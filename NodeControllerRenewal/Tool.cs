@@ -13,8 +13,6 @@ namespace NodeController30
 {
     public class NodeControllerTool : BaseTool<NodeControllerTool, ToolModeType>
     {
-        public static void Create() => Create<NodeControllerTool>();
-
         public static string SettingsFile => $"{nameof(NodeController30)}{nameof(SettingsFile)}";
         public static Shortcut ActivationShortcut { get; } = new Shortcut(SettingsFile, nameof(ActivationShortcut), "Activation", SavedInputKey.Encode(KeyCode.N, false, false, true));
 
@@ -22,17 +20,11 @@ namespace NodeController30
         protected override IToolMode DefaultMode => ToolModes[ToolModeType.Select];
         public override bool IsActivationPressed => ActivationShortcut.InputKey.IsKeyUp();
 
-        public new static NodeControllerTool Instance
-        {
-            get => BaseTool.Instance as NodeControllerTool;
-            set => BaseTool.Instance = value;
-        }
+        public new static NodeControllerTool Instance => BaseTool.Instance as NodeControllerTool;
         protected override IEnumerable<IToolMode<ToolModeType>> GetModes()
         {
             yield return CreateToolMode<SelectToolMode>();
         }
-        public override void Enable() => Enable<NodeControllerTool>();
-
     }
     public abstract class NodeControllerToolMode : BaseToolMode, IToolMode<ToolModeType>, IToolModePanel
     {
@@ -46,6 +38,6 @@ namespace NodeController30
         None = 0,
         Select = 1,
     }
-    public class NodeControllerThreadingExtension : BaseThreadingExtension { }
+    public class NodeControllerToolThreadingExtension : BaseThreadingExtension { }
     public class NodeControllerToolLoadingExtension : BaseToolLoadingExtension { }
 }

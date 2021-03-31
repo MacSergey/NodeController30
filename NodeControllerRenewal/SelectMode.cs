@@ -19,10 +19,6 @@ namespace NodeController30
 
         protected new NodeControllerTool Tool => NodeControllerTool.Instance;
 
-        protected override Segment3 Ray => NodeControllerTool.Ray;
-        protected override bool RayValid => NodeControllerTool.MouseRayValid;
-        protected override Vector3 MouseWorldPosition => NodeControllerTool.MouseWorldPosition;
-
         public override string GetToolInfo() => IsHoverNode ? $"Node {HoverNode.Id}": (IsHoverSegment ? $"Segment {HoverSegment.Id}" : string.Empty);
 
         public override void OnPrimaryMouseClicked(Event e)
