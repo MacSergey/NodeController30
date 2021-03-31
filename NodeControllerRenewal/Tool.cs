@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace NodeController30
 {
-    public class NodeControllerTool : BaseTool<NodeControllerTool, ToolModeType>
+    public class NodeControllerTool : BaseTool<ToolModeType>
     {
         public static string SettingsFile => $"{nameof(NodeController30)}{nameof(SettingsFile)}";
         public static Shortcut ActivationShortcut { get; } = new Shortcut(SettingsFile, nameof(ActivationShortcut), "Activation", SavedInputKey.Encode(KeyCode.N, false, false, true));
@@ -20,6 +20,7 @@ namespace NodeController30
         protected override IToolMode DefaultMode => ToolModes[ToolModeType.Select];
         public override bool IsActivationPressed => ActivationShortcut.InputKey.IsKeyUp();
 
+        public static void Create() => Create<NodeControllerTool>();
         public new static NodeControllerTool Instance => BaseTool.Instance as NodeControllerTool;
         protected override IEnumerable<IToolMode<ToolModeType>> GetModes()
         {
