@@ -15,16 +15,16 @@ namespace NodeController30
         {
             var success = true;
 
-            //success &= PatchToolControllerAwake();
+            success &= PatchToolControllerAwake();
 
             return success;
         }
 
-        //private bool PatchToolControllerAwake()
-        //{
-        //    var prefix = AccessTools.Method(typeof(NodeMarkupTool), nameof(NodeMarkupTool.Create));
+        private bool PatchToolControllerAwake()
+        {
+            var prefix = AccessTools.Method(typeof(NodeControllerTool), nameof(NodeControllerTool.Create));
 
-        //    return AddPrefix(prefix, typeof(ToolController), "Awake");
-        //}
+            return AddPrefix(prefix, typeof(ToolController), "Awake");
+        }
     }
 }
