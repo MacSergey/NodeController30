@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodeController30", "NodeController30\NodeController30.csproj", "{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ModsCommonShared", "ModsCommon\ModsCommonShared\ModsCommonShared.shproj", "{24615A21-AFA6-42C0-8B7A-4FB3329B056F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodeControllerRenewal", "NodeControllerRenewal\NodeControllerRenewal.csproj", "{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -26,6 +26,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		BuildVersion_StartDate = 2000/1/1
 		SolutionGuid = {81553A2A-DCA5-449A-A08F-0BC55141DD0D}
 	EndGlobalSection
 EndGlobal
