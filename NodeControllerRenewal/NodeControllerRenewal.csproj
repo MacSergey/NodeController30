@@ -89,10 +89,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LifeCycle\AssetDataExtension.cs" />
-    <Compile Include="LifeCycle\LifeCycle.cs" />
-    <Compile Include="LifeCycle\MoveItIntegration.cs" />
-    <Compile Include="LifeCycle\SerializableDataExtension.cs" />
+    <Compile Include="Manager\AssetDataExtension.cs" />
+    <Compile Include="Utilities\MoveItIntegration.cs" />
+    <Compile Include="Manager\SerializableDataExtension.cs" />
     <Compile Include="Manager\INetworkData.cs" />
     <Compile Include="Manager\NodeData.cs" />
     <Compile Include="Manager\NodeManager.cs" />

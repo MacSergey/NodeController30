@@ -20,6 +20,7 @@ namespace NodeController
             var success = true;
 
             success &= Patch_ToolController_Awake();
+            success &= Patch_LoadAssetPanel_OnLoad();
 
             PatchNetManager(ref success);
             PatchNetNode(ref success);
@@ -39,6 +40,11 @@ namespace NodeController
             var prefix = AccessTools.Method(typeof(NodeControllerTool), nameof(NodeControllerTool.Create));
             return AddPrefix(prefix, typeof(ToolController), "Awake");
         }
+        private bool Patch_LoadAssetPanel_OnLoad()
+        {
+            var postfix = AccessTools.Method(typeof(OnLoadPatch), nameof(OnLoadPatch.LoadAssetPanelOnLoadPostfix));
+            return AddPostfix(postfix, typeof(LoadAssetPanel), nameof(LoadAssetPanel.OnLoad));
+        }
 
         #region NETMANAGER
 
@@ -57,7 +63,7 @@ namespace NodeController
         private bool Patch_NetManager_ReleaseNodeImplementation()
         {
             var prefix = AccessTools.Method(typeof(NetManagerPatches), nameof(NetManagerPatches.ReleaseNodeImplementationPrefix));
-            return AddPrefix(prefix, typeof(NetManager), "ReleaseNodeImplementation");
+            return AddPrefix(prefix, typeof(NetManager), "ReleaseNodeImplementation", new Type[] { typeof(ushort) });
         }
         private bool Patch_NetManager_ReleaseSegmentImplementation()
         {
@@ -73,8 +79,8 @@ namespace NodeController
         private void PatchNetNode(ref bool success)
         {
             success &= Patch_NetNode_CalculateNode();
-            success &= Patch_NetNode_RefreshJunctionData1();
-            success &= Patch_NetNode_RefreshJunctionData2();
+            success &= Patch_NetNode_RefreshJunctionData_Postfix();
+            success &= Patch_NetNode_RefreshJunctionData_Transpiler();
             success &= Patch_NetNode_RenderInstance();
         }
         private bool Patch_NetNode_CalculateNode()
@@ -82,23 +88,23 @@ namespace NodeController
             var postfix = AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.CalculateNodePostfix));
             return AddPostfix(postfix, typeof(NetNode), nameof(NetNode.CalculateNode));
         }
-        private bool Patch_NetNode_RefreshJunctionData1()
+        private bool Patch_NetNode_RefreshJunctionData_Postfix()
         {
             var postfix = AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.RefreshJunctionDataPostfix));
             var parameters = new Type[] { typeof(ushort), typeof(int), typeof(ushort), typeof(Vector3), typeof(uint).MakeByRefType(), typeof(RenderManager.Instance).MakeByRefType() };
             return AddPostfix(postfix, typeof(NetNode), "RefreshJunctionData", parameters);
         }
-        private bool Patch_NetNode_RefreshJunctionData2()
+        private bool Patch_NetNode_RefreshJunctionData_Transpiler()
         {
-            var transpiler = AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.RefreshJunctionDataPostfix));
+            var transpiler = AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.RefreshJunctionDataTranspiler));
             var parameters = new Type[] { typeof(ushort), typeof(NetInfo), typeof(uint) };
             return AddTranspiler(transpiler, typeof(NetNode), "RefreshJunctionData", parameters);
         }
         private bool Patch_NetNode_RenderInstance()
         {
-            var postfix = AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.RenderInstanceTranspiler));
+            var transpiler = AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.RenderInstanceTranspiler));
             var parameters = new Type[] { typeof(RenderManager.CameraInfo), typeof(ushort), typeof(NetInfo), typeof(int), typeof(NetNode.Flags), typeof(uint).MakeByRefType(), typeof(RenderManager.Instance).MakeByRefType() };
-            return AddPostfix(postfix, typeof(NetNode), nameof(NetNode.CalculateNode), parameters);
+            return AddTranspiler(transpiler, typeof(NetNode), nameof(NetNode.RenderInstance), parameters);
         }
 
         #endregion
@@ -106,17 +112,24 @@ namespace NodeController
         #region NETSEGMENT
         private void PatchNetSegment(ref bool success)
         {
-            success &= Patch_NetSegment_CalculateCorner();
+            success &= Patch_NetSegment_CalculateCorner_Postfix();
+            success &= Patch_NetSegment_CalculateCorner_Transpiler();
             success &= Patch_NetSegment_FindDirection();
             success &= Patch_NetSegment_CalculateSegment();
             success &= Patch_NetSegment_RenderInstance();
         }
 
-        private bool Patch_NetSegment_CalculateCorner()
+        private bool Patch_NetSegment_CalculateCorner_Postfix()
         {
             var postfix = AccessTools.Method(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerPostfix));
+            var parameters = new Type[] { typeof(ushort), typeof(bool), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType() };
+            return AddPostfix(postfix, typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
+        }
+        private bool Patch_NetSegment_CalculateCorner_Transpiler()
+        {
             var transpilar = AccessTools.Method(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerTranspiler));
-            return AddPostfix(postfix, typeof(NetSegment), nameof(NetSegment.CalculateCorner)) && AddTranspiler(transpilar, typeof(NetSegment), nameof(NetSegment.CalculateCorner));
+            var parameters = new Type[] { typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(ushort), typeof(ushort), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType() };
+            return AddTranspiler(transpilar, typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
         }
 
         private bool Patch_NetSegment_FindDirection()
@@ -154,7 +167,7 @@ namespace NodeController
         private bool Patch_NetLane_RenderInstance() => Patch_NetLane(nameof(NetLane.RenderInstance));
         private bool Patch_NetLane(string methodName)
         {
-            var transpilar = AccessTools.Method(typeof(NetLanePatches), nameof(NetLanePatches.Patch));
+            var transpilar = AccessTools.Method(typeof(NetLanePatches), nameof(NetLanePatches.Transpiler));
             return AddTranspiler(transpilar, typeof(NetLane), methodName);
         }
 
@@ -219,7 +232,7 @@ namespace NodeController
 
         private void PatchTMPE(ref bool success)
         {
-            if(PluginUtil.GetTrafficManager().IsActive())
+            if (PluginUtil.GetTrafficManager().IsActive())
             {
                 success &= Patch_TrafficLightManager_CanToggleTrafficLight();
                 success &= Patch_JunctionRestrictionsManager_GetDefaultEnteringBlockedJunctionAllowed();

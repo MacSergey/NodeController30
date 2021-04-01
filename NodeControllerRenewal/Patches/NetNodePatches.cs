@@ -97,19 +97,18 @@ namespace NodeController.Patches
             return segmentData == null ? cornerOffset0 : (segmentData.Corner(true).Offset + segmentData.Corner(false).Offset) * 0.5f;
         }
 
-        public static IEnumerable<CodeInstruction> RenderInstanceTranspiler(ILGenerator il, IEnumerable<CodeInstruction> instructions, MethodInfo method)
+        public static IEnumerable<CodeInstruction> RenderInstanceTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase method)
         {
             var codes = TranspilerUtils.ToCodeList(instructions);
             PatchCheckFlags(codes, occurance: 2, method);
 
             return codes;
         }
-        public static void PatchCheckFlags(List<CodeInstruction> codes, int occurance, MethodInfo method)
+        public static void PatchCheckFlags(List<CodeInstruction> codes, int occurance, MethodBase method)
         {
             int index = 0;
             var drawMeshMethod = AccessTools.Method(typeof(Graphics), nameof(Graphics.DrawMesh), new[] { typeof(Mesh), typeof(Vector3), typeof(Quaternion), typeof(Material), typeof(int), typeof(Camera), typeof(int), typeof(MaterialPropertyBlock) });
             index = TranspilerUtils.SearchInstruction(codes, new CodeInstruction(OpCodes.Call, drawMeshMethod), index, counter: occurance);
-            Assertion.Assert(index != 0, "index!=0");
 
             var nodeMaterialField = AccessTools.Field(typeof(NetInfo.Node), nameof(NetInfo.Node.m_nodeMaterial));
             index = TranspilerUtils.SearchInstruction(codes, new CodeInstruction(OpCodes.Ldfld, nodeMaterialField), index, dir: -1);

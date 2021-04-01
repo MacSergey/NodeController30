@@ -6,37 +6,25 @@ using static NodeController.LifeCycle.MoveItIntegration;
 using static KianCommons.Assertion;
 using KianCommons.Serialization;
 
-namespace NodeController.LifeCycle
+namespace NodeController
 {
     using HarmonyLib;
     using ColossalFramework.UI;
     using System.Runtime.CompilerServices;
     using NodeController;
+    using System.Reflection;
 
-    // Credits to boformer
-    [HarmonyPatch(typeof(LoadAssetPanel), "OnLoad")]
     public static class OnLoadPatch
     {
-        /// <summary>
-        /// when loading asset from file, IAssetData.OnAssetLoaded() is called for all assets but the one that is loaded from file.
-        /// this postfix calls IAssetData.OnAssetLoaded() for asset loaded from file.
-        /// </summary>
-        public static void Postfix(LoadAssetPanel __instance, UIListBox ___m_SaveList)
+        public static void LoadAssetPanelOnLoadPostfix(LoadAssetPanel __instance, UIListBox ___m_SaveList)
         {
-            // Taken from LoadAssetPanel.OnLoad
-            var selectedIndex = ___m_SaveList.selectedIndex;
-            var getListingMetaDataMethod = typeof(LoadSavePanelBase<CustomAssetMetaData>).GetMethod(
-                "GetListingMetaData", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            var listingMetaData = (CustomAssetMetaData)getListingMetaDataMethod.Invoke(__instance, new object[] { selectedIndex });
+            if (AccessTools.Method(typeof(LoadSavePanelBase<CustomAssetMetaData>), "GetListingMetaData") is not MethodInfo method)
+                return;
 
-            // Taken from LoadingManager.LoadCustomContent
+            var listingMetaData = (CustomAssetMetaData)method.Invoke(__instance, new object[] { ___m_SaveList.selectedIndex });
             if (listingMetaData.userDataRef != null)
             {
-                AssetDataWrapper.UserAssetData userAssetData = listingMetaData.userDataRef.Instantiate() as AssetDataWrapper.UserAssetData;
-                if (userAssetData == null)
-                {
-                    userAssetData = new AssetDataWrapper.UserAssetData();
-                }
+                var userAssetData = (listingMetaData.userDataRef.Instantiate() as AssetDataWrapper.UserAssetData) ?? new AssetDataWrapper.UserAssetData();
                 AssetDataExtension.Instance.OnAssetLoaded(listingMetaData.name, ToolsModifierControl.toolController.m_editPrefabInfo, userAssetData.Data);
             }
         }
@@ -54,6 +42,7 @@ namespace NodeController.LifeCycle
             var records = GetRecords();
             if (records == null || records.Length == 0)
                 return null;
+
             return new AssetData
             {
                 Records = SerializationUtil.Serialize(records),
@@ -99,7 +88,6 @@ namespace NodeController.LifeCycle
     public class AssetDataExtension : AssetDataExtensionBase
     {
         public const string NC_ID = "NodeController_V1.0";
-        //static Building[] buildingBuffer = BuildingManager.instance.m_buildings.m_buffer;
 
         public static AssetDataExtension Instance;
         public Dictionary<BuildingInfo, object[]> Asset2Records = new Dictionary<BuildingInfo, object[]>();
@@ -117,12 +105,8 @@ namespace NodeController.LifeCycle
 
         public override void OnAssetLoaded(string name, object asset, Dictionary<string, byte[]> userData)
         {
-            //return;
-            //Log.Debug($"AssetDataExtension.OnAssetLoaded({name}, {asset}, userData) called");
             if (asset is BuildingInfo prefab)
             {
-                //Log.Debug("AssetDataExtension.OnAssetLoaded():  prefab is " + prefab);
-
                 if (userData != null && userData.TryGetValue(NC_ID, out byte[] data))
                 {
                     Mod.Logger.Debug("AssetDataExtension.OnAssetLoaded():  extracted data for " + NC_ID);

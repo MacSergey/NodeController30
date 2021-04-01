@@ -18,7 +18,7 @@ namespace NodeController.Patches
         static FieldInfo PositionField { get; } = AccessTools.Field(typeof(NetLaneProps.Prop), nameof(NetLaneProps.Prop.m_position));
         static FieldInfo XField { get; } = AccessTools.Field(typeof(Vector3), nameof(Vector3.x));
         static FieldInfo YField { get; } = AccessTools.Field(typeof(Vector3), nameof(Vector3.y));
-        static MethodInfo PositionMethod { get; } = AccessTools.Method(typeof(Bezier3), nameof(Bezier3.Position));
+        static MethodInfo PositionMethod { get; } = AccessTools.Method(typeof(Bezier3), nameof(Bezier3.Position), new Type[] { typeof(float)});
 
         public static Vector3 CalculatePropPos(ref Vector3 pos0, float t, uint laneID, NetInfo.Lane laneInfo)
         {
@@ -52,7 +52,7 @@ namespace NodeController.Patches
             return pos;
         }
 
-        public static IEnumerable<CodeInstruction> Patch(IEnumerable<CodeInstruction> instructions, MethodInfo method)
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase method)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace NodeController.Patches
             }
         }
 
-        public static bool InsertCall(List<CodeInstruction> codes, int index, MethodInfo method)
+        public static bool InsertCall(List<CodeInstruction> codes, int index, MethodBase method)
         {
             if (GetLDOffset(codes, index) is not CodeInstruction LDOffset)
                 return false; // silently return if no offset could be found.

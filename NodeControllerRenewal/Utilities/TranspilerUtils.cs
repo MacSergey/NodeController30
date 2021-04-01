@@ -20,59 +20,6 @@ namespace KianCommons.Patches
             | BindingFlags.GetProperty
             | BindingFlags.SetProperty;
 
-        public static string FullName(MethodBase m) =>
-            m.DeclaringType.FullName + "::" + m.Name;
-
-        /// <typeparam name="TDelegate">delegate type</typeparam>
-        /// <returns>Type[] represeting arguments of the delegate.</returns>
-        internal static Type[] GetParameterTypes<TDelegate>() where TDelegate : Delegate
-            => typeof(TDelegate).GetMethod("Invoke").GetParameters().Select(p => p.ParameterType).ToArray();
-
-        /// <summary>
-        /// Gets directly declared method based on a delegate that has
-        /// the same name and the same args as the target method.
-        /// </summary>
-        /// <param name="type">the class/type where the method is delcared</param>
-        internal static MethodInfo DeclaredMethod<TDelegate>
-            (Type type, bool throwOnError = true) where TDelegate : Delegate =>
-            DeclaredMethod<TDelegate>(type, typeof(TDelegate).Name, throwOnError);
-
-        /// <summary>
-        /// Gets directly declared method based on a delegate that has
-        /// the same name as the target method
-        /// </summary>
-        /// <param name="type">the class/type where the method is delcared</param>
-        /// <param name="name">the name of the method</param>
-        internal static MethodInfo DeclaredMethod<TDelegate>(Type type, string name, bool throwOnError = false)
-            where TDelegate : Delegate
-        {
-            return type.GetMethod(name, binding: ReflectionHelpers.ALL_Declared, types: GetParameterTypes<TDelegate>(), throwOnError: true);
-        }
-
-        /// <summary>
-        /// like DeclaredMethod but throws suitable exception if method not found.
-        /// </summary>
-        [Obsolete("use reflection helpers instead")]
-        internal static MethodInfo GetMethod(Type type, string name) =>
-            type.GetMethod(name, ReflectionHelpers.ALL_Declared)
-            ?? throw new Exception($"Method not found: {type.Name}.{name}");
-
-        internal static MethodInfo GetCoroutineMoveNext(Type declaringType, string name)
-        {
-            try
-            {
-                Type t = declaringType.GetNestedTypes(ALL)
-                    .Single(_t => _t.Name.Contains($"<{name}>"));
-                return ReflectionHelpers.GetMethod(t, "MoveNext");
-            }
-            catch (Exception ex)
-            {
-                var types = declaringType?.GetNestedTypes(ALL).Where(_t => _t.Name.Contains($"<{name}>")).Select(_t => _t.FullName);
-                Mod.Logger.Error($"the following types contian '<{name}>': " + types.ToSTR(), ex);
-                return null;
-            }
-        }
-
         public static List<CodeInstruction> ToCodeList(this IEnumerable<CodeInstruction> instructions)
         {
             var originalCodes = new List<CodeInstruction>(instructions);
@@ -85,7 +32,7 @@ namespace KianCommons.Patches
             if (!throwOnError && !HasParameter(method, argName))
                 return null;
 
-            byte idx = (byte)GetArgLoc(method, argName);
+            byte idx = method.GetArgLoc(argName);
             if (idx == 0)
                 return new CodeInstruction(OpCodes.Ldarg_0);
             else if (idx == 1)
@@ -103,7 +50,7 @@ namespace KianCommons.Patches
         /// </returns>
         public static byte GetArgLoc(this MethodBase method, string argName)
         {
-            byte idx = (byte)GetParameterLoc(method, argName);
+            byte idx = GetParameterLoc(method, argName);
             if (!method.IsStatic)
                 idx++; // first argument is object instance.
             return idx;
@@ -222,6 +169,7 @@ namespace KianCommons.Patches
         {
             if (count == 0)
                 throw new ArgumentOutOfRangeException("count can't be zero");
+
             int dir = count > 0 ? 1 : -1;
             int counter = System.Math.Abs(count);
             int n = 0;
@@ -235,20 +183,8 @@ namespace KianCommons.Patches
                         break;
                 }
             }
-            if (n != counter)
-            {
-                if (throwOnError == true)
-                {
-                    throw new InstructionNotFoundException($"count: found={n} requested={count}");
-                }
-                else
-                {
-                    Mod.Logger.Debug("Did not found instruction[s].\n" + Environment.StackTrace);
-                    return -1;
-                }
-            }
-            Mod.Logger.Debug("Found : \n" + new[] { codes[index], codes[index + 1] }.IL2STR());
-            return index;
+
+            return n == counter ? index : (!throwOnError ? -1 : throw new InstructionNotFoundException($"count: found={n} requested={count}"));
         }
 
         [Obsolete]
@@ -276,34 +212,8 @@ namespace KianCommons.Patches
                         break;
                 }
             }
-            if (count != counter)
-            {
-                if (throwOnError == true)
-                    throw new InstructionNotFoundException(" Did not found instruction[s].");
-                else
-                {
-                    Mod.Logger.Debug("Did not found instruction[s].\n" + Environment.StackTrace);
-                    return -1;
-                }
-            }
-            Mod.Logger.Debug("Found : \n" + new[] { codes[index], codes[index + 1] }.IL2STR());
-            return index;
+            return count == counter ? index : (!throwOnError ? -1 : throw new InstructionNotFoundException(" Did not found instruction[s]."));
         }
-
-        [Obsolete("unreliable")]
-        public static Label GetContinueLabel(List<CodeInstruction> codes, int index, int counter = 1, int dir = -1)
-        {
-            // continue command is in form of branch into the end of for loop.
-            index = SearchGeneric(codes, idx => codes[idx].Branches(out _), index, dir: dir, counter: counter);
-            return (Label)codes[index].operand;
-        }
-
-        [Obsolete("use harmoyn extension Branches() instead")]
-        public static bool IsBR32(OpCode opcode)
-        {
-            return opcode == OpCodes.Br || opcode == OpCodes.Brtrue || opcode == OpCodes.Brfalse || opcode == OpCodes.Beq;
-        }
-
         public static void MoveLabels(CodeInstruction source, CodeInstruction target)
         {
             // move labels
@@ -323,14 +233,9 @@ namespace KianCommons.Patches
                     throw new Exception("Bad Instructions:\n" + insertion.IL2STR());
             }
 
-            Mod.Logger.Debug($"replacing <{codes[index]}>\nInsert between: <{codes[index - 1]}>  and  <{codes[index + 1]}>");
-
             MoveLabels(codes[index], insertion[0]);
             codes.RemoveAt(index);
             codes.InsertRange(index, insertion);
-
-            Mod.Logger.Debug("Replacing with\n" + insertion.IL2STR());
-            Mod.Logger.Debug("PEEK (RESULTING CODE):\n" + codes.GetRange(index - 4, insertion.Length + 8).IL2STR());
         }
 
         public static void InsertInstructions(List<CodeInstruction> codes, CodeInstruction[] insertion, int index, bool moveLabels = true)
@@ -340,13 +245,10 @@ namespace KianCommons.Patches
                 if (code == null)
                     throw new Exception("Bad Instructions:\n" + insertion.IL2STR());
             }
-            Mod.Logger.Debug($"Insert point:\n between: <{codes[index - 1]}>  and  <{codes[index]}>");
 
             MoveLabels(codes[index], insertion[0]);
             codes.InsertRange(index, insertion);
 
-            Mod.Logger.Debug("\n" + insertion.IL2STR());
-            Mod.Logger.Debug("PEEK:\n" + codes.GetRange(index - 4, insertion.Length + 12).IL2STR());
         }
     }
 

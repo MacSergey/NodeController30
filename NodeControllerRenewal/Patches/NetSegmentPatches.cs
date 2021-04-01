@@ -17,7 +17,6 @@ namespace NodeController.Patches
         public static void CalculateCornerPostfix(ushort segmentID, bool start, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection)
         {
             SegmentEndData data = SegmentEndManager.Instance.GetAt(segmentID, start);
-            Assertion.AssertNotNull(GUI.Settings.GameConfig, "Settings.GameConfig");
             if (data == null && !GUI.Settings.GameConfig.UnviversalSlopeFixes)
                 return;
 

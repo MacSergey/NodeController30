@@ -208,12 +208,8 @@ namespace KianCommons.Plugins
                 }
 
                 if (match)
-                {
-                    Mod.Logger.Debug("Found plugin:" + current.GetModName());
                     return current;
-                }
             }
-            Mod.Logger.Debug($"plugin not found: keyword={searchName} options={searchOptions}");
             return null;
         }
 
@@ -233,8 +229,6 @@ namespace KianCommons.Plugins
                 name2 = name2.Replace(" ", "");
             }
 
-            Mod.Logger.Debug($"[MATCHING] : {name1} =? {name2} " + searchOptions);
-
             if (name1 == name2)
                 return true;
             if (searchOptions.IsFlagSet(SearchOptionT.Contains))
@@ -252,9 +246,9 @@ namespace KianCommons.Plugins
 
         public static bool Matches(PluginInfo plugin, ulong[] searchIds)
         {
-            Assertion.AssertNotNull(plugin);
             if (searchIds == null)
                 return false;
+
             foreach (var id in searchIds)
             {
                 if (id == 0)
