@@ -8,7 +8,7 @@ namespace KianCommons.Serialization
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters;
     using System.Runtime.Serialization.Formatters.Binary;
-    using NodeController30;
+    using NodeController;
 
     internal static class SerializationUtil
     {

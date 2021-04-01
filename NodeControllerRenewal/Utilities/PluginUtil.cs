@@ -11,7 +11,7 @@ namespace KianCommons.Plugins
     using System.Linq;
     using System.Collections;
     using System.Collections.Generic;
-    using NodeController30;
+    using NodeController;
 
     public static class PluginExtensions
     {

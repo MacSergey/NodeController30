@@ -6,7 +6,7 @@ namespace KianCommons
     using System;
     using System.Runtime.CompilerServices;
     using static KianCommons.ReflectionHelpers;
-    using NodeController30;
+    using NodeController;
 
     public static class HarmonyUtil
     {

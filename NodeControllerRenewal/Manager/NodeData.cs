@@ -17,7 +17,7 @@ namespace NodeController
     using System.Diagnostics;
     using System.Linq;
     using ModsCommon.Utilities;
-    using NodeController30;
+    using NodeController;
     using KianCommons.Math;
 
     public enum NodeTypeT

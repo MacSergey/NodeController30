@@ -9,12 +9,17 @@ using static KianCommons.Patches.TranspilerUtils;
 using static KianCommons.Assertion;
 using KianCommons;
 using ColossalFramework;
-using NodeController30;
+using NodeController;
 
-namespace NodeController.Patches.NetLanePatches
+namespace NodeController.Patches
 {
-    public static class PropDisplacementCommons
+    public static class NetLanePatches
     {
+        static FieldInfo PositionField { get; } = AccessTools.Field(typeof(NetLaneProps.Prop), nameof(NetLaneProps.Prop.m_position));
+        static FieldInfo XField { get; } = AccessTools.Field(typeof(Vector3), nameof(Vector3.x));
+        static FieldInfo YField { get; } = AccessTools.Field(typeof(Vector3), nameof(Vector3.y));
+        static MethodInfo PositionMethod { get; } = AccessTools.Method(typeof(Bezier3), nameof(Bezier3.Position));
+
         public static Vector3 CalculatePropPos(ref Vector3 pos0, float t, uint laneID, NetInfo.Lane laneInfo)
         {
             Vector3 pos = pos0;
@@ -47,20 +52,6 @@ namespace NodeController.Patches.NetLanePatches
             return pos;
         }
 
-        static MethodInfo mCalculatePropPos = typeof(PropDisplacementCommons).GetMethod(nameof(CalculatePropPos)) ??
-            throw new Exception("mCalculatePropPos is null");
-
-        static FieldInfo fPosition = typeof(NetLaneProps.Prop).
-                              GetField(nameof(NetLaneProps.Prop.m_position)) ??
-                              throw new Exception("fPosition is null");
-        static FieldInfo fX = typeof(Vector3).GetField("x") ?? throw new Exception("fX is null");
-        static FieldInfo fY = typeof(Vector3).GetField("y") ?? throw new Exception("fY is null");
-
-        static MethodInfo mPosition =
-            typeof(Bezier3)
-            .GetMethod(nameof(Bezier3.Position), BindingFlags.Public | BindingFlags.Instance)
-            ?? throw new Exception("mPosition is null");
-
         public static IEnumerable<CodeInstruction> Patch(IEnumerable<CodeInstruction> instructions, MethodInfo method)
         {
             try
@@ -72,8 +63,8 @@ namespace NodeController.Patches.NetLanePatches
                     var c0 = codes[i];
                     var c1 = codes[i + 1];
                     var c2 = codes[i + 2];
-                    bool ret = c0.operand == fPosition;
-                    ret &= c1.operand == fX || c1.operand == fY;
+                    bool ret = c0.operand == PositionField;
+                    ret &= c1.operand == XField || c1.operand == YField;
                     ret &= c2.opcode == OpCodes.Mul || c2.opcode == OpCodes.Add; // ignore if(pos.x != 0)
                     return ret;
                 }
@@ -85,7 +76,8 @@ namespace NodeController.Patches.NetLanePatches
                     Assert(watchdog < 20, "watchdog");
                     int c = 1;//watchdog == 0 ? 1 : 2; // skip over m_position from previous loop.
                     index = SearchGeneric(codes, predicate, index, throwOnError: false, counter: c);
-                    if (index < 0) break; // not found
+                    if (index < 0)
+                        break; // not found
                     index++; // insert after
                     bool inserted = InsertCall(codes, index, method);
                     if (inserted) nInsertions++;
@@ -101,18 +93,14 @@ namespace NodeController.Patches.NetLanePatches
 
         public static bool InsertCall(List<CodeInstruction> codes, int index, MethodInfo method)
         {
-            CodeInstruction LDLaneID = GetLDArg(method, "laneID");
-            CodeInstruction LDLaneInfo = GetLDArg(method, "laneInfo");
-            CodeInstruction LDOffset = GetLDOffset(codes, index);
-
-            if (LDOffset == null)
+            if (GetLDOffset(codes, index) is not CodeInstruction LDOffset)
                 return false; // silently return if no offset could be found.
 
             var insertion = new CodeInstruction[] {
                 LDOffset,
-                LDLaneID,
-                LDLaneInfo,
-                new CodeInstruction(OpCodes.Call, mCalculatePropPos)
+                GetLDArg(method, "laneID"),
+                 GetLDArg(method, "laneInfo"),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetLanePatches), nameof(CalculatePropPos)))
             };
 
             // insert after ldflda prop.m_posion
@@ -126,8 +114,7 @@ namespace NodeController.Patches.NetLanePatches
         /// </summary>
         public static CodeInstruction GetLDOffset(List<CodeInstruction> codes, int index)
         {
-            // find bezier.Position(offset);
-            index = SearchGeneric(codes, i => codes[i].operand == mPosition, index: index, dir: -1, throwOnError: false);
+            index = SearchGeneric(codes, i => codes[i].operand == PositionMethod, index: index, dir: -1, throwOnError: false);
             index--; // previous instructions should put offset into stack
 
             if (index < 0) // not found

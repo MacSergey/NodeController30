@@ -3,7 +3,7 @@ using MoveItIntegration;
 using System;
 using System.Collections.Generic;
 using KianCommons.Serialization;
-using NodeController30;
+using NodeController;
 
 namespace NodeController.LifeCycle
 {

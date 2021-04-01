@@ -10,7 +10,7 @@ namespace NodeController.Patches
     using static KianCommons.Patches.TranspilerUtils;
     using NodeController.Util;
     using UnityEngine;
-    using NodeController30;
+    using NodeController;
 
     [HarmonyPatch]
     class RenderInstance
@@ -83,7 +83,7 @@ namespace NodeController.Patches
         public static IEnumerable<CodeInstruction> Transpiler(ILGenerator il, IEnumerable<CodeInstruction> instructions)
         {
             // apply the flat junctions traspiler
-            instructions = FlatJunctionsCommons.ModifyFlatJunctionsTranspiler(instructions, targetMethod_);
+            instructions = FlatJunctionsCommons.Transpiler(instructions, targetMethod_);
 
             CodeInstruction ldarg_segmentID = GetLDArg(targetMethod_, "segmentID"); // push startNodeID into stack,
             CodeInstruction call_CalculateNameMatrix = new CodeInstruction(OpCodes.Call, mCalculateNameMatrix);

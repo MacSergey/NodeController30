@@ -4,7 +4,7 @@ namespace NodeController.Patches._NetTool
     using NodeController.LifeCycle;
     using static KianCommons.HelpersExtensions;
     using System;
-    using NodeController30;
+    using NodeController;
 
     [HarmonyPatch(typeof(global::NetTool), "SplitSegment")]
     public class SplitSegmentPatch

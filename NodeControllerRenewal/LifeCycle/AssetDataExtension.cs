@@ -11,7 +11,7 @@ namespace NodeController.LifeCycle
     using HarmonyLib;
     using ColossalFramework.UI;
     using System.Runtime.CompilerServices;
-    using NodeController30;
+    using NodeController;
 
     // Credits to boformer
     [HarmonyPatch(typeof(LoadAssetPanel), "OnLoad")]

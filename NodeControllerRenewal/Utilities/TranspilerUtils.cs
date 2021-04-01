@@ -1,5 +1,5 @@
 using HarmonyLib;
-using NodeController30;
+using NodeController;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,13 +25,8 @@ namespace KianCommons.Patches
 
         /// <typeparam name="TDelegate">delegate type</typeparam>
         /// <returns>Type[] represeting arguments of the delegate.</returns>
-        internal static Type[] GetParameterTypes<TDelegate>()
-            where TDelegate : Delegate =>
-            typeof(TDelegate)
-            .GetMethod("Invoke")
-            .GetParameters()
-            .Select(p => p.ParameterType)
-            .ToArray();
+        internal static Type[] GetParameterTypes<TDelegate>() where TDelegate : Delegate
+            => typeof(TDelegate).GetMethod("Invoke").GetParameters().Select(p => p.ParameterType).ToArray();
 
         /// <summary>
         /// Gets directly declared method based on a delegate that has
@@ -48,15 +43,10 @@ namespace KianCommons.Patches
         /// </summary>
         /// <param name="type">the class/type where the method is delcared</param>
         /// <param name="name">the name of the method</param>
-        internal static MethodInfo DeclaredMethod<TDelegate>
-            (Type type, string name, bool throwOnError = false)
+        internal static MethodInfo DeclaredMethod<TDelegate>(Type type, string name, bool throwOnError = false)
             where TDelegate : Delegate
         {
-            return type.GetMethod(
-                name,
-                binding: ReflectionHelpers.ALL_Declared,
-                types: GetParameterTypes<TDelegate>(),
-                throwOnError: true);
+            return type.GetMethod(name, binding: ReflectionHelpers.ALL_Declared, types: GetParameterTypes<TDelegate>(), throwOnError: true);
         }
 
         /// <summary>

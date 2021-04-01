@@ -10,7 +10,7 @@ using ColossalFramework.UI;
 using ColossalFramework;
 using ModsCommon;
 
-namespace NodeController30
+namespace NodeController
 {
     public class SelectToolMode : BaseSelectToolMode, IToolModePanel, IToolMode<ToolModeType>
     {

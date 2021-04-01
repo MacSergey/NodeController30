@@ -18,7 +18,7 @@ namespace NodeController
     using System.Linq;
     using KianCommons.Serialization;
     using Vector3Serializable = KianCommons.Math.Vector3Serializable;
-    using NodeController30;
+    using NodeController;
 
     [Serializable]
     public class SegmentEndData : INetworkData, INetworkData<SegmentEndData>, ISerializable

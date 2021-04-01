@@ -91,9 +91,7 @@
   <ItemGroup>
     <Compile Include="LifeCycle\AssetDataExtension.cs" />
     <Compile Include="LifeCycle\LifeCycle.cs" />
-    <Compile Include="LifeCycle\LoadingExtension.cs" />
     <Compile Include="LifeCycle\MoveItIntegration.cs" />
-    <Compile Include="LifeCycle\NodeControllerMod.cs" />
     <Compile Include="LifeCycle\SerializableDataExtension.cs" />
     <Compile Include="Manager\INetworkData.cs" />
     <Compile Include="Manager\NodeData.cs" />
@@ -104,23 +102,12 @@
     <Compile Include="Patcher.cs" />
     <Compile Include="Patches\CalculateCornerPatch.cs" />
     <Compile Include="Patches\FlatJunctions\CalculateCornerPatch2.cs" />
-    <Compile Include="Patches\FlatJunctions\FindDirectionPatch.cs" />
     <Compile Include="Patches\FlatJunctions\FlatJunctionCommons.cs" />
     <Compile Include="Patches\HarmonyExtension.cs" />
     <Compile Include="Patches\HideCrosswalksMod\ShouldHideCrossing.cs" />
-    <Compile Include="Patches\NetLanePatches\PopulateGroupData.cs" />
-    <Compile Include="Patches\NetLanePatches\PropDisplacementCommons.cs" />
-    <Compile Include="Patches\NetLanePatches\RefreshInstance.cs" />
-    <Compile Include="Patches\NetLanePatches\RenderDestroyedInstance.cs" />
-    <Compile Include="Patches\NetLanePatches\RenderInstance.cs" />
-    <Compile Include="Patches\NetManager\CreateSegmentPatch.cs" />
-    <Compile Include="Patches\NetManager\ReleaseNodeImplementationPatch.cs" />
-    <Compile Include="Patches\NetManager\ReleaseSegmentImplementationPatch.cs" />
-    <Compile Include="Patches\NetNodePatches\CalculateMaterialCommons.cs" />
-    <Compile Include="Patches\NetNodePatches\CalculateNode.cs" />
-    <Compile Include="Patches\NetNodePatches\RefreshJunctionData.cs" />
-    <Compile Include="Patches\NetNodePatches\RefreshJunctionData2.cs" />
-    <Compile Include="Patches\NetNodePatches\RenderInstance.cs" />
+    <Compile Include="Patches\NetLanePatches\NetLanePatches.cs" />
+    <Compile Include="Patches\NetManager\NetManagerPatches.cs" />
+    <Compile Include="Patches\NetNodePatches\NetNodePatches.cs" />
     <Compile Include="Patches\NetSegmentPatches\CalculateSegment.cs" />
     <Compile Include="Patches\NetSegmentPatches\RenderInstance.cs" />
     <Compile Include="Patches\NetTool\MoveMiddleNodePatch.cs" />

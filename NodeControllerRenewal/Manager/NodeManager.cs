@@ -4,7 +4,7 @@ namespace NodeController
     using System;
     using static KianCommons.Assertion;
     using KianCommons.Serialization;
-    using NodeController30;
+    using NodeController;
 
     [Serializable]
     public class NodeManager

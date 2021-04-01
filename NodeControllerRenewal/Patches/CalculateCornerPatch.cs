@@ -4,7 +4,7 @@ namespace NodeController.Patches
     using JetBrains.Annotations;
     using KianCommons;
     using NodeController.Util;
-    using NodeController30;
+    using NodeController;
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -32,7 +32,7 @@ namespace NodeController.Patches
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
         {
             // apply the flat junctions traspiler
-            instructions = FlatJunctionsCommons.ModifyFlatJunctionsTranspiler(instructions, original);
+            instructions = FlatJunctionsCommons.Transpiler(instructions, original);
 
             CodeInstruction ldarg_startNodeID = GetLDArg(original, "startNodeID"); // push startNodeID into stack,
             CodeInstruction ldarg_segmentID = GetLDArg(original, "ignoreSegmentID");

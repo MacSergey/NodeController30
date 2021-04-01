@@ -9,11 +9,11 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace NodeController30
+namespace NodeController
 {
     public class NodeControllerTool : BaseTool<ToolModeType>
     {
-        public static string SettingsFile => $"{nameof(NodeController30)}{nameof(SettingsFile)}";
+        public static string SettingsFile => $"{nameof(NodeController)}{nameof(SettingsFile)}";
         public static Shortcut ActivationShortcut { get; } = new Shortcut(SettingsFile, nameof(ActivationShortcut), "Activation", SavedInputKey.Encode(KeyCode.N, false, false, true));
         public static readonly SavedBool SnapToMiddleNode = new SavedBool("SnapToMiddleNode", NodeController.GUI.Settings.FileName, def: false, true);
 
