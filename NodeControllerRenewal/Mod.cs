@@ -1,4 +1,5 @@
-﻿using ModsCommon;
+﻿using ICities;
+using ModsCommon;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,21 @@ namespace NodeController30
         protected override string ModLocale => string.Empty;
 
         protected override BasePatcher CreatePatcher() => new Patcher(this);
+
+        public override void OnEnabled()
+        {
+            base.OnEnabled();
+            NodeController.LifeCycle.LifeCycle.Enable();
+        }
+
+        public override void OnDisabled()
+        {
+            base.OnDisabled();
+            NodeController.LifeCycle.LifeCycle.Disable();
+        }
+        protected override void GetSettings(UIHelperBase helper)
+        {
+            NodeController.GUI.Settings.OnSettingsUI(helper);
+        }
     }
 }

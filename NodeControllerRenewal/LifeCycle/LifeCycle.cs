@@ -23,8 +23,6 @@ namespace NodeController.LifeCycle
 
         public static void Enable()
         {
-            Mod.Logger.Debug("Testing StackTrace:\n" + new StackTrace(true).ToString());
-            HelpersExtensions.VERBOSE = false;
             Loaded = false;
 
             HarmonyHelper.EnsureHarmonyInstalled();

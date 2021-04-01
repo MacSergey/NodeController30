@@ -41,7 +41,7 @@ namespace NodeController
         #region MOVEIT BACKWARD COMPATIBLITY
 
         [Obsolete("delete when moveit is updated")]
-        public static byte[] CopyNodeData(ushort nodeID) => SerializationUtil.Serialize(Instance.buffer[nodeID]).LogRet($"NodeManager.CopyNodeData({nodeID}) ->");
+        public static byte[] CopyNodeData(ushort nodeID) => SerializationUtil.Serialize(Instance.buffer[nodeID]);
 
         public static ushort TargetNodeID = 0;
 

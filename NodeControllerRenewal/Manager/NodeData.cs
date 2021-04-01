@@ -18,6 +18,7 @@ namespace NodeController
     using System.Linq;
     using ModsCommon.Utilities;
     using NodeController30;
+    using KianCommons.Math;
 
     public enum NodeTypeT
     {
@@ -450,8 +451,6 @@ namespace NodeController
         /// </summary>
         private void Refresh()
         {
-            if (VERBOSE) Mod.Logger.Debug($"NodeData.Refresh() node:{NodeID}\n" + Environment.StackTrace);
-
             if (NodeType != NodeTypeT.Custom)
                 NoMarkings = false;
 
@@ -466,11 +465,6 @@ namespace NodeController
 
         public void Update()
         {
-            if (VERBOSE)
-            {
-                var st = new StackTrace(fNeedFileInfo: true);
-                Mod.Logger.Debug(this + "\n" + st.ToStringPretty());
-            }
             NetManager.instance.UpdateNode(NodeID);
         }
 

@@ -90,8 +90,7 @@ namespace NodeController.LifeCycle
             {
                 // convert to new version
                 LoadingVersion = 1;
-                data = serializableDataManager.LoadData(DATA_ID1)
-                    ?? serializableDataManager.LoadData(DATA_ID0);
+                data = serializableDataManager.LoadData(DATA_ID1) ?? serializableDataManager.LoadData(DATA_ID0);
                 NodeManager.Deserialize(data, new Version(1, 0));
             }
         }

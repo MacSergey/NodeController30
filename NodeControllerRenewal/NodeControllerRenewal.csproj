@@ -7,8 +7,8 @@
     <ProjectGuid>{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NodeController30</RootNamespace>
-    <AssemblyName>NodeController30</AssemblyName>
+    <RootNamespace>NodeController</RootNamespace>
+    <AssemblyName>NodeController</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -140,20 +140,53 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectMode.cs" />
     <Compile Include="Tool.cs" />
+    <Compile Include="UI\IDataControllerUI.cs" />
+    <Compile Include="UI\KeymappingsPanel.cs" />
     <Compile Include="Utilities\Assertion.cs" />
+    <Compile Include="Utilities\BezierUtil.cs" />
     <Compile Include="Utilities\CSURUtil.cs" />
+    <Compile Include="Utilities\EnumBitMaskExtensions.cs" />
     <Compile Include="Utilities\HarmonyUtil.cs" />
     <Compile Include="Utilities\HelpersExtensions.cs" />
+    <Compile Include="Utilities\MaterialUtils.cs" />
+    <Compile Include="Utilities\MathUtil.cs" />
     <Compile Include="Utilities\NetUtil.cs" />
+    <Compile Include="Utilities\PluginUtil.cs" />
     <Compile Include="Utilities\PrefixUtils.cs" />
     <Compile Include="Utilities\ReflectionHelpers.cs" />
     <Compile Include="Utilities\SerializationUtil.cs" />
     <Compile Include="Utilities\Settings.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />
+    <Compile Include="Utilities\TextureUTILS.cs" />
     <Compile Include="Utilities\TranspilerUtils.cs" />
+    <Compile Include="Utilities\VecetorUtils.cs" />
+    <Compile Include="Utilities\Vector3Serializable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor_edit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\cursor_error.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\cursor_insert.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\cursor_insert_crossing.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\cursor_move.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\cursor_searching.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\sprites.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="..\ModsCommon\ModsCommonShared\ModsCommonShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

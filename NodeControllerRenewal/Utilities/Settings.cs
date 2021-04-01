@@ -4,7 +4,7 @@ namespace NodeController.GUI
     using ColossalFramework.UI;
     using ICities;
     using KianCommons;
-    using NodeController.Tool;
+    using ModsCommon;
     using NodeController30;
     using System;
     using static KianCommons.HelpersExtensions;
@@ -63,7 +63,7 @@ namespace NodeController.GUI
             UIPanel panel = group.self as UIPanel;
 
             var keymappings = panel.gameObject.AddComponent<KeymappingsPanel>();
-            keymappings.AddKeymapping("Activation Shortcut", NodeControllerTool.ActivationShortcut);
+            keymappings.AddKeymapping("Activation Shortcut", NodeControllerTool.ActivationShortcut.InputKey);
 
             UICheckBox snapToggle = group.AddCheckbox(
                 "Snap to middle node",

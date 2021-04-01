@@ -236,6 +236,9 @@ namespace KianCommons
 
         #endregion MATH
 
+        public static float SampleHeight(Vector2 point) => terrainMan.SampleDetailHeightSmooth(point.ToCS3D(0));
+        public static Vector3 Get3DPos(Vector2 point) => point.ToCS3D(SampleHeight(point));
+
         #region copied from TMPE
         public static bool LHT => TrafficDrivesOnLeft;
         public static bool RHT => !LHT;

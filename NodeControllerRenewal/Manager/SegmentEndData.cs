@@ -5,6 +5,7 @@ namespace NodeController
     using ColossalFramework.UI;
     using CSUtil.Commons;
     using KianCommons;
+    using KianCommons.Math;
     using NodeController.GUI;
     using System;
     using System.Diagnostics;
@@ -17,12 +18,13 @@ namespace NodeController
     using System.Linq;
     using KianCommons.Serialization;
     using Vector3Serializable = KianCommons.Math.Vector3Serializable;
+    using NodeController30;
 
     [Serializable]
     public class SegmentEndData : INetworkData, INetworkData<SegmentEndData>, ISerializable
     {
-        #region SERIALIZATION
-
+        #region serialization
+        //serialization
         public void GetObjectData(SerializationInfo info, StreamingContext context) =>
             SerializationUtil.GetObjectFields(info, this);
 
@@ -31,7 +33,6 @@ namespace NodeController
             CopyProperties(this, template);
 
         public SegmentEndData Clone() => new SegmentEndData(this);
-
         #endregion
 
         // deserialization
@@ -121,8 +122,6 @@ namespace NodeController
             CornerOffset = DefaultCornerOffset;
             FlatJunctions = DefaultFlatJunctions;
             Twist = DefaultTwist;
-            if (VERBOSE)
-                Log.Debug($"SegmentEndData() Direction={Direction} Slope={SlopeAngleDeg}");
             Assert(IsDefault(),
             $"\n{CornerOffset} == {DefaultCornerOffset} error = 0.1\n" +
             $"DeltaSlopeAngleDeg:{DeltaSlopeAngleDeg} == 0;" +
@@ -156,9 +155,6 @@ namespace NodeController
         /// </summary>
         private void Refresh()
         {
-            if (HelpersExtensions.VERBOSE)
-                Log.Debug("SegmentEndData.Refresh() for this\n" + Environment.StackTrace);
-
             if (!CanModifyOffset())
             {
                 //Log.Debug("SegmentEndData.Refresh(): setting CornerOffset = DefaultCornerOffset");
@@ -185,11 +181,6 @@ namespace NodeController
 
         public void Update()
         {
-            if (VERBOSE)
-            {
-                var st = new StackTrace(fNeedFileInfo: true);
-                Log.Debug(this + "\n" + st.ToStringPretty());
-            }
             NetManager.instance.UpdateNode(NodeID);
         }
 
@@ -230,18 +221,18 @@ namespace NodeController
 
             SimulationManager.instance.m_ThreadingWrapper.QueueMainThread(delegate ()
             {
-                var activePanel = UIPanelBase.ActivePanel;
-                if (activePanel != null)
-                {
-                    if (activePanel.NetworkType == NetworkTypeT.Node && NodeID == SelectedNodeID)
-                    {
-                        activePanel.RefreshValues();
-                    }
-                    else if (activePanel.NetworkType == NetworkTypeT.SegmentEnd && this.IsSelected())
-                    {
-                        activePanel.RefreshValues();
-                    }
-                }
+                //var activePanel = UIPanelBase.ActivePanel;
+                //if (activePanel != null)
+                //{
+                //    if (activePanel.NetworkType == NetworkTypeT.Node && NodeID == SelectedNodeID)
+                //    {
+                //        activePanel.RefreshValues();
+                //    }
+                //    else if (activePanel.NetworkType == NetworkTypeT.SegmentEnd && this.IsSelected())
+                //    {
+                //        activePanel.RefreshValues();
+                //    }
+                //}
             });
             insideAfterCalcualte_ = false;
         }
@@ -287,7 +278,7 @@ namespace NodeController
         }
 
 
-        #region GUI DATA CONVERSIONS
+        #region GUI Data Conversions
         public float CornerOffset
         {
             get => (LeftCorner.Offset + RightCorner.Offset) * 0.5f;
@@ -326,8 +317,6 @@ namespace NodeController
         public CornerData LeftCorner = new CornerData { Left = true };
         public CornerData RightCorner = new CornerData { Left = false };
 
-
-
         [Serializable]
         public struct CornerData
         {
@@ -362,73 +351,41 @@ namespace NodeController
             public float Offset;
             public bool LockLength;
 
-            //public void SetDirI(float val, int index) => Dir = Dir.SetI(val, index);
+            public void SetDirI(float val, int index) => Dir = Dir.SetI(val, index);
 
-            public float GetAngle(int index)
-            {
-                var angles = Dir.eulerAngles;
-                return angles[index];
-                //var a = dir[(index + 2) % 3];
-                //var b = dir[(index + 1) % 3];
-
-                //if (a == 0 || b == 0)
-                //    return 0;
-                //else
-                //    return Mathf.Atan2(a, b) * Mathf.Rad2Deg;
-            }
-            public void SetAngle(float angle, int index)
-            {
-                var angles = Vector3.zero;
-                angles[(index + 2) % 3] = GetAngle((index + 2) % 3);
-                angles[index] = angle;
-                angles[(index + 1) % 3] = GetAngle((index + 1) % 3);
-
-                //var rotation = Quaternion.Euler(angles);
-                //var dir = rotation * Vector3.forward;
-
-                //Dir = dir;
-
-                Dir = Quaternion.Euler(angles);
-            }
-
-            public Quaternion Dir
+            public Vector3 Dir
             {
                 get
                 {
-                    var startDir = (Vector3)Dir0 - (Vector3)DeltaDir;
-                    var endDir = Dir0;
-                    return Quaternion.FromToRotation(endDir, startDir);
-                    //CalculateTransformVectors(Dir0, Left, out var outward, out var forward);
-                    //return ReverseTransformCoordinats(CachedDir, outward, Vector3.up, forward);
+                    CalculateTransformVectors(Dir0, Left, out var outward, out var forward);
+                    return ReverseTransformCoordinats(CachedDir, outward, Vector3.up, forward);
                 }
                 set
                 {
-                    var newDir = value * Dir0;
-                    DeltaDir = Dir0 - newDir;
-                    CachedDir = newDir;
-                    //if (LockLength)
-                    //    value *= DirLength / value.magnitude;
-                    //CalculateTransformVectors(Dir0, Left, out var outward, out var forward);
-                    //DeltaDir = value - ReverseTransformCoordinats(Dir0, outward, Vector3.up, forward);
-                    //CachedDir = Dir0 + TransformCoordinates(DeltaDir, outward, Vector3.up, forward);
-                    ////Update();
+                    if (LockLength)
+                        value *= DirLength / value.magnitude;
+                    CalculateTransformVectors(Dir0, Left, out var outward, out var forward);
+                    DeltaDir = value - ReverseTransformCoordinats(Dir0, outward, Vector3.up, forward);
+                    CachedDir = Dir0 + TransformCoordinates(DeltaDir, outward, Vector3.up, forward);
+                    //Update();
                 }
             }
 
-            //public Vector3 GetTransformedDir0() {
-            //    CalculateTransformVectors(Dir0, Left, out var outward, out var forward);
-            //    return ReverseTransformCoordinats(Dir0, outward, Vector3.up, forward);
-            //}
+            public Vector3 GetTransformedDir0()
+            {
+                CalculateTransformVectors(Dir0, Left, out var outward, out var forward);
+                return ReverseTransformCoordinats(Dir0, outward, Vector3.up, forward);
+            }
 
             public float DirLength
             {
                 get => ((Vector3)CachedDir).magnitude;
                 set
                 {
-                    //bool prevLockLength = LockLength;
-                    //LockLength = false;
-                    //Dir *= Mathf.Clamp(value, 0.001f, 1000) / DirLength;
-                    //LockLength = prevLockLength;
+                    bool prevLockLength = LockLength;
+                    LockLength = false;
+                    Dir *= Mathf.Clamp(value, 0.001f, 1000) / DirLength;
+                    LockLength = prevLockLength;
                     //Update();
                 }
             }
@@ -479,7 +436,7 @@ namespace NodeController
             HideCrosswalks.Patches.CalculateMaterialCommons.
             ShouldHideCrossing(NodeID, SegmentID);
 
-        #region SHOW/HIDE IN UI
+        #region show/hide in UI
         public bool IsCSUR => NetUtil.IsCSUR(Info);
         public NetInfo Info => Segment.Info;
         public bool CanModifyOffset() => NodeData?.CanModifyOffset() ?? false;
@@ -640,7 +597,7 @@ namespace NodeController
             }
         }
 
-        #region EXTERNAL MODS
+        #region External Mods
         public TernaryBool ShouldHideCrossingTexture()
         {
             if (NodeData != null && NodeData.NodeType == NodeTypeT.Stretch)

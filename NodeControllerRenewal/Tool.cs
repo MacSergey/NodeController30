@@ -15,10 +15,16 @@ namespace NodeController30
     {
         public static string SettingsFile => $"{nameof(NodeController30)}{nameof(SettingsFile)}";
         public static Shortcut ActivationShortcut { get; } = new Shortcut(SettingsFile, nameof(ActivationShortcut), "Activation", SavedInputKey.Encode(KeyCode.N, false, false, true));
+        public static readonly SavedBool SnapToMiddleNode = new SavedBool("SnapToMiddleNode", NodeController.GUI.Settings.FileName, def: false, true);
+
+        public static readonly SavedBool Hide_TMPE_Overlay = new SavedBool("Hide_TMPE_Overlay", NodeController.GUI.Settings.FileName, def: false, true);
 
         protected override bool ShowToolTip => true;
         protected override IToolMode DefaultMode => ToolModes[ToolModeType.Select];
         public override bool IsActivationPressed => ActivationShortcut.InputKey.IsKeyUp();
+
+        public ushort SelectedSegmentID { get; set; }
+        public ushort SelectedNodeID { get; set; }
 
         public static void Create() => Create<NodeControllerTool>();
         public new static NodeControllerTool Instance => BaseTool.Instance as NodeControllerTool;

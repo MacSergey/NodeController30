@@ -233,7 +233,7 @@ namespace KianCommons.Patches
             if (count == 0)
                 throw new ArgumentOutOfRangeException("count can't be zero");
             int dir = count > 0 ? 1 : -1;
-            int counter = Math.Abs(count);
+            int counter = System.Math.Abs(count);
             int n = 0;
             int index = startIndex;
 

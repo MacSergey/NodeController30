@@ -35,7 +35,7 @@ namespace NodeController.LifeCycle
             Mod.Logger.Debug($"MoveItIntegration.Decode64({base64Data},{dataVersion}) was called");
             if (base64Data == null || base64Data.Length == 0) return null;
             byte[] data = Convert.FromBase64String(base64Data);
-            return SerializationUtil.Deserialize(data, dataVersion).LogRet("MoveItIntegration.Decode64 ->");
+            return SerializationUtil.Deserialize(data, dataVersion);
         }
 
         public override string Encode64(object record)
@@ -43,7 +43,7 @@ namespace NodeController.LifeCycle
             Mod.Logger.Debug($"MoveItIntegration.Encode64({record}) was called");
             var data = SerializationUtil.Serialize(record);
             if (data == null || data.Length == 0) return null;
-            return Convert.ToBase64String(data).LogRet("MoveItIntegration.Encode64 ->");
+            return Convert.ToBase64String(data);
         }
 
         public override object Copy(InstanceID sourceInstanceID)
@@ -82,7 +82,7 @@ namespace NodeController.LifeCycle
 
         public static NodeData CopyNode(ushort sourceNodeID)
         {
-            return NodeManager.Instance.buffer[sourceNodeID]?.Clone().LogRet($"MoveItIntegration.CopyNode({sourceNodeID}) -> ");
+            return NodeManager.Instance.buffer[sourceNodeID]?.Clone();
         }
 
         public static MoveItSegmentData CopySegment(ushort sourceSegmentID)
@@ -95,7 +95,7 @@ namespace NodeController.LifeCycle
             if (ret.Start == null && ret.End == null)
                 return null;
 
-            return ret.LogRet($"MoveItIntegration.CopySegment({sourceSegmentID}) -> ");
+            return ret;
         }
 
         public static void PasteNode(ushort targetNodeID, NodeData record, Dictionary<InstanceID, InstanceID> map)
