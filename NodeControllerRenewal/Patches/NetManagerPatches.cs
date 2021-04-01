@@ -1,6 +1,5 @@
 using NodeController.LifeCycle;
 using static KianCommons.HelpersExtensions;
-using NodeController.Patches._NetTool;
 using ColossalFramework;
 using KianCommons;
 
@@ -16,16 +15,16 @@ namespace NodeController.Patches
             if (!__result || !InSimulationThread())
                 return;
 
-            if (MoveMiddleNodePatch.CopyData)
+            if (NetToolPatch.MoveCopyData)
             {
-                var segmentData = MoveMiddleNodePatch.SegmentData;
+                var segmentData = NetToolPatch.MoveSegmentData;
                 PasteSegment(segmentData, startNode, endNode, targetSegmentID: segment);
             }
-            else if (SplitSegmentPatch.CopyData)
+            else if (NetToolPatch.SplitCopyData)
             {
-                var segmentData = SplitSegmentPatch.SegmentData;
-                var segmentData2 = SplitSegmentPatch.SegmentData2;
-                var segmentData3 = SplitSegmentPatch.SegmentData3;
+                var segmentData = NetToolPatch.SplitSegmentData;
+                var segmentData2 = NetToolPatch.SplitSegmentData2;
+                var segmentData3 = NetToolPatch.SplitSegmentData3;
 
                 PasteSegment(segmentData, startNode, endNode, targetSegmentID: segment);
                 PasteSegment(segmentData2, startNode, endNode, targetSegmentID: segment);
