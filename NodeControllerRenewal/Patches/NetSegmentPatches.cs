@@ -162,10 +162,8 @@ namespace NodeController.Patches
             }
 
 
-            NetSegment.CalculateMiddlePoints(
-                startPos, startDir, endPos, endDir, true, true, out var b, out var c);
-            return NetSegment.CalculateControlMatrix(
-                startPos, b, c, endPos, (startPos + endPos) * 0.5f, 1f);
+            NetSegment.CalculateMiddlePoints(startPos, startDir, endPos, endDir, true, true, out var b, out var c);
+            return NetSegment.CalculateControlMatrix(startPos, b, c, endPos, (startPos + endPos) * 0.5f, 1f);
         }
         static void CalculateNameMatrix2(ushort segmentID, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
         {

@@ -208,10 +208,14 @@ namespace NodeController
 
         private void PatchHideCrosswalk(ref bool success)
         {
-            if (PluginUtil.GetHideCrossings().IsActive())
+            try { var type = typeof(HideCrosswalksPatches); }
+            catch
             {
-                success &= AddPrefix(typeof(HideCrosswalksPatches), nameof(HideCrosswalksPatches.ShouldHideCrossingPrefix), typeof(HideCrosswalks.Patches.CalculateMaterialCommons), nameof(HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing));
+                Mod.Logger.Debug("Hide Crosswalks not exist, skip patches");
+                return;
             }
+
+            success &= AddPrefix(typeof(HideCrosswalksPatches), nameof(HideCrosswalksPatches.ShouldHideCrossingPrefix), typeof(HideCrosswalks.Patches.CalculateMaterialCommons), nameof(HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing));
         }
 
         #endregion
@@ -220,16 +224,20 @@ namespace NodeController
 
         private void PatchTMPE(ref bool success)
         {
-            if (PluginUtil.GetTrafficManager().IsActive())
+            try { var type = typeof(HideCrosswalksPatches); }
+            catch
             {
-                success &= Patch_TrafficLightManager_CanToggleTrafficLight();
-                success &= Patch_JunctionRestrictionsManager_GetDefaultEnteringBlockedJunctionAllowed();
-                success &= Patch_JunctionRestrictionsManager_GetDefaultPedestrianCrossingAllowed();
-                success &= Patch_JunctionRestrictionsManager_GetDefaultUturnAllowed();
-                success &= Patch_JunctionRestrictionsManager_IsEnteringBlockedJunctionAllowedConfigurable();
-                success &= Patch_JunctionRestrictionsManager_IsPedestrianCrossingAllowedConfigurable();
-                success &= Patch_JunctionRestrictionsManager_IsUturnAllowedConfigurable();
+                Mod.Logger.Debug("TMPE not exist, skip patches");
+                return;
             }
+
+            success &= Patch_TrafficLightManager_CanToggleTrafficLight();
+            success &= Patch_JunctionRestrictionsManager_GetDefaultEnteringBlockedJunctionAllowed();
+            success &= Patch_JunctionRestrictionsManager_GetDefaultPedestrianCrossingAllowed();
+            success &= Patch_JunctionRestrictionsManager_GetDefaultUturnAllowed();
+            success &= Patch_JunctionRestrictionsManager_IsEnteringBlockedJunctionAllowedConfigurable();
+            success &= Patch_JunctionRestrictionsManager_IsPedestrianCrossingAllowedConfigurable();
+            success &= Patch_JunctionRestrictionsManager_IsUturnAllowedConfigurable();
         }
         private bool Patch_TrafficLightManager_CanToggleTrafficLight()
         {
@@ -275,11 +283,15 @@ namespace NodeController
             success &= Patch_TrainAI_SimulationStep(parameters);
             success &= Patch_TramBaseAI_SimulationStep(parameters);
 
-            if (PluginUtil.GetTrafficManager().IsActive())
+            try { var type = typeof(HideCrosswalksPatches); }
+            catch
             {
-                success &= Patch_TMPE_CustomTrainAI_CustomSimulationStep(parameters);
-                success &= Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(parameters);
+                Mod.Logger.Debug("TMPE not exist, skip patches");
+                return;
             }
+
+            success &= Patch_TMPE_CustomTrainAI_CustomSimulationStep(parameters);
+            success &= Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(parameters);
         }
         private bool Patch_CarAI_SimulationStep_Prefix(Type[] parameters)
         {
