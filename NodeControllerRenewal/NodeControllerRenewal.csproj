@@ -48,27 +48,109 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\ColossalManaged.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CSURToolBox">
+      <HintPath>..\libs\CSURToolBox.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="CSUtil.Commons">
+      <HintPath>..\libs\CSUtil.Commons.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HideCrosswalks">
+      <HintPath>..\libs\HideCrosswalks.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="ICities">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\ICities.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="MoveItIntegration">
+      <HintPath>..\..\CS-MoveIt\MoveItIntegration\bin\Debug\MoveItIntegration.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.Linq">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TMPE.API">
+      <HintPath>..\..\TMPE\TLM\TMPE.API\bin\Debug\TMPE.API.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="TrafficManager">
+      <HintPath>..\..\TMPE\TLM\TLM\bin\Debug\TrafficManager.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LifeCycle\AssetDataExtension.cs" />
+    <Compile Include="LifeCycle\LifeCycle.cs" />
+    <Compile Include="LifeCycle\LoadingExtension.cs" />
+    <Compile Include="LifeCycle\MoveItIntegration.cs" />
+    <Compile Include="LifeCycle\NodeControllerMod.cs" />
+    <Compile Include="LifeCycle\SerializableDataExtension.cs" />
+    <Compile Include="Manager\INetworkData.cs" />
+    <Compile Include="Manager\NodeData.cs" />
+    <Compile Include="Manager\NodeManager.cs" />
+    <Compile Include="Manager\SegmentEndData.cs" />
+    <Compile Include="Manager\SegmentEndManager.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Patcher.cs" />
+    <Compile Include="Patches\CalculateCornerPatch.cs" />
+    <Compile Include="Patches\FlatJunctions\CalculateCornerPatch2.cs" />
+    <Compile Include="Patches\FlatJunctions\FindDirectionPatch.cs" />
+    <Compile Include="Patches\FlatJunctions\FlatJunctionCommons.cs" />
+    <Compile Include="Patches\HarmonyExtension.cs" />
+    <Compile Include="Patches\HideCrosswalksMod\ShouldHideCrossing.cs" />
+    <Compile Include="Patches\NetLanePatches\PopulateGroupData.cs" />
+    <Compile Include="Patches\NetLanePatches\PropDisplacementCommons.cs" />
+    <Compile Include="Patches\NetLanePatches\RefreshInstance.cs" />
+    <Compile Include="Patches\NetLanePatches\RenderDestroyedInstance.cs" />
+    <Compile Include="Patches\NetLanePatches\RenderInstance.cs" />
+    <Compile Include="Patches\NetManager\CreateSegmentPatch.cs" />
+    <Compile Include="Patches\NetManager\ReleaseNodeImplementationPatch.cs" />
+    <Compile Include="Patches\NetManager\ReleaseSegmentImplementationPatch.cs" />
+    <Compile Include="Patches\NetNodePatches\CalculateMaterialCommons.cs" />
+    <Compile Include="Patches\NetNodePatches\CalculateNode.cs" />
+    <Compile Include="Patches\NetNodePatches\RefreshJunctionData.cs" />
+    <Compile Include="Patches\NetNodePatches\RefreshJunctionData2.cs" />
+    <Compile Include="Patches\NetNodePatches\RenderInstance.cs" />
+    <Compile Include="Patches\NetSegmentPatches\CalculateSegment.cs" />
+    <Compile Include="Patches\NetSegmentPatches\RenderInstance.cs" />
+    <Compile Include="Patches\NetTool\MoveMiddleNodePatch.cs" />
+    <Compile Include="Patches\NetTool\SplitSegmentPatch.cs" />
+    <Compile Include="Patches\TMPE\CanToggleTrafficLight.cs" />
+    <Compile Include="Patches\TMPE\GetDefaultEnteringBlockedJunctionAllowed.cs" />
+    <Compile Include="Patches\TMPE\GetDefaultPedestrianCrossingAllowed.cs" />
+    <Compile Include="Patches\TMPE\GetDefaultUturnAllowed.cs" />
+    <Compile Include="Patches\TMPE\IsEnteringBlockedJunctionAllowedConfigurable.cs" />
+    <Compile Include="Patches\TMPE\IsPedestrianCrossingAllowedConfigurable.cs" />
+    <Compile Include="Patches\TMPE\IsUturnAllowedConfigurable.cs" />
+    <Compile Include="Patches\TMPE\ThreadingExtension_OnBeforeSimulationFrame.cs" />
+    <Compile Include="Patches\UpdateLanes.cs" />
+    <Compile Include="Patches\UpdateNodeFlags.cs" />
+    <Compile Include="Patches\VehicleSuperElevation\SimulationStepPatches.cs" />
+    <Compile Include="Patches\VehicleSuperElevation\SuperElevationCommons.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectMode.cs" />
     <Compile Include="Tool.cs" />
+    <Compile Include="Utilities\Assertion.cs" />
+    <Compile Include="Utilities\CSURUtil.cs" />
+    <Compile Include="Utilities\HarmonyUtil.cs" />
+    <Compile Include="Utilities\HelpersExtensions.cs" />
+    <Compile Include="Utilities\NetUtil.cs" />
+    <Compile Include="Utilities\PrefixUtils.cs" />
+    <Compile Include="Utilities\ReflectionHelpers.cs" />
+    <Compile Include="Utilities\SerializationUtil.cs" />
+    <Compile Include="Utilities\Settings.cs" />
+    <Compile Include="Utilities\StringExtensions.cs" />
+    <Compile Include="Utilities\TranspilerUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -97,7 +179,7 @@
   </Target>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_ConfigurationName="Debug" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="Build" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Build" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Debug" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- <Target Name="AfterBuildRelease" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'"> -->
