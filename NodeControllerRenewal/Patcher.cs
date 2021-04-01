@@ -37,13 +37,11 @@ namespace NodeController
 
         private bool Patch_ToolController_Awake()
         {
-            var prefix = AccessTools.Method(typeof(NodeControllerTool), nameof(NodeControllerTool.Create));
-            return AddPrefix(prefix, typeof(ToolController), "Awake");
+            return AddPrefix(typeof(NodeControllerTool), nameof(NodeControllerTool.Create), typeof(ToolController), "Awake");
         }
         private bool Patch_LoadAssetPanel_OnLoad()
         {
-            var postfix = AccessTools.Method(typeof(OnLoadPatch), nameof(OnLoadPatch.LoadAssetPanelOnLoadPostfix));
-            return AddPostfix(postfix, typeof(LoadAssetPanel), nameof(LoadAssetPanel.OnLoad));
+            return AddPostfix(typeof(OnLoadPatch), nameof(OnLoadPatch.LoadAssetPanelOnLoadPostfix), typeof(LoadAssetPanel), nameof(LoadAssetPanel.OnLoad));
         }
 
         #region NETMANAGER
@@ -57,19 +55,16 @@ namespace NodeController
 
         private bool Patch_NetManager_CreateSegment()
         {
-            var postfix = AccessTools.Method(typeof(NetManagerPatches), nameof(NetManagerPatches.CreateSegmentPostfix));
-            return AddPostfix(postfix, typeof(NetManager), nameof(NetManager.CreateSegment));
+            return AddPostfix(typeof(NetManagerPatches), nameof(NetManagerPatches.CreateSegmentPostfix), typeof(NetManager), nameof(NetManager.CreateSegment));
         }
         private bool Patch_NetManager_ReleaseNodeImplementation()
         {
-            var prefix = AccessTools.Method(typeof(NetManagerPatches), nameof(NetManagerPatches.ReleaseNodeImplementationPrefix));
-            return AddPrefix(prefix, typeof(NetManager), "ReleaseNodeImplementation", new Type[] { typeof(ushort) });
+            return AddPrefix(typeof(NetManagerPatches), nameof(NetManagerPatches.ReleaseNodeImplementationPrefix), typeof(NetManager), "ReleaseNodeImplementation", new Type[] { typeof(ushort) });
         }
         private bool Patch_NetManager_ReleaseSegmentImplementation()
         {
-            var prefix = AccessTools.Method(typeof(NetManagerPatches), nameof(NetManagerPatches.ReleaseSegmentImplementationPrefix));
             var parameters = new[] { typeof(ushort), typeof(NetSegment).MakeByRefType(), typeof(bool) };
-            return AddPrefix(prefix, typeof(NetManager), "ReleaseSegmentImplementation", parameters);
+            return AddPrefix(typeof(NetManagerPatches), nameof(NetManagerPatches.ReleaseSegmentImplementationPrefix), typeof(NetManager), "ReleaseSegmentImplementation", parameters);
         }
 
         #endregion
@@ -85,26 +80,22 @@ namespace NodeController
         }
         private bool Patch_NetNode_CalculateNode()
         {
-            var postfix = AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.CalculateNodePostfix));
-            return AddPostfix(postfix, typeof(NetNode), nameof(NetNode.CalculateNode));
+            return AddPostfix(typeof(NetNodePatches), nameof(NetNodePatches.CalculateNodePostfix), typeof(NetNode), nameof(NetNode.CalculateNode));
         }
         private bool Patch_NetNode_RefreshJunctionData_Postfix()
         {
-            var postfix = AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.RefreshJunctionDataPostfix));
             var parameters = new Type[] { typeof(ushort), typeof(int), typeof(ushort), typeof(Vector3), typeof(uint).MakeByRefType(), typeof(RenderManager.Instance).MakeByRefType() };
-            return AddPostfix(postfix, typeof(NetNode), "RefreshJunctionData", parameters);
+            return AddPostfix(typeof(NetNodePatches), nameof(NetNodePatches.RefreshJunctionDataPostfix), typeof(NetNode), "RefreshJunctionData", parameters);
         }
         private bool Patch_NetNode_RefreshJunctionData_Transpiler()
         {
-            var transpiler = AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.RefreshJunctionDataTranspiler));
             var parameters = new Type[] { typeof(ushort), typeof(NetInfo), typeof(uint) };
-            return AddTranspiler(transpiler, typeof(NetNode), "RefreshJunctionData", parameters);
+            return AddTranspiler(typeof(NetNodePatches), nameof(NetNodePatches.RefreshJunctionDataTranspiler), typeof(NetNode), "RefreshJunctionData", parameters);
         }
         private bool Patch_NetNode_RenderInstance()
         {
-            var transpiler = AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.RenderInstanceTranspiler));
             var parameters = new Type[] { typeof(RenderManager.CameraInfo), typeof(ushort), typeof(NetInfo), typeof(int), typeof(NetNode.Flags), typeof(uint).MakeByRefType(), typeof(RenderManager.Instance).MakeByRefType() };
-            return AddTranspiler(transpiler, typeof(NetNode), nameof(NetNode.RenderInstance), parameters);
+            return AddTranspiler(typeof(NetNodePatches), nameof(NetNodePatches.RenderInstanceTranspiler), typeof(NetNode), nameof(NetNode.RenderInstance), parameters);
         }
 
         #endregion
@@ -121,32 +112,27 @@ namespace NodeController
 
         private bool Patch_NetSegment_CalculateCorner_Postfix()
         {
-            var postfix = AccessTools.Method(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerPostfix));
             var parameters = new Type[] { typeof(ushort), typeof(bool), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType() };
-            return AddPostfix(postfix, typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
+            return AddPostfix(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerPostfix), typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
         }
         private bool Patch_NetSegment_CalculateCorner_Transpiler()
         {
-            var transpilar = AccessTools.Method(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerTranspiler));
             var parameters = new Type[] { typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(ushort), typeof(ushort), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType() };
-            return AddTranspiler(transpilar, typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
+            return AddTranspiler(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerTranspiler), typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
         }
 
         private bool Patch_NetSegment_FindDirection()
         {
-            var transpilar = AccessTools.Method(typeof(NetSegmentPatches), nameof(NetSegmentPatches.FindDirectionTranspiler));
-            return AddTranspiler(transpilar, typeof(NetSegment), nameof(NetSegment.FindDirection));
+            return AddTranspiler(typeof(NetSegmentPatches), nameof(NetSegmentPatches.FindDirectionTranspiler), typeof(NetSegment), nameof(NetSegment.FindDirection));
         }
         private bool Patch_NetSegment_CalculateSegment()
         {
-            var postfix = AccessTools.Method(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateSegmentPostfix));
-            return AddPostfix(postfix, typeof(NetSegment), nameof(NetSegment.CalculateSegment));
+            return AddPostfix(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateSegmentPostfix), typeof(NetSegment), nameof(NetSegment.CalculateSegment));
         }
         private bool Patch_NetSegment_RenderInstance()
         {
-            var transpilar = AccessTools.Method(typeof(NetSegmentPatches), nameof(NetSegmentPatches.RenderInstanceTranspiler));
             var parameters = new Type[] { typeof(RenderManager.CameraInfo), typeof(ushort), typeof(int), typeof(NetInfo), typeof(RenderManager.Instance).MakeByRefType() };
-            return AddTranspiler(transpilar, typeof(NetSegment), nameof(NetSegment.RenderInstance), parameters);
+            return AddTranspiler(typeof(NetSegmentPatches), nameof(NetSegmentPatches.RenderInstanceTranspiler), typeof(NetSegment), nameof(NetSegment.RenderInstance), parameters);
         }
 
         #endregion
@@ -167,8 +153,7 @@ namespace NodeController
         private bool Patch_NetLane_RenderInstance() => Patch_NetLane(nameof(NetLane.RenderInstance));
         private bool Patch_NetLane(string methodName)
         {
-            var transpilar = AccessTools.Method(typeof(NetLanePatches), nameof(NetLanePatches.Transpiler));
-            return AddTranspiler(transpilar, typeof(NetLane), methodName);
+            return AddTranspiler(typeof(NetLanePatches), nameof(NetLanePatches.Transpiler), typeof(NetLane), methodName);
         }
 
         #endregion
@@ -177,20 +162,26 @@ namespace NodeController
 
         private void PatchNetTool(ref bool success)
         {
-            success &= Patch_NetTool_MoveMiddleNode();
-            success &= Patch_NetTool_SplitSegment();
+            success &= Patch_NetTool_MoveMiddleNode_Prefix();
+            success &= Patch_NetTool_MoveMiddleNode_Postfix();
+            success &= Patch_NetTool_SplitSegment_Prefix();
+            success &= Patch_NetTool_SplitSegment_Postfix();
         }
-        private bool Patch_NetTool_MoveMiddleNode()
+        private bool Patch_NetTool_MoveMiddleNode_Prefix()
         {
-            var prefix = AccessTools.Method(typeof(NetToolPatch), nameof(NetToolPatch.MoveMiddleNodePrefix));
-            var postfix = AccessTools.Method(typeof(NetToolPatch), nameof(NetToolPatch.MoveMiddleNodePostfix));
-            return AddPrefix(prefix, typeof(NetTool), "MoveMiddleNode") && AddPostfix(postfix, typeof(NetTool), "MoveMiddleNode");
+            return AddPrefix(typeof(NetToolPatch), nameof(NetToolPatch.MoveMiddleNodePrefix), typeof(NetTool), "MoveMiddleNode");
         }
-        private bool Patch_NetTool_SplitSegment()
+        private bool Patch_NetTool_MoveMiddleNode_Postfix()
         {
-            var prefix = AccessTools.Method(typeof(NetToolPatch), nameof(NetToolPatch.SplitSegmentPrefix));
-            var postfix = AccessTools.Method(typeof(NetToolPatch), nameof(NetToolPatch.SplitSegmentPostfix));
-            return AddPrefix(prefix, typeof(NetTool), "SplitSegment") && AddPostfix(postfix, typeof(NetTool), "SplitSegment");
+            return AddPostfix(typeof(NetToolPatch), nameof(NetToolPatch.MoveMiddleNodePostfix), typeof(NetTool), "MoveMiddleNode");
+        }
+        private bool Patch_NetTool_SplitSegment_Prefix()
+        {
+            return AddPrefix(typeof(NetToolPatch), nameof(NetToolPatch.SplitSegmentPrefix), typeof(NetTool), "SplitSegment");
+        }
+        private bool Patch_NetTool_SplitSegment_Postfix()
+        {
+            return AddPostfix(typeof(NetToolPatch), nameof(NetToolPatch.SplitSegmentPostfix), typeof(NetTool), "SplitSegment");
         }
 
         #endregion
@@ -204,13 +195,11 @@ namespace NodeController
         }
         private bool Patch_RoadBaseAI_UpdateLanes()
         {
-            var postfix = AccessTools.Method(typeof(RoadBaseAIPatches), nameof(RoadBaseAIPatches.UpdateLanesPostfix));
-            return AddPostfix(postfix, typeof(RoadBaseAI), nameof(RoadBaseAI.UpdateLanes));
+            return AddPostfix(typeof(RoadBaseAIPatches), nameof(RoadBaseAIPatches.UpdateLanesPostfix), typeof(RoadBaseAI), nameof(RoadBaseAI.UpdateLanes));
         }
         private bool Patch_RoadBaseAI_UpdateNodeFlags()
         {
-            var postfix = AccessTools.Method(typeof(RoadBaseAIPatches), nameof(RoadBaseAIPatches.UpdateNodeFlagsPostfix));
-            return AddPostfix(postfix, typeof(RoadBaseAI), nameof(RoadBaseAI.UpdateNodeFlags));
+            return AddPostfix(typeof(RoadBaseAIPatches), nameof(RoadBaseAIPatches.UpdateNodeFlagsPostfix), typeof(RoadBaseAI), nameof(RoadBaseAI.UpdateNodeFlags));
         }
 
         #endregion
@@ -221,8 +210,7 @@ namespace NodeController
         {
             if (PluginUtil.GetHideCrossings().IsActive())
             {
-                var prefix = AccessTools.Method(typeof(HideCrosswalksPatches), nameof(HideCrosswalksPatches.ShouldHideCrossingPrefix));
-                success &= AddPrefix(prefix, typeof(HideCrosswalks.Patches.CalculateMaterialCommons), nameof(HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing));
+                success &= AddPrefix(typeof(HideCrosswalksPatches), nameof(HideCrosswalksPatches.ShouldHideCrossingPrefix), typeof(HideCrosswalks.Patches.CalculateMaterialCommons), nameof(HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing));
             }
         }
 
@@ -245,38 +233,31 @@ namespace NodeController
         }
         private bool Patch_TrafficLightManager_CanToggleTrafficLight()
         {
-            var prefix = AccessTools.Method(typeof(TMPEPatches), nameof(TMPEPatches.CanToggleTrafficLightPrefix));
-            return AddPrefix(prefix, typeof(TrafficLightManager), nameof(TrafficLightManager.CanToggleTrafficLight));
+            return AddPrefix(typeof(TMPEPatches), nameof(TMPEPatches.CanToggleTrafficLightPrefix), typeof(TrafficLightManager), nameof(TrafficLightManager.CanToggleTrafficLight));
         }
         private bool Patch_JunctionRestrictionsManager_GetDefaultEnteringBlockedJunctionAllowed()
         {
-            var prefix = AccessTools.Method(typeof(TMPEPatches), nameof(TMPEPatches.GetDefaultEnteringBlockedJunctionAllowedPrefix));
-            return AddPrefix(prefix, typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultEnteringBlockedJunctionAllowed));
+            return AddPrefix(typeof(TMPEPatches), nameof(TMPEPatches.GetDefaultEnteringBlockedJunctionAllowedPrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultEnteringBlockedJunctionAllowed));
         }
         private bool Patch_JunctionRestrictionsManager_GetDefaultPedestrianCrossingAllowed()
         {
-            var prefix = AccessTools.Method(typeof(TMPEPatches), nameof(TMPEPatches.GetDefaultPedestrianCrossingAllowedPrefix));
-            return AddPrefix(prefix, typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultPedestrianCrossingAllowed));
+            return AddPrefix(typeof(TMPEPatches), nameof(TMPEPatches.GetDefaultPedestrianCrossingAllowedPrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultPedestrianCrossingAllowed));
         }
         private bool Patch_JunctionRestrictionsManager_GetDefaultUturnAllowed()
         {
-            var prefix = AccessTools.Method(typeof(TMPEPatches), nameof(TMPEPatches.GetDefaultUturnAllowedPrefix));
-            return AddPrefix(prefix, typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultUturnAllowed));
+            return AddPrefix(typeof(TMPEPatches), nameof(TMPEPatches.GetDefaultUturnAllowedPrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultUturnAllowed));
         }
         private bool Patch_JunctionRestrictionsManager_IsEnteringBlockedJunctionAllowedConfigurable()
         {
-            var prefix = AccessTools.Method(typeof(TMPEPatches), nameof(TMPEPatches.IsEnteringBlockedJunctionAllowedConfigurablePrefix));
-            return AddPrefix(prefix, typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsEnteringBlockedJunctionAllowedConfigurable));
+            return AddPrefix(typeof(TMPEPatches), nameof(TMPEPatches.IsEnteringBlockedJunctionAllowedConfigurablePrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsEnteringBlockedJunctionAllowedConfigurable));
         }
         private bool Patch_JunctionRestrictionsManager_IsPedestrianCrossingAllowedConfigurable()
         {
-            var prefix = AccessTools.Method(typeof(TMPEPatches), nameof(TMPEPatches.IsPedestrianCrossingAllowedConfigurablePrefix));
-            return AddPrefix(prefix, typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsPedestrianCrossingAllowedConfigurable));
+            return AddPrefix(typeof(TMPEPatches), nameof(TMPEPatches.IsPedestrianCrossingAllowedConfigurablePrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsPedestrianCrossingAllowedConfigurable));
         }
         private bool Patch_JunctionRestrictionsManager_IsUturnAllowedConfigurable()
         {
-            var prefix = AccessTools.Method(typeof(TMPEPatches), nameof(TMPEPatches.IsUturnAllowedConfigurablePrefix));
-            return AddPrefix(prefix, typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsUturnAllowedConfigurable));
+            return AddPrefix(typeof(TMPEPatches), nameof(TMPEPatches.IsUturnAllowedConfigurablePrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsUturnAllowedConfigurable));
         }
 
         #endregion
@@ -287,34 +268,50 @@ namespace NodeController
         {
             var parameters = new Type[] { typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(Vehicle.Frame).MakeByRefType(), typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(int) };
 
-            success &= Patch_CarAI_SimulationStep(parameters);
-            success &= Patch_CarTrailerAI_SimulationStep(parameters);
+            success &= Patch_CarAI_SimulationStep_Prefix(parameters);
+            success &= Patch_CarAI_SimulationStep_Transpiler(parameters);
+            success &= Patch_CarTrailerAI_SimulationStep_Prefix(parameters);
+            success &= Patch_CarTrailerAI_SimulationStep_Transpiler(parameters);
             success &= Patch_TrainAI_SimulationStep(parameters);
             success &= Patch_TramBaseAI_SimulationStep(parameters);
+
+            if (PluginUtil.GetTrafficManager().IsActive())
+            {
+                success &= Patch_TMPE_CustomTrainAI_CustomSimulationStep(parameters);
+                success &= Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(parameters);
+            }
         }
-        private bool Patch_CarAI_SimulationStep(Type[] parameters)
+        private bool Patch_CarAI_SimulationStep_Prefix(Type[] parameters)
         {
-            var prefix = AccessTools.Method(typeof(SimulationStepPatches), nameof(SimulationStepPatches.CarAISimulationStepPostfix));
-            var transpiler = AccessTools.Method(typeof(SimulationStepPatches), nameof(SimulationStepPatches.CarAISimulationStepTranspiler));
-            return AddPrefix(prefix, typeof(CarAI), nameof(CarAI.SimulationStep), parameters) && AddTranspiler(transpiler, typeof(CarAI), nameof(CarAI.SimulationStep), parameters);
+            return AddPrefix(typeof(SimulationStepPatches), nameof(SimulationStepPatches.CarAISimulationStepPostfix), typeof(CarAI), nameof(CarAI.SimulationStep), parameters);
         }
-        private bool Patch_CarTrailerAI_SimulationStep(Type[] parameters)
+        private bool Patch_CarAI_SimulationStep_Transpiler(Type[] parameters)
         {
-            var prefix = AccessTools.Method(typeof(SimulationStepPatches), nameof(SimulationStepPatches.CarTrailerAISimulationStepPostfix));
-            var transpiler = AccessTools.Method(typeof(SimulationStepPatches), nameof(SimulationStepPatches.CarTrailerAISimulationStepTranspiler));
-            return AddPrefix(prefix, typeof(CarTrailerAI), nameof(CarTrailerAI.SimulationStep), parameters) && AddTranspiler(transpiler, typeof(CarTrailerAI), nameof(CarTrailerAI.SimulationStep), parameters);
+            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.CarAISimulationStepTranspiler), typeof(CarAI), nameof(CarAI.SimulationStep), parameters);
+        }
+        private bool Patch_CarTrailerAI_SimulationStep_Prefix(Type[] parameters)
+        {
+            return AddPrefix(typeof(SimulationStepPatches), nameof(SimulationStepPatches.CarTrailerAISimulationStepPostfix), typeof(CarTrailerAI), nameof(CarTrailerAI.SimulationStep), parameters);
+        }
+        private bool Patch_CarTrailerAI_SimulationStep_Transpiler(Type[] parameters)
+        {
+            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.CarTrailerAISimulationStepTranspiler), typeof(CarTrailerAI), nameof(CarTrailerAI.SimulationStep), parameters);
         }
         private bool Patch_TrainAI_SimulationStep(Type[] parameters)
         {
-            var prefix = AccessTools.Method(typeof(SimulationStepPatches), nameof(SimulationStepPatches.TrainAISimulationStepPostfix));
-            AddPrefix(prefix, typeof(TrafficManager.Custom.AI.CustomTrainAI), nameof(TrafficManager.Custom.AI.CustomTrainAI.SimulationStep), parameters);
-            return AddPrefix(prefix, typeof(TrainAI), nameof(TrainAI.SimulationStep), parameters);
+            return AddPrefix(typeof(SimulationStepPatches), nameof(SimulationStepPatches.TrainAISimulationStepPostfix), typeof(TrainAI), nameof(TrainAI.SimulationStep), parameters);
+        }
+        private bool Patch_TMPE_CustomTrainAI_CustomSimulationStep(Type[] parameters)
+        {
+            return AddPrefix(typeof(SimulationStepPatches), nameof(SimulationStepPatches.TrainAISimulationStepPostfix), typeof(TrafficManager.Custom.AI.CustomTrainAI), nameof(TrafficManager.Custom.AI.CustomTrainAI.CustomSimulationStep), parameters);
         }
         private bool Patch_TramBaseAI_SimulationStep(Type[] parameters)
         {
-            var prefix = AccessTools.Method(typeof(SimulationStepPatches), nameof(SimulationStepPatches.TramBaseAISimulationStepPostfix));
-            AddPrefix(prefix, typeof(TrafficManager.Custom.AI.CustomTramBaseAI), nameof(TrafficManager.Custom.AI.CustomTramBaseAI.SimulationStep), parameters);
-            return AddPrefix(prefix, typeof(TramBaseAI), nameof(TramBaseAI.SimulationStep), parameters);
+            return AddPrefix(typeof(SimulationStepPatches), nameof(SimulationStepPatches.TramBaseAISimulationStepPostfix), typeof(TramBaseAI), nameof(TramBaseAI.SimulationStep), parameters);
+        }
+        private bool Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(Type[] parameters)
+        {
+            return AddPrefix(typeof(SimulationStepPatches), nameof(SimulationStepPatches.TramBaseAISimulationStepPostfix), typeof(TrafficManager.Custom.AI.CustomTramBaseAI), nameof(TrafficManager.Custom.AI.CustomTramBaseAI.CustomSimulationStep), parameters);
         }
 
         #endregion
