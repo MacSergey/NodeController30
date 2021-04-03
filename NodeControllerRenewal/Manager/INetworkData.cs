@@ -1,5 +1,7 @@
-namespace NodeController {
-    public interface INetworkData {
+namespace NodeController
+{
+    public interface INetworkData
+    {
         /// <summary>
         /// marks the network for update in the next simulation step.
         /// once this node is updated, its recalculated.
@@ -42,7 +44,8 @@ namespace NodeController {
         bool IsSelected();
     }
 
-    public interface INetworkData<T> {
+    public interface INetworkData<T>
+    {
         T Clone();
     }
 }

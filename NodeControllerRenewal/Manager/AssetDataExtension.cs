@@ -3,7 +3,6 @@ using KianCommons;
 using System;
 using System.Collections.Generic;
 using static NodeController.LifeCycle.MoveItIntegration;
-using static KianCommons.Assertion;
 using KianCommons.Serialization;
 
 namespace NodeController
@@ -39,8 +38,7 @@ namespace NodeController
 
         public static AssetData GetAssetData()
         {
-            var records = GetRecords();
-            if (records == null || records.Length == 0)
+            if (GetRecords() is not object[] records || records.Length == 0)
                 return null;
 
             return new AssetData
@@ -56,14 +54,12 @@ namespace NodeController
             List<object> records = new List<object>();
             for (ushort nodeID = 0; nodeID < NetManager.MAX_NODE_COUNT; ++nodeID)
             {
-                object record = CopyNode(nodeID);
-                if (record != null)
+                if (CopyNode(nodeID) is object record)
                     records.Add(record);
             }
             for (ushort segmentID = 0; segmentID < NetManager.MAX_SEGMENT_COUNT; ++segmentID)
             {
-                object record = CopySegment(segmentID);
-                if (record != null)
+                if (CopySegment(segmentID) is object record)
                     records.Add(record);
             }
             return records.ToArray();
@@ -71,15 +67,10 @@ namespace NodeController
 
         public static object[] Deserialize(byte[] data)
         {
-            AssertNotNull(data, "data");
             var data2 = SerializationUtil.Deserialize(data, default);
-            AssertNotNull(data2, "data2");
             AssetData assetData = data2 as AssetData;
-            AssertNotNull(assetData, "assetData");
 
-            var records = SerializationUtil.Deserialize(assetData.Records, assetData.Version) as object[];
-            if (records == null || records.Length == 0) return null;
-            return records;
+            return SerializationUtil.Deserialize(assetData.Records, assetData.Version) is not object[] records || records.Length == 0 ? null : records;
         }
 
         public byte[] Serialize() => SerializationUtil.Serialize(this);
@@ -125,7 +116,7 @@ namespace NodeController
             userData = null;
             if (asset is BuildingInfo prefab)
             {
-                Mod.Logger.Debug("AssetDataExtension.OnAssetSaved():  prefab is " + prefab);
+                Mod.Logger.Debug($"AssetDataExtension.OnAssetSaved():  prefab is {prefab}");
                 var assetData = AssetData.GetAssetData();
                 if (assetData == null)
                 {
@@ -133,7 +124,7 @@ namespace NodeController
                     return;
                 }
 
-                Mod.Logger.Debug("AssetDataExtension.OnAssetSaved(): assetData=" + assetData);
+                Mod.Logger.Debug($"AssetDataExtension.OnAssetSaved(): assetData={assetData}");
                 userData = new Dictionary<string, byte[]>();
                 userData.Add(NC_ID, assetData.Serialize());
             }
@@ -160,9 +151,7 @@ namespace NodeController
                 }
             }
             else
-            {
                 Mod.Logger.Debug("PlaceAsset: records not found");
-            }
         }
 
         static AssetDataExtension()

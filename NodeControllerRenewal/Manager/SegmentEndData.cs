@@ -14,7 +14,6 @@ namespace NodeController
     using CSURUtil = Util.CSURUtil;
     using static KianCommons.HelpersExtensions;
     using static KianCommons.ReflectionHelpers;
-    using static KianCommons.Assertion;
     using System.Linq;
     using KianCommons.Serialization;
     using Vector3Serializable = KianCommons.Math.Vector3Serializable;
@@ -122,21 +121,6 @@ namespace NodeController
             CornerOffset = DefaultCornerOffset;
             FlatJunctions = DefaultFlatJunctions;
             Twist = DefaultTwist;
-            Assert(IsDefault(),
-            $"\n{CornerOffset} == {DefaultCornerOffset} error = 0.1\n" +
-            $"DeltaSlopeAngleDeg:{DeltaSlopeAngleDeg} == 0;" +
-            $"Stretch:{Stretch} == 0; " +
-            $"EmbankmentAngleDeg:{EmbankmentAngleDeg} == 0; \n" +
-            $"LeftCorner.IsDefault():{LeftCorner.IsDefault()} " +
-            $"RightCorner.IsDefault():{RightCorner.IsDefault()} \n" +
-            $"FlatJunctions:{FlatJunctions} == {DefaultFlatJunctions} " +
-            $"Twist:{Twist} == {DefaultTwist} \n" +
-            $"NoCrossings:{NoCrossings} == false; " +
-            $"NoMarkings:{NoMarkings} == false; " +
-            $"NoJunctionTexture:{NoJunctionTexture} == false; " +
-            $"NoJunctionProps:{NoJunctionProps} == false; " +
-            $"NoTLProps:{NoTLProps} == false "
-            );
 
             Update();
         }

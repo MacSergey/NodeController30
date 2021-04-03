@@ -16,15 +16,12 @@ namespace NodeController.Util
             NetInfo info = nodeID.ToNode().Info;
             if (CSUREnabled && info.m_netAI is RoadBaseAI && info.name.Contains("CSUR"))
                 return GetMinCornerOffset_(info.m_minCornerOffset, nodeID);
-
-            return segmentID.ToSegment().Info.m_minCornerOffset;
+            else
+                return segmentID.ToSegment().Info.m_minCornerOffset;
         }
 
-        [MethodImplAttribute(MethodImplOptions.NoInlining)]
-        private static float GetMinCornerOffset_(float cornerOffset0, ushort nodeID)
-        {
-            return CSURToolBox.Util.CSURUtil.GetMinCornerOffset(cornerOffset0, nodeID);
-        }
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static float GetMinCornerOffset_(float cornerOffset0, ushort nodeID) => CSURToolBox.Util.CSURUtil.GetMinCornerOffset(cornerOffset0, nodeID);
     }
 
 }

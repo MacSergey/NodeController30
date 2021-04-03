@@ -3,7 +3,6 @@ using KianCommons;
 using System;
 using NodeController.LifeCycle;
 using static KianCommons.HelpersExtensions;
-using static KianCommons.Assertion;
 using NodeController;
 
 namespace NodeController.Patches

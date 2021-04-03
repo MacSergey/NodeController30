@@ -122,8 +122,8 @@ namespace NodeController.Patches
             index = TranspilerUtils.SearchInstruction(codes, new CodeInstruction(OpCodes.Callvirt, checkRenderDistanceMethod), index, dir: -1);
             int insertIndex1 = index + 1; // at this point boloean is in stack
 
-            var LDArg_NodeID = TranspilerUtils.GetLDArg(method, "nodeID"); 
-            var LDLoc_segmentID = BuildSegnentLDLocFromPrevSTLoc(codes, index, counter: 1); 
+            var LDArg_NodeID = TranspilerUtils.GetLDArg(method, "nodeID");
+            var LDLoc_segmentID = BuildSegnentLDLocFromPrevSTLoc(codes, index, counter: 1);
 
             {
                 var newInstructions = new[] {
@@ -179,7 +179,7 @@ namespace NodeController.Patches
             if (ShouldContinueMedian(nodeID, segmentID))
             {
                 NetInfo netInfo = segmentID.ToSegment().Info;
-                mesh = MaterialUtils.ContinuesMedian(mesh, netInfo, false);
+                mesh = MaterialUtils.ContinuesMedian(mesh, netInfo);
             }
             return mesh;
         }

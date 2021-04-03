@@ -14,12 +14,12 @@ namespace KianCommons.Serialization
     {
         public static Version DeserializationVersion;
 
-        static BinaryFormatter GetBinaryFormatter =>
-            new BinaryFormatter { AssemblyFormat = FormatterAssemblyStyle.Simple };
+        static BinaryFormatter GetBinaryFormatter => new BinaryFormatter { AssemblyFormat = FormatterAssemblyStyle.Simple };
 
         public static object Deserialize(byte[] data, Version version)
         {
-            if (data == null || data.Length == 0) return null;
+            if (data == null || data.Length == 0)
+                return null;
             try
             {
                 DeserializationVersion = version;
@@ -42,8 +42,9 @@ namespace KianCommons.Serialization
 
         public static byte[] Serialize(object obj)
         {
-            if (obj == null) return null;
-            var memoryStream = new MemoryStream();
+            if (obj == null)
+                return null;
+            using var memoryStream = new MemoryStream();
             GetBinaryFormatter.Serialize(memoryStream, obj);
             memoryStream.Position = 0; // redundant
             return memoryStream.ToArray();
@@ -91,17 +92,5 @@ namespace KianCommons.Serialization
 
         public static T GetValue<T>(this SerializationInfo info, string name) => (T)info.GetValue(name, typeof(T));
 
-    }
-
-    internal static class IOExtensions
-    {
-        public const int VERSION_SIZE = sizeof(int) * 4;
-
-        public static byte[] Version2Bytes(Version version)
-        {
-            var ret = BitConverter.GetBytes(version.Major).Concat(BitConverter.GetBytes(version.Minor)).Concat(BitConverter.GetBytes(version.Build)).Concat(BitConverter.GetBytes(version.Revision)).ToArray();
-            Assertion.AssertEqual(ret.Length, VERSION_SIZE);
-            return ret;
-        }
     }
 }

@@ -2,13 +2,14 @@ using NodeController.LifeCycle;
 using static KianCommons.HelpersExtensions;
 using ColossalFramework;
 using KianCommons;
+using HarmonyLib;
 
 namespace NodeController.Patches
 {
     public static class NetManagerPatches
     {
         public static MoveItSegmentData UpgradingSegmentData;
-        public static bool Upgrading => (bool)ReflectionHelpers.GetFieldValue(Singleton<NetTool>.instance, "m_upgrading");
+        public static bool Upgrading => (bool)AccessTools.Field(typeof(Singleton<NetTool>), "m_upgrading").GetValue(Singleton<NetTool>.instance);
 
         public static void CreateSegmentPostfix(ref ushort segment, ushort startNode, ushort endNode, bool __result)
         {
@@ -73,9 +74,6 @@ namespace NodeController.Patches
             SegmentEndManager.Instance.SetAt(segmentID: segment, true, value: null);
             SegmentEndManager.Instance.SetAt(segmentID: segment, false, value: null);
         }
-        public static void ReleaseNodeImplementationPrefix(ushort node)
-        {
-            NodeManager.Instance.SetNullNodeAndSegmentEnds(node);
-        }
+        public static void ReleaseNodeImplementationPrefix(ushort node) => NodeManager.Instance.SetNullNodeAndSegmentEnds(node);
     }
 }

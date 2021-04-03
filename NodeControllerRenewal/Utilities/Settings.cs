@@ -33,11 +33,8 @@ namespace NodeController.GUI
 
         static Settings()
         {
-            // Creating setting file - from SamsamTS
             if (GameSettings.FindSettingsFileByName(FileName) == null)
-            {
                 GameSettings.AddSettingsFile(new SettingsFile[] { new SettingsFile() { fileName = FileName } });
-            }
         }
 
         public static void OnSettingsUI(UIHelperBase helper)
@@ -47,16 +44,6 @@ namespace NodeController.GUI
             if (!InStartup)
                 MakeGameSettings(helper);
         }
-
-        public static void FixTooltipAlignment(UIComponent component)
-        {
-            component.eventTooltipShow += (c, _) =>
-            {
-                if (c.tooltipBox is UILabel label)
-                    label.textAlignment = UIHorizontalAlignment.Left;
-            };
-        }
-
         public static void MakeGlobalSettings(UIHelperBase helper)
         {
             UIHelper group = helper.AddGroup("Global settings") as UIHelper;
@@ -65,30 +52,25 @@ namespace NodeController.GUI
             var keymappings = panel.gameObject.AddComponent<KeymappingsPanel>();
             keymappings.AddKeymapping("Activation Shortcut", NodeControllerTool.ActivationShortcut.InputKey);
 
-            UICheckBox snapToggle = group.AddCheckbox(
-                "Snap to middle node",
-                NodeControllerTool.SnapToMiddleNode.value,
-                val => NodeControllerTool.SnapToMiddleNode.value = val) as UICheckBox;
-            snapToggle.tooltip = "when you click near a middle node:\n" +
-                " - [checked] => Node controller modifies the node\n" +
-                " - [unchceked] => Node controller moves the node to hovered position.";
-            FixTooltipAlignment(snapToggle);
+            UICheckBox snapToggle = group.AddCheckbox("Snap to middle node", NodeControllerTool.SnapToMiddleNode.value, val => NodeControllerTool.SnapToMiddleNode.value = val) as UICheckBox;
+            snapToggle.tooltip = "when you click near a middle node:\n - [checked] => Node controller modifies the node\n - [unchceked] => Node controller moves the node to hovered position.";
+            snapToggle.eventTooltipShow += OnTooltipShow;
 
-            UICheckBox TMPE_Overlay = group.AddCheckbox(
-                "Hide TMPE overlay on the selected node",
-                NodeControllerTool.Hide_TMPE_Overlay.value,
-                val => NodeControllerTool.Hide_TMPE_Overlay.value = val) as UICheckBox;
-            TMPE_Overlay.tooltip = "Holding control hides all TMPE overlay.\n" +
-                "but if this is checked, you don't have to (excluding Corssings/Uturn)";
-            FixTooltipAlignment(TMPE_Overlay);
+            UICheckBox TMPE_Overlay = group.AddCheckbox("Hide TMPE overlay on the selected node", NodeControllerTool.Hide_TMPE_Overlay.value, val => NodeControllerTool.Hide_TMPE_Overlay.value = val) as UICheckBox;
+            TMPE_Overlay.tooltip = "Holding control hides all TMPE overlay.\nbut if this is checked, you don't have to (excluding Corssings/Uturn)";
+            TMPE_Overlay.eventTooltipShow += OnTooltipShow;
+        }
 
+        private static void OnTooltipShow(UIComponent component, UITooltipEventParameter eventParam)
+        {
+            if (component.tooltipBox is UILabel label)
+                label.textAlignment = UIHorizontalAlignment.Left;
         }
 
         static UICheckBox universalFixes_;
         public static void MakeGameSettings(UIHelperBase helper)
         {
             UIHelper group = helper.AddGroup("Game settings") as UIHelper;
-
             UIPanel panel = group.self as UIPanel;
 
             object val = GameConfig?.UnviversalSlopeFixes; val = val ?? "null";
@@ -104,7 +86,7 @@ namespace NodeController.GUI
                 Mod.Logger.Error("GameConfig==null");
                 return;
             }
-            Mod.Logger.Debug($"UpdateGameSettings: UnviversalSlopeFixes =" + GameConfig.UnviversalSlopeFixes);
+            Mod.Logger.Debug($"UpdateGameSettings: UnviversalSlopeFixes ={GameConfig.UnviversalSlopeFixes}");
             if (universalFixes_)
                 universalFixes_.isChecked = GameConfig.UnviversalSlopeFixes;
         }
@@ -127,11 +109,8 @@ namespace NodeController.GUI
                     }
 
                     // also update segments with extreme slopes.
-                    if (segmentID.ToSegment().m_startDirection.y > 2 ||
-                        segmentID.ToSegment().m_endDirection.y > 2)
-                    {
+                    if (segmentID.ToSegment().m_startDirection.y > 2 || segmentID.ToSegment().m_endDirection.y > 2)
                         NetManager.instance.UpdateSegment(segmentID);
-                    }
                 }
             }
         }

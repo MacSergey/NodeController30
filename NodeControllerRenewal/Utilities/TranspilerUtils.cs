@@ -135,9 +135,7 @@ namespace KianCommons.Patches
         {
             string ret = "";
             foreach (var code in instructions)
-            {
                 ret += code + "\n";
-            }
             return ret;
         }
 
@@ -148,10 +146,7 @@ namespace KianCommons.Patches
         }
 
         /// <param name="count">Number of occurances. Negative count searches backward</param>
-        public static int Search(
-            this List<CodeInstruction> codes,
-            Func<CodeInstruction, bool> predicate,
-            int startIndex = 0, int count = 1, bool throwOnError = true)
+        public static int Search(this List<CodeInstruction> codes, Func<CodeInstruction, bool> predicate, int startIndex = 0, int count = 1, bool throwOnError = true)
         {
             return codes.Search(
                 (int i) => predicate(codes[i]),
@@ -162,10 +157,7 @@ namespace KianCommons.Patches
         }
 
         /// <param name="count">negative count searches backward</param>
-        public static int Search(
-            this List<CodeInstruction> codes,
-            Func<int, bool> predicate,
-            int startIndex = 0, int count = 1, bool throwOnError = true)
+        public static int Search(this List<CodeInstruction> codes, Func<int, bool> predicate, int startIndex = 0, int count = 1, bool throwOnError = true)
         {
             if (count == 0)
                 throw new ArgumentOutOfRangeException("count can't be zero");
@@ -202,7 +194,6 @@ namespace KianCommons.Patches
 
         public static int SearchGeneric(List<CodeInstruction> codes, Func<int, bool> predicate, int index, int dir = +1, int counter = 1, bool throwOnError = true)
         {
-
             int count = 0;
             for (; 0 <= index && index < codes.Count; index += dir)
             {
@@ -218,7 +209,7 @@ namespace KianCommons.Patches
         {
             // move labels
             var labels = source.labels;
-            target.labels.AddRange((IEnumerable<Label>)labels);
+            target.labels.AddRange(labels);
             labels.Clear();
         }
 
@@ -249,142 +240,6 @@ namespace KianCommons.Patches
             MoveLabels(codes[index], insertion[0]);
             codes.InsertRange(index, insertion);
 
-        }
-    }
-
-    internal static class TranspilerExtensions
-    {
-        public static void InsertInstructions(this List<CodeInstruction> codes, int index, CodeInstruction[] insertion, bool moveLabels = true)
-        {
-            TranspilerUtils.InsertInstructions(codes, insertion, index, moveLabels);
-        }
-
-        public static void InsertInstructions(this List<CodeInstruction> codes, int index, IEnumerable<CodeInstruction> insertion, bool moveLabels = true)
-        {
-            TranspilerUtils.InsertInstructions(codes, insertion.ToArray(), index, moveLabels);
-        }
-
-        public static void InsertInstructions(this List<CodeInstruction> codes, int index, CodeInstruction insertion, bool moveLabels = true)
-        {
-            TranspilerUtils.InsertInstructions(codes, new[] { insertion }, index, moveLabels);
-        }
-
-
-        /// <summary>
-        /// replaces one instruction at the given index with multiple instrutions
-        /// </summary>
-        public static void ReplaceInstruction(this List<CodeInstruction> codes, int index, CodeInstruction[] insertion)
-        {
-            TranspilerUtils.ReplaceInstructions(codes, insertion, index);
-        }
-
-        public static void ReplaceInstruction(this List<CodeInstruction> codes, int index, IEnumerable<CodeInstruction> insertion)
-        {
-            TranspilerUtils.ReplaceInstructions(codes, insertion.ToArray(), index);
-        }
-
-        public static void ReplaceInstruction(this List<CodeInstruction> codes, int index, CodeInstruction insertion)
-        {
-            TranspilerUtils.ReplaceInstructions(codes, new[] { insertion }, index);
-        }
-
-        public static bool IsLdLoc(this CodeInstruction code, out int loc)
-        {
-            if (code.opcode == OpCodes.Ldloc_0)
-                loc = 0;
-            else if (code.opcode == OpCodes.Ldloc_1)
-                loc = 1;
-            else if (code.opcode == OpCodes.Ldloc_2)
-                loc = 2;
-            else if (code.opcode == OpCodes.Ldloc_3)
-                loc = 3;
-            else if (code.opcode == OpCodes.Ldloc_S || code.opcode == OpCodes.Ldloc)
-            {
-                if (code.operand is LocalBuilder lb)
-                    loc = lb.LocalIndex;
-                else
-                    loc = (int)code.operand;
-            }
-            else
-            {
-                loc = -1;
-                return false;
-            }
-            return true;
-        }
-
-        public static bool IsLdLoc(this CodeInstruction code, int loc)
-        {
-            if (!code.IsLdLoc(out int loc0))
-                return false;
-            return loc == loc0;
-        }
-
-        public static bool IsStLoc(this CodeInstruction code, out int loc)
-        {
-            if (code.opcode == OpCodes.Stloc_0)
-                loc = 0;
-            else if (code.opcode == OpCodes.Stloc_1)
-                loc = 1;
-            else if (code.opcode == OpCodes.Stloc_2)
-                loc = 2;
-            else if (code.opcode == OpCodes.Stloc_3)
-                loc = 3;
-            else if (code.opcode == OpCodes.Stloc_S || code.opcode == OpCodes.Stloc)
-            {
-                if (code.operand is LocalBuilder lb)
-                    loc = lb.LocalIndex;
-                else
-                    loc = (int)code.operand;
-            }
-            else
-            {
-                loc = -1;
-                return false;
-            }
-            return true;
-        }
-
-        public static bool IsStLoc(this CodeInstruction code, int loc)
-        {
-            if (!code.IsStLoc(out int loc0))
-                return false;
-            return loc == loc0;
-        }
-
-        public static bool IsLdLoc(this CodeInstruction code, Type type)
-        {
-            return code.IsLdloc()
-                && code.operand is LocalBuilder lb
-                && lb.LocalType == type;
-        }
-
-        public static bool IsLdLocA(this CodeInstruction code, Type type, out int loc)
-        {
-            bool isldloca =
-                code.opcode == OpCodes.Ldloca ||
-                code.opcode == OpCodes.Ldloca_S;
-            if (isldloca && code.operand is LocalBuilder lb && lb.LocalType == type)
-            {
-                loc = lb.LocalIndex;
-                return true;
-            }
-            loc = -1;
-            return false;
-
-        }
-        public static bool IsStLoc(this CodeInstruction code, Type type)
-        {
-            return code.IsStloc()
-                && code.operand is LocalBuilder lb
-                && lb.LocalType == type;
-        }
-
-        public static bool LoadsConstant(this CodeInstruction code, string value)
-        {
-            return code.opcode == OpCodes.Ldstr
-                && code.operand is string str
-                && str == value;
         }
     }
 }

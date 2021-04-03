@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
 using static KianCommons.Patches.TranspilerUtils;
-using static KianCommons.Assertion;
 using KianCommons;
 using ColossalFramework;
 using NodeController;
@@ -73,14 +72,14 @@ namespace NodeController.Patches
                 int nInsertions = 0;
                 for (int watchdog = 0; ; ++watchdog)
                 {
-                    Assert(watchdog < 20, "watchdog");
                     int c = 1;//watchdog == 0 ? 1 : 2; // skip over m_position from previous loop.
                     index = SearchGeneric(codes, predicate, index, throwOnError: false, counter: c);
                     if (index < 0)
                         break; // not found
                     index++; // insert after
                     bool inserted = InsertCall(codes, index, method);
-                    if (inserted) nInsertions++;
+                    if (inserted) 
+                        nInsertions++;
                 }
                 return codes;
             }
@@ -121,7 +120,6 @@ namespace NodeController.Patches
                 return null;
 
             // assuming offset is stored somewhere as opposed to calcualted on the spot.
-            Assert(codes[index].IsLdloc(), $"{codes[index]}.IsLdloc()");
             return new CodeInstruction(codes[index].opcode, codes[index].operand);
         }
     }

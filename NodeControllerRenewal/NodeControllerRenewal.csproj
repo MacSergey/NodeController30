@@ -100,7 +100,6 @@
     <Compile Include="Mod.cs" />
     <Compile Include="Patcher.cs" />
     <Compile Include="Patches\NetSegmentPatches.cs" />
-    <Compile Include="Patches\HarmonyExtension.cs" />
     <Compile Include="Patches\HideCrosswalksPatches.cs" />
     <Compile Include="Patches\NetLanePatches.cs" />
     <Compile Include="Patches\NetManagerPatches.cs" />
@@ -112,13 +111,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectMode.cs" />
     <Compile Include="Tool.cs" />
-    <Compile Include="UI\IDataControllerUI.cs" />
     <Compile Include="UI\KeymappingsPanel.cs" />
-    <Compile Include="Utilities\Assertion.cs" />
-    <Compile Include="Utilities\BezierUtil.cs" />
     <Compile Include="Utilities\CSURUtil.cs" />
     <Compile Include="Utilities\EnumBitMaskExtensions.cs" />
-    <Compile Include="Utilities\HarmonyUtil.cs" />
     <Compile Include="Utilities\HelpersExtensions.cs" />
     <Compile Include="Utilities\MaterialUtils.cs" />
     <Compile Include="Utilities\MathUtil.cs" />
@@ -184,7 +179,7 @@
   </Target>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Build" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Debug" />
+      <UserProperties BuildVersion_ConfigurationName="Debug" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="Build" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- <Target Name="AfterBuildRelease" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'"> -->
