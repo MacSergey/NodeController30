@@ -29,7 +29,7 @@ namespace NodeController.GUI
     {
         public const string FileName = nameof(NodeController);
 
-        public static GameConfigT GameConfig;
+        public static GameConfigT GameConfig { get; set; } = GameConfigT.LoadGameDefault;
 
         static Settings()
         {
@@ -93,10 +93,7 @@ namespace NodeController.GUI
 
             object val = GameConfig?.UnviversalSlopeFixes; val = val ?? "null";
             Mod.Logger.Debug($"MakeGameSettings: UnviversalSlopeFixes =" + val);
-            universalFixes_ = group.AddCheckbox(
-                "apply universal slope fixes(flat junctions, curvature of extreme slopes)",
-                defaultValue: GameConfig?.UnviversalSlopeFixes ?? GameConfigT.NewGameDefault.UnviversalSlopeFixes,
-                ApplyUniversalSlopeFixes) as UICheckBox;
+            universalFixes_ = group.AddCheckbox("apply universal slope fixes(flat junctions, curvature of extreme slopes)", defaultValue: GameConfig?.UnviversalSlopeFixes ?? GameConfigT.NewGameDefault.UnviversalSlopeFixes, ApplyUniversalSlopeFixes) as UICheckBox;
             universalFixes_.tooltip = "changing this may influence existing custom nodes.";
         }
 

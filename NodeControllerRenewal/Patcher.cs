@@ -107,7 +107,6 @@ namespace NodeController
             success &= Patch_NetSegment_CalculateCorner_Transpiler();
             success &= Patch_NetSegment_FindDirection();
             success &= Patch_NetSegment_CalculateSegment();
-            success &= Patch_NetSegment_RenderInstance();
         }
 
         private bool Patch_NetSegment_CalculateCorner_Postfix()
@@ -128,11 +127,6 @@ namespace NodeController
         private bool Patch_NetSegment_CalculateSegment()
         {
             return AddPostfix(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateSegmentPostfix), typeof(NetSegment), nameof(NetSegment.CalculateSegment));
-        }
-        private bool Patch_NetSegment_RenderInstance()
-        {
-            var parameters = new Type[] { typeof(RenderManager.CameraInfo), typeof(ushort), typeof(int), typeof(NetInfo), typeof(RenderManager.Instance).MakeByRefType() };
-            return AddTranspiler(typeof(NetSegmentPatches), nameof(NetSegmentPatches.RenderInstanceTranspiler), typeof(NetSegment), nameof(NetSegment.RenderInstance), parameters);
         }
 
         #endregion
