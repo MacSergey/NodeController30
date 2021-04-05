@@ -25,7 +25,7 @@ namespace NodeController
                 return;
 
             var messageBox = MessageBoxBase.ShowModal<OneButtonMessageBox>();
-            messageBox.CaptionText = SingletonMod<Mod>.Name;
+            messageBox.CaptionText = SingletonMod<Mod>.NameRaw;
             messageBox.MessageText = GetToolInfo();
             messageBox.ButtonText = "OK";
         }
