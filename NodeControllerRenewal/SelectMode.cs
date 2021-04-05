@@ -12,12 +12,10 @@ using ModsCommon;
 
 namespace NodeController
 {
-    public class SelectToolMode : BaseSelectToolMode, IToolModePanel, IToolMode<ToolModeType>
+    public class SelectToolMode : BaseSelectToolMode<Mod, NodeControllerTool>, IToolModePanel, IToolMode<ToolModeType>
     {
         public bool ShowPanel => false;
         public ToolModeType Type => ToolModeType.Select;
-
-        protected new NodeControllerTool Tool => NodeControllerTool.Instance;
 
         public override string GetToolInfo() => IsHoverNode ? $"Node {HoverNode.Id}": (IsHoverSegment ? $"Segment {HoverSegment.Id}" : string.Empty);
 
@@ -27,7 +25,7 @@ namespace NodeController
                 return;
 
             var messageBox = MessageBoxBase.ShowModal<OneButtonMessageBox>();
-            messageBox.CaptionText = Mod.ShortName;
+            messageBox.CaptionText = SingletonMod<Mod>.Name;
             messageBox.MessageText = GetToolInfo();
             messageBox.ButtonText = "OK";
         }

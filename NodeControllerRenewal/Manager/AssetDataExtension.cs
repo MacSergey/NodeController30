@@ -12,6 +12,7 @@ namespace NodeController
     using System.Runtime.CompilerServices;
     using NodeController;
     using System.Reflection;
+    using ModsCommon;
 
     public static class OnLoadPatch
     {
@@ -100,11 +101,11 @@ namespace NodeController
             {
                 if (userData != null && userData.TryGetValue(NC_ID, out byte[] data))
                 {
-                    Mod.Logger.Debug("AssetDataExtension.OnAssetLoaded():  extracted data for " + NC_ID);
+                    SingletonMod<Mod>.Logger.Debug("AssetDataExtension.OnAssetLoaded():  extracted data for " + NC_ID);
                     object[] records = AssetData.Deserialize(data);
                     if (records != null)
                         Asset2Records[prefab] = records;
-                    Mod.Logger.Debug("AssetDataExtension.OnAssetLoaded(): records=" + records.ToSTR());
+                    SingletonMod<Mod>.Logger.Debug("AssetDataExtension.OnAssetLoaded(): records=" + records.ToSTR());
 
                 }
             }
@@ -112,19 +113,19 @@ namespace NodeController
 
         public override void OnAssetSaved(string name, object asset, out Dictionary<string, byte[]> userData)
         {
-            Mod.Logger.Debug($"AssetDataExtension.OnAssetSaved({name}, {asset}, userData) called");
+            SingletonMod<Mod>.Logger.Debug($"AssetDataExtension.OnAssetSaved({name}, {asset}, userData) called");
             userData = null;
             if (asset is BuildingInfo prefab)
             {
-                Mod.Logger.Debug($"AssetDataExtension.OnAssetSaved():  prefab is {prefab}");
+                SingletonMod<Mod>.Logger.Debug($"AssetDataExtension.OnAssetSaved():  prefab is {prefab}");
                 var assetData = AssetData.GetAssetData();
                 if (assetData == null)
                 {
-                    Mod.Logger.Debug("AssetDataExtension.OnAssetSaved(): there were no NC data.");
+                    SingletonMod<Mod>.Logger.Debug("AssetDataExtension.OnAssetSaved(): there were no NC data.");
                     return;
                 }
 
-                Mod.Logger.Debug($"AssetDataExtension.OnAssetSaved(): assetData={assetData}");
+                SingletonMod<Mod>.Logger.Debug($"AssetDataExtension.OnAssetSaved(): assetData={assetData}");
                 userData = new Dictionary<string, byte[]>();
                 userData.Add(NC_ID, assetData.Serialize());
             }
@@ -134,8 +135,8 @@ namespace NodeController
         {
             if (Instance.Asset2Records.TryGetValue(info, out var records))
             {
-                Mod.Logger.Debug("PlaceAsset: records = " + records.ToSTR());
-                Mod.Logger.Debug("PlaceAsset: map = " + map.ToSTR());
+                SingletonMod<Mod>.Logger.Debug("PlaceAsset: records = " + records.ToSTR());
+                SingletonMod<Mod>.Logger.Debug("PlaceAsset: map = " + map.ToSTR());
                 int exceptionCount = 0;
                 foreach (object record in records)
                 {
@@ -145,13 +146,13 @@ namespace NodeController
                     }
                     catch (Exception e)
                     {
-                        Mod.Logger.Error(e);
+                        SingletonMod<Mod>.Logger.Error(e);
                         exceptionCount++;
                     }
                 }
             }
             else
-                Mod.Logger.Debug("PlaceAsset: records not found");
+                SingletonMod<Mod>.Logger.Debug("PlaceAsset: records not found");
         }
 
         static AssetDataExtension()
@@ -159,11 +160,11 @@ namespace NodeController
             try
             {
                 RegisterEvent();
-                Mod.Logger.Debug("registered OnNetworksMapped.");
+                SingletonMod<Mod>.Logger.Debug("registered OnNetworksMapped.");
             }
             catch
             {
-                Mod.Logger.Error("[NOT CRITICAL]Could not register OnNetworksMapped. TMPE 11.5.3+ is required for loading intersections with NC data");
+                SingletonMod<Mod>.Logger.Error("[NOT CRITICAL]Could not register OnNetworksMapped. TMPE 11.5.3+ is required for loading intersections with NC data");
             }
         }
 

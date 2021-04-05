@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using KianCommons.Serialization;
 using NodeController;
+using ModsCommon;
 
 namespace NodeController.LifeCycle
 {
@@ -32,7 +33,7 @@ namespace NodeController.LifeCycle
 
         public override object Decode64(string base64Data, Version dataVersion)
         {
-            Mod.Logger.Debug($"MoveItIntegration.Decode64({base64Data},{dataVersion}) was called");
+            SingletonMod<Mod>.Logger.Debug($"MoveItIntegration.Decode64({base64Data},{dataVersion}) was called");
             if (base64Data == null || base64Data.Length == 0) return null;
             byte[] data = Convert.FromBase64String(base64Data);
             return SerializationUtil.Deserialize(data, dataVersion);
@@ -40,7 +41,7 @@ namespace NodeController.LifeCycle
 
         public override string Encode64(object record)
         {
-            Mod.Logger.Debug($"MoveItIntegration.Encode64({record}) was called");
+            SingletonMod<Mod>.Logger.Debug($"MoveItIntegration.Encode64({record}) was called");
             var data = SerializationUtil.Serialize(record);
             if (data == null || data.Length == 0) return null;
             return Convert.ToBase64String(data);
@@ -48,7 +49,7 @@ namespace NodeController.LifeCycle
 
         public override object Copy(InstanceID sourceInstanceID)
         {
-            Mod.Logger.Debug($"MoveItIntegration.Copy({sourceInstanceID.ToSTR()}) called");
+            SingletonMod<Mod>.Logger.Debug($"MoveItIntegration.Copy({sourceInstanceID.ToSTR()}) called");
             switch (sourceInstanceID.Type)
             {
                 case InstanceType.NetNode:
@@ -56,7 +57,7 @@ namespace NodeController.LifeCycle
                 case InstanceType.NetSegment:
                     return CopySegment(sourceInstanceID.NetSegment);
                 default:
-                    Mod.Logger.Debug("Unsupported integration");
+                    SingletonMod<Mod>.Logger.Debug("Unsupported integration");
                     return null;
             }
         }
@@ -65,7 +66,7 @@ namespace NodeController.LifeCycle
         {
             string strRecord = record == null ? "null" : record.ToString();
             string strInstanceID = targetrInstanceID.ToSTR();
-            Mod.Logger.Debug($"MoveItIntegration.Paste({strInstanceID}, record:{strRecord}, map) was called");
+            SingletonMod<Mod>.Logger.Debug($"MoveItIntegration.Paste({strInstanceID}, record:{strRecord}, map) was called");
             switch (targetrInstanceID.Type)
             {
                 case InstanceType.NetNode:
@@ -75,7 +76,7 @@ namespace NodeController.LifeCycle
                     PasteSegment(targetrInstanceID.NetSegment, (MoveItSegmentData)record, map);
                     break;
                 default:
-                    Mod.Logger.Debug("Unsupported integration");
+                    SingletonMod<Mod>.Logger.Debug("Unsupported integration");
                     break;
             }
         }
@@ -100,7 +101,7 @@ namespace NodeController.LifeCycle
 
         public static void PasteNode(ushort targetNodeID, NodeData record, Dictionary<InstanceID, InstanceID> map)
         {
-            Mod.Logger.Debug($"MoveItIntegration.PasteNode({targetNodeID}) called with record = {record}");
+            SingletonMod<Mod>.Logger.Debug($"MoveItIntegration.PasteNode({targetNodeID}) called with record = {record}");
             if (record == null)
             {
                 //nodeMan.ResetNodeToDefault(nodeID); // doing this is not backward comaptible
@@ -121,7 +122,7 @@ namespace NodeController.LifeCycle
         public static void PasteSegment(
             ushort targetSegmentID, MoveItSegmentData data, Dictionary<InstanceID, InstanceID> map)
         {
-            Mod.Logger.Debug($"MoveItIntegration.PasteSegment({targetSegmentID}) called with record = " + data);
+            SingletonMod<Mod>.Logger.Debug($"MoveItIntegration.PasteSegment({targetSegmentID}) called with record = " + data);
             if (data == null)
             {
                 // doing this is not backward comatible:
@@ -202,7 +203,7 @@ namespace NodeController.LifeCycle
 
         public static void PasteSegmentEnd(SegmentEndData segmentEndData, ushort targetNodeID, ushort targetSegmentID)
         {
-            Mod.Logger.Debug($"PasteSegmentEnd({segmentEndData}, targetNodeID:{targetNodeID}, targetSegmentID:{targetNodeID})");
+            SingletonMod<Mod>.Logger.Debug($"PasteSegmentEnd({segmentEndData}, targetNodeID:{targetNodeID}, targetSegmentID:{targetNodeID})");
             if (segmentEndData != null)
             {
                 segmentEndData = segmentEndData.Clone();

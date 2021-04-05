@@ -3,6 +3,7 @@ namespace NodeController.Patches
     using ColossalFramework;
     using HarmonyLib;
     using KianCommons;
+    using ModsCommon;
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -43,7 +44,7 @@ namespace NodeController.Patches
             }
             catch (Exception error)
             {
-                Mod.Logger.Error(pathPos.ToSTR(), error);
+                SingletonMod<Mod>.Logger.Error(pathPos.ToSTR(), error);
             }
         }
 

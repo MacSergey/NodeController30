@@ -126,7 +126,8 @@ namespace NodeController.Patches
             var LDLoc_segmentID = BuildSegnentLDLocFromPrevSTLoc(codes, index, counter: 1);
 
             {
-                var newInstructions = new[] {
+                var newInstructions = new[]
+                {
                     LDArg_NodeID,
                     LDLoc_segmentID,
                     new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(CalculateMaterial))),
@@ -135,7 +136,8 @@ namespace NodeController.Patches
             }
 
             {
-                var newInstructions = new[] {
+                var newInstructions = new[]
+                {
                     LDArg_NodeID,
                     LDLoc_segmentID,
                     new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(CalculateMesh))),
@@ -144,11 +146,13 @@ namespace NodeController.Patches
             }
 
             {
-                var newInstructions = new[]{
+                var newInstructions = new[]
+                {
                     LDArg_NodeID,
                     LDLoc_segmentID,
                     new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(ShouldContinueMedian))),
-                    new CodeInstruction(OpCodes.Or) };
+                    new CodeInstruction(OpCodes.Or)
+                };
 
                 TranspilerUtils.InsertInstructions(codes, newInstructions, insertIndex1);
             }

@@ -18,6 +18,7 @@ namespace NodeController
     using ModsCommon.Utilities;
     using NodeController;
     using KianCommons.Math;
+    using ModsCommon;
 
     public enum NodeTypeT
     {
@@ -223,7 +224,7 @@ namespace NodeController
 
         public void Flatten()
         {
-            Mod.Logger.Debug("NodeData.Flatten() called");
+            SingletonMod<Mod>.Logger.Debug("NodeData.Flatten() called");
             foreach (ushort segmentID in SortedSegmentIDs)
             {
                 var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentID: segmentID, nodeID: NodeID);
@@ -234,7 +235,7 @@ namespace NodeController
 
         public void UnFlatten()
         {
-            Mod.Logger.Debug("NodeData.UnFlatten() called");
+            SingletonMod<Mod>.Logger.Debug("NodeData.UnFlatten() called");
             for (int i = 0; i < SortedSegmentIDs.Count; ++i)
             {
                 ushort segmentID = SortedSegmentIDs[i];
@@ -430,7 +431,7 @@ namespace NodeController
         }
 
 
-        static ushort SelectedNodeID => NodeControllerTool.Instance.SelectedNodeID;
+        static ushort SelectedNodeID => SingletonTool<NodeControllerTool>.Instance.SelectedNodeID;
         public bool IsSelected() => NodeID == SelectedNodeID;
 
         public bool IsDefault()

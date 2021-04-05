@@ -1,14 +1,14 @@
+using ColossalFramework;
+using ColossalFramework.UI;
+using ICities;
+using KianCommons;
+using ModsCommon;
+using ModsCommon.UI;
+using System;
+using static KianCommons.HelpersExtensions;
+
 namespace NodeController.GUI
 {
-    using ColossalFramework;
-    using ColossalFramework.UI;
-    using ICities;
-    using KianCommons;
-    using ModsCommon;
-    using NodeController;
-    using System;
-    using static KianCommons.HelpersExtensions;
-
     [Serializable]
     public class GameConfigT
     {
@@ -39,7 +39,7 @@ namespace NodeController.GUI
 
         public static void OnSettingsUI(UIHelperBase helper)
         {
-            Mod.Logger.Debug("Make settings was called");
+            SingletonMod<Mod>.Logger.Debug("Make settings was called");
             MakeGlobalSettings(helper);
             if (!InStartup)
                 MakeGameSettings(helper);
@@ -50,10 +50,10 @@ namespace NodeController.GUI
             UIPanel panel = group.self as UIPanel;
 
             var keymappings = panel.gameObject.AddComponent<KeymappingsPanel>();
-            keymappings.AddKeymapping("Activation Shortcut", NodeControllerTool.ActivationShortcut.InputKey);
+            keymappings.AddKeymapping(NodeControllerTool.ActivationShortcut);
 
             UICheckBox snapToggle = group.AddCheckbox("Snap to middle node", NodeControllerTool.SnapToMiddleNode.value, val => NodeControllerTool.SnapToMiddleNode.value = val) as UICheckBox;
-            snapToggle.tooltip = "when you click near a middle node:\n - [checked] => Node controller modifies the node\n - [unchceked] => Node controller moves the node to hovered position.";
+            snapToggle.tooltip = "When you click near a middle node:\n - [checked] => Node controller modifies the node\n - [unchceked] => Node controller moves the node to hovered position.";
             snapToggle.eventTooltipShow += OnTooltipShow;
 
             UICheckBox TMPE_Overlay = group.AddCheckbox("Hide TMPE overlay on the selected node", NodeControllerTool.Hide_TMPE_Overlay.value, val => NodeControllerTool.Hide_TMPE_Overlay.value = val) as UICheckBox;
@@ -73,8 +73,6 @@ namespace NodeController.GUI
             UIHelper group = helper.AddGroup("Game settings") as UIHelper;
             UIPanel panel = group.self as UIPanel;
 
-            object val = GameConfig?.UnviversalSlopeFixes; val = val ?? "null";
-            Mod.Logger.Debug($"MakeGameSettings: UnviversalSlopeFixes =" + val);
             universalFixes_ = group.AddCheckbox("apply universal slope fixes(flat junctions, curvature of extreme slopes)", defaultValue: GameConfig?.UnviversalSlopeFixes ?? GameConfigT.NewGameDefault.UnviversalSlopeFixes, ApplyUniversalSlopeFixes) as UICheckBox;
             universalFixes_.tooltip = "changing this may influence existing custom nodes.";
         }
@@ -83,10 +81,10 @@ namespace NodeController.GUI
         {
             if (GameConfig == null)
             {
-                Mod.Logger.Error("GameConfig==null");
+                SingletonMod<Mod>.Logger.Error("GameConfig==null");
                 return;
             }
-            Mod.Logger.Debug($"UpdateGameSettings: UnviversalSlopeFixes ={GameConfig.UnviversalSlopeFixes}");
+            SingletonMod<Mod>.Logger.Debug($"UpdateGameSettings: UnviversalSlopeFixes ={GameConfig.UnviversalSlopeFixes}");
             if (universalFixes_)
                 universalFixes_.isChecked = GameConfig.UnviversalSlopeFixes;
         }

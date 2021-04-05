@@ -1,6 +1,7 @@
 using ColossalFramework;
 using ColossalFramework.Math;
 using KianCommons.Math;
+using ModsCommon;
 using NodeController;
 using System;
 using System.Collections;
@@ -127,7 +128,7 @@ namespace KianCommons
             int idx = 0;
             if (segmentId.ToSegment().Info == null)
             {
-                Mod.Logger.Error("null info: potentially caused by missing assets. segmentId=" + segmentId);
+                SingletonMod<Mod>.Logger.Error("null info: potentially caused by missing assets. segmentId=" + segmentId);
                 yield break;
             }
             int n = segmentId.ToSegment().Info.m_lanes.Length;

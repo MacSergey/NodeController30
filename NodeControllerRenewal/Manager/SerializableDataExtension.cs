@@ -7,6 +7,7 @@ namespace NodeController.LifeCycle
     using NodeController.GUI;
     using KianCommons.Serialization;
     using NodeController;
+    using ModsCommon;
 
     [Serializable]
     public class NCState
@@ -28,7 +29,7 @@ namespace NodeController.LifeCycle
                 GameConfig = Settings.GameConfig,
             };
 
-            Mod.Logger.Debug("NCState.Serialize(): saving UnviversalSlopeFixes as " +
+            SingletonMod<Mod>.Logger.Debug("NCState.Serialize(): saving UnviversalSlopeFixes as " +
                 Instance.GameConfig.UnviversalSlopeFixes);
 
             return SerializationUtil.Serialize(Instance);
@@ -38,28 +39,28 @@ namespace NodeController.LifeCycle
         {
             if (data == null)
             {
-                Mod.Logger.Debug($"NCState.Deserialize(data=null)");
+                SingletonMod<Mod>.Logger.Debug($"NCState.Deserialize(data=null)");
                 Instance = new NCState();
             }
             else
             {
-                Mod.Logger.Debug($"NCState.Deserialize(data): data.Length={data?.Length}");
+                SingletonMod<Mod>.Logger.Debug($"NCState.Deserialize(data): data.Length={data?.Length}");
                 Instance = SerializationUtil.Deserialize(data, default) as NCState;
                 if (Instance?.Version != null)
                 { //2.1.1 or above
-                    Mod.Logger.Debug("Deserializing V" + Instance.Version);
+                    SingletonMod<Mod>.Logger.Debug("Deserializing V" + Instance.Version);
                     SerializationUtil.DeserializationVersion = new Version(Instance.Version);
                 }
                 else
                 {
                     // 2.0
-                    Mod.Logger.Debug("Deserializing version 2.0");
+                    SingletonMod<Mod>.Logger.Debug("Deserializing version 2.0");
                     Instance.Version = "2.0";
                     Instance.GameConfig = GameConfigT.LoadGameDefault; // for the sake of feature proofing.
                     Instance.GameConfig.UnviversalSlopeFixes = true; // in this version I do apply slope fixes.
                 }
             }
-            Mod.Logger.Debug($"setting UnviversalSlopeFixes to {Instance.GameConfig.UnviversalSlopeFixes}");
+            SingletonMod<Mod>.Logger.Debug($"setting UnviversalSlopeFixes to {Instance.GameConfig.UnviversalSlopeFixes}");
             Settings.GameConfig = Instance.GameConfig;
             Settings.UpdateGameSettings();
             var version = new Version(Instance.Version);

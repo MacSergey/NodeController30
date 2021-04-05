@@ -3,6 +3,7 @@ using static KianCommons.HelpersExtensions;
 using ColossalFramework;
 using KianCommons;
 using HarmonyLib;
+using ModsCommon;
 
 namespace NodeController.Patches
 {
@@ -65,7 +66,7 @@ namespace NodeController.Patches
         {
             if (UpgradingSegmentData != null)
             {
-                Mod.Logger.Error("Unexpected UpgradingSegmentData != null");
+                SingletonMod<Mod>.Logger.Error("Unexpected UpgradingSegmentData != null");
                 UpgradingSegmentData = null;
             }
             if (Upgrading)

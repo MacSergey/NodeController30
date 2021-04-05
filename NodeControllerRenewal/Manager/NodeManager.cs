@@ -4,6 +4,7 @@ namespace NodeController
     using System;
     using KianCommons.Serialization;
     using NodeController;
+    using ModsCommon;
 
     [Serializable]
     public class NodeManager
@@ -18,12 +19,12 @@ namespace NodeController
             if (data == null)
             {
                 Instance = new NodeManager();
-                Mod.Logger.Debug($"NodeBlendManager.Deserialize(data=null)");
+                SingletonMod<Mod>.Logger.Debug($"NodeBlendManager.Deserialize(data=null)");
 
             }
             else
             {
-                Mod.Logger.Debug($"NodeBlendManager.Deserialize(data): data.Length={data?.Length}");
+                SingletonMod<Mod>.Logger.Debug($"NodeBlendManager.Deserialize(data): data.Length={data?.Length}");
                 Instance = SerializationUtil.Deserialize(data, version) as NodeManager;
             }
         }
@@ -53,7 +54,7 @@ namespace NodeController
         /// <param name="nodeID">target nodeID</param>
         private void PasteNodeDataImp(ushort nodeID, byte[] data)
         {
-            Mod.Logger.Debug($"NodeManager.PasteNodeDataImp(nodeID={nodeID}, data={data})");
+            SingletonMod<Mod>.Logger.Debug($"NodeManager.PasteNodeDataImp(nodeID={nodeID}, data={data})");
             if (data == null)
             {
                 // for backward compatibality reasons its not a good idea to do this:
@@ -120,7 +121,7 @@ namespace NodeController
         {
             if (nodeID == 0 || buffer[nodeID] == null)
                 return;
-            bool selected = NodeControllerTool.Instance.SelectedNodeID == nodeID;
+            bool selected = SingletonTool<NodeControllerTool>.Instance.SelectedNodeID == nodeID;
             if (buffer[nodeID].IsDefault() && !selected)
             {
                 ResetNodeToDefault(nodeID);
@@ -139,9 +140,9 @@ namespace NodeController
         public void ResetNodeToDefault(ushort nodeID)
         {
             if (buffer[nodeID] != null)
-                Mod.Logger.Debug($"node:{nodeID} reset to defualt");
+                SingletonMod<Mod>.Logger.Debug($"node:{nodeID} reset to defualt");
             else
-                Mod.Logger.Debug($"node:{nodeID} is alreadey null. no need to reset to default");
+                SingletonMod<Mod>.Logger.Debug($"node:{nodeID} is alreadey null. no need to reset to default");
 
             SetNullNodeAndSegmentEnds(nodeID);
 
@@ -202,7 +203,7 @@ namespace NodeController
 
         public void Heal()
         {
-            Mod.Logger.Debug("NodeManager.Validate() heal");
+            SingletonMod<Mod>.Logger.Debug("NodeManager.Validate() heal");
             buffer[0] = null;
             for (ushort nodeID = 1; nodeID < buffer.Length; ++nodeID)
             {

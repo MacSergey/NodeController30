@@ -9,6 +9,7 @@ namespace KianCommons.Serialization
     using System.Runtime.Serialization.Formatters;
     using System.Runtime.Serialization.Formatters.Binary;
     using NodeController;
+    using ModsCommon;
 
     internal static class SerializationUtil
     {
@@ -31,7 +32,7 @@ namespace KianCommons.Serialization
             }
             catch (Exception e)
             {
-                Mod.Logger.Error(e);
+                SingletonMod<Mod>.Logger.Error(e);
                 return null;
             }
             finally

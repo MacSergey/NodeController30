@@ -12,6 +12,7 @@ namespace KianCommons.Plugins
     using System.Collections;
     using System.Collections.Generic;
     using NodeController;
+    using ModsCommon;
 
     public static class PluginExtensions
     {
@@ -166,7 +167,7 @@ namespace KianCommons.Plugins
             {
                 if (id == 0)
                 {
-                    Mod.Logger.Error("unexpected 0 as mod search id");
+                    SingletonMod<Mod>.Logger.Error("unexpected 0 as mod search id");
                     continue;
                 }
                 if (id == plugin.GetWorkshopID())

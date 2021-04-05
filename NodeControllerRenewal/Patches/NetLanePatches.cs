@@ -9,6 +9,7 @@ using static KianCommons.Patches.TranspilerUtils;
 using KianCommons;
 using ColossalFramework;
 using NodeController;
+using ModsCommon;
 
 namespace NodeController.Patches
 {
@@ -17,14 +18,13 @@ namespace NodeController.Patches
         static FieldInfo PositionField { get; } = AccessTools.Field(typeof(NetLaneProps.Prop), nameof(NetLaneProps.Prop.m_position));
         static FieldInfo XField { get; } = AccessTools.Field(typeof(Vector3), nameof(Vector3.x));
         static FieldInfo YField { get; } = AccessTools.Field(typeof(Vector3), nameof(Vector3.y));
-        static MethodInfo PositionMethod { get; } = AccessTools.Method(typeof(Bezier3), nameof(Bezier3.Position), new Type[] { typeof(float)});
+        static MethodInfo PositionMethod { get; } = AccessTools.Method(typeof(Bezier3), nameof(Bezier3.Position), new Type[] { typeof(float) });
 
         public static Vector3 CalculatePropPos(ref Vector3 pos0, float t, uint laneID, NetInfo.Lane laneInfo)
         {
             Vector3 pos = pos0;
             ushort segmentID = laneID.ToLane().m_segment;
-            bool backward = (laneInfo.m_finalDirection & NetInfo.Direction.Both) == NetInfo.Direction.Backward ||
-                            (laneInfo.m_finalDirection & NetInfo.Direction.AvoidBoth) == NetInfo.Direction.AvoidForward;
+            bool backward = (laneInfo.m_finalDirection & NetInfo.Direction.Both) == NetInfo.Direction.Backward || (laneInfo.m_finalDirection & NetInfo.Direction.AvoidBoth) == NetInfo.Direction.AvoidForward;
             bool segmentInvert = segmentID.ToSegment().m_flags.IsFlagSet(NetSegment.Flags.Invert);
             bool reverse = backward != segmentInvert;
 
@@ -33,21 +33,19 @@ namespace NodeController.Patches
 
             float stretchStart = start?.Stretch ?? 0;
             float stretchEnd = end?.Stretch ?? 0;
-            float stretch = Mathf.Lerp(stretchStart, stretchEnd, t);
-            stretch = 1 + stretch * 0.01f; // convert delta-percent to ratio
+            var stretch = 1 + Mathf.Lerp(stretchStart, stretchEnd, t) * 0.01f; // convert delta-percent to ratio
             pos.x *= stretch;
 
             float embankStart = start?.EmbankmentPercent ?? 0;
             float embankEnd = start?.EmbankmentPercent ?? 0;
-            float embankment = Mathf.Lerp(embankStart, embankEnd, t);
-            embankment *= 0.01f; //convert percent to ratio.
-            float deltaY = pos.x * embankment;
+            float deltaY = pos.x * Mathf.Lerp(embankStart, embankEnd, t) * 0.01f;
 
 
             if (reverse)
                 pos.y += deltaY;
             else
                 pos.y -= deltaY;
+
             return pos;
         }
 
@@ -58,7 +56,8 @@ namespace NodeController.Patches
                 var codes = instructions.ToCodeList();
                 bool predicate(int i)
                 {
-                    if (i + 2 >= codes.Count) return false;
+                    if (i + 2 >= codes.Count)
+                        return false;
                     var c0 = codes[i];
                     var c1 = codes[i + 1];
                     var c2 = codes[i + 2];
@@ -78,14 +77,14 @@ namespace NodeController.Patches
                         break; // not found
                     index++; // insert after
                     bool inserted = InsertCall(codes, index, method);
-                    if (inserted) 
+                    if (inserted)
                         nInsertions++;
                 }
                 return codes;
             }
             catch (Exception e)
             {
-                Mod.Logger.Error(e);
+                SingletonMod<Mod>.Logger.Error(e);
                 return instructions;
             }
         }
@@ -95,7 +94,8 @@ namespace NodeController.Patches
             if (GetLDOffset(codes, index) is not CodeInstruction LDOffset)
                 return false; // silently return if no offset could be found.
 
-            var insertion = new CodeInstruction[] {
+            var insertion = new CodeInstruction[]
+            {
                 LDOffset,
                 GetLDArg(method, "laneID"),
                  GetLDArg(method, "laneInfo"),

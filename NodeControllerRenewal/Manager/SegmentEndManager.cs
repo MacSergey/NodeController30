@@ -7,6 +7,7 @@ namespace NodeController
     using UnityEngine;
     using KianCommons.Serialization;
     using NodeController;
+    using ModsCommon;
 
     [Serializable]
     public class SegmentEndManager
@@ -21,12 +22,12 @@ namespace NodeController
             if (data == null)
             {
                 Instance = new SegmentEndManager();
-                Mod.Logger.Debug($"SegmentEndManager.Deserialize(data=null)");
+                SingletonMod<Mod>.Logger.Debug($"SegmentEndManager.Deserialize(data=null)");
 
             }
             else
             {
-                Mod.Logger.Debug($"SegmentEndManager.Deserialize(data): data.Length={data?.Length}");
+                SingletonMod<Mod>.Logger.Debug($"SegmentEndManager.Deserialize(data): data.Length={data?.Length}");
                 Instance = SerializationUtil.Deserialize(data, version) as SegmentEndManager;
             }
         }
@@ -86,9 +87,9 @@ namespace NodeController
         {
             SegmentEndData segEnd = GetAt(segmentID, startNode);
             if (segEnd != null)
-                Mod.Logger.Debug($"segment End:({segmentID},{startNode}) reset to defualt");
+                SingletonMod<Mod>.Logger.Debug($"segment End:({segmentID},{startNode}) reset to defualt");
             else
-                Mod.Logger.Debug($"segment End:({segmentID},{startNode}) is already null.");
+                SingletonMod<Mod>.Logger.Debug($"segment End:({segmentID},{startNode}) is already null.");
             SetAt(segmentID, startNode, null);
             NetManager.instance.UpdateSegment(segmentID);
         }
@@ -111,7 +112,7 @@ namespace NodeController
 
         public void Heal()
         {
-            Mod.Logger.Debug("SegmentEndManager.Heal() called");
+            SingletonMod<Mod>.Logger.Debug("SegmentEndManager.Heal() called");
             buffer[0] = buffer[1] = null;
             for (int i = 1; i < buffer.Length; ++i)
             {

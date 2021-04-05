@@ -18,6 +18,7 @@ namespace NodeController
     using KianCommons.Serialization;
     using Vector3Serializable = KianCommons.Math.Vector3Serializable;
     using NodeController;
+    using ModsCommon;
 
     [Serializable]
     public class SegmentEndData : INetworkData, INetworkData<SegmentEndData>, ISerializable
@@ -221,8 +222,8 @@ namespace NodeController
             insideAfterCalcualte_ = false;
         }
 
-        static ushort SelectedSegmentID => NodeControllerTool.Instance.SelectedSegmentID;
-        static ushort SelectedNodeID => NodeControllerTool.Instance.SelectedNodeID;
+        static ushort SelectedSegmentID => SingletonTool<NodeControllerTool>.Instance.SelectedSegmentID;
+        static ushort SelectedNodeID => SingletonTool<NodeControllerTool>.Instance.SelectedNodeID;
         public bool IsSelected() => NodeID == SelectedNodeID && SegmentID == SelectedSegmentID;
 
         public bool IsDefault()
