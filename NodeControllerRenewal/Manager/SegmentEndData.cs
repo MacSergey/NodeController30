@@ -19,6 +19,8 @@ namespace NodeController
     using Vector3Serializable = KianCommons.Math.Vector3Serializable;
     using NodeController;
     using ModsCommon;
+    using System.Collections.Generic;
+    using ModsCommon.UI;
 
     [Serializable]
     public class SegmentEndData : INetworkData, INetworkData<SegmentEndData>, ISerializable
@@ -228,23 +230,26 @@ namespace NodeController
         //static ushort SelectedNodeID => SingletonTool<NodeControllerTool>.Instance.SelectedNodeID;
         //public bool IsSelected() => NodeID == SelectedNodeID && SegmentID == SelectedSegmentID;
 
-        public bool IsDefault()
+        public bool IsDefault
         {
-            bool ret = Mathf.Abs(CornerOffset - DefaultCornerOffset) < 0.1f;
-            ret &= DeltaSlopeAngleDeg == 0;
-            ret &= Stretch == 0;
-            ret &= EmbankmentAngleDeg == 0;
-            ret &= FlatJunctions == DefaultFlatJunctions;
-            ret &= Twist == DefaultTwist;
-            ret &= LeftCorner.IsDefault();
-            ret &= RightCorner.IsDefault();
+            get
+            {
+                bool ret = Mathf.Abs(CornerOffset - DefaultCornerOffset) < 0.1f;
+                ret &= DeltaSlopeAngleDeg == 0;
+                ret &= Stretch == 0;
+                ret &= EmbankmentAngleDeg == 0;
+                ret &= FlatJunctions == DefaultFlatJunctions;
+                ret &= Twist == DefaultTwist;
+                ret &= LeftCorner.IsDefault();
+                ret &= RightCorner.IsDefault();
 
-            ret &= NoCrossings == false;
-            ret &= NoMarkings == false;
-            ret &= NoJunctionTexture == false;
-            ret &= NoJunctionProps == false;
-            ret &= NoTLProps == false;
-            return ret;
+                ret &= NoCrossings == false;
+                ret &= NoMarkings == false;
+                ret &= NoJunctionTexture == false;
+                ret &= NoJunctionProps == false;
+                ret &= NoTLProps == false;
+                return ret;
+            }
         }
 
         public void ResetToDefault()
@@ -426,10 +431,10 @@ namespace NodeController
         #region show/hide in UI
         public bool IsCSUR => NetUtil.IsCSUR(Info);
         public NetInfo Info => Segment.Info;
-        public bool CanModifyOffset() => NodeData?.CanModifyOffset() ?? false;
+        public bool CanModifyOffset() => NodeData?.CanModifyOffset ?? false;
         public bool CanModifyCorners() => NodeData != null &&
             (CanModifyOffset() || NodeType == NodeTypeT.End || NodeType == NodeTypeT.Middle);
-        public bool CanModifyFlatJunctions() => NodeData?.CanModifyFlatJunctions() ?? false;
+        public bool CanModifyFlatJunctions() => NodeData?.CanModifyFlatJunctions ?? false;
         public bool CanModifyTwist() => CanTwist(SegmentID, NodeID);
         public static bool CanTwist(ushort segmentID, ushort nodeID)
         {
@@ -595,5 +600,10 @@ namespace NodeController
         }
 
         #endregion
+
+        public List<EditorItem> GetUIComponents(UIComponent parent)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

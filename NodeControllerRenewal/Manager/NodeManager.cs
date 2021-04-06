@@ -40,6 +40,8 @@ namespace NodeController
 
         #region MOVEIT BACKWARD COMPATIBLITY
 
+
+
         [Obsolete("delete when moveit is updated")]
         public static byte[] CopyNodeData(ushort nodeID) => SerializationUtil.Serialize(Instance.buffer[nodeID]);
 
@@ -47,8 +49,7 @@ namespace NodeController
 
         [Obsolete("kept here for backward compatibility with MoveIT")]
         /// <param name="nodeID">target nodeID</param>
-        public static void PasteNodeData(ushort nodeID, byte[] data) =>
-            Instance.PasteNodeDataImp(nodeID, data);
+        public static void PasteNodeData(ushort nodeID, byte[] data) => Instance.PasteNodeDataImp(nodeID, data);
 
         [Obsolete("kept here for backward compatibility with MoveIT")]
         /// <param name="nodeID">target nodeID</param>
@@ -64,6 +65,7 @@ namespace NodeController
             {
                 foreach (var segmentID in NetUtil.IterateNodeSegments(nodeID))
                     SegmentEndManager.Instance.GetOrCreate(segmentID: segmentID, nodeID: nodeID);
+
                 TargetNodeID = nodeID; // must be done before deserialization.
                 buffer[nodeID] = SerializationUtil.Deserialize(data, this.VersionOf()) as NodeData;
                 buffer[nodeID].NodeID = nodeID;
@@ -123,7 +125,7 @@ namespace NodeController
                 return;
 
             bool selected = SingletonTool<NodeControllerTool>.Instance.Data is NodeData nodeData && nodeData.NodeID == nodeID;
-            if (buffer[nodeID].IsDefault() && !selected)
+            if (buffer[nodeID].IsDefault && !selected)
                 ResetNodeToDefault(nodeID);
             else
             {
@@ -152,7 +154,8 @@ namespace NodeController
         {
             foreach (var nodeData in buffer)
             {
-                if (nodeData == null) continue;
+                if (nodeData == null)
+                    continue;
                 if (NetUtil.IsNodeValid(nodeData.NodeID))
                     nodeData.Update();
                 else
@@ -177,17 +180,14 @@ namespace NodeController
 
             foreach (var segmentID in NetUtil.IterateNodeSegments(nodeID))
             {
-                var segEnd = SegmentEndManager.Instance.
-                    GetOrCreate(segmentID: segmentID, nodeID: nodeID);
+                var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentID: segmentID, nodeID: nodeID);
                 segEnd.Calculate();
             }
 
             buffer[nodeID].Calculate();
 
-            if (!buffer[nodeID].CanChangeTo(buffer[nodeID].NodeType)/*.LogRet("CanChangeTo()->")*/)
-            {
+            if (!buffer[nodeID].CanChangeTo(buffer[nodeID].NodeType))
                 ResetNodeToDefault(nodeID);
-            }
         }
 
         public void SetNullNodeAndSegmentEnds(ushort nodeID)
@@ -206,13 +206,15 @@ namespace NodeController
             buffer[0] = null;
             for (ushort nodeID = 1; nodeID < buffer.Length; ++nodeID)
             {
-                var data = buffer[nodeID];
-                if (data == null) continue;
+                if (buffer[nodeID] is not NodeData data)
+                    continue;
+
                 if (!NetUtil.IsNodeValid(nodeID))
                 {
                     SetNullNodeAndSegmentEnds(nodeID);
                     continue;
                 }
+
                 if (buffer[nodeID].NodeID != nodeID)
                     buffer[nodeID].NodeID = nodeID;
             }

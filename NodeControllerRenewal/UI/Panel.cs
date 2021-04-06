@@ -52,6 +52,7 @@ namespace NodeController.UI
             base.Awake();
 
             width = 300f;
+            Active = false;
         }
 
         public void SetData(INetworkData data)
@@ -78,6 +79,7 @@ namespace NodeController.UI
             var header = ComponentPool.Get<TextProperty>(this);
             header.Text = Data.Title;
             DataProperties.Add(header);
+            DataProperties.AddRange(Data.GetUIComponents(this));
 
             StartLayout();
         }

@@ -120,7 +120,6 @@
     <Compile Include="Utilities\NetUtil.cs" />
     <Compile Include="Utilities\Textures.cs" />
     <Compile Include="Utilities\PluginUtil.cs" />
-    <Compile Include="Utilities\PrefixUtils.cs" />
     <Compile Include="Utilities\ReflectionHelpers.cs" />
     <Compile Include="Utilities\SerializationUtil.cs" />
     <Compile Include="Utilities\Settings.cs" />

@@ -1,25 +1,25 @@
+using System;
+using System.Runtime.Serialization;
+using System.Collections.Generic;
+using UnityEngine;
+using ColossalFramework;
+using static ColossalFramework.Math.VectorUtils;
+using TrafficManager.API.Traffic.Enums;
+using TernaryBool = CSUtil.Commons.TernaryBool;
+using KianCommons;
+using static KianCommons.ReflectionHelpers;
+using KianCommons.Serialization;
+
+using System.Diagnostics;
+using System.Linq;
+using ModsCommon.Utilities;
+using KianCommons.Math;
+using ModsCommon;
+using ModsCommon.UI;
+using ColossalFramework.UI;
+
 namespace NodeController
 {
-    using System;
-    using System.Runtime.Serialization;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using ColossalFramework;
-    using static ColossalFramework.Math.VectorUtils;
-    using TrafficManager.API.Traffic.Enums;
-    using TernaryBool = CSUtil.Commons.TernaryBool;
-    using KianCommons;
-    using static KianCommons.HelpersExtensions;
-    using static KianCommons.ReflectionHelpers;
-    using KianCommons.Serialization;
-
-    using System.Diagnostics;
-    using System.Linq;
-    using ModsCommon.Utilities;
-    using NodeController;
-    using KianCommons.Math;
-    using ModsCommon;
-
     public enum NodeTypeT
     {
         Middle,
@@ -95,28 +95,12 @@ namespace NodeController
         #region CORNER OFFSET
         public float CornerOffset
         {
-            get
-            {
-                float ret = 0;
-                int count = 0;
-                for (int i = 0; i < 8; ++i)
-                {
-                    ushort segmentID = Node.GetSegment(i);
-                    if (segmentID == 0) continue;
-                    var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentID: segmentID, nodeID: NodeID);
-                    ret += segEnd.CornerOffset;
-                    count++;
-                }
-                ret /= count;
-                return ret;
-            }
+            get => Node.SegmentsId().Average(s => SegmentEndManager.Instance.GetOrCreate(s, NodeID).CornerOffset);
             set
             {
-                for (int i = 0; i < 8; ++i)
+                foreach (var segmentId in Node.SegmentsId())
                 {
-                    ushort segmentID = Node.GetSegment(i);
-                    if (segmentID == 0) continue;
-                    var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentID: segmentID, nodeID: NodeID);
+                    var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeID);
                     segEnd.CornerOffset = value;
                 }
             }
@@ -144,33 +128,14 @@ namespace NodeController
 
         #region NO MARKINGS
 
-        [Obsolete("this is only for backward compatiblity")]
-        public bool ClearMarkings { set => NoMarkings = value; }
-
         public bool NoMarkings
         {
-            get
-            {
-                for (int i = 0; i < 8; ++i)
-                {
-                    ushort segmentID = Node.GetSegment(i);
-                    if (segmentID == 0)
-                        continue;
-                    var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentID: segmentID, nodeID: NodeID);
-                    if (segEnd.NoMarkings)
-                        return true;
-                }
-                return false;
-            }
+            get => Node.SegmentsId().Any(s => SegmentEndManager.Instance.GetOrCreate(s, NodeID).NoMarkings);
             set
             {
-                //Log.Debug($"ClearMarkings.set() called for node:{NodeID}" + Environment.StackTrace);
-                for (int i = 0; i < 8; ++i)
+                foreach (var segmentId in Node.SegmentsId())
                 {
-                    ushort segmentID = Node.GetSegment(i);
-                    if (segmentID == 0)
-                        continue;
-                    var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentID: segmentID, nodeID: NodeID);
+                    var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeID);
                     segEnd.NoMarkings = value;
                 }
             }
@@ -400,7 +365,7 @@ namespace NodeController
             if (NodeType != NodeTypeT.Custom)
                 NoMarkings = false;
 
-            if (!CanModifyOffset())
+            if (!CanModifyOffset)
             {
                 if (NodeType == NodeTypeT.UTurn)
                     CornerOffset = 8f;
@@ -420,47 +385,34 @@ namespace NodeController
             Update();
         }
 
-        public IEnumerable<SegmentEndData> IterateSegmentEndDatas()
+        public IEnumerable<SegmentEndData> SegmentEndDatas
         {
-            for (int i = 0; i < 8; ++i)
+            get
             {
-                ushort segmentID = Node.GetSegment(i);
-                if (segmentID == 0)
-                    continue;
-                yield return SegmentEndManager.Instance.GetAt(segmentID: segmentID, nodeID: NodeID);
+                for (int i = 0; i < 8; ++i)
+                {
+                    ushort segmentID = Node.GetSegment(i);
+                    if (segmentID != 0)
+                        yield return SegmentEndManager.Instance.GetAt(segmentID: segmentID, nodeID: NodeID);
+                }
             }
         }
 
-
-        //static ushort SelectedNodeID => SingletonTool<NodeControllerTool>.Instance.SelectedNodeID;
-        //public bool IsSelected() => NodeID == SelectedNodeID;
-
-        public bool IsDefault()
-        {
-            bool isDefault = NodeType == DefaultNodeType;
-            if (!isDefault)
-                return false;
-            foreach (var segEnd in IterateSegmentEndDatas())
-            {
-                isDefault = segEnd == null || segEnd.IsDefault();
-                if (!isDefault)
-                    return false;
-            }
-            return true;
-        }
-
+        public bool IsDefault => NodeType == DefaultNodeType && !SegmentEndDatas.Any(s => s?.IsDefault != true);
         public void ResetToDefault()
         {
             NodeType = DefaultNodeType;
-            foreach (var segEnd in IterateSegmentEndDatas())
+
+            foreach (var segEnd in SegmentEndDatas)
                 segEnd?.ResetToDefault();
+
             Update();
         }
-
         public static bool IsSupported(ushort nodeID)
         {
             if (!NetUtil.IsNodeValid(nodeID)) // check info !=null (and maybe more checks in future)
                 return false;
+
             foreach (ushort segmentID in NetUtil.IterateNodeSegments(nodeID))
             {
                 if (!NetUtil.IsSegmentValid(segmentID))
@@ -471,17 +423,14 @@ namespace NodeController
             if (!flags.CheckFlags(required: NetNode.Flags.Created, forbidden: NetNode.Flags.LevelCrossing | NetNode.Flags.Outside | NetNode.Flags.Deleted))
                 return false;
 
-            int n = nodeID.GetNode().CountSegments();
-            if (n != 2)
+            if (nodeID.GetNode().CountSegments() != 2)
                 return true;
+
             var info = nodeID.GetNode().Info;
-            //return info.m_netAI is RoadBaseAI && !NetUtil.IsCSUR(info); // TODO support paths/tracks.
             return !NetUtil.IsCSUR(info);
         }
-
         public bool CanChangeTo(NodeTypeT newNodeType)
         {
-            //Log.Debug($"CanChangeTo({newNodeType}) was called.");
             if (SegmentCount == 1)
                 return newNodeType == NodeTypeT.End;
 
@@ -489,12 +438,11 @@ namespace NodeController
                 return newNodeType == NodeTypeT.Custom;
 
             bool middle = DefaultFlags.IsFlagSet(NetNode.Flags.Middle);
-            // segmentCount == 2 at this point.
             return newNodeType switch
             {
                 NodeTypeT.Crossing => PedestrianLaneCount >= 2 && HWDiff < 0.001f && IsStraight,
                 NodeTypeT.UTurn => IsRoad && Info.m_forwardVehicleLaneCount > 0 && Info.m_backwardVehicleLaneCount > 0,
-                NodeTypeT.Stretch => CanModifyTextures() && !middle && IsStraight,
+                NodeTypeT.Stretch => CanModifyTextures && !middle && IsStraight,
                 NodeTypeT.Bend => !middle,
                 NodeTypeT.Middle => IsStraight || Is180,
                 NodeTypeT.Custom => true,
@@ -506,17 +454,17 @@ namespace NodeController
         public bool IsCSUR => NetUtil.IsCSUR(Info);
         public NetInfo Info => NodeID.ToNode().Info;
         public bool IsRoad => Info.m_netAI is RoadBaseAI;
-        public bool EndNode() => NodeType == NodeTypeT.End;
-        public bool NeedMiddleFlag() => NodeType == NodeTypeT.Middle;
-        public bool NeedBendFlag() => NodeType == NodeTypeT.Bend;
-        public bool NeedJunctionFlag() => !NeedMiddleFlag() && !NeedBendFlag() && !EndNode();
-        public bool WantsTrafficLight() => NodeType == NodeTypeT.Crossing;
-        public bool CanModifyOffset() => NodeType == NodeTypeT.Bend || NodeType == NodeTypeT.Stretch || NodeType == NodeTypeT.Custom;
-        public bool CanMassEditNodeCorners() => SegmentCount == 2;
-        public bool CanModifyFlatJunctions() => !NeedMiddleFlag();
-        public bool IsAsymRevert() => DefaultFlags.IsFlagSet(NetNode.Flags.AsymBackward | NetNode.Flags.AsymForward);
-        public bool CanModifyTextures() => IsRoad && !IsCSUR;
-        public bool ShowNoMarkingsToggle() => CanModifyTextures() && NodeType == NodeTypeT.Custom;
+        public bool IsEndNode => NodeType == NodeTypeT.End;
+        public bool NeedMiddleFlag => NodeType == NodeTypeT.Middle;
+        public bool NeedBendFlag => NodeType == NodeTypeT.Bend;
+        public bool NeedJunctionFlag => !NeedMiddleFlag && !NeedBendFlag && !IsEndNode;
+        public bool WantsTrafficLight => NodeType == NodeTypeT.Crossing;
+        public bool CanModifyOffset => NodeType == NodeTypeT.Bend || NodeType == NodeTypeT.Stretch || NodeType == NodeTypeT.Custom;
+        public bool CanMassEditNodeCorners => SegmentCount == 2;
+        public bool CanModifyFlatJunctions => !NeedMiddleFlag;
+        public bool IsAsymRevert => DefaultFlags.IsFlagSet(NetNode.Flags.AsymBackward | NetNode.Flags.AsymForward);
+        public bool CanModifyTextures => IsRoad && !IsCSUR;
+        public bool ShowNoMarkingsToggle => CanModifyTextures && NodeType == NodeTypeT.Custom;
 
         bool CrossingIsRemoved(ushort segmentId) => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(NodeID, segmentId);
         public bool NeedsTransitionFlag() => SegmentCount == 2 && (NodeType == NodeTypeT.Custom || NodeType == NodeTypeT.Crossing || NodeType == NodeTypeT.UTurn);
@@ -526,7 +474,7 @@ namespace NodeController
         {
             NodeTypeT.Crossing => "Crossing node.",
             NodeTypeT.Middle => "Middle: No node.",
-            NodeTypeT.Bend => IsAsymRevert() ? "Bend: Asymmetrical road changes direction." : (HWDiff > 0.05f ? "Bend: Linearly match segment widths." : "Bend: Simple road corner."),
+            NodeTypeT.Bend => IsAsymRevert ? "Bend: Asymmetrical road changes direction." : (HWDiff > 0.05f ? "Bend: Linearly match segment widths." : "Bend: Simple road corner."),
             NodeTypeT.Stretch => "Stretch: Match both pavement and road.",
             NodeTypeT.UTurn => "U-Turn: node with enough space for U-Turn.",
             NodeTypeT.Custom => "Custom: transition size and traffic rules are configrable.",
@@ -538,140 +486,211 @@ namespace NodeController
         // undefined -> don't touch prev value
         // true -> force true
         // false -> force false.
-        public TernaryBool IsUturnAllowedConfigurable() => NodeType switch
+        public bool? IsUturnAllowedConfigurable => NodeType switch
         {
-            NodeTypeT.Crossing => TernaryBool.False,// always off
-            NodeTypeT.UTurn => TernaryBool.Undefined,// default on
-            NodeTypeT.Stretch => TernaryBool.False,// always off
-            NodeTypeT.Middle or NodeTypeT.Bend => TernaryBool.False,// always default
-            NodeTypeT.Custom => TernaryBool.Undefined,// default
-            NodeTypeT.End => TernaryBool.Undefined,
+            NodeTypeT.Crossing or NodeTypeT.Stretch or NodeTypeT.Middle or NodeTypeT.Bend => false,// always off
+            NodeTypeT.UTurn or NodeTypeT.Custom or NodeTypeT.End => null,// default
             _ => throw new Exception("Unreachable code"),
         };
-
-        public TernaryBool GetDefaultUturnAllowed() => NodeType switch
+        public bool? IsDefaultUturnAllowed => NodeType switch
         {
-            NodeTypeT.Crossing => TernaryBool.False,// always off
-            NodeTypeT.UTurn => TernaryBool.True,// default on
-            NodeTypeT.Stretch => TernaryBool.False,// always off
-            NodeTypeT.Middle or NodeTypeT.Bend => TernaryBool.Undefined,// don't care
-            NodeTypeT.Custom => TernaryBool.Undefined,// default
-            NodeTypeT.End => TernaryBool.Undefined,
+            NodeTypeT.UTurn => true,
+            NodeTypeT.Crossing or NodeTypeT.Stretch => false,
+            NodeTypeT.Middle or NodeTypeT.Bend or NodeTypeT.Custom or NodeTypeT.End => null,
             _ => throw new Exception("Unreachable code"),
         };
-
-        public TernaryBool IsPedestrianCrossingAllowedConfigurable() => NodeType switch
+        public bool? IsPedestrianCrossingAllowedConfigurable => NodeType switch
         {
-            NodeTypeT.Crossing => TernaryBool.False,// always on
-            NodeTypeT.UTurn => TernaryBool.False,// always off
-            NodeTypeT.Stretch => TernaryBool.False,// always off
-            NodeTypeT.Middle or NodeTypeT.Bend => TernaryBool.False,// always off
-            NodeTypeT.Custom => (SegmentCount == 2 && !HasPedestrianLanes) ? TernaryBool.False : TernaryBool.Undefined,
-            NodeTypeT.End => TernaryBool.Undefined,
+            NodeTypeT.Crossing or NodeTypeT.UTurn or NodeTypeT.Stretch or NodeTypeT.Middle or NodeTypeT.Bend => false,
+            NodeTypeT.Custom => (SegmentCount == 2 && !HasPedestrianLanes) ? false : null,
+            NodeTypeT.End => null,
             _ => throw new Exception("Unreachable code"),
         };
-
-        public TernaryBool GetDefaultPedestrianCrossingAllowed()
+        public bool? IsDefaultPedestrianCrossingAllowed
         {
-            switch (NodeType)
+            get
             {
-                case NodeTypeT.Crossing:
-                    return TernaryBool.True; // always on
-                case NodeTypeT.UTurn:
-                    return TernaryBool.False; // default off
-                case NodeTypeT.Stretch:
-                    return TernaryBool.False; // always off
-                case NodeTypeT.Middle:
-                case NodeTypeT.Bend:
-                    return TernaryBool.False; // always off
-                case NodeTypeT.Custom:
-                    var netAI1 = segmentID1.ToSegment().Info.m_netAI;
-                    var netAI2 = segmentID2.ToSegment().Info.m_netAI;
-                    bool sameAIType = netAI1.GetType() == netAI2.GetType();
-                    if (SegmentCount == 2 && !sameAIType) // eg: at bridge/tunnel entrances.
-                        return TernaryBool.False; // default off
-                    return TernaryBool.Undefined; // don't care
-                case NodeTypeT.End:
-                    return TernaryBool.Undefined;
-                default:
-                    throw new Exception("Unreachable code");
+                switch (NodeType)
+                {
+                    case NodeTypeT.Crossing:
+                        return true; // always on
+                    case NodeTypeT.UTurn:
+                    case NodeTypeT.Stretch:
+                    case NodeTypeT.Middle:
+                    case NodeTypeT.Bend:
+                        return false; // always off
+                    case NodeTypeT.Custom:
+                        var netAI1 = segmentID1.ToSegment().Info.m_netAI;
+                        var netAI2 = segmentID2.ToSegment().Info.m_netAI;
+                        bool sameAIType = netAI1.GetType() == netAI2.GetType();
+                        if (SegmentCount == 2 && !sameAIType) // eg: at bridge/tunnel entrances.
+                            return false; // default off
+                        return null; // don't care
+                    case NodeTypeT.End:
+                        return null;
+                    default:
+                        throw new Exception("Unreachable code");
+                }
             }
         }
-
-        public TernaryBool CanHaveTrafficLights(out ToggleTrafficLightError reason)
+        public bool? CanHaveTrafficLights(out ToggleTrafficLightError reason)
         {
             reason = ToggleTrafficLightError.None;
             switch (NodeType)
             {
                 case NodeTypeT.Crossing:
                 case NodeTypeT.UTurn:
-                    return TernaryBool.Undefined;
+                case NodeTypeT.End:
+                case NodeTypeT.Custom:
+                    return null;
                 case NodeTypeT.Stretch:
                 case NodeTypeT.Middle:
                 case NodeTypeT.Bend:
                     reason = ToggleTrafficLightError.NoJunction;
-                    return TernaryBool.False;
-                case NodeTypeT.Custom:
-                    return TernaryBool.Undefined; // default off
-                case NodeTypeT.End:
-                    return TernaryBool.Undefined;
+                    return false;
                 default:
                     throw new Exception("Unreachable code");
             }
         }
-
-        public TernaryBool IsEnteringBlockedJunctionAllowedConfigurable()
+        public bool? IsEnteringBlockedJunctionAllowedConfigurable => NodeType switch
         {
-            switch (NodeType)
-            {
-                case NodeTypeT.Crossing:
-                    return TernaryBool.Undefined; // default off
-                case NodeTypeT.UTurn:
-                    return TernaryBool.Undefined; // default
-                case NodeTypeT.Stretch:
-                    return TernaryBool.False; // always on
-                case NodeTypeT.Middle:
-                case NodeTypeT.Bend:
-                    return TernaryBool.False; // always default
-                case NodeTypeT.Custom:
-                    if (SegmentCount > 2)
-                        return TernaryBool.Undefined;
-                    bool oneway = DefaultFlags.IsFlagSet(NetNode.Flags.OneWayIn) & DefaultFlags.IsFlagSet(NetNode.Flags.OneWayOut);
-                    if (oneway & !HasPedestrianLanes)
-                    {
-                        return TernaryBool.False; // always on.
-                    }
-                    return TernaryBool.Undefined; // default on.
-                case NodeTypeT.End:
-                    return TernaryBool.Undefined;
-                default:
-                    throw new Exception("Unreachable code");
-            }
-        }
-
-        public TernaryBool GetDefaultEnteringBlockedJunctionAllowed()
+            NodeTypeT.Custom when SegmentCount > 2 => null,
+            NodeTypeT.Custom when DefaultFlags.IsFlagSet(NetNode.Flags.OneWayIn) & DefaultFlags.IsFlagSet(NetNode.Flags.OneWayOut) && !HasPedestrianLanes => false,//
+            NodeTypeT.Crossing or NodeTypeT.UTurn or NodeTypeT.Custom or NodeTypeT.End => null,// default off
+            NodeTypeT.Stretch or NodeTypeT.Middle or NodeTypeT.Bend => false,// always on
+            _ => throw new Exception("Unreachable code"),
+        };
+        public bool? IsDefaultEnteringBlockedJunctionAllowed => NodeType switch
         {
-            switch (NodeType)
-            {
-                case NodeTypeT.Crossing:
-                    return TernaryBool.False; // default off
-                case NodeTypeT.UTurn:
-                    return TernaryBool.Undefined; // default
-                case NodeTypeT.Stretch:
-                    return TernaryBool.True; // always on
-                case NodeTypeT.Middle:
-                case NodeTypeT.Bend:
-                    return TernaryBool.Undefined; // don't care
-                case NodeTypeT.Custom:
-                    if (SegmentCount > 2)
-                        return TernaryBool.Undefined;
-                    return TernaryBool.True;
-                case NodeTypeT.End:
-                    return TernaryBool.Undefined;
-                default:
-                    throw new Exception("Unreachable code");
-            }
-        }
+            NodeTypeT.Stretch => true,// always on
+            NodeTypeT.Crossing => false,// default off
+            NodeTypeT.UTurn or NodeTypeT.Middle or NodeTypeT.Bend or NodeTypeT.End => null,// default
+            NodeTypeT.Custom => SegmentCount > 2 ? null : true,
+            _ => throw new Exception("Unreachable code"),
+        };
+
         #endregion
+
+        public List<EditorItem> GetUIComponents(UIComponent parent)
+        {
+            var properties = new List<EditorItem>();
+
+            properties.Add(GetNodeTypeProperty(parent));
+            properties.Add(GetOffsetProperty(parent));
+            if (SegmentCount == 2)
+            {
+                properties.Add(GetSlopeProperty(parent));
+                properties.Add(GetEmbankmentProperty(parent));
+            }
+            properties.Add(GetHideMarkingProperty(parent));
+            properties.Add(GetActionButtons(parent));
+            properties.Add(GetResetButton(parent));
+
+            return properties;
+        }
+        private NodeTypePropertyPanel GetNodeTypeProperty(UIComponent parent)
+        {
+            var typeProperty = ComponentPool.Get<NodeTypePropertyPanel>(parent);
+            typeProperty.Text = "Node type";
+            typeProperty.Init();
+            typeProperty.SelectedObject = NodeType;
+            typeProperty.OnSelectObjectChanged += (value) => NodeType = value;
+
+            return typeProperty;
+        }
+        private ButtonsPanel GetActionButtons(UIComponent parent)
+        {
+            var actionButtons = ComponentPool.Get<ButtonsPanel>(parent);
+            var slopeIndex = actionButtons.AddButton("Make slope");
+            var flatIndex = actionButtons.AddButton("Make flat");
+            actionButtons.Init();
+            actionButtons.OnButtonClick += OnButtonClick;
+
+            return actionButtons;
+
+            void OnButtonClick(int index)
+            {
+                if (index == slopeIndex)
+                    UnFlatten();
+                else if (index == flatIndex)
+                    Flatten();
+            }
+        }
+
+        private FloatPropertyPanel GetOffsetProperty(UIComponent parent)
+        {
+            var offsetProperty = ComponentPool.Get<FloatPropertyPanel>(parent);
+            offsetProperty.Text = "Corner offset";
+            offsetProperty.MinValue = 0;
+            offsetProperty.CheckMin = true;
+            offsetProperty.MaxValue = 100;
+            offsetProperty.CheckMax = true;
+            offsetProperty.UseWheel = true;
+            offsetProperty.WheelStep = 1f;
+            offsetProperty.Init();
+            offsetProperty.Value = CornerOffset;
+            offsetProperty.OnValueChanged += (value) => CornerOffset = value;
+
+            return offsetProperty;
+        }
+        private FloatPropertyPanel GetSlopeProperty(UIComponent parent)
+        {
+            var slopeProperty = ComponentPool.Get<FloatPropertyPanel>(parent);
+            slopeProperty.Text = "Slope";
+            slopeProperty.MinValue = -60;
+            slopeProperty.CheckMin = true;
+            slopeProperty.MaxValue = 60;
+            slopeProperty.CheckMax = true;
+            slopeProperty.UseWheel = true;
+            slopeProperty.WheelStep = 1f;
+            slopeProperty.Init();
+            slopeProperty.Value = SlopeAngleDeg;
+            slopeProperty.OnValueChanged += (value) => SlopeAngleDeg = value;
+
+            return slopeProperty;
+        }
+        private FloatPropertyPanel GetEmbankmentProperty(UIComponent parent)
+        {
+            var embankmentProperty = ComponentPool.Get<FloatPropertyPanel>(parent);
+            embankmentProperty.Text = "Embankment";
+            embankmentProperty.MinValue = -60;
+            embankmentProperty.CheckMin = true;
+            embankmentProperty.MaxValue = 60;
+            embankmentProperty.CheckMax = true;
+            embankmentProperty.UseWheel = true;
+            embankmentProperty.WheelStep = 1f;
+            embankmentProperty.Init();
+            embankmentProperty.Value = EmbankmentAngle;
+            embankmentProperty.OnValueChanged += (value) => EmbankmentAngle = value;
+
+            return embankmentProperty;
+        }
+        private BoolListPropertyPanel GetHideMarkingProperty(UIComponent parent)
+        {
+            var hideMarkingProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
+            hideMarkingProperty.Text = "Hide crosswalk marking";
+            hideMarkingProperty.Init("No", "Yes");
+            hideMarkingProperty.SelectedObject = NoMarkings;
+            hideMarkingProperty.OnSelectObjectChanged += (value) => NoMarkings = value;
+
+            return hideMarkingProperty;
+        }
+        private ButtonPanel GetResetButton(UIComponent parent)
+        {
+            var resetButton = ComponentPool.Get<ButtonPanel>(parent);
+            resetButton.Text = "Reset to default";
+            resetButton.Init();
+            resetButton.OnButtonClick += ResetToDefault;
+
+            return resetButton;
+        }
+    }
+
+    public class NodeTypePropertyPanel : EnumOncePropertyPanel<NodeTypeT, NodeTypePropertyPanel.NodeTypeDropDown>
+    {
+        protected override float DropDownWidth => 100f;
+        protected override bool IsEqual(NodeTypeT first, NodeTypeT second) => first == second;
+        public class NodeTypeDropDown : UIDropDown<NodeTypeT> { }
+        protected override string GetDescription(NodeTypeT value) => value.ToString();
     }
 }
