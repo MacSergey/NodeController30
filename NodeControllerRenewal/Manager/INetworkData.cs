@@ -42,7 +42,7 @@ namespace NodeController
         /// </summary>
         void RefreshAndUpdate();
 
-        bool IsSelected();
+        //bool IsSelected();
     }
 
     public interface INetworkData<T>

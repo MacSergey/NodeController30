@@ -224,9 +224,9 @@ namespace NodeController
             insideAfterCalcualte_ = false;
         }
 
-        static ushort SelectedSegmentID => SingletonTool<NodeControllerTool>.Instance.SelectedSegmentID;
-        static ushort SelectedNodeID => SingletonTool<NodeControllerTool>.Instance.SelectedNodeID;
-        public bool IsSelected() => NodeID == SelectedNodeID && SegmentID == SelectedSegmentID;
+        //static ushort SelectedSegmentID => SingletonTool<NodeControllerTool>.Instance.SelectedSegmentID;
+        //static ushort SelectedNodeID => SingletonTool<NodeControllerTool>.Instance.SelectedNodeID;
+        //public bool IsSelected() => NodeID == SelectedNodeID && SegmentID == SelectedSegmentID;
 
         public bool IsDefault()
         {

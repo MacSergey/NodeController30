@@ -121,11 +121,10 @@ namespace NodeController
         {
             if (nodeID == 0 || buffer[nodeID] == null)
                 return;
-            bool selected = SingletonTool<NodeControllerTool>.Instance.SelectedNodeID == nodeID;
+
+            bool selected = SingletonTool<NodeControllerTool>.Instance.Data is NodeData nodeData && nodeData.NodeID == nodeID;
             if (buffer[nodeID].IsDefault() && !selected)
-            {
                 ResetNodeToDefault(nodeID);
-            }
             else
             {
                 foreach (var segmentID in NetUtil.IterateNodeSegments(nodeID))

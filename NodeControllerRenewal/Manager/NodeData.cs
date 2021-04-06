@@ -432,8 +432,8 @@ namespace NodeController
         }
 
 
-        static ushort SelectedNodeID => SingletonTool<NodeControllerTool>.Instance.SelectedNodeID;
-        public bool IsSelected() => NodeID == SelectedNodeID;
+        //static ushort SelectedNodeID => SingletonTool<NodeControllerTool>.Instance.SelectedNodeID;
+        //public bool IsSelected() => NodeID == SelectedNodeID;
 
         public bool IsDefault()
         {

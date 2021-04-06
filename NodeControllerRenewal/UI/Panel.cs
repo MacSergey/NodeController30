@@ -28,6 +28,16 @@ namespace NodeController.UI
             }
         }
 
+        public bool Active
+        {
+            get => enabled && isVisible;
+            set
+            {
+                enabled = value;
+                isVisible = value;
+            }
+        }
+
         public INetworkData Data { get; private set; }
         private List<EditorItem> DataProperties { get; } = new List<EditorItem>();
 

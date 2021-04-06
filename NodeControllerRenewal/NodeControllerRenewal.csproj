@@ -110,7 +110,7 @@
     <Compile Include="Patches\TMPEPatches.cs" />
     <Compile Include="Patches\SimulationStepPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SelectMode.cs" />
+    <Compile Include="ToolMode.cs" />
     <Compile Include="Tool.cs" />
     <Compile Include="Utilities\CSURUtil.cs" />
     <Compile Include="Utilities\EnumBitMaskExtensions.cs" />

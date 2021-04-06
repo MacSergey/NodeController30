@@ -27,12 +27,10 @@ namespace NodeController
 
         public INetworkData Data { get; private set; }
 
-        public ushort SelectedSegmentID { get; set; }
-        public ushort SelectedNodeID { get; set; }
-
         protected override IEnumerable<IToolMode<ToolModeType>> GetModes()
         {
             yield return CreateToolMode<SelectToolMode>();
+            yield return CreateToolMode<EditToolMode>();
         }
 
         protected override void InitProcess()
@@ -41,6 +39,12 @@ namespace NodeController
             NodeControllerPanel.CreatePanel();
         }
 
+        public void SetDefaultMode() => SetMode(ToolModeType.Edit);
+        protected override void SetModeNow(IToolMode mode)
+        {
+            base.SetModeNow(mode);
+            Panel.Active = (Mode as NodeControllerToolMode)?.ShowPanel == true;
+        }
         public void SetData(INetworkData data)
         {
             Data = data;
@@ -56,6 +60,7 @@ namespace NodeController
     {
         None = 0,
         Select = 1,
+        Edit = 2,
     }
     public class NodeControllerToolThreadingExtension : BaseThreadingExtension<Mod, NodeControllerTool> { }
     public class NodeControllerToolLoadingExtension : BaseToolLoadingExtension<Mod, NodeControllerTool> { }
