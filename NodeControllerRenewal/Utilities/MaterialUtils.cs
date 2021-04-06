@@ -14,12 +14,8 @@ namespace NodeController.Util
         {
             try
             {
-                if (material.HasProperty(textureID))
-                {
-                    Texture texture = material.GetTexture(textureID);
-                    if (texture is Texture2D)
-                        return texture as Texture2D;
-                }
+                if (material.HasProperty(textureID) && material.GetTexture(textureID) is Texture2D texture)
+                    return texture;
             }
             catch { }
             return null;
@@ -27,16 +23,12 @@ namespace NodeController.Util
 
         public static NetInfo.Segment GetSegment(NetInfo info, int textureID)
         {
-            NetInfo.Segment segmentInfo = null;
-            foreach (var segmentInfo2 in info.m_segments ?? Enumerable.Empty<NetInfo.Segment>())
+            foreach (var segmentInfo in info.m_segments ?? Enumerable.Empty<NetInfo.Segment>())
             {
-                if (segmentInfo2.m_segmentMaterial.TryGetTexture2D(textureID) != null)
-                {
-                    segmentInfo = segmentInfo2;
-                    break;
-                }
+                if (segmentInfo.m_segmentMaterial.TryGetTexture2D(textureID) != null)
+                    return segmentInfo;
             }
-            return segmentInfo;
+            return null;
         }
 
         public static Material ContinuesMedian(Material material, NetInfo info, bool lod = false)
@@ -45,23 +37,20 @@ namespace NodeController.Util
                 throw new ArgumentNullException("material");
             if (info == null)
                 throw new ArgumentNullException("info");
+
             var segment = GetSegment(info, ID_APRMap);
             var segMaterial = segment.m_material;
 
             material = new Material(material);
 
-            Texture2D tex;
-            tex = segMaterial?.TryGetTexture2D(ID_Defuse);
-            if (tex != null)
-                material.SetTexture(ID_Defuse, tex);
+            if (segMaterial?.TryGetTexture2D(ID_Defuse) is Texture2D defuse)
+                material.SetTexture(ID_Defuse, defuse);
 
-            tex = segMaterial?.TryGetTexture2D(ID_APRMap);
-            if (tex != null)
-                material.SetTexture(ID_APRMap, tex);
+            if (segMaterial?.TryGetTexture2D(ID_APRMap) is Texture2D apr)
+                material.SetTexture(ID_APRMap, apr);
 
-            tex = segMaterial?.TryGetTexture2D(ID_XYSMap);
-            if (tex != null)
-                material.SetTexture(ID_XYSMap, tex);
+            if (segMaterial?.TryGetTexture2D(ID_XYSMap) is Texture2D xys)
+                material.SetTexture(ID_XYSMap, xys);
 
             return material;
         }
