@@ -2,6 +2,7 @@ namespace NodeController
 {
     public interface INetworkData
     {
+        public string Title { get; }
         /// <summary>
         /// marks the network for update in the next simulation step.
         /// once this node is updated, its recalculated.

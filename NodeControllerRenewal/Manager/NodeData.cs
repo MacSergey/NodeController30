@@ -34,6 +34,7 @@ namespace NodeController
     [Serializable]
     public class NodeData : ISerializable, INetworkData, INetworkData<NodeData>
     {
+        public string Title => $"Node #{NodeID}";
         public override string ToString() => $"NodeData(id:{NodeID} type:{NodeType})";
 
         #region SERIALIZATION

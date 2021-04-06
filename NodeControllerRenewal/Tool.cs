@@ -3,6 +3,7 @@ using ColossalFramework.UI;
 using ICities;
 using ModsCommon;
 using ModsCommon.Utilities;
+using NodeController.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +16,16 @@ namespace NodeController
     {
         public static string SettingsFile => $"{nameof(NodeController)}{nameof(SettingsFile)}";
         public static Shortcut ActivationShortcut { get; } = new Shortcut(SettingsFile, nameof(ActivationShortcut), "Activation", SavedInputKey.Encode(KeyCode.N, false, false, true));
-        public static readonly SavedBool SnapToMiddleNode = new SavedBool("SnapToMiddleNode", NodeController.GUI.Settings.FileName, def: false, true);
+        public static readonly SavedBool SnapToMiddleNode = new SavedBool("SnapToMiddleNode", GUI.Settings.FileName, def: false, true);
 
-        public static readonly SavedBool Hide_TMPE_Overlay = new SavedBool("Hide_TMPE_Overlay", NodeController.GUI.Settings.FileName, def: false, true);
+        public static readonly SavedBool Hide_TMPE_Overlay = new SavedBool("Hide_TMPE_Overlay", GUI.Settings.FileName, def: false, true);
 
         protected override bool ShowToolTip => true;
         protected override IToolMode DefaultMode => ToolModes[ToolModeType.Select];
         public override Shortcut Activation => ActivationShortcut;
+        public NodeControllerPanel Panel => SingletonItem<NodeControllerPanel>.Instance;
+
+        public INetworkData Data { get; private set; }
 
         public ushort SelectedSegmentID { get; set; }
         public ushort SelectedNodeID { get; set; }
@@ -29,6 +33,18 @@ namespace NodeController
         protected override IEnumerable<IToolMode<ToolModeType>> GetModes()
         {
             yield return CreateToolMode<SelectToolMode>();
+        }
+
+        protected override void InitProcess()
+        {
+            base.InitProcess();
+            NodeControllerPanel.CreatePanel();
+        }
+
+        public void SetData(INetworkData data)
+        {
+            Data = data;
+            Panel.SetData(data);
         }
     }
     public abstract class NodeControllerToolMode : BaseToolMode<Mod, NodeControllerTool>, IToolMode<ToolModeType>, IToolModePanel

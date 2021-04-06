@@ -23,6 +23,8 @@ namespace NodeController
     [Serializable]
     public class SegmentEndData : INetworkData, INetworkData<SegmentEndData>, ISerializable
     {
+        public string Title => $"Segment #{SegmentID}";
+
         #region serialization
         //serialization
         public void GetObjectData(SerializationInfo info, StreamingContext context) =>
