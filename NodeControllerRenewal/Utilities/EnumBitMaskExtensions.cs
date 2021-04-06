@@ -3,7 +3,6 @@ namespace KianCommons {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using static KianCommons.Math.MathUtil;
     using System.Reflection;
     using static KianCommons.ReflectionHelpers;
 

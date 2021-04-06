@@ -24,7 +24,7 @@ namespace NodeController.Patches
             if (node.m_flags.IsFlagSet(NetNode.Flags.Outside))
                 return;
 
-            if (nodeData.NeedsTransitionFlag())
+            if (nodeData.NeedsTransitionFlag)
                 node.m_flags |= NetNode.Flags.Transition;
             else
                 node.m_flags &= ~NetNode.Flags.Transition;
@@ -56,7 +56,7 @@ namespace NodeController.Patches
             if (NodeManager.Instance.buffer[nodeID] is not NodeData blendData)
                 return;
 
-            if (blendData.ShouldRenderCenteralCrossingTexture())
+            if (blendData.ShouldRenderCenteralCrossingTexture)
             {
                 // puts crossings in the center.
                 data.m_dataVector1.w = 0.01f;

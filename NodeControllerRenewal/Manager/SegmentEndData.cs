@@ -96,14 +96,14 @@ namespace NodeController
         public bool Twist;
         /// <summary>delta width stretch in percent</summary>
         public float Stretch;
-        public float EmbankmentAngleDeg;
+        public float EmbankmentAngle;
         public float DeltaSlopeAngleDeg;
 
         // shortcuts
         public ref NetSegment Segment => ref SegmentID.ToSegment();
         public ref NetNode Node => ref NodeID.ToNode();
         public NodeData NodeData => NodeManager.Instance.buffer[NodeID];
-        public ref NodeTypeT NodeType => ref NodeData.NodeType;
+        public NodeTypeT NodeType => NodeData.NodeType;
         /// <summary>segment end direction</summary>
         public ref Vector3 Direction
         {
@@ -160,7 +160,7 @@ namespace NodeController
             if (!CanModifyCorners())
             {
                 DeltaSlopeAngleDeg = 0;
-                Stretch = EmbankmentAngleDeg = 0;
+                Stretch = EmbankmentAngle = 0;
             }
             if (!FlatJunctions)
                 Twist = false;
@@ -237,7 +237,7 @@ namespace NodeController
                 bool ret = Mathf.Abs(CornerOffset - DefaultCornerOffset) < 0.1f;
                 ret &= DeltaSlopeAngleDeg == 0;
                 ret &= Stretch == 0;
-                ret &= EmbankmentAngleDeg == 0;
+                ret &= EmbankmentAngle == 0;
                 ret &= FlatJunctions == DefaultFlatJunctions;
                 ret &= Twist == DefaultTwist;
                 ret &= LeftCorner.IsDefault();
@@ -263,7 +263,7 @@ namespace NodeController
             NoJunctionTexture = false;
             NoJunctionProps = false;
             NoTLProps = false;
-            Stretch = EmbankmentAngleDeg = 0;
+            Stretch = EmbankmentAngle = 0;
             LeftCorner.ResetToDefault();
             RightCorner.ResetToDefault();
             RefreshAndUpdate();
@@ -281,14 +281,14 @@ namespace NodeController
 
         public float EmbankmentPercent
         {
-            get => Mathf.Tan(EmbankmentAngleDeg * Mathf.Deg2Rad) * 100;
-            set => EmbankmentAngleDeg = Mathf.Atan(value * 0.01f) * Mathf.Rad2Deg;
+            get => Mathf.Tan(EmbankmentAngle * Mathf.Deg2Rad) * 100;
+            set => EmbankmentAngle = Mathf.Atan(value * 0.01f) * Mathf.Rad2Deg;
         }
 
         // we know Dir00.LenXZ == 1
         float AverageDirY00 => (LeftCorner.Dir00.y + RightCorner.Dir00.y) * 0.5f;
 
-        public float SlopeAngleDeg
+        public float SlopeAngle
         {
             get => DeltaSlopeAngleDeg + AngleDeg(AverageDirY00);
             set => DeltaSlopeAngleDeg = value - AngleDeg(AverageDirY00);
@@ -554,7 +554,7 @@ namespace NodeController
             Vector3 deltaPos = Vector3.zero;
 
             // embankment:
-            float embankmentAngleRad = EmbankmentAngleDeg * Mathf.Deg2Rad;
+            float embankmentAngleRad = EmbankmentAngle * Mathf.Deg2Rad;
             if (leftSide) embankmentAngleRad = -embankmentAngleRad;
             float sinEmbankmentAngle = Mathf.Sin(embankmentAngleRad);
             float cosEmbankmentAngle = Mathf.Cos(embankmentAngleRad);
@@ -590,13 +590,17 @@ namespace NodeController
         }
 
         #region External Mods
-        public TernaryBool ShouldHideCrossingTexture()
+        public bool? ShouldHideCrossingTexture
         {
-            if (NodeData != null && NodeData.NodeType == NodeTypeT.Stretch)
-                return TernaryBool.False; // always ignore.
-            if (NoMarkings)
-                return TernaryBool.True; // always hide
-            return TernaryBool.Undefined; // default.
+            get
+            {
+                if (NodeData != null && NodeData.NodeType == NodeTypeT.Stretch)
+                    return false; // always ignore.
+                else if (NoMarkings)
+                    return true; // always hide
+                else
+                    return null; // default.
+            }
         }
 
         #endregion

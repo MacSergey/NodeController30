@@ -116,7 +116,6 @@
     <Compile Include="Utilities\EnumBitMaskExtensions.cs" />
     <Compile Include="Utilities\HelpersExtensions.cs" />
     <Compile Include="Utilities\MaterialUtils.cs" />
-    <Compile Include="Utilities\MathUtil.cs" />
     <Compile Include="Utilities\NetUtil.cs" />
     <Compile Include="Utilities\Textures.cs" />
     <Compile Include="Utilities\PluginUtil.cs" />

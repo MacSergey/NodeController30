@@ -48,7 +48,7 @@ namespace NodeController
                 TrafficLightManager.Instance.SetTrafficLight(nodeID, true, ref data);
                 nodeData.FirstTimeTrafficLight = false;
             }
-            else if (nodeData.CanHaveTrafficLights(out _) == TernaryBool.False)
+            else if (nodeData.CanHaveTrafficLights(out _) == false)
                 data.m_flags &= ~NetNode.Flags.TrafficLights;
         }
     }
