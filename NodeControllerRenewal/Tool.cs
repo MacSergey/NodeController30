@@ -21,7 +21,7 @@ namespace NodeController
 
         protected override bool ShowToolTip => true;
         protected override IToolMode DefaultMode => ToolModes[ToolModeType.Select];
-        public override bool IsActivationPressed => ActivationShortcut.InputKey.IsKeyUp();
+        public override Shortcut Activation => ActivationShortcut;
 
         public ushort SelectedSegmentID { get; set; }
         public ushort SelectedNodeID { get; set; }

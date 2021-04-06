@@ -5,6 +5,7 @@ using KianCommons;
 using ModsCommon;
 using NodeController.GUI;
 using NodeController.Patches;
+using NodeController.UI;
 using NodeController.Util;
 using System;
 using System.Collections.Generic;
@@ -98,9 +99,10 @@ namespace NodeController
         {
             var success = true;
 
-            success &= Patch_ToolController_Awake(ToolControllerAwakeTranspiler);
-            success &= Patch_GameKeyShortcuts_Escape(GameKeyShortcutsEscapeTranspiler);
-            success &= Patch_LoadAssetPanel_OnLoad(OnLoadPatch.LoadAssetPanelOnLoadPostfix);
+            success &= AddTool<NodeControllerTool>();
+            success &= AddNetToolButton<NodeControllerButton>();
+            success &= ToolOnEscape<NodeControllerTool>();
+            success &= AssetDataExtensionFix<AssetDataExtension>();
 
             PatchNetManager(ref success);
             PatchNetNode(ref success);
@@ -114,9 +116,6 @@ namespace NodeController
 
             return success;
         }
-
-        private static IEnumerable<CodeInstruction> ToolControllerAwakeTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions) => ToolControllerAwakeTranspiler<NodeControllerTool>(generator, instructions);
-        private static IEnumerable<CodeInstruction> GameKeyShortcutsEscapeTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions) => GameKeyShortcutsEscapeTranspiler<NodeControllerTool>(generator, instructions);
 
         #region NETMANAGER
 

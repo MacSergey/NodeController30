@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Manager\AssetDataExtension.cs" />
+    <Compile Include="UI\Button.cs" />
     <Compile Include="Utilities\MoveItIntegration.cs" />
     <Compile Include="Manager\SerializableDataExtension.cs" />
     <Compile Include="Manager\INetworkData.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Utilities\MaterialUtils.cs" />
     <Compile Include="Utilities\MathUtil.cs" />
     <Compile Include="Utilities\NetUtil.cs" />
+    <Compile Include="Utilities\NodeControllerTextures.cs" />
     <Compile Include="Utilities\PluginUtil.cs" />
     <Compile Include="Utilities\PrefixUtils.cs" />
     <Compile Include="Utilities\ReflectionHelpers.cs" />
@@ -149,9 +151,7 @@
     <None Include="Resources\cursor_searching.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\sprites.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Resources\Button.png" />
   </ItemGroup>
   <Import Project="..\ModsCommon\ModsCommonShared\ModsCommonShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -177,7 +177,7 @@
   </Target>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Build" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Debug" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_ConfigurationName="Debug" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="Build" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- <Target Name="AfterBuildRelease" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'"> -->

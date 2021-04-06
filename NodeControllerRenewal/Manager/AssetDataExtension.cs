@@ -13,22 +13,7 @@ namespace NodeController
     using NodeController;
     using System.Reflection;
     using ModsCommon;
-
-    public static class OnLoadPatch
-    {
-        public static void LoadAssetPanelOnLoadPostfix(LoadAssetPanel __instance, UIListBox ___m_SaveList)
-        {
-            if (AccessTools.Method(typeof(LoadSavePanelBase<CustomAssetMetaData>), "GetListingMetaData") is not MethodInfo method)
-                return;
-
-            var listingMetaData = (CustomAssetMetaData)method.Invoke(__instance, new object[] { ___m_SaveList.selectedIndex });
-            if (listingMetaData.userDataRef != null)
-            {
-                var userAssetData = (listingMetaData.userDataRef.Instantiate() as AssetDataWrapper.UserAssetData) ?? new AssetDataWrapper.UserAssetData();
-                AssetDataExtension.Instance.OnAssetLoaded(listingMetaData.name, ToolsModifierControl.toolController.m_editPrefabInfo, userAssetData.Data);
-            }
-        }
-    }
+    using ModsCommon.Utilities;
 
     [Serializable]
     public class AssetData
@@ -77,23 +62,11 @@ namespace NodeController
         public byte[] Serialize() => SerializationUtil.Serialize(this);
     }
 
-    public class AssetDataExtension : AssetDataExtensionBase
+    public class AssetDataExtension : BaseAssetDataExtension<AssetDataExtension>
     {
         public const string NC_ID = "NodeController_V1.0";
 
-        public static AssetDataExtension Instance;
         public Dictionary<BuildingInfo, object[]> Asset2Records = new Dictionary<BuildingInfo, object[]>();
-
-        public override void OnCreated(IAssetData assetData)
-        {
-            base.OnCreated(assetData);
-            Instance = this;
-        }
-
-        public override void OnReleased()
-        {
-            Instance = null;
-        }
 
         public override void OnAssetLoaded(string name, object asset, Dictionary<string, byte[]> userData)
         {
@@ -133,7 +106,7 @@ namespace NodeController
 
         public static void PlaceAsset(BuildingInfo info, Dictionary<InstanceID, InstanceID> map)
         {
-            if (Instance.Asset2Records.TryGetValue(info, out var records))
+            if (SingletonItem<AssetDataExtension>.Instance.Asset2Records.TryGetValue(info, out var records))
             {
                 SingletonMod<Mod>.Logger.Debug("PlaceAsset: records = " + records.ToSTR());
                 SingletonMod<Mod>.Logger.Debug("PlaceAsset: map = " + map.ToSTR());
