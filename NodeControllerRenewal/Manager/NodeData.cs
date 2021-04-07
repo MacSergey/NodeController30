@@ -60,6 +60,33 @@ namespace NodeController
         public SegmentEndData SegmentEnd2 => SegmentEndManager.Instance.GetAt(Segment2Id, NodeId);
         public bool FirstTimeTrafficLight { get; set; }
 
+        public float Offset
+        {
+            get => Node.SegmentsId().Average(s => SegmentEndManager.Instance.GetOrCreate(s, NodeId).Offset);
+            set
+            {
+                foreach (var segmentId in Node.SegmentsId())
+                {
+                    var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
+                    segEnd.Offset = value;
+                }
+                Update();
+            }
+        }
+        public float Angle
+        {
+            get => Node.SegmentsId().Average(s => SegmentEndManager.Instance.GetOrCreate(s, NodeId).Angle);
+            set
+            {
+                foreach (var segmentId in Node.SegmentsId())
+                {
+                    var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
+                    segEnd.Angle = value;
+                }
+                Update();
+            }
+        }
+
         public float CornerOffset
         {
             get => Node.SegmentsId().Average(s => SegmentEndManager.Instance.GetOrCreate(s, NodeId).CornerOffset);
@@ -441,120 +468,117 @@ namespace NodeController
 
             var offsetProperty = GetOffsetProperty(parent);
             properties.Add(offsetProperty);
-
             var segmentOffsets = Node.SegmentsId().Select(s => GetSegmentOffsetProperty(parent, s)).ToArray();
             properties.AddRange(segmentOffsets);
-            properties.Add(GetHideMarkingProperty(parent));
-
             offsetProperty.OnValueChanged += NodeOffsetChanged;
             foreach (var segmentOffsetProperty in segmentOffsets)
                 segmentOffsetProperty.OnValueChanged += SegmentOffsetChanged;
+
+            var angleProperty = GetAngleProperty(parent);
+            properties.Add(angleProperty);
+            var segmentAngles = Node.SegmentsId().Select(s => GetSegmentAngleProperty(parent, s)).ToArray();
+            properties.AddRange(segmentAngles);
+            angleProperty.OnValueChanged += NodeAngleChanged;
+            foreach (var segmentAngleProperty in segmentAngles)
+                segmentAngleProperty.OnValueChanged += SegmentAngleChanged;
+
+            properties.Add(GetHideMarkingProperty(parent));
 
             return properties;
 
             void NodeOffsetChanged(float value)
             {
-                var offset = CornerOffset;
+                var offset = Offset;
                 foreach (var segmentOffsetProperty in segmentOffsets)
                     segmentOffsetProperty.Value = offset;
             }
-            void SegmentOffsetChanged(float value) =>  offsetProperty.Value = CornerOffset;
-        }
-
-        private NodeTypePropertyPanel GetNodeTypeProperty(UIComponent parent)
-        {
-            var typeProperty = ComponentPool.Get<NodeTypePropertyPanel>(parent);
-            typeProperty.Text = "Node type";
-            typeProperty.Init();
-            typeProperty.SelectedObject = NodeType;
-            typeProperty.OnSelectObjectChanged += (value) => NodeType = value;
-
-            return typeProperty;
-        }
-        private ButtonsPanel GetActionButtons(UIComponent parent)
-        {
-            var actionButtons = ComponentPool.Get<ButtonsPanel>(parent);
-            var slopeIndex = actionButtons.AddButton("Make slope");
-            var flatIndex = actionButtons.AddButton("Make flat");
-            actionButtons.Init();
-            actionButtons.OnButtonClick += OnButtonClick;
-
-            return actionButtons;
-
-            void OnButtonClick(int index)
+            void NodeAngleChanged(float value)
             {
-                if (index == slopeIndex)
-                    UnFlatten();
-                else if (index == flatIndex)
-                    Flatten();
+                var angle = Angle;
+                foreach (var segmentAngleProperty in segmentAngles)
+                    segmentAngleProperty.Value = angle;
+            }
+
+            void SegmentOffsetChanged(float value)
+            {
+                offsetProperty.Value = Offset;
+                Update();
+            }
+            void SegmentAngleChanged(float value)
+            {
+                angleProperty.Value = Angle;
+                Update();
             }
         }
 
         private FloatPropertyPanel GetOffsetProperty(UIComponent parent)
         {
-            var offsetProperty = ComponentPool.Get<FloatPropertyPanel>(parent);
-            offsetProperty.Text = "Corner offset";
+            var offsetProperty = GetNodeProperty(parent);
+            offsetProperty.Text = "Offset";
             offsetProperty.MinValue = 0;
-            offsetProperty.CheckMin = true;
             offsetProperty.MaxValue = 100;
-            offsetProperty.CheckMax = true;
-            offsetProperty.UseWheel = true;
-            offsetProperty.WheelStep = 1f;
-            offsetProperty.Init();
-            offsetProperty.Value = CornerOffset;
-            offsetProperty.OnValueChanged += (value) => CornerOffset = value;
+            offsetProperty.Value = Offset;
+            offsetProperty.OnValueChanged += (value) => Offset = value;
 
             return offsetProperty;
         }
+        private FloatPropertyPanel GetAngleProperty(UIComponent parent)
+        {
+            var angleProperty = GetNodeProperty(parent);
+            angleProperty.Text = "Angle";
+            angleProperty.MinValue = -90;
+            angleProperty.MaxValue = 90;
+            angleProperty.Value = Angle;
+            angleProperty.OnValueChanged += (value) => Angle = value;
+
+            return angleProperty;
+        }
+        private FloatPropertyPanel GetNodeProperty(UIComponent parent)
+        {
+            var property = ComponentPool.Get<FloatPropertyPanel>(parent);
+            property.CheckMin = true;
+            property.CheckMax = true;
+            property.UseWheel = true;
+            property.WheelStep = 1f;
+            property.Init();
+
+            return property;
+        }
+
         private FloatPropertyPanel GetSegmentOffsetProperty(UIComponent parent, ushort segmentId)
         {
             var segmentData = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
-
-            var offsetProperty = ComponentPool.Get<FloatPropertyPanel>(parent);
+            var offsetProperty = GetSegmentProperty(parent);
             offsetProperty.Text = $"Segment #{segmentId} offset";
             offsetProperty.MinValue = 0;
-            offsetProperty.CheckMin = true;
             offsetProperty.MaxValue = 100;
-            offsetProperty.CheckMax = true;
-            offsetProperty.UseWheel = true;
-            offsetProperty.WheelStep = 1f;
-            offsetProperty.Init();
-            offsetProperty.Value = segmentData.CornerOffset;
-            offsetProperty.OnValueChanged += (value) => segmentData.CornerOffset = value;
+            offsetProperty.Value = segmentData.Offset;
+            offsetProperty.OnValueChanged += (value) => segmentData.Offset = value;
 
             return offsetProperty;
         }
-        private FloatPropertyPanel GetSlopeProperty(UIComponent parent)
+        private FloatPropertyPanel GetSegmentAngleProperty(UIComponent parent, ushort segmentId)
         {
-            var slopeProperty = ComponentPool.Get<FloatPropertyPanel>(parent);
-            slopeProperty.Text = "Slope";
-            slopeProperty.MinValue = -60;
-            slopeProperty.CheckMin = true;
-            slopeProperty.MaxValue = 60;
-            slopeProperty.CheckMax = true;
-            slopeProperty.UseWheel = true;
-            slopeProperty.WheelStep = 1f;
-            slopeProperty.Init();
-            slopeProperty.Value = SlopeAngle;
-            slopeProperty.OnValueChanged += (value) => SlopeAngle = value;
+            var segmentData = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
+            var angleProperty = GetSegmentProperty(parent);
+            angleProperty.Text = $"Segment #{segmentId} angle";
+            angleProperty.MinValue = -90;
+            angleProperty.MaxValue = 90;
+            angleProperty.Value = segmentData.Angle;
+            angleProperty.OnValueChanged += (value) => segmentData.Angle = value;
 
-            return slopeProperty;
+            return angleProperty;
         }
-        private FloatPropertyPanel GetEmbankmentProperty(UIComponent parent)
+        private FloatPropertyPanel GetSegmentProperty(UIComponent parent)
         {
-            var embankmentProperty = ComponentPool.Get<FloatPropertyPanel>(parent);
-            embankmentProperty.Text = "Embankment";
-            embankmentProperty.MinValue = -60;
-            embankmentProperty.CheckMin = true;
-            embankmentProperty.MaxValue = 60;
-            embankmentProperty.CheckMax = true;
-            embankmentProperty.UseWheel = true;
-            embankmentProperty.WheelStep = 1f;
-            embankmentProperty.Init();
-            embankmentProperty.Value = EmbankmentAngle;
-            embankmentProperty.OnValueChanged += (value) => EmbankmentAngle = value;
+            var property = ComponentPool.Get<FloatPropertyPanel>(parent);
+            property.CheckMin = true;
+            property.CheckMax = true;
+            property.UseWheel = true;
+            property.WheelStep = 1f;
+            property.Init();
 
-            return embankmentProperty;
+            return property;
         }
         private BoolListPropertyPanel GetHideMarkingProperty(UIComponent parent)
         {
@@ -566,27 +590,88 @@ namespace NodeController
 
             return hideMarkingProperty;
         }
-        private ButtonPanel GetResetButton(UIComponent parent)
-        {
-            var resetButton = ComponentPool.Get<ButtonPanel>(parent);
-            resetButton.Text = "Reset to default";
-            resetButton.Init();
-            resetButton.OnButtonClick += ResetToDefault;
 
-            return resetButton;
-        }
+        //private NodeTypePropertyPanel GetNodeTypeProperty(UIComponent parent)
+        //{
+        //    var typeProperty = ComponentPool.Get<NodeTypePropertyPanel>(parent);
+        //    typeProperty.Text = "Node type";
+        //    typeProperty.Init();
+        //    typeProperty.SelectedObject = NodeType;
+        //    typeProperty.OnSelectObjectChanged += (value) => NodeType = value;
 
-        public string ToolTip(NodeTypeT nodeType) => nodeType switch
-        {
-            NodeTypeT.Crossing => "Crossing node.",
-            NodeTypeT.Middle => "Middle: No node.",
-            NodeTypeT.Bend => IsAsymRevert ? "Bend: Asymmetrical road changes direction." : (HalfWidthDelta > 0.05f ? "Bend: Linearly match segment widths." : "Bend: Simple road corner."),
-            NodeTypeT.Stretch => "Stretch: Match both pavement and road.",
-            NodeTypeT.UTurn => "U-Turn: node with enough space for U-Turn.",
-            NodeTypeT.Custom => "Custom: transition size and traffic rules are configrable.",
-            NodeTypeT.End => "when there is only one segment at the node.",
-            _ => null,
-        };
+        //    return typeProperty;
+        //}
+        //private ButtonsPanel GetActionButtons(UIComponent parent)
+        //{
+        //    var actionButtons = ComponentPool.Get<ButtonsPanel>(parent);
+        //    var slopeIndex = actionButtons.AddButton("Make slope");
+        //    var flatIndex = actionButtons.AddButton("Make flat");
+        //    actionButtons.Init();
+        //    actionButtons.OnButtonClick += OnButtonClick;
+
+        //    return actionButtons;
+
+        //    void OnButtonClick(int index)
+        //    {
+        //        if (index == slopeIndex)
+        //            UnFlatten();
+        //        else if (index == flatIndex)
+        //            Flatten();
+        //    }
+        //}
+        //private FloatPropertyPanel GetSlopeProperty(UIComponent parent)
+        //{
+        //    var slopeProperty = ComponentPool.Get<FloatPropertyPanel>(parent);
+        //    slopeProperty.Text = "Slope";
+        //    slopeProperty.MinValue = -60;
+        //    slopeProperty.CheckMin = true;
+        //    slopeProperty.MaxValue = 60;
+        //    slopeProperty.CheckMax = true;
+        //    slopeProperty.UseWheel = true;
+        //    slopeProperty.WheelStep = 1f;
+        //    slopeProperty.Init();
+        //    slopeProperty.Value = SlopeAngle;
+        //    slopeProperty.OnValueChanged += (value) => SlopeAngle = value;
+
+        //    return slopeProperty;
+        //}
+        //private FloatPropertyPanel GetEmbankmentProperty(UIComponent parent)
+        //{
+        //    var embankmentProperty = ComponentPool.Get<FloatPropertyPanel>(parent);
+        //    embankmentProperty.Text = "Embankment";
+        //    embankmentProperty.MinValue = -60;
+        //    embankmentProperty.CheckMin = true;
+        //    embankmentProperty.MaxValue = 60;
+        //    embankmentProperty.CheckMax = true;
+        //    embankmentProperty.UseWheel = true;
+        //    embankmentProperty.WheelStep = 1f;
+        //    embankmentProperty.Init();
+        //    embankmentProperty.Value = EmbankmentAngle;
+        //    embankmentProperty.OnValueChanged += (value) => EmbankmentAngle = value;
+
+        //    return embankmentProperty;
+        //}
+        //private ButtonPanel GetResetButton(UIComponent parent)
+        //{
+        //    var resetButton = ComponentPool.Get<ButtonPanel>(parent);
+        //    resetButton.Text = "Reset to default";
+        //    resetButton.Init();
+        //    resetButton.OnButtonClick += ResetToDefault;
+
+        //    return resetButton;
+        //}
+
+        //public string ToolTip(NodeTypeT nodeType) => nodeType switch
+        //{
+        //    NodeTypeT.Crossing => "Crossing node.",
+        //    NodeTypeT.Middle => "Middle: No node.",
+        //    NodeTypeT.Bend => IsAsymRevert ? "Bend: Asymmetrical road changes direction." : (HalfWidthDelta > 0.05f ? "Bend: Linearly match segment widths." : "Bend: Simple road corner."),
+        //    NodeTypeT.Stretch => "Stretch: Match both pavement and road.",
+        //    NodeTypeT.UTurn => "U-Turn: node with enough space for U-Turn.",
+        //    NodeTypeT.Custom => "Custom: transition size and traffic rules are configrable.",
+        //    NodeTypeT.End => "when there is only one segment at the node.",
+        //    _ => null,
+        //};
 
         #endregion
     }

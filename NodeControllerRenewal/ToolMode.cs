@@ -16,6 +16,7 @@ namespace NodeController
     {
         public bool ShowPanel => false;
         public ToolModeType Type => ToolModeType.Select;
+        protected override bool SelectSegments => false;
 
         public override string GetToolInfo() => IsHoverNode ? $"Node {HoverNode.Id}" : (IsHoverSegment ? $"Segment {HoverSegment.Id}" : string.Empty);
 
@@ -37,7 +38,6 @@ namespace NodeController
             Tool.SetData(null);
             Tool.SetMode(ToolModeType.Select);
         }
-
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             var data = Tool.Data as NodeData;

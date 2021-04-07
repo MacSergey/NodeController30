@@ -88,6 +88,8 @@ namespace NodeController
                 return ret;
             }
         }
+        public float Offset { get; set; }
+        public float Angle { get; set; }
 
         public float CornerOffset
         {

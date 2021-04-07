@@ -1,8 +1,10 @@
 using ColossalFramework;
+using ColossalFramework.Math;
 using HarmonyLib;
 using JetBrains.Annotations;
 using KianCommons;
 using KianCommons.Patches;
+using ModsCommon.Utilities;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -110,33 +112,80 @@ namespace NodeController.Patches
             segEnd?.OnAfterCalculate();
         }
 
-        public static IEnumerable<CodeInstruction> CalculateCornerTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
+        public static IEnumerable<CodeInstruction> CalculateCornerTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
         {
             instructions = FindDirectionTranspiler(instructions, original);
 
-            var ldarg_startNodeID = TranspilerUtils.GetLDArg(original, "startNodeID");
-            var ldarg_segmentID = TranspilerUtils.GetLDArg(original, "ignoreSegmentID");
-            var ldarg_leftSide = TranspilerUtils.GetLDArg(original, "leftSide");
-            var call_GetMinCornerOffset = new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(GetMinCornerOffset)));
-            var minCornerOffsetField = AccessTools.Field(typeof(NetInfo), nameof(NetInfo.m_minCornerOffset));
+            var offsetLocal = generator.DeclareLocal(typeof(float));
+            yield return TranspilerUtils.GetLDArg(original, "info");
+            yield return TranspilerUtils.GetLDArg(original, "startNodeID");
+            yield return TranspilerUtils.GetLDArg(original, "ignoreSegmentID");
+            yield return TranspilerUtils.GetLDArg(original, "leftSide");
+            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(GetMinCornerOffset)));
+            yield return new CodeInstruction(OpCodes.Stloc, offsetLocal.LocalIndex);
 
+            var minCornerOffsetField = AccessTools.Field(typeof(NetInfo), nameof(NetInfo.m_minCornerOffset));
             foreach (var instruction in instructions)
             {
                 yield return instruction;
                 if (instruction.opcode == OpCodes.Ldfld && instruction.operand == minCornerOffsetField)
                 {
-                    yield return ldarg_startNodeID;
-                    yield return ldarg_segmentID;
-                    yield return ldarg_leftSide;
-                    yield return call_GetMinCornerOffset;
+                    yield return new CodeInstruction(OpCodes.Pop);
+                    yield return new CodeInstruction(OpCodes.Ldloc, offsetLocal.LocalIndex);
                 }
             }
-            yield break;
         }
-        static float GetMinCornerOffset(float cornerOffset0, ushort nodeID, ushort segmentID, bool leftSide)
+        static float GetMinCornerOffset(NetInfo info, ushort nodeID, ushort segmentID, bool leftSide)
         {
-            var segmentData = SegmentEndManager.Instance.GetAt(segmentID: segmentID, nodeID: nodeID);
-            return segmentData == null ? cornerOffset0 : segmentData.Corner(leftSide).Offset;
+            if (SegmentEndManager.Instance.GetAt(segmentID, nodeID) is not SegmentEndData segmentData)
+                return info.m_minCornerOffset;
+
+            var segment = segmentID.GetSegment();
+            var isStart = segment.m_startNode == nodeID;
+            var startNormal = segment.m_startDirection.Turn90(!leftSide);
+            var endNormal = segment.m_endDirection.Turn90(leftSide);
+
+            var bezier = new Bezier3()
+            {
+                a = segment.m_startNode.GetNode().m_position,
+                b = segment.m_startDirection,
+                c = segment.m_endDirection,
+                d = segment.m_endNode.GetNode().m_position,
+            };
+            NetSegment.CalculateMiddlePoints(bezier.a, bezier.b, bezier.d, bezier.c, true, true, out bezier.b, out bezier.c);
+
+            var sideBezier = new Bezier3()
+            {
+                a = bezier.a + startNormal * info.m_halfWidth,
+                b = segment.m_startDirection,
+                c = segment.m_endDirection,
+                d = bezier.d + endNormal * info.m_halfWidth,
+            };
+            NetSegment.CalculateMiddlePoints(sideBezier.a, sideBezier.b, sideBezier.d, sideBezier.c, true, true, out sideBezier.b, out sideBezier.c);
+
+            if (!isStart)
+            {
+                bezier = bezier.Invert();
+                sideBezier = sideBezier.Invert();
+            }
+
+            var t = bezier.Travel(0f, segmentData.Offset);
+            var position = bezier.Position(t);
+            var direction = bezier.Tangent(t).TurnDeg(90 + segmentData.Angle, isStart);
+
+            var line = new StraightTrajectory(position, position + direction, false);
+            var side = new BezierTrajectory(sideBezier);
+
+            var intersection = Intersection.CalculateSingle(side, line);
+            if (intersection.IsIntersect)
+            {
+                side = side.Cut(0f, intersection.FirstT) as BezierTrajectory;
+                return side.Length;
+            }
+            else
+                return info.m_minCornerOffset;
+
+
         }
     }
 }
