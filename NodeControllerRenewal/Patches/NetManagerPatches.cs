@@ -58,8 +58,8 @@ namespace NodeController.Patches
         }
         static void PasteSegmentEnd(SegmentEndData data, ushort nodeID1, ushort nodeID2, ushort targetSegmentID)
         {
-            if (data != null && data.NodeID == nodeID1 || data.NodeID == nodeID2)
-                LifeCycle.MoveItIntegration.PasteSegmentEnd(data, data.NodeID, targetSegmentID);
+            if (data != null && data.NodeId == nodeID1 || data.NodeId == nodeID2)
+                LifeCycle.MoveItIntegration.PasteSegmentEnd(data, data.NodeId, targetSegmentID);
         }
 
         public static void ReleaseSegmentImplementationPrefix(ushort segment)

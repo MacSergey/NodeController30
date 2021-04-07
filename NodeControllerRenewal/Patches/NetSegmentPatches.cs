@@ -37,11 +37,11 @@ namespace NodeController.Patches
 
                     bool twist;
                     if (data != null)
-                        twist = data.CanModifyTwist() && data.Twist;
+                        twist = data.CanModifyTwist && data.Twist;
                     else
                     {
                         twist = !untouchable && segmentID.ToSegment().Info.m_flatJunctions;
-                        twist = twist && SegmentEndData.CanTwist(segmentID: segmentID, nodeID: nodeID);
+                        twist = twist && SegmentEndData.CanTwist(segmentId: segmentID, nodeId: nodeID);
                     }
 
                     if (twist)

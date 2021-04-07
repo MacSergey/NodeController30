@@ -17,30 +17,16 @@ namespace NodeController
         public bool ShowPanel => false;
         public ToolModeType Type => ToolModeType.Select;
 
-        public override string GetToolInfo() => IsHoverNode ? $"Node {HoverNode.Id}": (IsHoverSegment ? $"Segment {HoverSegment.Id}" : string.Empty);
+        public override string GetToolInfo() => IsHoverNode ? $"Node {HoverNode.Id}" : (IsHoverSegment ? $"Segment {HoverSegment.Id}" : string.Empty);
 
         public override void OnPrimaryMouseClicked(Event e)
         {
-            if(IsHoverNode)
+            if (IsHoverNode)
             {
                 var data = NodeManager.Instance.GetOrCreate(HoverNode.Id);
                 Tool.SetData(data);
                 Tool.SetDefaultMode();
             }
-            //else if(IsHoverSegment)
-            //{
-            //    var data = SegmentEndManager.Instance.GetOrCreate(HoverSegment.Id, );
-            //    Tool.SetData(data);
-            //    Tool.SetDefaultMode();
-            //}
-
-            //if (!IsHoverNode && !IsHoverSegment)
-            //    return;
-
-            //var messageBox = MessageBoxBase.ShowModal<OneButtonMessageBox>();
-            //messageBox.CaptionText = SingletonMod<Mod>.NameRaw;
-            //messageBox.MessageText = GetToolInfo();
-            //messageBox.ButtonText = "OK";
         }
     }
     public class EditToolMode : NodeControllerToolMode
@@ -50,6 +36,27 @@ namespace NodeController
         {
             Tool.SetData(null);
             Tool.SetMode(ToolModeType.Select);
+        }
+
+        public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
+        {
+            var data = Tool.Data as NodeData;
+            foreach (var segmentId in data.Node.SegmentsId())
+            {
+                var segment = segmentId.GetSegment();
+                var bezier = new Bezier3()
+                {
+                    a = segment.m_startNode.GetNode().m_position,
+                    b = segment.m_startDirection,
+                    c = segment.m_endDirection,
+                    d = segment.m_endNode.GetNode().m_position
+                };
+                NetSegment.CalculateMiddlePoints(bezier.a, bezier.b, bezier.d, bezier.c, true, true, out bezier.b, out bezier.c);
+                bezier.RenderBezier(new OverlayData(cameraInfo));
+
+                var selection = new SegmentSelection(segmentId);
+                selection.RenderBorders(new OverlayData(cameraInfo) { Color = Color.red });
+            }
         }
     }
 }

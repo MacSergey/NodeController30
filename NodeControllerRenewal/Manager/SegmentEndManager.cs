@@ -100,12 +100,12 @@ namespace NodeController
             {
                 if (segmentEndData == null) 
                     continue;
-                if (NetUtil.IsSegmentValid(segmentEndData.SegmentID))
+                if (NetUtil.IsSegmentValid(segmentEndData.SegmentId))
                     segmentEndData.Update();
                 else
                 {
-                    ResetSegmentEndToDefault(segmentEndData.SegmentID, true);
-                    ResetSegmentEndToDefault(segmentEndData.SegmentID, false);
+                    ResetSegmentEndToDefault(segmentEndData.SegmentId, true);
+                    ResetSegmentEndToDefault(segmentEndData.SegmentId, false);
                 }
             }
         }
@@ -129,10 +129,10 @@ namespace NodeController
                     buffer[i] = null;
                     continue;
                 }
-                if (data.NodeID != nodeID)
-                    data.NodeID = nodeID;
-                if (data.SegmentID != segmentID)
-                    data.SegmentID = segmentID;
+                if (data.NodeId != nodeID)
+                    data.NodeId = nodeID;
+                if (data.SegmentId != segmentID)
+                    data.SegmentId = segmentID;
 
                 if (data.IsStartNode != startNode)
                     buffer[i] = null;

@@ -45,7 +45,7 @@ namespace NodeController
         [Obsolete("delete when moveit is updated")]
         public static byte[] CopyNodeData(ushort nodeID) => SerializationUtil.Serialize(Instance.buffer[nodeID]);
 
-        public static ushort TargetNodeID = 0;
+        public static ushort TargetNodeId = 0;
 
         [Obsolete("kept here for backward compatibility with MoveIT")]
         /// <param name="nodeID">target nodeID</param>
@@ -66,11 +66,11 @@ namespace NodeController
                 foreach (var segmentID in NetUtil.IterateNodeSegments(nodeID))
                     SegmentEndManager.Instance.GetOrCreate(segmentID: segmentID, nodeID: nodeID);
 
-                TargetNodeID = nodeID; // must be done before deserialization.
+                TargetNodeId = nodeID; // must be done before deserialization.
                 buffer[nodeID] = SerializationUtil.Deserialize(data, this.VersionOf()) as NodeData;
-                buffer[nodeID].NodeID = nodeID;
+                buffer[nodeID].NodeId = nodeID;
                 UpdateData(nodeID);
-                TargetNodeID = 0;
+                TargetNodeId = 0;
             }
         }
         #endregion
@@ -124,7 +124,7 @@ namespace NodeController
             if (nodeID == 0 || buffer[nodeID] == null)
                 return;
 
-            bool selected = SingletonTool<NodeControllerTool>.Instance.Data is NodeData nodeData && nodeData.NodeID == nodeID;
+            bool selected = SingletonTool<NodeControllerTool>.Instance.Data is NodeData nodeData && nodeData.NodeId == nodeID;
             if (buffer[nodeID].IsDefault && !selected)
                 ResetNodeToDefault(nodeID);
             else
@@ -156,10 +156,10 @@ namespace NodeController
             {
                 if (nodeData == null)
                     continue;
-                if (NetUtil.IsNodeValid(nodeData.NodeID))
+                if (NetUtil.IsNodeValid(nodeData.NodeId))
                     nodeData.Update();
                 else
-                    ResetNodeToDefault(nodeData.NodeID);
+                    ResetNodeToDefault(nodeData.NodeId);
             }
         }
 
@@ -204,19 +204,19 @@ namespace NodeController
         {
             SingletonMod<Mod>.Logger.Debug("NodeManager.Validate() heal");
             buffer[0] = null;
-            for (ushort nodeID = 1; nodeID < buffer.Length; ++nodeID)
+            for (ushort nodeId = 1; nodeId < buffer.Length; ++nodeId)
             {
-                if (buffer[nodeID] is not NodeData data)
+                if (buffer[nodeId] is not NodeData)
                     continue;
 
-                if (!NetUtil.IsNodeValid(nodeID))
+                if (!NetUtil.IsNodeValid(nodeId))
                 {
-                    SetNullNodeAndSegmentEnds(nodeID);
+                    SetNullNodeAndSegmentEnds(nodeId);
                     continue;
                 }
 
-                if (buffer[nodeID].NodeID != nodeID)
-                    buffer[nodeID].NodeID = nodeID;
+                if (buffer[nodeId].NodeId != nodeId)
+                    buffer[nodeId].NodeId = nodeId;
             }
         }
 

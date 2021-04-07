@@ -110,7 +110,7 @@ namespace NodeController.LifeCycle
             {
                 record = record.Clone();
                 nodeMan.buffer[targetNodeID] = record;
-                nodeMan.buffer[targetNodeID].NodeID = targetNodeID;
+                nodeMan.buffer[targetNodeID].NodeId = targetNodeID;
 
                 // Do not call refresh here as it might restart node to 0 even though corner offsets from
                 // segments may come in later.
@@ -140,7 +140,7 @@ namespace NodeController.LifeCycle
         {
             if (record is NodeData nodeData)
             {
-                ushort mappedNodeID = MappedNodeID(map, nodeData.NodeID);
+                ushort mappedNodeID = MappedNodeID(map, nodeData.NodeId);
                 PasteNode(mappedNodeID, nodeData, map);
             }
             else if (record is MoveItSegmentData moveItSegmentData)
@@ -148,11 +148,11 @@ namespace NodeController.LifeCycle
                 ushort segmentID;
                 if (moveItSegmentData.Start != null)
                 {
-                    segmentID = moveItSegmentData.Start.SegmentID;
+                    segmentID = moveItSegmentData.Start.SegmentId;
                 }
                 else if (moveItSegmentData.End != null)
                 {
-                    segmentID = moveItSegmentData.End.SegmentID;
+                    segmentID = moveItSegmentData.End.SegmentId;
                 }
                 else
                 {
@@ -193,7 +193,7 @@ namespace NodeController.LifeCycle
         {
             if (segmentEndData != null)
             {
-                ushort nodeID = MappedNodeID(map, segmentEndData.NodeID);
+                ushort nodeID = MappedNodeID(map, segmentEndData.NodeId);
                 PasteSegmentEnd(
                     segmentEndData: segmentEndData,
                     targetNodeID: nodeID,
@@ -207,8 +207,8 @@ namespace NodeController.LifeCycle
             if (segmentEndData != null)
             {
                 segmentEndData = segmentEndData.Clone();
-                segmentEndData.SegmentID = targetSegmentID;
-                segmentEndData.NodeID = targetNodeID;
+                segmentEndData.SegmentId = targetSegmentID;
+                segmentEndData.NodeId = targetNodeID;
             }
             segEndMan.SetAt(
                 segmentID: targetSegmentID,

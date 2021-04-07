@@ -86,10 +86,14 @@ namespace NodeController.UI
 
         private void ClearDataProperties()
         {
+            StopLayout();
+
             foreach (var property in DataProperties)
                 ComponentPool.Free(property);
 
             DataProperties.Clear();
+
+            StartLayout();
         }
     }
 }
