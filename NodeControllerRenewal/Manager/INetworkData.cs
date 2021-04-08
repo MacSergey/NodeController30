@@ -1,5 +1,6 @@
 using ColossalFramework.UI;
 using ModsCommon.UI;
+using System;
 using System.Collections.Generic;
 
 namespace NodeController
@@ -20,7 +21,7 @@ namespace NodeController
         void ResetToDefault();
         void RefreshAndUpdate();
 
-        public List<EditorItem> GetUIComponents(UIComponent parent);
+        public List<EditorItem> GetUIComponents(UIComponent parent, Action refresh);
     }
 
     public interface INetworkData<T>

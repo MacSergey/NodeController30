@@ -464,19 +464,25 @@ namespace NodeController
 
         #region UI COMPONENTS
 
-        public List<EditorItem> GetUIComponents(UIComponent parent)
+        public List<EditorItem> GetUIComponents(UIComponent parent, Action refresh)
         {
             var properties = new List<EditorItem>();
 
-            properties.Add(GetNodeTypeProperty(parent));
+            properties.Add(GetNodeTypeProperty(parent, refresh));
             if (CanModifyFlatJunctions)
                 properties.Add(GetActionButtons(parent));
 
-            GetUIComponents(properties, parent, GetOffsetProperty, GetSegmentOffsetProperty, (data) => data.Offset, (data, value) => data.Offset = value);
-            GetUIComponents(properties, parent, GetShiftProperty, GetSegmentShiftProperty, (data) => data.Shift, (data, value) => data.Shift = value);
-            GetUIComponents(properties, parent, GetRotateProperty, GetSegmentRotateProperty, (data) => data.RotateAngle, (data, value) => data.RotateAngle = value);
-            GetUIComponents(properties, parent, GetSlopeProperty, GetSegmentSlopeProperty, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value);
-            GetUIComponents(properties, parent, GetTwistProperty, GetSegmentTwistProperty, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value);
+            if (!IsMiddleNode)
+            {
+                GetUIComponents(properties, parent, GetOffsetProperty, GetSegmentOffsetProperty, (data) => data.Offset, (data, value) => data.Offset = value);
+                GetUIComponents(properties, parent, GetShiftProperty, GetSegmentShiftProperty, (data) => data.Shift, (data, value) => data.Shift = value);
+                GetUIComponents(properties, parent, GetRotateProperty, GetSegmentRotateProperty, (data) => data.RotateAngle, (data, value) => data.RotateAngle = value);
+            }
+            if (IsMiddleNode)
+            {
+                GetUIComponents(properties, parent, GetSlopeProperty, null, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value);
+                GetUIComponents(properties, parent, GetTwistProperty, null, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value);
+            }
 
             properties.Add(GetHideMarkingProperty(parent));
 
@@ -490,20 +496,23 @@ namespace NodeController
             properties.Add(nodeProperty);
 
             var segmentProperties = new List<FloatPropertyPanel>();
-            foreach (var segmentId in Node.SegmentsId())
+            if (getSegmentProperty != null)
             {
-                var segmentData = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
-                var segmentProperty = getSegmentProperty(parent, segmentData);
-                segmentProperty.Value = getValue(segmentData);
-                segmentProperty.OnValueChanged += (newValue) =>
-                    {
-                        var segmentData = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
-                        setValue(segmentData, newValue);
-                        nodeProperty.Value = getValue(this);
-                        Update();
-                    };
-                segmentProperties.Add(segmentProperty);
-                properties.Add(segmentProperty);
+                foreach (var segmentId in Node.SegmentsId())
+                {
+                    var segmentData = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
+                    var segmentProperty = getSegmentProperty(parent, segmentData);
+                    segmentProperty.Value = getValue(segmentData);
+                    segmentProperty.OnValueChanged += (newValue) =>
+                        {
+                            var segmentData = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
+                            setValue(segmentData, newValue);
+                            nodeProperty.Value = getValue(this);
+                            Update();
+                        };
+                    segmentProperties.Add(segmentProperty);
+                    properties.Add(segmentProperty);
+                }
             }
 
             nodeProperty.OnValueChanged += (float newValue) =>
@@ -516,8 +525,7 @@ namespace NodeController
 
         private FloatPropertyPanel GetOffsetProperty(UIComponent parent)
         {
-            var offsetProperty = GetNodeProperty(parent);
-            offsetProperty.Text = "Offset";
+            var offsetProperty = GetNodeProperty(parent, "Offset");
             offsetProperty.MinValue = 0;
             offsetProperty.MaxValue = 100;
 
@@ -525,8 +533,7 @@ namespace NodeController
         }
         private FloatPropertyPanel GetShiftProperty(UIComponent parent)
         {
-            var offsetProperty = GetNodeProperty(parent);
-            offsetProperty.Text = "Shift";
+            var offsetProperty = GetNodeProperty(parent, "Shift");
             offsetProperty.MinValue = -32;
             offsetProperty.MaxValue = 32;
 
@@ -534,8 +541,7 @@ namespace NodeController
         }
         private FloatPropertyPanel GetRotateProperty(UIComponent parent)
         {
-            var rotateProperty = GetNodeProperty(parent);
-            rotateProperty.Text = "Rotate";
+            var rotateProperty = GetNodeProperty(parent, "Rotate");
             rotateProperty.MinValue = -60;
             rotateProperty.MaxValue = 60;
 
@@ -543,8 +549,7 @@ namespace NodeController
         }
         private FloatPropertyPanel GetSlopeProperty(UIComponent parent)
         {
-            var slopeProperty = GetNodeProperty(parent);
-            slopeProperty.Text = "Slope";
+            var slopeProperty = GetNodeProperty(parent, "Slope");
             slopeProperty.MinValue = -60;
             slopeProperty.MaxValue = 60;
 
@@ -552,17 +557,17 @@ namespace NodeController
         }
         private FloatPropertyPanel GetTwistProperty(UIComponent parent)
         {
-            var twistProperty = GetNodeProperty(parent);
-            twistProperty.Text = "Twist";
+            var twistProperty = GetNodeProperty(parent, "Twist");
             twistProperty.MinValue = -60;
             twistProperty.MaxValue = 60;
 
             return twistProperty;
         }
 
-        private FloatPropertyPanel GetNodeProperty(UIComponent parent)
+        private FloatPropertyPanel GetNodeProperty(UIComponent parent, string name)
         {
-            var property = ComponentPool.Get<FloatPropertyPanel>(parent);
+            var property = ComponentPool.Get<FloatPropertyPanel>(parent, name);
+            property.Text = name;
             property.CheckMin = true;
             property.CheckMax = true;
             property.UseWheel = true;
@@ -574,8 +579,7 @@ namespace NodeController
 
         private FloatPropertyPanel GetSegmentOffsetProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var offsetProperty = GetSegmentProperty(parent);
-            offsetProperty.Text = $"Segment #{segmentData.SegmentId} offset";
+            var offsetProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} offset");
             offsetProperty.MinValue = 0;
             offsetProperty.MaxValue = 100;
 
@@ -583,8 +587,7 @@ namespace NodeController
         }
         private FloatPropertyPanel GetSegmentShiftProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var offsetProperty = GetSegmentProperty(parent);
-            offsetProperty.Text = $"Segment #{segmentData.SegmentId} shift";
+            var offsetProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} shift");
             offsetProperty.MinValue = -32;
             offsetProperty.MaxValue = 32;
 
@@ -592,8 +595,7 @@ namespace NodeController
         }
         private FloatPropertyPanel GetSegmentRotateProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var rotateProperty = GetSegmentProperty(parent);
-            rotateProperty.Text = $"Segment #{segmentData.SegmentId} rotate";
+            var rotateProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} rotate");
             rotateProperty.MinValue = -60;
             rotateProperty.MaxValue = 60;
 
@@ -601,8 +603,7 @@ namespace NodeController
         }
         private FloatPropertyPanel GetSegmentSlopeProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var slopeProperty = GetSegmentProperty(parent);
-            slopeProperty.Text = $"Segment #{segmentData.SegmentId} slope";
+            var slopeProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} slope");
             slopeProperty.MinValue = -60;
             slopeProperty.MaxValue = 60;
 
@@ -610,16 +611,16 @@ namespace NodeController
         }
         private FloatPropertyPanel GetSegmentTwistProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var twistProperty = GetSegmentProperty(parent);
-            twistProperty.Text = $"Segment #{segmentData.SegmentId} twist";
+            var twistProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} twist");
             twistProperty.MinValue = -60;
             twistProperty.MaxValue = 60;
 
             return twistProperty;
         }
-        private FloatPropertyPanel GetSegmentProperty(UIComponent parent)
+        private FloatPropertyPanel GetSegmentProperty(UIComponent parent, string name)
         {
-            var property = ComponentPool.Get<FloatPropertyPanel>(parent);
+            var property = ComponentPool.Get<FloatPropertyPanel>(parent, name);
+            property.Text = name;
             property.CheckMin = true;
             property.CheckMax = true;
             property.UseWheel = true;
@@ -628,7 +629,7 @@ namespace NodeController
 
             return property;
         }
-        private NodeTypePropertyPanel GetNodeTypeProperty(UIComponent parent)
+        private NodeTypePropertyPanel GetNodeTypeProperty(UIComponent parent, Action refresh)
         {
             var typeProperty = ComponentPool.Get<NodeTypePropertyPanel>(parent);
             typeProperty.Text = "Node type";
@@ -638,6 +639,7 @@ namespace NodeController
             {
                 NodeType = value;
                 Update();
+                refresh();
             };
 
             return typeProperty;

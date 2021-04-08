@@ -3,19 +3,13 @@ using ColossalFramework.Math;
 using ColossalFramework.UI;
 using CSUtil.Commons;
 using KianCommons;
-using KianCommons.Math;
-using NodeController.GUI;
 using System;
-using System.Diagnostics;
 using System.Runtime.Serialization;
 using UnityEngine;
 using CSURUtil = NodeController.Util.CSURUtil;
-using static KianCommons.HelpersExtensions;
 using static KianCommons.ReflectionHelpers;
 using System.Linq;
 using KianCommons.Serialization;
-using Vector3Serializable = KianCommons.Math.Vector3Serializable;
-using NodeController;
 using ModsCommon;
 using System.Collections.Generic;
 using ModsCommon.UI;
@@ -251,7 +245,7 @@ namespace NodeController
 
         #region UI COMPONENTS
 
-        public List<EditorItem> GetUIComponents(UIComponent parent)
+        public List<EditorItem> GetUIComponents(UIComponent parent, Action refresh)
         {
             throw new NotImplementedException();
         }

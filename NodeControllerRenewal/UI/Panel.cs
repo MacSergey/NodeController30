@@ -74,6 +74,8 @@ namespace NodeController.UI
             foreach (var property in components.ToArray())
                 ComponentPool.Free(property);
 
+            DataProperties.Clear();
+
             StartLayout();
         }
 
@@ -84,7 +86,7 @@ namespace NodeController.UI
             var header = ComponentPool.Get<TextProperty>(this);
             header.Text = Data.Title;
             DataProperties.Add(header);
-            DataProperties.AddRange(Data.GetUIComponents(this));
+            DataProperties.AddRange(Data.GetUIComponents(this, UpdatePanel));
 
             StartLayout();
         }
