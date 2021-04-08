@@ -60,16 +60,15 @@ namespace NodeController
         public bool Twist { get; set; }
 
         public float Stretch { get; set; }
-        public float EmbankmentAngle { get; set; }
-        public float DeltaSlopeAngle { get; set; }
+        public float TwistAngle { get; set; }
 
         public bool IsDefault
         {
             get
             {
-                var ret = DeltaSlopeAngle == 0;
+                var ret = SlopeAngle == 0f;
                 ret &= Stretch == 0;
-                ret &= EmbankmentAngle == 0;
+                ret &= TwistAngle == 0;
                 ret &= FlatJunctions == DefaultFlatJunctions;
                 ret &= Twist == DefaultTwist;
 
@@ -83,18 +82,15 @@ namespace NodeController
         }
         public float Offset { get; set; }
         public float Shift { get; set; }
-        public float Angle { get; set; }
+        public float RotateAngle { get; set; }
+        public float SlopeAngle { get; set; }
 
         public float EmbankmentPercent
         {
-            get => Mathf.Tan(EmbankmentAngle * Mathf.Deg2Rad) * 100;
-            set => EmbankmentAngle = Mathf.Atan(value * 0.01f) * Mathf.Rad2Deg;
+            get => Mathf.Tan(TwistAngle * Mathf.Deg2Rad) * 100;
+            set => TwistAngle = Mathf.Atan(value * 0.01f) * Mathf.Rad2Deg;
         }
-        public float SlopeAngle
-        {
-            get => DeltaSlopeAngle;
-            set => DeltaSlopeAngle = value;
-        }
+
         bool CrossingIsRemoved => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(NodeId, SegmentId);
 
         public bool IsCSUR => NetUtil.IsCSUR(Info);
@@ -179,8 +175,8 @@ namespace NodeController
 
             if (!CanModifyCorners)
             {
-                DeltaSlopeAngle = 0;
-                Stretch = EmbankmentAngle = 0;
+                SlopeAngle = 0f;
+                Stretch = TwistAngle = 0;
             }
 
             if (!FlatJunctions)
@@ -193,7 +189,7 @@ namespace NodeController
         public void ResetToDefault()
         {
             Offset = DefaultOffset;
-            DeltaSlopeAngle = 0;
+            SlopeAngle = 0;
             FlatJunctions = DefaultFlatJunctions;
             Twist = DefaultTwist;
             NoCrossings = false;
@@ -201,102 +197,18 @@ namespace NodeController
             NoJunctionTexture = false;
             NoJunctionProps = false;
             NoTLProps = false;
-            Stretch = EmbankmentAngle = 0;
+            Stretch = TwistAngle = 0;
             RefreshAndUpdate();
         }
 
-        bool InProgress { get; set; } = false;
-        public void ApplyCornerAdjustments(ref Vector3 cornerPos, ref Vector3 cornerDir, bool leftSide)
-        {
-            //float slopeAngleDeg = DeltaSlopeAngle + AngleDeg(corner.Dir00.y);
-            //float slopeAngleRad = slopeAngleDeg * Mathf.Deg2Rad;
-
-            //if (89 <= slopeAngleDeg && slopeAngleDeg <= 91)
-            //{
-            //    cornerDir.x = cornerDir.z = 0;
-            //    cornerDir.y = 1;
-            //}
-            //else if (-89 >= slopeAngleDeg && slopeAngleDeg >= -91)
-            //{
-            //    cornerDir.x = cornerDir.z = 0;
-            //    cornerDir.y = -1;
-            //}
-            //else if (slopeAngleDeg > 90 || slopeAngleDeg < -90)
-            //{
-            //    cornerDir.y = -Mathf.Tan(slopeAngleRad);
-            //    cornerDir.x = -cornerDir.x;
-            //    cornerDir.z = -cornerDir.z;
-            //}
-            //else
-            //    cornerDir.y = Mathf.Tan(slopeAngleRad);
-
-            //if (!Node.m_flags.IsFlagSet(NetNode.Flags.Middle))
-            //{
-            //    float d = VectorUtils.DotXZ(cornerPos - Node.m_position, cornerDir);
-            //    cornerPos.y += d * (cornerDir.y - corner.Dir00.y);
-            //}
-
-            if (GUI.Settings.GameConfig.UnviversalSlopeFixes)
-            {
-                float absY = Mathf.Abs(cornerDir.y);
-                if (absY > 2)
-                    cornerDir *= 2 / absY;
-            }
-
-            //Vector3 deltaPos = Vector3.zero;
-
-            //float embankmentAngleRad = (leftSide ? -1 : 1) * EmbankmentAngle * Mathf.Deg2Rad;
-            //float sinEmbankmentAngle = Mathf.Sin(embankmentAngleRad);
-            //float cosEmbankmentAngle = Mathf.Cos(embankmentAngleRad);
-            //float halfWidth = Info.m_halfWidth;
-            //float stretch = Stretch * 0.01f;
-            //float totalHalfWidth = halfWidth * (1 + stretch);
-            //deltaPos.x += -totalHalfWidth * (1 - cosEmbankmentAngle);
-            //deltaPos.y = totalHalfWidth * sinEmbankmentAngle;
-
-            // Stretch:
-            //deltaPos.x += halfWidth * stretch * cosEmbankmentAngle;
-            //deltaPos.y += halfWidth * stretch * sinEmbankmentAngle;
-
-            //cornerPos += CornerData.TransformCoordinates(deltaPos, outwardDir, Vector3.up, forwardDir);
-
-            //cornerPos += CornerData.TransformCoordinates(corner.DeltaPos, outwardDir, Vector3.up, forwardDir);
-            //cornerDir += CornerData.TransformCoordinates(corner.DeltaDir, outwardDir, Vector3.up, forwardDir);
-
-            //if (corner.LockLength)
-            //{
-            //    float prevSqrmagnitiude = ((Vector3)corner.CachedDir).sqrMagnitude;
-            //    float newSqrmagnitiude = cornerDir.sqrMagnitude;
-            //    cornerDir *= Mathf.Sqrt(prevSqrmagnitiude / newSqrmagnitiude);
-            //}
-        }
         public void OnAfterCalculate()
         {
-            InProgress = true;
-
             Segment.CalculateCorner(SegmentId, true, IsStartNode, leftSide: true, cornerPos: out var lpos, cornerDirection: out var ldir, out _);
             Segment.CalculateCorner(SegmentId, true, IsStartNode, leftSide: false, cornerPos: out var rpos, cornerDirection: out var rdir, out _);
 
             Vector3 diff = rpos - lpos;
             float se = Mathf.Atan2(diff.y, VectorUtils.LengthXZ(diff));
             CachedSuperElevationDeg = se * Mathf.Rad2Deg;
-
-            SimulationManager.instance.m_ThreadingWrapper.QueueMainThread(delegate ()
-            {
-                //var activePanel = UIPanelBase.ActivePanel;
-                //if (activePanel != null)
-                //{
-                //    if (activePanel.NetworkType == NetworkTypeT.Node && NodeID == SelectedNodeID)
-                //    {
-                //        activePanel.RefreshValues();
-                //    }
-                //    else if (activePanel.NetworkType == NetworkTypeT.SegmentEnd && this.IsSelected())
-                //    {
-                //        activePanel.RefreshValues();
-                //    }
-                //}
-            });
-            InProgress = false;
         }
 
         #endregion

@@ -70,18 +70,17 @@ namespace NodeController
 
         public override void OnAssetLoaded(string name, object asset, Dictionary<string, byte[]> userData)
         {
-            if (asset is BuildingInfo prefab)
-            {
-                if (userData != null && userData.TryGetValue(NC_ID, out byte[] data))
-                {
-                    SingletonMod<Mod>.Logger.Debug("AssetDataExtension.OnAssetLoaded():  extracted data for " + NC_ID);
-                    object[] records = AssetData.Deserialize(data);
-                    if (records != null)
-                        Asset2Records[prefab] = records;
-                    SingletonMod<Mod>.Logger.Debug("AssetDataExtension.OnAssetLoaded(): records=" + records.ToSTR());
-
-                }
-            }
+            //if (asset is BuildingInfo prefab)
+            //{
+            //    if (userData != null && userData.TryGetValue(NC_ID, out byte[] data))
+            //    {
+            //        SingletonMod<Mod>.Logger.Debug("AssetDataExtension.OnAssetLoaded():  extracted data for " + NC_ID);
+            //        object[] records = AssetData.Deserialize(data);
+            //        if (records != null)
+            //            Asset2Records[prefab] = records;
+            //        SingletonMod<Mod>.Logger.Debug("AssetDataExtension.OnAssetLoaded(): records=" + records.ToSTR());
+            //    }
+            //}
         }
 
         public override void OnAssetSaved(string name, object asset, out Dictionary<string, byte[]> userData)

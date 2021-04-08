@@ -69,7 +69,12 @@ namespace NodeController.UI
         }
         private void ResetPanel()
         {
-            ClearDataProperties();
+            StopLayout();
+
+            foreach (var property in components.ToArray())
+                ComponentPool.Free(property);
+
+            StartLayout();
         }
 
         private void FillProperties()

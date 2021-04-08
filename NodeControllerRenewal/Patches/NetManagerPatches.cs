@@ -72,8 +72,8 @@ namespace NodeController.Patches
             if (Upgrading)
                 UpgradingSegmentData = LifeCycle.MoveItIntegration.CopySegment(segment);
 
-            SegmentEndManager.Instance.SetAt(segmentID: segment, true, value: null);
-            SegmentEndManager.Instance.SetAt(segmentID: segment, false, value: null);
+            SegmentEndManager.Instance.SetAt(segment, true, null);
+            SegmentEndManager.Instance.SetAt(segment, false,  null);
         }
         public static void ReleaseNodeImplementationPrefix(ushort node) => NodeManager.Instance.SetNullNodeAndSegmentEnds(node);
     }

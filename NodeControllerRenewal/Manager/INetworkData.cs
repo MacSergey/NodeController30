@@ -11,7 +11,9 @@ namespace NodeController
 
         public float Offset { get; set; }
         public float Shift { get; set; }
-        public float Angle { get; set; }
+        public float RotateAngle { get; set; }
+        public float SlopeAngle { get; set; }
+        public float TwistAngle { get; set; }
 
         void Update();
         void Calculate();

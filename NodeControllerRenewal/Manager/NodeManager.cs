@@ -83,7 +83,7 @@ namespace NodeController
             foreach (var segmentID in NetUtil.IterateNodeSegments(nodeID))
             {
                 var segEnd = new SegmentEndData(segmentID, nodeID);
-                SegmentEndManager.Instance.SetAt(segmentID: segmentID, nodeID: nodeID, value: segEnd);
+                SegmentEndManager.Instance.SetAt(segmentID, nodeID, segEnd);
             }
 
             var info = controlPoint.m_segment.ToSegment().Info;
@@ -97,22 +97,18 @@ namespace NodeController
             return buffer[nodeID];
         }
 
-        public ref NodeData GetOrCreate(ushort nodeID)
+        public NodeData GetOrCreate(ushort nodeID)
         {
-            ref NodeData data = ref Instance.buffer[nodeID];
-            if (data == null)
+            if (Instance.buffer[nodeID] is not NodeData data)
             {
                 data = new NodeData(nodeID);
                 buffer[nodeID] = data;
             }
 
             foreach (var segmentID in NetUtil.IterateNodeSegments(nodeID))
-            {
-                SegmentEndManager.Instance.
-                    GetOrCreate(segmentID: segmentID, nodeID: nodeID);
-            }
+                SegmentEndManager.Instance.GetOrCreate(segmentID, nodeID);
 
-            return ref data;
+            return data;
         }
 
         /// <summary>
@@ -193,10 +189,8 @@ namespace NodeController
         public void SetNullNodeAndSegmentEnds(ushort nodeID)
         {
             foreach (var segmentID in NetUtil.IterateNodeSegments(nodeID))
-            {
-                SegmentEndManager.Instance.
-                    SetAt(segmentID: segmentID, nodeID: nodeID, value: null);
-            }
+                SegmentEndManager.Instance.SetAt(segmentID, nodeID, null);
+
             buffer[nodeID] = null;
         }
 

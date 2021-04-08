@@ -39,48 +39,39 @@ namespace NodeController
 
         #endregion LifeCycle
 
-        public SegmentEndData[] buffer = new SegmentEndData[NetManager.MAX_SEGMENT_COUNT * 2];
+        private SegmentEndData[] Buffer { get; } = new SegmentEndData[NetManager.MAX_SEGMENT_COUNT * 2];
 
-        public ref SegmentEndData GetAt(ushort segmentID, ushort nodeID)
+        private int GetIndex(ushort segmentID, bool startNode) => segmentID * 2 + (startNode ? 0 : 1);
+        public SegmentEndData GetAt(ushort segmentID, ushort nodeID)
         {
             bool startNode = NetUtil.IsStartNode(segmentId: segmentID, nodeId: nodeID);
-            return ref GetAt(segmentID, startNode);
+            return GetAt(segmentID, startNode);
         }
-        public ref SegmentEndData GetAt(ushort segmentID, bool startNode)
-        {
-            if (startNode)
-                return ref buffer[segmentID * 2];
-            else
-                return ref buffer[segmentID * 2 + 1];
-        }
+        public SegmentEndData GetAt(ushort segmentID, bool startNode) => Buffer[GetIndex(segmentID, startNode)];
 
-        public void SetAt(ushort segmentID, ushort nodeID, SegmentEndData value)
+        public void SetAt(ushort segmentID, ushort nodeID, SegmentEndData data)
         {
             bool startNode = NetUtil.IsStartNode(segmentId: segmentID, nodeId: nodeID);
-            SetAt(segmentID, startNode, value);
+            SetAt(segmentID, startNode, data);
         }
 
-        public void SetAt(ushort segmentID, bool startNode, SegmentEndData value)
-        {
-            GetAt(segmentID, startNode) = value;
-        }
+        public void SetAt(ushort segmentID, bool startNode, SegmentEndData data) => Buffer[GetIndex(segmentID, startNode)] = data;
 
-        public ref SegmentEndData GetOrCreate(ushort segmentID, ushort nodeID)
+        public SegmentEndData GetOrCreate(ushort segmentID, ushort nodeID)
         {
             bool startNode = NetUtil.IsStartNode(segmentId: segmentID, nodeId: nodeID);
-            return ref GetOrCreate(segmentID, startNode);
+            return GetOrCreate(segmentID, startNode);
         }
 
-        public ref SegmentEndData GetOrCreate(ushort segmentID, bool startNode)
+        public SegmentEndData GetOrCreate(ushort segmentID, bool startNode)
         {
-            ref SegmentEndData data = ref GetAt(segmentID, startNode);
-            if (data == null)
+            if(GetAt(segmentID, startNode) is not SegmentEndData data)
             {
                 ushort nodeID = NetUtil.GetSegmentNode(segmentID, startNode);
-                data = new SegmentEndData(segmentID: segmentID, nodeID: nodeID);
-                SetAt(segmentID: segmentID, startNode: startNode, data);
+                data = new SegmentEndData(segmentID, nodeID);
+                SetAt(segmentID, startNode, data);
             }
-            return ref data;
+            return data;
         }
 
         public void ResetSegmentEndToDefault(ushort segmentID, bool startNode)
@@ -96,7 +87,7 @@ namespace NodeController
 
         public void UpdateAll()
         {
-            foreach (var segmentEndData in buffer)
+            foreach (var segmentEndData in Buffer)
             {
                 if (segmentEndData == null) 
                     continue;
@@ -113,11 +104,10 @@ namespace NodeController
         public void Heal()
         {
             SingletonMod<Mod>.Logger.Debug("SegmentEndManager.Heal() called");
-            buffer[0] = buffer[1] = null;
-            for (int i = 1; i < buffer.Length; ++i)
+            Buffer[0] = Buffer[1] = null;
+            for (int i = 1; i < Buffer.Length; ++i)
             {
-                ref SegmentEndData data = ref buffer[i];
-                if (data == null) 
+                if(Buffer[i] is not SegmentEndData data)
                     continue;
 
                 bool startNode = i % 2 == 0;
@@ -126,7 +116,7 @@ namespace NodeController
 
                 if (!NetUtil.IsNodeValid(nodeID) || !NetUtil.IsSegmentValid(segmentID))
                 {
-                    buffer[i] = null;
+                    Buffer[i] = null;
                     continue;
                 }
                 if (data.NodeId != nodeID)
@@ -135,7 +125,7 @@ namespace NodeController
                     data.SegmentId = segmentID;
 
                 if (data.IsStartNode != startNode)
-                    buffer[i] = null;
+                    Buffer[i] = null;
             }
         }
     }

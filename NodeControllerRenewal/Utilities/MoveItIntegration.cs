@@ -24,8 +24,8 @@ namespace NodeController.LifeCycle
 
     public class MoveItIntegration : MoveItIntegrationBase
     {
-        static NodeManager nodeMan => NodeManager.Instance;
-        static SegmentEndManager segEndMan => SegmentEndManager.Instance;
+        static NodeManager NodeManager => NodeManager.Instance;
+        static SegmentEndManager SegmentEndManager => SegmentEndManager.Instance;
 
         public override string ID => "CS.Kian.NodeController";
 
@@ -34,17 +34,23 @@ namespace NodeController.LifeCycle
         public override object Decode64(string base64Data, Version dataVersion)
         {
             SingletonMod<Mod>.Logger.Debug($"MoveItIntegration.Decode64({base64Data},{dataVersion}) was called");
-            if (base64Data == null || base64Data.Length == 0) return null;
-            byte[] data = Convert.FromBase64String(base64Data);
-            return SerializationUtil.Deserialize(data, dataVersion);
+            if (base64Data == null || base64Data.Length == 0)
+                return null;
+            else
+            {
+                byte[] data = Convert.FromBase64String(base64Data);
+                return SerializationUtil.Deserialize(data, dataVersion);
+            }
         }
 
         public override string Encode64(object record)
         {
             SingletonMod<Mod>.Logger.Debug($"MoveItIntegration.Encode64({record}) was called");
             var data = SerializationUtil.Serialize(record);
-            if (data == null || data.Length == 0) return null;
-            return Convert.ToBase64String(data);
+            if (data == null || data.Length == 0)
+                return null;
+            else
+                return Convert.ToBase64String(data);
         }
 
         public override object Copy(InstanceID sourceInstanceID)
@@ -81,17 +87,14 @@ namespace NodeController.LifeCycle
             }
         }
 
-        public static NodeData CopyNode(ushort sourceNodeID)
-        {
-            return NodeManager.Instance.buffer[sourceNodeID]?.Clone();
-        }
+        public static NodeData CopyNode(ushort sourceNodeID) => NodeManager.Instance.buffer[sourceNodeID]?.Clone();
 
         public static MoveItSegmentData CopySegment(ushort sourceSegmentID)
         {
             var ret = new MoveItSegmentData
             {
-                Start = segEndMan.GetAt(segmentID: sourceSegmentID, startNode: true)?.Clone(),
-                End = segEndMan.GetAt(segmentID: sourceSegmentID, startNode: false)?.Clone()
+                Start = SegmentEndManager.GetAt(sourceSegmentID, true)?.Clone(),
+                End = SegmentEndManager.GetAt(sourceSegmentID, false)?.Clone()
             };
             if (ret.Start == null && ret.End == null)
                 return null;
@@ -109,8 +112,8 @@ namespace NodeController.LifeCycle
             else
             {
                 record = record.Clone();
-                nodeMan.buffer[targetNodeID] = record;
-                nodeMan.buffer[targetNodeID].NodeId = targetNodeID;
+                NodeManager.buffer[targetNodeID] = record;
+                NodeManager.buffer[targetNodeID].NodeId = targetNodeID;
 
                 // Do not call refresh here as it might restart node to 0 even though corner offsets from
                 // segments may come in later.
@@ -147,17 +150,12 @@ namespace NodeController.LifeCycle
             {
                 ushort segmentID;
                 if (moveItSegmentData.Start != null)
-                {
                     segmentID = moveItSegmentData.Start.SegmentId;
-                }
                 else if (moveItSegmentData.End != null)
-                {
                     segmentID = moveItSegmentData.End.SegmentId;
-                }
                 else
-                {
                     return;
-                }
+
                 ushort mappedSegmentID = MappedSegmentID(map, segmentID);
                 PasteSegment(mappedSegmentID, moveItSegmentData, map);
             }
@@ -167,37 +165,25 @@ namespace NodeController.LifeCycle
         {
             InstanceID instanceID = new InstanceID { NetNode = nodeID };
             if (map.TryGetValue(instanceID, out InstanceID mappedInstanceID))
-            {
                 return mappedInstanceID.NetNode;
-            }
             else
-            {
                 throw new Exception($"map does not contian node:{nodeID} map = {map.ToSTR()}");
-            }
         }
         public static ushort MappedSegmentID(Dictionary<InstanceID, InstanceID> map, ushort segmentID)
         {
             InstanceID instanceID = new InstanceID { NetSegment = segmentID };
             if (map.TryGetValue(instanceID, out InstanceID mappedInstanceID))
-            {
                 return mappedInstanceID.NetSegment;
-            }
             else
-            {
                 throw new Exception($"map does not contian segment:{segmentID} map = {map.ToSTR()}");
-            }
         }
 
-        public static void PasteSegmentEnd(
-            SegmentEndData segmentEndData, ushort targetSegmentID, Dictionary<InstanceID, InstanceID> map)
+        public static void PasteSegmentEnd(SegmentEndData segmentEndData, ushort targetSegmentID, Dictionary<InstanceID, InstanceID> map)
         {
             if (segmentEndData != null)
             {
                 ushort nodeID = MappedNodeID(map, segmentEndData.NodeId);
-                PasteSegmentEnd(
-                    segmentEndData: segmentEndData,
-                    targetNodeID: nodeID,
-                    targetSegmentID: targetSegmentID);
+                PasteSegmentEnd(segmentEndData, nodeID, targetSegmentID);
             }
         }
 
@@ -210,10 +196,7 @@ namespace NodeController.LifeCycle
                 segmentEndData.SegmentId = targetSegmentID;
                 segmentEndData.NodeId = targetNodeID;
             }
-            segEndMan.SetAt(
-                segmentID: targetSegmentID,
-                nodeID: targetNodeID,
-                value: segmentEndData);
+            SegmentEndManager.SetAt(targetSegmentID, targetNodeID, segmentEndData);
         }
 
     }

@@ -29,19 +29,19 @@ namespace NodeController.Patches
             else
                 node.m_flags &= ~NetNode.Flags.Transition;
 
-            if (nodeData.NeedMiddleFlag)
+            if (nodeData.IsMiddleNode)
             {
                 node.m_flags &= ~(NetNode.Flags.Junction | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward);
                 node.m_flags |= NetNode.Flags.Middle;
             }
 
-            if (nodeData.NeedBendFlag)
+            if (nodeData.IsBendNode)
             {
                 node.m_flags &= ~(NetNode.Flags.Junction | NetNode.Flags.Middle);
                 node.m_flags |= NetNode.Flags.Bend; // TODO set asymForward and asymBackward
             }
 
-            if (nodeData.NeedJunctionFlag)
+            if (nodeData.IsJunctionNode)
             {
                 node.m_flags |= NetNode.Flags.Junction;
                 node.m_flags &= ~(NetNode.Flags.Middle | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward | NetNode.Flags.Bend | NetNode.Flags.End);

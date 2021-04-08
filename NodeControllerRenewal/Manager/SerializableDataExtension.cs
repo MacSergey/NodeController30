@@ -67,12 +67,10 @@ namespace NodeController.LifeCycle
             SegmentEndManager.Deserialize(Instance.SegmentEndManagerData, version);
             NodeManager.Deserialize(Instance.NodeManagerData, version);
         }
-
     }
 
     [UsedImplicitly]
-    public class SerializableDataExtension
-        : SerializableDataExtensionBase
+    public class SerializableDataExtension : SerializableDataExtensionBase
     {
         private const string DATA_ID0 = "RoadTransitionManager_V1.0";
         private const string DATA_ID1 = "NodeController_V1.0";
@@ -81,19 +79,19 @@ namespace NodeController.LifeCycle
         public static int LoadingVersion;
         public override void OnLoadData()
         {
-            byte[] data = serializableDataManager.LoadData(DATA_ID);
-            if (data != null)
-            {
-                LoadingVersion = 2;
-                NCState.Deserialize(data);
-            }
-            else
-            {
-                // convert to new version
-                LoadingVersion = 1;
-                data = serializableDataManager.LoadData(DATA_ID1) ?? serializableDataManager.LoadData(DATA_ID0);
-                NodeManager.Deserialize(data, new Version(1, 0));
-            }
+            //byte[] data = serializableDataManager.LoadData(DATA_ID);
+            //if (data != null)
+            //{
+            //    LoadingVersion = 2;
+            //    NCState.Deserialize(data);
+            //}
+            //else
+            //{
+            //    // convert to new version
+            //    LoadingVersion = 1;
+            //    data = serializableDataManager.LoadData(DATA_ID1) ?? serializableDataManager.LoadData(DATA_ID0);
+            //    NodeManager.Deserialize(data, new Version(1, 0));
+            //}
         }
 
         public override void OnSaveData()
