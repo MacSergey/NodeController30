@@ -10,7 +10,7 @@ namespace NodeController.Patches
     public static class NetManagerPatches
     {
         public static MoveItSegmentData UpgradingSegmentData;
-        public static bool Upgrading => (bool)AccessTools.Field(typeof(Singleton<NetTool>), "m_upgrading").GetValue(Singleton<NetTool>.instance);
+        public static bool Upgrading => (bool)AccessTools.Field(typeof(NetTool), "m_upgrading").GetValue(Singleton<NetTool>.instance);
 
         public static void CreateSegmentPostfix(ref ushort segment, ushort startNode, ushort endNode, bool __result)
         {

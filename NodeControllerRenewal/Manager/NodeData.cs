@@ -73,6 +73,19 @@ namespace NodeController
                 Update();
             }
         }
+        public float Shift
+        {
+            get => Node.SegmentsId().Average(s => SegmentEndManager.Instance.GetOrCreate(s, NodeId).Shift);
+            set
+            {
+                foreach (var segmentId in Node.SegmentsId())
+                {
+                    var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
+                    segEnd.Shift = value;
+                }
+                Update();
+            }
+        }
         public float Angle
         {
             get => Node.SegmentsId().Average(s => SegmentEndManager.Instance.GetOrCreate(s, NodeId).Angle);
@@ -466,47 +479,33 @@ namespace NodeController
         {
             var properties = new List<EditorItem>();
 
-            var offsetProperty = GetOffsetProperty(parent);
-            properties.Add(offsetProperty);
-            var segmentOffsets = Node.SegmentsId().Select(s => GetSegmentOffsetProperty(parent, s)).ToArray();
-            properties.AddRange(segmentOffsets);
-            offsetProperty.OnValueChanged += NodeOffsetChanged;
-            foreach (var segmentOffsetProperty in segmentOffsets)
-                segmentOffsetProperty.OnValueChanged += SegmentOffsetChanged;
-
-            var angleProperty = GetAngleProperty(parent);
-            properties.Add(angleProperty);
-            var segmentAngles = Node.SegmentsId().Select(s => GetSegmentAngleProperty(parent, s)).ToArray();
-            properties.AddRange(segmentAngles);
-            angleProperty.OnValueChanged += NodeAngleChanged;
-            foreach (var segmentAngleProperty in segmentAngles)
-                segmentAngleProperty.OnValueChanged += SegmentAngleChanged;
-
-            properties.Add(GetHideMarkingProperty(parent));
+            GetUIComponents(properties, parent, GetOffsetProperty, GetSegmentOffsetProperty, () => Offset);
+            GetUIComponents(properties, parent, GetShiftProperty, GetSegmentShiftProperty, () => Shift);
+            GetUIComponents(properties, parent, GetAngleProperty, GetSegmentAngleProperty, () => Angle);
 
             return properties;
 
-            void NodeOffsetChanged(float value)
-            {
-                var offset = Offset;
-                foreach (var segmentOffsetProperty in segmentOffsets)
-                    segmentOffsetProperty.Value = offset;
-            }
-            void NodeAngleChanged(float value)
-            {
-                var angle = Angle;
-                foreach (var segmentAngleProperty in segmentAngles)
-                    segmentAngleProperty.Value = angle;
-            }
+        }
+        private void GetUIComponents(List<EditorItem> properties, UIComponent parent, Func<UIComponent, FloatPropertyPanel> getNodeProperty, Func<UIComponent, ushort, FloatPropertyPanel> getSegmentProperty, Func<float> getValue)
+        {
+            var property = getNodeProperty(parent);
+            var segmentProperties = Node.SegmentsId().Select(s => getSegmentProperty(parent, s)).ToArray();
+            properties.Add(property);
+            properties.AddRange(segmentProperties);
 
-            void SegmentOffsetChanged(float value)
+            property.OnValueChanged += NodeChanged;
+            foreach (var segmentProperty in segmentProperties)
+                segmentProperty.OnValueChanged += SegmentChanged;
+
+            void NodeChanged(float _)
             {
-                offsetProperty.Value = Offset;
-                Update();
+                var value = getValue();
+                foreach (var segmentProperty in segmentProperties)
+                    segmentProperty.Value = value;
             }
-            void SegmentAngleChanged(float value)
+            void SegmentChanged(float _)
             {
-                angleProperty.Value = Angle;
+                property.Value = getValue();
                 Update();
             }
         }
@@ -519,6 +518,17 @@ namespace NodeController
             offsetProperty.MaxValue = 100;
             offsetProperty.Value = Offset;
             offsetProperty.OnValueChanged += (value) => Offset = value;
+
+            return offsetProperty;
+        }
+        private FloatPropertyPanel GetShiftProperty(UIComponent parent)
+        {
+            var offsetProperty = GetNodeProperty(parent);
+            offsetProperty.Text = "Shift";
+            offsetProperty.MinValue = -32;
+            offsetProperty.MaxValue = 32;
+            offsetProperty.Value = Shift;
+            offsetProperty.OnValueChanged += (value) => Shift = value;
 
             return offsetProperty;
         }
@@ -554,6 +564,18 @@ namespace NodeController
             offsetProperty.MaxValue = 100;
             offsetProperty.Value = segmentData.Offset;
             offsetProperty.OnValueChanged += (value) => segmentData.Offset = value;
+
+            return offsetProperty;
+        }
+        private FloatPropertyPanel GetSegmentShiftProperty(UIComponent parent, ushort segmentId)
+        {
+            var segmentData = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
+            var offsetProperty = GetSegmentProperty(parent);
+            offsetProperty.Text = $"Segment #{segmentId} shift";
+            offsetProperty.MinValue = -32;
+            offsetProperty.MaxValue = 32;
+            offsetProperty.Value = segmentData.Shift;
+            offsetProperty.OnValueChanged += (value) => segmentData.Shift = value;
 
             return offsetProperty;
         }
