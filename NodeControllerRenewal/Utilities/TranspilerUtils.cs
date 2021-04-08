@@ -44,6 +44,14 @@ namespace KianCommons.Patches
             else
                 return new CodeInstruction(OpCodes.Ldarg_S, idx);
         }
+        public static CodeInstruction GetLDArgRef(MethodBase method, string argName, bool throwOnError = true)
+        {
+            if (!throwOnError && !HasParameter(method, argName))
+                return null;
+
+            byte idx = method.GetArgLoc(argName);
+            return new CodeInstruction(OpCodes.Ldarga_S, idx);
+        }
 
         /// <returns>
         /// returns the argument location to be used in LdArg instruction.

@@ -9,6 +9,10 @@ namespace NodeController
         public string Title { get; }
         bool IsDefault { get; }
 
+        public float Offset { get; set; }
+        public float Shift { get; set; }
+        public float Angle { get; set; }
+
         void Update();
         void Calculate();
         void ResetToDefault();

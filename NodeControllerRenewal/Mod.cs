@@ -176,7 +176,7 @@ namespace NodeController
         #region NETSEGMENT
         private void PatchNetSegment(ref bool success)
         {
-            success &= Patch_NetSegment_CalculateCorner_Postfix();
+            //success &= Patch_NetSegment_CalculateCorner_Postfix();
             success &= Patch_NetSegment_CalculateCorner_Transpiler();
             success &= Patch_NetSegment_FindDirection();
             success &= Patch_NetSegment_CalculateSegment();
