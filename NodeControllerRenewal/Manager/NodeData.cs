@@ -100,19 +100,6 @@ namespace NodeController
             }
         }
 
-        public float CornerOffset
-        {
-            get => Node.SegmentsId().Average(s => SegmentEndManager.Instance.GetOrCreate(s, NodeId).CornerOffset);
-            set
-            {
-                foreach (var segmentId in Node.SegmentsId())
-                {
-                    var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
-                    segEnd.CornerOffset = value;
-                }
-                Update();
-            }
-        }
         public bool NoMarkings
         {
             get => Node.SegmentsId().Any(s => SegmentEndManager.Instance.GetOrCreate(s, NodeId).NoMarkings);
@@ -158,7 +145,7 @@ namespace NodeController
         }
 
 
-        public bool HasUniformCornerOffset => IsUniform(s => s.CornerOffset);
+        public bool HasUniformOffset => IsUniform(s => s.Offset);
         public bool HasUniformNoMarkings => IsUniform(s => s.NoMarkings);
         public bool HasUniformEmbankmentAngle => SegmentEnd1.EmbankmentAngle == -SegmentEnd2.EmbankmentAngle;
         public bool HasUniformSlopeAngle => Math.Abs(SegmentEnd1.SlopeAngle + SegmentEnd2.SlopeAngle) < 1f;
@@ -363,9 +350,9 @@ namespace NodeController
             if (!CanModifyOffset)
             {
                 if (NodeType == NodeTypeT.UTurn)
-                    CornerOffset = 8f;
+                    Offset = 8f;
                 else if (NodeType == NodeTypeT.Crossing)
-                    CornerOffset = 0f;
+                    Offset = 0f;
             }
         }
 

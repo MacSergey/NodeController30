@@ -91,10 +91,10 @@ namespace NodeController.Patches
             index = codes.Search(c => c.IsStloc(), index);
             return codes[index].BuildLdLocFromStLoc();
         }
-        public static float GetMinCornerOffset(float cornerOffset0, ushort nodeID, ushort segmentID)
+        public static float GetMinCornerOffset(float cornerOffset, ushort nodeID, ushort segmentID)
         {
             var segmentData = SegmentEndManager.Instance.GetAt(segmentID, nodeID);
-            return segmentData == null ? cornerOffset0 : (segmentData.Corner(true).Offset + segmentData.Corner(false).Offset) * 0.5f;
+            return segmentData?.Offset ?? cornerOffset;
         }
 
         public static IEnumerable<CodeInstruction> RenderInstanceTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase method)

@@ -18,6 +18,7 @@ namespace NodeController
         public bool ShowPanel => false;
         public ToolModeType Type => ToolModeType.Select;
         protected override bool SelectSegments => false;
+        protected override bool SelectMiddleNodes => true;
 
         public override string GetToolInfo() => IsHoverNode ? $"Node {HoverNode.Id}" : (IsHoverSegment ? $"Segment {HoverSegment.Id}" : string.Empty);
 
