@@ -21,7 +21,7 @@ namespace NodeController.LifeCycle
 
         public static byte[] Serialize()
         {
-            NodeManager.ValidateAndHeal(false);
+            NodeManager.ValidateAndHeal();
             Instance = new NCState
             {
                 NodeManagerData = NodeManager.Serialize(),

@@ -43,8 +43,8 @@ namespace NodeController.Patches
             }
             else
             {
-                SegmentEndManager.Instance.SetAt(segment, true, null);
-                SegmentEndManager.Instance.SetAt(segment, false, null);
+                SegmentEndManager.Instance[segment, true] = null;
+                SegmentEndManager.Instance[segment, false] = null;
             }
         }
 
@@ -72,8 +72,8 @@ namespace NodeController.Patches
             if (Upgrading)
                 UpgradingSegmentData = LifeCycle.MoveItIntegration.CopySegment(segment);
 
-            SegmentEndManager.Instance.SetAt(segment, true, null);
-            SegmentEndManager.Instance.SetAt(segment, false,  null);
+            SegmentEndManager.Instance[segment, true] = null;
+            SegmentEndManager.Instance[segment, false] = null;
         }
         public static void ReleaseNodeImplementationPrefix(ushort node) => NodeManager.Instance.SetNullNodeAndSegmentEnds(node);
     }

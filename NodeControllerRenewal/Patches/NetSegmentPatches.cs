@@ -18,38 +18,33 @@ namespace NodeController.Patches
     {
         public static void CalculateCornerPostfix(ushort segmentID, bool start, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection)
         {
-            SegmentEndData data = SegmentEndManager.Instance.GetAt(segmentID, start);
+            var data = SegmentEndManager.Instance[segmentID, start];
             if (data == null && !GUI.Settings.GameConfig.UnviversalSlopeFixes)
                 return;
 
-            ushort nodeID = segmentID.ToSegment().GetNode(start);
-            bool middle = nodeID.ToNode().m_flags.IsFlagSet(NetNode.Flags.Middle);
-            bool untouchable = nodeID.ToNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
-            if (!middle)
+            var segment = segmentID.GetSegment();
+            var nodeId = segment.GetNode(start);
+            var node = nodeId.GetNode();
+
+            var untouchable = node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
+            if (!node.m_flags.IsFlagSet(NetNode.Flags.Middle))
             {
-                bool flatJunctions = data?.FlatJunctions ?? untouchable || segmentID.ToSegment().Info.m_flatJunctions;
+                var flatJunctions = data?.FlatJunctions ?? untouchable || segment.Info.m_flatJunctions;
                 if (!flatJunctions)
-                    FixCornerPos(nodeID.ToNode().m_position, segmentID.ToSegment().GetDirection(nodeID), ref cornerPos);
+                    FixCornerPos(node.m_position, segment.GetDirection(nodeId), ref cornerPos);
                 else
                 {
-                    // left segment going away from the node is right segment going toward the node.
-                    ushort neighbourSegmentID = leftSide ? segmentID.ToSegment().GetRightSegment(nodeID) : segmentID.ToSegment().GetLeftSegment(nodeID);
-
                     bool twist;
                     if (data != null)
                         twist = data.CanModifyTwist && data.Twist;
                     else
-                    {
-                        twist = !untouchable && segmentID.ToSegment().Info.m_flatJunctions;
-                        twist = twist && SegmentEndData.CanTwist(segmentId: segmentID, nodeId: nodeID);
-                    }
+                        twist = !untouchable && segment.Info.m_flatJunctions && SegmentEndData.CanTwist(segmentID, nodeId);
 
                     if (twist)
                     {
-                        Vector3 nodePos = nodeID.ToNode().m_position;
-                        Vector3 neighbourEndDir = neighbourSegmentID.ToSegment().GetDirection(nodeID);
-
-                        FixCornerPosMinor(nodePos, neighbourEndDir, ref cornerDirection, ref cornerPos);
+                        var neighbourSegmentId = leftSide ? segment.GetRightSegment(nodeId) : segment.GetLeftSegment(nodeId);
+                        var neighbourEndDir = neighbourSegmentId.GetSegment().GetDirection(nodeId);
+                        FixCornerPosMinor(node.m_position, neighbourEndDir, ref cornerDirection, ref cornerPos);
                     }
                 }
             }
@@ -63,23 +58,23 @@ namespace NodeController.Patches
             }
             else
             {
-                float absY = Mathf.Abs(cornerDirection.y);
+                var absY = Mathf.Abs(cornerDirection.y);
                 if (absY > 2)
                     cornerDirection *= 2 / absY;
             }
         }
         public static void FixCornerPos(Vector3 nodePos, Vector3 segmentEndDir, ref Vector3 cornerPos)
         {
-            float d = DotXZ(cornerPos - nodePos, segmentEndDir);
+            var d = DotXZ(cornerPos - nodePos, segmentEndDir);
             cornerPos.y = nodePos.y + d * segmentEndDir.y;
         }
 
         public static void FixCornerPosMinor(Vector3 nodePos, Vector3 neighbourEndDir, ref Vector3 cornerDir, ref Vector3 cornerPos)
         {
-            float d = DotXZ(cornerPos - nodePos, neighbourEndDir);
+            var d = DotXZ(cornerPos - nodePos, neighbourEndDir);
             cornerPos.y = nodePos.y + d * neighbourEndDir.y;
 
-            float acos = DotXZ(cornerDir, neighbourEndDir);
+            var acos = DotXZ(cornerDir, neighbourEndDir);
             cornerDir.y = neighbourEndDir.y * acos;
         }
 
@@ -99,10 +94,10 @@ namespace NodeController.Patches
             yield break;
         }
 
-        public static bool GetFlatJunctions(bool flatJunctions0, ushort segmentID, ushort nodeID)
+        public static bool GetFlatJunctions(bool flatJunctions, ushort segmentId, ushort nodeId)
         {
-            var data = SegmentEndManager.Instance.GetAt(segmentID, nodeID);
-            return data?.FlatJunctions ?? flatJunctions0;
+            var data = SegmentEndManager.Instance[segmentId, nodeId];
+            return data?.FlatJunctions ?? flatJunctions;
         }
 
         public static void CalculateSegmentPostfix(ushort segmentID)
@@ -110,8 +105,8 @@ namespace NodeController.Patches
             if (!NetUtil.IsSegmentValid(segmentID))
                 return;
 
-            SegmentEndData segStart = SegmentEndManager.Instance.GetAt(segmentID, true);
-            SegmentEndData segEnd = SegmentEndManager.Instance.GetAt(segmentID, false);
+            var segStart = SegmentEndManager.Instance[segmentID, true];
+            var segEnd = SegmentEndManager.Instance[segmentID, false];
             segStart?.OnAfterCalculate();
             segEnd?.OnAfterCalculate();
         }
@@ -126,7 +121,7 @@ namespace NodeController.Patches
             yield return TranspilerUtils.GetLDArgRef(original, "startDir");
             yield return TranspilerUtils.GetLDArgRef(original, "endPos");
             yield return TranspilerUtils.GetLDArgRef(original, "endDir");
-            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(FixPosAndDir)));
+            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(ShiftSegment)));
 
             var halfWidthField = AccessTools.Field(typeof(NetInfo), nameof(NetInfo.m_halfWidth));
             var halfWidthLocal = generator.DeclareLocal(typeof(float));
@@ -176,13 +171,13 @@ namespace NodeController.Patches
                     yield return instruction;
             }
         }
-        public static void FixPosAndDir(ushort firstNodeId, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
+        public static void ShiftSegment(ushort firstNodeId, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
         {
             var segment = segmentId.GetSegment();
             var secondNodeId = segment.m_startNode == firstNodeId ? segment.m_endNode : segment.m_startNode;
 
-            var startShift = SegmentEndManager.Instance.GetAt(segmentId, firstNodeId) is SegmentEndData SegmentData1 ? SegmentData1.Shift : 0f;
-            var endShift = SegmentEndManager.Instance.GetAt(segmentId, secondNodeId) is SegmentEndData SegmentData2 ? SegmentData2.Shift : 0f;
+            var startShift = SegmentEndManager.Instance[segmentId, firstNodeId] is SegmentEndData SegmentData1 ? SegmentData1.Shift : 0f;
+            var endShift = SegmentEndManager.Instance[segmentId, secondNodeId] is SegmentEndData SegmentData2 ? SegmentData2.Shift : 0f;
 
             if (startShift == 0f && endShift == 0f)
                 return;
@@ -199,16 +194,16 @@ namespace NodeController.Patches
             endDir = endDir.TurnRad(deltaAngle, true);
         }
 
-        static float GetHalfWidth(float halfWidth, ushort nodeID, ushort segmentID)
+        static float GetHalfWidth(float halfWidth, ushort nodeId, ushort segmentId)
         {
-            if (SegmentEndManager.Instance.GetAt(segmentID, nodeID) is SegmentEndData segmentData)
+            if (SegmentEndManager.Instance[segmentId, nodeId] is SegmentEndData segmentData)
                 return halfWidth * Mathf.Cos(segmentData.TwistAngle * Mathf.Deg2Rad);
             else
                 return halfWidth;
         }
         static float GetMinCornerOffset(float cornerOffset, float halfWidth, ushort nodeId, ushort segmentId, bool leftSide, Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir)
         {
-            if (SegmentEndManager.Instance.GetAt(segmentId, nodeId) is not SegmentEndData segmentData)
+            if (SegmentEndManager.Instance[segmentId, nodeId] is not SegmentEndData segmentData)
                 return cornerOffset;
 
             var startNormal = startDir.Turn90(false);
@@ -223,8 +218,8 @@ namespace NodeController.Patches
 
             var sideBezier = new Bezier3()
             {
-                a = bezier.a + (leftSide ? 1 : -1) * startNormal *  halfWidth,
-                d = bezier.d + (leftSide ? 1 : -1) * endNormal *  halfWidth,
+                a = bezier.a + (leftSide ? 1 : -1) * startNormal * halfWidth,
+                d = bezier.d + (leftSide ? 1 : -1) * endNormal * halfWidth,
             };
             NetSegment.CalculateMiddlePoints(sideBezier.a, startDir, sideBezier.d, endDir, true, true, out sideBezier.b, out sideBezier.c);
 

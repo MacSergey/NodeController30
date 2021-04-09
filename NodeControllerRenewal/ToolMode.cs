@@ -20,7 +20,7 @@ namespace NodeController
         protected override bool SelectSegments => false;
         protected override bool SelectMiddleNodes => true;
 
-        public override string GetToolInfo() => IsHoverNode ? $"Node {HoverNode.Id}" : (IsHoverSegment ? $"Segment {HoverSegment.Id}" : string.Empty);
+        public override string GetToolInfo() => IsHoverNode ? $"Node {HoverNode.Id}" : "Select node";
 
         public override void OnPrimaryMouseClicked(Event e)
         {
@@ -64,7 +64,7 @@ namespace NodeController
                 var startDir = isStart ? segment.m_startDirection : segment.m_endDirection;
                 var endPos = (isStart ? segment.m_endNode : segment.m_startNode).GetNode().m_position;
                 var endDir = isStart ? segment.m_endDirection : segment.m_startDirection;
-                NetSegmentPatches.FixPosAndDir(data.NodeId, segmentId, ref startPos, ref startDir, ref endPos, ref endDir);
+                NetSegmentPatches.ShiftSegment(data.NodeId, segmentId, ref startPos, ref startDir, ref endPos, ref endDir);
 
                 var line = new StraightTrajectory(startPos, startPos + 5 * startDir);
                 line.Render(new OverlayData(cameraInfo) { Color = Color.green });

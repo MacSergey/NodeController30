@@ -104,7 +104,7 @@ namespace KianCommons
         internal static bool IsGoingBackward(this NetInfo.Lane laneInfo, bool invertDirection = false) => laneInfo.m_finalDirection.Invert(invertDirection).IsGoingForward();
         public static bool IsStartNode(ushort segmentId, ushort nodeId) => segmentId.ToSegment().m_startNode == nodeId;
         public static ushort GetSegmentNode(ushort segmentID, bool startNode) => segmentID.ToSegment().GetNode(startNode);
-        public static ushort GetNode(this ref NetSegment segment, bool startNode) => startNode ? segment.m_startNode : segment.m_endNode;
+        public static ushort GetNode(this NetSegment segment, bool startNode) => startNode ? segment.m_startNode : segment.m_endNode;
         public static bool IsSegmentValid(ushort segmentId) => segmentId != 0 && segmentId.ToSegment().IsValid();
         public static bool IsValid(this ref NetSegment segment) => segment.Info != null ? segment.m_flags.CheckFlags(required: NetSegment.Flags.Created, forbidden: NetSegment.Flags.Deleted) : false;
 
@@ -112,16 +112,6 @@ namespace KianCommons
         public static bool IsValid(this ref NetNode node) => node.Info == null ? false : node.m_flags.CheckFlags(required: NetNode.Flags.Created, forbidden: NetNode.Flags.Deleted);
 
         #endregion
-
-        public static IEnumerable<ushort> IterateNodeSegments(ushort nodeID)
-        {
-            for (int i = 0; i < 8; ++i)
-            {
-                ushort segmentID = nodeID.ToNode().GetSegment(i);
-                if (segmentID != 0)
-                    yield return segmentID;
-            }
-        }
 
         public static IEnumerable<LaneData> IterateSegmentLanes(ushort segmentId)
         {

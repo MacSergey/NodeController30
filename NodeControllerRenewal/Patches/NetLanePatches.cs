@@ -28,8 +28,8 @@ namespace NodeController.Patches
             bool segmentInvert = segmentID.ToSegment().m_flags.IsFlagSet(NetSegment.Flags.Invert);
             bool reverse = backward != segmentInvert;
 
-            var start = SegmentEndManager.Instance.GetAt(segmentID, true);
-            var end = SegmentEndManager.Instance.GetAt(segmentID, false);
+            var start = SegmentEndManager.Instance[segmentID, true];
+            var end = SegmentEndManager.Instance[segmentID, false];
 
             float stretchStart = start?.Stretch ?? 0;
             float stretchEnd = end?.Stretch ?? 0;

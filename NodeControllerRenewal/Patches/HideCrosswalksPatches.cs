@@ -6,7 +6,7 @@ namespace NodeController.Patches
     {
         public static bool ShouldHideCrossingPrefix(ushort nodeID, ushort segmentID, ref bool __result)
         {
-            var data = SegmentEndManager.Instance.GetAt(segmentID, nodeID);
+            var data = SegmentEndManager.Instance[segmentID, nodeID];
             return HelpersExtensions.HandleNullBool(data?.ShouldHideCrossingTexture, ref __result);
         }
     }

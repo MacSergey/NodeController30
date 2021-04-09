@@ -41,34 +41,66 @@ namespace NodeController
         public NetNode Node => NodeId.GetNode();
         public NetInfo Info => Node.Info;
         public NodeTypeT NodeType { get; set; }
-        public IEnumerable<SegmentEndData> SegmentEndDatas => Node.SegmentsId().Select(s => SegmentEndManager.Instance.GetAt(s, NodeId));
+        public IEnumerable<SegmentEndData> SegmentEndDatas => Node.SegmentsId().Select(s => SegmentEndManager.Instance[s, NodeId]);
         public bool IsDefault => NodeType == DefaultNodeType && !SegmentEndDatas.Any(s => s?.IsDefault != true);
 
         public NetNode.Flags DefaultFlags { get; set; }
         public NodeTypeT DefaultNodeType { get; set; }
 
-        public bool HasPedestrianLanes { get; set; }
-        public int SegmentCount { get; set; }
+        private List<ushort> SegmentIdsList { get; set; }
+        public bool IsEnd => SegmentIdsList.Count == 1;
+        public bool IsMain => SegmentIdsList.Count == 2;
+        public bool IsJunction => SegmentIdsList.Count > 2;
+        public IEnumerable<ushort> SegmentIds => SegmentIdsList;
+        public int SegmentCount => SegmentIdsList.Count;
 
-        public float HalfWidthDelta { get; set; }
-        public int PedestrianLaneCount { get; set; }
-        public bool IsStraight { get; set; }
-        public bool Is180 { get; set; }
-        ushort Segment1Id { get; set; }
-        ushort Segment2Id { get; set; }
-        public List<ushort> SortedSegmentIDs { get; set; }
-        public SegmentEndData SegmentEnd1 => SegmentEndManager.Instance.GetAt(Segment1Id, NodeId);
-        public SegmentEndData SegmentEnd2 => SegmentEndManager.Instance.GetAt(Segment2Id, NodeId);
+        ushort FirstSegmentId => IsMain ? SegmentIdsList[0] : 0;
+        ushort SecondSegmentId => IsMain ? SegmentIdsList[1] : 0;
+        NetSegment FirstSegment => FirstSegmentId.GetSegment();
+        NetSegment SecondSegment => SecondSegmentId.GetSegment();
+        public SegmentEndData FirstSegmentEnd => SegmentEndManager.Instance[FirstSegmentId, NodeId];
+        public SegmentEndData SecondSegmentEnd => SegmentEndManager.Instance[SecondSegmentId, NodeId];
+
+        public bool HasPedestrianLanes => SegmentIdsList.Any(s => s.GetSegment().Info.m_hasPedestrianLanes);
+        private int PedestrianLaneCount => SegmentIdsList.Max(s => s.GetSegment().Info.CountPedestrianLanes());
+        private float MainDot => DotXZ(FirstSegment.GetDirection(NodeId).XZ(), SecondSegment.GetDirection(NodeId).XZ());
+        public bool IsStraight => IsMain && MainDot < -0.999f;
+        public bool Is180 => IsMain && MainDot > 0.999f;
+        public bool IsEqualWidth => IsMain && Math.Abs(FirstSegment.Info.m_halfWidth - SecondSegment.Info.m_halfWidth) < 0.001f;
+
         public bool FirstTimeTrafficLight { get; set; }
 
-        public float Offset
+        public bool IsFlatJunctions
         {
-            get => Node.SegmentsId().Average(s => SegmentEndManager.Instance.GetOrCreate(s, NodeId).Offset);
             set
             {
-                foreach (var segmentId in Node.SegmentsId())
+                var count = 0;
+                foreach (ushort segmentId in SegmentIdsList)
                 {
-                    var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
+                    var segEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
+                    if (value)
+                    {
+                        segEnd.FlatJunctions = true;
+                        segEnd.Twist = false;
+                    }
+                    else
+                    {
+                        segEnd.FlatJunctions = count >= 2;
+                        segEnd.Twist = count >= 2;
+                    }
+                    count += 1;
+                }
+                Update();
+            }
+        }
+        public float Offset
+        {
+            get => SegmentIdsList.Average(s => SegmentEndManager.Instance[s, NodeId, true].Offset);
+            set
+            {
+                foreach (var segmentId in SegmentIdsList)
+                {
+                    var segEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
                     segEnd.Offset = value;
                 }
                 Update();
@@ -76,12 +108,12 @@ namespace NodeController
         }
         public float Shift
         {
-            get => Node.SegmentsId().Average(s => SegmentEndManager.Instance.GetOrCreate(s, NodeId).Shift);
+            get => SegmentIdsList.Average(s => SegmentEndManager.Instance[s, NodeId, true].Shift);
             set
             {
-                foreach (var segmentId in Node.SegmentsId())
+                foreach (var segmentId in SegmentIdsList)
                 {
-                    var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
+                    var segEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
                     segEnd.Shift = value;
                 }
                 Update();
@@ -89,12 +121,12 @@ namespace NodeController
         }
         public float RotateAngle
         {
-            get => Node.SegmentsId().Average(s => SegmentEndManager.Instance.GetOrCreate(s, NodeId).RotateAngle);
+            get => SegmentIdsList.Average(s => SegmentEndManager.Instance[s, NodeId, true].RotateAngle);
             set
             {
-                foreach (var segmentId in Node.SegmentsId())
+                foreach (var segmentId in SegmentIdsList)
                 {
-                    var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
+                    var segEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
                     segEnd.RotateAngle = value;
                 }
                 Update();
@@ -102,33 +134,39 @@ namespace NodeController
         }
         public float SlopeAngle
         {
-            get => (SegmentEnd1.SlopeAngle - SegmentEnd2.SlopeAngle) / 2;
+            get => IsMain ? (FirstSegmentEnd.SlopeAngle - SecondSegmentEnd.SlopeAngle) / 2 : 0f;
             set
             {
-                SegmentEnd1.SlopeAngle = value;
-                SegmentEnd2.SlopeAngle = -value;
-                Update();
+                if (IsMain)
+                {
+                    FirstSegmentEnd.SlopeAngle = value;
+                    SecondSegmentEnd.SlopeAngle = -value;
+                    Update();
+                }
             }
         }
         public float TwistAngle
         {
-            get => (SegmentEnd1.TwistAngle - SegmentEnd2.TwistAngle) / 2;
+            get => IsMain ? (FirstSegmentEnd.TwistAngle - SecondSegmentEnd.TwistAngle) / 2 : 0f;
             set
             {
-                SegmentEnd1.TwistAngle = value;
-                SegmentEnd2.TwistAngle = -value;
-                Update();
+                if (IsMain)
+                {
+                    FirstSegmentEnd.TwistAngle = value;
+                    SecondSegmentEnd.TwistAngle = -value;
+                    Update();
+                }
             }
         }
 
         public bool NoMarkings
         {
-            get => Node.SegmentsId().Any(s => SegmentEndManager.Instance.GetOrCreate(s, NodeId).NoMarkings);
+            get => Node.SegmentsId().Any(s => SegmentEndManager.Instance[s, NodeId, true].NoMarkings);
             set
             {
                 foreach (var segmentId in Node.SegmentsId())
                 {
-                    var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
+                    var segEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
                     segEnd.NoMarkings = value;
                 }
                 Update();
@@ -136,22 +174,14 @@ namespace NodeController
         }
         public float Stretch
         {
-            get => (SegmentEnd1.Stretch + SegmentEnd2.Stretch) / 2;
+            get => (FirstSegmentEnd.Stretch + SecondSegmentEnd.Stretch) / 2;
             set
             {
-                SegmentEnd1.Stretch = value;
-                SegmentEnd2.Stretch = value;
+                FirstSegmentEnd.Stretch = value;
+                SecondSegmentEnd.Stretch = value;
                 Update();
             }
         }
-
-
-        public bool HasUniformOffset => IsUniform(s => s.Offset);
-        public bool HasUniformNoMarkings => IsUniform(s => s.NoMarkings);
-        public bool HasUniformEmbankmentAngle => SegmentEnd1.TwistAngle == -SegmentEnd2.TwistAngle;
-        public bool HasUniformSlopeAngle => Math.Abs(SegmentEnd1.SlopeAngle + SegmentEnd2.SlopeAngle) < 1f;
-        public bool HasUniformStretch => SegmentEnd1.Stretch == SegmentEnd2.Stretch;
-
 
         public bool IsCSUR => NetUtil.IsCSUR(Info);
         public bool IsRoad => Info.m_netAI is RoadBaseAI;
@@ -163,13 +193,13 @@ namespace NodeController
 
         public bool WantsTrafficLight => NodeType == NodeTypeT.Crossing;
         public bool CanModifyOffset => NodeType == NodeTypeT.Bend || NodeType == NodeTypeT.Stretch || NodeType == NodeTypeT.Custom;
-        public bool CanMassEditNodeCorners => SegmentCount == 2;
+        public bool CanMassEditNodeCorners => IsMain;
         public bool CanModifyFlatJunctions => !IsMiddleNode;
         public bool IsAsymRevert => DefaultFlags.IsFlagSet(NetNode.Flags.AsymBackward | NetNode.Flags.AsymForward);
         public bool CanModifyTextures => IsRoad && !IsCSUR;
         public bool ShowNoMarkingsToggle => CanModifyTextures && NodeType == NodeTypeT.Custom;
-        public bool NeedsTransitionFlag => SegmentCount == 2 && (NodeType == NodeTypeT.Custom || NodeType == NodeTypeT.Crossing || NodeType == NodeTypeT.UTurn);
-        public bool ShouldRenderCenteralCrossingTexture => NodeType == NodeTypeT.Crossing && CrossingIsRemoved(Segment1Id) && CrossingIsRemoved(Segment2Id);
+        public bool NeedsTransitionFlag => IsMain && (NodeType == NodeTypeT.Custom || NodeType == NodeTypeT.Crossing || NodeType == NodeTypeT.UTurn);
+        public bool ShouldRenderCenteralCrossingTexture => NodeType == NodeTypeT.Crossing && CrossingIsRemoved(FirstSegmentId) && CrossingIsRemoved(SecondSegmentId);
 
 
         public bool? IsUturnAllowedConfigurable => NodeType switch
@@ -188,37 +218,18 @@ namespace NodeController
         public bool? IsPedestrianCrossingAllowedConfigurable => NodeType switch
         {
             NodeTypeT.Crossing or NodeTypeT.UTurn or NodeTypeT.Stretch or NodeTypeT.Middle or NodeTypeT.Bend => false,
-            NodeTypeT.Custom => (SegmentCount == 2 && !HasPedestrianLanes) ? false : null,
+            NodeTypeT.Custom => (IsMain && !HasPedestrianLanes) ? false : null,
             NodeTypeT.End => null,
             _ => throw new Exception("Unreachable code"),
         };
-        public bool? IsDefaultPedestrianCrossingAllowed
+        public bool? IsDefaultPedestrianCrossingAllowed => NodeType switch
         {
-            get
-            {
-                switch (NodeType)
-                {
-                    case NodeTypeT.Crossing:
-                        return true; // always on
-                    case NodeTypeT.UTurn:
-                    case NodeTypeT.Stretch:
-                    case NodeTypeT.Middle:
-                    case NodeTypeT.Bend:
-                        return false; // always off
-                    case NodeTypeT.Custom:
-                        var netAI1 = Segment1Id.ToSegment().Info.m_netAI;
-                        var netAI2 = Segment2Id.ToSegment().Info.m_netAI;
-                        bool sameAIType = netAI1.GetType() == netAI2.GetType();
-                        if (SegmentCount == 2 && !sameAIType) // eg: at bridge/tunnel entrances.
-                            return false; // default off
-                        return null; // don't care
-                    case NodeTypeT.End:
-                        return null;
-                    default:
-                        throw new Exception("Unreachable code");
-                }
-            }
-        }
+            NodeTypeT.Crossing => true,
+            NodeTypeT.UTurn or NodeTypeT.Stretch or NodeTypeT.Middle or NodeTypeT.Bend => false,
+            NodeTypeT.Custom when IsMain && FirstSegment.Info.m_netAI.GetType() != SecondSegment.Info.m_netAI.GetType() => false,
+            NodeTypeT.Custom or NodeTypeT.End => null,
+            _ => throw new Exception("Unreachable code"),
+        };
         public bool? CanHaveTrafficLights(out ToggleTrafficLightError reason)
         {
             reason = ToggleTrafficLightError.None;
@@ -240,7 +251,7 @@ namespace NodeController
         }
         public bool? IsEnteringBlockedJunctionAllowedConfigurable => NodeType switch
         {
-            NodeTypeT.Custom when SegmentCount > 2 => null,
+            NodeTypeT.Custom when IsJunction => null,
             NodeTypeT.Custom when DefaultFlags.IsFlagSet(NetNode.Flags.OneWayIn) & DefaultFlags.IsFlagSet(NetNode.Flags.OneWayOut) && !HasPedestrianLanes => false,//
             NodeTypeT.Crossing or NodeTypeT.UTurn or NodeTypeT.Custom or NodeTypeT.End => null,// default off
             NodeTypeT.Stretch or NodeTypeT.Middle or NodeTypeT.Bend => false,// always on
@@ -251,7 +262,7 @@ namespace NodeController
             NodeTypeT.Stretch => true,// always on
             NodeTypeT.Crossing => false,// default off
             NodeTypeT.UTurn or NodeTypeT.Middle or NodeTypeT.Bend or NodeTypeT.End => null,// default
-            NodeTypeT.Custom => SegmentCount > 2 ? null : true,
+            NodeTypeT.Custom => IsJunction ? null : true,
             _ => throw new Exception("Unreachable code"),
         };
 
@@ -290,16 +301,6 @@ namespace NodeController
 
         public void Calculate()
         {
-            CalculateDefaults();
-            Refresh();
-        }
-        public void RefreshAndUpdate()
-        {
-            Refresh();
-            Update();
-        }
-        private void CalculateDefaults()
-        {
             var node = Node;
             DefaultFlags = node.m_flags;
 
@@ -314,36 +315,17 @@ namespace NodeController
             else
                 throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
 
-            var segmentIds = node.SegmentsId().ToList();
-            SegmentCount = segmentIds.Count;
-
-            if (SegmentCount == 2)
-            {
-                Segment1Id = segmentIds[0];
-                Segment2Id = segmentIds[1];
-
-                var segment1 = Segment1Id.GetSegment();
-                var segment2 = Segment2Id.GetSegment();
-
-                HalfWidthDelta = Mathf.Abs(segment1.Info.m_halfWidth - segment2.Info.m_halfWidth);
-                PedestrianLaneCount = Math.Max(segment1.Info.CountPedestrianLanes(), segment2.Info.CountPedestrianLanes());
-
-                var dir1 = segment1.GetDirection(NodeId).XZ();
-                var dir2 = segment2.GetDirection(NodeId).XZ();
-                float dot = DotXZ(dir1, dir2);
-                IsStraight = dot < -0.999f; // 180 degrees
-                Is180 = dot > 0.999f; // 0 degrees
-            }
-
-            HasPedestrianLanes = segmentIds.Any(s => s.GetSegment().Info.m_hasPedestrianLanes);
-
-            segmentIds.Sort(CompareSegments);
-            segmentIds.Reverse();
-            SortedSegmentIDs = segmentIds;
+            SegmentIdsList = node.SegmentsId().ToList();
+            SegmentIdsList.Sort(CompareSegments);
+            SegmentIdsList.Reverse();
 
             Refresh();
         }
-
+        public void RefreshAndUpdate()
+        {
+            Refresh();
+            Update();
+        }
         private void Refresh()
         {
             if (NodeType != NodeTypeT.Custom)
@@ -369,63 +351,42 @@ namespace NodeController
             Update();
         }
 
-        public void Flatten()
-        {
-            foreach (ushort segmentID in SortedSegmentIDs)
-            {
-                var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentID: segmentID, nodeID: NodeId);
-                segEnd.FlatJunctions = true;
-                segEnd.Twist = false;
-            }
-        }
-        public void UnFlatten()
-        {
-            for (int i = 0; i < SortedSegmentIDs.Count; ++i)
-            {
-                ushort segmentID = SortedSegmentIDs[i];
-                var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentID: segmentID, nodeID: NodeId);
-                bool sideSegment = i >= 2;
-                segEnd.FlatJunctions = sideSegment;
-                segEnd.Twist = sideSegment;
-            }
-        }
-
         #endregion
 
         #region UTILITIES
 
         bool IsUniform<T>(Func<SegmentEndData, T> predicate)
         {
-            var count = Node.SegmentsId().Select(s => predicate(SegmentEndManager.Instance.GetOrCreate(s, NodeId))).Distinct().Count();
+            var count = Node.SegmentsId().Select(s => predicate(SegmentEndManager.Instance[s, NodeId, true])).Distinct().Count();
             return count <= 1;
         }
-        static int CompareSegments(ushort segment1Id, ushort segment2Id)
+        static int CompareSegments(ushort firstSegmentId, ushort secondSegmentId)
         {
-            var info1 = segment1Id.GetSegment().Info;
-            var info2 = segment2Id.GetSegment().Info;
+            var firstInfo = firstSegmentId.GetSegment().Info;
+            var secondInfo = secondSegmentId.GetSegment().Info;
 
             int result;
 
-            if ((result = info1.m_flatJunctions.CompareTo(info2.m_flatJunctions)) == 0)
-                if ((result = info1.m_forwardVehicleLaneCount.CompareTo(info2.m_forwardVehicleLaneCount)) == 0)
-                    if ((result = info1.m_halfWidth.CompareTo(info2.m_halfWidth)) == 0)
-                        result = ((info1.m_netAI as RoadBaseAI)?.m_highwayRules ?? false).CompareTo((info2.m_netAI as RoadBaseAI)?.m_highwayRules ?? false);
+            if ((result = firstInfo.m_flatJunctions.CompareTo(secondInfo.m_flatJunctions)) == 0)
+                if ((result = firstInfo.m_forwardVehicleLaneCount.CompareTo(secondInfo.m_forwardVehicleLaneCount)) == 0)
+                    if ((result = firstInfo.m_halfWidth.CompareTo(secondInfo.m_halfWidth)) == 0)
+                        result = ((firstInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false).CompareTo((secondInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false);
 
             return result;
         }
         public bool CanChangeTo(NodeTypeT newNodeType)
         {
-            if (SegmentCount == 1)
+            if (IsEnd)
                 return newNodeType == NodeTypeT.End;
 
-            if (SegmentCount > 2 || IsCSUR)
+            if (IsJunction || IsCSUR)
                 return newNodeType == NodeTypeT.Custom;
 
             bool middle = DefaultFlags.IsFlagSet(NetNode.Flags.Middle);
             return newNodeType switch
             {
-                NodeTypeT.Crossing => PedestrianLaneCount >= 2 && HalfWidthDelta < 0.001f && IsStraight,
-                NodeTypeT.UTurn => IsRoad && Info.m_forwardVehicleLaneCount > 0 && Info.m_backwardVehicleLaneCount > 0,
+                NodeTypeT.Crossing => IsEqualWidth && IsStraight && PedestrianLaneCount >= 2,
+                NodeTypeT.UTurn => IsMain && IsRoad && Info.m_forwardVehicleLaneCount > 0 && Info.m_backwardVehicleLaneCount > 0,
                 NodeTypeT.Stretch => CanModifyTextures && !middle && IsStraight,
                 NodeTypeT.Bend => !middle,
                 NodeTypeT.Middle => IsStraight || Is180,
@@ -500,12 +461,12 @@ namespace NodeController
             {
                 foreach (var segmentId in Node.SegmentsId())
                 {
-                    var segmentData = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
+                    var segmentData = SegmentEndManager.Instance[segmentId, NodeId, true];
                     var segmentProperty = getSegmentProperty(parent, segmentData);
                     segmentProperty.Value = getValue(segmentData);
                     segmentProperty.OnValueChanged += (newValue) =>
                         {
-                            var segmentData = SegmentEndManager.Instance.GetOrCreate(segmentId, NodeId);
+                            var segmentData = SegmentEndManager.Instance[segmentId, NodeId, true];
                             setValue(segmentData, newValue);
                             nodeProperty.Value = getValue(this);
                             Update();
@@ -657,10 +618,9 @@ namespace NodeController
             void OnButtonClick(int index)
             {
                 if (index == slopeIndex)
-                    UnFlatten();
+                    IsFlatJunctions = false;
                 else if (index == flatIndex)
-                    Flatten();
-                Update();
+                    IsFlatJunctions = true;
             }
         }
         private BoolListPropertyPanel GetHideMarkingProperty(UIComponent parent)
@@ -674,38 +634,6 @@ namespace NodeController
             return hideMarkingProperty;
         }
 
-        //private FloatPropertyPanel GetSlopeProperty(UIComponent parent)
-        //{
-        //    var slopeProperty = ComponentPool.Get<FloatPropertyPanel>(parent);
-        //    slopeProperty.Text = "Slope";
-        //    slopeProperty.MinValue = -60;
-        //    slopeProperty.CheckMin = true;
-        //    slopeProperty.MaxValue = 60;
-        //    slopeProperty.CheckMax = true;
-        //    slopeProperty.UseWheel = true;
-        //    slopeProperty.WheelStep = 1f;
-        //    slopeProperty.Init();
-        //    slopeProperty.Value = SlopeAngle;
-        //    slopeProperty.OnValueChanged += (value) => SlopeAngle = value;
-
-        //    return slopeProperty;
-        //}
-        //private FloatPropertyPanel GetEmbankmentProperty(UIComponent parent)
-        //{
-        //    var embankmentProperty = ComponentPool.Get<FloatPropertyPanel>(parent);
-        //    embankmentProperty.Text = "Embankment";
-        //    embankmentProperty.MinValue = -60;
-        //    embankmentProperty.CheckMin = true;
-        //    embankmentProperty.MaxValue = 60;
-        //    embankmentProperty.CheckMax = true;
-        //    embankmentProperty.UseWheel = true;
-        //    embankmentProperty.WheelStep = 1f;
-        //    embankmentProperty.Init();
-        //    embankmentProperty.Value = EmbankmentAngle;
-        //    embankmentProperty.OnValueChanged += (value) => EmbankmentAngle = value;
-
-        //    return embankmentProperty;
-        //}
         //private ButtonPanel GetResetButton(UIComponent parent)
         //{
         //    var resetButton = ComponentPool.Get<ButtonPanel>(parent);

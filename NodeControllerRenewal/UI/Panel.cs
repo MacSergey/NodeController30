@@ -5,10 +5,11 @@ using System.Text;
 using ModsCommon.UI;
 using ColossalFramework.UI;
 using ModsCommon;
+using UnityEngine;
 
 namespace NodeController.UI
 {
-    public class NodeControllerPanel : PropertyGroupPanel
+    public class NodeControllerPanel : CustomUIPanel
     {
         public static void CreatePanel()
         {
@@ -38,20 +39,23 @@ namespace NodeController.UI
             }
         }
 
+        private PropertyGroupPanel Content { get; set; }
         public INetworkData Data { get; private set; }
         private List<EditorItem> DataProperties { get; } = new List<EditorItem>();
 
         public NodeControllerPanel()
         {
-            autoLayoutDirection = LayoutDirection.Vertical;
-            autoFitChildrenVertically = true;
+            Content = ComponentPool.Get<PropertyGroupPanel>(this);
+            Content.autoLayoutDirection = LayoutDirection.Vertical;
+            Content.autoFitChildrenVertically = true;
+            Content.eventSizeChanged += (UIComponent component, Vector2 value) => size = value;
         }
 
         public override void Awake()
         {
             base.Awake();
 
-            width = 300f;
+            Content.width = 300f;
             Active = false;
         }
 
@@ -69,38 +73,38 @@ namespace NodeController.UI
         }
         private void ResetPanel()
         {
-            StopLayout();
+            Content.StopLayout();
 
-            foreach (var property in components.ToArray())
+            foreach (var property in Content.components.ToArray())
                 ComponentPool.Free(property);
 
             DataProperties.Clear();
 
-            StartLayout();
+            Content.StartLayout();
         }
 
         private void FillProperties()
         {
-            StopLayout();
+            Content.StopLayout();
 
-            var header = ComponentPool.Get<TextProperty>(this);
+            var header = ComponentPool.Get<TextProperty>(Content);
             header.Text = Data.Title;
             DataProperties.Add(header);
-            DataProperties.AddRange(Data.GetUIComponents(this, UpdatePanel));
+            DataProperties.AddRange(Data.GetUIComponents(Content, UpdatePanel));
 
-            StartLayout();
+            Content.StartLayout();
         }
 
         private void ClearDataProperties()
         {
-            StopLayout();
+            Content.StopLayout();
 
             foreach (var property in DataProperties)
                 ComponentPool.Free(property);
 
             DataProperties.Clear();
 
-            StartLayout();
+            Content.StartLayout();
         }
     }
 }

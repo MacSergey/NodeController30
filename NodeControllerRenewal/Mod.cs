@@ -65,19 +65,15 @@ namespace NodeController
                     return;
 
                 CSURUtil.Init();
-                if (GUI.Settings.GameConfig == null)
+                GUI.Settings.GameConfig ??= Mode switch
                 {
-                    GUI.Settings.GameConfig = Mode switch
-                    {
-                        LoadMode.NewGameFromScenario or LoadMode.LoadScenario or LoadMode.LoadMap => GameConfigT.LoadGameDefault,// no NC or old NC
-                        _ => GameConfigT.NewGameDefault,
-                    };
-                }
-
+                    LoadMode.NewGameFromScenario or LoadMode.LoadScenario or LoadMode.LoadMap => GameConfigT.LoadGameDefault,// no NC or old NC
+                    _ => GameConfigT.NewGameDefault,
+                };
 
                 NodeManager.Instance.OnLoad();
                 SegmentEndManager.Instance.OnLoad();
-                NodeManager.ValidateAndHeal(true);
+                NodeManager.ValidateAndHeal();
                 Loaded = true;
             }
             catch (Exception e)
@@ -86,10 +82,7 @@ namespace NodeController
             }
         }
 
-        protected override void GetSettings(UIHelperBase helper)
-        {
-            GUI.Settings.OnSettingsUI(helper);
-        }
+        protected override void GetSettings(UIHelperBase helper) => GUI.Settings.OnSettingsUI(helper);
 
         #endregion
 

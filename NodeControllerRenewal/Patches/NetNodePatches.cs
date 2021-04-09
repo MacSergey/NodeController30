@@ -19,7 +19,7 @@ namespace NodeController.Patches
             NodeData nodeData = NodeManager.Instance.buffer[nodeID];
             ref NetNode node = ref nodeID.ToNode();
 
-            if (nodeData == null || nodeData.SegmentCount != 2)
+            if (nodeData == null || !nodeData.IsMain)
                 return;
             if (node.m_flags.IsFlagSet(NetNode.Flags.Outside))
                 return;
@@ -93,7 +93,7 @@ namespace NodeController.Patches
         }
         public static float GetMinCornerOffset(float cornerOffset, ushort nodeID, ushort segmentID)
         {
-            var segmentData = SegmentEndManager.Instance.GetAt(segmentID, nodeID);
+            var segmentData = SegmentEndManager.Instance[segmentID, nodeID];
             return segmentData?.Offset ?? cornerOffset;
         }
 

@@ -5,6 +5,7 @@ namespace NodeController
     using KianCommons.Serialization;
     using NodeController;
     using ModsCommon;
+    using ModsCommon.Utilities;
 
     [Serializable]
     public class NodeManager
@@ -40,22 +41,19 @@ namespace NodeController
 
         #region MOVEIT BACKWARD COMPATIBLITY
 
-
-
         [Obsolete("delete when moveit is updated")]
         public static byte[] CopyNodeData(ushort nodeID) => SerializationUtil.Serialize(Instance.buffer[nodeID]);
 
         public static ushort TargetNodeId = 0;
 
         [Obsolete("kept here for backward compatibility with MoveIT")]
-        /// <param name="nodeID">target nodeID</param>
         public static void PasteNodeData(ushort nodeID, byte[] data) => Instance.PasteNodeDataImp(nodeID, data);
 
         [Obsolete("kept here for backward compatibility with MoveIT")]
-        /// <param name="nodeID">target nodeID</param>
-        private void PasteNodeDataImp(ushort nodeID, byte[] data)
+        /// <param name="nodeId">target nodeID</param>
+        private void PasteNodeDataImp(ushort nodeId, byte[] data)
         {
-            SingletonMod<Mod>.Logger.Debug($"NodeManager.PasteNodeDataImp(nodeID={nodeID}, data={data})");
+            SingletonMod<Mod>.Logger.Debug($"NodeManager.PasteNodeDataImp(nodeID={nodeId}, data={data})");
             if (data == null)
             {
                 // for backward compatibality reasons its not a good idea to do this:
@@ -63,13 +61,13 @@ namespace NodeController
             }
             else
             {
-                foreach (var segmentID in NetUtil.IterateNodeSegments(nodeID))
-                    SegmentEndManager.Instance.GetOrCreate(segmentID: segmentID, nodeID: nodeID);
+                foreach (var segmentId in nodeId.GetNode().SegmentsId())
+                    _ = SegmentEndManager.Instance[segmentId, nodeId, true];
 
-                TargetNodeId = nodeID; // must be done before deserialization.
-                buffer[nodeID] = SerializationUtil.Deserialize(data, this.VersionOf()) as NodeData;
-                buffer[nodeID].NodeId = nodeID;
-                UpdateData(nodeID);
+                TargetNodeId = nodeId; // must be done before deserialization.
+                buffer[nodeId] = SerializationUtil.Deserialize(data, this.VersionOf()) as NodeData;
+                buffer[nodeId].NodeId = nodeId;
+                UpdateData(nodeId);
                 TargetNodeId = 0;
             }
         }
@@ -77,60 +75,54 @@ namespace NodeController
 
         public NodeData InsertNode(NetTool.ControlPoint controlPoint, NodeTypeT nodeType = NodeTypeT.Crossing)
         {
-            if (ToolBase.ToolErrors.None != NetUtil.InsertNode(controlPoint, out ushort nodeID))
+            if (ToolBase.ToolErrors.None != NetUtil.InsertNode(controlPoint, out ushort nodeId))
                 return null;
 
-            foreach (var segmentID in NetUtil.IterateNodeSegments(nodeID))
+            foreach (var segmentId in nodeId.GetNode().SegmentsId())
             {
-                var segEnd = new SegmentEndData(segmentID, nodeID);
-                SegmentEndManager.Instance.SetAt(segmentID, nodeID, segEnd);
+                var segEnd = new SegmentEndData(segmentId, nodeId);
+                SegmentEndManager.Instance[segmentId, nodeId] = segEnd;
             }
 
             var info = controlPoint.m_segment.ToSegment().Info;
-            int nPedLanes = info.CountPedestrianLanes();
-            bool isRoad = info.m_netAI is RoadBaseAI;
-            if (nodeType == NodeTypeT.Crossing && (nPedLanes < 2 || !isRoad))
-                buffer[nodeID] = new NodeData(nodeID);
+            if (nodeType == NodeTypeT.Crossing && (info.CountPedestrianLanes() < 2 || info.m_netAI is not RoadBaseAI))
+                buffer[nodeId] = new NodeData(nodeId);
             else
-                buffer[nodeID] = new NodeData(nodeID, nodeType);
+                buffer[nodeId] = new NodeData(nodeId, nodeType);
 
-            return buffer[nodeID];
+            return buffer[nodeId];
         }
 
-        public NodeData GetOrCreate(ushort nodeID)
+        public NodeData GetOrCreate(ushort nodeId)
         {
-            if (Instance.buffer[nodeID] is not NodeData data)
+            if (Instance.buffer[nodeId] is not NodeData data)
             {
-                data = new NodeData(nodeID);
-                buffer[nodeID] = data;
+                data = new NodeData(nodeId);
+                buffer[nodeId] = data;
             }
 
-            foreach (var segmentID in NetUtil.IterateNodeSegments(nodeID))
-                SegmentEndManager.Instance.GetOrCreate(segmentID, nodeID);
+            foreach (var segmentId in nodeId.GetNode().SegmentsId())
+                _ = SegmentEndManager.Instance[segmentId, nodeId, true];
 
             return data;
         }
 
-        /// <summary>
-        /// Calls update node. releases data for <paramref name="nodeID"/> if uncessary. 
-        /// </summary>
-        /// <param name="nodeID"></param>
-        public void UpdateData(ushort nodeID)
+        public void UpdateData(ushort nodeId)
         {
-            if (nodeID == 0 || buffer[nodeID] == null)
+            if (nodeId == 0 || buffer[nodeId] == null)
                 return;
 
-            bool selected = SingletonTool<NodeControllerTool>.Instance.Data is NodeData nodeData && nodeData.NodeId == nodeID;
-            if (buffer[nodeID].IsDefault && !selected)
-                ResetNodeToDefault(nodeID);
+            bool selected = SingletonTool<NodeControllerTool>.Instance.Data is NodeData nodeData && nodeData.NodeId == nodeId;
+            if (buffer[nodeId].IsDefault && !selected)
+                ResetNodeToDefault(nodeId);
             else
             {
-                foreach (var segmentID in NetUtil.IterateNodeSegments(nodeID))
+                foreach (var segmentId in nodeId.GetNode().SegmentsId())
                 {
-                    var segEnd = SegmentEndManager.Instance.GetAt(segmentID: segmentID, nodeID: nodeID);
+                    var segEnd = SegmentEndManager.Instance[segmentId, nodeId];
                     segEnd.Update();
                 }
-                buffer[nodeID].Update();
+                buffer[nodeId].Update();
             }
         }
 
@@ -158,40 +150,34 @@ namespace NodeController
                     ResetNodeToDefault(nodeData.NodeId);
             }
         }
-
-        /// <summary>
-        /// Called after stock code and before postfix code.
-        /// if node is invalid or otherwise unsupported, it will be set to null.
-        /// </summary>
-        public void OnBeforeCalculateNodePatch(ushort nodeID)
+        public void OnBeforeCalculateNodePatch(ushort nodeId)
         {
-            // nodeID.ToNode still has default flags.
-            if (buffer[nodeID] == null) return;
+            if (buffer[nodeId] == null) return;
 
-            if (!NetUtil.IsNodeValid(nodeID) || !NodeData.IsSupported(nodeID))
+            if (!NetUtil.IsNodeValid(nodeId) || !NodeData.IsSupported(nodeId))
             {
-                SetNullNodeAndSegmentEnds(nodeID);
+                SetNullNodeAndSegmentEnds(nodeId);
                 return;
             }
 
-            foreach (var segmentID in NetUtil.IterateNodeSegments(nodeID))
+            foreach (var segmentId in nodeId.GetNode().SegmentsId())
             {
-                var segEnd = SegmentEndManager.Instance.GetOrCreate(segmentID: segmentID, nodeID: nodeID);
+                var segEnd = SegmentEndManager.Instance[segmentId, nodeId, true];
                 segEnd.Calculate();
             }
 
-            buffer[nodeID].Calculate();
+            buffer[nodeId].Calculate();
 
-            if (!buffer[nodeID].CanChangeTo(buffer[nodeID].NodeType))
-                ResetNodeToDefault(nodeID);
+            if (!buffer[nodeId].CanChangeTo(buffer[nodeId].NodeType))
+                ResetNodeToDefault(nodeId);
         }
 
-        public void SetNullNodeAndSegmentEnds(ushort nodeID)
+        public void SetNullNodeAndSegmentEnds(ushort nodeId)
         {
-            foreach (var segmentID in NetUtil.IterateNodeSegments(nodeID))
-                SegmentEndManager.Instance.SetAt(segmentID, nodeID, null);
+            foreach (var segmentID in nodeId.GetNode().SegmentsId())
+                SegmentEndManager.Instance[segmentID, nodeId] = null;
 
-            buffer[nodeID] = null;
+            buffer[nodeId] = null;
         }
 
         public void Heal()
@@ -214,8 +200,7 @@ namespace NodeController
             }
         }
 
-        /// <param name="showError1">set true to display error panel before healing</param>
-        public static void ValidateAndHeal(bool showError1)
+        public static void ValidateAndHeal()
         {
             Instance.Heal();
             SegmentEndManager.Instance.Heal();

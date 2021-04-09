@@ -93,8 +93,8 @@ namespace NodeController.LifeCycle
         {
             var ret = new MoveItSegmentData
             {
-                Start = SegmentEndManager.GetAt(sourceSegmentID, true)?.Clone(),
-                End = SegmentEndManager.GetAt(sourceSegmentID, false)?.Clone()
+                Start = SegmentEndManager[sourceSegmentID, true]?.Clone(),
+                End = SegmentEndManager[sourceSegmentID, false]?.Clone()
             };
             if (ret.Start == null && ret.End == null)
                 return null;
@@ -196,7 +196,7 @@ namespace NodeController.LifeCycle
                 segmentEndData.SegmentId = targetSegmentID;
                 segmentEndData.NodeId = targetNodeID;
             }
-            SegmentEndManager.SetAt(targetSegmentID, targetNodeID, segmentEndData);
+            SegmentEndManager[targetSegmentID, targetNodeID] = segmentEndData;
         }
 
     }

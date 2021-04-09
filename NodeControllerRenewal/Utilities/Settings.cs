@@ -100,8 +100,8 @@ namespace NodeController.GUI
                     if (segmentID.ToSegment().Info.m_flatJunctions == false &&
                         !segmentID.ToSegment().m_startNode.ToNode().m_flags.IsFlagSet(NetNode.Flags.Middle) &&
                         !segmentID.ToSegment().m_endNode.ToNode().m_flags.IsFlagSet(NetNode.Flags.Middle) &&
-                        SegmentEndManager.Instance.GetAt(segmentID, true) == null &&
-                        SegmentEndManager.Instance.GetAt(segmentID, false) == null)
+                        SegmentEndManager.Instance[segmentID, true] == null &&
+                        SegmentEndManager.Instance[segmentID, false] == null)
                     {
                         NetManager.instance.UpdateSegment(segmentID);
                     }

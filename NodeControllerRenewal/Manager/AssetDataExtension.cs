@@ -36,7 +36,7 @@ namespace NodeController
 
         public static object[] GetRecords()
         {
-            NodeManager.ValidateAndHeal(false);
+            NodeManager.ValidateAndHeal();
             List<object> records = new List<object>();
             for (ushort nodeID = 0; nodeID < NetManager.MAX_NODE_COUNT; ++nodeID)
             {

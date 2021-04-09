@@ -200,8 +200,8 @@ namespace NodeController
             Segment.CalculateCorner(SegmentId, true, IsStartNode, leftSide: true, cornerPos: out var lpos, cornerDirection: out var ldir, out _);
             Segment.CalculateCorner(SegmentId, true, IsStartNode, leftSide: false, cornerPos: out var rpos, cornerDirection: out var rdir, out _);
 
-            Vector3 diff = rpos - lpos;
-            float se = Mathf.Atan2(diff.y, VectorUtils.LengthXZ(diff));
+            var diff = rpos - lpos;
+            var se = Mathf.Atan2(diff.y, VectorUtils.LengthXZ(diff));
             CachedSuperElevationDeg = se * Mathf.Rad2Deg;
         }
 
@@ -217,10 +217,10 @@ namespace NodeController
                 return false;
 
             var segment = segmentId.GetSegment();
-            ushort segment1Id = segment.GetLeftSegment(nodeId);
-            ushort segment2Id = segment.GetRightSegment(nodeId);
-            var segEnd1 = SegmentEndManager.Instance.GetAt(segment1Id, nodeId);
-            var segEnd2 = SegmentEndManager.Instance.GetAt(segment2Id, nodeId);
+            var segment1Id = segment.GetLeftSegment(nodeId);
+            var segment2Id = segment.GetRightSegment(nodeId);
+            var segEnd1 = SegmentEndManager.Instance[segment1Id, nodeId];
+            var segEnd2 = SegmentEndManager.Instance[segment2Id, nodeId];
 
             bool flat1 = segEnd1?.FlatJunctions ?? segment1Id.GetSegment().Info.m_flatJunctions;
             bool flat2 = segEnd2?.FlatJunctions ?? segment2Id.GetSegment().Info.m_flatJunctions;
@@ -237,7 +237,6 @@ namespace NodeController
 
             return true;
         }
-        public static float AngleDeg(float y) => Mathf.Atan(y) * Mathf.Rad2Deg;
 
         public override string ToString() => $"{GetType().Name} (segment:{SegmentId} node:{NodeId})";
 
