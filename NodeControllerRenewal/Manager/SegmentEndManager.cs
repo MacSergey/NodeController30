@@ -8,6 +8,7 @@ namespace NodeController
     using KianCommons.Serialization;
     using NodeController;
     using ModsCommon;
+    using ModsCommon.Utilities;
 
     [Serializable]
     public class SegmentEndManager
@@ -46,19 +47,20 @@ namespace NodeController
         {
             get
             {
-                if (this[segmentId, NetUtil.IsStartNode(segmentId, nodeId)] is not SegmentEndData data)
+                var isStartNode = segmentId.GetSegment().IsStartNode(nodeId);
+                if (this[segmentId, isStartNode] is not SegmentEndData data)
                 {
                     if (create)
                     {
                         data = new SegmentEndData(segmentId, nodeId);
-                        this[segmentId, NetUtil.IsStartNode(segmentId, nodeId)] = data;
+                        this[segmentId, isStartNode] = data;
                     }
                     else
                         data = null;
                 }
                 return data;
             }
-            set => this[segmentId, NetUtil.IsStartNode(segmentId, nodeId)] = value;
+            set => this[segmentId, segmentId.GetSegment().IsStartNode(nodeId)] = value;
         }
         public SegmentEndData this[ushort segmentId, bool startNode]
         {
@@ -77,7 +79,7 @@ namespace NodeController
             {
                 if (segmentEndData == null)
                     continue;
-                if (NetUtil.IsSegmentValid(segmentEndData.SegmentId))
+                if (segmentEndData.SegmentId.GetSegment().IsValid())
                     segmentEndData.Update();
                 else
                 {
@@ -96,21 +98,22 @@ namespace NodeController
                 if (Buffer[i] is not SegmentEndData data)
                     continue;
 
-                var startNode = i % 2 == 0;
-                var segmentID = (ushort)Mathf.FloorToInt(i / 2);
-                var nodeID = segmentID.ToSegment().GetNode(startNode);
+                var isStartNode = i % 2 == 0;
+                var segmentId = (ushort)Mathf.FloorToInt(i / 2);
+                var segment = segmentId.GetSegment();
+                var nodeId = segment.GetNode(isStartNode);
 
-                if (!NetUtil.IsNodeValid(nodeID) || !NetUtil.IsSegmentValid(segmentID))
+                if (!nodeId.GetNode().IsValid() || !segment.IsValid())
                 {
                     Buffer[i] = null;
                     continue;
                 }
-                if (data.NodeId != nodeID)
-                    data.NodeId = nodeID;
-                if (data.SegmentId != segmentID)
-                    data.SegmentId = segmentID;
+                if (data.NodeId != nodeId)
+                    data.NodeId = nodeId;
+                if (data.SegmentId != segmentId)
+                    data.SegmentId = segmentId;
 
-                if (data.IsStartNode != startNode)
+                if (data.IsStartNode != isStartNode)
                     Buffer[i] = null;
             }
         }

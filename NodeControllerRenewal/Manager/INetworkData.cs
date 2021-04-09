@@ -21,7 +21,7 @@ namespace NodeController
         void ResetToDefault();
         void RefreshAndUpdate();
 
-        public List<EditorItem> GetUIComponents(UIComponent parent, Action refresh);
+        public void GetUIComponents(UIComponent parent, Action refresh);
     }
 
     public interface INetworkData<T>

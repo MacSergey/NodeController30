@@ -2,6 +2,7 @@ using ColossalFramework;
 using CSUtil.Commons;
 using HarmonyLib;
 using KianCommons;
+using ModsCommon.Utilities;
 using TrafficManager.Manager.Impl;
 
 namespace NodeController
@@ -10,10 +11,10 @@ namespace NodeController
     {
         public static void UpdateLanesPostfix(ushort segmentID)
         {
-            if (!NetUtil.IsSegmentValid(segmentID))
+            if (!segmentID.GetSegment().IsValid())
                 return;
 
-            foreach (bool startNode in HelpersExtensions.ALL_BOOL)
+            foreach (bool startNode in new bool[] { false, true })
             {
                 if (AllFlagsAreForward(segmentID, startNode))
                 {
@@ -22,11 +23,10 @@ namespace NodeController
                 }
             }
         }
-
         public static bool AllFlagsAreForward(ushort segmentID, bool startNode)
         {
             NetLane.Flags flags = 0;
-            foreach (var lane in NetUtil.IterateLanes(segmentID, startNode: startNode))
+            foreach (var lane in NetUtil.IterateLanes(segmentID, startNode))
                 flags |= lane.Flags;
 
             return (flags & NetLane.Flags.LeftForwardRight) == NetLane.Flags.Forward;

@@ -2,6 +2,7 @@ using KianCommons;
 using System;
 using System.Runtime.CompilerServices;
 using KianCommons.Plugins;
+using ModsCommon.Utilities;
 
 namespace NodeController.Util
 {
@@ -13,11 +14,11 @@ namespace NodeController.Util
 
         public static float GetMinCornerOffset(ushort segmentID, ushort nodeID)
         {
-            NetInfo info = nodeID.ToNode().Info;
+            NetInfo info = nodeID.GetNode().Info;
             if (CSUREnabled && info.m_netAI is RoadBaseAI && info.name.Contains("CSUR"))
                 return GetMinCornerOffset_(info.m_minCornerOffset, nodeID);
             else
-                return segmentID.ToSegment().Info.m_minCornerOffset;
+                return segmentID.GetSegment().Info.m_minCornerOffset;
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]

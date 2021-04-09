@@ -4,6 +4,8 @@ using System;
 using NodeController.LifeCycle;
 using static KianCommons.HelpersExtensions;
 using NodeController;
+using ModsCommon.Utilities;
+using System.Linq;
 
 namespace NodeController.Patches
 {
@@ -31,9 +33,9 @@ namespace NodeController.Patches
                 return;
 
             NodeID = node;
-            ushort segmentID = NetUtil.GetFirstSegment(NodeID);
-            MoveSegmentData = LifeCycle.MoveItIntegration.CopySegment(segmentID);
-            NodeID2 = segmentID.ToSegment().GetOtherNode(NodeID);
+            var segmentId = NodeID.GetNode().SegmentIds().First();
+            MoveSegmentData = LifeCycle.MoveItIntegration.CopySegment(segmentId);
+            NodeID2 = segmentId.GetSegment().GetOtherNode(NodeID);
         }
 
         /// <param name="node">output node</param>

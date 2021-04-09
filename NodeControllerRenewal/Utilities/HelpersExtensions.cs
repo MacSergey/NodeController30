@@ -8,9 +8,6 @@ namespace KianCommons
     internal static class HelpersExtensions
     {
         internal static bool InSimulationThread() => System.Threading.Thread.CurrentThread == SimulationManager.instance.m_simulationThread;
-
-        internal static bool[] ALL_BOOL = new bool[] { false, true };
-
         internal static bool InGameOrEditor => SceneManager.GetActiveScene().name != "IntroScreen" && SceneManager.GetActiveScene().name != "Startup";
 
         [Obsolete("use Helpers.InStartupMenu instead")]

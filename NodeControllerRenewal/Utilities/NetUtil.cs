@@ -2,6 +2,7 @@ using ColossalFramework;
 using ColossalFramework.Math;
 using KianCommons.Math;
 using ModsCommon;
+using ModsCommon.Utilities;
 using NodeController;
 using System;
 using System.Collections;
@@ -23,16 +24,9 @@ namespace KianCommons
     {
         public const float SAFETY_NET = 0.02f;
 
-        public static NetManager netMan = NetManager.instance;
+        public static NetManager NetManager => Singleton<NetManager>.instance;
 
         public const float MPU = 8f; // meter per unit
-
-        private static NetNode[] nodeBuffer_ = netMan.m_nodes.m_buffer;
-        private static NetSegment[] segmentBuffer_ = netMan.m_segments.m_buffer;
-        private static NetLane[] laneBuffer_ = netMan.m_lanes.m_buffer;
-        internal static ref NetNode ToNode(this ushort id) => ref nodeBuffer_[id];
-        internal static ref NetSegment ToSegment(this ushort id) => ref segmentBuffer_[id];
-        internal static ref NetLane ToLane(this uint id) => ref laneBuffer_[id];
 
         public static bool IsCSUR(this NetInfo info)
         {
@@ -44,18 +38,10 @@ namespace KianCommons
 
         public static ToolBase.ToolErrors InsertNode(NetTool.ControlPoint controlPoint, out ushort nodeId, bool test = false)
         {
-            var ret = NetTool.CreateNode(
-                controlPoint.m_segment.ToSegment().Info,
-                controlPoint, controlPoint, controlPoint,
-                NetTool.m_nodePositionsSimulation,
-                maxSegments: 0,
-                test: test, visualize: false, autoFix: true, needMoney: false,
-                invert: false, switchDir: false,
-                relocateBuildingID: 0,
-                out nodeId, out var newSegment, out var cost, out var productionRate);
+            var ret = NetTool.CreateNode(controlPoint.m_segment.GetSegment().Info, controlPoint, controlPoint, controlPoint, NetTool.m_nodePositionsSimulation, 0, test, false, true, false, false, false, 0, out nodeId, out _, out _, out _);
 
             if (!test)
-                nodeId.ToNode().m_flags |= NetNode.Flags.Middle | NetNode.Flags.Moveable;
+                nodeId.GetNodeRef().m_flags |= NetNode.Flags.Middle | NetNode.Flags.Moveable;
 
             return ret;
         }
@@ -64,32 +50,14 @@ namespace KianCommons
 
         static bool CheckID(this ref NetNode node1, ushort nodeId2)
         {
-            ref NetNode node2 = ref nodeId2.ToNode();
+            var node2 = nodeId2.GetNode();
             return node1.m_buildIndex == node2.m_buildIndex && node1.m_position == node2.m_position;
         }
         internal static ushort GetID(this ref NetNode node)
         {
-            ref NetSegment seg = ref node.GetFirstSegment().ToSegment();
-            bool startNode = node.CheckID(seg.m_startNode);
-            return startNode ? seg.m_startNode : seg.m_endNode;
+            var segment = node.Segments().First();
+            return node.CheckID(segment.m_startNode) ? segment.m_startNode : segment.m_endNode;
         }
-        public static ushort GetFirstSegment(ushort nodeID) => nodeID.ToNode().GetFirstSegment();
-        public static ushort GetFirstSegment(this ref NetNode node)
-        {
-            ushort segmentID = 0;
-            int i;
-            for (i = 0; i < 8; ++i)
-            {
-                segmentID = node.GetSegment(i);
-                if (segmentID != 0)
-                    break;
-            }
-            return segmentID;
-        }
-
-        #region Math
-
-        #endregion MATH
 
         #region copied from TMPE
         internal static NetInfo.Direction Invert(this NetInfo.Direction direction, bool invert = true) => invert ? NetInfo.InvertDirection(direction) : direction;
@@ -102,32 +70,23 @@ namespace KianCommons
         /// <returns>true if vehicles move backward,
         /// false if vehilces going ward, bi-directional, or non-directional</returns>
         internal static bool IsGoingBackward(this NetInfo.Lane laneInfo, bool invertDirection = false) => laneInfo.m_finalDirection.Invert(invertDirection).IsGoingForward();
-        public static bool IsStartNode(ushort segmentId, ushort nodeId) => segmentId.ToSegment().m_startNode == nodeId;
-        public static ushort GetSegmentNode(ushort segmentID, bool startNode) => segmentID.ToSegment().GetNode(startNode);
-        public static ushort GetNode(this NetSegment segment, bool startNode) => startNode ? segment.m_startNode : segment.m_endNode;
-        public static bool IsSegmentValid(ushort segmentId) => segmentId != 0 && segmentId.ToSegment().IsValid();
-        public static bool IsValid(this ref NetSegment segment) => segment.Info != null ? segment.m_flags.CheckFlags(required: NetSegment.Flags.Created, forbidden: NetSegment.Flags.Deleted) : false;
-
-        public static bool IsNodeValid(ushort nodeId) => nodeId != 0 && nodeId.ToNode().IsValid();
-        public static bool IsValid(this ref NetNode node) => node.Info == null ? false : node.m_flags.CheckFlags(required: NetNode.Flags.Created, forbidden: NetNode.Flags.Deleted);
-
         #endregion
 
         public static IEnumerable<LaneData> IterateSegmentLanes(ushort segmentId)
         {
             int idx = 0;
-            if (segmentId.ToSegment().Info == null)
+            if (segmentId.GetSegment().Info == null)
             {
                 SingletonMod<Mod>.Logger.Error("null info: potentially caused by missing assets. segmentId=" + segmentId);
                 yield break;
             }
-            int n = segmentId.ToSegment().Info.m_lanes.Length;
-            bool inverted = segmentId.ToSegment().m_flags.IsFlagSet(NetSegment.Flags.Invert);
-            for (uint laneID = segmentId.ToSegment().m_lanes;
+            int n = segmentId.GetSegment().Info.m_lanes.Length;
+            bool inverted = segmentId.GetSegment().m_flags.IsFlagSet(NetSegment.Flags.Invert);
+            for (uint laneID = segmentId.GetSegment().m_lanes;
                 laneID != 0 && idx < n;
-                laneID = laneID.ToLane().m_nextLane, idx++)
+                laneID = laneID.GetLane().m_nextLane, idx++)
             {
-                var laneInfo = segmentId.ToSegment().Info.m_lanes[idx];
+                var laneInfo = segmentId.GetSegment().Info.m_lanes[idx];
                 bool forward = laneInfo.m_finalDirection == NetInfo.Direction.Forward;
                 yield return new LaneData
                 {
@@ -154,14 +113,14 @@ namespace KianCommons
         }
         public static int GetLaneIndex(uint laneID)
         {
-            ushort segmentId = laneID.ToLane().m_segment;
-            var id = segmentId.ToSegment().m_lanes;
+            ushort segmentId = laneID.GetLane().m_segment;
+            var id = segmentId.GetSegment().m_lanes;
 
-            for (int i = 0; i < segmentId.ToSegment().Info.m_lanes.Length && id != 0; i++)
+            for (int i = 0; i < segmentId.GetSegment().Info.m_lanes.Length && id != 0; i++)
             {
                 if (id == laneID)
                     return i;
-                id = id.ToLane().m_nextLane;
+                id = id.GetLane().m_nextLane;
             }
             return -1;
         }
@@ -188,21 +147,21 @@ namespace KianCommons
                 laneIndex = NetUtil.GetLaneIndex(laneID);
             LaneIndex = laneIndex;
 
-            ushort segmentID = LaneID.ToLane().m_segment;
-            laneInfo_ = segmentID.ToSegment().Info.m_lanes[LaneIndex];
+            ushort segmentID = LaneID.GetLane().m_segment;
+            laneInfo_ = segmentID.GetSegment().Info.m_lanes[LaneIndex];
             bool backward = laneInfo_.IsGoingBackward();
-            bool inverted = segmentID.ToSegment().m_flags.IsFlagSet(NetSegment.Flags.Invert);
+            bool inverted = segmentID.GetSegment().m_flags.IsFlagSet(NetSegment.Flags.Invert);
             StartNode = backward == inverted; //xnor
         }
 
         public readonly ushort SegmentID => Lane.m_segment;
-        public readonly ref NetSegment Segment => ref SegmentID.ToSegment();
-        public readonly ref NetLane Lane => ref LaneID.ToLane();
+        public readonly ref NetSegment Segment => ref SegmentID.GetSegmentRef();
+        public readonly ref NetLane Lane => ref LaneID.GetLaneRef();
         public readonly ushort NodeID => StartNode ? Segment.m_startNode : Segment.m_endNode;
         public readonly NetLane.Flags Flags
         {
             get => (NetLane.Flags)Lane.m_flags;
-            set => LaneID.ToLane().m_flags = (ushort)value;
+            set => LaneID.GetLaneRef().m_flags = (ushort)value;
         }
 
         public bool LeftSide => LaneInfo.m_position < 0 != Segment.m_flags.IsFlagSet(NetSegment.Flags.Invert);

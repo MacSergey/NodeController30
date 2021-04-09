@@ -4,6 +4,7 @@ namespace NodeController.Patches
     using HarmonyLib;
     using KianCommons;
     using ModsCommon;
+    using ModsCommon.Utilities;
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -79,7 +80,7 @@ namespace NodeController.Patches
             // Calculate trailer lane offset based on how far the trailer is from the car its attached to.
             bool inverted = leadingVehicle.m_flags.IsFlagSet(Vehicle.Flags.Inverted);
             float deltaPos = inverted ? leadningInfo.m_attachOffsetBack : leadningInfo.m_attachOffsetFront;
-            float deltaOffset = deltaPos / laneID.ToLane().m_length;
+            float deltaOffset = deltaPos / laneID.GetLane().m_length;
             float offset = leadingVehicle.m_lastPathOffset * (1f / 255f) - deltaOffset;
             offset = Mathf.Clamp(offset, 0, 1);
             if (float.IsNaN(offset))
@@ -96,7 +97,7 @@ namespace NodeController.Patches
 
         static string ToSTR(this ref PathUnit.Position pathPos)
         {
-            var info = pathPos.m_segment.ToSegment().Info;
+            var info = pathPos.m_segment.GetSegment().Info;
             return $"segment:{pathPos.m_segment} info:{info} nLanes={info.m_lanes.Length} laneIndex={pathPos.m_lane}";
         }
 
@@ -108,35 +109,29 @@ namespace NodeController.Patches
             return PathUnitBuffer[vehicleData.m_path].GetPosition(pathIndex >> 1, out pathPos);
         }
 
-        internal static NetInfo.Lane GetLaneInfo(this ref PathUnit.Position pathPos) => pathPos.m_segment.ToSegment().Info.m_lanes[pathPos.m_lane];
+        internal static NetInfo.Lane GetLaneInfo(this ref PathUnit.Position pathPos) => pathPos.m_segment.GetSegment().Info.m_lanes[pathPos.m_lane];
 
         internal static float GetCurrentSE(PathUnit.Position pathPos, float offset, ref Vehicle vehicleData)
         {
             if (float.IsNaN(offset) || float.IsInfinity(offset))
                 return 0;
 
-            SegmentEndData segStart = SegmentEndManager.Instance[pathPos.m_segment, true];
-            SegmentEndData segEnd = SegmentEndManager.Instance[pathPos.m_segment, false];
-            float startSE = segStart == null ? 0f : segStart.CachedSuperElevationDeg;
-            float endSE = segEnd == null ? 0f : -segEnd.CachedSuperElevationDeg;
-            float se = startSE * (1 - offset) + endSE * offset;
+            var segmentStart = SegmentEndManager.Instance[pathPos.m_segment, true];
+            var segmentEnd = SegmentEndManager.Instance[pathPos.m_segment, false];
+            var startSE = segmentStart == null ? 0f : segmentStart.CachedSuperElevationDeg;
+            var endSE = segmentEnd == null ? 0f : -segmentEnd.CachedSuperElevationDeg;
+            var se = startSE * (1 - offset) + endSE * offset;
 
             if (pathPos.GetLaneInfo() is not NetInfo.Lane lane)
                 return 0;
 
-            bool invert = pathPos.m_segment.ToSegment().m_flags.IsFlagSet(NetSegment.Flags.Invert);
-            bool backward = lane.m_finalDirection == NetInfo.Direction.Backward;
-            bool reversed = vehicleData.m_flags.IsFlagSet(Vehicle.Flags.Reversed);
+            var avoid = lane.m_finalDirection == NetInfo.Direction.AvoidForward | lane.m_finalDirection == NetInfo.Direction.AvoidBackward;
 
-            bool avoidForward = lane.m_finalDirection == NetInfo.Direction.AvoidForward;
-            bool avoidBackward = lane.m_finalDirection == NetInfo.Direction.AvoidBackward;
-            bool avoid = avoidForward | avoidBackward;
-
-            if (invert)
+            if (pathPos.m_segment.GetSegment().m_flags.IsFlagSet(NetSegment.Flags.Invert))
                 se = -se;
-            if (backward)
+            if (lane.m_finalDirection == NetInfo.Direction.Backward)
                 se = -se;
-            if (reversed & !avoid)
+            if (vehicleData.m_flags.IsFlagSet(Vehicle.Flags.Reversed) & !avoid)
                 se = -se;
 
             return se;

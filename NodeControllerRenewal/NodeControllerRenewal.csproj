@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Manager\AssetDataExtension.cs" />
     <Compile Include="Manager\CornerData.cs" />
+    <Compile Include="Manager\NodeType.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\Panel.cs" />
     <Compile Include="Utilities\MoveItIntegration.cs" />
@@ -114,7 +115,6 @@
     <Compile Include="ToolMode.cs" />
     <Compile Include="Tool.cs" />
     <Compile Include="Utilities\CSURUtil.cs" />
-    <Compile Include="Utilities\EnumBitMaskExtensions.cs" />
     <Compile Include="Utilities\HelpersExtensions.cs" />
     <Compile Include="Utilities\MaterialUtils.cs" />
     <Compile Include="Utilities\NetUtil.cs" />
@@ -162,7 +162,7 @@
   </Target>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Build" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Debug" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_ConfigurationName="Debug" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="Build" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- <Target Name="AfterBuildRelease" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'"> -->

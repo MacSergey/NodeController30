@@ -4,6 +4,7 @@ using ICities;
 using KianCommons;
 using ModsCommon;
 using ModsCommon.UI;
+using ModsCommon.Utilities;
 using System;
 using static KianCommons.HelpersExtensions;
 
@@ -92,23 +93,24 @@ namespace NodeController.GUI
         static void ApplyUniversalSlopeFixes(bool value)
         {
             GameConfig.UnviversalSlopeFixes = value;
-            for (ushort segmentID = 0; segmentID < NetManager.MAX_SEGMENT_COUNT; ++segmentID)
+            for (ushort segmentId = 0; segmentId < NetManager.MAX_SEGMENT_COUNT; ++segmentId)
             {
-                if (NetUtil.IsSegmentValid(segmentID))
+                if (segmentId.GetSegment().IsValid())
                 {
                     // update only those that have flat junctions and not customized (custom nodes use enforced flat junctions).
-                    if (segmentID.ToSegment().Info.m_flatJunctions == false &&
-                        !segmentID.ToSegment().m_startNode.ToNode().m_flags.IsFlagSet(NetNode.Flags.Middle) &&
-                        !segmentID.ToSegment().m_endNode.ToNode().m_flags.IsFlagSet(NetNode.Flags.Middle) &&
-                        SegmentEndManager.Instance[segmentID, true] == null &&
-                        SegmentEndManager.Instance[segmentID, false] == null)
+                    var segment = segmentId.GetSegment();
+                    if (segment.Info.m_flatJunctions == false &&
+                        !segment.m_startNode.GetNode().m_flags.IsFlagSet(NetNode.Flags.Middle) &&
+                        !segment.m_endNode.GetNode().m_flags.IsFlagSet(NetNode.Flags.Middle) &&
+                        SegmentEndManager.Instance[segmentId, true] == null &&
+                        SegmentEndManager.Instance[segmentId, false] == null)
                     {
-                        NetManager.instance.UpdateSegment(segmentID);
+                        NetManager.instance.UpdateSegment(segmentId);
                     }
 
                     // also update segments with extreme slopes.
-                    if (segmentID.ToSegment().m_startDirection.y > 2 || segmentID.ToSegment().m_endDirection.y > 2)
-                        NetManager.instance.UpdateSegment(segmentID);
+                    if (segment.m_startDirection.y > 2 || segment.m_endDirection.y > 2)
+                        NetManager.instance.UpdateSegment(segmentId);
                 }
             }
         }

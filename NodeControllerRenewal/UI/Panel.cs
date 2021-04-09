@@ -41,7 +41,6 @@ namespace NodeController.UI
 
         private PropertyGroupPanel Content { get; set; }
         public INetworkData Data { get; private set; }
-        private List<EditorItem> DataProperties { get; } = new List<EditorItem>();
 
         public NodeControllerPanel()
         {
@@ -68,7 +67,7 @@ namespace NodeController.UI
         }
         private void UpdatePanel()
         {
-            ClearDataProperties();
+            ResetPanel();
             FillProperties();
         }
         private void ResetPanel()
@@ -77,8 +76,6 @@ namespace NodeController.UI
 
             foreach (var property in Content.components.ToArray())
                 ComponentPool.Free(property);
-
-            DataProperties.Clear();
 
             Content.StartLayout();
         }
@@ -89,20 +86,7 @@ namespace NodeController.UI
 
             var header = ComponentPool.Get<TextProperty>(Content);
             header.Text = Data.Title;
-            DataProperties.Add(header);
-            DataProperties.AddRange(Data.GetUIComponents(Content, UpdatePanel));
-
-            Content.StartLayout();
-        }
-
-        private void ClearDataProperties()
-        {
-            Content.StopLayout();
-
-            foreach (var property in DataProperties)
-                ComponentPool.Free(property);
-
-            DataProperties.Clear();
+            Data.GetUIComponents(Content, UpdatePanel);
 
             Content.StartLayout();
         }

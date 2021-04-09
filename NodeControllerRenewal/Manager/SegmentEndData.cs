@@ -27,12 +27,12 @@ namespace NodeController
         public ushort NodeId { get; set; }
         public ushort SegmentId { get; set; }
 
-        public ref NetSegment Segment => ref SegmentId.ToSegment();
+        public NetSegment Segment => SegmentId.GetSegment();
         public NetInfo Info => Segment.Info;
-        public ref NetNode Node => ref NodeId.ToNode();
+        public NetNode Node => NodeId.GetNode();
         public NodeData NodeData => NodeManager.Instance.buffer[NodeId];
         public NodeTypeT NodeType => NodeData.NodeType;
-        public bool IsStartNode => NetUtil.IsStartNode(SegmentId, NodeId);
+        public bool IsStartNode => Segment.IsStartNode(NodeId);
         public Vector3 Direction => IsStartNode ? Segment.m_startDirection : Segment.m_endDirection;
 
         public float DefaultOffset => CSURUtil.GetMinCornerOffset(SegmentId, NodeId);
@@ -183,7 +183,11 @@ namespace NodeController
         public void ResetToDefault()
         {
             Offset = DefaultOffset;
-            SlopeAngle = 0;
+            Shift = 0f;
+            RotateAngle = 0f;
+            SlopeAngle = 0f;
+            TwistAngle = 0f;
+
             FlatJunctions = DefaultFlatJunctions;
             Twist = DefaultTwist;
             NoCrossings = false;
@@ -211,7 +215,7 @@ namespace NodeController
 
         public static bool CanTwist(ushort segmentId, ushort nodeId)
         {
-            var segmentIds = nodeId.GetNode().SegmentsId().ToArray();
+            var segmentIds = nodeId.GetNode().SegmentIds().ToArray();
 
             if (segmentIds.Length == 1)
                 return false;
@@ -244,7 +248,7 @@ namespace NodeController
 
         #region UI COMPONENTS
 
-        public List<EditorItem> GetUIComponents(UIComponent parent, Action refresh)
+        public void GetUIComponents(UIComponent parent, Action refresh)
         {
             throw new NotImplementedException();
         }

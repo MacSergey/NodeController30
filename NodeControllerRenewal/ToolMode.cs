@@ -43,7 +43,7 @@ namespace NodeController
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             var data = Tool.Data as NodeData;
-            foreach (var segmentId in data.Node.SegmentsId())
+            foreach (var segmentId in data.Node.SegmentIds())
             {
                 var segment = segmentId.GetSegment();
                 var bezier = new Bezier3()

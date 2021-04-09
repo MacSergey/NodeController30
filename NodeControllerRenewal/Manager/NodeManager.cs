@@ -61,7 +61,7 @@ namespace NodeController
             }
             else
             {
-                foreach (var segmentId in nodeId.GetNode().SegmentsId())
+                foreach (var segmentId in nodeId.GetNode().SegmentIds())
                     _ = SegmentEndManager.Instance[segmentId, nodeId, true];
 
                 TargetNodeId = nodeId; // must be done before deserialization.
@@ -78,13 +78,13 @@ namespace NodeController
             if (ToolBase.ToolErrors.None != NetUtil.InsertNode(controlPoint, out ushort nodeId))
                 return null;
 
-            foreach (var segmentId in nodeId.GetNode().SegmentsId())
+            foreach (var segmentId in nodeId.GetNode().SegmentIds())
             {
-                var segEnd = new SegmentEndData(segmentId, nodeId);
-                SegmentEndManager.Instance[segmentId, nodeId] = segEnd;
+                var segmentEnd = new SegmentEndData(segmentId, nodeId);
+                SegmentEndManager.Instance[segmentId, nodeId] = segmentEnd;
             }
 
-            var info = controlPoint.m_segment.ToSegment().Info;
+            var info = controlPoint.m_segment.GetSegment().Info;
             if (nodeType == NodeTypeT.Crossing && (info.CountPedestrianLanes() < 2 || info.m_netAI is not RoadBaseAI))
                 buffer[nodeId] = new NodeData(nodeId);
             else
@@ -101,7 +101,7 @@ namespace NodeController
                 buffer[nodeId] = data;
             }
 
-            foreach (var segmentId in nodeId.GetNode().SegmentsId())
+            foreach (var segmentId in nodeId.GetNode().SegmentIds())
                 _ = SegmentEndManager.Instance[segmentId, nodeId, true];
 
             return data;
@@ -117,10 +117,10 @@ namespace NodeController
                 ResetNodeToDefault(nodeId);
             else
             {
-                foreach (var segmentId in nodeId.GetNode().SegmentsId())
+                foreach (var segmentId in nodeId.GetNode().SegmentIds())
                 {
-                    var segEnd = SegmentEndManager.Instance[segmentId, nodeId];
-                    segEnd.Update();
+                    var segmentEnd = SegmentEndManager.Instance[segmentId, nodeId];
+                    segmentEnd.Update();
                 }
                 buffer[nodeId].Update();
             }
@@ -144,7 +144,7 @@ namespace NodeController
             {
                 if (nodeData == null)
                     continue;
-                if (NetUtil.IsNodeValid(nodeData.NodeId))
+                if (nodeData.Node.IsValid())
                     nodeData.Update();
                 else
                     ResetNodeToDefault(nodeData.NodeId);
@@ -152,18 +152,21 @@ namespace NodeController
         }
         public void OnBeforeCalculateNodePatch(ushort nodeId)
         {
-            if (buffer[nodeId] == null) return;
+            if (buffer[nodeId] == null) 
+                return;
 
-            if (!NetUtil.IsNodeValid(nodeId) || !NodeData.IsSupported(nodeId))
+            var node = nodeId.GetNode();
+
+            if (!node.IsValid() || !NodeData.IsSupported(nodeId))
             {
                 SetNullNodeAndSegmentEnds(nodeId);
                 return;
             }
 
-            foreach (var segmentId in nodeId.GetNode().SegmentsId())
+            foreach (var segmentId in node.SegmentIds())
             {
-                var segEnd = SegmentEndManager.Instance[segmentId, nodeId, true];
-                segEnd.Calculate();
+                var segmentEnd = SegmentEndManager.Instance[segmentId, nodeId, true];
+                segmentEnd.Calculate();
             }
 
             buffer[nodeId].Calculate();
@@ -174,7 +177,7 @@ namespace NodeController
 
         public void SetNullNodeAndSegmentEnds(ushort nodeId)
         {
-            foreach (var segmentID in nodeId.GetNode().SegmentsId())
+            foreach (var segmentID in nodeId.GetNode().SegmentIds())
                 SegmentEndManager.Instance[segmentID, nodeId] = null;
 
             buffer[nodeId] = null;
@@ -189,7 +192,7 @@ namespace NodeController
                 if (buffer[nodeId] is not NodeData)
                     continue;
 
-                if (!NetUtil.IsNodeValid(nodeId))
+                if (!nodeId.GetNode().IsValid())
                 {
                     SetNullNodeAndSegmentEnds(nodeId);
                     continue;

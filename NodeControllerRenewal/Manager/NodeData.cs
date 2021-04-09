@@ -19,17 +19,6 @@ using ColossalFramework.UI;
 
 namespace NodeController
 {
-    public enum NodeTypeT
-    {
-        Middle,
-        Bend,
-        Stretch,
-        Crossing, // change dataMatrix.w to render crossings in the middle.
-        UTurn, // set offset to 5.
-        Custom,
-        End,
-    }
-
     [Serializable]
     public class NodeData : ISerializable, INetworkData, INetworkData<NodeData>
     {
@@ -40,8 +29,28 @@ namespace NodeController
         public ushort NodeId { get; set; }
         public NetNode Node => NodeId.GetNode();
         public NetInfo Info => Node.Info;
-        public NodeTypeT NodeType { get; set; }
-        public IEnumerable<SegmentEndData> SegmentEndDatas => Node.SegmentsId().Select(s => SegmentEndManager.Instance[s, NodeId]);
+        private NodeType Type { get; set; }
+        public NodeTypeT NodeType
+        {
+            get => Type.Type;
+            set
+            {
+                NodeType newType = value switch
+                {
+                    NodeTypeT.Middle => new MiddleNode(this),
+                    NodeTypeT.Bend => new BendNode(this),
+                    NodeTypeT.Stretch => new StretchNode(this),
+                    NodeTypeT.Crossing => new CrossingNode(this),
+                    NodeTypeT.UTurn => new UTurnNode(this),
+                    NodeTypeT.Custom => new CustomNode(this),
+                    NodeTypeT.End => new EndNode(this),
+                    _ => throw new NotImplementedException(),
+                };
+                Type = newType;
+                Update();
+            }
+        }
+        public IEnumerable<SegmentEndData> SegmentEndDatas => Node.SegmentIds().Select(s => SegmentEndManager.Instance[s, NodeId]);
         public bool IsDefault => NodeType == DefaultNodeType && !SegmentEndDatas.Any(s => s?.IsDefault != true);
 
         public NetNode.Flags DefaultFlags { get; set; }
@@ -64,8 +73,8 @@ namespace NodeController
         public bool HasPedestrianLanes => SegmentIdsList.Any(s => s.GetSegment().Info.m_hasPedestrianLanes);
         private int PedestrianLaneCount => SegmentIdsList.Max(s => s.GetSegment().Info.CountPedestrianLanes());
         private float MainDot => DotXZ(FirstSegment.GetDirection(NodeId).XZ(), SecondSegment.GetDirection(NodeId).XZ());
-        public bool IsStraight => IsMain && MainDot < -0.999f;
-        public bool Is180 => IsMain && MainDot > 0.999f;
+        public bool IsStraight => IsMain && MainDot < -0.99f;
+        public bool Is180 => IsMain && MainDot > 0.99f;
         public bool IsEqualWidth => IsMain && Math.Abs(FirstSegment.Info.m_halfWidth - SecondSegment.Info.m_halfWidth) < 0.001f;
 
         public bool FirstTimeTrafficLight { get; set; }
@@ -77,16 +86,16 @@ namespace NodeController
                 var count = 0;
                 foreach (ushort segmentId in SegmentIdsList)
                 {
-                    var segEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
+                    var segmentEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
                     if (value)
                     {
-                        segEnd.FlatJunctions = true;
-                        segEnd.Twist = false;
+                        segmentEnd.FlatJunctions = true;
+                        segmentEnd.Twist = false;
                     }
                     else
                     {
-                        segEnd.FlatJunctions = count >= 2;
-                        segEnd.Twist = count >= 2;
+                        segmentEnd.FlatJunctions = count >= 2;
+                        segmentEnd.Twist = count >= 2;
                     }
                     count += 1;
                 }
@@ -100,8 +109,8 @@ namespace NodeController
             {
                 foreach (var segmentId in SegmentIdsList)
                 {
-                    var segEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
-                    segEnd.Offset = value;
+                    var segmentEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
+                    segmentEnd.Offset = value;
                 }
                 Update();
             }
@@ -113,8 +122,8 @@ namespace NodeController
             {
                 foreach (var segmentId in SegmentIdsList)
                 {
-                    var segEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
-                    segEnd.Shift = value;
+                    var segmentEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
+                    segmentEnd.Shift = value;
                 }
                 Update();
             }
@@ -126,8 +135,8 @@ namespace NodeController
             {
                 foreach (var segmentId in SegmentIdsList)
                 {
-                    var segEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
-                    segEnd.RotateAngle = value;
+                    var segmentEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
+                    segmentEnd.RotateAngle = value;
                 }
                 Update();
             }
@@ -161,13 +170,13 @@ namespace NodeController
 
         public bool NoMarkings
         {
-            get => Node.SegmentsId().Any(s => SegmentEndManager.Instance[s, NodeId, true].NoMarkings);
+            get => Node.SegmentIds().Any(s => SegmentEndManager.Instance[s, NodeId, true].NoMarkings);
             set
             {
-                foreach (var segmentId in Node.SegmentsId())
+                foreach (var segmentId in Node.SegmentIds())
                 {
-                    var segEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
-                    segEnd.NoMarkings = value;
+                    var segmentEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
+                    segmentEnd.NoMarkings = value;
                 }
                 Update();
             }
@@ -311,11 +320,13 @@ namespace NodeController
             else if (DefaultFlags.IsFlagSet(NetNode.Flags.Junction))
                 DefaultNodeType = NodeTypeT.Custom;
             else if (DefaultFlags.IsFlagSet(NetNode.Flags.End))
-                NodeType = DefaultNodeType = NodeTypeT.End;
+                DefaultNodeType = NodeTypeT.End;
             else
                 throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
 
-            SegmentIdsList = node.SegmentsId().ToList();
+            NodeType = DefaultNodeType;
+
+            SegmentIdsList = node.SegmentIds().ToList();
             SegmentIdsList.Sort(CompareSegments);
             SegmentIdsList.Reverse();
 
@@ -343,10 +354,8 @@ namespace NodeController
         public void Update() => NetManager.instance.UpdateNode(NodeId);
         public void ResetToDefault()
         {
-            NodeType = DefaultNodeType;
-
-            foreach (var segEnd in SegmentEndDatas)
-                segEnd.ResetToDefault();
+            foreach (var segmentEnd in SegmentEndDatas)
+                segmentEnd.ResetToDefault();
 
             Update();
         }
@@ -355,11 +364,6 @@ namespace NodeController
 
         #region UTILITIES
 
-        bool IsUniform<T>(Func<SegmentEndData, T> predicate)
-        {
-            var count = Node.SegmentsId().Select(s => predicate(SegmentEndManager.Instance[s, NodeId, true])).Distinct().Count();
-            return count <= 1;
-        }
         static int CompareSegments(ushort firstSegmentId, ushort secondSegmentId)
         {
             var firstInfo = firstSegmentId.GetSegment().Info;
@@ -376,8 +380,8 @@ namespace NodeController
         }
         public bool CanChangeTo(NodeTypeT newNodeType)
         {
-            if (IsEnd)
-                return newNodeType == NodeTypeT.End;
+            if (newNodeType == NodeType)
+                return true;
 
             if (IsJunction || IsCSUR)
                 return newNodeType == NodeTypeT.Custom;
@@ -391,22 +395,19 @@ namespace NodeController
                 NodeTypeT.Bend => !middle,
                 NodeTypeT.Middle => IsStraight || Is180,
                 NodeTypeT.Custom => true,
-                NodeTypeT.End => false,
+                NodeTypeT.End => IsEnd,
                 _ => throw new Exception("Unreachable code"),
             };
         }
         public static bool IsSupported(ushort nodeId)
         {
-            if (!NetUtil.IsNodeValid(nodeId))
+            var node = nodeId.GetNode();
+            if (!node.IsValid())
                 return false;
 
-            var node = nodeId.GetNode();
-            var segmentIds = node.SegmentsId().ToArray();
-            foreach (ushort segmentId in segmentIds)
-            {
-                if (!NetUtil.IsSegmentValid(segmentId))
+            var segmentIds = node.SegmentIds().ToArray();
+            if(segmentIds.Any(id => !id.GetSegment().IsValid()))
                     return false;
-            }
 
             if (!node.m_flags.CheckFlags(required: NetNode.Flags.Created, forbidden: NetNode.Flags.LevelCrossing | NetNode.Flags.Outside | NetNode.Flags.Deleted))
                 return false;
@@ -425,171 +426,12 @@ namespace NodeController
 
         #region UI COMPONENTS
 
-        public List<EditorItem> GetUIComponents(UIComponent parent, Action refresh)
+        public void GetUIComponents(UIComponent parent, Action refresh)
         {
-            var properties = new List<EditorItem>();
-
-            properties.Add(GetNodeTypeProperty(parent, refresh));
-            if (CanModifyFlatJunctions)
-                properties.Add(GetActionButtons(parent));
-
-            if (!IsMiddleNode)
-            {
-                GetUIComponents(properties, parent, GetOffsetProperty, GetSegmentOffsetProperty, (data) => data.Offset, (data, value) => data.Offset = value);
-                GetUIComponents(properties, parent, GetShiftProperty, GetSegmentShiftProperty, (data) => data.Shift, (data, value) => data.Shift = value);
-                GetUIComponents(properties, parent, GetRotateProperty, GetSegmentRotateProperty, (data) => data.RotateAngle, (data, value) => data.RotateAngle = value);
-            }
-            if (IsMiddleNode)
-            {
-                GetUIComponents(properties, parent, GetSlopeProperty, null, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value);
-                GetUIComponents(properties, parent, GetTwistProperty, null, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value);
-            }
-
-            properties.Add(GetHideMarkingProperty(parent));
-
-            return properties;
-
+            GetNodeTypeProperty(parent, refresh);
+            Type.GetUIComponents(parent, refresh);
         }
-        private void GetUIComponents(List<EditorItem> properties, UIComponent parent, Func<UIComponent, FloatPropertyPanel> getNodeProperty, Func<UIComponent, SegmentEndData, FloatPropertyPanel> getSegmentProperty, Func<INetworkData, float> getValue, Action<INetworkData, float> setValue)
-        {
-            var nodeProperty = getNodeProperty(parent);
-            nodeProperty.Value = getValue(this);
-            properties.Add(nodeProperty);
-
-            var segmentProperties = new List<FloatPropertyPanel>();
-            if (getSegmentProperty != null)
-            {
-                foreach (var segmentId in Node.SegmentsId())
-                {
-                    var segmentData = SegmentEndManager.Instance[segmentId, NodeId, true];
-                    var segmentProperty = getSegmentProperty(parent, segmentData);
-                    segmentProperty.Value = getValue(segmentData);
-                    segmentProperty.OnValueChanged += (newValue) =>
-                        {
-                            var segmentData = SegmentEndManager.Instance[segmentId, NodeId, true];
-                            setValue(segmentData, newValue);
-                            nodeProperty.Value = getValue(this);
-                            Update();
-                        };
-                    segmentProperties.Add(segmentProperty);
-                    properties.Add(segmentProperty);
-                }
-            }
-
-            nodeProperty.OnValueChanged += (float newValue) =>
-            {
-                setValue(this, newValue);
-                foreach (var segmentProperty in segmentProperties)
-                    segmentProperty.Value = newValue;
-            };
-        }
-
-        private FloatPropertyPanel GetOffsetProperty(UIComponent parent)
-        {
-            var offsetProperty = GetNodeProperty(parent, "Offset");
-            offsetProperty.MinValue = 0;
-            offsetProperty.MaxValue = 100;
-
-            return offsetProperty;
-        }
-        private FloatPropertyPanel GetShiftProperty(UIComponent parent)
-        {
-            var offsetProperty = GetNodeProperty(parent, "Shift");
-            offsetProperty.MinValue = -32;
-            offsetProperty.MaxValue = 32;
-
-            return offsetProperty;
-        }
-        private FloatPropertyPanel GetRotateProperty(UIComponent parent)
-        {
-            var rotateProperty = GetNodeProperty(parent, "Rotate");
-            rotateProperty.MinValue = -60;
-            rotateProperty.MaxValue = 60;
-
-            return rotateProperty;
-        }
-        private FloatPropertyPanel GetSlopeProperty(UIComponent parent)
-        {
-            var slopeProperty = GetNodeProperty(parent, "Slope");
-            slopeProperty.MinValue = -60;
-            slopeProperty.MaxValue = 60;
-
-            return slopeProperty;
-        }
-        private FloatPropertyPanel GetTwistProperty(UIComponent parent)
-        {
-            var twistProperty = GetNodeProperty(parent, "Twist");
-            twistProperty.MinValue = -60;
-            twistProperty.MaxValue = 60;
-
-            return twistProperty;
-        }
-
-        private FloatPropertyPanel GetNodeProperty(UIComponent parent, string name)
-        {
-            var property = ComponentPool.Get<FloatPropertyPanel>(parent, name);
-            property.Text = name;
-            property.CheckMin = true;
-            property.CheckMax = true;
-            property.UseWheel = true;
-            property.WheelStep = 1f;
-            property.Init();
-
-            return property;
-        }
-
-        private FloatPropertyPanel GetSegmentOffsetProperty(UIComponent parent, SegmentEndData segmentData)
-        {
-            var offsetProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} offset");
-            offsetProperty.MinValue = 0;
-            offsetProperty.MaxValue = 100;
-
-            return offsetProperty;
-        }
-        private FloatPropertyPanel GetSegmentShiftProperty(UIComponent parent, SegmentEndData segmentData)
-        {
-            var offsetProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} shift");
-            offsetProperty.MinValue = -32;
-            offsetProperty.MaxValue = 32;
-
-            return offsetProperty;
-        }
-        private FloatPropertyPanel GetSegmentRotateProperty(UIComponent parent, SegmentEndData segmentData)
-        {
-            var rotateProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} rotate");
-            rotateProperty.MinValue = -60;
-            rotateProperty.MaxValue = 60;
-
-            return rotateProperty;
-        }
-        private FloatPropertyPanel GetSegmentSlopeProperty(UIComponent parent, SegmentEndData segmentData)
-        {
-            var slopeProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} slope");
-            slopeProperty.MinValue = -60;
-            slopeProperty.MaxValue = 60;
-
-            return slopeProperty;
-        }
-        private FloatPropertyPanel GetSegmentTwistProperty(UIComponent parent, SegmentEndData segmentData)
-        {
-            var twistProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} twist");
-            twistProperty.MinValue = -60;
-            twistProperty.MaxValue = 60;
-
-            return twistProperty;
-        }
-        private FloatPropertyPanel GetSegmentProperty(UIComponent parent, string name)
-        {
-            var property = ComponentPool.Get<FloatPropertyPanel>(parent, name);
-            property.Text = name;
-            property.CheckMin = true;
-            property.CheckMax = true;
-            property.UseWheel = true;
-            property.WheelStep = 1f;
-            property.Init();
-
-            return property;
-        }
+       
         private NodeTypePropertyPanel GetNodeTypeProperty(UIComponent parent, Action refresh)
         {
             var typeProperty = ComponentPool.Get<NodeTypePropertyPanel>(parent);
@@ -599,50 +441,11 @@ namespace NodeController
             typeProperty.OnSelectObjectChanged += (value) =>
             {
                 NodeType = value;
-                Update();
                 refresh();
             };
 
             return typeProperty;
         }
-        private ButtonsPanel GetActionButtons(UIComponent parent)
-        {
-            var actionButtons = ComponentPool.Get<ButtonsPanel>(parent);
-            var slopeIndex = actionButtons.AddButton("Make slope");
-            var flatIndex = actionButtons.AddButton("Make flat");
-            actionButtons.Init();
-            actionButtons.OnButtonClick += OnButtonClick;
-
-            return actionButtons;
-
-            void OnButtonClick(int index)
-            {
-                if (index == slopeIndex)
-                    IsFlatJunctions = false;
-                else if (index == flatIndex)
-                    IsFlatJunctions = true;
-            }
-        }
-        private BoolListPropertyPanel GetHideMarkingProperty(UIComponent parent)
-        {
-            var hideMarkingProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
-            hideMarkingProperty.Text = "Hide crosswalk marking";
-            hideMarkingProperty.Init("No", "Yes");
-            hideMarkingProperty.SelectedObject = NoMarkings;
-            hideMarkingProperty.OnSelectObjectChanged += (value) => NoMarkings = value;
-
-            return hideMarkingProperty;
-        }
-
-        //private ButtonPanel GetResetButton(UIComponent parent)
-        //{
-        //    var resetButton = ComponentPool.Get<ButtonPanel>(parent);
-        //    resetButton.Text = "Reset to default";
-        //    resetButton.Init();
-        //    resetButton.OnButtonClick += ResetToDefault;
-
-        //    return resetButton;
-        //}
 
         //public string ToolTip(NodeTypeT nodeType) => nodeType switch
         //{

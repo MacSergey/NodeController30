@@ -102,13 +102,11 @@ namespace NodeController.Patches
 
         public static void CalculateSegmentPostfix(ushort segmentID)
         {
-            if (!NetUtil.IsSegmentValid(segmentID))
+            if (!segmentID.GetSegment().IsValid())
                 return;
 
-            var segStart = SegmentEndManager.Instance[segmentID, true];
-            var segEnd = SegmentEndManager.Instance[segmentID, false];
-            segStart?.OnAfterCalculate();
-            segEnd?.OnAfterCalculate();
+            SegmentEndManager.Instance[segmentID, true]?.OnAfterCalculate();
+            SegmentEndManager.Instance[segmentID, false]?.OnAfterCalculate();
         }
 
         public static IEnumerable<CodeInstruction> CalculateCornerTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)

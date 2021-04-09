@@ -2,6 +2,7 @@ using ColossalFramework;
 using HarmonyLib;
 using KianCommons;
 using KianCommons.Patches;
+using ModsCommon.Utilities;
 using NodeController.Util;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace NodeController.Patches
         {
             NodeManager.Instance.OnBeforeCalculateNodePatch(nodeID); // invalid/unsupported nodes are set to null.
             NodeData nodeData = NodeManager.Instance.buffer[nodeID];
-            ref NetNode node = ref nodeID.ToNode();
+            ref var node = ref nodeID.GetNodeRef();
 
             if (nodeData == null || !nodeData.IsMain)
                 return;
@@ -100,7 +101,7 @@ namespace NodeController.Patches
         public static IEnumerable<CodeInstruction> RenderInstanceTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase method)
         {
             var codes = TranspilerUtils.ToCodeList(instructions);
-            PatchCheckFlags(codes, occurance: 2, method);
+            PatchCheckFlags(codes, 2, method);
 
             return codes;
         }
@@ -172,19 +173,15 @@ namespace NodeController.Patches
         public static Material CalculateMaterial(Material material, ushort nodeID, ushort segmentID)
         {
             if (ShouldContinueMedian(nodeID, segmentID))
-            {
-                NetInfo netInfo = segmentID.ToSegment().Info;
-                material = MaterialUtils.ContinuesMedian(material, netInfo, false);
-            }
+                material = MaterialUtils.ContinuesMedian(material, segmentID.GetSegment().Info, false);
+
             return material;
         }
         public static Mesh CalculateMesh(Mesh mesh, ushort nodeID, ushort segmentID)
         {
             if (ShouldContinueMedian(nodeID, segmentID))
-            {
-                NetInfo netInfo = segmentID.ToSegment().Info;
-                mesh = MaterialUtils.ContinuesMedian(mesh, netInfo);
-            }
+                mesh = MaterialUtils.ContinuesMedian(mesh, segmentID.GetSegment().Info);
+
             return mesh;
         }
     }
