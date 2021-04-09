@@ -22,6 +22,27 @@ namespace NodeController
     {
         public abstract NodeTypeT Type { get; }
 
+        public virtual bool ResetOffset => false;
+        public virtual float DefaultOffset => 0f;
+
+        public virtual bool ResetShift => false;
+        public virtual float DefaultShift => 0f;
+
+        public virtual bool ResetRotate => false;
+        public virtual float DefaultRotate => 0f;
+
+        public virtual bool ResetSlope => false;
+        public virtual float DefaultSlope => 0f;
+
+        public virtual bool ResetTwist => false;
+        public virtual float DefaultTwist => 0f;
+
+        public virtual bool ResetNoMarking => false;
+        public virtual bool DefaultNoMarking => false;
+
+        public virtual bool ResetFlatJunction => false;
+        public virtual bool DefaultFlatJunction => true;
+
         public NodeData Data { get; }
 
         public NodeType(NodeData data)
@@ -30,7 +51,6 @@ namespace NodeController
         }
 
         public virtual void GetUIComponents(UIComponent parent, Action refresh) { }
-        protected virtual void ResetToDefault() { }
 
         protected void GetOffsetUIComponents(UIComponent parent) => GetUIComponents(parent, GetOffsetProperty, GetSegmentOffsetProperty, (data) => data.Offset, (data, value) => data.Offset = value);
         protected void GetShiftUIComponents(UIComponent parent) => GetUIComponents(parent, GetShiftProperty, GetSegmentShiftProperty, (data) => data.Shift, (data, value) => data.Shift = value);
@@ -175,23 +195,31 @@ namespace NodeController
 
             return property;
         }
-        protected ButtonsPanel GetActionButtons(UIComponent parent)
+        protected BoolListPropertyPanel GetActionButtons(UIComponent parent)
         {
-            var actionButtons = ComponentPool.Get<ButtonsPanel>(parent);
-            var slopeIndex = actionButtons.AddButton("Make slope");
-            var flatIndex = actionButtons.AddButton("Make flat");
-            actionButtons.Init();
-            actionButtons.OnButtonClick += OnButtonClick;
+            var flatJunctionProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
+            flatJunctionProperty.Text = "Style";
+            flatJunctionProperty.Init("Slope", "Flat");
+            flatJunctionProperty.SelectedObject = Data.IsFlatJunctions;
+            flatJunctionProperty.OnSelectObjectChanged += (value) => Data.IsFlatJunctions = value;
 
-            return actionButtons;
+            return flatJunctionProperty;
 
-            void OnButtonClick(int index)
-            {
-                if (index == slopeIndex)
-                    Data.IsFlatJunctions = false;
-                else if (index == flatIndex)
-                    Data.IsFlatJunctions = true;
-            }
+            //var actionButtons = ComponentPool.Get<ButtonsPanel>(parent);
+            //var slopeIndex = actionButtons.AddButton("Make slope");
+            //var flatIndex = actionButtons.AddButton("Make flat");
+            //actionButtons.Init();
+            //actionButtons.OnButtonClick += OnButtonClick;
+
+            //return actionButtons;
+
+            //void OnButtonClick(int index)
+            //{
+            //    if (index == slopeIndex)
+            //        Data.IsFlatJunctions = false;
+            //    else if (index == flatIndex)
+            //        Data.IsFlatJunctions = true;
+            //}
         }
         protected BoolListPropertyPanel GetHideMarkingProperty(UIComponent parent)
         {
@@ -210,7 +238,7 @@ namespace NodeController
             resetButton.Init();
             resetButton.OnButtonClick += () =>
             {
-                Data.ResetToDefault();
+                Data.Refresh();
                 refresh();
             };
 
@@ -220,16 +248,14 @@ namespace NodeController
     public class MiddleNode : NodeType
     {
         public override NodeTypeT Type => NodeTypeT.Middle;
+        public override bool ResetOffset => true;
+        public override bool ResetShift => true;
+        public override bool ResetRotate => true;
+        public override bool ResetNoMarking => true;
+        public override bool ResetFlatJunction => true;
 
         public MiddleNode(NodeData data) : base(data) { }
 
-
-
-        protected override void ResetToDefault()
-        {
-            Data.SlopeAngle = 0f;
-            Data.TwistAngle = 0f;
-        }
         public override void GetUIComponents(UIComponent parent, Action refresh)
         {
             GetSlopeUIComponents(parent);
@@ -240,9 +266,10 @@ namespace NodeController
     public class BendNode : NodeType
     {
         public override NodeTypeT Type => NodeTypeT.Bend;
+        public override bool ResetSlope => true;
+        public override bool ResetTwist => true;
 
         public BendNode(NodeData data) : base(data) { }
-
 
         public override void GetUIComponents(UIComponent parent, Action refresh)
         {
@@ -255,14 +282,15 @@ namespace NodeController
     public class StretchNode : NodeType
     {
         public override NodeTypeT Type => NodeTypeT.Stretch;
+        public override bool ResetShift => true;
+        public override bool ResetSlope => true;
+        public override bool ResetTwist => true;
 
         public StretchNode(NodeData data) : base(data) { }
-
 
         public override void GetUIComponents(UIComponent parent, Action refresh)
         {
             GetOffsetUIComponents(parent);
-            GetShiftUIComponents(parent);
             GetRotateUIComponents(parent);
             GetResetButton(parent, refresh);
         }
@@ -270,41 +298,54 @@ namespace NodeController
     public class CrossingNode : NodeType
     {
         public override NodeTypeT Type => NodeTypeT.Crossing;
+        public override bool ResetOffset => true;
+        public override bool ResetShift => true;
+        public override bool ResetRotate => true;
+        public override bool ResetSlope => true;
+        public override bool ResetTwist => true;
+        public override bool ResetNoMarking => true;
 
         public CrossingNode(NodeData data) : base(data) { }
 
-
         public override void GetUIComponents(UIComponent parent, Action refresh)
         {
-
+            GetActionButtons(parent);
+            GetHideMarkingProperty(parent);
+            GetResetButton(parent, refresh);
         }
     }
     public class UTurnNode : NodeType
     {
         public override NodeTypeT Type => NodeTypeT.UTurn;
+        public override bool ResetOffset => true;
+        public override bool ResetShift => true;
+        public override bool ResetRotate => true;
+        public override bool ResetSlope => true;
+        public override bool ResetTwist => true;
+
+        public override float DefaultOffset => 8f;
 
         public UTurnNode(NodeData data) : base(data) { }
 
-
         public override void GetUIComponents(UIComponent parent, Action refresh)
         {
-
+            GetActionButtons(parent);
+            GetHideMarkingProperty(parent);
+            GetResetButton(parent, refresh);
         }
     }
     public class EndNode : NodeType
     {
         public override NodeTypeT Type => NodeTypeT.End;
+        public override bool ResetOffset => true;
+        public override bool ResetShift => true;
+        public override bool ResetRotate => true;
 
         public EndNode(NodeData data) : base(data) { }
 
-
-        protected override void ResetToDefault()
-        {
-            base.ResetToDefault();
-        }
-
         public override void GetUIComponents(UIComponent parent, Action refresh)
         {
+            GetActionButtons(parent);
             GetSlopeUIComponents(parent);
             GetTwistUIComponents(parent);
             GetResetButton(parent, refresh);
@@ -313,19 +354,15 @@ namespace NodeController
     public class CustomNode : NodeType
     {
         public override NodeTypeT Type => NodeTypeT.Custom;
+        public override bool ResetRotate => true;
+        public override bool ResetSlope => true;
+        public override bool ResetTwist => true;
 
         public CustomNode(NodeData data) : base(data) { }
 
-
-        protected override void ResetToDefault()
-        {
-            Data.Offset = 0f;
-            Data.Shift = 0f;
-            Data.RotateAngle = 0f;
-        }
-
         public override void GetUIComponents(UIComponent parent, Action refresh)
         {
+            GetActionButtons(parent);
             GetOffsetUIComponents(parent);
             GetShiftUIComponents(parent);
             GetRotateUIComponents(parent);

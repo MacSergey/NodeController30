@@ -38,7 +38,7 @@ namespace NodeController
                 return;
 
             ushort nodeID = data.GetID();
-            NodeData nodeData = NodeManager.Instance.buffer[nodeID];
+            NodeData nodeData = NodeManager.Instance[nodeID];
 
             if (nodeData == null)
                 return;

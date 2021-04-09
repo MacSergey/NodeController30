@@ -30,7 +30,7 @@ namespace NodeController
         public NetSegment Segment => SegmentId.GetSegment();
         public NetInfo Info => Segment.Info;
         public NetNode Node => NodeId.GetNode();
-        public NodeData NodeData => NodeManager.Instance.buffer[NodeId];
+        public NodeData NodeData => NodeManager.Instance[NodeId];
         public NodeTypeT NodeType => NodeData.NodeType;
         public bool IsStartNode => Segment.IsStartNode(NodeId);
         public Vector3 Direction => IsStartNode ? Segment.m_startDirection : Segment.m_endDirection;
@@ -40,8 +40,6 @@ namespace NodeController
         public bool DefaultTwist => DefaultFlatJunctions && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public NetSegment.Flags DefaultFlags { get; set; }
 
-        public bool HasPedestrianLanes { get; set; }
-        public float CurveRaduis0 { get; set; }
         public int PedestrianLaneCount { get; set; }
         public float CachedSuperElevationDeg { get; set; }
 
@@ -79,12 +77,6 @@ namespace NodeController
         public float RotateAngle { get; set; }
         public float SlopeAngle { get; set; }
 
-        public float EmbankmentPercent
-        {
-            get => Mathf.Tan(TwistAngle * Mathf.Deg2Rad) * 100;
-            set => TwistAngle = Mathf.Atan(value * 0.01f) * Mathf.Rad2Deg;
-        }
-
         bool CrossingIsRemoved => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(NodeId, SegmentId);
 
         public bool IsCSUR => NetUtil.IsCSUR(Info);
@@ -92,16 +84,6 @@ namespace NodeController
         public bool CanModifyCorners => NodeData != null && (CanModifyOffset || NodeType == NodeTypeT.End || NodeType == NodeTypeT.Middle);
         public bool CanModifyFlatJunctions => NodeData?.CanModifyFlatJunctions ?? false;
         public bool CanModifyTwist => CanTwist(SegmentId, NodeId);
-        public bool ShowNoMarkingsToggle
-        {
-            get
-            {
-                if (IsCSUR)
-                    return false;
-                else
-                    return NodeData == null || NodeData.NodeType == NodeTypeT.Custom;
-            }
-        }
         public bool? ShouldHideCrossingTexture
         {
             get
@@ -149,54 +131,49 @@ namespace NodeController
             DefaultFlags = Segment.m_flags;
             PedestrianLaneCount = Info.CountPedestrianLanes();
 
-            Refresh();
+            //Refresh();
         }
-        public void RefreshAndUpdate()
-        {
-            Refresh();
-            Update();
-        }
-        private void Refresh()
-        {
-            if (!CanModifyOffset)
-                Offset = DefaultOffset;
+        //private void Refresh()
+        //{
+        //    if (!CanModifyOffset)
+        //        Offset = DefaultOffset;
 
-            if (!CanModifyFlatJunctions)
-                FlatJunctions = DefaultFlatJunctions;
+        //    if (!CanModifyFlatJunctions)
+        //        FlatJunctions = DefaultFlatJunctions;
 
-            if (!CanModifyTwist)
-                Twist = DefaultTwist;
+        //    if (!CanModifyTwist)
+        //        Twist = DefaultTwist;
 
-            if (!CanModifyCorners)
-            {
-                SlopeAngle = 0f;
-                Stretch = TwistAngle = 0;
-            }
+        //    if (!CanModifyCorners)
+        //    {
+        //        SlopeAngle = 0f;
+        //        Stretch = TwistAngle = 0;
+        //    }
 
-            if (!FlatJunctions)
-                Twist = false;
-        }
+        //    if (!FlatJunctions)
+        //        Twist = false;
+        //}
         public void Update()
         {
             NetManager.instance.UpdateNode(NodeId);
         }
         public void ResetToDefault()
         {
-            Offset = DefaultOffset;
-            Shift = 0f;
-            RotateAngle = 0f;
-            SlopeAngle = 0f;
-            TwistAngle = 0f;
+            //Offset = DefaultOffset;
+            //Shift = 0f;
+            //RotateAngle = 0f;
+            //SlopeAngle = 0f;
+            //TwistAngle = 0f;
 
-            FlatJunctions = DefaultFlatJunctions;
+            //FlatJunctions = DefaultFlatJunctions;
             Twist = DefaultTwist;
             NoCrossings = false;
-            NoMarkings = false;
+            //NoMarkings = false;
             NoJunctionTexture = false;
             NoJunctionProps = false;
             NoTLProps = false;
             Stretch = TwistAngle = 0;
-            RefreshAndUpdate();
+            //RefreshAndUpdate();
         }
 
         public void OnAfterCalculate()

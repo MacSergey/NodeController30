@@ -18,8 +18,6 @@ namespace NodeController
 
         void Update();
         void Calculate();
-        void ResetToDefault();
-        void RefreshAndUpdate();
 
         public void GetUIComponents(UIComponent parent, Action refresh);
     }

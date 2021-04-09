@@ -37,12 +37,12 @@ namespace NodeController
 
         #endregion LifeCycle
 
-        public NodeData[] buffer = new NodeData[NetManager.MAX_NODE_COUNT];
+        private NodeData[] Buffer { get; } = new NodeData[NetManager.MAX_NODE_COUNT];
 
         #region MOVEIT BACKWARD COMPATIBLITY
 
         [Obsolete("delete when moveit is updated")]
-        public static byte[] CopyNodeData(ushort nodeID) => SerializationUtil.Serialize(Instance.buffer[nodeID]);
+        public static byte[] CopyNodeData(ushort nodeID) => SerializationUtil.Serialize(Instance.Buffer[nodeID]);
 
         public static ushort TargetNodeId = 0;
 
@@ -65,8 +65,8 @@ namespace NodeController
                     _ = SegmentEndManager.Instance[segmentId, nodeId, true];
 
                 TargetNodeId = nodeId; // must be done before deserialization.
-                buffer[nodeId] = SerializationUtil.Deserialize(data, this.VersionOf()) as NodeData;
-                buffer[nodeId].NodeId = nodeId;
+                Buffer[nodeId] = SerializationUtil.Deserialize(data, this.VersionOf()) as NodeData;
+                Buffer[nodeId].NodeId = nodeId;
                 UpdateData(nodeId);
                 TargetNodeId = 0;
             }
@@ -86,34 +86,41 @@ namespace NodeController
 
             var info = controlPoint.m_segment.GetSegment().Info;
             if (nodeType == NodeTypeT.Crossing && (info.CountPedestrianLanes() < 2 || info.m_netAI is not RoadBaseAI))
-                buffer[nodeId] = new NodeData(nodeId);
+                Buffer[nodeId] = new NodeData(nodeId);
             else
-                buffer[nodeId] = new NodeData(nodeId, nodeType);
+                Buffer[nodeId] = new NodeData(nodeId, nodeType);
 
-            return buffer[nodeId];
+            return Buffer[nodeId];
         }
-
-        public NodeData GetOrCreate(ushort nodeId)
+        public NodeData this[ushort nodeId, bool create = false]
         {
-            if (Instance.buffer[nodeId] is not NodeData data)
+            get
             {
-                data = new NodeData(nodeId);
-                buffer[nodeId] = data;
+                if (Instance.Buffer[nodeId] is not NodeData data)
+                {
+                    if (create)
+                    {
+                        data = new NodeData(nodeId);
+                        Buffer[nodeId] = data;
+
+                        foreach (var segmentId in nodeId.GetNode().SegmentIds())
+                            _ = SegmentEndManager.Instance[segmentId, nodeId, true];
+                    }
+                    else
+                        data = null;
+                }
+                return data;
             }
-
-            foreach (var segmentId in nodeId.GetNode().SegmentIds())
-                _ = SegmentEndManager.Instance[segmentId, nodeId, true];
-
-            return data;
+            set => Instance.Buffer[nodeId] = value;
         }
 
         public void UpdateData(ushort nodeId)
         {
-            if (nodeId == 0 || buffer[nodeId] == null)
+            if (nodeId == 0 || Buffer[nodeId] == null)
                 return;
 
             bool selected = SingletonTool<NodeControllerTool>.Instance.Data is NodeData nodeData && nodeData.NodeId == nodeId;
-            if (buffer[nodeId].IsDefault && !selected)
+            if (Buffer[nodeId].IsDefault && !selected)
                 ResetNodeToDefault(nodeId);
             else
             {
@@ -122,13 +129,13 @@ namespace NodeController
                     var segmentEnd = SegmentEndManager.Instance[segmentId, nodeId];
                     segmentEnd.Update();
                 }
-                buffer[nodeId].Update();
+                Buffer[nodeId].Update();
             }
         }
 
         public void ResetNodeToDefault(ushort nodeID)
         {
-            if (buffer[nodeID] != null)
+            if (Buffer[nodeID] != null)
                 SingletonMod<Mod>.Logger.Debug($"node:{nodeID} reset to defualt");
             else
                 SingletonMod<Mod>.Logger.Debug($"node:{nodeID} is alreadey null. no need to reset to default");
@@ -140,7 +147,7 @@ namespace NodeController
 
         public void UpdateAll()
         {
-            foreach (var nodeData in buffer)
+            foreach (var nodeData in Buffer)
             {
                 if (nodeData == null)
                     continue;
@@ -152,7 +159,7 @@ namespace NodeController
         }
         public void OnBeforeCalculateNodePatch(ushort nodeId)
         {
-            if (buffer[nodeId] == null) 
+            if (Buffer[nodeId] == null) 
                 return;
 
             var node = nodeId.GetNode();
@@ -169,9 +176,9 @@ namespace NodeController
                 segmentEnd.Calculate();
             }
 
-            buffer[nodeId].Calculate();
+            Buffer[nodeId].Calculate();
 
-            if (!buffer[nodeId].CanChangeTo(buffer[nodeId].NodeType))
+            if (!Buffer[nodeId].IsPossibleType(Buffer[nodeId].NodeType))
                 ResetNodeToDefault(nodeId);
         }
 
@@ -180,16 +187,16 @@ namespace NodeController
             foreach (var segmentID in nodeId.GetNode().SegmentIds())
                 SegmentEndManager.Instance[segmentID, nodeId] = null;
 
-            buffer[nodeId] = null;
+            Buffer[nodeId] = null;
         }
 
         public void Heal()
         {
             SingletonMod<Mod>.Logger.Debug("NodeManager.Validate() heal");
-            buffer[0] = null;
-            for (ushort nodeId = 1; nodeId < buffer.Length; ++nodeId)
+            Buffer[0] = null;
+            for (ushort nodeId = 1; nodeId < Buffer.Length; ++nodeId)
             {
-                if (buffer[nodeId] is not NodeData)
+                if (Buffer[nodeId] is not NodeData)
                     continue;
 
                 if (!nodeId.GetNode().IsValid())
@@ -198,8 +205,8 @@ namespace NodeController
                     continue;
                 }
 
-                if (buffer[nodeId].NodeId != nodeId)
-                    buffer[nodeId].NodeId = nodeId;
+                if (Buffer[nodeId].NodeId != nodeId)
+                    Buffer[nodeId].NodeId = nodeId;
             }
         }
 

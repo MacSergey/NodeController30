@@ -83,7 +83,7 @@ namespace NodeController.LifeCycle
             }
         }
 
-        public static NodeData CopyNode(ushort sourceNodeID) => NodeManager.Instance.buffer[sourceNodeID]?.Clone();
+        public static NodeData CopyNode(ushort sourceNodeID) => NodeManager[sourceNodeID]?.Clone();
 
         public static MoveItSegmentData CopySegment(ushort sourceSegmentID)
         {
@@ -108,8 +108,8 @@ namespace NodeController.LifeCycle
             else
             {
                 record = record.Clone();
-                NodeManager.buffer[targetNodeID] = record;
-                NodeManager.buffer[targetNodeID].NodeId = targetNodeID;
+                NodeManager[targetNodeID] = record;
+                NodeManager[targetNodeID].NodeId = targetNodeID;
 
                 // Do not call refresh here as it might restart node to 0 even though corner offsets from
                 // segments may come in later.

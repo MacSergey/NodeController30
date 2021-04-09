@@ -22,6 +22,7 @@ namespace NodeController
     [Serializable]
     public class NodeData : ISerializable, INetworkData, INetworkData<NodeData>
     {
+        private static SegmentComparer SegmentComparer { get; } = new SegmentComparer();
         #region PROPERTIES
 
         public string Title => $"Node #{NodeId}";
@@ -47,7 +48,7 @@ namespace NodeController
                     _ => throw new NotImplementedException(),
                 };
                 Type = newType;
-                Update();
+                Refresh();
             }
         }
         public IEnumerable<SegmentEndData> SegmentEndDatas => Node.SegmentIds().Select(s => SegmentEndManager.Instance[s, NodeId]);
@@ -81,6 +82,7 @@ namespace NodeController
 
         public bool IsFlatJunctions
         {
+            get => FirstSegmentEnd.FlatJunctions && SecondSegmentEnd.FlatJunctions;
             set
             {
                 var count = 0;
@@ -324,39 +326,38 @@ namespace NodeController
             else
                 throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
 
-            NodeType = DefaultNodeType;
-
             SegmentIdsList = node.SegmentIds().ToList();
-            SegmentIdsList.Sort(CompareSegments);
+            SegmentIdsList.Sort(SegmentComparer);
             SegmentIdsList.Reverse();
 
-            Refresh();
-        }
-        public void RefreshAndUpdate()
-        {
-            Refresh();
-            Update();
-        }
-        private void Refresh()
-        {
-            if (NodeType != NodeTypeT.Custom)
-                NoMarkings = false;
-
-            if (!CanModifyOffset)
-            {
-                if (NodeType == NodeTypeT.UTurn)
-                    Offset = 8f;
-                else if (NodeType == NodeTypeT.Crossing)
-                    Offset = 0f;
-            }
+            if (Type == null || !IsPossibleType(NodeType))
+                NodeType = DefaultNodeType;
         }
 
         public void Update() => NetManager.instance.UpdateNode(NodeId);
         public void ResetToDefault()
         {
+            if (Type.ResetOffset)
+                Offset = Type.DefaultOffset;
+            if (Type.ResetShift)
+                Shift = Type.DefaultShift;
+            if (Type.ResetRotate)
+                RotateAngle = Type.DefaultRotate;
+            if (Type.ResetSlope)
+                SlopeAngle = Type.DefaultSlope;
+            if (Type.ResetTwist)
+                TwistAngle = Type.DefaultTwist;
+            if (Type.ResetNoMarking)
+                NoMarkings = Type.DefaultNoMarking;
+            if (Type.ResetFlatJunction)
+                IsFlatJunctions = Type.DefaultFlatJunction;
+
             foreach (var segmentEnd in SegmentEndDatas)
                 segmentEnd.ResetToDefault();
-
+        }
+        public void Refresh()
+        {
+            ResetToDefault();
             Update();
         }
 
@@ -364,25 +365,8 @@ namespace NodeController
 
         #region UTILITIES
 
-        static int CompareSegments(ushort firstSegmentId, ushort secondSegmentId)
+        public bool IsPossibleType(NodeTypeT newNodeType)
         {
-            var firstInfo = firstSegmentId.GetSegment().Info;
-            var secondInfo = secondSegmentId.GetSegment().Info;
-
-            int result;
-
-            if ((result = firstInfo.m_flatJunctions.CompareTo(secondInfo.m_flatJunctions)) == 0)
-                if ((result = firstInfo.m_forwardVehicleLaneCount.CompareTo(secondInfo.m_forwardVehicleLaneCount)) == 0)
-                    if ((result = firstInfo.m_halfWidth.CompareTo(secondInfo.m_halfWidth)) == 0)
-                        result = ((firstInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false).CompareTo((secondInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false);
-
-            return result;
-        }
-        public bool CanChangeTo(NodeTypeT newNodeType)
-        {
-            if (newNodeType == NodeType)
-                return true;
-
             if (IsJunction || IsCSUR)
                 return newNodeType == NodeTypeT.Custom;
 
@@ -406,8 +390,8 @@ namespace NodeController
                 return false;
 
             var segmentIds = node.SegmentIds().ToArray();
-            if(segmentIds.Any(id => !id.GetSegment().IsValid()))
-                    return false;
+            if (segmentIds.Any(id => !id.GetSegment().IsValid()))
+                return false;
 
             if (!node.m_flags.CheckFlags(required: NetNode.Flags.Created, forbidden: NetNode.Flags.LevelCrossing | NetNode.Flags.Outside | NetNode.Flags.Deleted))
                 return false;
@@ -417,7 +401,6 @@ namespace NodeController
 
             return !NetUtil.IsCSUR(node.Info);
         }
-
         bool CrossingIsRemoved(ushort segmentId) => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(NodeId, segmentId);
 
         public override string ToString() => $"NodeData(id:{NodeId} type:{NodeType})";
@@ -431,12 +414,12 @@ namespace NodeController
             GetNodeTypeProperty(parent, refresh);
             Type.GetUIComponents(parent, refresh);
         }
-       
+
         private NodeTypePropertyPanel GetNodeTypeProperty(UIComponent parent, Action refresh)
         {
             var typeProperty = ComponentPool.Get<NodeTypePropertyPanel>(parent);
             typeProperty.Text = "Node type";
-            typeProperty.Init(CanChangeTo);
+            typeProperty.Init(IsPossibleType);
             typeProperty.SelectedObject = NodeType;
             typeProperty.OnSelectObjectChanged += (value) =>
             {
@@ -462,6 +445,23 @@ namespace NodeController
         #endregion
     }
 
+    public class SegmentComparer : IComparer<ushort>
+    {
+        public int Compare(ushort firstSegmentId, ushort secondSegmentId)
+        {
+            var firstInfo = firstSegmentId.GetSegment().Info;
+            var secondInfo = secondSegmentId.GetSegment().Info;
+
+            int result;
+
+            if ((result = firstInfo.m_flatJunctions.CompareTo(secondInfo.m_flatJunctions)) == 0)
+                if ((result = firstInfo.m_forwardVehicleLaneCount.CompareTo(secondInfo.m_forwardVehicleLaneCount)) == 0)
+                    if ((result = firstInfo.m_halfWidth.CompareTo(secondInfo.m_halfWidth)) == 0)
+                        result = ((firstInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false).CompareTo((secondInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false);
+
+            return result;
+        }
+    }
     public class NodeTypePropertyPanel : EnumOncePropertyPanel<NodeTypeT, NodeTypePropertyPanel.NodeTypeDropDown>
     {
         protected override float DropDownWidth => 100f;

@@ -17,32 +17,32 @@ namespace NodeController.Patches
         public static void CalculateNodePostfix(ushort nodeID)
         {
             NodeManager.Instance.OnBeforeCalculateNodePatch(nodeID); // invalid/unsupported nodes are set to null.
-            NodeData nodeData = NodeManager.Instance.buffer[nodeID];
+            var data = NodeManager.Instance[nodeID];
             ref var node = ref nodeID.GetNodeRef();
 
-            if (nodeData == null || !nodeData.IsMain)
+            if (data == null || !data.IsMain)
                 return;
             if (node.m_flags.IsFlagSet(NetNode.Flags.Outside))
                 return;
 
-            if (nodeData.NeedsTransitionFlag)
+            if (data.NeedsTransitionFlag)
                 node.m_flags |= NetNode.Flags.Transition;
             else
                 node.m_flags &= ~NetNode.Flags.Transition;
 
-            if (nodeData.IsMiddleNode)
+            if (data.IsMiddleNode)
             {
                 node.m_flags &= ~(NetNode.Flags.Junction | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward);
                 node.m_flags |= NetNode.Flags.Middle;
             }
 
-            if (nodeData.IsBendNode)
+            if (data.IsBendNode)
             {
                 node.m_flags &= ~(NetNode.Flags.Junction | NetNode.Flags.Middle);
                 node.m_flags |= NetNode.Flags.Bend; // TODO set asymForward and asymBackward
             }
 
-            if (nodeData.IsJunctionNode)
+            if (data.IsJunctionNode)
             {
                 node.m_flags |= NetNode.Flags.Junction;
                 node.m_flags &= ~(NetNode.Flags.Middle | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward | NetNode.Flags.Bend | NetNode.Flags.End);
@@ -53,8 +53,8 @@ namespace NodeController.Patches
 
         public static void RefreshJunctionDataPostfix(ref NetNode __instance, ref RenderManager.Instance data)
         {
-            ushort nodeID = __instance.GetID();
-            if (NodeManager.Instance.buffer[nodeID] is not NodeData blendData)
+            var nodeId = __instance.GetID();
+            if (NodeManager.Instance[nodeId] is not NodeData blendData)
                 return;
 
             if (blendData.ShouldRenderCenteralCrossingTexture)
@@ -167,20 +167,20 @@ namespace NodeController.Patches
         }
         public static bool ShouldContinueMedian(ushort nodeID, ushort segmentID)
         {
-            var data = NodeManager.Instance.buffer[nodeID];
+            var data = NodeManager.Instance[nodeID];
             return data != null && data.NodeType == NodeTypeT.Stretch;
         }
-        public static Material CalculateMaterial(Material material, ushort nodeID, ushort segmentID)
+        public static Material CalculateMaterial(Material material, ushort nodeId, ushort segmentId)
         {
-            if (ShouldContinueMedian(nodeID, segmentID))
-                material = MaterialUtils.ContinuesMedian(material, segmentID.GetSegment().Info, false);
+            if (ShouldContinueMedian(nodeId, segmentId))
+                material = MaterialUtils.ContinuesMedian(material, segmentId.GetSegment().Info, false);
 
             return material;
         }
-        public static Mesh CalculateMesh(Mesh mesh, ushort nodeID, ushort segmentID)
+        public static Mesh CalculateMesh(Mesh mesh, ushort nodeId, ushort segmentId)
         {
-            if (ShouldContinueMedian(nodeID, segmentID))
-                mesh = MaterialUtils.ContinuesMedian(mesh, segmentID.GetSegment().Info);
+            if (ShouldContinueMedian(nodeId, segmentId))
+                mesh = MaterialUtils.ContinuesMedian(mesh, segmentId.GetSegment().Info);
 
             return mesh;
         }

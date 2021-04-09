@@ -37,9 +37,9 @@ namespace NodeController.Patches
             var stretch = 1 + Mathf.Lerp(stretchStart, stretchEnd, t) * 0.01f; // convert delta-percent to ratio
             pos.x *= stretch;
 
-            float embankStart = start?.EmbankmentPercent ?? 0;
-            float embankEnd = start?.EmbankmentPercent ?? 0;
-            float deltaY = pos.x * Mathf.Lerp(embankStart, embankEnd, t) * 0.01f;
+            float embankStart = start?.TwistAngle ?? 0;
+            float embankEnd = start?.TwistAngle ?? 0;
+            float deltaY = pos.x * Mathf.Sin(Mathf.Lerp(embankStart, embankEnd, t));
 
 
             if (reverse)
