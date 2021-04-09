@@ -17,17 +17,12 @@ namespace KianCommons.Plugins
     public static class PluginExtensions
     {
         public static ulong GetWorkshopID(this PluginInfo plugin) => plugin.publishedFileID.AsUInt64;
-        /// <summary>
-        /// shortcut for plugin?.isEnabled ?? false
-        /// </summary>
         public static bool IsActive(this PluginInfo plugin) => plugin?.isEnabled ?? false;
         public static Assembly GetMainAssembly(this PluginInfo plugin) => plugin?.userModInstance?.GetType()?.Assembly;
     }
 
     public static class PluginUtil
     {
-        static PluginManager man => PluginManager.instance;
-
         public static PluginInfo GetCSUR() => GetPlugin("CSUR ToolBox", 1959342332ul);
         public static PluginInfo GetAdaptiveRoads() => GetPlugin("AdaptiveRoads");
         public static PluginInfo GetHideCrossings() => GetPlugin("HideCrosswalks", searchOptions: AssemblyEquals);

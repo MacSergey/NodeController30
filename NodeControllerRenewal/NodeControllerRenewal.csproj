@@ -123,10 +123,8 @@
     <Compile Include="Utilities\ReflectionHelpers.cs" />
     <Compile Include="Utilities\SerializationUtil.cs" />
     <Compile Include="Utilities\Settings.cs" />
-    <Compile Include="Utilities\StringExtensions.cs" />
     <Compile Include="Utilities\TextureUTILS.cs" />
     <Compile Include="Utilities\TranspilerUtils.cs" />
-    <Compile Include="Utilities\VecetorUtils.cs" />
     <Compile Include="Utilities\Vector3Serializable.cs" />
   </ItemGroup>
   <ItemGroup>

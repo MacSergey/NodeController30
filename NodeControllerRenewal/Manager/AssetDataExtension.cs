@@ -107,8 +107,6 @@ namespace NodeController
         {
             if (SingletonItem<AssetDataExtension>.Instance.Asset2Records.TryGetValue(info, out var records))
             {
-                SingletonMod<Mod>.Logger.Debug("PlaceAsset: records = " + records.ToSTR());
-                SingletonMod<Mod>.Logger.Debug("PlaceAsset: map = " + map.ToSTR());
                 int exceptionCount = 0;
                 foreach (object record in records)
                 {

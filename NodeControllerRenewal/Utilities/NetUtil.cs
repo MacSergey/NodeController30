@@ -13,21 +13,8 @@ using UnityEngine;
 
 namespace KianCommons
 {
-    internal class NetServiceException : Exception
-    {
-        public NetServiceException(string m) : base(m) { }
-        public NetServiceException() : base() { }
-        public NetServiceException(string m, Exception e) : base(m, e) { }
-    }
-
     internal static class NetUtil
     {
-        public const float SAFETY_NET = 0.02f;
-
-        public static NetManager NetManager => Singleton<NetManager>.instance;
-
-        public const float MPU = 8f; // meter per unit
-
         public static bool IsCSUR(this NetInfo info)
         {
             if (info == null || (info.m_netAI.GetType() != typeof(RoadAI) && info.m_netAI.GetType() != typeof(RoadBridgeAI) && info.m_netAI.GetType() != typeof(RoadTunnelAI)))

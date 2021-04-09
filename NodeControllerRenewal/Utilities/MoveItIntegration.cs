@@ -55,7 +55,6 @@ namespace NodeController.LifeCycle
 
         public override object Copy(InstanceID sourceInstanceID)
         {
-            SingletonMod<Mod>.Logger.Debug($"MoveItIntegration.Copy({sourceInstanceID.ToSTR()}) called");
             switch (sourceInstanceID.Type)
             {
                 case InstanceType.NetNode:
@@ -70,9 +69,6 @@ namespace NodeController.LifeCycle
 
         public override void Paste(InstanceID targetrInstanceID, object record, Dictionary<InstanceID, InstanceID> map)
         {
-            string strRecord = record == null ? "null" : record.ToString();
-            string strInstanceID = targetrInstanceID.ToSTR();
-            SingletonMod<Mod>.Logger.Debug($"MoveItIntegration.Paste({strInstanceID}, record:{strRecord}, map) was called");
             switch (targetrInstanceID.Type)
             {
                 case InstanceType.NetNode:
@@ -167,7 +163,7 @@ namespace NodeController.LifeCycle
             if (map.TryGetValue(instanceID, out InstanceID mappedInstanceID))
                 return mappedInstanceID.NetNode;
             else
-                throw new Exception($"map does not contian node:{nodeID} map = {map.ToSTR()}");
+                throw new Exception($"map does not contian node:{nodeID}");
         }
         public static ushort MappedSegmentID(Dictionary<InstanceID, InstanceID> map, ushort segmentID)
         {
@@ -175,7 +171,7 @@ namespace NodeController.LifeCycle
             if (map.TryGetValue(instanceID, out InstanceID mappedInstanceID))
                 return mappedInstanceID.NetSegment;
             else
-                throw new Exception($"map does not contian segment:{segmentID} map = {map.ToSTR()}");
+                throw new Exception($"map does not contian segment:{segmentID}");
         }
 
         public static void PasteSegmentEnd(SegmentEndData segmentEndData, ushort targetSegmentID, Dictionary<InstanceID, InstanceID> map)

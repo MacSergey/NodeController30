@@ -64,7 +64,6 @@ namespace NodeController
                 if (Scene == "ThemeEditor")
                     return;
 
-                CSURUtil.Init();
                 GUI.Settings.GameConfig ??= Mode switch
                 {
                     LoadMode.NewGameFromScenario or LoadMode.LoadScenario or LoadMode.LoadMap => GameConfigT.LoadGameDefault,// no NC or old NC
