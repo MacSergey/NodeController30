@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace NodeController
 {
-    public enum NodeTypeT
+    public enum NodeStyleType
     {
         Middle,
         Bend,
@@ -18,9 +19,9 @@ namespace NodeController
         Custom,
         End,
     }
-    public abstract class NodeType
+    public abstract class NodeStyle
     {
-        public abstract NodeTypeT Type { get; }
+        public abstract NodeStyleType Type { get; }
 
         public virtual bool ResetOffset => false;
         public virtual float DefaultOffset => 0f;
@@ -43,9 +44,32 @@ namespace NodeController
         public virtual bool ResetFlatJunction => false;
         public virtual bool DefaultFlatJunction => true;
 
+        public bool IsDefault
+        {
+            get
+            {
+                if (Mathf.Abs(Data.Offset - DefaultOffset) > 0.001f)
+                    return false;
+                else if (Mathf.Abs(Data.Shift - DefaultShift) > 0.001f)
+                    return false;
+                else if (Mathf.Abs(Data.RotateAngle - DefaultRotate) > 0.001f)
+                    return false;
+                else if (Mathf.Abs(Data.SlopeAngle - DefaultSlope) > 0.001f)
+                    return false;
+                else if (Mathf.Abs(Data.TwistAngle - DefaultTwist) > 0.001f)
+                    return false;
+                else if (Data.NoMarkings != DefaultNoMarking)
+                    return false;
+                else if (Data.IsFlatJunctions != DefaultFlatJunction)
+                    return false;
+                else
+                    return true;
+            }
+        }
+
         public NodeData Data { get; }
 
-        public NodeType(NodeData data)
+        public NodeStyle(NodeData data)
         {
             Data = data;
         }
@@ -245,9 +269,9 @@ namespace NodeController
             return resetButton;
         }
     }
-    public class MiddleNode : NodeType
+    public class MiddleNode : NodeStyle
     {
-        public override NodeTypeT Type => NodeTypeT.Middle;
+        public override NodeStyleType Type => NodeStyleType.Middle;
         public override bool ResetOffset => true;
         public override bool ResetShift => true;
         public override bool ResetRotate => true;
@@ -263,9 +287,9 @@ namespace NodeController
             GetResetButton(parent, refresh);
         }
     }
-    public class BendNode : NodeType
+    public class BendNode : NodeStyle
     {
-        public override NodeTypeT Type => NodeTypeT.Bend;
+        public override NodeStyleType Type => NodeStyleType.Bend;
         public override bool ResetSlope => true;
         public override bool ResetTwist => true;
 
@@ -279,9 +303,9 @@ namespace NodeController
             GetResetButton(parent, refresh);
         }
     }
-    public class StretchNode : NodeType
+    public class StretchNode : NodeStyle
     {
-        public override NodeTypeT Type => NodeTypeT.Stretch;
+        public override NodeStyleType Type => NodeStyleType.Stretch;
         public override bool ResetShift => true;
         public override bool ResetSlope => true;
         public override bool ResetTwist => true;
@@ -295,9 +319,9 @@ namespace NodeController
             GetResetButton(parent, refresh);
         }
     }
-    public class CrossingNode : NodeType
+    public class CrossingNode : NodeStyle
     {
-        public override NodeTypeT Type => NodeTypeT.Crossing;
+        public override NodeStyleType Type => NodeStyleType.Crossing;
         public override bool ResetOffset => true;
         public override bool ResetShift => true;
         public override bool ResetRotate => true;
@@ -314,9 +338,9 @@ namespace NodeController
             GetResetButton(parent, refresh);
         }
     }
-    public class UTurnNode : NodeType
+    public class UTurnNode : NodeStyle
     {
-        public override NodeTypeT Type => NodeTypeT.UTurn;
+        public override NodeStyleType Type => NodeStyleType.UTurn;
         public override bool ResetOffset => true;
         public override bool ResetShift => true;
         public override bool ResetRotate => true;
@@ -334,9 +358,9 @@ namespace NodeController
             GetResetButton(parent, refresh);
         }
     }
-    public class EndNode : NodeType
+    public class EndNode : NodeStyle
     {
-        public override NodeTypeT Type => NodeTypeT.End;
+        public override NodeStyleType Type => NodeStyleType.End;
         public override bool ResetOffset => true;
         public override bool ResetShift => true;
         public override bool ResetRotate => true;
@@ -351,9 +375,9 @@ namespace NodeController
             GetResetButton(parent, refresh);
         }
     }
-    public class CustomNode : NodeType
+    public class CustomNode : NodeStyle
     {
-        public override NodeTypeT Type => NodeTypeT.Custom;
+        public override NodeStyleType Type => NodeStyleType.Custom;
         public override bool ResetRotate => true;
         public override bool ResetSlope => true;
         public override bool ResetTwist => true;

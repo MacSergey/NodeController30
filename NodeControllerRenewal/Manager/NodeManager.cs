@@ -73,9 +73,9 @@ namespace NodeController
         }
         #endregion
 
-        public NodeData InsertNode(NetTool.ControlPoint controlPoint, NodeTypeT nodeType = NodeTypeT.Crossing)
+        public NodeData InsertNode(NetTool.ControlPoint controlPoint, NodeStyleType nodeType = NodeStyleType.Crossing)
         {
-            if (ToolBase.ToolErrors.None != NetUtil.InsertNode(controlPoint, out ushort nodeId))
+            if (NetUtil.InsertNode(controlPoint, out ushort nodeId) != ToolBase.ToolErrors.None)
                 return null;
 
             foreach (var segmentId in nodeId.GetNode().SegmentIds())
@@ -84,13 +84,16 @@ namespace NodeController
                 SegmentEndManager.Instance[segmentId, nodeId] = segmentEnd;
             }
 
-            var info = controlPoint.m_segment.GetSegment().Info;
-            if (nodeType == NodeTypeT.Crossing && (info.CountPedestrianLanes() < 2 || info.m_netAI is not RoadBaseAI))
-                Buffer[nodeId] = new NodeData(nodeId);
-            else
-                Buffer[nodeId] = new NodeData(nodeId, nodeType);
+            NodeData data;
 
-            return Buffer[nodeId];
+            var info = controlPoint.m_segment.GetSegment().Info;
+            if (nodeType == NodeStyleType.Crossing && info.m_netAI is RoadBaseAI && info.CountPedestrianLanes() >= 2)
+                data = new NodeData(nodeId, nodeType);
+            else
+                data = new NodeData(nodeId);
+
+            Buffer[nodeId] = data;
+            return data;
         }
         public NodeData this[ushort nodeId, bool create = false]
         {
@@ -159,7 +162,7 @@ namespace NodeController
         }
         public void OnBeforeCalculateNodePatch(ushort nodeId)
         {
-            if (Buffer[nodeId] == null) 
+            if (Buffer[nodeId] == null)
                 return;
 
             var node = nodeId.GetNode();
@@ -178,7 +181,7 @@ namespace NodeController
 
             Buffer[nodeId].Calculate();
 
-            if (!Buffer[nodeId].IsPossibleType(Buffer[nodeId].NodeType))
+            if (!Buffer[nodeId].IsPossibleType(Buffer[nodeId].Type))
                 ResetNodeToDefault(nodeId);
         }
 

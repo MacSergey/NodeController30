@@ -30,32 +30,32 @@ namespace NodeController
         public ushort NodeId { get; set; }
         public NetNode Node => NodeId.GetNode();
         public NetInfo Info => Node.Info;
-        private NodeType Type { get; set; }
-        public NodeTypeT NodeType
+        private NodeStyle Style { get; set; }
+        public NodeStyleType Type
         {
-            get => Type.Type;
+            get => Style.Type;
             set
             {
-                NodeType newType = value switch
+                NodeStyle newType = value switch
                 {
-                    NodeTypeT.Middle => new MiddleNode(this),
-                    NodeTypeT.Bend => new BendNode(this),
-                    NodeTypeT.Stretch => new StretchNode(this),
-                    NodeTypeT.Crossing => new CrossingNode(this),
-                    NodeTypeT.UTurn => new UTurnNode(this),
-                    NodeTypeT.Custom => new CustomNode(this),
-                    NodeTypeT.End => new EndNode(this),
+                    NodeStyleType.Middle => new MiddleNode(this),
+                    NodeStyleType.Bend => new BendNode(this),
+                    NodeStyleType.Stretch => new StretchNode(this),
+                    NodeStyleType.Crossing => new CrossingNode(this),
+                    NodeStyleType.UTurn => new UTurnNode(this),
+                    NodeStyleType.Custom => new CustomNode(this),
+                    NodeStyleType.End => new EndNode(this),
                     _ => throw new NotImplementedException(),
                 };
-                Type = newType;
+                Style = newType;
                 Refresh();
             }
         }
         public IEnumerable<SegmentEndData> SegmentEndDatas => Node.SegmentIds().Select(s => SegmentEndManager.Instance[s, NodeId]);
-        public bool IsDefault => NodeType == DefaultNodeType && !SegmentEndDatas.Any(s => s?.IsDefault != true);
+        public bool IsDefault => Type == DefaultType && !SegmentEndDatas.Any(s => s?.IsDefault != true);
 
         public NetNode.Flags DefaultFlags { get; set; }
-        public NodeTypeT DefaultNodeType { get; set; }
+        public NodeStyleType DefaultType { get; set; }
 
         private List<ushort> SegmentIdsList { get; set; }
         public bool IsEnd => SegmentIdsList.Count == 1;
@@ -82,7 +82,7 @@ namespace NodeController
 
         public bool IsFlatJunctions
         {
-            get => FirstSegmentEnd.FlatJunctions && SecondSegmentEnd.FlatJunctions;
+            get => SegmentIdsList.Take(2).All(s => SegmentEndManager.Instance[s, NodeId, true].IsFlat);
             set
             {
                 var count = 0;
@@ -91,12 +91,12 @@ namespace NodeController
                     var segmentEnd = SegmentEndManager.Instance[segmentId, NodeId, true];
                     if (value)
                     {
-                        segmentEnd.FlatJunctions = true;
+                        segmentEnd.IsFlat = true;
                         segmentEnd.Twist = false;
                     }
                     else
                     {
-                        segmentEnd.FlatJunctions = count >= 2;
+                        segmentEnd.IsFlat = count >= 2;
                         segmentEnd.Twist = count >= 2;
                     }
                     count += 1;
@@ -197,83 +197,85 @@ namespace NodeController
         public bool IsCSUR => NetUtil.IsCSUR(Info);
         public bool IsRoad => Info.m_netAI is RoadBaseAI;
 
-        public bool IsEndNode => NodeType == NodeTypeT.End;
-        public bool IsMiddleNode => NodeType == NodeTypeT.Middle;
-        public bool IsBendNode => NodeType == NodeTypeT.Bend;
+        public bool IsEndNode => Type == NodeStyleType.End;
+        public bool IsMiddleNode => Type == NodeStyleType.Middle;
+        public bool IsBendNode => Type == NodeStyleType.Bend;
         public bool IsJunctionNode => !IsMiddleNode && !IsBendNode && !IsEndNode;
+        public bool IsMoveableNode => IsMiddleNode && Style.IsDefault;
 
-        public bool WantsTrafficLight => NodeType == NodeTypeT.Crossing;
-        public bool CanModifyOffset => NodeType == NodeTypeT.Bend || NodeType == NodeTypeT.Stretch || NodeType == NodeTypeT.Custom;
+
+        public bool WantsTrafficLight => Type == NodeStyleType.Crossing;
+        public bool CanModifyOffset => Type == NodeStyleType.Bend || Type == NodeStyleType.Stretch || Type == NodeStyleType.Custom;
         public bool CanMassEditNodeCorners => IsMain;
         public bool CanModifyFlatJunctions => !IsMiddleNode;
         public bool IsAsymRevert => DefaultFlags.IsFlagSet(NetNode.Flags.AsymBackward | NetNode.Flags.AsymForward);
         public bool CanModifyTextures => IsRoad && !IsCSUR;
-        public bool ShowNoMarkingsToggle => CanModifyTextures && NodeType == NodeTypeT.Custom;
-        public bool NeedsTransitionFlag => IsMain && (NodeType == NodeTypeT.Custom || NodeType == NodeTypeT.Crossing || NodeType == NodeTypeT.UTurn);
-        public bool ShouldRenderCenteralCrossingTexture => NodeType == NodeTypeT.Crossing && CrossingIsRemoved(FirstSegmentId) && CrossingIsRemoved(SecondSegmentId);
+        public bool ShowNoMarkingsToggle => CanModifyTextures && Type == NodeStyleType.Custom;
+        public bool NeedsTransitionFlag => IsMain && (Type == NodeStyleType.Custom || Type == NodeStyleType.Crossing || Type == NodeStyleType.UTurn);
+        public bool ShouldRenderCenteralCrossingTexture => Type == NodeStyleType.Crossing && CrossingIsRemoved(FirstSegmentId) && CrossingIsRemoved(SecondSegmentId);
 
 
-        public bool? IsUturnAllowedConfigurable => NodeType switch
+        public bool? IsUturnAllowedConfigurable => Type switch
         {
-            NodeTypeT.Crossing or NodeTypeT.Stretch or NodeTypeT.Middle or NodeTypeT.Bend => false,// always off
-            NodeTypeT.UTurn or NodeTypeT.Custom or NodeTypeT.End => null,// default
+            NodeStyleType.Crossing or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,// always off
+            NodeStyleType.UTurn or NodeStyleType.Custom or NodeStyleType.End => null,// default
             _ => throw new Exception("Unreachable code"),
         };
-        public bool? IsDefaultUturnAllowed => NodeType switch
+        public bool? IsDefaultUturnAllowed => Type switch
         {
-            NodeTypeT.UTurn => true,
-            NodeTypeT.Crossing or NodeTypeT.Stretch => false,
-            NodeTypeT.Middle or NodeTypeT.Bend or NodeTypeT.Custom or NodeTypeT.End => null,
+            NodeStyleType.UTurn => true,
+            NodeStyleType.Crossing or NodeStyleType.Stretch => false,
+            NodeStyleType.Middle or NodeStyleType.Bend or NodeStyleType.Custom or NodeStyleType.End => null,
             _ => throw new Exception("Unreachable code"),
         };
-        public bool? IsPedestrianCrossingAllowedConfigurable => NodeType switch
+        public bool? IsPedestrianCrossingAllowedConfigurable => Type switch
         {
-            NodeTypeT.Crossing or NodeTypeT.UTurn or NodeTypeT.Stretch or NodeTypeT.Middle or NodeTypeT.Bend => false,
-            NodeTypeT.Custom => (IsMain && !HasPedestrianLanes) ? false : null,
-            NodeTypeT.End => null,
+            NodeStyleType.Crossing or NodeStyleType.UTurn or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,
+            NodeStyleType.Custom => (IsMain && !HasPedestrianLanes) ? false : null,
+            NodeStyleType.End => null,
             _ => throw new Exception("Unreachable code"),
         };
-        public bool? IsDefaultPedestrianCrossingAllowed => NodeType switch
+        public bool? IsDefaultPedestrianCrossingAllowed => Type switch
         {
-            NodeTypeT.Crossing => true,
-            NodeTypeT.UTurn or NodeTypeT.Stretch or NodeTypeT.Middle or NodeTypeT.Bend => false,
-            NodeTypeT.Custom when IsMain && FirstSegment.Info.m_netAI.GetType() != SecondSegment.Info.m_netAI.GetType() => false,
-            NodeTypeT.Custom or NodeTypeT.End => null,
+            NodeStyleType.Crossing => true,
+            NodeStyleType.UTurn or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,
+            NodeStyleType.Custom when IsMain && FirstSegment.Info.m_netAI.GetType() != SecondSegment.Info.m_netAI.GetType() => false,
+            NodeStyleType.Custom or NodeStyleType.End => null,
             _ => throw new Exception("Unreachable code"),
         };
         public bool? CanHaveTrafficLights(out ToggleTrafficLightError reason)
         {
             reason = ToggleTrafficLightError.None;
-            switch (NodeType)
+            switch (Type)
             {
-                case NodeTypeT.Crossing:
-                case NodeTypeT.UTurn:
-                case NodeTypeT.End:
-                case NodeTypeT.Custom:
+                case NodeStyleType.Crossing:
+                case NodeStyleType.UTurn:
+                case NodeStyleType.End:
+                case NodeStyleType.Custom:
                     return null;
-                case NodeTypeT.Stretch:
-                case NodeTypeT.Middle:
-                case NodeTypeT.Bend:
+                case NodeStyleType.Stretch:
+                case NodeStyleType.Middle:
+                case NodeStyleType.Bend:
                     reason = ToggleTrafficLightError.NoJunction;
                     return false;
                 default:
                     throw new Exception("Unreachable code");
             }
         }
-        public bool? IsEnteringBlockedJunctionAllowedConfigurable => NodeType switch
+        public bool? IsEnteringBlockedJunctionAllowedConfigurable => Type switch
         {
-            NodeTypeT.Custom when IsJunction => null,
-            NodeTypeT.Custom when DefaultFlags.IsFlagSet(NetNode.Flags.OneWayIn) & DefaultFlags.IsFlagSet(NetNode.Flags.OneWayOut) && !HasPedestrianLanes => false,//
-            NodeTypeT.Crossing or NodeTypeT.UTurn or NodeTypeT.Custom or NodeTypeT.End => null,// default off
-            NodeTypeT.Stretch or NodeTypeT.Middle or NodeTypeT.Bend => false,// always on
+            NodeStyleType.Custom when IsJunction => null,
+            NodeStyleType.Custom when DefaultFlags.IsFlagSet(NetNode.Flags.OneWayIn) & DefaultFlags.IsFlagSet(NetNode.Flags.OneWayOut) && !HasPedestrianLanes => false,//
+            NodeStyleType.Crossing or NodeStyleType.UTurn or NodeStyleType.Custom or NodeStyleType.End => null,// default off
+            NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,// always on
             _ => throw new Exception("Unreachable code"),
         };
-        public bool? IsDefaultEnteringBlockedJunctionAllowed => NodeType switch
+        public bool? IsDefaultEnteringBlockedJunctionAllowed => Type switch
         {
-            NodeTypeT.Stretch => true,// always on
-            NodeTypeT.Crossing => false,// default off
-            NodeTypeT.UTurn or NodeTypeT.Middle or NodeTypeT.Bend or NodeTypeT.End => null,// default
-            NodeTypeT.Custom => IsJunction ? null : true,
+            NodeStyleType.Stretch => true,// always on
+            NodeStyleType.Crossing => false,// default off
+            NodeStyleType.UTurn or NodeStyleType.Middle or NodeStyleType.Bend or NodeStyleType.End => null,// default
+            NodeStyleType.Custom => IsJunction ? null : true,
             _ => throw new Exception("Unreachable code"),
         };
 
@@ -286,15 +288,15 @@ namespace NodeController
         {
             NodeId = nodeId;
             Calculate();
-            NodeType = DefaultNodeType;
+            Type = DefaultType;
             FirstTimeTrafficLight = false;
             Update();
         }
 
-        public NodeData(ushort nodeId, NodeTypeT nodeType) : this(nodeId)
+        public NodeData(ushort nodeId, NodeStyleType nodeType) : this(nodeId)
         {
-            NodeType = nodeType;
-            FirstTimeTrafficLight = nodeType == NodeTypeT.Crossing;
+            Type = nodeType;
+            FirstTimeTrafficLight = nodeType == NodeStyleType.Crossing;
         }
         private NodeData(NodeData template) => CopyProperties(this, template);
         public NodeData(SerializationInfo info, StreamingContext context)
@@ -316,13 +318,13 @@ namespace NodeController
             DefaultFlags = node.m_flags;
 
             if (DefaultFlags.IsFlagSet(NetNode.Flags.Middle))
-                DefaultNodeType = NodeTypeT.Middle;
+                DefaultType = NodeStyleType.Middle;
             else if (DefaultFlags.IsFlagSet(NetNode.Flags.Bend))
-                DefaultNodeType = NodeTypeT.Bend;
+                DefaultType = NodeStyleType.Bend;
             else if (DefaultFlags.IsFlagSet(NetNode.Flags.Junction))
-                DefaultNodeType = NodeTypeT.Custom;
+                DefaultType = NodeStyleType.Custom;
             else if (DefaultFlags.IsFlagSet(NetNode.Flags.End))
-                DefaultNodeType = NodeTypeT.End;
+                DefaultType = NodeStyleType.End;
             else
                 throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
 
@@ -330,27 +332,27 @@ namespace NodeController
             SegmentIdsList.Sort(SegmentComparer);
             SegmentIdsList.Reverse();
 
-            if (Type == null || !IsPossibleType(NodeType))
-                NodeType = DefaultNodeType;
+            if (Style == null || !IsPossibleType(Type))
+                Type = DefaultType;
         }
 
         public void Update() => NetManager.instance.UpdateNode(NodeId);
         public void ResetToDefault()
         {
-            if (Type.ResetOffset)
-                Offset = Type.DefaultOffset;
-            if (Type.ResetShift)
-                Shift = Type.DefaultShift;
-            if (Type.ResetRotate)
-                RotateAngle = Type.DefaultRotate;
-            if (Type.ResetSlope)
-                SlopeAngle = Type.DefaultSlope;
-            if (Type.ResetTwist)
-                TwistAngle = Type.DefaultTwist;
-            if (Type.ResetNoMarking)
-                NoMarkings = Type.DefaultNoMarking;
-            if (Type.ResetFlatJunction)
-                IsFlatJunctions = Type.DefaultFlatJunction;
+            if (Style.ResetOffset)
+                Offset = Style.DefaultOffset;
+            if (Style.ResetShift)
+                Shift = Style.DefaultShift;
+            if (Style.ResetRotate)
+                RotateAngle = Style.DefaultRotate;
+            if (Style.ResetSlope)
+                SlopeAngle = Style.DefaultSlope;
+            if (Style.ResetTwist)
+                TwistAngle = Style.DefaultTwist;
+            if (Style.ResetNoMarking)
+                NoMarkings = Style.DefaultNoMarking;
+            if (Style.ResetFlatJunction)
+                IsFlatJunctions = Style.DefaultFlatJunction;
 
             foreach (var segmentEnd in SegmentEndDatas)
                 segmentEnd.ResetToDefault();
@@ -365,21 +367,21 @@ namespace NodeController
 
         #region UTILITIES
 
-        public bool IsPossibleType(NodeTypeT newNodeType)
+        public bool IsPossibleType(NodeStyleType newNodeType)
         {
             if (IsJunction || IsCSUR)
-                return newNodeType == NodeTypeT.Custom;
+                return newNodeType == NodeStyleType.Custom;
 
             bool middle = DefaultFlags.IsFlagSet(NetNode.Flags.Middle);
             return newNodeType switch
             {
-                NodeTypeT.Crossing => IsEqualWidth && IsStraight && PedestrianLaneCount >= 2,
-                NodeTypeT.UTurn => IsMain && IsRoad && Info.m_forwardVehicleLaneCount > 0 && Info.m_backwardVehicleLaneCount > 0,
-                NodeTypeT.Stretch => CanModifyTextures && !middle && IsStraight,
-                NodeTypeT.Bend => !middle,
-                NodeTypeT.Middle => IsStraight || Is180,
-                NodeTypeT.Custom => true,
-                NodeTypeT.End => IsEnd,
+                NodeStyleType.Crossing => IsEqualWidth && IsStraight && PedestrianLaneCount >= 2,
+                NodeStyleType.UTurn => IsMain && IsRoad && Info.m_forwardVehicleLaneCount > 0 && Info.m_backwardVehicleLaneCount > 0,
+                NodeStyleType.Stretch => CanModifyTextures && !middle && IsStraight,
+                NodeStyleType.Bend => !middle,
+                NodeStyleType.Middle => IsStraight || Is180,
+                NodeStyleType.Custom => true,
+                NodeStyleType.End => IsEnd,
                 _ => throw new Exception("Unreachable code"),
             };
         }
@@ -403,7 +405,7 @@ namespace NodeController
         }
         bool CrossingIsRemoved(ushort segmentId) => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(NodeId, segmentId);
 
-        public override string ToString() => $"NodeData(id:{NodeId} type:{NodeType})";
+        public override string ToString() => $"NodeData(id:{NodeId} type:{Type})";
 
         #endregion
 
@@ -412,7 +414,7 @@ namespace NodeController
         public void GetUIComponents(UIComponent parent, Action refresh)
         {
             GetNodeTypeProperty(parent, refresh);
-            Type.GetUIComponents(parent, refresh);
+            Style.GetUIComponents(parent, refresh);
         }
 
         private NodeTypePropertyPanel GetNodeTypeProperty(UIComponent parent, Action refresh)
@@ -420,10 +422,10 @@ namespace NodeController
             var typeProperty = ComponentPool.Get<NodeTypePropertyPanel>(parent);
             typeProperty.Text = "Node type";
             typeProperty.Init(IsPossibleType);
-            typeProperty.SelectedObject = NodeType;
+            typeProperty.SelectedObject = Type;
             typeProperty.OnSelectObjectChanged += (value) =>
             {
-                NodeType = value;
+                Type = value;
                 refresh();
             };
 
@@ -462,11 +464,11 @@ namespace NodeController
             return result;
         }
     }
-    public class NodeTypePropertyPanel : EnumOncePropertyPanel<NodeTypeT, NodeTypePropertyPanel.NodeTypeDropDown>
+    public class NodeTypePropertyPanel : EnumOncePropertyPanel<NodeStyleType, NodeTypePropertyPanel.NodeTypeDropDown>
     {
         protected override float DropDownWidth => 100f;
-        protected override bool IsEqual(NodeTypeT first, NodeTypeT second) => first == second;
-        public class NodeTypeDropDown : UIDropDown<NodeTypeT> { }
-        protected override string GetDescription(NodeTypeT value) => value.ToString();
+        protected override bool IsEqual(NodeStyleType first, NodeStyleType second) => first == second;
+        public class NodeTypeDropDown : UIDropDown<NodeStyleType> { }
+        protected override string GetDescription(NodeStyleType value) => value.ToString();
     }
 }

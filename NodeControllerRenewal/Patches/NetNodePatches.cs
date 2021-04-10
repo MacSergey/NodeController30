@@ -48,7 +48,10 @@ namespace NodeController.Patches
                 node.m_flags &= ~(NetNode.Flags.Middle | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward | NetNode.Flags.Bend | NetNode.Flags.End);
             }
 
-            node.m_flags &= ~NetNode.Flags.Moveable;
+            if (data.IsMoveableNode)
+                node.m_flags |= NetNode.Flags.Moveable;
+            else
+                node.m_flags &= ~NetNode.Flags.Moveable;
         }
 
         public static void RefreshJunctionDataPostfix(ref NetNode __instance, ref RenderManager.Instance data)
@@ -168,7 +171,7 @@ namespace NodeController.Patches
         public static bool ShouldContinueMedian(ushort nodeID, ushort segmentID)
         {
             var data = NodeManager.Instance[nodeID];
-            return data != null && data.NodeType == NodeTypeT.Stretch;
+            return data != null && data.Type == NodeStyleType.Stretch;
         }
         public static Material CalculateMaterial(Material material, ushort nodeId, ushort segmentId)
         {

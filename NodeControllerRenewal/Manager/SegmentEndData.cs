@@ -31,13 +31,13 @@ namespace NodeController
         public NetInfo Info => Segment.Info;
         public NetNode Node => NodeId.GetNode();
         public NodeData NodeData => NodeManager.Instance[NodeId];
-        public NodeTypeT NodeType => NodeData.NodeType;
+        public NodeStyleType NodeType => NodeData.Type;
         public bool IsStartNode => Segment.IsStartNode(NodeId);
         public Vector3 Direction => IsStartNode ? Segment.m_startDirection : Segment.m_endDirection;
 
         public float DefaultOffset => CSURUtil.GetMinCornerOffset(SegmentId, NodeId);
-        public bool DefaultFlatJunctions => Info.m_flatJunctions || Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
-        public bool DefaultTwist => DefaultFlatJunctions && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
+        public bool DefaultIsFlat => Info.m_flatJunctions || Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
+        public bool DefaultTwist => DefaultIsFlat && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public NetSegment.Flags DefaultFlags { get; set; }
 
         public int PedestrianLaneCount { get; set; }
@@ -48,7 +48,7 @@ namespace NodeController
         public bool NoJunctionTexture { get; set; }
         public bool NoJunctionProps { get; set; }
         public bool NoTLProps { get; set; }
-        public bool FlatJunctions { get; set; }
+        public bool IsFlat { get; set; }
         public bool Twist { get; set; }
 
         public float Stretch { get; set; }
@@ -61,7 +61,7 @@ namespace NodeController
                 var ret = SlopeAngle == 0f;
                 ret &= Stretch == 0;
                 ret &= TwistAngle == 0;
-                ret &= FlatJunctions == DefaultFlatJunctions;
+                ret &= IsFlat == DefaultIsFlat;
                 ret &= Twist == DefaultTwist;
 
                 ret &= NoCrossings == false;
@@ -81,14 +81,14 @@ namespace NodeController
 
         public bool IsCSUR => NetUtil.IsCSUR(Info);
         public bool CanModifyOffset => NodeData?.CanModifyOffset ?? false;
-        public bool CanModifyCorners => NodeData != null && (CanModifyOffset || NodeType == NodeTypeT.End || NodeType == NodeTypeT.Middle);
+        public bool CanModifyCorners => NodeData != null && (CanModifyOffset || NodeType == NodeStyleType.End || NodeType == NodeStyleType.Middle);
         public bool CanModifyFlatJunctions => NodeData?.CanModifyFlatJunctions ?? false;
         public bool CanModifyTwist => CanTwist(SegmentId, NodeId);
         public bool? ShouldHideCrossingTexture
         {
             get
             {
-                if (NodeData != null && NodeData.NodeType == NodeTypeT.Stretch)
+                if (NodeData != null && NodeData.Type == NodeStyleType.Stretch)
                     return false; // always ignore.
                 else if (NoMarkings)
                     return true; // always hide
@@ -117,7 +117,7 @@ namespace NodeController
             SegmentId = segmentID;
 
             Calculate();
-            FlatJunctions = DefaultFlatJunctions;
+            IsFlat = DefaultIsFlat;
             Twist = DefaultTwist;
 
             Update();
@@ -203,8 +203,8 @@ namespace NodeController
             var segEnd1 = SegmentEndManager.Instance[segment1Id, nodeId];
             var segEnd2 = SegmentEndManager.Instance[segment2Id, nodeId];
 
-            bool flat1 = segEnd1?.FlatJunctions ?? segment1Id.GetSegment().Info.m_flatJunctions;
-            bool flat2 = segEnd2?.FlatJunctions ?? segment2Id.GetSegment().Info.m_flatJunctions;
+            bool flat1 = segEnd1?.IsFlat ?? segment1Id.GetSegment().Info.m_flatJunctions;
+            bool flat2 = segEnd2?.IsFlat ?? segment2Id.GetSegment().Info.m_flatJunctions;
             if (flat1 && flat2)
                 return false;
 

@@ -1,9 +1,5 @@
-using HarmonyLib;
-using KianCommons;
 using System;
 using NodeController.LifeCycle;
-using static KianCommons.HelpersExtensions;
-using NodeController;
 using ModsCommon.Utilities;
 using System.Linq;
 
@@ -13,7 +9,7 @@ namespace NodeController.Patches
     {
         internal static MoveItSegmentData MoveSegmentData { get; private set; }
         internal static bool MoveCopyData => MoveSegmentData != null;
-        internal static ushort NodeID, NodeID2;
+        internal static ushort NodeId { get; set; }
         /// <summary>
         /// scenario 1: no change - returns the input node.
         /// scenario 2: move node : segment is released and a smaller segment is created - returns the moved node.
@@ -23,31 +19,20 @@ namespace NodeController.Patches
         /// 1: skip (DONE)
         /// 2: copy segment end for the node that didn't move (moved node cannot have customisations) (DONE)
         /// 3: when split-segment creates a new segment, that copy segment end to it.
-        /// </summary>
-        /// <param name="node">input node</param>
 
-
-        public static void MoveMiddleNodePrefix(ref ushort node) // TODO remove ref when in lates harmony.
+        public static void MoveMiddleNodePrefix(ushort node)
         {
-            if (!InSimulationThread())
-                return;
-
-            NodeID = node;
-            var segmentId = NodeID.GetNode().SegmentIds().First();
+            var segmentId = node.GetNode().SegmentIds().First();
             MoveSegmentData = LifeCycle.MoveItIntegration.CopySegment(segmentId);
-            NodeID2 = segmentId.GetSegment().GetOtherNode(NodeID);
+            NodeId = segmentId.GetSegment().GetOtherNode(node);
         }
 
-        /// <param name="node">output node</param>
-        public static void MoveMiddleNodePostfix(ref ushort node)
+        public static void MoveMiddleNodePostfix(ushort node)
         {
-            if (!InSimulationThread())
-                return;
-
             if (MoveSegmentData?.Start != null || MoveSegmentData?.End != null)
             {
                 // scenario 3.
-                if (node == NodeID2)
+                if (node == NodeId)
                 {
                     if (SplitSegmentData2 == null)
                         SplitSegmentData2 = MoveSegmentData;
@@ -65,17 +50,11 @@ namespace NodeController.Patches
 
         public static void SplitSegmentPrefix(ushort segment)
         {
-            if (!InSimulationThread())
-                return;
-
             SplitSegmentData = LifeCycle.MoveItIntegration.CopySegment(segment);
         }
 
         public static void SplitSegmentPostfix()
         {
-            if (!InSimulationThread())
-                return;
-
             SplitSegmentData = SplitSegmentData2 = SplitSegmentData3 = null;
         }
     }
