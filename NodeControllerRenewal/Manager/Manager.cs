@@ -44,7 +44,7 @@ namespace NodeController
         {
             var data = new NodeData(nodeId, nodeType);
             Buffer[nodeId] = data;
-            Update(nodeId);
+            Update(nodeId, false);
             return data;
         }
         public static void GetSegmentData(ushort id, out SegmentEndData start, out SegmentEndData end)
@@ -59,14 +59,18 @@ namespace NodeController
             return Instance[isStart ? segment.m_startNode : segment.m_endNode]?[id];
         }
 
-        public void Update(ushort nodeId)
+        public void Update(ushort nodeId) => Update(nodeId, true);
+        private void Update(ushort nodeId, bool updateNearby)
         {
             NetManager.instance.UpdateNode(nodeId);
-            foreach (var segment in nodeId.GetNode().Segments())
+            if (updateNearby)
             {
-                var otherNodeId = segment.GetOtherNode(nodeId);
-                _ = this[otherNodeId, true];
-                NetManager.instance.UpdateNode(otherNodeId);
+                foreach (var segment in nodeId.GetNode().Segments())
+                {
+                    var otherNodeId = segment.GetOtherNode(nodeId);
+                    _ = this[otherNodeId, true];
+                    NetManager.instance.UpdateNode(otherNodeId);
+                }
             }
         }
 
