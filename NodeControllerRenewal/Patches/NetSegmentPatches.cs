@@ -221,12 +221,12 @@ namespace NodeController.Patches
             };
             NetSegment.CalculateMiddlePoints(sideBezier.a, startDir, sideBezier.d, endDir, true, true, out sideBezier.b, out sideBezier.c);
 
-            var t = Mathf.Clamp01(bezier.Travel(0f, segmentData.Offset));
+            var t = bezier.Travel(0f, segmentData.Offset);
             var position = bezier.Position(t);
             var direction = bezier.Tangent(t).Turn90(true).TurnDeg(segmentData.RotateAngle, true);
 
-            var line = new StraightTrajectory(position, position + direction, false);
             var side = new BezierTrajectory(sideBezier);
+            var line = new StraightTrajectory(position, position + direction, false);
 
             var intersection = Intersection.CalculateSingle(side, line);
             if (intersection.IsIntersect)
@@ -234,12 +234,12 @@ namespace NodeController.Patches
                 side = side.Cut(0f, intersection.FirstT) as BezierTrajectory;
                 return side.Length;
             }
-            else if (segmentData.RotateAngle == 0f)
-                return 0f;
-            else if (leftSide ^ segmentData.RotateAngle > 0f)
-                return 0f;
+
+
+            if (segmentData.RotateAngle == 0f)
+                return t <= 0.5f ? 0f : side.Length;
             else
-                return side.Length;
+                return leftSide ^ segmentData.RotateAngle > 0f ? 0f : side.Length;
         }
     }
 }
