@@ -51,15 +51,11 @@ namespace NodeController
         public bool IsFlat { get; set; }
         public bool Twist { get; set; }
 
-        public float Stretch { get; set; }
-        public float TwistAngle { get; set; }
-
         public bool IsDefault
         {
             get
             {
                 var ret = SlopeAngle == 0f;
-                ret &= Stretch == 0;
                 ret &= TwistAngle == 0;
                 ret &= IsFlat == DefaultIsFlat;
                 ret &= Twist == DefaultTwist;
@@ -76,10 +72,8 @@ namespace NodeController
         public float Shift { get; set; }
         public float RotateAngle { get; set; }
         public float SlopeAngle { get; set; }
+        public float TwistAngle { get; set; }
 
-        bool CrossingIsRemoved => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(NodeId, Id);
-
-        public bool IsCSUR => NetUtil.IsCSUR(Info);
         public bool CanModifyOffset => NodeData?.CanModifyOffset ?? false;
         public bool CanModifyCorners => NodeData != null && (CanModifyOffset || NodeType == NodeStyleType.End || NodeType == NodeStyleType.Middle);
         public bool CanModifyFlatJunctions => NodeData?.CanModifyFlatJunctions ?? false;
@@ -123,7 +117,6 @@ namespace NodeController
             NoJunctionTexture = false;
             NoJunctionProps = false;
             NoTLProps = false;
-            Stretch = TwistAngle = 0;
         }
 
         public void OnAfterCalculate()
@@ -148,20 +141,20 @@ namespace NodeController
                 return false;
 
             var segment = segmentId.GetSegment();
-            var segment1Id = segment.GetLeftSegment(nodeId);
-            var segment2Id = segment.GetRightSegment(nodeId);
+            var firstSegmentId = segment.GetLeftSegment(nodeId);
+            var secondSegmentId = segment.GetRightSegment(nodeId);
             var nodeData = Manager.Instance[nodeId];
-            var segEnd1 = nodeData[segment1Id];
-            var segEnd2 = nodeData[segment2Id];
+            var segmentEnd1 = nodeData[firstSegmentId];
+            var segmentEnd2 = nodeData[secondSegmentId];
 
-            bool flat1 = segEnd1?.IsFlat ?? segment1Id.GetSegment().Info.m_flatJunctions;
-            bool flat2 = segEnd2?.IsFlat ?? segment2Id.GetSegment().Info.m_flatJunctions;
+            bool flat1 = segmentEnd1?.IsFlat ?? firstSegmentId.GetSegment().Info.m_flatJunctions;
+            bool flat2 = segmentEnd2?.IsFlat ?? secondSegmentId.GetSegment().Info.m_flatJunctions;
             if (flat1 && flat2)
                 return false;
 
             if (segmentIds.Length == 2)
             {
-                var dir1 = segment1Id.GetSegment().GetDirection(nodeId);
+                var dir1 = firstSegmentId.GetSegment().GetDirection(nodeId);
                 var dir = segmentId.GetSegment().GetDirection(nodeId);
                 if (Mathf.Abs(VectorUtils.DotXZ(dir, dir1)) > 0.999f)
                     return false;

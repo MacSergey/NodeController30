@@ -12,28 +12,93 @@ namespace NodeController.Patches
 {
     public static class ExternalModPatches
     {
+        private static bool? IsUturnAllowedConfigurable(NodeData node) => node?.Type switch
+        {
+            NodeStyleType.Crossing or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,// always off
+            NodeStyleType.UTurn or NodeStyleType.Custom or NodeStyleType.End => null,// default
+            _ => throw new Exception("Unreachable code"),
+        };
+        private static bool? IsDefaultUturnAllowed(NodeData node) => node?.Type switch
+        {
+            NodeStyleType.UTurn => true,
+            NodeStyleType.Crossing or NodeStyleType.Stretch => false,
+            NodeStyleType.Middle or NodeStyleType.Bend or NodeStyleType.Custom or NodeStyleType.End => null,
+            _ => throw new Exception("Unreachable code"),
+        };
+        private static bool? IsPedestrianCrossingAllowedConfigurable(NodeData node) => node?.Type switch
+        {
+            NodeStyleType.Crossing or NodeStyleType.UTurn or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,
+            NodeStyleType.Custom => (node.IsMain && !node.HasPedestrianLanes) ? false : null,
+            NodeStyleType.End => null,
+            _ => throw new Exception("Unreachable code"),
+        };
+        private static bool? IsDefaultPedestrianCrossingAllowed(NodeData node) => node?.Type switch
+        {
+            NodeStyleType.Crossing => true,
+            NodeStyleType.UTurn or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,
+            NodeStyleType.Custom when node.IsMain && node.FirstSegment.Info.m_netAI.GetType() != node.SecondSegment.Info.m_netAI.GetType() => false,
+            NodeStyleType.Custom or NodeStyleType.End => null,
+            _ => throw new Exception("Unreachable code"),
+        };
+        private static bool? CanHaveTrafficLights(NodeData node, out ToggleTrafficLightError reason)
+        {
+            reason = ToggleTrafficLightError.None;
+            switch (node?.Type)
+            {
+                case NodeStyleType.Crossing:
+                case NodeStyleType.UTurn:
+                case NodeStyleType.End:
+                case NodeStyleType.Custom:
+                    return null;
+                case NodeStyleType.Stretch:
+                case NodeStyleType.Middle:
+                case NodeStyleType.Bend:
+                    reason = ToggleTrafficLightError.NoJunction;
+                    return false;
+                default:
+                    throw new Exception("Unreachable code");
+            }
+        }
+        private static bool? IsEnteringBlockedJunctionAllowedConfigurable(NodeData node) => node?.Type switch
+        {
+            NodeStyleType.Custom when node.IsJunction => null,
+            NodeStyleType.Custom when node.DefaultFlags.IsFlagSet(NetNode.Flags.OneWayIn) & node.DefaultFlags.IsFlagSet(NetNode.Flags.OneWayOut) && !node.HasPedestrianLanes => false,
+            NodeStyleType.Crossing or NodeStyleType.UTurn or NodeStyleType.Custom or NodeStyleType.End => null,
+            NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,
+            _ => throw new Exception("Unreachable code"),
+        };
+        private static bool? IsDefaultEnteringBlockedJunctionAllowed(NodeData node) => node?.Type switch
+        {
+            NodeStyleType.Stretch => true,// always on
+            NodeStyleType.Crossing => false,// default off
+            NodeStyleType.UTurn or NodeStyleType.Middle or NodeStyleType.Bend or NodeStyleType.End => null,// default
+            NodeStyleType.Custom => node.IsJunction ? null : true,
+            _ => throw new Exception("Unreachable code"),
+        };
+
+
         public static bool CanToggleTrafficLightPrefix(ref bool __result, ushort nodeId, ref ToggleTrafficLightError reason)
         {
             var nodeData = Manager.Instance[nodeId];
-            return HandleNullBool(nodeData?.CanHaveTrafficLights(out reason), ref __result);
+            return HandleNullBool(CanHaveTrafficLights(nodeData, out reason), ref __result);
         }
         public static bool GetDefaultEnteringBlockedJunctionAllowedPrefix(ushort segmentId, bool startNode, ref bool __result)
         {
             ushort nodeID = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
             var data = Manager.Instance[nodeID];
-            return HandleNullBool(data?.IsDefaultEnteringBlockedJunctionAllowed, ref __result);
+            return HandleNullBool(IsDefaultEnteringBlockedJunctionAllowed(data), ref __result);
         }
         public static bool GetDefaultPedestrianCrossingAllowedPrefix(ushort segmentId, bool startNode, ref bool __result)
         {
             ushort nodeID = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
             NodeData data = Manager.Instance[nodeID];
-            return HandleNullBool(data?.IsDefaultPedestrianCrossingAllowed, ref __result);
+            return HandleNullBool(IsDefaultPedestrianCrossingAllowed(data), ref __result);
         }
         public static bool GetDefaultUturnAllowedPrefix(ushort segmentId, bool startNode, ref bool __result)
         {
             ushort nodeID = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
             var data = Manager.Instance[nodeID];
-            return HandleNullBool(data?.IsDefaultUturnAllowed, ref __result);
+            return HandleNullBool(IsDefaultUturnAllowed(data), ref __result);
         }
         public static bool IsEnteringBlockedJunctionAllowedConfigurablePrefix(ushort segmentId, bool startNode, ref bool __result)
         {
@@ -50,19 +115,19 @@ namespace NodeController.Patches
                 }
             }
 
-            return HandleNullBool(data?.IsEnteringBlockedJunctionAllowedConfigurable, ref __result);
+            return HandleNullBool(IsEnteringBlockedJunctionAllowedConfigurable(data), ref __result);
         }
         public static bool IsPedestrianCrossingAllowedConfigurablePrefix(ushort segmentId, bool startNode, ref bool __result)
         {
             ushort nodeID = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
             var data = Manager.Instance[nodeID];
-            return HandleNullBool(data?.IsPedestrianCrossingAllowedConfigurable, ref __result);
+            return HandleNullBool(IsPedestrianCrossingAllowedConfigurable(data), ref __result);
         }
         public static bool IsUturnAllowedConfigurablePrefix(ushort segmentId, bool startNode, ref bool __result)
         {
             ushort nodeID = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
             var data = Manager.Instance[nodeID];
-            return HandleNullBool(data?.IsUturnAllowedConfigurable, ref __result);
+            return HandleNullBool(IsUturnAllowedConfigurable(data), ref __result);
         }
 
         public static bool ShouldHideCrossingPrefix(ushort nodeID, ushort segmentID, ref bool __result)

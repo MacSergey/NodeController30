@@ -60,8 +60,8 @@ namespace NodeController
 
         public bool IsDefault => Type == DefaultType && !SegmentEndDatas.Any(s => s?.IsDefault != true);
 
-        public NetNode.Flags DefaultFlags { get; set; }
-        public NodeStyleType DefaultType { get; set; }
+        public NetNode.Flags DefaultFlags { get; private set; }
+        public NodeStyleType DefaultType { get; private set; }
 
         public bool IsEnd => SegmentEnds.Count == 1;
         public bool IsMain => SegmentEnds.Count == 2;
@@ -69,8 +69,8 @@ namespace NodeController
         public IEnumerable<ushort> SegmentIds => SegmentEnds.Keys;
         public int SegmentCount => SegmentEnds.Count;
 
-        NetSegment FirstSegment => MainRoad.First.GetSegment();
-        NetSegment SecondSegment => MainRoad.Second.GetSegment();
+        public NetSegment FirstSegment => MainRoad.First.GetSegment();
+        public NetSegment SecondSegment => MainRoad.Second.GetSegment();
         public SegmentEndData FirstMainSegmentEnd => SegmentEnds.TryGetValue(MainRoad.First, out var data) ? data : null;
         public SegmentEndData SecondMainSegmentEnd => SegmentEnds.TryGetValue(MainRoad.Second, out var data) ? data : null;
 
@@ -175,16 +175,6 @@ namespace NodeController
                 UpdateNode();
             }
         }
-        public float Stretch
-        {
-            get => (FirstMainSegmentEnd.Stretch + SecondMainSegmentEnd.Stretch) / 2;
-            set
-            {
-                FirstMainSegmentEnd.Stretch = value;
-                SecondMainSegmentEnd.Stretch = value;
-                UpdateNode();
-            }
-        }
 
         public bool IsCSUR => NetUtil.IsCSUR(Info);
         public bool IsRoad => Info.m_netAI is RoadBaseAI;
@@ -196,7 +186,6 @@ namespace NodeController
         public bool IsMoveableNode => IsMiddleNode && Style.IsDefault;
 
 
-        public bool WantsTrafficLight => Type == NodeStyleType.Crossing;
         public bool CanModifyOffset => Type == NodeStyleType.Bend || Type == NodeStyleType.Stretch || Type == NodeStyleType.Custom;
         public bool CanMassEditNodeCorners => IsMain;
         public bool CanModifyFlatJunctions => !IsMiddleNode;
@@ -205,71 +194,6 @@ namespace NodeController
         public bool ShowNoMarkingsToggle => CanModifyTextures && Type == NodeStyleType.Custom;
         public bool NeedsTransitionFlag => IsMain && (Type == NodeStyleType.Custom || Type == NodeStyleType.Crossing || Type == NodeStyleType.UTurn);
         public bool ShouldRenderCenteralCrossingTexture => Type == NodeStyleType.Crossing && CrossingIsRemoved(MainRoad.First) && CrossingIsRemoved(MainRoad.Second);
-
-
-        public bool? IsUturnAllowedConfigurable => Type switch
-        {
-            NodeStyleType.Crossing or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,// always off
-            NodeStyleType.UTurn or NodeStyleType.Custom or NodeStyleType.End => null,// default
-            _ => throw new Exception("Unreachable code"),
-        };
-        public bool? IsDefaultUturnAllowed => Type switch
-        {
-            NodeStyleType.UTurn => true,
-            NodeStyleType.Crossing or NodeStyleType.Stretch => false,
-            NodeStyleType.Middle or NodeStyleType.Bend or NodeStyleType.Custom or NodeStyleType.End => null,
-            _ => throw new Exception("Unreachable code"),
-        };
-        public bool? IsPedestrianCrossingAllowedConfigurable => Type switch
-        {
-            NodeStyleType.Crossing or NodeStyleType.UTurn or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,
-            NodeStyleType.Custom => (IsMain && !HasPedestrianLanes) ? false : null,
-            NodeStyleType.End => null,
-            _ => throw new Exception("Unreachable code"),
-        };
-        public bool? IsDefaultPedestrianCrossingAllowed => Type switch
-        {
-            NodeStyleType.Crossing => true,
-            NodeStyleType.UTurn or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,
-            NodeStyleType.Custom when IsMain && FirstSegment.Info.m_netAI.GetType() != SecondSegment.Info.m_netAI.GetType() => false,
-            NodeStyleType.Custom or NodeStyleType.End => null,
-            _ => throw new Exception("Unreachable code"),
-        };
-        public bool? CanHaveTrafficLights(out ToggleTrafficLightError reason)
-        {
-            reason = ToggleTrafficLightError.None;
-            switch (Type)
-            {
-                case NodeStyleType.Crossing:
-                case NodeStyleType.UTurn:
-                case NodeStyleType.End:
-                case NodeStyleType.Custom:
-                    return null;
-                case NodeStyleType.Stretch:
-                case NodeStyleType.Middle:
-                case NodeStyleType.Bend:
-                    reason = ToggleTrafficLightError.NoJunction;
-                    return false;
-                default:
-                    throw new Exception("Unreachable code");
-            }
-        }
-        public bool? IsEnteringBlockedJunctionAllowedConfigurable => Type switch
-        {
-            NodeStyleType.Custom when IsJunction => null,
-            NodeStyleType.Custom when DefaultFlags.IsFlagSet(NetNode.Flags.OneWayIn) & DefaultFlags.IsFlagSet(NetNode.Flags.OneWayOut) && !HasPedestrianLanes => false,//
-            NodeStyleType.Crossing or NodeStyleType.UTurn or NodeStyleType.Custom or NodeStyleType.End => null,// default off
-            NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,// always on
-            _ => throw new Exception("Unreachable code"),
-        };
-        public bool? IsDefaultEnteringBlockedJunctionAllowed => Type switch
-        {
-            NodeStyleType.Stretch => true,// always on
-            NodeStyleType.Crossing => false,// default off
-            NodeStyleType.UTurn or NodeStyleType.Middle or NodeStyleType.Bend or NodeStyleType.End => null,// default
-            NodeStyleType.Custom => IsJunction ? null : true,
-            _ => throw new Exception("Unreachable code"),
-        };
 
         #endregion
 
