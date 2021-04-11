@@ -18,24 +18,24 @@ using ModsCommon.Utilities;
 namespace NodeController
 {
     [Serializable]
-    public class SegmentEndData : INetworkData, INetworkData<SegmentEndData>, ISerializable
+    public class SegmentEndData : INetworkData,  ISerializable
     {
         #region PROPERTIES
 
-        public string Title => $"Segment #{SegmentId}";
+        public string Title => $"Segment #{Id}";
 
         public ushort NodeId { get; set; }
-        public ushort SegmentId { get; set; }
+        public ushort Id { get; set; }
 
-        public NetSegment Segment => SegmentId.GetSegment();
+        public NetSegment Segment => Id.GetSegment();
         public NetInfo Info => Segment.Info;
         public NetNode Node => NodeId.GetNode();
-        public NodeData NodeData => NodeManager.Instance[NodeId];
+        public NodeData NodeData => Manager.Instance[NodeId];
         public NodeStyleType NodeType => NodeData.Type;
         public bool IsStartNode => Segment.IsStartNode(NodeId);
         public Vector3 Direction => IsStartNode ? Segment.m_startDirection : Segment.m_endDirection;
 
-        public float DefaultOffset => CSURUtil.GetMinCornerOffset(SegmentId, NodeId);
+        public float DefaultOffset => CSURUtil.GetMinCornerOffset(Id, NodeId);
         public bool DefaultIsFlat => Info.m_flatJunctions || Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public bool DefaultTwist => DefaultIsFlat && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public NetSegment.Flags DefaultFlags { get; set; }
@@ -77,13 +77,13 @@ namespace NodeController
         public float RotateAngle { get; set; }
         public float SlopeAngle { get; set; }
 
-        bool CrossingIsRemoved => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(NodeId, SegmentId);
+        bool CrossingIsRemoved => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(NodeId, Id);
 
         public bool IsCSUR => NetUtil.IsCSUR(Info);
         public bool CanModifyOffset => NodeData?.CanModifyOffset ?? false;
         public bool CanModifyCorners => NodeData != null && (CanModifyOffset || NodeType == NodeStyleType.End || NodeType == NodeStyleType.Middle);
         public bool CanModifyFlatJunctions => NodeData?.CanModifyFlatJunctions ?? false;
-        public bool CanModifyTwist => CanTwist(SegmentId, NodeId);
+        public bool CanModifyTwist => CanTwist(Id, NodeId);
         public bool? ShouldHideCrossingTexture
         {
             get
@@ -109,18 +109,18 @@ namespace NodeController
 
             // corner offset and slope angle deg
             SerializationUtil.SetObjectProperties(info, this);
-            Update();
+            UpdateNode();
         }
         public SegmentEndData(ushort segmentID, ushort nodeID)
         {
             NodeId = nodeID;
-            SegmentId = segmentID;
+            Id = segmentID;
 
             Calculate();
             IsFlat = DefaultIsFlat;
             Twist = DefaultTwist;
 
-            Update();
+            UpdateNode();
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context) => SerializationUtil.GetObjectFields(info, this);
@@ -130,56 +130,25 @@ namespace NodeController
         {
             DefaultFlags = Segment.m_flags;
             PedestrianLaneCount = Info.CountPedestrianLanes();
-
-            //Refresh();
         }
-        //private void Refresh()
-        //{
-        //    if (!CanModifyOffset)
-        //        Offset = DefaultOffset;
-
-        //    if (!CanModifyFlatJunctions)
-        //        FlatJunctions = DefaultFlatJunctions;
-
-        //    if (!CanModifyTwist)
-        //        Twist = DefaultTwist;
-
-        //    if (!CanModifyCorners)
-        //    {
-        //        SlopeAngle = 0f;
-        //        Stretch = TwistAngle = 0;
-        //    }
-
-        //    if (!FlatJunctions)
-        //        Twist = false;
-        //}
-        public void Update()
+        public void UpdateNode()
         {
             NetManager.instance.UpdateNode(NodeId);
         }
         public void ResetToDefault()
         {
-            //Offset = DefaultOffset;
-            //Shift = 0f;
-            //RotateAngle = 0f;
-            //SlopeAngle = 0f;
-            //TwistAngle = 0f;
-
-            //FlatJunctions = DefaultFlatJunctions;
             Twist = DefaultTwist;
             NoCrossings = false;
-            //NoMarkings = false;
             NoJunctionTexture = false;
             NoJunctionProps = false;
             NoTLProps = false;
             Stretch = TwistAngle = 0;
-            //RefreshAndUpdate();
         }
 
         public void OnAfterCalculate()
         {
-            Segment.CalculateCorner(SegmentId, true, IsStartNode, leftSide: true, cornerPos: out var lpos, cornerDirection: out var ldir, out _);
-            Segment.CalculateCorner(SegmentId, true, IsStartNode, leftSide: false, cornerPos: out var rpos, cornerDirection: out var rdir, out _);
+            Segment.CalculateCorner(Id, true, IsStartNode, leftSide: true, cornerPos: out var lpos, cornerDirection: out var ldir, out _);
+            Segment.CalculateCorner(Id, true, IsStartNode, leftSide: false, cornerPos: out var rpos, cornerDirection: out var rdir, out _);
 
             var diff = rpos - lpos;
             var se = Mathf.Atan2(diff.y, VectorUtils.LengthXZ(diff));
@@ -200,8 +169,9 @@ namespace NodeController
             var segment = segmentId.GetSegment();
             var segment1Id = segment.GetLeftSegment(nodeId);
             var segment2Id = segment.GetRightSegment(nodeId);
-            var segEnd1 = SegmentEndManager.Instance[segment1Id, nodeId];
-            var segEnd2 = SegmentEndManager.Instance[segment2Id, nodeId];
+            var nodeData = Manager.Instance[nodeId];
+            var segEnd1 = nodeData[segment1Id];
+            var segEnd2 = nodeData[segment2Id];
 
             bool flat1 = segEnd1?.IsFlat ?? segment1Id.GetSegment().Info.m_flatJunctions;
             bool flat2 = segEnd2?.IsFlat ?? segment2Id.GetSegment().Info.m_flatJunctions;
@@ -219,7 +189,7 @@ namespace NodeController
             return true;
         }
 
-        public override string ToString() => $"{GetType().Name} (segment:{SegmentId} node:{NodeId})";
+        public override string ToString() => $"{GetType().Name} (segment:{Id} node:{NodeId})";
 
         #endregion
 

@@ -18,7 +18,7 @@ namespace NodeController.Patches
     {
         public static void CalculateCornerPostfix(ushort segmentID, bool start, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection)
         {
-            var data = SegmentEndManager.Instance[segmentID, start];
+            var data = Manager.GetSegmentData(segmentID, start);
             if (data == null && !GUI.Settings.GameConfig.UnviversalSlopeFixes)
                 return;
 
@@ -96,7 +96,7 @@ namespace NodeController.Patches
 
         public static bool GetFlatJunctions(bool flatJunctions, ushort segmentId, ushort nodeId)
         {
-            var data = SegmentEndManager.Instance[segmentId, nodeId];
+            var data = Manager.Instance[nodeId, segmentId];
             return data?.IsFlat ?? flatJunctions;
         }
 
@@ -105,15 +105,15 @@ namespace NodeController.Patches
             if (!segmentID.GetSegment().IsValid())
                 return;
 
-            SegmentEndManager.Instance[segmentID, true]?.OnAfterCalculate();
-            SegmentEndManager.Instance[segmentID, false]?.OnAfterCalculate();
+            Manager.GetSegmentData(segmentID, out var start, out var end);
+            start?.OnAfterCalculate();
+            end?.OnAfterCalculate();
         }
 
         public static IEnumerable<CodeInstruction> CalculateCornerTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
         {
             instructions = FindDirectionTranspiler(instructions, original);
 
-            yield return TranspilerUtils.GetLDArg(original, "startNodeID");
             yield return TranspilerUtils.GetLDArg(original, "ignoreSegmentID");
             yield return TranspilerUtils.GetLDArgRef(original, "startPos");
             yield return TranspilerUtils.GetLDArgRef(original, "startDir");
@@ -169,13 +169,11 @@ namespace NodeController.Patches
                     yield return instruction;
             }
         }
-        public static void ShiftSegment(ushort firstNodeId, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
+        public static void ShiftSegment(ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
         {
-            var segment = segmentId.GetSegment();
-            var secondNodeId = segment.m_startNode == firstNodeId ? segment.m_endNode : segment.m_startNode;
-
-            var startShift = SegmentEndManager.Instance[segmentId, firstNodeId] is SegmentEndData SegmentData1 ? SegmentData1.Shift : 0f;
-            var endShift = SegmentEndManager.Instance[segmentId, secondNodeId] is SegmentEndData SegmentData2 ? SegmentData2.Shift : 0f;
+            Manager.GetSegmentData(segmentId, out var start, out var end);
+            var startShift = start?.Shift ?? 0f;
+            var endShift = end?.Shift ?? 0f;
 
             if (startShift == 0f && endShift == 0f)
                 return;
@@ -194,14 +192,14 @@ namespace NodeController.Patches
 
         static float GetHalfWidth(float halfWidth, ushort nodeId, ushort segmentId)
         {
-            if (SegmentEndManager.Instance[segmentId, nodeId] is SegmentEndData segmentData)
+            if (Manager.Instance[nodeId, segmentId] is SegmentEndData segmentData)
                 return halfWidth * Mathf.Cos(segmentData.TwistAngle * Mathf.Deg2Rad);
             else
                 return halfWidth;
         }
         static float GetMinCornerOffset(float cornerOffset, float halfWidth, ushort nodeId, ushort segmentId, bool leftSide, Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir)
         {
-            if (SegmentEndManager.Instance[segmentId, nodeId] is not SegmentEndData segmentData)
+            if (Manager.Instance[nodeId, segmentId] is not SegmentEndData segmentData)
                 return cornerOffset;
 
             var startNormal = startDir.Turn90(false);

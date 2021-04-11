@@ -70,9 +70,6 @@ namespace NodeController
                     _ => GameConfigT.NewGameDefault,
                 };
 
-                NodeManager.Instance.OnLoad();
-                SegmentEndManager.Instance.OnLoad();
-                NodeManager.ValidateAndHeal();
                 Loaded = true;
             }
             catch (Exception e)
@@ -94,13 +91,12 @@ namespace NodeController
             success &= AddTool<NodeControllerTool>();
             success &= AddNetToolButton<NodeControllerButton>();
             success &= ToolOnEscape<NodeControllerTool>();
-            success &= AssetDataExtensionFix<AssetDataExtension>();
+            //success &= AssetDataExtensionFix<AssetDataExtension>();
 
             PatchNetManager(ref success);
             PatchNetNode(ref success);
             PatchNetSegment(ref success);
             PatchNetLane(ref success);
-            PatchNetTool(ref success);
             PatchRoadBaseAI(ref success);
             PatchHideCrosswalk(ref success);
             PatchTMPE(ref success);
@@ -113,23 +109,23 @@ namespace NodeController
 
         private void PatchNetManager(ref bool success)
         {
-            success &= Patch_NetManager_CreateSegment();
             success &= Patch_NetManager_ReleaseNodeImplementation();
-            success &= Patch_NetManager_ReleaseSegmentImplementation();
+            success &= Patch_NetManager_UpdateNode();
+            success &= Patch_NetManager_SimulationStepImpl();
         }
 
-        private bool Patch_NetManager_CreateSegment()
-        {
-            return AddPostfix(typeof(NetManagerPatches), nameof(NetManagerPatches.CreateSegmentPostfix), typeof(NetManager), nameof(NetManager.CreateSegment));
-        }
         private bool Patch_NetManager_ReleaseNodeImplementation()
         {
             return AddPrefix(typeof(NetManagerPatches), nameof(NetManagerPatches.ReleaseNodeImplementationPrefix), typeof(NetManager), "ReleaseNodeImplementation", new Type[] { typeof(ushort) });
         }
-        private bool Patch_NetManager_ReleaseSegmentImplementation()
+        private bool Patch_NetManager_UpdateNode()
         {
-            var parameters = new[] { typeof(ushort), typeof(NetSegment).MakeByRefType(), typeof(bool) };
-            return AddPrefix(typeof(NetManagerPatches), nameof(NetManagerPatches.ReleaseSegmentImplementationPrefix), typeof(NetManager), "ReleaseSegmentImplementation", parameters);
+            var parameters = new Type[] { typeof(ushort), typeof(ushort), typeof(int) };
+            return AddPostfix(typeof(NetManagerPatches), nameof(NetManagerPatches.NetManagerUpdateNodePostfix), typeof(NetManager), nameof(NetManager.UpdateNode), parameters);
+        }
+        private bool Patch_NetManager_SimulationStepImpl()
+        {
+            return AddPostfix(typeof(NetManagerPatches), nameof(NetManagerPatches.NetManagerSimulationStepImplPostfix), typeof(NetManager), "SimulationStepImpl");
         }
 
         #endregion
@@ -217,34 +213,6 @@ namespace NodeController
 
         #endregion
 
-        #region NETTOOL
-
-        private void PatchNetTool(ref bool success)
-        {
-            success &= Patch_NetTool_MoveMiddleNode_Prefix();
-            success &= Patch_NetTool_MoveMiddleNode_Postfix();
-            success &= Patch_NetTool_SplitSegment_Prefix();
-            success &= Patch_NetTool_SplitSegment_Postfix();
-        }
-        private bool Patch_NetTool_MoveMiddleNode_Prefix()
-        {
-            return AddPrefix(typeof(NetToolPatch), nameof(NetToolPatch.MoveMiddleNodePrefix), typeof(NetTool), "MoveMiddleNode");
-        }
-        private bool Patch_NetTool_MoveMiddleNode_Postfix()
-        {
-            return AddPostfix(typeof(NetToolPatch), nameof(NetToolPatch.MoveMiddleNodePostfix), typeof(NetTool), "MoveMiddleNode");
-        }
-        private bool Patch_NetTool_SplitSegment_Prefix()
-        {
-            return AddPrefix(typeof(NetToolPatch), nameof(NetToolPatch.SplitSegmentPrefix), typeof(NetTool), "SplitSegment");
-        }
-        private bool Patch_NetTool_SplitSegment_Postfix()
-        {
-            return AddPostfix(typeof(NetToolPatch), nameof(NetToolPatch.SplitSegmentPostfix), typeof(NetTool), "SplitSegment");
-        }
-
-        #endregion
-
         #region ROADBUSAI
 
         private void PatchRoadBaseAI(ref bool success)
@@ -267,14 +235,14 @@ namespace NodeController
 
         private void PatchHideCrosswalk(ref bool success)
         {
-            try { var type = typeof(HideCrosswalksPatches); }
+            try { var type = typeof(HideCrosswalks.Patches.CalculateMaterialCommons); }
             catch
             {
                 Logger.Debug("Hide Crosswalks not exist, skip patches");
                 return;
             }
 
-            success &= AddPrefix(typeof(HideCrosswalksPatches), nameof(HideCrosswalksPatches.ShouldHideCrossingPrefix), typeof(HideCrosswalks.Patches.CalculateMaterialCommons), nameof(HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing));
+            success &= AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.ShouldHideCrossingPrefix), typeof(HideCrosswalks.Patches.CalculateMaterialCommons), nameof(HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing));
         }
 
         #endregion
@@ -283,7 +251,7 @@ namespace NodeController
 
         private void PatchTMPE(ref bool success)
         {
-            try { var type = typeof(HideCrosswalksPatches); }
+            try { var type = typeof(TrafficLightManager); }
             catch
             {
                 Logger.Debug("TMPE not exist, skip patches");
@@ -300,31 +268,31 @@ namespace NodeController
         }
         private bool Patch_TrafficLightManager_CanToggleTrafficLight()
         {
-            return AddPrefix(typeof(TMPEPatches), nameof(TMPEPatches.CanToggleTrafficLightPrefix), typeof(TrafficLightManager), nameof(TrafficLightManager.CanToggleTrafficLight));
+            return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.CanToggleTrafficLightPrefix), typeof(TrafficLightManager), nameof(TrafficLightManager.CanToggleTrafficLight));
         }
         private bool Patch_JunctionRestrictionsManager_GetDefaultEnteringBlockedJunctionAllowed()
         {
-            return AddPrefix(typeof(TMPEPatches), nameof(TMPEPatches.GetDefaultEnteringBlockedJunctionAllowedPrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultEnteringBlockedJunctionAllowed));
+            return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.GetDefaultEnteringBlockedJunctionAllowedPrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultEnteringBlockedJunctionAllowed));
         }
         private bool Patch_JunctionRestrictionsManager_GetDefaultPedestrianCrossingAllowed()
         {
-            return AddPrefix(typeof(TMPEPatches), nameof(TMPEPatches.GetDefaultPedestrianCrossingAllowedPrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultPedestrianCrossingAllowed));
+            return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.GetDefaultPedestrianCrossingAllowedPrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultPedestrianCrossingAllowed));
         }
         private bool Patch_JunctionRestrictionsManager_GetDefaultUturnAllowed()
         {
-            return AddPrefix(typeof(TMPEPatches), nameof(TMPEPatches.GetDefaultUturnAllowedPrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultUturnAllowed));
+            return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.GetDefaultUturnAllowedPrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultUturnAllowed));
         }
         private bool Patch_JunctionRestrictionsManager_IsEnteringBlockedJunctionAllowedConfigurable()
         {
-            return AddPrefix(typeof(TMPEPatches), nameof(TMPEPatches.IsEnteringBlockedJunctionAllowedConfigurablePrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsEnteringBlockedJunctionAllowedConfigurable));
+            return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.IsEnteringBlockedJunctionAllowedConfigurablePrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsEnteringBlockedJunctionAllowedConfigurable));
         }
         private bool Patch_JunctionRestrictionsManager_IsPedestrianCrossingAllowedConfigurable()
         {
-            return AddPrefix(typeof(TMPEPatches), nameof(TMPEPatches.IsPedestrianCrossingAllowedConfigurablePrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsPedestrianCrossingAllowedConfigurable));
+            return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.IsPedestrianCrossingAllowedConfigurablePrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsPedestrianCrossingAllowedConfigurable));
         }
         private bool Patch_JunctionRestrictionsManager_IsUturnAllowedConfigurable()
         {
-            return AddPrefix(typeof(TMPEPatches), nameof(TMPEPatches.IsUturnAllowedConfigurablePrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsUturnAllowedConfigurable));
+            return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.IsUturnAllowedConfigurablePrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsUturnAllowedConfigurable));
         }
 
         #endregion
@@ -342,7 +310,7 @@ namespace NodeController
             success &= Patch_TrainAI_SimulationStep(parameters);
             success &= Patch_TramBaseAI_SimulationStep(parameters);
 
-            try { var type = typeof(HideCrosswalksPatches); }
+            try { var type = typeof(TrafficLightManager); }
             catch
             {
                 Logger.Debug("TMPE not exist, skip patches");

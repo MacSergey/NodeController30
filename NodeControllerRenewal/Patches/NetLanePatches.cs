@@ -24,13 +24,12 @@ namespace NodeController.Patches
         public static Vector3 CalculatePropPos(ref Vector3 pos0, float t, uint laneID, NetInfo.Lane laneInfo)
         {
             Vector3 pos = pos0;
-            ushort segmentID = laneID.GetLane().m_segment;
+            ushort segmentId = laneID.GetLane().m_segment;
             bool backward = (laneInfo.m_finalDirection & NetInfo.Direction.Both) == NetInfo.Direction.Backward || (laneInfo.m_finalDirection & NetInfo.Direction.AvoidBoth) == NetInfo.Direction.AvoidForward;
-            bool segmentInvert = segmentID.GetSegment().m_flags.IsFlagSet(NetSegment.Flags.Invert);
+            bool segmentInvert = segmentId.GetSegment().m_flags.IsFlagSet(NetSegment.Flags.Invert);
             bool reverse = backward != segmentInvert;
 
-            var start = SegmentEndManager.Instance[segmentID, true];
-            var end = SegmentEndManager.Instance[segmentID, false];
+            Manager.GetSegmentData(segmentId, out var start, out var end);
 
             float stretchStart = start?.Stretch ?? 0;
             float stretchEnd = end?.Stretch ?? 0;

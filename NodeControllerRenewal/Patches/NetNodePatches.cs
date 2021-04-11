@@ -16,8 +16,7 @@ namespace NodeController.Patches
     {
         public static void CalculateNodePostfix(ushort nodeID)
         {
-            NodeManager.Instance.OnBeforeCalculateNodePatch(nodeID); // invalid/unsupported nodes are set to null.
-            var data = NodeManager.Instance[nodeID];
+            var data = Manager.Instance[nodeID];
             ref var node = ref nodeID.GetNodeRef();
 
             if (data == null || !data.IsMain)
@@ -57,7 +56,7 @@ namespace NodeController.Patches
         public static void RefreshJunctionDataPostfix(ref NetNode __instance, ref RenderManager.Instance data)
         {
             var nodeId = __instance.GetID();
-            if (NodeManager.Instance[nodeId] is not NodeData blendData)
+            if (Manager.Instance[nodeId] is not NodeData blendData)
                 return;
 
             if (blendData.ShouldRenderCenteralCrossingTexture)
@@ -95,11 +94,7 @@ namespace NodeController.Patches
             index = codes.Search(c => c.IsStloc(), index);
             return codes[index].BuildLdLocFromStLoc();
         }
-        public static float GetMinCornerOffset(float cornerOffset, ushort nodeID, ushort segmentID)
-        {
-            var segmentData = SegmentEndManager.Instance[segmentID, nodeID];
-            return segmentData?.Offset ?? cornerOffset;
-        }
+        public static float GetMinCornerOffset(float cornerOffset, ushort nodeId, ushort segmentId) => Manager.Instance[nodeId, segmentId]?.Offset ?? cornerOffset;
 
         public static IEnumerable<CodeInstruction> RenderInstanceTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase method)
         {
@@ -170,7 +165,7 @@ namespace NodeController.Patches
         }
         public static bool ShouldContinueMedian(ushort nodeID, ushort segmentID)
         {
-            var data = NodeManager.Instance[nodeID];
+            var data = Manager.Instance[nodeID];
             return data != null && data.Type == NodeStyleType.Stretch;
         }
         public static Material CalculateMaterial(Material material, ushort nodeId, ushort segmentId)

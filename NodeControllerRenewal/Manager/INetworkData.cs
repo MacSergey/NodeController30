@@ -16,14 +16,6 @@ namespace NodeController
         public float SlopeAngle { get; set; }
         public float TwistAngle { get; set; }
 
-        void Update();
-        void Calculate();
-
         public void GetUIComponents(UIComponent parent, Action refresh);
-    }
-
-    public interface INetworkData<T>
-    {
-        T Clone();
     }
 }

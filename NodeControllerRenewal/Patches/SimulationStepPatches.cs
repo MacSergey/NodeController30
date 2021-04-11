@@ -116,10 +116,9 @@ namespace NodeController.Patches
             if (float.IsNaN(offset) || float.IsInfinity(offset))
                 return 0;
 
-            var segmentStart = SegmentEndManager.Instance[pathPos.m_segment, true];
-            var segmentEnd = SegmentEndManager.Instance[pathPos.m_segment, false];
-            var startSE = segmentStart == null ? 0f : segmentStart.CachedSuperElevationDeg;
-            var endSE = segmentEnd == null ? 0f : -segmentEnd.CachedSuperElevationDeg;
+            Manager.GetSegmentData(pathPos.m_segment, out var start, out var end);
+            var startSE = start?.CachedSuperElevationDeg ?? 0f;
+            var endSE = -end?.CachedSuperElevationDeg ?? 0f;
             var se = startSE * (1 - offset) + endSE * offset;
 
             if (pathPos.GetLaneInfo() is not NetInfo.Lane lane)

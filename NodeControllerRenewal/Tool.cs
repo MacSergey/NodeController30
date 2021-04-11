@@ -25,7 +25,7 @@ namespace NodeController
         public override Shortcut Activation => ActivationShortcut;
         public NodeControllerPanel Panel => SingletonItem<NodeControllerPanel>.Instance;
 
-        public INetworkData Data { get; private set; }
+        public NodeData Data { get; private set; }
 
         protected override IEnumerable<IToolMode<ToolModeType>> GetModes()
         {
@@ -45,7 +45,7 @@ namespace NodeController
             base.SetModeNow(mode);
             Panel.Active = (Mode as NodeControllerToolMode)?.ShowPanel == true;
         }
-        public void SetData(INetworkData data)
+        public void SetData(NodeData data)
         {
             Data = data;
             Panel.SetData(data);

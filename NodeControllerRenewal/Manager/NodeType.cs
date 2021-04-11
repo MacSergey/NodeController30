@@ -89,17 +89,15 @@ namespace NodeController
             var segmentProperties = new List<FloatPropertyPanel>();
             if (getSegmentProperty != null)
             {
-                foreach (var segmentId in Data.Node.SegmentIds())
+                foreach (var segmentData in Data.SegmentEndDatas)
                 {
-                    var segmentData = SegmentEndManager.Instance[segmentId, Data.NodeId, true];
                     var segmentProperty = getSegmentProperty(parent, segmentData);
                     segmentProperty.Value = getValue(segmentData);
                     segmentProperty.OnValueChanged += (newValue) =>
                     {
-                        var segmentData = SegmentEndManager.Instance[segmentId, Data.NodeId, true];
                         setValue(segmentData, newValue);
                         nodeProperty.Value = getValue(Data);
-                        Data.Update();
+                        Data.UpdateNode();
                     };
                     segmentProperties.Add(segmentProperty);
                 }
@@ -169,7 +167,7 @@ namespace NodeController
 
         protected FloatPropertyPanel GetSegmentOffsetProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var offsetProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} offset");
+            var offsetProperty = GetSegmentProperty(parent, $"Segment #{segmentData.Id} offset");
             offsetProperty.MinValue = 0;
             offsetProperty.MaxValue = 100;
 
@@ -177,7 +175,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetSegmentShiftProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var offsetProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} shift");
+            var offsetProperty = GetSegmentProperty(parent, $"Segment #{segmentData.Id} shift");
             offsetProperty.MinValue = -32;
             offsetProperty.MaxValue = 32;
 
@@ -185,7 +183,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetSegmentRotateProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var rotateProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} rotate");
+            var rotateProperty = GetSegmentProperty(parent, $"Segment #{segmentData.Id} rotate");
             rotateProperty.MinValue = -60;
             rotateProperty.MaxValue = 60;
 
@@ -193,7 +191,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetSegmentSlopeProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var slopeProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} slope");
+            var slopeProperty = GetSegmentProperty(parent, $"Segment #{segmentData.Id} slope");
             slopeProperty.MinValue = -60;
             slopeProperty.MaxValue = 60;
 
@@ -201,7 +199,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetSegmentTwistProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var twistProperty = GetSegmentProperty(parent, $"Segment #{segmentData.SegmentId} twist");
+            var twistProperty = GetSegmentProperty(parent, $"Segment #{segmentData.Id} twist");
             twistProperty.MinValue = -60;
             twistProperty.MaxValue = 60;
 
