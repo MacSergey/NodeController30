@@ -16,21 +16,21 @@ namespace NodeController.Patches
         {
             NodeStyleType.Crossing or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,// always off
             NodeStyleType.UTurn or NodeStyleType.Custom or NodeStyleType.End => null,// default
-            _ => throw new Exception("Unreachable code"),
+            _ => null,
         };
         private static bool? IsDefaultUturnAllowed(NodeData node) => node?.Type switch
         {
             NodeStyleType.UTurn => true,
             NodeStyleType.Crossing or NodeStyleType.Stretch => false,
             NodeStyleType.Middle or NodeStyleType.Bend or NodeStyleType.Custom or NodeStyleType.End => null,
-            _ => throw new Exception("Unreachable code"),
+            _ => null,
         };
         private static bool? IsPedestrianCrossingAllowedConfigurable(NodeData node) => node?.Type switch
         {
             NodeStyleType.Crossing or NodeStyleType.UTurn or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,
             NodeStyleType.Custom => (node.IsMain && !node.HasPedestrianLanes) ? false : null,
             NodeStyleType.End => null,
-            _ => throw new Exception("Unreachable code"),
+            _ => null,
         };
         private static bool? IsDefaultPedestrianCrossingAllowed(NodeData node) => node?.Type switch
         {
@@ -38,9 +38,9 @@ namespace NodeController.Patches
             NodeStyleType.UTurn or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,
             NodeStyleType.Custom when node.IsMain && node.FirstSegment.Info.m_netAI.GetType() != node.SecondSegment.Info.m_netAI.GetType() => false,
             NodeStyleType.Custom or NodeStyleType.End => null,
-            _ => throw new Exception("Unreachable code"),
+            _ => null,
         };
-        private static bool? CanHaveTrafficLights(NodeData node, out ToggleTrafficLightError reason)
+        public static bool? CanHaveTrafficLights(NodeData node, out ToggleTrafficLightError reason)
         {
             reason = ToggleTrafficLightError.None;
             switch (node?.Type)
@@ -56,7 +56,7 @@ namespace NodeController.Patches
                     reason = ToggleTrafficLightError.NoJunction;
                     return false;
                 default:
-                    throw new Exception("Unreachable code");
+                    return null;
             }
         }
         private static bool? IsEnteringBlockedJunctionAllowedConfigurable(NodeData node) => node?.Type switch
@@ -65,7 +65,7 @@ namespace NodeController.Patches
             NodeStyleType.Custom when node.DefaultFlags.IsFlagSet(NetNode.Flags.OneWayIn) & node.DefaultFlags.IsFlagSet(NetNode.Flags.OneWayOut) && !node.HasPedestrianLanes => false,
             NodeStyleType.Crossing or NodeStyleType.UTurn or NodeStyleType.Custom or NodeStyleType.End => null,
             NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,
-            _ => throw new Exception("Unreachable code"),
+            _ => null,
         };
         private static bool? IsDefaultEnteringBlockedJunctionAllowed(NodeData node) => node?.Type switch
         {
@@ -73,7 +73,7 @@ namespace NodeController.Patches
             NodeStyleType.Crossing => false,// default off
             NodeStyleType.UTurn or NodeStyleType.Middle or NodeStyleType.Bend or NodeStyleType.End => null,// default
             NodeStyleType.Custom => node.IsJunction ? null : true,
-            _ => throw new Exception("Unreachable code"),
+            _ => null,
         };
 
 

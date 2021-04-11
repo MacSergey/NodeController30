@@ -23,26 +23,26 @@ namespace NodeController
     {
         public abstract NodeStyleType Type { get; }
 
-        public virtual bool ResetOffset => false;
+        public virtual bool SupportOffset => false;
         public virtual float DefaultOffset => 0f;
 
-        public virtual bool ResetShift => false;
+        public virtual bool SupportShift => false;
         public virtual float DefaultShift => 0f;
 
-        public virtual bool ResetRotate => false;
+        public virtual bool SupportRotate => false;
         public virtual float DefaultRotate => 0f;
 
-        public virtual bool ResetSlope => false;
+        public virtual bool SupportSlope => false;
         public virtual float DefaultSlope => 0f;
 
-        public virtual bool ResetTwist => false;
+        public virtual bool SupportTwist => false;
         public virtual float DefaultTwist => 0f;
 
-        public virtual bool ResetNoMarking => false;
+        public virtual bool SupportNoMarking => false;
         public virtual bool DefaultNoMarking => false;
 
-        public virtual bool ResetFlatJunction => false;
-        public virtual bool DefaultFlatJunction => true;
+        public virtual bool SupportSlopeJunction => false;
+        public virtual bool DefaultSlopeJunction => false;
 
         public bool IsDefault
         {
@@ -60,7 +60,7 @@ namespace NodeController
                     return false;
                 else if (Data.NoMarkings != DefaultNoMarking)
                     return false;
-                else if (Data.IsFlatJunctions != DefaultFlatJunction)
+                else if (Data.IsSlopeJunctions != DefaultSlopeJunction)
                     return false;
                 else
                     return true;
@@ -222,8 +222,8 @@ namespace NodeController
             var flatJunctionProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
             flatJunctionProperty.Text = "Style";
             flatJunctionProperty.Init("Slope", "Flat");
-            flatJunctionProperty.SelectedObject = Data.IsFlatJunctions;
-            flatJunctionProperty.OnSelectObjectChanged += (value) => Data.IsFlatJunctions = value;
+            flatJunctionProperty.SelectedObject = Data.IsSlopeJunctions;
+            flatJunctionProperty.OnSelectObjectChanged += (value) => Data.IsSlopeJunctions = value;
 
             return flatJunctionProperty;
 
@@ -260,7 +260,7 @@ namespace NodeController
             resetButton.Init();
             resetButton.OnButtonClick += () =>
             {
-                Data.Refresh();
+                Data.ResetToDefault();
                 refresh();
             };
 
@@ -270,11 +270,8 @@ namespace NodeController
     public class MiddleNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Middle;
-        public override bool ResetOffset => true;
-        public override bool ResetShift => true;
-        public override bool ResetRotate => true;
-        public override bool ResetNoMarking => true;
-        public override bool ResetFlatJunction => true;
+        public override bool SupportSlope => true;
+        public override bool SupportTwist => true;
 
         public MiddleNode(NodeData data) : base(data) { }
 
@@ -288,8 +285,8 @@ namespace NodeController
     public class BendNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Bend;
-        public override bool ResetSlope => true;
-        public override bool ResetTwist => true;
+        public override bool SupportSlope => true;
+        public override bool SupportTwist => true;
 
         public BendNode(NodeData data) : base(data) { }
 
@@ -304,9 +301,11 @@ namespace NodeController
     public class StretchNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Stretch;
-        public override bool ResetShift => true;
-        public override bool ResetSlope => true;
-        public override bool ResetTwist => true;
+
+        public override bool SupportOffset => true;
+        public override bool SupportRotate => true;
+        public override bool SupportNoMarking => true;
+        public override bool SupportSlopeJunction => true;
 
         public StretchNode(NodeData data) : base(data) { }
 
@@ -320,12 +319,9 @@ namespace NodeController
     public class CrossingNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Crossing;
-        public override bool ResetOffset => true;
-        public override bool ResetShift => true;
-        public override bool ResetRotate => true;
-        public override bool ResetSlope => true;
-        public override bool ResetTwist => true;
-        public override bool ResetNoMarking => true;
+     
+        public override bool SupportNoMarking => true;
+        public override bool SupportSlopeJunction => true;
 
         public CrossingNode(NodeData data) : base(data) { }
 
@@ -339,11 +335,9 @@ namespace NodeController
     public class UTurnNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.UTurn;
-        public override bool ResetOffset => true;
-        public override bool ResetShift => true;
-        public override bool ResetRotate => true;
-        public override bool ResetSlope => true;
-        public override bool ResetTwist => true;
+      
+        public override bool SupportNoMarking => true;
+        public override bool SupportSlopeJunction => true;
 
         public override float DefaultOffset => 8f;
 
@@ -359,9 +353,11 @@ namespace NodeController
     public class EndNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.End;
-        public override bool ResetOffset => true;
-        public override bool ResetShift => true;
-        public override bool ResetRotate => true;
+
+        public override bool SupportSlope => true;
+        public override bool SupportTwist => true;
+        public override bool SupportNoMarking => true;
+        public override bool SupportSlopeJunction => true;
 
         public EndNode(NodeData data) : base(data) { }
 
@@ -376,9 +372,13 @@ namespace NodeController
     public class CustomNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Custom;
-        public override bool ResetRotate => true;
-        public override bool ResetSlope => true;
-        public override bool ResetTwist => true;
+
+
+        public override bool SupportOffset => true;
+        public override bool SupportShift => true;
+        public override bool SupportRotate => true;
+        public override bool SupportNoMarking => true;
+        public override bool SupportSlopeJunction => true;
 
         public CustomNode(NodeData data) : base(data) { }
 

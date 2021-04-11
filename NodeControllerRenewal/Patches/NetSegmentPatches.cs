@@ -29,14 +29,14 @@ namespace NodeController.Patches
             var untouchable = node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
             if (!node.m_flags.IsFlagSet(NetNode.Flags.Middle))
             {
-                var flatJunctions = data?.IsFlat ?? untouchable || segment.Info.m_flatJunctions;
+                var flatJunctions = !data?.IsSlope ?? untouchable || segment.Info.m_flatJunctions;
                 if (!flatJunctions)
                     FixCornerPos(node.m_position, segment.GetDirection(nodeId), ref cornerPos);
                 else
                 {
                     bool twist;
                     if (data != null)
-                        twist = data.CanModifyTwist && data.Twist;
+                        twist = data.CanModifyTwist && data.IsTwist;
                     else
                         twist = !untouchable && segment.Info.m_flatJunctions && SegmentEndData.CanTwist(segmentID, nodeId);
 
@@ -97,7 +97,7 @@ namespace NodeController.Patches
         public static bool GetFlatJunctions(bool flatJunctions, ushort segmentId, ushort nodeId)
         {
             var data = Manager.Instance[nodeId, segmentId];
-            return data?.IsFlat ?? flatJunctions;
+            return !data?.IsSlope ?? flatJunctions;
         }
 
         public static void CalculateSegmentPostfix(ushort segmentID)

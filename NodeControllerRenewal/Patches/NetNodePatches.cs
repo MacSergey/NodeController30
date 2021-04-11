@@ -60,10 +60,7 @@ namespace NodeController.Patches
                 return;
 
             if (blendData.ShouldRenderCenteralCrossingTexture)
-            {
-                // puts crossings in the center.
                 data.m_dataVector1.w = 0.01f;
-            }
         }
 
         public static IEnumerable<CodeInstruction> RefreshJunctionDataTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)

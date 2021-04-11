@@ -50,7 +50,30 @@ namespace NodeController
                     _ => throw new NotImplementedException(),
                 };
                 Style = newType;
-                Refresh();
+
+                StartUpdate();
+
+                if (!Style.SupportOffset)
+                    Offset = Style.DefaultOffset;
+                if (!Style.SupportShift)
+                    Shift = Style.DefaultShift;
+                if (!Style.SupportRotate)
+                    RotateAngle = Style.DefaultRotate;
+                if (!Style.SupportSlope)
+                    SlopeAngle = Style.DefaultSlope;
+                if (!Style.SupportTwist)
+                    TwistAngle = Style.DefaultTwist;
+                if (!Style.SupportNoMarking)
+                    NoMarkings = Style.DefaultNoMarking;
+                if (!Style.SupportSlopeJunction)
+                    IsSlopeJunctions = Style.DefaultSlopeJunction;
+
+                foreach (var segmentEnd in SegmentEndDatas)
+                    segmentEnd.ResetToDefault();
+
+                StopUpdate();
+
+                UpdateNode();
             }
         }
         private Dictionary<ushort, SegmentEndData> SegmentEnds { get; set; } = new Dictionary<ushort, SegmentEndData>();
@@ -81,29 +104,6 @@ namespace NodeController
         public bool Is180 => IsMain && MainDot > 0.99f;
         public bool IsEqualWidth => IsMain && Math.Abs(FirstSegment.Info.m_halfWidth - SecondSegment.Info.m_halfWidth) < 0.001f;
 
-        public bool IsFlatJunctions
-        {
-            get => MainRoad.Segments.All(s => SegmentEnds[s].IsFlat);
-            set
-            {
-                foreach (var data in SegmentEnds.Values)
-                {
-                    if (value)
-                    {
-                        data.IsFlat = true;
-                        data.Twist = false;
-                    }
-                    else
-                    {
-                        var isMain = MainRoad.IsMain(data.Id);
-                        data.IsFlat = !isMain;
-                        data.Twist = !isMain;
-                    }
-                }
-
-                UpdateNode();
-            }
-        }
         public float Offset
         {
             get => SegmentEnds.Values.Average(s => s.Offset);
@@ -163,7 +163,6 @@ namespace NodeController
                 }
             }
         }
-
         public bool NoMarkings
         {
             get => SegmentEnds.Values.Any(s => s.NoMarkings);
@@ -171,6 +170,29 @@ namespace NodeController
             {
                 foreach (var data in SegmentEnds.Values)
                     data.NoMarkings = value;
+
+                UpdateNode();
+            }
+        }
+        public bool IsSlopeJunctions
+        {
+            get => MainRoad.Segments.Any(s => SegmentEnds[s].IsSlope);
+            set
+            {
+                foreach (var data in SegmentEnds.Values)
+                {
+                    if (value)
+                    {
+                        data.IsSlope = true;
+                        data.IsTwist = false;
+                    }
+                    else
+                    {
+                        var isMain = MainRoad.IsMain(data.Id);
+                        data.IsSlope = !isMain;
+                        data.IsTwist = !isMain;
+                    }
+                }
 
                 UpdateNode();
             }
@@ -296,34 +318,24 @@ namespace NodeController
             if (!InUpdate)
                 Manager.Instance.Update(Id);
         }
-        public void Refresh()
-        {
-            ResetToDefault();
-            UpdateNode();
-        }
-        private void ResetToDefault()
+        public void ResetToDefault()
         {
             StartUpdate();
 
-            if (Style.ResetOffset)
-                Offset = Style.DefaultOffset;
-            if (Style.ResetShift)
-                Shift = Style.DefaultShift;
-            if (Style.ResetRotate)
-                RotateAngle = Style.DefaultRotate;
-            if (Style.ResetSlope)
-                SlopeAngle = Style.DefaultSlope;
-            if (Style.ResetTwist)
-                TwistAngle = Style.DefaultTwist;
-            if (Style.ResetNoMarking)
-                NoMarkings = Style.DefaultNoMarking;
-            if (Style.ResetFlatJunction)
-                IsFlatJunctions = Style.DefaultFlatJunction;
+            Offset = Style.DefaultOffset;
+            Shift = Style.DefaultShift;
+            RotateAngle = Style.DefaultRotate;
+            SlopeAngle = Style.DefaultSlope;
+            TwistAngle = Style.DefaultTwist;
+            NoMarkings = Style.DefaultNoMarking;
+            IsSlopeJunctions = Style.DefaultSlopeJunction;
 
             foreach (var segmentEnd in SegmentEndDatas)
                 segmentEnd.ResetToDefault();
 
             StopUpdate();
+
+            UpdateNode();
         }
 
         #endregion

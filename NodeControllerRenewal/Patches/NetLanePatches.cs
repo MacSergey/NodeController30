@@ -31,10 +31,10 @@ namespace NodeController.Patches
 
             Manager.GetSegmentData(segmentId, out var start, out var end);
 
-            float stretchStart = start?.Stretch ?? 0;
-            float stretchEnd = end?.Stretch ?? 0;
-            var stretch = 1 + Mathf.Lerp(stretchStart, stretchEnd, t) * 0.01f; // convert delta-percent to ratio
-            pos.x *= stretch;
+            //float stretchStart = start?.Stretch ?? 0;
+            //float stretchEnd = end?.Stretch ?? 0;
+            //var stretch = 1 + Mathf.Lerp(stretchStart, stretchEnd, t) * 0.01f; // convert delta-percent to ratio
+            //pos.x *= stretch;
 
             float embankStart = start?.TwistAngle ?? 0;
             float embankEnd = start?.TwistAngle ?? 0;

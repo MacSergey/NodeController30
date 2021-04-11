@@ -37,7 +37,7 @@ namespace NodeController
 
         public float DefaultOffset => CSURUtil.GetMinCornerOffset(Id, NodeId);
         public bool DefaultIsFlat => Info.m_flatJunctions || Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
-        public bool DefaultTwist => DefaultIsFlat && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
+        public bool DefaultIsTwist => DefaultIsFlat && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public NetSegment.Flags DefaultFlags { get; set; }
 
         public int PedestrianLaneCount { get; set; }
@@ -48,8 +48,8 @@ namespace NodeController
         public bool NoJunctionTexture { get; set; }
         public bool NoJunctionProps { get; set; }
         public bool NoTLProps { get; set; }
-        public bool IsFlat { get; set; }
-        public bool Twist { get; set; }
+        public bool IsSlope { get; set; }
+        public bool IsTwist { get; set; }
 
         public bool IsDefault
         {
@@ -57,8 +57,8 @@ namespace NodeController
             {
                 var ret = SlopeAngle == 0f;
                 ret &= TwistAngle == 0;
-                ret &= IsFlat == DefaultIsFlat;
-                ret &= Twist == DefaultTwist;
+                ret &= IsSlope == !DefaultIsFlat;
+                ret &= IsTwist == DefaultIsTwist;
 
                 ret &= NoCrossings == false;
                 ret &= NoMarkings == false;
@@ -100,19 +100,17 @@ namespace NodeController
             NodeId = nodeID;
             Id = segmentID;
 
-            Calculate();
-            IsFlat = DefaultIsFlat;
-            Twist = DefaultTwist;
-        }
-
-        public void Calculate()
-        {
             DefaultFlags = Segment.m_flags;
             PedestrianLaneCount = Info.CountPedestrianLanes();
+            IsSlope = !DefaultIsFlat;
+            IsTwist = DefaultIsTwist;
         }
+
         public void ResetToDefault()
         {
-            Twist = DefaultTwist;
+            Offset = DefaultOffset;
+
+            IsTwist = DefaultIsTwist;
             NoCrossings = false;
             NoJunctionTexture = false;
             NoJunctionProps = false;
@@ -147,8 +145,8 @@ namespace NodeController
             var segmentEnd1 = nodeData[firstSegmentId];
             var segmentEnd2 = nodeData[secondSegmentId];
 
-            bool flat1 = segmentEnd1?.IsFlat ?? firstSegmentId.GetSegment().Info.m_flatJunctions;
-            bool flat2 = segmentEnd2?.IsFlat ?? secondSegmentId.GetSegment().Info.m_flatJunctions;
+            bool flat1 = !segmentEnd1?.IsSlope ?? firstSegmentId.GetSegment().Info.m_flatJunctions;
+            bool flat2 = !segmentEnd2?.IsSlope ?? secondSegmentId.GetSegment().Info.m_flatJunctions;
             if (flat1 && flat2)
                 return false;
 

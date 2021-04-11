@@ -3,9 +3,8 @@ using CSUtil.Commons;
 using HarmonyLib;
 using KianCommons;
 using ModsCommon.Utilities;
-using TrafficManager.Manager.Impl;
 
-namespace NodeController
+namespace NodeController.Patches
 {
     public static class RoadBaseAIPatches
     {
@@ -48,7 +47,7 @@ namespace NodeController
             //    TrafficLightManager.Instance.SetTrafficLight(nodeID, true, ref data);
             //    nodeData.FirstTimeTrafficLight = false;
             //}
-            else if (nodeData.CanHaveTrafficLights(out _) == false)
+            else if (ExternalModPatches.CanHaveTrafficLights(nodeData, out _) == false)
                 data.m_flags &= ~NetNode.Flags.TrafficLights;
         }
     }
