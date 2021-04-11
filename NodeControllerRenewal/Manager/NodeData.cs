@@ -26,8 +26,6 @@ namespace NodeController
         #region PROPERTIES
 
         public string Title => $"Node #{Id}";
-        private int UpdateProcess { get; set; } = 0;
-        private bool InUpdate => UpdateProcess != 0;
 
         public ushort Id { get; set; }
         public NetNode Node => Id.GetNode();
@@ -38,41 +36,7 @@ namespace NodeController
             get => Style.Type;
             set
             {
-                NodeStyle newType = value switch
-                {
-                    NodeStyleType.Middle => new MiddleNode(this),
-                    NodeStyleType.Bend => new BendNode(this),
-                    NodeStyleType.Stretch => new StretchNode(this),
-                    NodeStyleType.Crossing => new CrossingNode(this),
-                    NodeStyleType.UTurn => new UTurnNode(this),
-                    NodeStyleType.Custom => new CustomNode(this),
-                    NodeStyleType.End => new EndNode(this),
-                    _ => throw new NotImplementedException(),
-                };
-                Style = newType;
-
-                StartUpdate();
-
-                if (!Style.SupportOffset)
-                    Offset = Style.DefaultOffset;
-                if (!Style.SupportShift)
-                    Shift = Style.DefaultShift;
-                if (!Style.SupportRotate)
-                    RotateAngle = Style.DefaultRotate;
-                if (!Style.SupportSlope)
-                    SlopeAngle = Style.DefaultSlope;
-                if (!Style.SupportTwist)
-                    TwistAngle = Style.DefaultTwist;
-                if (!Style.SupportNoMarking)
-                    NoMarkings = Style.DefaultNoMarking;
-                if (!Style.SupportSlopeJunction)
-                    IsSlopeJunctions = Style.DefaultSlopeJunction;
-
-                foreach (var segmentEnd in SegmentEndDatas)
-                    segmentEnd.ResetToDefault();
-
-                StopUpdate();
-
+                SetType(value);
                 UpdateNode();
             }
         }
@@ -109,9 +73,7 @@ namespace NodeController
             get => SegmentEnds.Values.Average(s => s.Offset);
             set
             {
-                foreach (var data in SegmentEnds.Values)
-                    data.Offset = value;
-
+                SetOffset(value);
                 UpdateNode();
             }
         }
@@ -120,9 +82,7 @@ namespace NodeController
             get => SegmentEnds.Values.Average(s => s.Shift);
             set
             {
-                foreach (var data in SegmentEnds.Values)
-                    data.Shift = value;
-
+                SetShift(value);
                 UpdateNode();
             }
         }
@@ -131,9 +91,7 @@ namespace NodeController
             get => SegmentEnds.Values.Average(s => s.RotateAngle);
             set
             {
-                foreach (var data in SegmentEnds.Values)
-                    data.RotateAngle = value;
-
+                SetRotate(value);
                 UpdateNode();
             }
         }
@@ -142,12 +100,8 @@ namespace NodeController
             get => IsMain ? (FirstMainSegmentEnd.SlopeAngle - SecondMainSegmentEnd.SlopeAngle) / 2 : 0f;
             set
             {
-                if (IsMain)
-                {
-                    FirstMainSegmentEnd.SlopeAngle = value;
-                    SecondMainSegmentEnd.SlopeAngle = -value;
-                    UpdateNode();
-                }
+                SetSlope(value);
+                UpdateNode();
             }
         }
         public float TwistAngle
@@ -155,12 +109,8 @@ namespace NodeController
             get => IsMain ? (FirstMainSegmentEnd.TwistAngle - SecondMainSegmentEnd.TwistAngle) / 2 : 0f;
             set
             {
-                if (IsMain)
-                {
-                    FirstMainSegmentEnd.TwistAngle = value;
-                    SecondMainSegmentEnd.TwistAngle = -value;
-                    UpdateNode();
-                }
+                SetTwist(value);
+                UpdateNode();
             }
         }
         public bool NoMarkings
@@ -168,9 +118,7 @@ namespace NodeController
             get => SegmentEnds.Values.Any(s => s.NoMarkings);
             set
             {
-                foreach (var data in SegmentEnds.Values)
-                    data.NoMarkings = value;
-
+                SetNoMarking(value);
                 UpdateNode();
             }
         }
@@ -179,21 +127,7 @@ namespace NodeController
             get => MainRoad.Segments.Any(s => SegmentEnds[s].IsSlope);
             set
             {
-                foreach (var data in SegmentEnds.Values)
-                {
-                    if (value)
-                    {
-                        data.IsSlope = true;
-                        data.IsTwist = false;
-                    }
-                    else
-                    {
-                        var isMain = MainRoad.IsMain(data.Id);
-                        data.IsSlope = !isMain;
-                        data.IsTwist = !isMain;
-                    }
-                }
-
+                SetIsSlopeJunctions(value);
                 UpdateNode();
             }
         }
@@ -207,13 +141,7 @@ namespace NodeController
         public bool IsJunctionNode => !IsMiddleNode && !IsBendNode && !IsEndNode;
         public bool IsMoveableNode => IsMiddleNode && Style.IsDefault;
 
-
-        public bool CanModifyOffset => Type == NodeStyleType.Bend || Type == NodeStyleType.Stretch || Type == NodeStyleType.Custom;
-        public bool CanMassEditNodeCorners => IsMain;
-        public bool CanModifyFlatJunctions => !IsMiddleNode;
-        public bool IsAsymRevert => DefaultFlags.IsFlagSet(NetNode.Flags.AsymBackward | NetNode.Flags.AsymForward);
         public bool CanModifyTextures => IsRoad && !IsCSUR;
-        public bool ShowNoMarkingsToggle => CanModifyTextures && Type == NodeStyleType.Custom;
         public bool NeedsTransitionFlag => IsMain && (Type == NodeStyleType.Custom || Type == NodeStyleType.Crossing || Type == NodeStyleType.UTurn);
         public bool ShouldRenderCenteralCrossingTexture => Type == NodeStyleType.Crossing && CrossingIsRemoved(MainRoad.First) && CrossingIsRemoved(MainRoad.Second);
 
@@ -224,12 +152,8 @@ namespace NodeController
         public NodeData(ushort nodeId, NodeStyleType? nodeType = null)
         {
             Id = nodeId;
-            Init(nodeType);
+
             Update();
-        }
-        private void Init(NodeStyleType? nodeType)
-        {
-            StartUpdate();
 
             DefaultFlags = Node.m_flags;
 
@@ -244,9 +168,7 @@ namespace NodeController
             else
                 throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
 
-            Type = nodeType != null && IsPossibleType(nodeType.Value) ? nodeType.Value : DefaultType;
-
-            StopUpdate();
+            SetType(nodeType != null && IsPossibleType(nodeType.Value) ? nodeType.Value : DefaultType);
         }
         public void Update()
         {
@@ -313,29 +235,108 @@ namespace NodeController
             else
                 return second;
         }
-        public void UpdateNode()
-        {
-            if (!InUpdate)
-                Manager.Instance.Update(Id);
-        }
+        public void UpdateNode() => Manager.Instance.Update(Id);
         public void ResetToDefault()
         {
-            StartUpdate();
-
-            Offset = Style.DefaultOffset;
-            Shift = Style.DefaultShift;
-            RotateAngle = Style.DefaultRotate;
-            SlopeAngle = Style.DefaultSlope;
-            TwistAngle = Style.DefaultTwist;
-            NoMarkings = Style.DefaultNoMarking;
-            IsSlopeJunctions = Style.DefaultSlopeJunction;
+            SetOffset(Style.DefaultOffset);
+            SetShift(Style.DefaultShift);
+            SetRotate(Style.DefaultRotate);
+            SetSlope(Style.DefaultSlope);
+            SetTwist(Style.DefaultTwist);
+            SetNoMarking(Style.DefaultNoMarking);
+            SetIsSlopeJunctions(Style.DefaultSlopeJunction);
 
             foreach (var segmentEnd in SegmentEndDatas)
                 segmentEnd.ResetToDefault();
 
-            StopUpdate();
-
             UpdateNode();
+        }
+
+        private void SetType(NodeStyleType type)
+        {
+            NodeStyle newStyle = type switch
+            {
+                NodeStyleType.Middle => new MiddleNode(this),
+                NodeStyleType.Bend => new BendNode(this),
+                NodeStyleType.Stretch => new StretchNode(this),
+                NodeStyleType.Crossing => new CrossingNode(this),
+                NodeStyleType.UTurn => new UTurnNode(this),
+                NodeStyleType.Custom => new CustomNode(this),
+                NodeStyleType.End => new EndNode(this),
+                _ => throw new NotImplementedException(),
+            };
+            Style = newStyle;
+
+            if (!Style.SupportOffset)
+                SetOffset(Style.DefaultOffset);
+            if (!Style.SupportShift)
+                SetShift(Style.DefaultShift);
+            if (!Style.SupportRotate)
+                SetRotate(Style.DefaultRotate);
+            if (!Style.SupportSlope)
+                SetSlope(Style.DefaultSlope);
+            if (!Style.SupportTwist)
+                SetTwist(Style.DefaultTwist);
+            if (!Style.SupportNoMarking)
+                SetNoMarking(Style.DefaultNoMarking);
+            if (!Style.SupportSlopeJunction)
+                SetIsSlopeJunctions(Style.DefaultSlopeJunction);
+
+            foreach (var segmentEnd in SegmentEndDatas)
+                segmentEnd.ResetToDefault();
+        }
+        private void SetOffset(float value)
+        {
+            foreach (var data in SegmentEnds.Values)
+                data.Offset = value;
+        }
+        private void SetShift(float value)
+        {
+            foreach (var data in SegmentEnds.Values)
+                data.Shift = value;
+        }
+        private void SetRotate(float value)
+        {
+            foreach (var data in SegmentEnds.Values)
+                data.RotateAngle = value;
+        }
+        private void SetSlope(float value)
+        {
+            if (IsMain)
+            {
+                FirstMainSegmentEnd.SlopeAngle = value;
+                SecondMainSegmentEnd.SlopeAngle = -value;
+            }
+        }
+        private void SetTwist(float value)
+        {
+            if (IsMain)
+            {
+                FirstMainSegmentEnd.TwistAngle = value;
+                SecondMainSegmentEnd.TwistAngle = -value;
+            }
+        }
+        private void SetNoMarking(bool value)
+        {
+            foreach (var data in SegmentEnds.Values)
+                data.NoMarkings = value;
+        }
+        private void SetIsSlopeJunctions(bool value)
+        {
+            foreach (var data in SegmentEnds.Values)
+            {
+                if (value)
+                {
+                    data.IsSlope = true;
+                    data.IsTwist = false;
+                }
+                else
+                {
+                    var isMain = MainRoad.IsMain(data.Id);
+                    data.IsSlope = !isMain;
+                    data.IsTwist = !isMain;
+                }
+            }
         }
 
         #endregion
@@ -361,27 +362,7 @@ namespace NodeController
                 _ => throw new Exception("Unreachable code"),
             };
         }
-        public static bool IsSupported(ushort nodeId)
-        {
-            var node = nodeId.GetNode();
-            if (!node.IsValid())
-                return false;
-
-            var segmentIds = node.SegmentIds().ToArray();
-            if (segmentIds.Any(id => !id.GetSegment().IsValid()))
-                return false;
-
-            if (!node.m_flags.CheckFlags(required: NetNode.Flags.Created, forbidden: NetNode.Flags.LevelCrossing | NetNode.Flags.Outside | NetNode.Flags.Deleted))
-                return false;
-
-            if (segmentIds.Length != 2)
-                return true;
-
-            return !NetUtil.IsCSUR(node.Info);
-        }
         bool CrossingIsRemoved(ushort segmentId) => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(Id, segmentId);
-        private void StartUpdate() => UpdateProcess += 1;
-        private void StopUpdate() => UpdateProcess = Math.Max(UpdateProcess - 1, 0);
 
         public override string ToString() => $"NodeData(id:{Id} type:{Type})";
 

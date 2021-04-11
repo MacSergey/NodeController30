@@ -31,9 +31,7 @@ namespace NodeController
         public NetInfo Info => Segment.Info;
         public NetNode Node => NodeId.GetNode();
         public NodeData NodeData => Manager.Instance[NodeId];
-        public NodeStyleType NodeType => NodeData.Type;
         public bool IsStartNode => Segment.IsStartNode(NodeId);
-        public Vector3 Direction => IsStartNode ? Segment.m_startDirection : Segment.m_endDirection;
 
         public float DefaultOffset => CSURUtil.GetMinCornerOffset(Id, NodeId);
         public bool DefaultIsFlat => Info.m_flatJunctions || Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
@@ -74,9 +72,6 @@ namespace NodeController
         public float SlopeAngle { get; set; }
         public float TwistAngle { get; set; }
 
-        public bool CanModifyOffset => NodeData?.CanModifyOffset ?? false;
-        public bool CanModifyCorners => NodeData != null && (CanModifyOffset || NodeType == NodeStyleType.End || NodeType == NodeStyleType.Middle);
-        public bool CanModifyFlatJunctions => NodeData?.CanModifyFlatJunctions ?? false;
         public bool CanModifyTwist => CanTwist(Id, NodeId);
         public bool? ShouldHideCrossingTexture
         {
@@ -95,21 +90,22 @@ namespace NodeController
 
         #region BASIC
 
-        public SegmentEndData(ushort segmentID, ushort nodeID)
+        public SegmentEndData(ushort segmentId, ushort nodeId)
         {
-            NodeId = nodeID;
-            Id = segmentID;
+            Id = segmentId;
+            NodeId = nodeId;
 
             DefaultFlags = Segment.m_flags;
             PedestrianLaneCount = Info.CountPedestrianLanes();
-            IsSlope = !DefaultIsFlat;
-            IsTwist = DefaultIsTwist;
+
+            ResetToDefault();
         }
 
         public void ResetToDefault()
         {
             Offset = DefaultOffset;
 
+            IsSlope = !DefaultIsFlat;
             IsTwist = DefaultIsTwist;
             NoCrossings = false;
             NoJunctionTexture = false;

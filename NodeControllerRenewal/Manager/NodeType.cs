@@ -221,27 +221,11 @@ namespace NodeController
         {
             var flatJunctionProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
             flatJunctionProperty.Text = "Style";
-            flatJunctionProperty.Init("Slope", "Flat");
+            flatJunctionProperty.Init("Flat", "Slope", false);
             flatJunctionProperty.SelectedObject = Data.IsSlopeJunctions;
             flatJunctionProperty.OnSelectObjectChanged += (value) => Data.IsSlopeJunctions = value;
 
             return flatJunctionProperty;
-
-            //var actionButtons = ComponentPool.Get<ButtonsPanel>(parent);
-            //var slopeIndex = actionButtons.AddButton("Make slope");
-            //var flatIndex = actionButtons.AddButton("Make flat");
-            //actionButtons.Init();
-            //actionButtons.OnButtonClick += OnButtonClick;
-
-            //return actionButtons;
-
-            //void OnButtonClick(int index)
-            //{
-            //    if (index == slopeIndex)
-            //        Data.IsFlatJunctions = false;
-            //    else if (index == flatIndex)
-            //        Data.IsFlatJunctions = true;
-            //}
         }
         protected BoolListPropertyPanel GetHideMarkingProperty(UIComponent parent)
         {
