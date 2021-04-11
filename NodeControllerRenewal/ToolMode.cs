@@ -136,7 +136,7 @@ namespace NodeController
                 var startDir = isStart ? segment.m_startDirection : segment.m_endDirection;
                 var endPos = (isStart ? segment.m_endNode : segment.m_startNode).GetNode().m_position;
                 var endDir = isStart ? segment.m_endDirection : segment.m_startDirection;
-                NetSegmentPatches.ShiftSegment(segmentData.Id, ref startPos, ref startDir, ref endPos, ref endDir);
+                NetSegmentPatches.ShiftSegment(data.Id, segmentData.Id, ref startPos, ref startDir, ref endPos, ref endDir);
 
                 var line = new StraightTrajectory(startPos, startPos + 5 * startDir);
                 line.Render(new OverlayData(cameraInfo) { Color = Color.green });

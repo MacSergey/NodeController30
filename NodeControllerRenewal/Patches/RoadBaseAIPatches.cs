@@ -43,11 +43,11 @@ namespace NodeController
             if (nodeData == null)
                 return;
 
-            if (nodeData.FirstTimeTrafficLight && TrafficLightManager.Instance.CanEnableTrafficLight(nodeID, ref data, out var res))
-            {
-                TrafficLightManager.Instance.SetTrafficLight(nodeID, true, ref data);
-                nodeData.FirstTimeTrafficLight = false;
-            }
+            //if (nodeData.FirstTimeTrafficLight && TrafficLightManager.Instance.CanEnableTrafficLight(nodeID, ref data, out var res))
+            //{
+            //    TrafficLightManager.Instance.SetTrafficLight(nodeID, true, ref data);
+            //    nodeData.FirstTimeTrafficLight = false;
+            //}
             else if (nodeData.CanHaveTrafficLights(out _) == false)
                 data.m_flags &= ~NetNode.Flags.TrafficLights;
         }

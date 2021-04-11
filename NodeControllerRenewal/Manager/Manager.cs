@@ -26,8 +26,7 @@ namespace NodeController
                 return null;
 
             var info = controlPoint.m_segment.GetSegment().Info;
-            var data = (nodeType == NodeStyleType.Crossing && info.m_netAI is RoadBaseAI && info.CountPedestrianLanes() >= 2) ? new NodeData(nodeId, nodeType) : new NodeData(nodeId);
-            Buffer[nodeId] = data;
+            var data = (nodeType == NodeStyleType.Crossing && info.m_netAI is RoadBaseAI && info.CountPedestrianLanes() >= 2) ? Create(nodeId, nodeType) : Create(nodeId);
             return data;
         }
         public NodeData this[ushort nodeId, bool create = false]
@@ -35,22 +34,19 @@ namespace NodeController
             get
             {
                 if (Instance.Buffer[nodeId] is not NodeData data)
-                {
-                    if (create)
-                    {
-                        data = new NodeData(nodeId);
-                        Buffer[nodeId] = data;
-                    }
-                    else
-                        data = null;
-                }
+                    data = create ? Create(nodeId) : null;
+
                 return data;
             }
         }
         public SegmentEndData this[ushort nodeId, ushort segmentId, bool create = false] => this[nodeId, create] is NodeData data ? data[segmentId] : null;
-
-        public void RemoveNode(ushort nodeId) => Buffer[nodeId] = null;
-
+        private NodeData Create(ushort nodeId, NodeStyleType? nodeType = null)
+        {
+            var data = new NodeData(nodeId, nodeType);
+            Buffer[nodeId] = data;
+            Update(nodeId);
+            return data;
+        }
         public static void GetSegmentData(ushort id, out SegmentEndData start, out SegmentEndData end)
         {
             var segment = id.GetSegment();
@@ -63,19 +59,34 @@ namespace NodeController
             return Instance[isStart ? segment.m_startNode : segment.m_endNode]?[id];
         }
 
-        public void AddToUpdate(ushort nodeId)
+        public void Update(ushort nodeId)
         {
-            if (Buffer[nodeId] != null)
-                NeedUpdate.Add(nodeId);
-        }
-        public void Update()
-        {
-            var needUpdate = NeedUpdate.ToArray();
-            NeedUpdate.Clear();
-            foreach (var nodeId in needUpdate)
+            NetManager.instance.UpdateNode(nodeId);
+            foreach (var segment in nodeId.GetNode().Segments())
             {
-                if (Buffer[nodeId] is NodeData data)
-                    data.Update();
+                var otherNodeId = segment.GetOtherNode(nodeId);
+                _ = this[otherNodeId, true];
+                NetManager.instance.UpdateNode(otherNodeId);
+            }
+        }
+
+        public static void ReleaseNodeImplementationPrefix(ushort node) => Instance.Buffer[node] = null;
+        public static void NetManagerUpdateNodePostfix(ushort node)
+        {
+            if (Instance.Buffer[node] != null)
+                Instance.NeedUpdate.Add(node);
+        }
+        public static void NetManagerSimulationStepImplPostfix()
+        {
+            if (Instance.NeedUpdate.Count != 0)
+            {
+                var needUpdate = Instance.NeedUpdate.ToArray();
+                Instance.NeedUpdate.Clear();
+                foreach (var nodeId in needUpdate)
+                {
+                    if (Instance.Buffer[nodeId] is NodeData data)
+                        data.Update();
+                }
             }
         }
     }

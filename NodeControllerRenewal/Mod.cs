@@ -116,16 +116,16 @@ namespace NodeController
 
         private bool Patch_NetManager_ReleaseNodeImplementation()
         {
-            return AddPrefix(typeof(NetManagerPatches), nameof(NetManagerPatches.ReleaseNodeImplementationPrefix), typeof(NetManager), "ReleaseNodeImplementation", new Type[] { typeof(ushort) });
+            return AddPrefix(typeof(Manager), nameof(Manager.ReleaseNodeImplementationPrefix), typeof(NetManager), "ReleaseNodeImplementation", new Type[] { typeof(ushort) });
         }
         private bool Patch_NetManager_UpdateNode()
         {
             var parameters = new Type[] { typeof(ushort), typeof(ushort), typeof(int) };
-            return AddPostfix(typeof(NetManagerPatches), nameof(NetManagerPatches.NetManagerUpdateNodePostfix), typeof(NetManager), nameof(NetManager.UpdateNode), parameters);
+            return AddPostfix(typeof(Manager), nameof(Manager.NetManagerUpdateNodePostfix), typeof(NetManager), nameof(NetManager.UpdateNode), parameters);
         }
         private bool Patch_NetManager_SimulationStepImpl()
         {
-            return AddPostfix(typeof(NetManagerPatches), nameof(NetManagerPatches.NetManagerSimulationStepImplPostfix), typeof(NetManager), "SimulationStepImpl");
+            return AddPostfix(typeof(Manager), nameof(Manager.NetManagerSimulationStepImplPostfix), typeof(NetManager), "SimulationStepImpl");
         }
 
         #endregion

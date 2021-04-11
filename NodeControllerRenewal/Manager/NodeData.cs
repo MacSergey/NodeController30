@@ -26,6 +26,8 @@ namespace NodeController
         #region PROPERTIES
 
         public string Title => $"Node #{Id}";
+        private int UpdateProcess { get; set; } = 0;
+        private bool InUpdate => UpdateProcess != 0;
 
         public ushort Id { get; set; }
         public NetNode Node => Id.GetNode();
@@ -78,8 +80,6 @@ namespace NodeController
         public bool IsStraight => IsMain && MainDot < -0.99f;
         public bool Is180 => IsMain && MainDot > 0.99f;
         public bool IsEqualWidth => IsMain && Math.Abs(FirstSegment.Info.m_halfWidth - SecondSegment.Info.m_halfWidth) < 0.001f;
-
-        public bool FirstTimeTrafficLight { get; set; } = false;
 
         public bool IsFlatJunctions
         {
@@ -275,24 +275,16 @@ namespace NodeController
 
         #region BASIC
 
-        public NodeData() { }
-        public NodeData(ushort id)
+        public NodeData(ushort nodeId, NodeStyleType? nodeType = null)
         {
-            Id = id;
-            Init();
+            Id = nodeId;
+            Init(nodeType);
             Update();
-            UpdateNode();
         }
-        public NodeData(ushort nodeId, NodeStyleType nodeType) : this(nodeId)
+        private void Init(NodeStyleType? nodeType)
         {
-            if (IsPossibleType(nodeType))
-            {
-                Type = nodeType;
-                FirstTimeTrafficLight = nodeType == NodeStyleType.Crossing;
-            }
-        }
-        private void Init()
-        {
+            StartUpdate();
+
             DefaultFlags = Node.m_flags;
 
             if (DefaultFlags.IsFlagSet(NetNode.Flags.Middle))
@@ -306,7 +298,9 @@ namespace NodeController
             else
                 throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
 
-            Type = DefaultType;
+            Type = nodeType != null && IsPossibleType(nodeType.Value) ? nodeType.Value : DefaultType;
+
+            StopUpdate();
         }
         public void Update()
         {
@@ -373,14 +367,20 @@ namespace NodeController
             else
                 return second;
         }
-        public void UpdateNode() => NetManager.instance.UpdateNode(Id);
+        public void UpdateNode()
+        {
+            if (!InUpdate)
+                Manager.Instance.Update(Id);
+        }
         public void Refresh()
         {
             ResetToDefault();
             UpdateNode();
         }
-        public void ResetToDefault()
+        private void ResetToDefault()
         {
+            StartUpdate();
+
             if (Style.ResetOffset)
                 Offset = Style.DefaultOffset;
             if (Style.ResetShift)
@@ -398,6 +398,8 @@ namespace NodeController
 
             foreach (var segmentEnd in SegmentEndDatas)
                 segmentEnd.ResetToDefault();
+
+            StopUpdate();
         }
 
         #endregion
@@ -442,6 +444,8 @@ namespace NodeController
             return !NetUtil.IsCSUR(node.Info);
         }
         bool CrossingIsRemoved(ushort segmentId) => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(Id, segmentId);
+        private void StartUpdate() => UpdateProcess += 1;
+        private void StopUpdate() => UpdateProcess = Math.Max(UpdateProcess - 1, 0);
 
         public override string ToString() => $"NodeData(id:{Id} type:{Type})";
 

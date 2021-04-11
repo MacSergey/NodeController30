@@ -114,6 +114,7 @@ namespace NodeController.Patches
         {
             instructions = FindDirectionTranspiler(instructions, original);
 
+            yield return TranspilerUtils.GetLDArg(original, "startNodeID");
             yield return TranspilerUtils.GetLDArg(original, "ignoreSegmentID");
             yield return TranspilerUtils.GetLDArgRef(original, "startPos");
             yield return TranspilerUtils.GetLDArgRef(original, "startDir");
@@ -169,11 +170,12 @@ namespace NodeController.Patches
                     yield return instruction;
             }
         }
-        public static void ShiftSegment(ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
+        public static void ShiftSegment(ushort firstNodeId, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
         {
+            var isStart = segmentId.GetSegment().IsStartNode(firstNodeId);
             Manager.GetSegmentData(segmentId, out var start, out var end);
-            var startShift = start?.Shift ?? 0f;
-            var endShift = end?.Shift ?? 0f;
+            var startShift = (isStart ? start : end)?.Shift ?? 0f;
+            var endShift = (isStart ? end : start)?.Shift ?? 0f;
 
             if (startShift == 0f && endShift == 0f)
                 return;

@@ -18,7 +18,7 @@ using ModsCommon.Utilities;
 namespace NodeController
 {
     [Serializable]
-    public class SegmentEndData : INetworkData,  ISerializable
+    public class SegmentEndData : INetworkData
     {
         #region PROPERTIES
 
@@ -101,16 +101,6 @@ namespace NodeController
 
         #region BASIC
 
-        public SegmentEndData() { }
-        private SegmentEndData(SegmentEndData template) => CopyProperties(this, template);
-        public SegmentEndData(SerializationInfo info, StreamingContext context)
-        {
-            SerializationUtil.SetObjectFields(info, this);
-
-            // corner offset and slope angle deg
-            SerializationUtil.SetObjectProperties(info, this);
-            UpdateNode();
-        }
         public SegmentEndData(ushort segmentID, ushort nodeID)
         {
             NodeId = nodeID;
@@ -119,21 +109,12 @@ namespace NodeController
             Calculate();
             IsFlat = DefaultIsFlat;
             Twist = DefaultTwist;
-
-            UpdateNode();
         }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context) => SerializationUtil.GetObjectFields(info, this);
-        public SegmentEndData Clone() => new SegmentEndData(this);
 
         public void Calculate()
         {
             DefaultFlags = Segment.m_flags;
             PedestrianLaneCount = Info.CountPedestrianLanes();
-        }
-        public void UpdateNode()
-        {
-            NetManager.instance.UpdateNode(NodeId);
         }
         public void ResetToDefault()
         {
