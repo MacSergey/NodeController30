@@ -2,19 +2,16 @@ using ICities;
 using KianCommons;
 using System;
 using System.Collections.Generic;
-//using static NodeController.LifeCycle.MoveItIntegration;
-using KianCommons.Serialization;
+using HarmonyLib;
+using ColossalFramework.UI;
+using System.Runtime.CompilerServices;
+using NodeController;
+using System.Reflection;
+using ModsCommon;
+using ModsCommon.Utilities;
 
 namespace NodeController
 {
-    using HarmonyLib;
-    using ColossalFramework.UI;
-    using System.Runtime.CompilerServices;
-    using NodeController;
-    using System.Reflection;
-    using ModsCommon;
-    using ModsCommon.Utilities;
-
     //[Serializable]
     //public class AssetData
     //{

@@ -42,7 +42,7 @@ namespace NodeController.GUI
         {
             SingletonMod<Mod>.Logger.Debug("Make settings was called");
             MakeGlobalSettings(helper);
-            if (!InStartup)
+            if (!InStartupMenu)
                 MakeGameSettings(helper);
         }
         public static void MakeGlobalSettings(UIHelperBase helper)

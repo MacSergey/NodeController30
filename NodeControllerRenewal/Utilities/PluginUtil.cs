@@ -113,7 +113,7 @@ namespace KianCommons.Plugins
                 if (searchOptions.IsFlagSet(SearchOptionT.AssemblyName))
                 {
                     Assembly asm = current.GetMainAssembly();
-                    match = match || Match(asm?.Name(), searchName, searchOptions);
+                    match = match || Match(asm?.GetName().Name, searchName, searchOptions);
                 }
 
                 if (match)

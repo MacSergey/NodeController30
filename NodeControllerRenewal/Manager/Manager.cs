@@ -1,14 +1,11 @@
+using KianCommons;
+using System;
+using ModsCommon.Utilities;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace NodeController
 {
-    using KianCommons;
-    using System;
-    using KianCommons.Serialization;
-    using NodeController;
-    using ModsCommon;
-    using ModsCommon.Utilities;
-    using System.Collections.Generic;
-    using System.Linq;
-
     [Serializable]
     public class Manager
     {
@@ -22,8 +19,10 @@ namespace NodeController
 
         public NodeData InsertNode(NetTool.ControlPoint controlPoint, NodeStyleType nodeType = NodeStyleType.Crossing)
         {
-            if (NetUtil.InsertNode(controlPoint, out ushort nodeId) != ToolBase.ToolErrors.None)
+            if (NetTool.CreateNode(controlPoint.m_segment.GetSegment().Info, controlPoint, controlPoint, controlPoint, NetTool.m_nodePositionsSimulation, 0, false, false, true, false, false, false, 0, out var nodeId, out _, out _, out _) != ToolBase.ToolErrors.None)
                 return null;
+            else
+                nodeId.GetNodeRef().m_flags |= NetNode.Flags.Middle | NetNode.Flags.Moveable;
 
             var info = controlPoint.m_segment.GetSegment().Info;
             var data = (nodeType == NodeStyleType.Crossing && info.m_netAI is RoadBaseAI && info.CountPedestrianLanes() >= 2) ? Create(nodeId, nodeType) : Create(nodeId);

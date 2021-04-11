@@ -1,6 +1,5 @@
 using ColossalFramework;
 using ColossalFramework.Math;
-using KianCommons.Math;
 using ModsCommon;
 using ModsCommon.Utilities;
 using NodeController;
@@ -15,24 +14,6 @@ namespace KianCommons
 {
     internal static class NetUtil
     {
-        public static bool IsCSUR(this NetInfo info)
-        {
-            if (info == null || (info.m_netAI.GetType() != typeof(RoadAI) && info.m_netAI.GetType() != typeof(RoadBridgeAI) && info.m_netAI.GetType() != typeof(RoadTunnelAI)))
-                return false;
-            return info.name.Contains(".CSUR ");
-        }
-
-
-        public static ToolBase.ToolErrors InsertNode(NetTool.ControlPoint controlPoint, out ushort nodeId, bool test = false)
-        {
-            var ret = NetTool.CreateNode(controlPoint.m_segment.GetSegment().Info, controlPoint, controlPoint, controlPoint, NetTool.m_nodePositionsSimulation, 0, test, false, true, false, false, false, 0, out nodeId, out _, out _, out _);
-
-            if (!test)
-                nodeId.GetNodeRef().m_flags |= NetNode.Flags.Middle | NetNode.Flags.Moveable;
-
-            return ret;
-        }
-
         internal static int CountPedestrianLanes(this NetInfo info) => info.m_lanes.Count(lane => lane.m_laneType == NetInfo.LaneType.Pedestrian);
 
         static bool CheckID(this ref NetNode node1, ushort nodeId2)

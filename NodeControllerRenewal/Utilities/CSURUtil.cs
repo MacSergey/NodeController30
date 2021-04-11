@@ -20,6 +20,13 @@ namespace NodeController.Util
                 return segmentID.GetSegment().Info.m_minCornerOffset;
         }
         private static float GetMinCornerOffset(float cornerOffset, ushort nodeId) => CSURToolBox.Util.CSURUtil.GetMinCornerOffset(cornerOffset, nodeId);
+
+        public static bool IsCSUR(this NetInfo info)
+        {
+            if (info == null || (info.m_netAI.GetType() != typeof(RoadAI) && info.m_netAI.GetType() != typeof(RoadBridgeAI) && info.m_netAI.GetType() != typeof(RoadTunnelAI)))
+                return false;
+            return info.name.Contains(".CSUR ");
+        }
     }
 
 }

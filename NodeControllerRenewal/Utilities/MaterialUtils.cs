@@ -7,9 +7,12 @@ using UnityEngine;
 // Loading screens Mod owner wrote this about LODs: https://steamcommunity.com/workshop/filedetails/discussion/667342976/1636416951459546732/
 namespace NodeController.Util
 {
-    using static TextureUtils;
     public static class MaterialUtils
     {
+        internal static int ID_Defuse => NetManager.instance.ID_MainTex;
+        internal static int ID_APRMap => NetManager.instance.ID_APRMap;
+        internal static int ID_XYSMap => NetManager.instance.ID_XYSMap;
+
         public static Texture2D TryGetTexture2D(this Material material, int textureID)
         {
             try
@@ -39,17 +42,17 @@ namespace NodeController.Util
                 throw new ArgumentNullException("info");
 
             var segment = GetSegment(info, ID_APRMap);
-            var segMaterial = segment.m_material;
+            var segmentMaterial = segment.m_material;
 
             material = new Material(material);
 
-            if (segMaterial?.TryGetTexture2D(ID_Defuse) is Texture2D defuse)
+            if (segmentMaterial?.TryGetTexture2D(ID_Defuse) is Texture2D defuse)
                 material.SetTexture(ID_Defuse, defuse);
 
-            if (segMaterial?.TryGetTexture2D(ID_APRMap) is Texture2D apr)
+            if (segmentMaterial?.TryGetTexture2D(ID_APRMap) is Texture2D apr)
                 material.SetTexture(ID_APRMap, apr);
 
-            if (segMaterial?.TryGetTexture2D(ID_XYSMap) is Texture2D xys)
+            if (segmentMaterial?.TryGetTexture2D(ID_XYSMap) is Texture2D xys)
                 material.SetTexture(ID_XYSMap, xys);
 
             return material;

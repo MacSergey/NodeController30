@@ -4,19 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using ColossalFramework;
 using static ColossalFramework.Math.VectorUtils;
-using TrafficManager.API.Traffic.Enums;
 using KianCommons;
-using static KianCommons.ReflectionHelpers;
-using KianCommons.Serialization;
 
 using System.Diagnostics;
 using System.Linq;
 using ModsCommon.Utilities;
-using KianCommons.Math;
-using ModsCommon;
 using ModsCommon.UI;
 using ColossalFramework.UI;
 using System.Collections;
+using NodeController.Util;
 
 namespace NodeController
 {
@@ -132,7 +128,7 @@ namespace NodeController
             }
         }
 
-        public bool IsCSUR => NetUtil.IsCSUR(Info);
+        public bool IsCSUR => Info.IsCSUR();
         public bool IsRoad => Info.m_netAI is RoadBaseAI;
 
         public bool IsEndNode => Type == NodeStyleType.End;

@@ -10,16 +10,6 @@ namespace KianCommons.Patches
 {
     public static class TranspilerUtils
     {
-
-        public const BindingFlags ALL = BindingFlags.Public
-            | BindingFlags.NonPublic
-            | BindingFlags.Instance
-            | BindingFlags.Static
-            | BindingFlags.GetField
-            | BindingFlags.SetField
-            | BindingFlags.GetProperty
-            | BindingFlags.SetProperty;
-
         public static List<CodeInstruction> ToCodeList(this IEnumerable<CodeInstruction> instructions)
         {
             var originalCodes = new List<CodeInstruction>(instructions);
@@ -53,20 +43,14 @@ namespace KianCommons.Patches
             return new CodeInstruction(OpCodes.Ldarga_S, idx);
         }
 
-        /// <returns>
-        /// returns the argument location to be used in LdArg instruction.
-        /// </returns>
         public static byte GetArgLoc(this MethodBase method, string argName)
         {
             byte idx = GetParameterLoc(method, argName);
             if (!method.IsStatic)
-                idx++; // first argument is object instance.
+                idx++;
             return idx;
         }
 
-        /// <summary>
-        /// Post condtion: for instnace method add one to get argument location
-        /// </summary>
         public static byte GetParameterLoc(MethodBase method, string name)
         {
             var parameters = method.GetParameters();
@@ -80,9 +64,6 @@ namespace KianCommons.Patches
 
         public static bool HasParameter(MethodBase method, string name) => method.GetParameters().Any(p => p.Name == name);
 
-        /// <summary>
-        /// shortcut for a.opcode == b.opcode && a.operand == b.operand
-        /// </summary>
         public static bool IsSameInstruction(this CodeInstruction a, CodeInstruction b)
         {
             if (a.opcode == b.opcode)
@@ -100,9 +81,6 @@ namespace KianCommons.Patches
                 return false;
             }
         }
-        /// <summary>
-        /// Get the instruction to load the variable which is stored here.
-        /// </summary>
         public static CodeInstruction BuildLdLocFromStLoc(this CodeInstruction instruction)
         {
             if (instruction.opcode == OpCodes.Stloc_0)
@@ -153,7 +131,6 @@ namespace KianCommons.Patches
             public InstructionNotFoundException(string m) : base(m) { }
         }
 
-        /// <param name="count">Number of occurances. Negative count searches backward</param>
         public static int Search(this List<CodeInstruction> codes, Func<CodeInstruction, bool> predicate, int startIndex = 0, int count = 1, bool throwOnError = true)
         {
             return codes.Search(
@@ -164,14 +141,13 @@ namespace KianCommons.Patches
 
         }
 
-        /// <param name="count">negative count searches backward</param>
         public static int Search(this List<CodeInstruction> codes, Func<int, bool> predicate, int startIndex = 0, int count = 1, bool throwOnError = true)
         {
             if (count == 0)
                 throw new ArgumentOutOfRangeException("count can't be zero");
 
             int dir = count > 0 ? 1 : -1;
-            int counter = System.Math.Abs(count);
+            int counter = Math.Abs(count);
             int n = 0;
             int index = startIndex;
 
@@ -220,23 +196,6 @@ namespace KianCommons.Patches
             target.labels.AddRange(labels);
             labels.Clear();
         }
-
-        /// <summary>
-        /// replaces one instruction at the given index with multiple instrutions
-        /// </summary>
-        public static void ReplaceInstructions(List<CodeInstruction> codes, CodeInstruction[] insertion, int index)
-        {
-            foreach (var code in insertion)
-            {
-                if (code == null)
-                    throw new Exception("Bad Instructions:\n" + insertion.IL2STR());
-            }
-
-            MoveLabels(codes[index], insertion[0]);
-            codes.RemoveAt(index);
-            codes.InsertRange(index, insertion);
-        }
-
         public static void InsertInstructions(List<CodeInstruction> codes, CodeInstruction[] insertion, int index, bool moveLabels = true)
         {
             foreach (var code in insertion)
