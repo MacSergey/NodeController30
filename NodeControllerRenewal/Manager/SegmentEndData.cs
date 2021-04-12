@@ -13,7 +13,7 @@ using NodeController.Utilities;
 namespace NodeController
 {
     [Serializable]
-    public class SegmentEndData : INetworkData
+    public class SegmentEndData : INetworkData, IOverlay
     {
         #region PROPERTIES
 
@@ -27,6 +27,7 @@ namespace NodeController
         public NetNode Node => NodeId.GetNode();
         public NodeData NodeData => Manager.Instance[NodeId];
         public bool IsStartNode => Segment.IsStartNode(NodeId);
+        public SegmentEndData Other => Manager.Instance[Segment.GetOtherNode(NodeId), Id, true];
 
         public float DefaultOffset => CSURUtilities.GetMinCornerOffset(Id, NodeId);
         public bool DefaultIsFlat => Info.m_flatJunctions || Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
@@ -81,6 +82,22 @@ namespace NodeController
             }
         }
 
+        public SegmentCorner this[bool isLeft]
+        {
+            get => isLeft ? LeftCorner : RightCorner;
+            set
+            {
+                if (isLeft)
+                    LeftCorner = value;
+                else
+                    RightCorner = value;
+            }
+        }
+
+        private SegmentCorner LeftCorner { get; set; }
+        private SegmentCorner RightCorner { get; set; }
+        public Vector3 Position => (LeftCorner.Position + RightCorner.Position) / 2;
+
         #endregion
 
         #region BASIC
@@ -110,10 +127,7 @@ namespace NodeController
 
         public void OnAfterCalculate()
         {
-            Segment.CalculateCorner(Id, true, IsStartNode, leftSide: true, cornerPos: out var lpos, cornerDirection: out var ldir, out _);
-            Segment.CalculateCorner(Id, true, IsStartNode, leftSide: false, cornerPos: out var rpos, cornerDirection: out var rdir, out _);
-
-            var diff = rpos - lpos;
+            var diff = RightCorner.Position - LeftCorner.Position;
             var se = Mathf.Atan2(diff.y, VectorUtils.LengthXZ(diff));
             CachedSuperElevationDeg = se * Mathf.Rad2Deg;
         }
@@ -152,6 +166,23 @@ namespace NodeController
             return true;
         }
 
+        private static float CircleRadius => 2f;
+        public void Render(OverlayData data)
+        {
+            var leftLine = new StraightTrajectory(LeftCorner.Position, Position);
+            leftLine = (StraightTrajectory)leftLine.Cut(0f, 1f - (CircleRadius / leftLine.Length));
+            leftLine.Render(data);
+
+            var rightLine = new StraightTrajectory(RightCorner.Position, Position);
+            rightLine = (StraightTrajectory)rightLine.Cut(0f, 1f - (CircleRadius / rightLine.Length));
+            rightLine.Render(data);
+
+            data.Width = CircleRadius * 2;
+            Position.RenderCircle(data);
+            data.Width = data.Width.Value - 0.43f;
+            Position.RenderCircle(data);
+        }
+
         public override string ToString() => $"{GetType().Name} (segment:{Id} node:{NodeId})";
 
         #endregion
@@ -164,5 +195,10 @@ namespace NodeController
         }
 
         #endregion
+    }
+    public struct SegmentCorner
+    {
+        public Vector3 Position;
+        public Vector3 Direction;
     }
 }

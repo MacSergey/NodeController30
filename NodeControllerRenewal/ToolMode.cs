@@ -107,6 +107,14 @@ namespace NodeController
     public class EditToolMode : NodeControllerToolMode
     {
         public override ToolModeType Type => ToolModeType.Edit;
+        protected Color Red { get; } = LessAlpha(Colors.Red);
+
+        private static Color LessAlpha(Color color)
+        {
+            color.a = 0.7f;
+            return color;
+        }
+
         public override void OnSecondaryMouseClicked()
         {
             Tool.SetData(null);
@@ -117,30 +125,24 @@ namespace NodeController
             var data = Tool.Data;
             foreach (var segmentData in data.SegmentEndDatas)
             {
-                var segment = segmentData.Segment;
-                var bezier = new Bezier3()
+                var overlayData = new OverlayData(cameraInfo) { Color = Colors.Red };
+                segmentData.Render(overlayData);
+
+                if (segmentData.Other is SegmentEndData otherSegmentData)
                 {
-                    a = segment.m_startNode.GetNode().m_position,
-                    b = segment.m_startDirection,
-                    c = segment.m_endDirection,
-                    d = segment.m_endNode.GetNode().m_position
-                };
-                NetSegment.CalculateMiddlePoints(bezier.a, bezier.b, bezier.d, bezier.c, true, true, out bezier.b, out bezier.c);
-                bezier.RenderBezier(new OverlayData(cameraInfo));
+                    var startLeftCorner = segmentData[true];
+                    var startRightCorner = segmentData[false];
+                    var endLeftCorner = otherSegmentData[true];
+                    var endRightCorner = otherSegmentData[false];
 
-                var selection = new SegmentSelection(segmentData.Id);
-                selection.RenderBorders(new OverlayData(cameraInfo) { Color = Color.red });
-
-                var isStart = segment.IsStartNode(data.Id);
-                var startPos = (isStart ? segment.m_startNode : segment.m_endNode).GetNode().m_position;
-                var startDir = isStart ? segment.m_startDirection : segment.m_endDirection;
-                var endPos = (isStart ? segment.m_endNode : segment.m_startNode).GetNode().m_position;
-                var endDir = isStart ? segment.m_endDirection : segment.m_startDirection;
-                NetSegmentPatches.ShiftSegment(data.Id, segmentData.Id, ref startPos, ref startDir, ref endPos, ref endDir);
-
-                var line = new StraightTrajectory(startPos, startPos + 5 * startDir);
-                line.Render(new OverlayData(cameraInfo) { Color = Color.green });
+                    var leftSide = new BezierTrajectory(startLeftCorner.Position, startLeftCorner.Direction, endRightCorner.Position, endRightCorner.Direction);
+                    leftSide.Render(overlayData);
+                    var rightSide = new BezierTrajectory(startRightCorner.Position, startRightCorner.Direction, endLeftCorner.Position, endLeftCorner.Direction);
+                    rightSide.Render(overlayData);
+                    var endSide = new StraightTrajectory(endLeftCorner.Position, endRightCorner.Position);
+                    endSide.Render(overlayData);
+                }
             }
-        }
+        }  
     }
 }

@@ -55,6 +55,8 @@ namespace NodeController.Patches
                 cornerDirection = result * Vector3.forward;
 
                 cornerPos.y += (leftSide ? -1 : 1) * data.Info.m_halfWidth * Mathf.Sin(data.TwistAngle * Mathf.Deg2Rad);
+
+                data[leftSide] = new SegmentCorner() { Position = cornerPos, Direction = cornerDirection };
             }
             else
             {
