@@ -10,10 +10,7 @@ namespace NodeController
     [Serializable]
     public class Manager
     {
-        #region LIFECYCLE
         public static Manager Instance { get; private set; } = new Manager();
-
-        #endregion LifeCycle
 
         private NodeData[] Buffer { get; } = new NodeData[NetManager.MAX_NODE_COUNT];
         protected HashSet<ushort> NeedUpdate { get; } = new HashSet<ushort>();

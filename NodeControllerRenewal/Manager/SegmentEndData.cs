@@ -35,7 +35,7 @@ namespace NodeController
         public NodeData NodeData => Manager.Instance[NodeId];
         public bool IsStartNode => Segment.IsStartNode(NodeId);
         public SegmentEndData Other => Manager.Instance[Segment.GetOtherNode(NodeId), Id, true];
-        public BezierTrajectory SegmentBezier { get; set; }
+        public BezierTrajectory SegmentBezier { get; private set; }
 
         public float DefaultOffset => CSURUtilities.GetMinCornerOffset(Id, NodeId);
         public bool DefaultIsFlat => Info.m_flatJunctions || Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
@@ -99,10 +99,6 @@ namespace NodeController
                     LeftCorner = value;
                 else
                     RightCorner = value;
-
-                var line = new StraightTrajectory(LeftCorner.Position, RightCorner.Position);
-                var intersect = Intersection.CalculateSingle(line, SegmentBezier);
-                Position = line.Position(intersect.IsIntersect ? intersect.FirstT : 0.5f);
             }
         }
 
@@ -143,9 +139,59 @@ namespace NodeController
 
         public void AfterSegmentCalculate()
         {
+            CalculatePosition();
+            UpdateCachedSuperElevation();
+        }
+        private void CalculatePosition()
+        {
+            var line = new StraightTrajectory(LeftCorner.Position, RightCorner.Position);
+            var intersect = Intersection.CalculateSingle(line, SegmentBezier);
+            Position = line.Position(intersect.IsIntersect ? intersect.FirstT : 0.5f);
+        }
+        private void UpdateCachedSuperElevation()
+        {
             var diff = RightCorner.Position - LeftCorner.Position;
             var se = Mathf.Atan2(diff.y, VectorUtils.LengthXZ(diff));
             CachedSuperElevationDeg = se * Mathf.Rad2Deg;
+        }
+
+        public static void UpdateSegmentBezier(ushort segmentId)
+        {
+            var segment = segmentId.GetSegment();
+
+            var startPos = segment.m_startNode.GetNode().m_position;
+            var startDir = segment.m_startDirection;
+            var endPos = segment.m_endNode.GetNode().m_position;
+            var endDir = segment.m_endDirection;
+            ShiftSegment(true, segmentId, ref startPos, ref startDir, ref endPos, ref endDir);
+
+            var bezier = new BezierTrajectory(startPos, startDir, endPos, endDir);
+
+            Manager.GetSegmentData(segmentId, out var start, out var end);
+            if (start != null)
+                start.SegmentBezier = bezier;
+            if (end != null)
+                end.SegmentBezier = bezier.Invert();
+        }
+        public static void ShiftSegment(bool isStart, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
+        {
+            Manager.GetSegmentData(segmentId, out var start, out var end);
+            var startShift = (isStart ? start : end)?.Shift ?? 0f;
+            var endShift = (isStart ? end : start)?.Shift ?? 0f;
+
+            if (startShift == 0f && endShift == 0f)
+                return;
+
+            var shift = (startShift + endShift) / 2;
+            var dir = endPos - startPos;
+            var sin = shift / dir.XZ().magnitude;
+            var deltaAngle = Mathf.Asin(sin);
+            var normal = dir.TurnRad(Mathf.PI / 2 + deltaAngle, true).normalized;
+
+            startPos -= normal * startShift;
+            endPos += normal * endShift;
+            startDir = startDir.TurnRad(deltaAngle, true);
+            endDir = endDir.TurnRad(deltaAngle, true);
         }
 
         #endregion
@@ -199,11 +245,11 @@ namespace NodeController
         private void RenderCutEnd(OverlayData data)
         {
             var leftLine = new StraightTrajectory(LeftCorner.Position, Position);
-            leftLine = (StraightTrajectory)leftLine.Cut(0f, 1f - (CircleRadius / leftLine.Length));
+            leftLine = leftLine.Cut(0f, 1f - (CircleRadius / leftLine.Length));
             leftLine.Render(data);
 
             var rightLine = new StraightTrajectory(RightCorner.Position, Position);
-            rightLine = (StraightTrajectory)rightLine.Cut(0f, 1f - (CircleRadius / rightLine.Length));
+            rightLine = rightLine.Cut(0f, 1f - (CircleRadius / rightLine.Length));
             rightLine.Render(data);
         }
         private void RenderEnd(OverlayData data) => new StraightTrajectory(LeftCorner.Position, RightCorner.Position).Render(data);
@@ -255,5 +301,7 @@ namespace NodeController
     {
         public Vector3 Position;
         public Vector3 Direction;
+
+        public override string ToString() => $"{Position} - {Direction}";
     }
 }

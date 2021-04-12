@@ -104,23 +104,9 @@ namespace NodeController.Patches
 
         public static void CalculateSegmentPrefix(ushort segmentID)
         {
-            var segment = segmentID.GetSegment();
-
-            var startPos = segment.m_startNode.GetNode().m_position;
-            var startDir = segment.m_startDirection;
-            var endPos = segment.m_endNode.GetNode().m_position;
-            var endDir = segment.m_endDirection;
-            ShiftSegment(true, segmentID, ref startPos, ref startDir, ref endPos, ref endDir);
-
-            var bezier = new BezierTrajectory(startPos, startDir, endPos, endDir);
-
-            Manager.GetSegmentData(segmentID, out var start, out var end);
-            if (start != null)
-                start.SegmentBezier = bezier;
-            if (end != null)
-                end.SegmentBezier = bezier.Invert();
+            SegmentEndData.UpdateSegmentBezier(segmentID);
         }
-        public static void CalculateSegmentPostfix(ushort segmentID)
+        public static void UpdateBoundsPostfix(ushort segmentID)
         {
             if (!segmentID.GetSegment().IsValid())
                 return;
@@ -199,27 +185,6 @@ namespace NodeController.Patches
                 endPos = segmentEnd.SegmentBezier.EndPosition;
                 endDir = segmentEnd.SegmentBezier.EndDirection;
             }
-        }
-
-        private static void ShiftSegment(bool isStart, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
-        {
-            Manager.GetSegmentData(segmentId, out var start, out var end);
-            var startShift = (isStart ? start : end)?.Shift ?? 0f;
-            var endShift = (isStart ? end : start)?.Shift ?? 0f;
-
-            if (startShift == 0f && endShift == 0f)
-                return;
-            
-            var shift = (startShift + endShift) / 2;
-            var dir = endPos - startPos;
-            var sin = shift / dir.XZ().magnitude;
-            var deltaAngle = Mathf.Asin(sin);
-            var normal = dir.TurnRad(Mathf.PI / 2 + deltaAngle, true).normalized;
-
-            startPos -= normal * startShift;
-            endPos += normal * endShift;
-            startDir = startDir.TurnRad(deltaAngle, true);
-            endDir = endDir.TurnRad(deltaAngle, true);
         }
 
         static float GetHalfWidth(float halfWidth, ushort nodeId, ushort segmentId)
