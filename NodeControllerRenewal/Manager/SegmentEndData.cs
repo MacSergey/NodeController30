@@ -90,17 +90,7 @@ namespace NodeController
             }
         }
 
-        public SegmentCorner this[bool isLeft]
-        {
-            get => isLeft ? LeftCorner : RightCorner;
-            set
-            {
-                if (isLeft)
-                    LeftCorner = value;
-                else
-                    RightCorner = value;
-            }
-        }
+        public SegmentCorner this[bool isLeft] => isLeft ? LeftCorner : RightCorner;
 
         private SegmentCorner LeftCorner { get; set; }
         private SegmentCorner RightCorner { get; set; }
@@ -137,8 +127,11 @@ namespace NodeController
             NoTLProps = false;
         }
 
-        public void AfterSegmentCalculate()
+        public void AfterSegmentCalculate(SegmentCorner left, SegmentCorner right)
         {
+            LeftCorner = left;
+            RightCorner = right;
+
             CalculatePosition();
             UpdateCachedSuperElevation();
         }
@@ -301,6 +294,11 @@ namespace NodeController
     {
         public Vector3 Position;
         public Vector3 Direction;
+        public SegmentCorner(Vector3 position, Vector3 direction)
+        {
+            Position = position;
+            Direction = direction;
+        }
 
         public override string ToString() => $"{Position} - {Direction}";
     }

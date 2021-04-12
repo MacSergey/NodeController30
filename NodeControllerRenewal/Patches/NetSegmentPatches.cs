@@ -55,8 +55,6 @@ namespace NodeController.Patches
                 cornerDirection = result * Vector3.forward;
 
                 cornerPos.y += (leftSide ? -1 : 1) * data.Info.m_halfWidth * Mathf.Sin(data.TwistAngle * Mathf.Deg2Rad);
-
-                data[leftSide] = new SegmentCorner() { Position = cornerPos, Direction = cornerDirection };
             }
             else
             {
@@ -100,20 +98,6 @@ namespace NodeController.Patches
         {
             var data = Manager.Instance[nodeId, segmentId];
             return !data?.IsSlope ?? flatJunctions;
-        }
-
-        public static void CalculateSegmentPrefix(ushort segmentID)
-        {
-            SegmentEndData.UpdateSegmentBezier(segmentID);
-        }
-        public static void UpdateBoundsPostfix(ushort segmentID)
-        {
-            if (!segmentID.GetSegment().IsValid())
-                return;
-
-            Manager.GetSegmentData(segmentID, out var start, out var end);
-            start?.AfterSegmentCalculate();
-            end?.AfterSegmentCalculate();
         }
 
         public static IEnumerable<CodeInstruction> CalculateCornerTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
@@ -178,7 +162,7 @@ namespace NodeController.Patches
         }
         private static void FixSegmentData(ushort nodeId, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
         {
-            if(Manager.Instance[nodeId, segmentId] is SegmentEndData segmentEnd)
+            if (Manager.Instance[nodeId, segmentId] is SegmentEndData segmentEnd)
             {
                 startPos = segmentEnd.SegmentBezier.StartPosition;
                 startDir = segmentEnd.SegmentBezier.StartDirection;
@@ -235,6 +219,42 @@ namespace NodeController.Patches
                 return t <= 0.5f ? 0f : side.Length;
             else
                 return leftSide ^ segmentData.RotateAngle > 0f ? 0f : side.Length;
+        }
+
+        public static void CalculateSegmentPrefix(ushort segmentID)
+        {
+            SegmentEndData.UpdateSegmentBezier(segmentID);
+        }
+
+        public static IEnumerable<CodeInstruction> UpdateBoundsTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
+        {
+            foreach (var instruction in instructions)
+            {
+                if (instruction.opcode == OpCodes.Ret)
+                {
+                    yield return TranspilerUtilities.GetLDArg(original, "segmentID");
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, 4);
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, 5);
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, 6);
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, 7);
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, 8);
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, 9);
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, 10);
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, 11);
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(NetSegmentPatches.UpdateBoundsPostfix)));
+                }
+
+                yield return instruction;
+            }
+        }
+        private static void UpdateBoundsPostfix(ushort segmentId, Vector3 startLeftPos, Vector3 startRightPos, Vector3 endRightPos, Vector3 endLeftPos, Vector3 startLeftDir, Vector3 startRightDir, Vector3 endRightDir, Vector3 endLeftDir)
+        {
+            if (!segmentId.GetSegment().IsValid())
+                return;
+
+            Manager.GetSegmentData(segmentId, out var start, out var end);
+            start?.AfterSegmentCalculate(new SegmentCorner(startLeftPos, startLeftDir), new SegmentCorner(startRightPos, startRightDir));
+            end?.AfterSegmentCalculate(new SegmentCorner(endLeftPos, endLeftDir), new SegmentCorner(endRightPos, endRightDir));
         }
     }
 }

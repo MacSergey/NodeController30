@@ -169,7 +169,7 @@ namespace NodeController
             success &= Patch_NetSegment_FindDirection();
             success &= Patch_NetSegment_CalculateSegment_Prefix();
             //success &= Patch_NetSegment_CalculateSegment_Postfix();
-            success &= Patch_NetSegment_UpdateBounds_Postfix();
+            success &= Patch_NetSegment_UpdateBounds_Transpiler();
         }
 
         private bool Patch_NetSegment_CalculateCorner_Postfix()
@@ -191,9 +191,9 @@ namespace NodeController
         {
             return AddPostfix(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateSegmentPrefix), typeof(NetSegment), nameof(NetSegment.CalculateSegment));
         }
-        private bool Patch_NetSegment_UpdateBounds_Postfix()
+        private bool Patch_NetSegment_UpdateBounds_Transpiler()
         {
-            return AddPostfix(typeof(NetSegmentPatches), nameof(NetSegmentPatches.UpdateBoundsPostfix), typeof(NetSegment), nameof(NetSegment.UpdateBounds));
+            return AddTranspiler(typeof(NetSegmentPatches), nameof(NetSegmentPatches.UpdateBoundsTranspiler), typeof(NetSegment), nameof(NetSegment.UpdateBounds));
         }
 
 
