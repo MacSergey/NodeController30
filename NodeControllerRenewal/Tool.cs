@@ -31,6 +31,8 @@ namespace NodeController
         {
             yield return CreateToolMode<SelectToolMode>();
             yield return CreateToolMode<EditToolMode>();
+            yield return CreateToolMode<DragSegmentEndToolMode>();
+            yield return CreateToolMode<RotateSegmentEndToolMode>();
         }
 
         protected override void InitProcess()
@@ -62,6 +64,8 @@ namespace NodeController
         None = 0,
         Select = 1,
         Edit = 2,
+        Drag = 4,
+        Rotate = 8,
     }
     public class NodeControllerToolThreadingExtension : BaseThreadingExtension<Mod, NodeControllerTool> { }
     public class NodeControllerToolLoadingExtension : BaseToolLoadingExtension<Mod, NodeControllerTool> { }

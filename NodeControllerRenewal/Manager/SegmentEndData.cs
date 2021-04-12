@@ -15,6 +15,13 @@ namespace NodeController
     [Serializable]
     public class SegmentEndData : INetworkData, IOverlay
     {
+        #region STATIC
+
+        public static float CircleRadius => 2.5f;
+        public static float DotRadius => 0.75f;
+
+        #endregion
+
         #region PROPERTIES
 
         public string Title => $"Segment #{Id}";
@@ -97,6 +104,22 @@ namespace NodeController
         private SegmentCorner LeftCorner { get; set; }
         private SegmentCorner RightCorner { get; set; }
         public Vector3 Position => (LeftCorner.Position + RightCorner.Position) / 2;
+        public Vector3 Direction => (RightCorner.Direction + LeftCorner.Direction).normalized;
+        public Vector3 EndDirection => (RightCorner.Position - LeftCorner.Position).normalized;
+        //private Vector3 Position
+        //{
+        //    get => Bounds.center;
+        //    set
+        //    {
+        //        Bounds = new Bounds(value, Vector3.one * DotSize);
+        //        BoundsInner = new Bounds(value, Vector3.one * (CircleRadius * 2 - 1));
+        //        BoundsOutter = new Bounds(value, Vector3.one * (CircleRadius * 2));
+        //    }
+        //}
+        //public Bounds Bounds { get; protected set; }
+        //public Bounds BoundsInner { get; protected set; }
+        //public Bounds BoundsOutter { get; protected set; }
+
 
         #endregion
 
@@ -112,6 +135,7 @@ namespace NodeController
 
             ResetToDefault();
         }
+        public void UpdateNode() => Manager.Instance.Update(NodeId);
 
         public void ResetToDefault()
         {
@@ -165,9 +189,16 @@ namespace NodeController
 
             return true;
         }
+        //public bool IsHoverCenter(Ray ray) => Bounds.IntersectRay(ray);
+        //public bool IsHoverCircle(Ray ray) => BoundsOutter.IntersectRay(ray) && !BoundsInner.IntersectRay(ray);
 
-        private static float CircleRadius => 2f;
         public void Render(OverlayData data)
+        {
+            RenderEnd(data);
+            RenderInnerCircle(data);
+            RenderOther(data);
+        }
+        public void RenderEnd(OverlayData data)
         {
             var leftLine = new StraightTrajectory(LeftCorner.Position, Position);
             leftLine = (StraightTrajectory)leftLine.Cut(0f, 1f - (CircleRadius / leftLine.Length));
@@ -177,10 +208,37 @@ namespace NodeController
             rightLine = (StraightTrajectory)rightLine.Cut(0f, 1f - (CircleRadius / rightLine.Length));
             rightLine.Render(data);
 
-            data.Width = CircleRadius * 2;
-            Position.RenderCircle(data);
-            data.Width = data.Width.Value - 0.43f;
-            Position.RenderCircle(data);
+            RenderOutterCircle(data);
+        }
+        public void RenderOther(OverlayData data)
+        {
+            if (Other is SegmentEndData otherSegmentData)
+            {
+                var otherLeftCorner = otherSegmentData[true];
+                var otherRightCorner = otherSegmentData[false];
+
+                var leftSide = new BezierTrajectory(LeftCorner.Position, LeftCorner.Direction, otherRightCorner.Position, otherRightCorner.Direction);
+                leftSide.Render(data);
+                var rightSide = new BezierTrajectory(RightCorner.Position, RightCorner.Direction, otherLeftCorner.Position, otherLeftCorner.Direction);
+                rightSide.Render(data);
+                var endSide = new StraightTrajectory(otherLeftCorner.Position, otherRightCorner.Position);
+                endSide.Render(data);
+            }
+        }
+
+        public void RenderInnerCircle(OverlayData data) => RenderCircle(data, DotRadius * 2, 0f);
+        public void RenderOutterCircle(OverlayData data) => RenderCircle(data, CircleRadius * 2, CircleRadius * 2 - 0.5f);
+
+        public void RenderCircle(OverlayData data) => Position.RenderCircle(data);
+        public void RenderCircle(OverlayData data, float from, float to)
+        {
+            data.Width = from;
+            do
+            {
+                RenderCircle(data);
+                data.Width = Mathf.Max(data.Width.Value - 0.43f, to);
+            }
+            while (data.Width > to);
         }
 
         public override string ToString() => $"{GetType().Name} (segment:{Id} node:{NodeId})";

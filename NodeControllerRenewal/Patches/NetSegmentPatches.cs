@@ -181,7 +181,7 @@ namespace NodeController.Patches
 
             if (startShift == 0f && endShift == 0f)
                 return;
-
+            
             var shift = (startShift + endShift) / 2;
             var dir = endPos - startPos;
             var sin = shift / dir.XZ().magnitude;

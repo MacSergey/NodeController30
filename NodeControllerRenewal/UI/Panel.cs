@@ -65,7 +65,7 @@ namespace NodeController.UI
             else
                 ResetPanel();
         }
-        private void UpdatePanel()
+        public void UpdatePanel()
         {
             ResetPanel();
             FillProperties();
