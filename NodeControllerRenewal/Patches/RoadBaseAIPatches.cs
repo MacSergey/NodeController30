@@ -17,7 +17,7 @@ namespace NodeController.Patches
             {
                 if (AllFlagsAreForward(segmentID, startNode))
                 {
-                    foreach (var lane in NetUtil.IterateLanes(segmentID, startNode: startNode))
+                    foreach (var lane in NetUtilities.IterateLanes(segmentID, startNode: startNode))
                         lane.Flags &= ~NetLane.Flags.LeftForwardRight;
                 }
             }
@@ -25,7 +25,7 @@ namespace NodeController.Patches
         public static bool AllFlagsAreForward(ushort segmentID, bool startNode)
         {
             NetLane.Flags flags = 0;
-            foreach (var lane in NetUtil.IterateLanes(segmentID, startNode))
+            foreach (var lane in NetUtilities.IterateLanes(segmentID, startNode))
                 flags |= lane.Flags;
 
             return (flags & NetLane.Flags.LeftForwardRight) == NetLane.Flags.Forward;

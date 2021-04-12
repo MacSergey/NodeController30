@@ -86,8 +86,8 @@ namespace NodeController.Patches
                 yield return instruction;
                 if (instruction.opcode == OpCodes.Ldfld && instruction.operand == flatJunctionsField)
                 {
-                    yield return TranspilerUtils.GetLDArg(targetMethod, "ignoreSegmentID", throwOnError: false) ?? TranspilerUtils.GetLDArg(targetMethod, "segmentID");
-                    yield return TranspilerUtils.GetLDArg(targetMethod, "startNodeID", throwOnError: false) ?? TranspilerUtils.GetLDArg(targetMethod, "nodeID");
+                    yield return TranspilerUtilities.GetLDArg(targetMethod, "ignoreSegmentID", throwOnError: false) ?? TranspilerUtilities.GetLDArg(targetMethod, "segmentID");
+                    yield return TranspilerUtilities.GetLDArg(targetMethod, "startNodeID", throwOnError: false) ?? TranspilerUtilities.GetLDArg(targetMethod, "nodeID");
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(GetFlatJunctions)));
                 }
             }
@@ -114,35 +114,35 @@ namespace NodeController.Patches
         {
             instructions = FindDirectionTranspiler(instructions, original);
 
-            yield return TranspilerUtils.GetLDArg(original, "startNodeID");
-            yield return TranspilerUtils.GetLDArg(original, "ignoreSegmentID");
-            yield return TranspilerUtils.GetLDArgRef(original, "startPos");
-            yield return TranspilerUtils.GetLDArgRef(original, "startDir");
-            yield return TranspilerUtils.GetLDArgRef(original, "endPos");
-            yield return TranspilerUtils.GetLDArgRef(original, "endDir");
+            yield return TranspilerUtilities.GetLDArg(original, "startNodeID");
+            yield return TranspilerUtilities.GetLDArg(original, "ignoreSegmentID");
+            yield return TranspilerUtilities.GetLDArgRef(original, "startPos");
+            yield return TranspilerUtilities.GetLDArgRef(original, "startDir");
+            yield return TranspilerUtilities.GetLDArgRef(original, "endPos");
+            yield return TranspilerUtilities.GetLDArgRef(original, "endDir");
             yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(ShiftSegment)));
 
             var halfWidthField = AccessTools.Field(typeof(NetInfo), nameof(NetInfo.m_halfWidth));
             var halfWidthLocal = generator.DeclareLocal(typeof(float));
-            yield return TranspilerUtils.GetLDArg(original, "info");
+            yield return TranspilerUtilities.GetLDArg(original, "info");
             yield return new CodeInstruction(OpCodes.Ldfld, halfWidthField);
-            yield return TranspilerUtils.GetLDArg(original, "startNodeID");
-            yield return TranspilerUtils.GetLDArg(original, "ignoreSegmentID");
+            yield return TranspilerUtilities.GetLDArg(original, "startNodeID");
+            yield return TranspilerUtilities.GetLDArg(original, "ignoreSegmentID");
             yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(GetHalfWidth)));
             yield return new CodeInstruction(OpCodes.Stloc_S, halfWidthLocal.LocalIndex);
 
             var minCornerOffsetField = AccessTools.Field(typeof(NetInfo), nameof(NetInfo.m_minCornerOffset));
             var offsetLocal = generator.DeclareLocal(typeof(float));
-            yield return TranspilerUtils.GetLDArg(original, "info");
+            yield return TranspilerUtilities.GetLDArg(original, "info");
             yield return new CodeInstruction(OpCodes.Ldfld, minCornerOffsetField);
             yield return new CodeInstruction(OpCodes.Ldloc_S, halfWidthLocal.LocalIndex);
-            yield return TranspilerUtils.GetLDArg(original, "startNodeID");
-            yield return TranspilerUtils.GetLDArg(original, "ignoreSegmentID");
-            yield return TranspilerUtils.GetLDArg(original, "leftSide");
-            yield return TranspilerUtils.GetLDArg(original, "startPos");
-            yield return TranspilerUtils.GetLDArg(original, "startDir");
-            yield return TranspilerUtils.GetLDArg(original, "endPos");
-            yield return TranspilerUtils.GetLDArg(original, "endDir");
+            yield return TranspilerUtilities.GetLDArg(original, "startNodeID");
+            yield return TranspilerUtilities.GetLDArg(original, "ignoreSegmentID");
+            yield return TranspilerUtilities.GetLDArg(original, "leftSide");
+            yield return TranspilerUtilities.GetLDArg(original, "startPos");
+            yield return TranspilerUtilities.GetLDArg(original, "startDir");
+            yield return TranspilerUtilities.GetLDArg(original, "endPos");
+            yield return TranspilerUtilities.GetLDArg(original, "endDir");
             yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(GetMinCornerOffset)));
             yield return new CodeInstruction(OpCodes.Stloc_S, offsetLocal.LocalIndex);
 

@@ -6,7 +6,7 @@ using ModsCommon;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
-using static KianCommons.HelpersExtensions;
+using UnityEngine.SceneManagement;
 
 namespace NodeController.GUI
 {
@@ -15,15 +15,8 @@ namespace NodeController.GUI
     {
         public bool UnviversalSlopeFixes;
 
-        public static GameConfigT NewGameDefault => new GameConfigT
-        {
-            UnviversalSlopeFixes = true,
-        };
-
-        public static GameConfigT LoadGameDefault => new GameConfigT
-        {
-            UnviversalSlopeFixes = false,
-        };
+        public static GameConfigT NewGameDefault => new GameConfigT { UnviversalSlopeFixes = true };
+        public static GameConfigT LoadGameDefault => new GameConfigT { UnviversalSlopeFixes = false };
     }
 
     public static class Settings
@@ -42,7 +35,7 @@ namespace NodeController.GUI
         {
             SingletonMod<Mod>.Logger.Debug("Make settings was called");
             MakeGlobalSettings(helper);
-            if (!InStartupMenu)
+            if (SceneManager.GetActiveScene().name != "IntroScreen" && SceneManager.GetActiveScene().name != "Startup")
                 MakeGameSettings(helper);
         }
         public static void MakeGlobalSettings(UIHelperBase helper)

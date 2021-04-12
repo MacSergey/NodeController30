@@ -12,7 +12,7 @@ using ModsCommon.Utilities;
 using ModsCommon.UI;
 using ColossalFramework.UI;
 using System.Collections;
-using NodeController.Util;
+using NodeController.Utilities;
 
 namespace NodeController
 {

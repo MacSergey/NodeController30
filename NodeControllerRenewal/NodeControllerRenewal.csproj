@@ -109,14 +109,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToolMode.cs" />
     <Compile Include="Tool.cs" />
-    <Compile Include="Utilities\CSURUtil.cs" />
-    <Compile Include="Utilities\HelpersExtensions.cs" />
-    <Compile Include="Utilities\MaterialUtils.cs" />
-    <Compile Include="Utilities\NetUtil.cs" />
+    <Compile Include="Utilities\Material.cs" />
+    <Compile Include="Utilities\Net.cs" />
     <Compile Include="Utilities\Textures.cs" />
-    <Compile Include="Utilities\PluginUtil.cs" />
+    <Compile Include="Utilities\Plugins.cs" />
     <Compile Include="Utilities\Settings.cs" />
-    <Compile Include="Utilities\TranspilerUtils.cs" />
+    <Compile Include="Utilities\Transpiler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -151,7 +149,7 @@
   </Target>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_ConfigurationName="Debug" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="Build" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Build" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Debug" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- <Target Name="AfterBuildRelease" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'"> -->

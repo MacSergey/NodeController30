@@ -6,7 +6,7 @@ using ModsCommon;
 using NodeController.GUI;
 using NodeController.Patches;
 using NodeController.UI;
-using NodeController.Util;
+using NodeController.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +47,7 @@ namespace NodeController
             Loaded = false;
 
             LoadingManager.instance.m_simulationDataReady += SimulationDataReady; // load/update data
-            if (HelpersExtensions.InGameOrEditor)
+            if (SceneManager.GetActiveScene().name != "IntroScreen" && SceneManager.GetActiveScene().name != "Startup")
                 SimulationDataReady();
         }
 

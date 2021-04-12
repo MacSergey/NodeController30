@@ -1,5 +1,6 @@
 using ColossalFramework;
 using ColossalFramework.Math;
+using KianCommons.Plugins;
 using ModsCommon;
 using ModsCommon.Utilities;
 using NodeController;
@@ -12,7 +13,29 @@ using UnityEngine;
 
 namespace KianCommons
 {
-    internal static class NetUtil
+    public static class CSURUtilities
+    {
+        public const string HARMONY_ID = "csur.toolbox";
+        internal static bool CSUREnabled { get; } = PluginUtilities.GetCSUR().IsActive();
+
+        public static float GetMinCornerOffset(ushort segmentID, ushort nodeID)
+        {
+            NetInfo info = nodeID.GetNode().Info;
+            if (CSUREnabled && info.m_netAI is RoadBaseAI && info.name.Contains("CSUR"))
+                return GetMinCornerOffset(info.m_minCornerOffset, nodeID);
+            else
+                return segmentID.GetSegment().Info.m_minCornerOffset;
+        }
+        private static float GetMinCornerOffset(float cornerOffset, ushort nodeId) => CSURToolBox.Util.CSURUtil.GetMinCornerOffset(cornerOffset, nodeId);
+
+        public static bool IsCSUR(this NetInfo info)
+        {
+            if (info == null || (info.m_netAI.GetType() != typeof(RoadAI) && info.m_netAI.GetType() != typeof(RoadBridgeAI) && info.m_netAI.GetType() != typeof(RoadTunnelAI)))
+                return false;
+            return info.name.Contains(".CSUR ");
+        }
+    }
+    internal static class NetUtilities
     {
         internal static int CountPedestrianLanes(this NetInfo info) => info.m_lanes.Count(lane => lane.m_laneType == NetInfo.LaneType.Pedestrian);
 
@@ -112,7 +135,7 @@ namespace KianCommons
         {
             LaneID = laneID;
             if (laneIndex < 0)
-                laneIndex = NetUtil.GetLaneIndex(laneID);
+                laneIndex = NetUtilities.GetLaneIndex(laneID);
             LaneIndex = laneIndex;
 
             ushort segmentID = LaneID.GetLane().m_segment;

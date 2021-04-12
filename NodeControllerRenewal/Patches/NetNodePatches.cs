@@ -3,7 +3,7 @@ using HarmonyLib;
 using KianCommons;
 using KianCommons.Patches;
 using ModsCommon.Utilities;
-using NodeController.Util;
+using NodeController.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -67,7 +67,7 @@ namespace NodeController.Patches
         {
             var codes = instructions.ToCodeList();
 
-            var ldarg_nodeID = TranspilerUtils.GetLDArg(original, "nodeID");
+            var ldarg_nodeID = TranspilerUtilities.GetLDArg(original, "nodeID");
             var ldarg_segmentID = BuildSegmentLDLocFromSTLoc(codes);
             var call_GetMinCornerOffset = new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(GetMinCornerOffset)));
 
@@ -95,7 +95,7 @@ namespace NodeController.Patches
 
         public static IEnumerable<CodeInstruction> RenderInstanceTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase method)
         {
-            var codes = TranspilerUtils.ToCodeList(instructions);
+            var codes = TranspilerUtilities.ToCodeList(instructions);
             PatchCheckFlags(codes, 2, method);
 
             return codes;
@@ -104,21 +104,21 @@ namespace NodeController.Patches
         {
             int index = 0;
             var drawMeshMethod = AccessTools.Method(typeof(Graphics), nameof(Graphics.DrawMesh), new[] { typeof(Mesh), typeof(Vector3), typeof(Quaternion), typeof(Material), typeof(int), typeof(Camera), typeof(int), typeof(MaterialPropertyBlock) });
-            index = TranspilerUtils.SearchInstruction(codes, new CodeInstruction(OpCodes.Call, drawMeshMethod), index, counter: occurance);
+            index = TranspilerUtilities.SearchInstruction(codes, new CodeInstruction(OpCodes.Call, drawMeshMethod), index, counter: occurance);
 
             var nodeMaterialField = AccessTools.Field(typeof(NetInfo.Node), nameof(NetInfo.Node.m_nodeMaterial));
-            index = TranspilerUtils.SearchInstruction(codes, new CodeInstruction(OpCodes.Ldfld, nodeMaterialField), index, dir: -1);
+            index = TranspilerUtilities.SearchInstruction(codes, new CodeInstruction(OpCodes.Ldfld, nodeMaterialField), index, dir: -1);
             int insertIndex3 = index + 1;
 
             var nodeMeshField = AccessTools.Field(typeof(NetInfo.Node), nameof(NetInfo.Node.m_nodeMesh));
-            index = TranspilerUtils.SearchInstruction(codes, new CodeInstruction(OpCodes.Ldfld, nodeMeshField), index, dir: -1);
+            index = TranspilerUtilities.SearchInstruction(codes, new CodeInstruction(OpCodes.Ldfld, nodeMeshField), index, dir: -1);
             int insertIndex2 = index + 1;
 
             var checkRenderDistanceMethod = AccessTools.Method(typeof(RenderManager.CameraInfo), nameof(RenderManager.CameraInfo.CheckRenderDistance));
-            index = TranspilerUtils.SearchInstruction(codes, new CodeInstruction(OpCodes.Callvirt, checkRenderDistanceMethod), index, dir: -1);
+            index = TranspilerUtilities.SearchInstruction(codes, new CodeInstruction(OpCodes.Callvirt, checkRenderDistanceMethod), index, dir: -1);
             int insertIndex1 = index + 1; // at this point boloean is in stack
 
-            var LDArg_NodeID = TranspilerUtils.GetLDArg(method, "nodeID");
+            var LDArg_NodeID = TranspilerUtilities.GetLDArg(method, "nodeID");
             var LDLoc_segmentID = BuildSegnentLDLocFromPrevSTLoc(codes, index, counter: 1);
 
             {
@@ -128,7 +128,7 @@ namespace NodeController.Patches
                     LDLoc_segmentID,
                     new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(CalculateMaterial))),
                 };
-                TranspilerUtils.InsertInstructions(codes, newInstructions, insertIndex3);
+                TranspilerUtilities.InsertInstructions(codes, newInstructions, insertIndex3);
             }
 
             {
@@ -138,7 +138,7 @@ namespace NodeController.Patches
                     LDLoc_segmentID,
                     new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(CalculateMesh))),
                 };
-                TranspilerUtils.InsertInstructions(codes, newInstructions, insertIndex2);
+                TranspilerUtilities.InsertInstructions(codes, newInstructions, insertIndex2);
             }
 
             {
@@ -150,14 +150,14 @@ namespace NodeController.Patches
                     new CodeInstruction(OpCodes.Or)
                 };
 
-                TranspilerUtils.InsertInstructions(codes, newInstructions, insertIndex1);
+                TranspilerUtilities.InsertInstructions(codes, newInstructions, insertIndex1);
             }
         }
 
         public static CodeInstruction BuildSegnentLDLocFromPrevSTLoc(List<CodeInstruction> codes, int index, int counter = 1)
         {
             var getSegmentMethod = AccessTools.Method(typeof(NetNode), nameof(NetNode.GetSegment));
-            index = TranspilerUtils.SearchInstruction(codes, new CodeInstruction(OpCodes.Call, getSegmentMethod), index, counter: counter, dir: -1);
+            index = TranspilerUtilities.SearchInstruction(codes, new CodeInstruction(OpCodes.Call, getSegmentMethod), index, counter: counter, dir: -1);
             return codes[index + 1].BuildLdLocFromStLoc();
         }
         public static bool ShouldContinueMedian(ushort nodeID, ushort segmentID)
@@ -168,14 +168,14 @@ namespace NodeController.Patches
         public static Material CalculateMaterial(Material material, ushort nodeId, ushort segmentId)
         {
             if (ShouldContinueMedian(nodeId, segmentId))
-                material = MaterialUtils.ContinuesMedian(material, segmentId.GetSegment().Info, false);
+                material = MaterialUtilities.ContinuesMedian(material, segmentId.GetSegment().Info, false);
 
             return material;
         }
         public static Mesh CalculateMesh(Mesh mesh, ushort nodeId, ushort segmentId)
         {
             if (ShouldContinueMedian(nodeId, segmentId))
-                mesh = MaterialUtils.ContinuesMedian(mesh, segmentId.GetSegment().Info);
+                mesh = MaterialUtilities.ContinuesMedian(mesh, segmentId.GetSegment().Info);
 
             return mesh;
         }

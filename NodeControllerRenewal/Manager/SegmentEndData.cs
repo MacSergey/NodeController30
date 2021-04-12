@@ -8,7 +8,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 using ModsCommon.Utilities;
-using NodeController.Util;
+using NodeController.Utilities;
 
 namespace NodeController
 {
@@ -28,7 +28,7 @@ namespace NodeController
         public NodeData NodeData => Manager.Instance[NodeId];
         public bool IsStartNode => Segment.IsStartNode(NodeId);
 
-        public float DefaultOffset => CSURUtil.GetMinCornerOffset(Id, NodeId);
+        public float DefaultOffset => CSURUtilities.GetMinCornerOffset(Id, NodeId);
         public bool DefaultIsFlat => Info.m_flatJunctions || Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public bool DefaultIsTwist => DefaultIsFlat && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public NetSegment.Flags DefaultFlags { get; set; }

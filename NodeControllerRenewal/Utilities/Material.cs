@@ -5,9 +5,9 @@ using UnityEngine;
 // TODO check out material.MainTextureScale
 // regarding weird nodes, what if we return a copy of the material?
 // Loading screens Mod owner wrote this about LODs: https://steamcommunity.com/workshop/filedetails/discussion/667342976/1636416951459546732/
-namespace NodeController.Util
+namespace NodeController.Utilities
 {
-    public static class MaterialUtils
+    public static class MaterialUtilities
     {
         internal static int ID_Defuse => NetManager.instance.ID_MainTex;
         internal static int ID_APRMap => NetManager.instance.ID_APRMap;

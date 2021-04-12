@@ -8,7 +8,7 @@ using System.Reflection.Emit;
 
 namespace KianCommons.Patches
 {
-    public static class TranspilerUtils
+    public static class TranspilerUtilities
     {
         public static List<CodeInstruction> ToCodeList(this IEnumerable<CodeInstruction> instructions)
         {

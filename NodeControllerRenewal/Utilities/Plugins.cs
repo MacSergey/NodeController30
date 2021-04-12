@@ -21,7 +21,7 @@ namespace KianCommons.Plugins
         public static Assembly GetMainAssembly(this PluginInfo plugin) => plugin?.userModInstance?.GetType()?.Assembly;
     }
 
-    public static class PluginUtil
+    public static class PluginUtilities
     {
         public static PluginInfo GetCSUR() => GetPlugin("CSUR ToolBox", 1959342332ul);
         public static PluginInfo GetAdaptiveRoads() => GetPlugin("AdaptiveRoads");
