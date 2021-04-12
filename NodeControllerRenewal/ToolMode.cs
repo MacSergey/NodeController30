@@ -127,7 +127,7 @@ namespace NodeController
                         HoverSegmentEndCircle = null;
                         return;
                     }
-                    else if (magnitude < SegmentEndData.CircleRadius + 0.5f && magnitude > SegmentEndData.CircleRadius - 0.5f)
+                    else if (magnitude < SegmentEndData.CircleRadius + 1f && magnitude > SegmentEndData.CircleRadius - 0.5f)
                     {
                         HoverSegmentEndCenter = null;
                         HoverSegmentEndCircle = segmentData;
@@ -205,7 +205,11 @@ namespace NodeController
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             Bezier.Render(new OverlayData(cameraInfo) { Width = 3f });
-            SegmentEnd.Render(new OverlayData(cameraInfo) { Color = Colors.Red });
+
+            SegmentEnd.RenderOther(new OverlayData(cameraInfo) { Color = Colors.Red });
+            SegmentEnd.RenderEnd(new OverlayData(cameraInfo) { Color = Colors.Red });
+            SegmentEnd.RenderOutterCircle(new OverlayData(cameraInfo) { Color = Colors.Red });
+            SegmentEnd.RenderInnerCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow });
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
         {
@@ -243,7 +247,7 @@ namespace NodeController
         {
             var quaternion = Quaternion.FromToRotation(BeginDirection, CurrentDirection);
             var angle = (BeginRotate + quaternion.eulerAngles.y).RoundToNearest(1f) % 360f;
-            SegmentEnd.RotateAngle = angle > 180f ? angle - 360f : angle;
+            SegmentEnd.RotateAngle = Mathf.Clamp(angle > 180f ? angle - 360f : angle, -60f, 60f);
             SegmentEnd.UpdateNode();
 
             Tool.Panel.UpdatePanel();
@@ -254,11 +258,14 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
-            var startDir = SegmentEnd.EndDirection;
-            var endDir = SegmentEnd.EndDirection.TurnDeg(SegmentEnd.RotateAngle, false);
-            SegmentEnd.Position.RenderAngle(new OverlayData(cameraInfo) { Color = Colors.Yellow }, startDir, endDir, SegmentEndData.DotRadius - 0.2f, SegmentEndData.CircleRadius - 0.2f);
+            //var startDir = SegmentEnd.EndDirection;
+            //var endDir = SegmentEnd.EndDirection.TurnDeg(SegmentEnd.RotateAngle, false);
+            //SegmentEnd.Position.RenderAngle(new OverlayData(cameraInfo) { Color = Colors.Yellow }, startDir, endDir, SegmentEndData.DotRadius - 0.2f, SegmentEndData.CircleRadius - 0.2f);
 
-            SegmentEnd.Render(new OverlayData(cameraInfo) { Color = Colors.Red });
+            SegmentEnd.RenderOther(new OverlayData(cameraInfo) { Color = Colors.Red });
+            SegmentEnd.RenderEnd(new OverlayData(cameraInfo) { Color = Colors.Red });
+            SegmentEnd.RenderOutterCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow });
+            SegmentEnd.RenderInnerCircle(new OverlayData(cameraInfo) { Color = Colors.Red });
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
         {

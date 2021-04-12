@@ -106,19 +106,6 @@ namespace NodeController
         public Vector3 Position => (LeftCorner.Position + RightCorner.Position) / 2;
         public Vector3 Direction => (RightCorner.Direction + LeftCorner.Direction).normalized;
         public Vector3 EndDirection => (RightCorner.Position - LeftCorner.Position).normalized;
-        //private Vector3 Position
-        //{
-        //    get => Bounds.center;
-        //    set
-        //    {
-        //        Bounds = new Bounds(value, Vector3.one * DotSize);
-        //        BoundsInner = new Bounds(value, Vector3.one * (CircleRadius * 2 - 1));
-        //        BoundsOutter = new Bounds(value, Vector3.one * (CircleRadius * 2));
-        //    }
-        //}
-        //public Bounds Bounds { get; protected set; }
-        //public Bounds BoundsInner { get; protected set; }
-        //public Bounds BoundsOutter { get; protected set; }
 
 
         #endregion
@@ -189,14 +176,12 @@ namespace NodeController
 
             return true;
         }
-        //public bool IsHoverCenter(Ray ray) => Bounds.IntersectRay(ray);
-        //public bool IsHoverCircle(Ray ray) => BoundsOutter.IntersectRay(ray) && !BoundsInner.IntersectRay(ray);
-
         public void Render(OverlayData data)
         {
-            RenderEnd(data);
-            RenderInnerCircle(data);
             RenderOther(data);
+            RenderEnd(data);
+            RenderOutterCircle(data);
+            RenderInnerCircle(data);
         }
         public void RenderEnd(OverlayData data)
         {
@@ -207,8 +192,6 @@ namespace NodeController
             var rightLine = new StraightTrajectory(RightCorner.Position, Position);
             rightLine = (StraightTrajectory)rightLine.Cut(0f, 1f - (CircleRadius / rightLine.Length));
             rightLine.Render(data);
-
-            RenderOutterCircle(data);
         }
         public void RenderOther(OverlayData data)
         {
@@ -227,7 +210,7 @@ namespace NodeController
         }
 
         public void RenderInnerCircle(OverlayData data) => RenderCircle(data, DotRadius * 2, 0f);
-        public void RenderOutterCircle(OverlayData data) => RenderCircle(data, CircleRadius * 2, CircleRadius * 2 - 0.5f);
+        public void RenderOutterCircle(OverlayData data) => RenderCircle(data, CircleRadius * 2 + 0.5f, CircleRadius * 2 - 0.5f);
 
         public void RenderCircle(OverlayData data) => Position.RenderCircle(data);
         public void RenderCircle(OverlayData data, float from, float to)
