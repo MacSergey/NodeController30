@@ -44,6 +44,8 @@ namespace NodeController
         public virtual bool SupportSlopeJunction => false;
         public virtual bool DefaultSlopeJunction => false;
 
+        public virtual bool IsMoveable => false;
+
         public bool IsDefault
         {
             get
@@ -269,8 +271,11 @@ namespace NodeController
     public class BendNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Bend;
-        public override bool SupportSlope => true;
-        public override bool SupportTwist => true;
+        public override bool SupportOffset => true;
+        public override bool SupportRotate => true;
+        public override bool SupportNoMarking => true;
+        public override bool SupportSlopeJunction => true;
+        public override bool IsMoveable => true;
 
         public BendNode(NodeData data) : base(data) { }
 
@@ -290,6 +295,7 @@ namespace NodeController
         public override bool SupportRotate => true;
         public override bool SupportNoMarking => true;
         public override bool SupportSlopeJunction => true;
+        public override bool IsMoveable => true;
 
         public StretchNode(NodeData data) : base(data) { }
 
@@ -357,12 +363,12 @@ namespace NodeController
     {
         public override NodeStyleType Type => NodeStyleType.Custom;
 
-
         public override bool SupportOffset => true;
         public override bool SupportShift => true;
         public override bool SupportRotate => true;
         public override bool SupportNoMarking => true;
         public override bool SupportSlopeJunction => true;
+        public override bool IsMoveable => true;
 
         public CustomNode(NodeData data) : base(data) { }
 

@@ -114,7 +114,7 @@ namespace NodeController
 
         public override void OnToolUpdate()
         {
-            if (Tool.MouseRayValid)
+            if (Tool.MouseRayValid && Tool.Data.IsMoveableEnds)
             {
                 foreach (var segmentData in Tool.Data.SegmentEndDatas)
                 {
@@ -157,44 +157,26 @@ namespace NodeController
         {
             var data = Tool.Data;
 
+            var red = new OverlayData(cameraInfo) { Color = Colors.Red };
+            var white = new OverlayData(cameraInfo);
             foreach (var segmentData in data.SegmentEndDatas)
-            {
-                var overlayData = new OverlayData(cameraInfo) { Color = Colors.Red };
-                segmentData.Render(overlayData);
-            }
-
-            if (IsHoverSegmentEndCenter)
-                HoverSegmentEndCenter.RenderInnerCircle(new OverlayData(cameraInfo));
-            else if (IsHoverSegmentEndCircle)
-                HoverSegmentEndCircle.RenderOutterCircle(new OverlayData(cameraInfo));
+                segmentData.Render(red, segmentData == HoverSegmentEndCircle ? white : red, segmentData == HoverSegmentEndCenter ? white : red);
         }
     }
     public class DragSegmentEndToolMode : NodeControllerToolMode
     {
         public override ToolModeType Type => ToolModeType.Drag;
         public SegmentEndData SegmentEnd { get; private set; } = null;
-        public BezierTrajectory Bezier { get; private set; }
 
         protected override void Reset(IToolMode prevMode)
         {
             SegmentEnd = prevMode is EditToolMode editMode ? editMode.HoverSegmentEndCenter : null;
-
-            var segment = SegmentEnd.Segment;
-
-            var isStart = segment.IsStartNode(SegmentEnd.NodeId);
-            var startPos = (isStart ? segment.m_startNode : segment.m_endNode).GetNode().m_position;
-            var startDir = isStart ? segment.m_startDirection : segment.m_endDirection;
-            var endPos = (isStart ? segment.m_endNode : segment.m_startNode).GetNode().m_position;
-            var endDir = isStart ? segment.m_endDirection : segment.m_startDirection;
-            NetSegmentPatches.ShiftSegment(SegmentEnd.NodeId, SegmentEnd.Id, ref startPos, ref startDir, ref endPos, ref endDir);
-
-            Bezier = new BezierTrajectory(startPos, startDir, endPos, endDir);
         }
         public override void OnMouseDrag(Event e)
         {
             SegmentEnd.Segment.GetHitPosition(Tool.Ray, out _, out var hitPosition);
-            Bezier.Trajectory.ClosestPositionAndDirection(hitPosition, out _, out _, out var t);
-            SegmentEnd.Offset = Bezier.Cut(0f, t).Length.RoundToNearest(0.1f);
+            SegmentEnd.SegmentBezier.Trajectory.ClosestPositionAndDirection(hitPosition, out _, out _, out var t);
+            SegmentEnd.Offset = SegmentEnd.SegmentBezier.Cut(0f, t).Length.RoundToNearest(0.1f);
             SegmentEnd.UpdateNode();
 
             Tool.Panel.UpdatePanel();
@@ -204,12 +186,11 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
-            Bezier.Render(new OverlayData(cameraInfo) { Width = 3f });
+            SegmentEnd.SegmentBezier.Render(new OverlayData(cameraInfo) { Width = 3f });
 
-            SegmentEnd.RenderOther(new OverlayData(cameraInfo) { Color = Colors.Red });
-            SegmentEnd.RenderEnd(new OverlayData(cameraInfo) { Color = Colors.Red });
-            SegmentEnd.RenderOutterCircle(new OverlayData(cameraInfo) { Color = Colors.Red });
-            SegmentEnd.RenderInnerCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow });
+            var red = new OverlayData(cameraInfo) { Color = Colors.Red };
+            var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow };
+            SegmentEnd.Render(red, red, yellow);
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
         {
@@ -258,14 +239,9 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
-            //var startDir = SegmentEnd.EndDirection;
-            //var endDir = SegmentEnd.EndDirection.TurnDeg(SegmentEnd.RotateAngle, false);
-            //SegmentEnd.Position.RenderAngle(new OverlayData(cameraInfo) { Color = Colors.Yellow }, startDir, endDir, SegmentEndData.DotRadius - 0.2f, SegmentEndData.CircleRadius - 0.2f);
-
-            SegmentEnd.RenderOther(new OverlayData(cameraInfo) { Color = Colors.Red });
-            SegmentEnd.RenderEnd(new OverlayData(cameraInfo) { Color = Colors.Red });
-            SegmentEnd.RenderOutterCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow });
-            SegmentEnd.RenderInnerCircle(new OverlayData(cameraInfo) { Color = Colors.Red });
+            var red = new OverlayData(cameraInfo) { Color = Colors.Red };
+            var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow };
+            SegmentEnd.Render(red, yellow, red);
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
         {

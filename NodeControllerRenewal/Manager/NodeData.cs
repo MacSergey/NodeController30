@@ -137,6 +137,8 @@ namespace NodeController
         public bool IsJunctionNode => !IsMiddleNode && !IsBendNode && !IsEndNode;
         public bool IsMoveableNode => IsMiddleNode && Style.IsDefault;
 
+        public bool IsMoveableEnds => Style.IsMoveable;
+
         public bool CanModifyTextures => IsRoad && !IsCSUR;
         public bool NeedsTransitionFlag => IsMain && (Type == NodeStyleType.Custom || Type == NodeStyleType.Crossing || Type == NodeStyleType.UTurn);
         public bool ShouldRenderCenteralCrossingTexture => Type == NodeStyleType.Crossing && CrossingIsRemoved(MainRoad.First) && CrossingIsRemoved(MainRoad.Second);

@@ -102,14 +102,32 @@ namespace NodeController.Patches
             return !data?.IsSlope ?? flatJunctions;
         }
 
+        public static void CalculateSegmentPrefix(ushort segmentID)
+        {
+            var segment = segmentID.GetSegment();
+
+            var startPos = segment.m_startNode.GetNode().m_position;
+            var startDir = segment.m_startDirection;
+            var endPos = segment.m_endNode.GetNode().m_position;
+            var endDir = segment.m_endDirection;
+            ShiftSegment(true, segmentID, ref startPos, ref startDir, ref endPos, ref endDir);
+
+            var bezier = new BezierTrajectory(startPos, startDir, endPos, endDir);
+
+            Manager.GetSegmentData(segmentID, out var start, out var end);
+            if (start != null)
+                start.SegmentBezier = bezier;
+            if (end != null)
+                end.SegmentBezier = bezier.Invert();
+        }
         public static void CalculateSegmentPostfix(ushort segmentID)
         {
             if (!segmentID.GetSegment().IsValid())
                 return;
 
             Manager.GetSegmentData(segmentID, out var start, out var end);
-            start?.OnAfterCalculate();
-            end?.OnAfterCalculate();
+            start?.AfterSegmentCalculate();
+            end?.AfterSegmentCalculate();
         }
 
         public static IEnumerable<CodeInstruction> CalculateCornerTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
@@ -122,7 +140,7 @@ namespace NodeController.Patches
             yield return TranspilerUtilities.GetLDArgRef(original, "startDir");
             yield return TranspilerUtilities.GetLDArgRef(original, "endPos");
             yield return TranspilerUtilities.GetLDArgRef(original, "endDir");
-            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(ShiftSegment)));
+            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(FixSegmentData)));
 
             var halfWidthField = AccessTools.Field(typeof(NetInfo), nameof(NetInfo.m_halfWidth));
             var halfWidthLocal = generator.DeclareLocal(typeof(float));
@@ -172,9 +190,19 @@ namespace NodeController.Patches
                     yield return instruction;
             }
         }
-        public static void ShiftSegment(ushort firstNodeId, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
+        private static void FixSegmentData(ushort nodeId, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
         {
-            var isStart = segmentId.GetSegment().IsStartNode(firstNodeId);
+            if(Manager.Instance[nodeId, segmentId] is SegmentEndData segmentEnd)
+            {
+                startPos = segmentEnd.SegmentBezier.StartPosition;
+                startDir = segmentEnd.SegmentBezier.StartDirection;
+                endPos = segmentEnd.SegmentBezier.EndPosition;
+                endDir = segmentEnd.SegmentBezier.EndDirection;
+            }
+        }
+
+        private static void ShiftSegment(bool isStart, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
+        {
             Manager.GetSegmentData(segmentId, out var start, out var end);
             var startShift = (isStart ? start : end)?.Shift ?? 0f;
             var endShift = (isStart ? end : start)?.Shift ?? 0f;
@@ -233,7 +261,7 @@ namespace NodeController.Patches
             var intersection = Intersection.CalculateSingle(side, line);
             if (intersection.IsIntersect)
             {
-                side = side.Cut(0f, intersection.FirstT) as BezierTrajectory;
+                side = side.Cut(0f, intersection.FirstT);
                 return side.Length;
             }
 

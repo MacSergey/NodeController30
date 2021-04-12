@@ -35,6 +35,7 @@ namespace NodeController
         public NodeData NodeData => Manager.Instance[NodeId];
         public bool IsStartNode => Segment.IsStartNode(NodeId);
         public SegmentEndData Other => Manager.Instance[Segment.GetOtherNode(NodeId), Id, true];
+        public BezierTrajectory SegmentBezier { get; set; }
 
         public float DefaultOffset => CSURUtilities.GetMinCornerOffset(Id, NodeId);
         public bool DefaultIsFlat => Info.m_flatJunctions || Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
@@ -98,12 +99,16 @@ namespace NodeController
                     LeftCorner = value;
                 else
                     RightCorner = value;
+
+                var line = new StraightTrajectory(LeftCorner.Position, RightCorner.Position);
+                var intersect = Intersection.CalculateSingle(line, SegmentBezier);
+                Position = line.Position(intersect.IsIntersect ? intersect.FirstT : 0.5f);
             }
         }
 
         private SegmentCorner LeftCorner { get; set; }
         private SegmentCorner RightCorner { get; set; }
-        public Vector3 Position => (LeftCorner.Position + RightCorner.Position) / 2;
+        public Vector3 Position { get; private set; }
         public Vector3 Direction => (RightCorner.Direction + LeftCorner.Direction).normalized;
         public Vector3 EndDirection => (RightCorner.Position - LeftCorner.Position).normalized;
 
@@ -136,7 +141,7 @@ namespace NodeController
             NoTLProps = false;
         }
 
-        public void OnAfterCalculate()
+        public void AfterSegmentCalculate()
         {
             var diff = RightCorner.Position - LeftCorner.Position;
             var se = Mathf.Atan2(diff.y, VectorUtils.LengthXZ(diff));
@@ -176,14 +181,22 @@ namespace NodeController
 
             return true;
         }
-        public void Render(OverlayData data)
+        public void Render(OverlayData data) => Render(data, data, data);
+        public void Render(OverlayData contourData, OverlayData outterData, OverlayData innerData)
         {
-            RenderOther(data);
-            RenderEnd(data);
-            RenderOutterCircle(data);
-            RenderInnerCircle(data);
+            var data = Manager.Instance[NodeId];
+
+            RenderOther(contourData);
+            if (data.IsMoveableEnds)
+            {
+                RenderCutEnd(contourData);
+                RenderOutterCircle(outterData);
+                RenderInnerCircle(innerData);
+            }
+            else
+                RenderEnd(contourData);
         }
-        public void RenderEnd(OverlayData data)
+        private void RenderCutEnd(OverlayData data)
         {
             var leftLine = new StraightTrajectory(LeftCorner.Position, Position);
             leftLine = (StraightTrajectory)leftLine.Cut(0f, 1f - (CircleRadius / leftLine.Length));
@@ -193,7 +206,8 @@ namespace NodeController
             rightLine = (StraightTrajectory)rightLine.Cut(0f, 1f - (CircleRadius / rightLine.Length));
             rightLine.Render(data);
         }
-        public void RenderOther(OverlayData data)
+        private void RenderEnd(OverlayData data) => new StraightTrajectory(LeftCorner.Position, RightCorner.Position).Render(data);
+        private void RenderOther(OverlayData data)
         {
             if (Other is SegmentEndData otherSegmentData)
             {
@@ -209,11 +223,11 @@ namespace NodeController
             }
         }
 
-        public void RenderInnerCircle(OverlayData data) => RenderCircle(data, DotRadius * 2, 0f);
-        public void RenderOutterCircle(OverlayData data) => RenderCircle(data, CircleRadius * 2 + 0.5f, CircleRadius * 2 - 0.5f);
+        private void RenderInnerCircle(OverlayData data) => RenderCircle(data, DotRadius * 2, 0f);
+        private void RenderOutterCircle(OverlayData data) => RenderCircle(data, CircleRadius * 2 + 0.5f, CircleRadius * 2 - 0.5f);
 
-        public void RenderCircle(OverlayData data) => Position.RenderCircle(data);
-        public void RenderCircle(OverlayData data, float from, float to)
+        private void RenderCircle(OverlayData data) => Position.RenderCircle(data);
+        private void RenderCircle(OverlayData data, float from, float to)
         {
             data.Width = from;
             do
