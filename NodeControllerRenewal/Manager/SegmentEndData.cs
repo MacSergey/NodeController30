@@ -36,6 +36,9 @@ namespace NodeController
         public bool IsStartNode => Segment.IsStartNode(NodeId);
         public SegmentEndData Other => Manager.Instance[Segment.GetOtherNode(NodeId), Id, true];
         public BezierTrajectory SegmentBezier { get; private set; }
+        public BezierTrajectory LeftSideBezier { get; private set; }
+        public BezierTrajectory RightSideBezier { get; private set; }
+
 
         public float DefaultOffset => CSURUtilities.GetMinCornerOffset(Id, NodeId);
         public bool DefaultIsFlat => Info.m_flatJunctions || Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
@@ -70,9 +73,35 @@ namespace NodeController
                 return ret;
             }
         }
-        public float Offset { get; set; }
+        private float _offsetValue;
+        public float Offset
+        {
+            get => _offsetValue;
+            set
+            {
+                _offsetValue = value;
+
+                var t = SegmentBezier.Travel(0f, _offsetValue);
+                var position = SegmentBezier.Position(t);
+                var normal = SegmentBezier.Tangent(t).Turn90(false);
+
+                var startLeft = Vector3.Angle(normal, LeftSideBezier.StartPosition - position);
+                var endLeft = Vector3.Angle(normal, LeftSideBezier.EndPosition - position);
+                var startRight = Vector3.Angle(normal, RightSideBezier.StartPosition - position);
+                var endRight = Vector3.Angle(normal, RightSideBezier.EndPosition - position);
+
+                var minAngle = -Mathf.Min(endLeft, 180 - startRight);
+                var maxAngle = Mathf.Min(startLeft, 180 - endRight);
+                MinRotate = Mathf.Max(minAngle, -60);
+                MaxRotate = Mathf.Min(maxAngle, 60);
+
+                RotateAngle = Mathf.Clamp(RotateAngle, MinRotate, MaxRotate);
+            }
+        }
         public float Shift { get; set; }
         public float RotateAngle { get; set; }
+        public float MinRotate { get; private set; }
+        public float MaxRotate { get; private set; }
         public float SlopeAngle { get; set; }
         public float TwistAngle { get; set; }
 
@@ -111,7 +140,19 @@ namespace NodeController
             DefaultFlags = Segment.m_flags;
             PedestrianLaneCount = Info.CountPedestrianLanes();
 
-            SegmentBezier = IsStartNode ? GetSegmentBezier(Id) : GetSegmentBezier(Id).Invert();
+            GetSegmentBeziers(Id, out var bezier, out var leftSide, out var rightSide);
+            if (IsStartNode)
+            {
+                SegmentBezier = bezier;
+                LeftSideBezier = leftSide;
+                RightSideBezier = rightSide;
+            }
+            else
+            {
+                SegmentBezier = bezier.Invert();
+                LeftSideBezier = rightSide.Invert();
+                RightSideBezier = leftSide.Invert();
+            }
 
             ResetToDefault();
         }
@@ -152,15 +193,23 @@ namespace NodeController
 
         public static void UpdateSegmentBezier(ushort segmentId)
         {
-            var bezier = GetSegmentBezier(segmentId);
+            GetSegmentBeziers(segmentId, out var bezier, out var leftSide, out var rightSide);
 
             Manager.GetSegmentData(segmentId, out var start, out var end);
             if (start != null)
+            {
                 start.SegmentBezier = bezier;
+                start.LeftSideBezier = leftSide;
+                start.RightSideBezier = rightSide;
+            }
             if (end != null)
+            {
                 end.SegmentBezier = bezier.Invert();
+                end.LeftSideBezier = rightSide.Invert();
+                end.RightSideBezier = leftSide.Invert();
+            }
         }
-        private static BezierTrajectory GetSegmentBezier(ushort segmentId)
+        private static void GetSegmentBeziers(ushort segmentId, out BezierTrajectory bezier, out BezierTrajectory leftSide, out BezierTrajectory rightSide)
         {
             var segment = segmentId.GetSegment();
 
@@ -170,9 +219,16 @@ namespace NodeController
             var endDir = segment.m_endDirection;
             ShiftSegment(true, segmentId, ref startPos, ref startDir, ref endPos, ref endDir);
 
-            return new BezierTrajectory(startPos, startDir, endPos, endDir);
+            bezier = new BezierTrajectory(startPos, startDir, endPos, endDir);
+
+            var halfWidth = segment.Info.m_halfWidth;
+            var startNormal = startDir.Turn90(false);
+            var endNormal = endDir.Turn90(true);
+
+            leftSide = new BezierTrajectory(startPos + startNormal * halfWidth, startDir, endPos + endNormal * halfWidth, endDir);
+            rightSide = new BezierTrajectory(startPos - startNormal * halfWidth, startDir, endPos - endNormal * halfWidth, endDir);
         }
-        public static void ShiftSegment(bool isStart, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
+        private static void ShiftSegment(bool isStart, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
         {
             Manager.GetSegmentData(segmentId, out var start, out var end);
             var startShift = (isStart ? start : end)?.Shift ?? 0f;

@@ -183,28 +183,13 @@ namespace NodeController.Patches
             if (Manager.Instance[nodeId, segmentId] is not SegmentEndData segmentData)
                 return cornerOffset;
 
-            var startNormal = startDir.Turn90(false);
-            var endNormal = endDir.Turn90(true);
+            var middle = segmentData.SegmentBezier;
+            var side = leftSide ? segmentData.LeftSideBezier : segmentData.RightSideBezier;
 
-            var bezier = new Bezier3()
-            {
-                a = startPos,
-                d = endPos,
-            };
-            NetSegment.CalculateMiddlePoints(bezier.a, startDir, bezier.d, endDir, true, true, out bezier.b, out bezier.c);
+            var t = middle.Travel(0f, segmentData.Offset);
+            var position = middle.Position(t);
+            var direction = middle.Tangent(t).Turn90(true).TurnDeg(segmentData.RotateAngle, true);
 
-            var sideBezier = new Bezier3()
-            {
-                a = bezier.a + (leftSide ? 1 : -1) * startNormal * halfWidth,
-                d = bezier.d + (leftSide ? 1 : -1) * endNormal * halfWidth,
-            };
-            NetSegment.CalculateMiddlePoints(sideBezier.a, startDir, sideBezier.d, endDir, true, true, out sideBezier.b, out sideBezier.c);
-
-            var t = bezier.Travel(0f, segmentData.Offset);
-            var position = bezier.Position(t);
-            var direction = bezier.Tangent(t).Turn90(true).TurnDeg(segmentData.RotateAngle, true);
-
-            var side = new BezierTrajectory(sideBezier);
             var line = new StraightTrajectory(position, position + direction, false);
 
             var intersection = Intersection.CalculateSingle(side, line);
@@ -213,7 +198,6 @@ namespace NodeController.Patches
                 side = side.Cut(0f, intersection.FirstT);
                 return side.Length;
             }
-
 
             if (segmentData.RotateAngle == 0f)
                 return t <= 0.5f ? 0f : side.Length;
