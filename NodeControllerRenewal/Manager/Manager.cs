@@ -4,6 +4,7 @@ using ModsCommon.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using ModsCommon;
 
 namespace NodeController
 {
@@ -39,10 +40,22 @@ namespace NodeController
         public SegmentEndData this[ushort nodeId, ushort segmentId, bool create = false] => this[nodeId, create] is NodeData data ? data[segmentId] : null;
         private NodeData Create(ushort nodeId, NodeStyleType? nodeType = null)
         {
-            var data = new NodeData(nodeId, nodeType);
-            Buffer[nodeId] = data;
-            Update(nodeId, false);
-            return data;
+            try
+            {
+                var data = new NodeData(nodeId, nodeType);
+                Buffer[nodeId] = data;
+                Update(nodeId, false);
+                return data;
+            }
+            catch(NotImplementedException)
+            {
+                return null;
+            }
+            catch (Exception error)
+            {
+                SingletonMod<Mod>.Logger.Error(error);
+                return null;
+            }
         }
         public static void GetSegmentData(ushort id, out SegmentEndData start, out SegmentEndData end)
         {

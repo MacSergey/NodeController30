@@ -111,6 +111,8 @@ namespace NodeController
             DefaultFlags = Segment.m_flags;
             PedestrianLaneCount = Info.CountPedestrianLanes();
 
+            SegmentBezier = IsStartNode ? GetSegmentBezier(Id) : GetSegmentBezier(Id).Invert();
+
             ResetToDefault();
         }
         public void UpdateNode() => Manager.Instance.Update(NodeId);
@@ -150,6 +152,16 @@ namespace NodeController
 
         public static void UpdateSegmentBezier(ushort segmentId)
         {
+            var bezier = GetSegmentBezier(segmentId);
+
+            Manager.GetSegmentData(segmentId, out var start, out var end);
+            if (start != null)
+                start.SegmentBezier = bezier;
+            if (end != null)
+                end.SegmentBezier = bezier.Invert();
+        }
+        private static BezierTrajectory GetSegmentBezier(ushort segmentId)
+        {
             var segment = segmentId.GetSegment();
 
             var startPos = segment.m_startNode.GetNode().m_position;
@@ -158,13 +170,7 @@ namespace NodeController
             var endDir = segment.m_endDirection;
             ShiftSegment(true, segmentId, ref startPos, ref startDir, ref endPos, ref endDir);
 
-            var bezier = new BezierTrajectory(startPos, startDir, endPos, endDir);
-
-            Manager.GetSegmentData(segmentId, out var start, out var end);
-            if (start != null)
-                start.SegmentBezier = bezier;
-            if (end != null)
-                end.SegmentBezier = bezier.Invert();
+            return new BezierTrajectory(startPos, startDir, endPos, endDir);
         }
         public static void ShiftSegment(bool isStart, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
         {
