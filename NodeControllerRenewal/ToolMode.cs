@@ -162,17 +162,6 @@ namespace NodeController
             {
                 var normalData = new OverlayData(cameraInfo) { Color = Colors.Green };
                 segmentData.Render(normalData, segmentData == HoverSegmentEndCircle ? hoverData : normalData, segmentData == HoverSegmentEndCenter ? hoverData : normalData);
-
-                //var t = segmentData.RawSegmentBezier.Travel(0f, segmentData.Offset);
-                //var dir = segmentData.RawSegmentBezier.Tangent(segmentData.SegmentT).Turn90(false);
-                //var pos = segmentData.RawSegmentBezier.Position(t);
-
-                //new StraightTrajectory(segmentData.LeftSide.Bezier.StartPosition, pos).Render(new OverlayData(cameraInfo) { Color = Color.red });
-                //new StraightTrajectory(segmentData.LeftSide.Bezier.EndPosition, pos).Render(new OverlayData(cameraInfo) { Color = Color.yellow });
-                //new StraightTrajectory(segmentData.RightSide.Bezier.StartPosition, pos).Render(new OverlayData(cameraInfo) { Color = Color.green });
-                //new StraightTrajectory(segmentData.RightSide.Bezier.EndPosition, pos).Render(new OverlayData(cameraInfo) { Color = Color.blue });
-
-                //new StraightTrajectory(pos, pos + 5 * dir).Render(new OverlayData(cameraInfo) { Color = Color.cyan });
             }
         }
     }
@@ -208,22 +197,11 @@ namespace NodeController
             var normalData = new OverlayData(cameraInfo) { Color = Colors.Green };
             var dragData = new OverlayData(cameraInfo) { Color = Colors.Yellow };
             SegmentEnd.Render(normalData, normalData, dragData);
-
-            //var t = SegmentEnd.RawSegmentBezier.Travel(0f, SegmentEnd.Offset);
-            //var dir = SegmentEnd.RawSegmentBezier.Tangent(SegmentEnd.SegmentT).Turn90(false);
-            //var pos = SegmentEnd.RawSegmentBezier.Position(t);
-
-            //new StraightTrajectory(SegmentEnd.LeftSide.Bezier.StartPosition, pos).Render(new OverlayData(cameraInfo) { Color = Color.red });
-            //new StraightTrajectory(SegmentEnd.LeftSide.Bezier.EndPosition, pos).Render(new OverlayData(cameraInfo) { Color = Color.yellow });
-            //new StraightTrajectory(SegmentEnd.RightSide.Bezier.StartPosition, pos).Render(new OverlayData(cameraInfo) { Color = Color.green });
-            //new StraightTrajectory(SegmentEnd.RightSide.Bezier.EndPosition, pos).Render(new OverlayData(cameraInfo) { Color = Color.blue });
-
-            //new StraightTrajectory(pos, pos + 5 * dir).Render(new OverlayData(cameraInfo) { Color = Color.cyan });
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
         {
             text = SegmentEnd.Offset.ToString("0.0");
-            color = Colors.Yellow;
+            color = SegmentEnd.IsBorderOffset ? Colors.Red : Colors.Yellow;
             size = 2f;
             position = SegmentEnd.Position + SegmentEnd.Direction * SegmentEndData.CircleRadius;
             direction = SegmentEnd.Direction;
@@ -288,7 +266,7 @@ namespace NodeController
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
         {
             text = $"{SegmentEnd.RotateAngle:0}°";
-            color = Colors.Yellow;
+            color = SegmentEnd.IsBorderRotate ? Colors.Red : Colors.Yellow;
             size = 2f;
             position = SegmentEnd.Position + SegmentEnd.Direction * SegmentEndData.CircleRadius;
             direction = SegmentEnd.Direction;

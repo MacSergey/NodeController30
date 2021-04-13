@@ -249,36 +249,5 @@ namespace NodeController.Patches
         {
             SegmentEndData.UpdateSegmentBezier(segmentID);
         }
-
-        public static IEnumerable<CodeInstruction> UpdateBoundsTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
-        {
-            foreach (var instruction in instructions)
-            {
-                if (instruction.opcode == OpCodes.Ret)
-                {
-                    yield return TranspilerUtilities.GetLDArg(original, "segmentID");
-                    yield return new CodeInstruction(OpCodes.Ldloc_S, 4);
-                    yield return new CodeInstruction(OpCodes.Ldloc_S, 5);
-                    yield return new CodeInstruction(OpCodes.Ldloc_S, 6);
-                    yield return new CodeInstruction(OpCodes.Ldloc_S, 7);
-                    yield return new CodeInstruction(OpCodes.Ldloc_S, 8);
-                    yield return new CodeInstruction(OpCodes.Ldloc_S, 9);
-                    yield return new CodeInstruction(OpCodes.Ldloc_S, 10);
-                    yield return new CodeInstruction(OpCodes.Ldloc_S, 11);
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(NetSegmentPatches.UpdateBoundsPostfix)));
-                }
-
-                yield return instruction;
-            }
-        }
-        private static void UpdateBoundsPostfix(ushort segmentId, Vector3 startLeftPos, Vector3 startRightPos, Vector3 endRightPos, Vector3 endLeftPos, Vector3 startLeftDir, Vector3 startRightDir, Vector3 endRightDir, Vector3 endLeftDir)
-        {
-            if (!segmentId.GetSegment().IsValid())
-                return;
-
-            Manager.GetSegmentData(segmentId, out var start, out var end);
-            start?.AfterSegmentCalculate(new SegmentCorner(startLeftPos, startLeftDir), new SegmentCorner(startRightPos, startRightDir));
-            end?.AfterSegmentCalculate(new SegmentCorner(endLeftPos, endLeftDir), new SegmentCorner(endRightPos, endRightDir));
-        }
     }
 }
