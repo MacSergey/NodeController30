@@ -202,7 +202,7 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
-            SegmentEnd.RenderSides(new OverlayData(cameraInfo), new OverlayData(cameraInfo) { Color = Colors.Orange });
+            SegmentEnd.RenderSides(new OverlayData(cameraInfo), new OverlayData(cameraInfo) { Color = Colors.Red });
             SegmentEnd.SegmentBezier.Render(new OverlayData(cameraInfo) { Width = 3f });
 
             var normalData = new OverlayData(cameraInfo) { Color = Colors.Green };
@@ -279,7 +279,7 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
-            SegmentEnd.RenderSides(new OverlayData(cameraInfo), new OverlayData(cameraInfo) { Color = Colors.Orange });
+            SegmentEnd.RenderSides(new OverlayData(cameraInfo), new OverlayData(cameraInfo) { Color = Colors.Red });
 
             var normalData = new OverlayData(cameraInfo) { Color = Colors.Green };
             var rotateData = new OverlayData(cameraInfo) { Color = Colors.Yellow };

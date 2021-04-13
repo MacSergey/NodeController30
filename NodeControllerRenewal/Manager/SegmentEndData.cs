@@ -295,16 +295,30 @@ namespace NodeController
                     current.LeftSide.Limit = 0f;
                     next.RightSide.Limit = 0f;
                 }
-
-                //if (count >= 3)
-                //{
-                //    var prev = endDatas[(i + count - 1) % count];
-                //    var border = new BezierTrajectory(prev.LeftSide.RawBezier.StartPosition, -prev.LeftSide.RawBezier.StartDirection, next.RightSide.RawBezier.StartPosition, -next.RightSide.RawBezier.StartDirection);
-                //}
             }
+            //if (count >= 3)
+            //{
+            //    for (var i = 0; i < count; i += 1)
+            //    {
+            //        var prev = endDatas[(i + count - 1) % count];
+            //        var current = endDatas[i];
+            //        var next = endDatas[(i + 1) % count];
+
+            //        var border = new BezierTrajectory(prev.RightSide.RawBezier.StartPosition, -prev.RightSide.RawBezier.StartDirection, next.LeftSide.RawBezier.StartPosition, -next.LeftSide.RawBezier.StartDirection);
+            //        CheckBorder(current.LeftSide, border);
+            //        CheckBorder(current.RightSide, border);
+            //    }
+            //}
 
             foreach (var endData in endDatas)
                 endData.Calculate();
+
+            //static void CheckBorder(SegmentSide side, BezierTrajectory border)
+            //{
+            //    var intersect = Intersection.CalculateSingle(side.RawBezier, border);
+            //    if (intersect.IsIntersect && intersect.FirstT > side.Limit)
+            //        side.Limit = intersect.FirstT;
+            //}
         }
         private void Calculate()
         {
@@ -366,7 +380,7 @@ namespace NodeController
             {
                 var angle = Vector3.Angle(segmentDir, cornerDir);
                 var sign = Mathf.Sign(Vector3.Cross(segmentDir, cornerDir).y);
- 
+
                 return sign * angle;
             }
             static float FixAngle(float angle) => angle < 0 ? angle + 180f : angle - 180f;
