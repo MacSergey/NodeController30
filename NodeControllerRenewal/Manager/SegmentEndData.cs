@@ -264,46 +264,38 @@ namespace NodeController
             var endDatas = data.SegmentEndDatas.OrderBy(s => s.AbsoluteAngle).ToArray();
             var count = endDatas.Length;
 
+            var leftLimits = new float[count];
+            var rightLimits = new float[count];
+
             for (var i = 0; i < count; i += 1)
             {
-                var current = endDatas[i];
-                var next = endDatas[(i + 1) % count];
+                var j = (i + 1) % count;
 
-                var intersect = Intersection.CalculateSingle(current.LeftSide.RawBezier, next.RightSide.RawBezier);
+                var intersect = Intersection.CalculateSingle(endDatas[i].LeftSide.RawBezier, endDatas[j].RightSide.RawBezier);
                 if (intersect.IsIntersect)
                 {
-                    current.LeftSide.Limit = intersect.FirstT;
-                    next.RightSide.Limit = intersect.SecondT;
+                    leftLimits[i] = Mathf.Max(leftLimits[i], intersect.FirstT);
+                    rightLimits[j] = Mathf.Max(rightLimits[j], intersect.SecondT);
                 }
-                else
+                intersect = Intersection.CalculateSingle(endDatas[i].LeftSide.RawBezier, endDatas[j].LeftSide.RawBezier);
+                if (intersect.IsIntersect)
                 {
-                    current.LeftSide.Limit = 0f;
-                    next.RightSide.Limit = 0f;
+                    leftLimits[i] = Mathf.Max(leftLimits[i], intersect.FirstT);
+                    leftLimits[j] = Mathf.Max(leftLimits[j], intersect.SecondT);
+                }
+                intersect = Intersection.CalculateSingle(endDatas[i].RightSide.RawBezier, endDatas[j].RightSide.RawBezier);
+                if (intersect.IsIntersect)
+                {
+                    rightLimits[i] = Mathf.Max(rightLimits[i], intersect.FirstT);
+                    rightLimits[j] = Mathf.Max(rightLimits[j], intersect.SecondT);
                 }
             }
-            //if (count >= 3)
-            //{
-            //    for (var i = 0; i < count; i += 1)
-            //    {
-            //        var prev = endDatas[(i + count - 1) % count];
-            //        var current = endDatas[i];
-            //        var next = endDatas[(i + 1) % count];
-
-            //        var border = new BezierTrajectory(prev.RightSide.RawBezier.StartPosition, -prev.RightSide.RawBezier.StartDirection, next.LeftSide.RawBezier.StartPosition, -next.LeftSide.RawBezier.StartDirection);
-            //        CheckBorder(current.LeftSide, border);
-            //        CheckBorder(current.RightSide, border);
-            //    }
-            //}
-
-            foreach (var endData in endDatas)
-                endData.Calculate();
-
-            //static void CheckBorder(SegmentSide side, BezierTrajectory border)
-            //{
-            //    var intersect = Intersection.CalculateSingle(side.RawBezier, border);
-            //    if (intersect.IsIntersect && intersect.FirstT > side.Limit)
-            //        side.Limit = intersect.FirstT;
-            //}
+            for (var i = 0; i < count; i += 1)
+            {
+                endDatas[i].LeftSide.Limit = leftLimits[i];
+                endDatas[i].RightSide.Limit = rightLimits[i];
+                endDatas[i].Calculate();
+            }
         }
         private void Calculate()
         {
@@ -533,7 +525,7 @@ namespace NodeController
                 Update();
             }
         }
-        public float T => Mathf.Max(RawT, Limit);
+        private float T => Mathf.Max(RawT, Limit);
 
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
@@ -547,8 +539,13 @@ namespace NodeController
         private void Update()
         {
             Bezier = RawBezier.Cut(_limit, 1f);
-            Position = RawBezier.Position(T);
-            Direction = RawBezier.Tangent(T);
+
+            var t = T;
+            if (RawT <= Limit)
+                t += RawBezier.Travel(0f, 0.01f);
+
+            Position = RawBezier.Position(t);
+            Direction = RawBezier.Tangent(t);
         }
 
         public void Render(OverlayData dataAllow, OverlayData dataForbidden)
