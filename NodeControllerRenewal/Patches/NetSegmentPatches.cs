@@ -23,26 +23,37 @@ namespace NodeController.Patches
 
             smooth = (data.Node.m_flags & NetNode.Flags.Middle) != 0;
 
-            var middle = data.SegmentBezier;
-            var side = leftSide ? data.LeftSideBezier : data.RightSideBezier;
+            //var middle = data.SegmentBezier;
+            //var side = leftSide ? data.LeftSideBezier : data.RightSideBezier;
 
-            var t = middle.Travel(0f, data.Offset);
-            var position = middle.Position(t);
-            var direction = middle.Tangent(t).Turn90(true).TurnDeg(data.RotateAngle, true);
+            //var t = middle.Travel(0f, data.Offset);
+            //var position = middle.Position(t);
+            //var direction = middle.Tangent(t).Turn90(true).TurnDeg(data.RotateAngle, true);
 
-            var line = new StraightTrajectory(position, position + direction, false);
-            var intersection = Intersection.CalculateSingle(side, line);
+            //var line = new StraightTrajectory(position, position + direction, false);
+            //var intersection = Intersection.CalculateSingle(side, line);
 
-            float sideT;
-            if (intersection.IsIntersect)
-                sideT = intersection.FirstT;
-            else if (data.RotateAngle == 0f)
-                sideT = t <= 0.5f ? 0f : 1f;
+            //float sideT;
+            //if (intersection.IsIntersect)
+            //    sideT = intersection.FirstT;
+            //else if (data.RotateAngle == 0f)
+            //    sideT = t <= 0.5f ? 0f : 1f;
+            //else
+            //    sideT = leftSide ^ data.RotateAngle > 0f ? 0f : 1f;
+
+            //cornerPos = side.Position(sideT);
+            //cornerDirection = side.Tangent(sideT);
+            if(leftSide)
+            {
+                cornerPos = data.LeftSidePosition;
+                cornerDirection = data.LeftSideDirection;
+            }
             else
-                sideT = leftSide ^ data.RotateAngle > 0f ? 0f : 1f;
+            {
+                cornerPos = data.RightSidePosition;
+                cornerDirection = data.RightSideDirection;
+            }
 
-            cornerPos = side.Position(sideT);
-            cornerDirection = side.Tangent(sideT);
             return false;
         }
         public static void CalculateCornerPostfix(ushort segmentID, bool start, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection)

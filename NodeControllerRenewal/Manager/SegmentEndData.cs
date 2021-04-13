@@ -40,6 +40,16 @@ namespace NodeController
         public BezierTrajectory SegmentBezier { get; private set; }
         public BezierTrajectory LeftSideBezier { get; private set; }
         public BezierTrajectory RightSideBezier { get; private set; }
+        public float LeftSideLimit { get; private set; }
+        public float RightSideLimit { get; private set; }
+        public float LeftSideT { get; private set; }
+        public float RightSideT { get; private set; }
+        public Vector3 LeftSidePosition => LeftSideBezier.Position(LeftSideT);
+        public Vector3 LeftSideDirection => LeftSideBezier.Tangent(LeftSideT);
+        public Vector3 RightSidePosition => RightSideBezier.Position(RightSideT);
+        public Vector3 RightSideDirection => RightSideBezier.Tangent(RightSideT);
+
+        public bool IsNotOverlap => LeftSideT >= LeftSideLimit && RightSideT >= RightSideLimit;
 
 
         public float DefaultOffset => CSURUtilities.GetMinCornerOffset(Id, NodeId);
@@ -280,6 +290,55 @@ namespace NodeController
             startDir = startDir.TurnRad(deltaAngle, true);
             endDir = endDir.TurnRad(deltaAngle, true);
         }
+        public static void CalculateLimits(NodeData data)
+        {
+            var endDatas = data.SegmentEndDatas.ToArray();
+            var count = endDatas.Length;
+
+            for (var i = 0; i < count; i += 1)
+            {
+                var first = endDatas[i];
+                var second = endDatas[(i + 1) % count];
+
+                var intersect = Intersection.CalculateSingle(first.RightSideBezier, second.LeftSideBezier);
+                if(intersect.IsIntersect)
+                {
+                    first.RightSideLimit = intersect.FirstT;
+                    second.LeftSideLimit = intersect.SecondT;
+                }
+                else
+                {
+                    first.RightSideLimit = 0f;
+                    second.LeftSideLimit = 0f;
+                }
+            }
+
+            foreach (var endData in endDatas)
+                endData.CalculateCornerOffsets();
+        }
+        private void CalculateCornerOffsets()
+        {
+            LeftSideT = CalculateCornerOffset(true);
+            RightSideT = CalculateCornerOffset(false);
+        }
+        private float CalculateCornerOffset(bool isLeft)
+        {
+            var side = isLeft ? LeftSideBezier : RightSideBezier;
+
+            var t = SegmentBezier.Travel(0f, Offset);
+            var position = SegmentBezier.Position(t);
+            var direction = SegmentBezier.Tangent(t).Turn90(true).TurnDeg(RotateAngle, true);
+
+            var line = new StraightTrajectory(position, position + direction, false);
+            var intersection = Intersection.CalculateSingle(side, line);
+
+            if (intersection.IsIntersect)
+                return intersection.FirstT;
+            else if (RotateAngle == 0f)
+                return t <= 0.5f ? 0f : 1f;
+            else
+                return isLeft ^ RotateAngle > 0f ? 0f : 1f;
+        }
 
         #endregion
 
@@ -328,6 +387,23 @@ namespace NodeController
             }
             else
                 RenderEnd(contourData);
+        }
+        public void RenderSides(OverlayData dataAllow, OverlayData dataForbidden)
+        {
+            RenderSide(dataAllow, dataForbidden, LeftSideBezier, LeftSideLimit);
+            RenderSide(dataAllow, dataForbidden, RightSideBezier, RightSideLimit);
+        }
+        private void RenderSide(OverlayData dataAllow, OverlayData dataForbidden, BezierTrajectory bezier, float limit)
+        {
+            if (limit == 0f)
+                bezier.Render(dataAllow);
+            else
+            {
+                dataForbidden.CutEnd = true;
+                dataAllow.CutStart = true;
+                bezier.Cut(0f, limit).Render(dataForbidden);
+                bezier.Cut(limit, 1f).Render(dataAllow);
+            }
         }
         private void RenderCutEnd(OverlayData data)
         {

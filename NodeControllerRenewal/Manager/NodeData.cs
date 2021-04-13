@@ -198,6 +198,8 @@ namespace NodeController
             }
 
             SegmentEnds = newSegmentsEnd;
+
+            SegmentEndData.CalculateLimits(this);
         }
         private void UpdateMainRoad()
         {

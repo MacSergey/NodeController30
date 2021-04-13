@@ -157,10 +157,12 @@ namespace NodeController
         {
             var data = Tool.Data;
 
-            var red = new OverlayData(cameraInfo) { Color = Colors.Red };
-            var white = new OverlayData(cameraInfo);
+            var hoverData = new OverlayData(cameraInfo);
             foreach (var segmentData in data.SegmentEndDatas)
-                segmentData.Render(red, segmentData == HoverSegmentEndCircle ? white : red, segmentData == HoverSegmentEndCenter ? white : red);
+            {
+                var normalData = new OverlayData(cameraInfo) { Color = segmentData.IsNotOverlap ? Colors.Green : Colors.Red };
+                segmentData.Render(normalData, segmentData == HoverSegmentEndCircle ? hoverData : normalData, segmentData == HoverSegmentEndCenter ? hoverData : normalData);
+            }
         }
     }
     public class DragSegmentEndToolMode : NodeControllerToolMode
@@ -189,13 +191,11 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
-            SegmentEnd.LeftSideBezier.Render(new OverlayData(cameraInfo));
-            SegmentEnd.RightSideBezier.Render(new OverlayData(cameraInfo));
-            SegmentEnd.SegmentBezier.Render(new OverlayData(cameraInfo) { Width = 3f });
+            SegmentEnd.RenderSides(new OverlayData(cameraInfo), new OverlayData(cameraInfo) { Color = Colors.Orange });
 
-            var red = new OverlayData(cameraInfo) { Color = Colors.Red };
-            var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow };
-            SegmentEnd.Render(red, red, yellow);
+            var normalData = new OverlayData(cameraInfo) { Color = SegmentEnd.IsNotOverlap ? Colors.Green : Colors.Red };
+            var dragData = new OverlayData(cameraInfo) { Color = Colors.Yellow };
+            SegmentEnd.Render(normalData, normalData, dragData);
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
         {
@@ -256,12 +256,11 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
-            SegmentEnd.LeftSideBezier.Render(new OverlayData(cameraInfo));
-            SegmentEnd.RightSideBezier.Render(new OverlayData(cameraInfo));
+            SegmentEnd.RenderSides(new OverlayData(cameraInfo), new OverlayData(cameraInfo) { Color = Colors.Orange });
 
-            var red = new OverlayData(cameraInfo) { Color = Colors.Red };
-            var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow };
-            SegmentEnd.Render(red, yellow, red);
+            var normalData = new OverlayData(cameraInfo) { Color = SegmentEnd.IsNotOverlap ? Colors.Green : Colors.Red };
+            var rotateData = new OverlayData(cameraInfo) { Color = Colors.Yellow };
+            SegmentEnd.Render(normalData, rotateData, normalData);
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
         {
