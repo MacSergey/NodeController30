@@ -164,14 +164,19 @@ namespace NodeController
         #region NETSEGMENT
         private void PatchNetSegment(ref bool success)
         {
+            success &= Patch_NetSegment_CalculateCorner_Prefix();
             success &= Patch_NetSegment_CalculateCorner_Postfix();
-            success &= Patch_NetSegment_CalculateCorner_Transpiler();
+            //success &= Patch_NetSegment_CalculateCorner_Transpiler();
             success &= Patch_NetSegment_FindDirection();
             success &= Patch_NetSegment_CalculateSegment_Prefix();
-            //success &= Patch_NetSegment_CalculateSegment_Postfix();
             success &= Patch_NetSegment_UpdateBounds_Transpiler();
         }
 
+        private bool Patch_NetSegment_CalculateCorner_Prefix()
+        {
+            var parameters = new Type[] { typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(ushort), typeof(ushort), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType() };
+            return AddPrefix(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerPrefix), typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
+        }
         private bool Patch_NetSegment_CalculateCorner_Postfix()
         {
             var parameters = new Type[] { typeof(ushort), typeof(bool), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType() };

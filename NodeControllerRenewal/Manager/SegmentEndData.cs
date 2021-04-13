@@ -19,6 +19,8 @@ namespace NodeController
 
         public static float CircleRadius => 2.5f;
         public static float DotRadius => 0.75f;
+        public static float MinPossibleRotate => -80f;
+        public static float MaxPossibleRotate => 80f;
 
         #endregion
 
@@ -74,34 +76,43 @@ namespace NodeController
             }
         }
         private float _offsetValue;
+        private float _rotateValue;
+        private float _minRotate;
+        private float _maxRotate;
+
         public float Offset
         {
             get => _offsetValue;
             set
             {
                 _offsetValue = value;
-
-                var t = SegmentBezier.Travel(0f, _offsetValue);
-                var position = SegmentBezier.Position(t);
-                var normal = SegmentBezier.Tangent(t).Turn90(false);
-
-                var startLeft = Vector3.Angle(normal, LeftSideBezier.StartPosition - position);
-                var endLeft = Vector3.Angle(normal, LeftSideBezier.EndPosition - position);
-                var startRight = Vector3.Angle(normal, RightSideBezier.StartPosition - position);
-                var endRight = Vector3.Angle(normal, RightSideBezier.EndPosition - position);
-
-                var minAngle = -Mathf.Min(endLeft, 180 - startRight);
-                var maxAngle = Mathf.Min(startLeft, 180 - endRight);
-                MinRotate = Mathf.Max(minAngle, -60);
-                MaxRotate = Mathf.Min(maxAngle, 60);
-
-                RotateAngle = Mathf.Clamp(RotateAngle, MinRotate, MaxRotate);
+                CalculateMinMaxRotate();
             }
         }
         public float Shift { get; set; }
-        public float RotateAngle { get; set; }
-        public float MinRotate { get; private set; }
-        public float MaxRotate { get; private set; }
+        public float RotateAngle
+        {
+            get => _rotateValue;
+            set => _rotateValue = Mathf.Clamp(value, MinRotate, MaxRotate);
+        }
+        public float MinRotate 
+        {
+            get => _minRotate;
+            private set
+            {
+                _minRotate = value;
+                RotateAngle = RotateAngle;
+            }
+        }
+        public float MaxRotate
+        {
+            get => _maxRotate;
+            private set
+            {
+                _maxRotate = value;
+                RotateAngle = RotateAngle;
+            }
+        }
         public float SlopeAngle { get; set; }
         public float TwistAngle { get; set; }
 
@@ -153,6 +164,7 @@ namespace NodeController
                 LeftSideBezier = rightSide.Invert();
                 RightSideBezier = leftSide.Invert();
             }
+            CalculateMinMaxRotate();
 
             ResetToDefault();
         }
@@ -184,6 +196,24 @@ namespace NodeController
             var intersect = Intersection.CalculateSingle(line, SegmentBezier);
             Position = line.Position(intersect.IsIntersect ? intersect.FirstT : 0.5f);
         }
+        private void CalculateMinMaxRotate()
+        {
+            var t = SegmentBezier.Travel(0f, Offset);
+            var position = SegmentBezier.Position(t);
+            var normal = SegmentBezier.Tangent(t).Turn90(false);
+
+            var startLeft = Vector3.Angle(normal, LeftSideBezier.StartPosition - position);
+            var endLeft = Vector3.Angle(normal, LeftSideBezier.EndPosition - position);
+            var startRight = Vector3.Angle(normal, RightSideBezier.StartPosition - position);
+            var endRight = Vector3.Angle(normal, RightSideBezier.EndPosition - position);
+
+            var minAngle = -Mathf.Min(startLeft, 180 - endRight);
+            var maxAngle = Mathf.Min(endLeft, 180 - startRight);
+            MinRotate = Mathf.Max(minAngle, MinPossibleRotate);
+            MaxRotate = Mathf.Min(maxAngle, MaxPossibleRotate);
+
+            RotateAngle = RotateAngle;
+        }
         private void UpdateCachedSuperElevation()
         {
             var diff = RightCorner.Position - LeftCorner.Position;
@@ -201,12 +231,14 @@ namespace NodeController
                 start.SegmentBezier = bezier;
                 start.LeftSideBezier = leftSide;
                 start.RightSideBezier = rightSide;
+                start.CalculateMinMaxRotate();
             }
             if (end != null)
             {
                 end.SegmentBezier = bezier.Invert();
                 end.LeftSideBezier = rightSide.Invert();
                 end.RightSideBezier = leftSide.Invert();
+                end.CalculateMinMaxRotate();
             }
         }
         private static void GetSegmentBeziers(ushort segmentId, out BezierTrajectory bezier, out BezierTrajectory leftSide, out BezierTrajectory rightSide)
@@ -339,7 +371,7 @@ namespace NodeController
             while (data.Width > to);
         }
 
-        public override string ToString() => $"{GetType().Name} (segment:{Id} node:{NodeId})";
+        public override string ToString() => $"segment:{Id} node:{NodeId}";
 
         #endregion
 

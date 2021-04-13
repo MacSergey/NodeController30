@@ -167,16 +167,19 @@ namespace NodeController
     {
         public override ToolModeType Type => ToolModeType.Drag;
         public SegmentEndData SegmentEnd { get; private set; } = null;
+        private float CachedRotate { get; set; }
+        private float RoundTo => InputExtension.OnlyShiftIsPressed ? 1f : 0.1f;
 
         protected override void Reset(IToolMode prevMode)
         {
             SegmentEnd = prevMode is EditToolMode editMode ? editMode.HoverSegmentEndCenter : null;
+            CachedRotate = SegmentEnd.RotateAngle;
         }
         public override void OnMouseDrag(Event e)
         {
-            SegmentEnd.Segment.GetHitPosition(Tool.Ray, out _, out var hitPosition);
-            SegmentEnd.SegmentBezier.Trajectory.ClosestPositionAndDirection(hitPosition, out _, out _, out var t);
-            SegmentEnd.Offset = SegmentEnd.SegmentBezier.Cut(0f, t).Length.RoundToNearest(0.1f);
+            SegmentEnd.SegmentBezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out _);
+            SegmentEnd.Offset = SegmentEnd.SegmentBezier.Cut(0f, t).Length.RoundToNearest(RoundTo);
+            SegmentEnd.RotateAngle = CachedRotate;
             SegmentEnd.UpdateNode();
 
             Tool.Panel.UpdatePanel();
@@ -186,6 +189,8 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
+            SegmentEnd.LeftSideBezier.Render(new OverlayData(cameraInfo));
+            SegmentEnd.RightSideBezier.Render(new OverlayData(cameraInfo));
             SegmentEnd.SegmentBezier.Render(new OverlayData(cameraInfo) { Width = 3f });
 
             var red = new OverlayData(cameraInfo) { Color = Colors.Red };
@@ -208,6 +213,18 @@ namespace NodeController
         public SegmentEndData SegmentEnd { get; private set; } = null;
         public Vector3 BeginDirection { get; private set; }
         public float BeginRotate { get; private set; }
+        private float RoundTo
+        {
+            get
+            {
+                if (InputExtension.OnlyShiftIsPressed)
+                    return 10f;
+                else if (InputExtension.OnlyCtrlIsPressed)
+                    return 0.1f;
+                else
+                    return 1f;
+            }
+        }
         private Vector3 CurrentDirection
         {
             get
@@ -227,8 +244,8 @@ namespace NodeController
         public override void OnMouseDrag(Event e)
         {
             var quaternion = Quaternion.FromToRotation(BeginDirection, CurrentDirection);
-            var angle = (BeginRotate + quaternion.eulerAngles.y).RoundToNearest(1f) % 360f;
-            SegmentEnd.RotateAngle = Mathf.Clamp(angle > 180f ? angle - 360f : angle, -60f, 60f);
+            var angle = (BeginRotate + quaternion.eulerAngles.y).RoundToNearest(RoundTo) % 360f;
+            SegmentEnd.RotateAngle = angle > 180f ? angle - 360f : angle;
             SegmentEnd.UpdateNode();
 
             Tool.Panel.UpdatePanel();
@@ -239,6 +256,9 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
+            SegmentEnd.LeftSideBezier.Render(new OverlayData(cameraInfo));
+            SegmentEnd.RightSideBezier.Render(new OverlayData(cameraInfo));
+
             var red = new OverlayData(cameraInfo) { Color = Colors.Red };
             var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow };
             SegmentEnd.Render(red, yellow, red);

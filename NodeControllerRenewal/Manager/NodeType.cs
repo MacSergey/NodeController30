@@ -132,8 +132,8 @@ namespace NodeController
         protected FloatPropertyPanel GetRotateProperty(UIComponent parent)
         {
             var rotateProperty = GetNodeProperty(parent, "Rotate");
-            rotateProperty.MinValue = -60;
-            rotateProperty.MaxValue = 60;
+            rotateProperty.MinValue = SegmentEndData.MinPossibleRotate;
+            rotateProperty.MaxValue = SegmentEndData.MaxPossibleRotate;
 
             return rotateProperty;
         }

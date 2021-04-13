@@ -16,6 +16,35 @@ namespace NodeController.Patches
     [UsedImplicitly]
     public static class NetSegmentPatches
     {
+        public static bool CalculateCornerPrefix(ushort ignoreSegmentID, ushort startNodeID, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection, ref bool smooth)
+        {
+            if(Manager.Instance[startNodeID, ignoreSegmentID] is not SegmentEndData data)
+                return true;
+
+            smooth = (data.Node.m_flags & NetNode.Flags.Middle) != 0;
+
+            var middle = data.SegmentBezier;
+            var side = leftSide ? data.LeftSideBezier : data.RightSideBezier;
+
+            var t = middle.Travel(0f, data.Offset);
+            var position = middle.Position(t);
+            var direction = middle.Tangent(t).Turn90(true).TurnDeg(data.RotateAngle, true);
+
+            var line = new StraightTrajectory(position, position + direction, false);
+            var intersection = Intersection.CalculateSingle(side, line);
+
+            float sideT;
+            if (intersection.IsIntersect)
+                sideT = intersection.FirstT;
+            else if (data.RotateAngle == 0f)
+                sideT = t <= 0.5f ? 0f : 1f;
+            else
+                sideT = leftSide ^ data.RotateAngle > 0f ? 0f : 1f;
+
+            cornerPos = side.Position(sideT);
+            cornerDirection = side.Tangent(sideT);
+            return false;
+        }
         public static void CalculateCornerPostfix(ushort segmentID, bool start, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection)
         {
             var data = Manager.GetSegmentData(segmentID, start);
