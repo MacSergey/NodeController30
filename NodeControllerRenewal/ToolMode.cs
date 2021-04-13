@@ -192,6 +192,7 @@ namespace NodeController
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             SegmentEnd.RenderSides(new OverlayData(cameraInfo), new OverlayData(cameraInfo) { Color = Colors.Orange });
+            SegmentEnd.RenderSegment(new OverlayData(cameraInfo) { Width = 3f }, new OverlayData(cameraInfo) { Width = 3f, Color = Colors.Orange });
 
             var normalData = new OverlayData(cameraInfo) { Color = SegmentEnd.IsNotOverlap ? Colors.Green : Colors.Red };
             var dragData = new OverlayData(cameraInfo) { Color = Colors.Yellow };
