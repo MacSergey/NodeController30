@@ -45,13 +45,13 @@ namespace NodeController.Patches
             //cornerDirection = side.Tangent(sideT);
             if(leftSide)
             {
-                cornerPos = data.LeftSidePosition;
-                cornerDirection = data.LeftSideDirection;
+                cornerPos = data.LeftSide.Position;
+                cornerDirection = data.LeftSide.Direction;
             }
             else
             {
-                cornerPos = data.RightSidePosition;
-                cornerDirection = data.RightSideDirection;
+                cornerPos = data.RightSide.Position;
+                cornerDirection = data.RightSide.Direction;
             }
 
             return false;
@@ -204,10 +204,10 @@ namespace NodeController.Patches
         {
             if (Manager.Instance[nodeId, segmentId] is SegmentEndData segmentEnd)
             {
-                startPos = segmentEnd.SegmentBezier.StartPosition;
-                startDir = segmentEnd.SegmentBezier.StartDirection;
-                endPos = segmentEnd.SegmentBezier.EndPosition;
-                endDir = segmentEnd.SegmentBezier.EndDirection;
+                startPos = segmentEnd.RawSegmentBezier.StartPosition;
+                startDir = segmentEnd.RawSegmentBezier.StartDirection;
+                endPos = segmentEnd.RawSegmentBezier.EndPosition;
+                endDir = segmentEnd.RawSegmentBezier.EndDirection;
             }
         }
 
@@ -223,8 +223,8 @@ namespace NodeController.Patches
             if (Manager.Instance[nodeId, segmentId] is not SegmentEndData segmentData)
                 return cornerOffset;
 
-            var middle = segmentData.SegmentBezier;
-            var side = leftSide ? segmentData.LeftSideBezier : segmentData.RightSideBezier;
+            var middle = segmentData.RawSegmentBezier;
+            var side = leftSide ? segmentData.LeftSide.RawBezier : segmentData.RightSide.RawBezier;
 
             var t = middle.Travel(0f, segmentData.Offset);
             var position = middle.Position(t);
