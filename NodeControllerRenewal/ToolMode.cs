@@ -175,7 +175,7 @@ namespace NodeController
         protected override void Reset(IToolMode prevMode)
         {
             SegmentEnd = prevMode is EditToolMode editMode ? editMode.HoverSegmentEndCenter : null;
-            CachedRotate = SegmentEnd.IsBorderRotate ? 0f : SegmentEnd.RotateAngle;
+            CachedRotate = SegmentEnd.IsBorderT ? 0f : SegmentEnd.RotateAngle;
         }
         public override void OnMouseDrag(Event e)
         {

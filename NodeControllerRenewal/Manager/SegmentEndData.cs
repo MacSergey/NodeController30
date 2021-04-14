@@ -44,10 +44,7 @@ namespace NodeController
         public SegmentSide RightSide { get; } = new SegmentSide(SideType.Right);
         public float AbsoluteAngle => RawSegmentBezier.StartDirection.AbsoluteAngle();
 
-        public float SegmentLimit { get; private set; }
-        public float SegmentT { get; private set; }
-
-        public bool IsNotOverlap => LeftSide.IsNotOverlap && RightSide.IsNotOverlap;
+        public float SegmentMinT { get; private set; }
 
 
         public float DefaultOffset => Mathf.Max(Info.m_minCornerOffset, Info.m_halfWidth < 4f ? 0f : 8f);
@@ -107,13 +104,8 @@ namespace NodeController
         public float RotateAngle
         {
             get => _rotateValue;
-            set
-            {
-                SetRotate(value);
-                WasBorderRotate = false;
-            }
+            set => _rotateValue = Mathf.Clamp(value, MinRotate, MaxRotate);
         }
-        private bool WasBorderRotate { get; set; }
         public float MinRotate { get; set; }
         public float MaxRotate { get; set; }
         public float SlopeAngle { get; set; }
@@ -121,6 +113,7 @@ namespace NodeController
 
         public bool IsBorderOffset => Offset == MinOffset;
         public bool IsBorderRotate => RotateAngle == MinRotate || RotateAngle == MaxRotate;
+        public bool IsBorderT => LeftSide.IsBorderT || RightSide.IsBorderT;
 
         public bool CanModifyTwist => CanTwist(Id, NodeId);
         public bool? ShouldHideCrossingTexture
@@ -187,7 +180,7 @@ namespace NodeController
             if (!style.SupportShift || force)
                 Shift = NodeStyle.DefaultShift;
             if (!style.SupportRotate || force)
-                SetRotate(NodeStyle.DefaultRotate);
+                RotateAngle = NodeStyle.DefaultRotate;
             if (!style.SupportSlope || force)
                 SlopeAngle = NodeStyle.DefaultSlope;
             if (!style.SupportTwist || force)
@@ -210,15 +203,13 @@ namespace NodeController
         private void SetOffset(float value, bool changeRotate = false)
         {
             _offsetValue = Mathf.Clamp(Math.Max(value, _minOffset), MinPossibleOffset, MaxPossibleOffset);
-            if (IsBorderRotate)
-                WasBorderRotate = true;
-            if (changeRotate && WasBorderRotate)
+
+            if (changeRotate && IsBorderT)
             {
                 CalculateMinMaxRotate();
-                _rotateValue = Mathf.Clamp(0f, MinRotate, MaxRotate);
+                RotateAngle = 0f;
             }
         }
-        private void SetRotate(float value) => _rotateValue = Mathf.Clamp(value, MinRotate, MaxRotate);
 
         #endregion
 
@@ -360,13 +351,13 @@ namespace NodeController
             var intersect = Intersection.CalculateSingle(RawSegmentBezier, limitLine);
             if (intersect.IsIntersect)
             {
-                SegmentLimit = intersect.FirstT;
-                SegmentBezier = RawSegmentBezier.Cut(SegmentLimit, 1f);
-                MinOffset = RawSegmentBezier.Cut(0f, SegmentLimit).Length;
+                SegmentMinT = intersect.FirstT;
+                SegmentBezier = RawSegmentBezier.Cut(SegmentMinT, 1f);
+                MinOffset = RawSegmentBezier.Cut(0f, SegmentMinT).Length;
             }
             else
             {
-                SegmentLimit = 0f;
+                SegmentMinT = 0f;
                 SegmentBezier = RawSegmentBezier.Copy();
                 MinOffset = 0f;
             }
@@ -385,7 +376,7 @@ namespace NodeController
             MinRotate = Mathf.Clamp(Mathf.Max(startLeft, endRight), MinPossibleRotate, MaxPossibleRotate);
             MaxRotate = Mathf.Clamp(Mathf.Min(endLeft, startRight), MinPossibleRotate, MaxPossibleRotate);
 
-            SetRotate(RotateAngle);
+            RotateAngle = RotateAngle;
 
             static float GetAngle(Vector3 cornerDir, Vector3 segmentDir)
             {
@@ -557,8 +548,7 @@ namespace NodeController
         }
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
-
-        public bool IsNotOverlap => RawT >= MinT;
+        public bool IsBorderT => RawT - 0.001f <= MinT;
 
         public SegmentSide(SideType type)
         {
@@ -587,6 +577,8 @@ namespace NodeController
                     RawBezier.Cut(MinT, RawT).Render(dataAllow);
             }
         }
+
+        public override string ToString() => $"{Type}: RawT={RawT}; MinT={MinT}; Pos={Position};";
     }
     public enum SideType : byte
     {
