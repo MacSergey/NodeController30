@@ -81,17 +81,17 @@ namespace NodeController.Utilities
                 var leftBezierXZ = Bezier2.XZ(leftBezier);
                 var rightBezierXZ = Bezier2.XZ(rightBezier);
 
-                float OffsetT = -1f;
-                float MinOffsetT = -1f;
+                float offsetT = -1f;
+                float minOffsetT = -1f;
                 bool flag = false;
 
                 var segmentCount = startNodeID != 0 ? 8 : 0;
                 var maxQuarterWidth = info.m_halfWidth * 0.5f;
                 var segmentIndex = 0;
 
-                for (int j = 0; j < segmentCount; j++)
+                for (var i = 0; i < segmentCount; i += 1)
                 {
-                    var currentSegmentId = instance.m_nodes.m_buffer[startNodeID].GetSegment(j);
+                    var currentSegmentId = instance.m_nodes.m_buffer[startNodeID].GetSegment(i);
                     if (currentSegmentId == 0 || currentSegmentId == ignoreSegmentID)
                         continue;
 
@@ -103,9 +103,9 @@ namespace NodeController.Utilities
 
                     if (currentInfo.m_netAI.GetSnapElevation() > info.m_netAI.GetSnapElevation())
                     {
-                        float num11 = 0.01f - Mathf.Min(info.m_maxTurnAngleCos, currentInfo.m_maxTurnAngleCos);
-                        float num12 = segmentStartDir.x * startDir.x + segmentStartDir.z * startDir.z;
-                        if ((info.m_vehicleTypes & currentInfo.m_vehicleTypes) == 0 || num12 >= num11)
+                        var turnAngle = 0.01f - Mathf.Min(info.m_maxTurnAngleCos, currentInfo.m_maxTurnAngleCos);
+                        var angleBetween = segmentStartDir.x * startDir.x + segmentStartDir.z * startDir.z;
+                        if ((info.m_vehicleTypes & currentInfo.m_vehicleTypes) == 0 || angleBetween >= turnAngle)
                             continue;
                     }
                     maxQuarterWidth = Mathf.Max(maxQuarterWidth, currentInfo.m_halfWidth * 0.5f);
@@ -114,9 +114,9 @@ namespace NodeController.Utilities
 
                 if (segmentIndex >= 1 || (flags & NetNode.Flags.Outside) != 0)
                 {
-                    for (int k = 0; k < segmentCount; k++)
+                    for (var i = 0; i < segmentCount; i += 1)
                     {
-                        var currentSegmentId = instance.m_nodes.m_buffer[startNodeID].GetSegment(k);
+                        var currentSegmentId = instance.m_nodes.m_buffer[startNodeID].GetSegment(i);
                         if (currentSegmentId == 0 || currentSegmentId == ignoreSegmentID)
                             continue;
 
@@ -150,24 +150,24 @@ namespace NodeController.Utilities
 
                         if (currentStartDir.z * cornerDirection.x - currentStartDir.x * cornerDirection.z > 0f == leftSide)
                         {
-                            float num17 = (leftSide ? 1 : -1) * Mathf.Max(maxQuarterWidth, currentInfo.m_halfWidth);
+                            float currentHalfWidth = (leftSide ? 1 : -1) * Mathf.Max(maxQuarterWidth, currentInfo.m_halfWidth);
 
                             var currentStartDirN = Vector3.Cross(currentStartDir, Vector3.up).normalized;
                             var currentEndDirN = Vector3.Cross(currentEndDir, Vector3.up).normalized;
                             var currentBezier = new Bezier3()
                             {
-                                a = startPos - currentStartDirN * num17,
-                                d = currentEndPos + currentEndDirN * num17,
+                                a = startPos - currentStartDirN * currentHalfWidth,
+                                d = currentEndPos + currentEndDirN * currentHalfWidth,
                             };
                             NetSegment.CalculateMiddlePoints(currentBezier.a, currentStartDir, currentBezier.d, currentEndDir, smoothStart: false, smoothEnd: false, out currentBezier.b, out currentBezier.c);
 
                             var currentBezierXZ = Bezier2.XZ(currentBezier);
                             if (leftBezierXZ.Intersect(currentBezierXZ, out var t, out _, 6))
-                                OffsetT = Mathf.Max(OffsetT, t);
+                                offsetT = Mathf.Max(offsetT, t);
                             else if (leftBezierXZ.Intersect(currentBezierXZ.a, currentBezierXZ.a - XZ(currentStartDir) * 16f, out t, out _, 6))
-                                OffsetT = Mathf.Max(OffsetT, t);
+                                offsetT = Mathf.Max(offsetT, t);
                             else if (currentBezierXZ.Intersect(leftBezierXZ.d + (leftBezierXZ.d - rightBezierXZ.d) * 0.01f, rightBezierXZ.d, out _, out _, 6))
-                                OffsetT = Mathf.Max(OffsetT, 1f);
+                                offsetT = Mathf.Max(offsetT, 1f);
 
                             if (cornerDirection.x * currentStartDir.x + cornerDirection.z * currentStartDir.z >= -0.75f)
                                 flag = true;
@@ -180,33 +180,33 @@ namespace NodeController.Utilities
                                 currentStartDir.x -= cornerDirection.x * num19 * 2f;
                                 currentStartDir.z -= cornerDirection.z * num19 * 2f;
                             }
-                            float num20 = (leftSide ? 1 : -1) * Mathf.Max(maxQuarterWidth, currentInfo.m_halfWidth);
+                            float currentHalfWidth = (leftSide ? 1 : -1) * Mathf.Max(maxQuarterWidth, currentInfo.m_halfWidth);
 
                             var currentStartDirN = Vector3.Cross(currentStartDir, Vector3.up).normalized;
                             var currentEndDirN = Vector3.Cross(currentEndDir, Vector3.up).normalized;
                             var currentBezier = new Bezier3()
                             {
-                                a = startPos + currentStartDirN * num20,
-                                d = currentEndPos - currentEndDirN * num20,
+                                a = startPos + currentStartDirN * currentHalfWidth,
+                                d = currentEndPos - currentEndDirN * currentHalfWidth,
                             };
                             NetSegment.CalculateMiddlePoints(currentBezier.a, currentStartDir, currentBezier.d, currentEndDir, smoothStart: false, smoothEnd: false, out currentBezier.b, out currentBezier.c);
                             var currentBezierXZ = Bezier2.XZ(currentBezier);
 
                             if (rightBezierXZ.Intersect(currentBezierXZ, out var t3, out _, 6))
-                                MinOffsetT = Mathf.Max(MinOffsetT, t3);
+                                minOffsetT = Mathf.Max(minOffsetT, t3);
                             else if (rightBezierXZ.Intersect(currentBezierXZ.a, currentBezierXZ.a - XZ(currentStartDir) * 16f, out t3, out _, 6))
-                                MinOffsetT = Mathf.Max(MinOffsetT, t3);
+                                minOffsetT = Mathf.Max(minOffsetT, t3);
                             else if (currentBezierXZ.Intersect(leftBezierXZ.d, rightBezierXZ.d + (rightBezierXZ.d - leftBezierXZ.d) * 0.01f, out _, out _, 6))
-                                MinOffsetT = Mathf.Max(MinOffsetT, 1f);
+                                minOffsetT = Mathf.Max(minOffsetT, 1f);
                         }
                     }
                     if ((flags & NetNode.Flags.Junction) != 0)
                     {
                         if (!flag)
-                            OffsetT = Mathf.Max(OffsetT, MinOffsetT);
+                            offsetT = Mathf.Max(offsetT, minOffsetT);
                     }
                     else if ((flags & NetNode.Flags.Bend) != 0 && !flag)
-                        OffsetT = Mathf.Max(OffsetT, MinOffsetT);
+                        offsetT = Mathf.Max(offsetT, minOffsetT);
 
                     if ((flags & NetNode.Flags.Outside) != 0)
                     {
@@ -217,47 +217,48 @@ namespace NodeController.Utilities
                         var maxMinPos = new Vector2(maxPos, -maxPos);
 
                         if (leftBezierXZ.Intersect(minMinPos, minMaxPos, out var t5, out _, 6))
-                            OffsetT = Mathf.Max(OffsetT, t5);
+                            offsetT = Mathf.Max(offsetT, t5);
                         if (leftBezierXZ.Intersect(minMaxPos, maxMaxPos, out t5, out _, 6))
-                            OffsetT = Mathf.Max(OffsetT, t5);
+                            offsetT = Mathf.Max(offsetT, t5);
                         if (leftBezierXZ.Intersect(maxMaxPos, maxMinPos, out t5, out _, 6))
-                            OffsetT = Mathf.Max(OffsetT, t5);
+                            offsetT = Mathf.Max(offsetT, t5);
                         if (leftBezierXZ.Intersect(maxMinPos, minMinPos, out t5, out _, 6))
-                            OffsetT = Mathf.Max(OffsetT, t5);
+                            offsetT = Mathf.Max(offsetT, t5);
 
-                        OffsetT = Mathf.Clamp01(OffsetT);
+                        offsetT = Mathf.Clamp01(offsetT);
                     }
                     else
                     {
-                        if (OffsetT < 0f)
-                            OffsetT = info.m_halfWidth >= 4f ? leftBezierXZ.Travel(0f, 8f) : 0f;
+                        if (offsetT < 0f)
+                            offsetT = info.m_halfWidth >= 4f ? leftBezierXZ.Travel(0f, 8f) : 0f;
 
                         var minCornerOffset = info.m_minCornerOffset;
                         if ((flags & (NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward)) != 0)
                             minCornerOffset = Mathf.Max(minCornerOffset, 8f);
 
-                        OffsetT = Mathf.Clamp01(OffsetT);
-                        float num23 = LengthXZ(leftBezier.Position(OffsetT) - leftBezier.a);
-                        OffsetT = leftBezierXZ.Travel(OffsetT, Mathf.Max(minCornerOffset - num23, 2f));
+                        offsetT = Mathf.Clamp01(offsetT);
+                        float num23 = LengthXZ(leftBezier.Position(offsetT) - leftBezier.a);
+                        offsetT = leftBezierXZ.Travel(offsetT, Mathf.Max(minCornerOffset - num23, 2f));
+
                         if (info.m_straightSegmentEnds)
                         {
-                            if (MinOffsetT < 0f)
-                                MinOffsetT = info.m_halfWidth >= 4f ? rightBezierXZ.Travel(0f, 8f) : 0f;
+                            if (minOffsetT < 0f)
+                                minOffsetT = info.m_halfWidth >= 4f ? rightBezierXZ.Travel(0f, 8f) : 0f;
 
-                            MinOffsetT = Mathf.Clamp01(MinOffsetT);
-                            num23 = LengthXZ(rightBezier.Position(MinOffsetT) - rightBezier.a);
-                            MinOffsetT = rightBezierXZ.Travel(MinOffsetT, Mathf.Max(info.m_minCornerOffset - num23, 2f));
-                            OffsetT = Mathf.Max(OffsetT, MinOffsetT);
+                            minOffsetT = Mathf.Clamp01(minOffsetT);
+                            num23 = LengthXZ(rightBezier.Position(minOffsetT) - rightBezier.a);
+                            minOffsetT = rightBezierXZ.Travel(minOffsetT, Mathf.Max(info.m_minCornerOffset - num23, 2f));
+                            offsetT = Mathf.Max(offsetT, minOffsetT);
                         }
                     }
                     var heightTemp = cornerDirection.y;
-                    cornerDirection = leftBezier.Tangent(OffsetT);
+                    cornerDirection = leftBezier.Tangent(offsetT);
                     cornerDirection.y = 0f;
                     cornerDirection.Normalize();
                     if (!info.m_flatJunctions)
                         cornerDirection.y = heightTemp;
 
-                    cornerPos = leftBezier.Position(OffsetT);
+                    cornerPos = leftBezier.Position(offsetT);
                     cornerPos.y = startPos.y;
                 }
             }
@@ -274,20 +275,21 @@ namespace NodeController.Utilities
                 float value = Mathf.Clamp01(info.m_halfWidth >= 4f ? leftBezierXZ.Travel(0f, 8f) : 0f);
                 float num24 = LengthXZ(leftBezier.Position(value) - leftBezier.a);
                 value = leftBezierXZ.Travel(value, Mathf.Max(info.m_minCornerOffset - num24, 2f));
+
                 if (info.m_straightSegmentEnds)
                 {
-                    float value2 = info.m_halfWidth >= 4f ? rightBezierXZ.Travel(0f, 8f) : 0f;
-                    value2 = Mathf.Clamp01(value2);
+                    float value2 = Mathf.Clamp01(info.m_halfWidth >= 4f ? rightBezierXZ.Travel(0f, 8f) : 0f);
                     num24 = LengthXZ(rightBezier.Position(value2) - rightBezier.a);
                     value2 = rightBezierXZ.Travel(value2, Mathf.Max(info.m_minCornerOffset - num24, 2f));
                     value = Mathf.Max(value, value2);
                 }
-                float y2 = cornerDirection.y;
+
+                var tempHeight = cornerDirection.y;
                 cornerDirection = leftBezier.Tangent(value);
                 cornerDirection.y = 0f;
                 cornerDirection.Normalize();
                 if (!info.m_flatJunctions)
-                    cornerDirection.y = y2;
+                    cornerDirection.y = tempHeight;
 
                 cornerPos = leftBezier.Position(value);
                 cornerPos.y = startPos.y;

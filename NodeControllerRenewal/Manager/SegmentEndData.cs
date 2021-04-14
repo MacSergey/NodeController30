@@ -51,7 +51,7 @@ namespace NodeController
         public bool IsNotOverlap => LeftSide.IsNotOverlap && RightSide.IsNotOverlap;
 
 
-        public float DefaultOffset => Mathf.Max(Info.m_minCornerOffset, Info.m_halfWidth < 4f ? 0f : 8f); /*CSURUtilities.GetMinCornerOffset(Id, NodeId);*/
+        public float DefaultOffset => Mathf.Max(Info.m_minCornerOffset, Info.m_halfWidth < 4f ? 0f : 8f);
         public bool DefaultIsFlat => Info.m_flatJunctions || Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public bool DefaultIsTwist => DefaultIsFlat && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public NetSegment.Flags DefaultFlags { get; set; }
@@ -187,7 +187,7 @@ namespace NodeController
             DefaultFlags = Segment.m_flags;
             PedestrianLaneCount = Info.CountPedestrianLanes();
 
-            GetSegmentBeziers(Id, out var bezier, out var leftSide, out var rightSide);
+            CalculateSegmentBeziers(Id, out var bezier, out var leftSide, out var rightSide);
             if (IsStartNode)
             {
                 RawSegmentBezier = bezier;
@@ -218,9 +218,14 @@ namespace NodeController
             NoTLProps = false;
         }
 
-        public static void UpdateSegmentBezier(ushort segmentId)
+
+        #endregion
+
+        #region CALCULATE
+
+        public static void CalculateSegmentBeziers(ushort segmentId)
         {
-            GetSegmentBeziers(segmentId, out var bezier, out var leftSide, out var rightSide);
+            CalculateSegmentBeziers(segmentId, out var bezier, out var leftSide, out var rightSide);
 
             Manager.GetSegmentData(segmentId, out var start, out var end);
             if (start != null)
@@ -236,7 +241,7 @@ namespace NodeController
                 end.RightSide.RawBezier = leftSide.Invert();
             }
         }
-        private static void GetSegmentBeziers(ushort segmentId, out BezierTrajectory bezier, out BezierTrajectory leftSide, out BezierTrajectory rightSide)
+        private static void CalculateSegmentBeziers(ushort segmentId, out BezierTrajectory bezier, out BezierTrajectory leftSide, out BezierTrajectory rightSide)
         {
             var segment = segmentId.GetSegment();
 
@@ -244,7 +249,7 @@ namespace NodeController
             var startDir = segment.m_startDirection;
             var endPos = segment.m_endNode.GetNode().m_position;
             var endDir = segment.m_endDirection;
-            ShiftSegment(true, segmentId, ref startPos, ref startDir, ref endPos, ref endDir);
+            CalculateSegmentShift(true, segmentId, ref startPos, ref startDir, ref endPos, ref endDir);
 
             bezier = new BezierTrajectory(startPos, startDir, endPos, endDir);
 
@@ -255,7 +260,7 @@ namespace NodeController
             leftSide = new BezierTrajectory(startPos + startNormal * halfWidth, startDir, endPos + endNormal * halfWidth, endDir);
             rightSide = new BezierTrajectory(startPos - startNormal * halfWidth, startDir, endPos - endNormal * halfWidth, endDir);
         }
-        private static void ShiftSegment(bool isStart, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
+        private static void CalculateSegmentShift(bool isStart, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
         {
             Manager.GetSegmentData(segmentId, out var start, out var end);
             var startShift = (isStart ? start : end)?.Shift ?? 0f;

@@ -181,11 +181,11 @@ namespace NodeController
             var parameters = new Type[] { typeof(ushort), typeof(bool), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType() };
             return AddPostfix(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerPostfix), typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
         }
-        private bool Patch_NetSegment_CalculateCorner_Transpiler()
-        {
-            var parameters = new Type[] { typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(ushort), typeof(ushort), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType() };
-            return AddTranspiler(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerTranspiler), typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
-        }
+        //private bool Patch_NetSegment_CalculateCorner_Transpiler()
+        //{
+        //    var parameters = new Type[] { typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(ushort), typeof(ushort), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType() };
+        //    return AddTranspiler(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerTranspiler), typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
+        //}
 
         private bool Patch_NetSegment_FindDirection()
         {

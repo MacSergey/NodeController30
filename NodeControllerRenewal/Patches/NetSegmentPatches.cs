@@ -112,114 +112,114 @@ namespace NodeController.Patches
             return !data?.IsSlope ?? flatJunctions;
         }
 
-        public static IEnumerable<CodeInstruction> CalculateCornerTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
-        {
-            instructions = FindDirectionTranspiler(instructions, original);
+        //public static IEnumerable<CodeInstruction> CalculateCornerTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
+        //{
+        //    instructions = FindDirectionTranspiler(instructions, original);
 
-            yield return TranspilerUtilities.GetLDArg(original, "startNodeID");
-            yield return TranspilerUtilities.GetLDArg(original, "ignoreSegmentID");
-            yield return TranspilerUtilities.GetLDArgRef(original, "startPos");
-            yield return TranspilerUtilities.GetLDArgRef(original, "startDir");
-            yield return TranspilerUtilities.GetLDArgRef(original, "endPos");
-            yield return TranspilerUtilities.GetLDArgRef(original, "endDir");
-            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(FixSegmentData)));
+        //    yield return TranspilerUtilities.GetLDArg(original, "startNodeID");
+        //    yield return TranspilerUtilities.GetLDArg(original, "ignoreSegmentID");
+        //    yield return TranspilerUtilities.GetLDArgRef(original, "startPos");
+        //    yield return TranspilerUtilities.GetLDArgRef(original, "startDir");
+        //    yield return TranspilerUtilities.GetLDArgRef(original, "endPos");
+        //    yield return TranspilerUtilities.GetLDArgRef(original, "endDir");
+        //    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(FixSegmentData)));
 
-            var halfWidthField = AccessTools.Field(typeof(NetInfo), nameof(NetInfo.m_halfWidth));
-            var halfWidthLocal = generator.DeclareLocal(typeof(float));
-            yield return TranspilerUtilities.GetLDArg(original, "info");
-            yield return new CodeInstruction(OpCodes.Ldfld, halfWidthField);
-            yield return TranspilerUtilities.GetLDArg(original, "startNodeID");
-            yield return TranspilerUtilities.GetLDArg(original, "ignoreSegmentID");
-            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(GetHalfWidth)));
-            yield return new CodeInstruction(OpCodes.Stloc_S, halfWidthLocal.LocalIndex);
+        //    var halfWidthField = AccessTools.Field(typeof(NetInfo), nameof(NetInfo.m_halfWidth));
+        //    var halfWidthLocal = generator.DeclareLocal(typeof(float));
+        //    yield return TranspilerUtilities.GetLDArg(original, "info");
+        //    yield return new CodeInstruction(OpCodes.Ldfld, halfWidthField);
+        //    yield return TranspilerUtilities.GetLDArg(original, "startNodeID");
+        //    yield return TranspilerUtilities.GetLDArg(original, "ignoreSegmentID");
+        //    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(GetHalfWidth)));
+        //    yield return new CodeInstruction(OpCodes.Stloc_S, halfWidthLocal.LocalIndex);
 
-            var minCornerOffsetField = AccessTools.Field(typeof(NetInfo), nameof(NetInfo.m_minCornerOffset));
-            var offsetLocal = generator.DeclareLocal(typeof(float));
-            yield return TranspilerUtilities.GetLDArg(original, "info");
-            yield return new CodeInstruction(OpCodes.Ldfld, minCornerOffsetField);
-            yield return new CodeInstruction(OpCodes.Ldloc_S, halfWidthLocal.LocalIndex);
-            yield return TranspilerUtilities.GetLDArg(original, "startNodeID");
-            yield return TranspilerUtilities.GetLDArg(original, "ignoreSegmentID");
-            yield return TranspilerUtilities.GetLDArg(original, "leftSide");
-            yield return TranspilerUtilities.GetLDArg(original, "startPos");
-            yield return TranspilerUtilities.GetLDArg(original, "startDir");
-            yield return TranspilerUtilities.GetLDArg(original, "endPos");
-            yield return TranspilerUtilities.GetLDArg(original, "endDir");
-            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(GetMinCornerOffset)));
-            yield return new CodeInstruction(OpCodes.Stloc_S, offsetLocal.LocalIndex);
+        //    var minCornerOffsetField = AccessTools.Field(typeof(NetInfo), nameof(NetInfo.m_minCornerOffset));
+        //    var offsetLocal = generator.DeclareLocal(typeof(float));
+        //    yield return TranspilerUtilities.GetLDArg(original, "info");
+        //    yield return new CodeInstruction(OpCodes.Ldfld, minCornerOffsetField);
+        //    yield return new CodeInstruction(OpCodes.Ldloc_S, halfWidthLocal.LocalIndex);
+        //    yield return TranspilerUtilities.GetLDArg(original, "startNodeID");
+        //    yield return TranspilerUtilities.GetLDArg(original, "ignoreSegmentID");
+        //    yield return TranspilerUtilities.GetLDArg(original, "leftSide");
+        //    yield return TranspilerUtilities.GetLDArg(original, "startPos");
+        //    yield return TranspilerUtilities.GetLDArg(original, "startDir");
+        //    yield return TranspilerUtilities.GetLDArg(original, "endPos");
+        //    yield return TranspilerUtilities.GetLDArg(original, "endDir");
+        //    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(GetMinCornerOffset)));
+        //    yield return new CodeInstruction(OpCodes.Stloc_S, offsetLocal.LocalIndex);
 
 
-            var wasGetCorrnerOffset = false;
+        //    var wasGetCorrnerOffset = false;
 
-            foreach (var instruction in instructions)
-            {
-                if (wasGetCorrnerOffset && instruction.opcode == OpCodes.Ldc_R4 && instruction.operand is float v && v == 0.01f)
-                    instruction.operand = -100f;
-                wasGetCorrnerOffset = false;
+        //    foreach (var instruction in instructions)
+        //    {
+        //        if (wasGetCorrnerOffset && instruction.opcode == OpCodes.Ldc_R4 && instruction.operand is float v && v == 0.01f)
+        //            instruction.operand = -100f;
+        //        wasGetCorrnerOffset = false;
 
-                if (instruction.opcode == OpCodes.Ldfld && instruction.operand == halfWidthField)
-                {
-                    yield return new CodeInstruction(OpCodes.Pop);
-                    yield return new CodeInstruction(OpCodes.Ldloc, halfWidthLocal.LocalIndex);
-                }
-                else if (instruction.opcode == OpCodes.Ldfld && instruction.operand == minCornerOffsetField)
-                {
-                    yield return new CodeInstruction(OpCodes.Pop);
-                    yield return new CodeInstruction(OpCodes.Ldloc, offsetLocal.LocalIndex);
-                    wasGetCorrnerOffset = true;
-                }
-                else
-                    yield return instruction;
-            }
-        }
-        private static void FixSegmentData(ushort nodeId, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
-        {
-            if (Manager.Instance[nodeId, segmentId] is SegmentEndData segmentEnd)
-            {
-                startPos = segmentEnd.RawSegmentBezier.StartPosition;
-                startDir = segmentEnd.RawSegmentBezier.StartDirection;
-                endPos = segmentEnd.RawSegmentBezier.EndPosition;
-                endDir = segmentEnd.RawSegmentBezier.EndDirection;
-            }
-        }
+        //        if (instruction.opcode == OpCodes.Ldfld && instruction.operand == halfWidthField)
+        //        {
+        //            yield return new CodeInstruction(OpCodes.Pop);
+        //            yield return new CodeInstruction(OpCodes.Ldloc, halfWidthLocal.LocalIndex);
+        //        }
+        //        else if (instruction.opcode == OpCodes.Ldfld && instruction.operand == minCornerOffsetField)
+        //        {
+        //            yield return new CodeInstruction(OpCodes.Pop);
+        //            yield return new CodeInstruction(OpCodes.Ldloc, offsetLocal.LocalIndex);
+        //            wasGetCorrnerOffset = true;
+        //        }
+        //        else
+        //            yield return instruction;
+        //    }
+        //}
+        //private static void FixSegmentData(ushort nodeId, ushort segmentId, ref Vector3 startPos, ref Vector3 startDir, ref Vector3 endPos, ref Vector3 endDir)
+        //{
+        //    if (Manager.Instance[nodeId, segmentId] is SegmentEndData segmentEnd)
+        //    {
+        //        startPos = segmentEnd.RawSegmentBezier.StartPosition;
+        //        startDir = segmentEnd.RawSegmentBezier.StartDirection;
+        //        endPos = segmentEnd.RawSegmentBezier.EndPosition;
+        //        endDir = segmentEnd.RawSegmentBezier.EndDirection;
+        //    }
+        //}
 
-        static float GetHalfWidth(float halfWidth, ushort nodeId, ushort segmentId)
-        {
-            if (Manager.Instance[nodeId, segmentId] is SegmentEndData segmentData)
-                return halfWidth * Mathf.Cos(segmentData.TwistAngle * Mathf.Deg2Rad);
-            else
-                return halfWidth;
-        }
-        static float GetMinCornerOffset(float cornerOffset, float halfWidth, ushort nodeId, ushort segmentId, bool leftSide, Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir)
-        {
-            if (Manager.Instance[nodeId, segmentId] is not SegmentEndData segmentData)
-                return cornerOffset;
+        //static float GetHalfWidth(float halfWidth, ushort nodeId, ushort segmentId)
+        //{
+        //    if (Manager.Instance[nodeId, segmentId] is SegmentEndData segmentData)
+        //        return halfWidth * Mathf.Cos(segmentData.TwistAngle * Mathf.Deg2Rad);
+        //    else
+        //        return halfWidth;
+        //}
+        //static float GetMinCornerOffset(float cornerOffset, float halfWidth, ushort nodeId, ushort segmentId, bool leftSide, Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir)
+        //{
+        //    if (Manager.Instance[nodeId, segmentId] is not SegmentEndData segmentData)
+        //        return cornerOffset;
 
-            var middle = segmentData.RawSegmentBezier;
-            var side = leftSide ? segmentData.LeftSide.RawBezier : segmentData.RightSide.RawBezier;
+        //    var middle = segmentData.RawSegmentBezier;
+        //    var side = leftSide ? segmentData.LeftSide.RawBezier : segmentData.RightSide.RawBezier;
 
-            var t = middle.Travel(0f, segmentData.Offset);
-            var position = middle.Position(t);
-            var direction = middle.Tangent(t).Turn90(true).TurnDeg(segmentData.RotateAngle, true);
+        //    var t = middle.Travel(0f, segmentData.Offset);
+        //    var position = middle.Position(t);
+        //    var direction = middle.Tangent(t).Turn90(true).TurnDeg(segmentData.RotateAngle, true);
 
-            var line = new StraightTrajectory(position, position + direction, false);
+        //    var line = new StraightTrajectory(position, position + direction, false);
 
-            var intersection = Intersection.CalculateSingle(side, line);
-            if (intersection.IsIntersect)
-            {
-                side = side.Cut(0f, intersection.FirstT);
-                return side.Length;
-            }
+        //    var intersection = Intersection.CalculateSingle(side, line);
+        //    if (intersection.IsIntersect)
+        //    {
+        //        side = side.Cut(0f, intersection.FirstT);
+        //        return side.Length;
+        //    }
 
-            if (segmentData.RotateAngle == 0f)
-                return t <= 0.5f ? 0f : side.Length;
-            else
-                return leftSide ^ segmentData.RotateAngle > 0f ? 0f : side.Length;
-        }
+        //    if (segmentData.RotateAngle == 0f)
+        //        return t <= 0.5f ? 0f : side.Length;
+        //    else
+        //        return leftSide ^ segmentData.RotateAngle > 0f ? 0f : side.Length;
+        //}
 
         public static void CalculateSegmentPrefix(ushort segmentID)
         {
-            SegmentEndData.UpdateSegmentBezier(segmentID);
+            SegmentEndData.CalculateSegmentBeziers(segmentID);
         }
     }
 }

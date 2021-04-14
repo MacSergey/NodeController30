@@ -246,20 +246,10 @@ namespace NodeController
         {
             var quaternion = Quaternion.FromToRotation(BeginDirection, CurrentDirection);
             var angle = (BeginRotate + quaternion.eulerAngles.y).RoundToNearest(RoundTo) % 360f;
-            SegmentEnd.RotateAngle = Delay(angle > 180f ? angle - 360f : angle);
+            SegmentEnd.RotateAngle = angle > 180f ? angle - 360f : angle;
             SegmentEnd.UpdateNode();
 
             Tool.Panel.UpdatePanel();
-
-            static float Delay(float angle)
-            {
-                if (angle >= 10f)
-                    return angle - 10f;
-                else if (angle <= -10f)
-                    return angle + 10f;
-                else
-                    return 0f;
-            }
         }
 
         public override void OnPrimaryMouseClicked(Event e) => OnMouseUp(e);
