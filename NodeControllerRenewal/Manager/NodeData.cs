@@ -377,7 +377,7 @@ namespace NodeController
                 NodeStyleType.UTurn => IsMain && IsRoad && Info.m_forwardVehicleLaneCount > 0 && Info.m_backwardVehicleLaneCount > 0,
                 NodeStyleType.Stretch => CanModifyTextures && !middle && IsStraight,
                 NodeStyleType.Bend => !middle,
-                NodeStyleType.Middle => IsStraight || Is180,
+                NodeStyleType.Middle => middle && IsStraight || Is180,
                 NodeStyleType.Custom => true,
                 NodeStyleType.End => IsEnd,
                 _ => throw new Exception("Unreachable code"),
