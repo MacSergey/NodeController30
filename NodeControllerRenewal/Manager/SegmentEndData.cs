@@ -21,6 +21,7 @@ namespace NodeController
         public static float DotRadius => 0.75f;
         public static float MinPossibleRotate => -80f;
         public static float MaxPossibleRotate => 80f;
+        public static float MinStartOffset => 8f;
 
         #endregion
 
@@ -50,7 +51,7 @@ namespace NodeController
         public bool IsNotOverlap => LeftSide.IsNotOverlap && RightSide.IsNotOverlap;
 
 
-        public float DefaultOffset => CSURUtilities.GetMinCornerOffset(Id, NodeId);
+        public float DefaultOffset => Mathf.Max(Info.m_minCornerOffset, Info.m_halfWidth < 4f ? 0f : 8f); /*CSURUtilities.GetMinCornerOffset(Id, NodeId);*/
         public bool DefaultIsFlat => Info.m_flatJunctions || Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public bool DefaultIsTwist => DefaultIsFlat && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public NetSegment.Flags DefaultFlags { get; set; }
@@ -92,7 +93,17 @@ namespace NodeController
         public float Offset
         {
             get => _offsetValue;
-            set => _offsetValue = Math.Max(value, _minOffset);
+            set
+            {
+                _offsetValue = Math.Max(value, _minOffset);
+                if (IsBorderRotate)
+                    WasBorderRotate = true;
+                if (WasBorderRotate)
+                {
+                    CalculateMinMaxRotate();
+                    _rotateValue = Mathf.Clamp(0f, MinRotate, MaxRotate);
+                }
+            }
         }
         public float MinOffset
         {
@@ -107,8 +118,13 @@ namespace NodeController
         public float RotateAngle
         {
             get => _rotateValue;
-            set => _rotateValue = Mathf.Clamp(value, MinRotate, MaxRotate);
+            set
+            {
+                _rotateValue = Mathf.Clamp(value, MinRotate, MaxRotate);
+                WasBorderRotate = false;
+            }
         }
+        private bool WasBorderRotate { get; set; }
         public float MinRotate
         {
             get => _minRotate;
@@ -184,7 +200,7 @@ namespace NodeController
                 LeftSide.RawBezier = rightSide.Invert();
                 RightSide.RawBezier = leftSide.Invert();
             }
-            CalculateMinMaxRotate();
+            Calculate();
 
             ResetToDefault();
         }

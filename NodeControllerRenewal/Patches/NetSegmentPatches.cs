@@ -18,32 +18,12 @@ namespace NodeController.Patches
     {
         public static bool CalculateCornerPrefix(ushort ignoreSegmentID, ushort startNodeID, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection, ref bool smooth)
         {
-            if(Manager.Instance[startNodeID, ignoreSegmentID] is not SegmentEndData data)
+            if (Manager.Instance[startNodeID, ignoreSegmentID] is not SegmentEndData data)
                 return true;
 
             smooth = (data.Node.m_flags & NetNode.Flags.Middle) != 0;
 
-            //var middle = data.SegmentBezier;
-            //var side = leftSide ? data.LeftSideBezier : data.RightSideBezier;
-
-            //var t = middle.Travel(0f, data.Offset);
-            //var position = middle.Position(t);
-            //var direction = middle.Tangent(t).Turn90(true).TurnDeg(data.RotateAngle, true);
-
-            //var line = new StraightTrajectory(position, position + direction, false);
-            //var intersection = Intersection.CalculateSingle(side, line);
-
-            //float sideT;
-            //if (intersection.IsIntersect)
-            //    sideT = intersection.FirstT;
-            //else if (data.RotateAngle == 0f)
-            //    sideT = t <= 0.5f ? 0f : 1f;
-            //else
-            //    sideT = leftSide ^ data.RotateAngle > 0f ? 0f : 1f;
-
-            //cornerPos = side.Position(sideT);
-            //cornerDirection = side.Tangent(sideT);
-            if(leftSide)
+            if (leftSide)
             {
                 cornerPos = data.LeftSide.Position;
                 cornerDirection = data.LeftSide.Direction;
@@ -58,8 +38,7 @@ namespace NodeController.Patches
         }
         public static void CalculateCornerPostfix(ushort segmentID, bool start, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection)
         {
-            var data = Manager.GetSegmentData(segmentID, start);
-            if (data == null && !GUI.Settings.GameConfig.UnviversalSlopeFixes)
+            if (Manager.GetSegmentData(segmentID, start) is not SegmentEndData data)
                 return;
 
             var segment = segmentID.GetSegment();
@@ -88,20 +67,13 @@ namespace NodeController.Patches
                     }
                 }
             }
-            if (data != null)
-            {
-                var quaternion = Quaternion.FromToRotation(Vector3.forward, cornerDirection);
-                var result = quaternion * Quaternion.Euler(data.SlopeAngle, 0, 0);
-                cornerDirection = result * Vector3.forward;
 
-                cornerPos.y += (leftSide ? -1 : 1) * data.Info.m_halfWidth * Mathf.Sin(data.TwistAngle * Mathf.Deg2Rad);
-            }
-            else
-            {
-                var absY = Mathf.Abs(cornerDirection.y);
-                if (absY > 2)
-                    cornerDirection *= 2 / absY;
-            }
+            var quaternion = Quaternion.FromToRotation(Vector3.forward, cornerDirection);
+            var result = quaternion * Quaternion.Euler(data.SlopeAngle, 0, 0);
+            cornerDirection = result * Vector3.forward;
+
+            cornerPos.y += (leftSide ? -1 : 1) * data.Info.m_halfWidth * Mathf.Sin(data.TwistAngle * Mathf.Deg2Rad);
+
         }
         public static void FixCornerPos(Vector3 nodePos, Vector3 segmentEndDir, ref Vector3 cornerPos)
         {
