@@ -175,7 +175,7 @@ namespace NodeController
         protected override void Reset(IToolMode prevMode)
         {
             SegmentEnd = prevMode is EditToolMode editMode ? editMode.HoverSegmentEndCenter : null;
-            CachedRotate = SegmentEnd.RotateAngle;
+            CachedRotate = SegmentEnd.IsBorderRotate ? 0f : SegmentEnd.RotateAngle;
         }
         public override void OnMouseDrag(Event e)
         {
@@ -246,10 +246,20 @@ namespace NodeController
         {
             var quaternion = Quaternion.FromToRotation(BeginDirection, CurrentDirection);
             var angle = (BeginRotate + quaternion.eulerAngles.y).RoundToNearest(RoundTo) % 360f;
-            SegmentEnd.RotateAngle = angle > 180f ? angle - 360f : angle;
+            SegmentEnd.RotateAngle = Delay(angle > 180f ? angle - 360f : angle);
             SegmentEnd.UpdateNode();
 
             Tool.Panel.UpdatePanel();
+
+            static float Delay(float angle)
+            {
+                if (angle >= 10f)
+                    return angle - 10f;
+                else if (angle <= -10f)
+                    return angle + 10f;
+                else
+                    return 0f;
+            }
         }
 
         public override void OnPrimaryMouseClicked(Event e) => OnMouseUp(e);

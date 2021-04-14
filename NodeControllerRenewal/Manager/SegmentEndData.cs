@@ -292,8 +292,8 @@ namespace NodeController
             }
             for (var i = 0; i < count; i += 1)
             {
-                endDatas[i].LeftSide.Limit = leftLimits[i];
-                endDatas[i].RightSide.Limit = rightLimits[i];
+                endDatas[i].LeftSide.LimitT = leftLimits[i];
+                endDatas[i].RightSide.LimitT = rightLimits[i];
                 endDatas[i].Calculate();
             }
         }
@@ -492,7 +492,7 @@ namespace NodeController
     }
     public class SegmentSide
     {
-        private float _limit;
+        private float _limitT;
         private BezierTrajectory _rawBezier;
         private float _rawT;
 
@@ -507,12 +507,12 @@ namespace NodeController
             }
         }
         public BezierTrajectory Bezier { get; private set; }
-        public float Limit
+        public float LimitT
         {
-            get => _limit;
+            get => _limitT;
             set
             {
-                _limit = value;
+                _limitT = value;
                 Update();
             }
         }
@@ -525,12 +525,12 @@ namespace NodeController
                 Update();
             }
         }
-        private float T => Mathf.Max(RawT, Limit);
+        private float T => Mathf.Max(RawT, LimitT);
 
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
 
-        public bool IsNotOverlap => RawT >= Limit;
+        public bool IsNotOverlap => RawT >= LimitT;
 
         public SegmentSide(SideType type)
         {
@@ -538,10 +538,10 @@ namespace NodeController
         }
         private void Update()
         {
-            Bezier = RawBezier.Cut(_limit, 1f);
+            Bezier = RawBezier.Cut(_limitT, 1f);
 
             var t = T;
-            if (RawT <= Limit)
+            if (RawT <= LimitT)
                 t += RawBezier.Travel(0f, 0.01f);
 
             Position = RawBezier.Position(t);
@@ -550,15 +550,15 @@ namespace NodeController
 
         public void Render(OverlayData dataAllow, OverlayData dataForbidden)
         {
-            if (Limit == 0f)
+            if (LimitT == 0f)
                 RawBezier.Cut(0f, RawT).Render(dataAllow);
             else
             {
                 dataForbidden.CutEnd = true;
                 dataAllow.CutStart = true;
-                RawBezier.Cut(0f, Math.Min(RawT, Limit)).Render(dataForbidden);
-                if (RawT > Limit)
-                    RawBezier.Cut(Limit, RawT).Render(dataAllow);
+                RawBezier.Cut(0f, Math.Min(RawT, LimitT)).Render(dataForbidden);
+                if (RawT > LimitT)
+                    RawBezier.Cut(LimitT, RawT).Render(dataAllow);
             }
         }
     }
