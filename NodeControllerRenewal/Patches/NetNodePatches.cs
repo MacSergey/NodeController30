@@ -14,42 +14,6 @@ namespace NodeController.Patches
 {
     public static class NetNodePatches
     {
-        public static void CalculateNodePostfix(ushort nodeID)
-        {
-            if (Manager.Instance[nodeID] is not NodeData data)
-                return;
-
-            ref var node = ref nodeID.GetNodeRef();
-            if (node.m_flags.IsFlagSet(NetNode.Flags.Outside))
-                return;
-
-            if (data.NeedsTransitionFlag)
-                node.m_flags |= NetNode.Flags.Transition;
-            else
-                node.m_flags &= ~NetNode.Flags.Transition;
-
-            if (data.IsMiddleNode)
-            {
-                node.m_flags |= NetNode.Flags.Middle;
-                node.m_flags &= ~(NetNode.Flags.Junction | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward);
-
-                if (data.IsMoveableNode)
-                    node.m_flags |= NetNode.Flags.Moveable;
-                else
-                    node.m_flags &= ~NetNode.Flags.Moveable;
-            }
-            else if (data.IsBendNode)
-            {
-                node.m_flags |= NetNode.Flags.Bend; // TODO set asymForward and asymBackward
-                node.m_flags &= ~(NetNode.Flags.Junction | NetNode.Flags.Middle);
-            }
-            else if (data.IsJunctionNode)
-            {
-                node.m_flags |= NetNode.Flags.Junction;
-                node.m_flags &= ~(NetNode.Flags.Middle | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward | NetNode.Flags.Bend | NetNode.Flags.End);
-            }
-        }
-
         public static void RefreshJunctionDataPostfix(ref NetNode __instance, ref RenderManager.Instance data)
         {
             var nodeId = __instance.GetID();

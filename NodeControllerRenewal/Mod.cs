@@ -134,14 +134,9 @@ namespace NodeController
 
         private void PatchNetNode(ref bool success)
         {
-            success &= Patch_NetNode_CalculateNode();
             success &= Patch_NetNode_RefreshJunctionData_Postfix();
             success &= Patch_NetNode_RefreshJunctionData_Transpiler();
             success &= Patch_NetNode_RenderInstance();
-        }
-        private bool Patch_NetNode_CalculateNode()
-        {
-            return AddPostfix(typeof(NetNodePatches), nameof(NetNodePatches.CalculateNodePostfix), typeof(NetNode), nameof(NetNode.CalculateNode));
         }
         private bool Patch_NetNode_RefreshJunctionData_Postfix()
         {
@@ -166,7 +161,6 @@ namespace NodeController
         {
             success &= Patch_NetSegment_CalculateCorner_Prefix();
             success &= Patch_NetSegment_CalculateCorner_Postfix();
-            //success &= Patch_NetSegment_CalculateCorner_Transpiler();
             success &= Patch_NetSegment_FindDirection();
             success &= Patch_NetSegment_CalculateSegment_Prefix();
         }
@@ -181,11 +175,6 @@ namespace NodeController
             var parameters = new Type[] { typeof(ushort), typeof(bool), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType() };
             return AddPostfix(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerPostfix), typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
         }
-        //private bool Patch_NetSegment_CalculateCorner_Transpiler()
-        //{
-        //    var parameters = new Type[] { typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(ushort), typeof(ushort), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType() };
-        //    return AddTranspiler(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerTranspiler), typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
-        //}
 
         private bool Patch_NetSegment_FindDirection()
         {

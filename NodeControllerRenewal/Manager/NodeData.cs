@@ -44,6 +44,7 @@ namespace NodeController
         public bool IsDefault => Type == DefaultType && !SegmentEndDatas.Any(s => s?.IsDefault != true);
 
         public NetNode.Flags DefaultFlags { get; private set; }
+        //public NetNode.Flags CurrentFlags { get; private set; }
         public NodeStyleType DefaultType { get; private set; }
 
         public bool IsEnd => SegmentEnds.Count == 1;
@@ -135,9 +136,8 @@ namespace NodeController
         public bool IsMiddleNode => Type == NodeStyleType.Middle;
         public bool IsBendNode => Type == NodeStyleType.Bend;
         public bool IsJunctionNode => !IsMiddleNode && !IsBendNode && !IsEndNode;
-        public bool IsMoveableNode => Style.IsDefault;
-
         public bool IsMoveableEnds => Style.IsMoveable;
+
 
         public bool CanModifyTextures => IsRoad && !IsCSUR;
         public bool NeedsTransitionFlag => IsMain && (Type == NodeStyleType.Custom || Type == NodeStyleType.Crossing || Type == NodeStyleType.UTurn);
@@ -150,28 +150,15 @@ namespace NodeController
         public NodeData(ushort nodeId, NodeStyleType? nodeType = null)
         {
             Id = nodeId;
-
-            Update();
-
-            DefaultFlags = Node.m_flags;
-
-            if (DefaultFlags.IsFlagSet(NetNode.Flags.Middle))
-                DefaultType = NodeStyleType.Middle;
-            else if (DefaultFlags.IsFlagSet(NetNode.Flags.Bend))
-                DefaultType = NodeStyleType.Bend;
-            else if (DefaultFlags.IsFlagSet(NetNode.Flags.Junction))
-                DefaultType = NodeStyleType.Custom;
-            else if (DefaultFlags.IsFlagSet(NetNode.Flags.End))
-                DefaultType = NodeStyleType.End;
-            else
-                throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
-
-            SetType(nodeType != null && IsPossibleType(nodeType.Value) ? nodeType.Value : DefaultType, true);
+            UpdateSegmentEnds();
+            UpdateMainRoad();
+            UpdateStyle(nodeType);
         }
         public void Update()
         {
             UpdateSegmentEnds();
             UpdateMainRoad();
+            UpdateFlags();
         }
         private void UpdateSegmentEnds()
         {
@@ -208,6 +195,60 @@ namespace NodeController
             if (!ContainsSegment(MainRoad.Second))
                 MainRoad.Second = FindMain(MainRoad.First);
         }
+        private void UpdateFlags()
+        {
+            ref var node = ref Id.GetNodeRef();
+
+            if (node.m_flags == NetNode.Flags.None || node.m_flags.IsFlagSet(NetNode.Flags.Outside))
+                return;
+
+            if (node.m_flags != DefaultFlags)
+                UpdateStyle(Style.Type);
+
+            if (NeedsTransitionFlag)
+                node.m_flags |= NetNode.Flags.Transition;
+            else
+                node.m_flags &= ~NetNode.Flags.Transition;
+
+            if (IsMiddleNode)
+            {
+                node.m_flags |= NetNode.Flags.Middle;
+                node.m_flags &= ~(NetNode.Flags.Junction | NetNode.Flags.Bend | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward);
+
+                if (Style.IsDefault)
+                    node.m_flags |= NetNode.Flags.Moveable;
+                else
+                    node.m_flags &= ~NetNode.Flags.Moveable;
+            }
+            else if (IsBendNode)
+            {
+                node.m_flags |= NetNode.Flags.Bend; // TODO set asymForward and asymBackward
+                node.m_flags &= ~(NetNode.Flags.Junction | NetNode.Flags.Middle);
+            }
+            else if (IsJunctionNode)
+            {
+                node.m_flags |= NetNode.Flags.Junction;
+                node.m_flags &= ~(NetNode.Flags.Middle | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward | NetNode.Flags.Bend | NetNode.Flags.End);
+            }
+        }
+        private void UpdateStyle(NodeStyleType? nodeType = null)
+        {
+            DefaultFlags = Node.m_flags;
+
+            if (DefaultFlags.IsFlagSet(NetNode.Flags.Middle))
+                DefaultType = NodeStyleType.Middle;
+            else if (DefaultFlags.IsFlagSet(NetNode.Flags.Bend))
+                DefaultType = NodeStyleType.Bend;
+            else if (DefaultFlags.IsFlagSet(NetNode.Flags.Junction))
+                DefaultType = NodeStyleType.Custom;
+            else if (DefaultFlags.IsFlagSet(NetNode.Flags.End))
+                DefaultType = NodeStyleType.End;
+            else
+                throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
+
+            SetType(nodeType != null && IsPossibleType(nodeType.Value) ? nodeType.Value : DefaultType, true);
+        }
+
         private ushort FindMain(ushort ignore)
         {
             var main = SegmentEnds.Values.Aggregate(default(SegmentEndData), (i, j) => Compare(i, j, ignore));
@@ -230,12 +271,10 @@ namespace NodeController
                     if ((result = firstInfo.m_halfWidth.CompareTo(secondInfo.m_halfWidth)) == 0)
                         result = ((firstInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false).CompareTo((secondInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false);
 
-            if (result >= 0)
-                return first;
-            else
-                return second;
+            return result >= 0 ? first : second;
         }
         public void UpdateNode() => Manager.Instance.Update(Id);
+        //public void UpdateFlags() => CurrentFlags = Node.m_flags;
         public void ResetToDefault()
         {
             ResetToDefaultImpl(true);
@@ -249,6 +288,9 @@ namespace NodeController
 
         private void SetType(NodeStyleType type, bool force)
         {
+            if (type == Style?.Type)
+                return;
+
             NodeStyle newStyle = type switch
             {
                 NodeStyleType.Middle => new MiddleNode(this),
@@ -383,6 +425,7 @@ namespace NodeController
         //};
 
         #endregion
+
     }
     public class MainRoad
     {
