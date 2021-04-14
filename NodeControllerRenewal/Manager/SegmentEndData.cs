@@ -21,7 +21,6 @@ namespace NodeController
         public static float DotRadius => 0.75f;
         public static float MinPossibleRotate => -80f;
         public static float MaxPossibleRotate => 80f;
-        public static float MinStartOffset => 8f;
 
         #endregion
 
@@ -86,32 +85,22 @@ namespace NodeController
         }
         private float _offsetValue;
         private float _rotateValue;
-        private float _minRotate;
-        private float _maxRotate;
         private float _minOffset;
 
         public float Offset
         {
             get => _offsetValue;
-            set
-            {
-                _offsetValue = Math.Max(value, _minOffset);
-                if (IsBorderRotate)
-                    WasBorderRotate = true;
-                if (WasBorderRotate)
-                {
-                    CalculateMinMaxRotate();
-                    _rotateValue = Mathf.Clamp(0f, MinRotate, MaxRotate);
-                }
-            }
+            set => SetOffset(value, true);
         }
+        public float MinPossibleOffset { get; private set; }
+        public float MaxPossibleOffset { get; private set; }
         public float MinOffset
         {
             get => _minOffset;
             private set
             {
                 _minOffset = value;
-                Offset = Offset;
+                SetOffset(Offset);
             }
         }
         public float Shift { get; set; }
@@ -120,29 +109,13 @@ namespace NodeController
             get => _rotateValue;
             set
             {
-                _rotateValue = Mathf.Clamp(value, MinRotate, MaxRotate);
+                SetRotate(value);
                 WasBorderRotate = false;
             }
         }
         private bool WasBorderRotate { get; set; }
-        public float MinRotate
-        {
-            get => _minRotate;
-            private set
-            {
-                _minRotate = value;
-                RotateAngle = RotateAngle;
-            }
-        }
-        public float MaxRotate
-        {
-            get => _maxRotate;
-            private set
-            {
-                _maxRotate = value;
-                RotateAngle = RotateAngle;
-            }
-        }
+        public float MinRotate { get; set; }
+        public float MaxRotate { get; set; }
         public float SlopeAngle { get; set; }
         public float TwistAngle { get; set; }
 
@@ -200,15 +173,29 @@ namespace NodeController
                 LeftSide.RawBezier = rightSide.Invert();
                 RightSide.RawBezier = leftSide.Invert();
             }
-            Calculate();
-
-            ResetToDefault();
         }
         public void UpdateNode() => Manager.Instance.Update(NodeId);
 
-        public void ResetToDefault()
+        public void ResetToDefault(NodeStyle style, bool force)
         {
-            Offset = DefaultOffset;
+            MinPossibleOffset = style.MinOffset;
+            MaxPossibleOffset = style.MaxOffset;
+            if (!style.SupportOffset || force)
+                SetOffset(DefaultOffset);
+            else
+                SetOffset(Offset);
+            if (!style.SupportShift || force)
+                Shift = NodeStyle.DefaultShift;
+            if (!style.SupportRotate || force)
+                SetRotate(NodeStyle.DefaultRotate);
+            if (!style.SupportSlope || force)
+                SlopeAngle = NodeStyle.DefaultSlope;
+            if (!style.SupportTwist || force)
+                TwistAngle = NodeStyle.DefaultTwist;
+            if (!style.SupportNoMarking || force)
+                NoMarkings = NodeStyle.DefaultNoMarking;
+            if (!style.SupportSlopeJunction || force)
+                IsSlope = NodeStyle.DefaultSlopeJunction;
 
             IsSlope = !DefaultIsFlat;
             IsTwist = DefaultIsTwist;
@@ -216,8 +203,22 @@ namespace NodeController
             NoJunctionTexture = false;
             NoJunctionProps = false;
             NoTLProps = false;
+
+            Calculate();
         }
 
+        private void SetOffset(float value, bool changeRotate = false)
+        {
+            _offsetValue = Mathf.Clamp(Math.Max(value, _minOffset), MinPossibleOffset, MaxPossibleOffset);
+            if (IsBorderRotate)
+                WasBorderRotate = true;
+            if (changeRotate && WasBorderRotate)
+            {
+                CalculateMinMaxRotate();
+                _rotateValue = Mathf.Clamp(0f, MinRotate, MaxRotate);
+            }
+        }
+        private void SetRotate(float value) => _rotateValue = Mathf.Clamp(value, MinRotate, MaxRotate);
 
         #endregion
 
@@ -285,38 +286,48 @@ namespace NodeController
             var endDatas = data.SegmentEndDatas.OrderBy(s => s.AbsoluteAngle).ToArray();
             var count = endDatas.Length;
 
-            var leftLimits = new float[count];
-            var rightLimits = new float[count];
+            var leftMitT = new float[count];
+            var rightMinT = new float[count];
 
-            for (var i = 0; i < count; i += 1)
+            if (count == 1)
             {
-                var j = (i + 1) % count;
+                endDatas[0].LeftSide.MinT = 0f;
+                endDatas[0].RightSide.MinT = 0f;
+                endDatas[0].Calculate();
+            }
+            else
+            {
+                for (var i = 0; i < count; i += 1)
+                {
+                    var j = (i + 1) % count;
 
-                var intersect = Intersection.CalculateSingle(endDatas[i].LeftSide.RawBezier, endDatas[j].RightSide.RawBezier);
-                if (intersect.IsIntersect)
-                {
-                    leftLimits[i] = Mathf.Max(leftLimits[i], intersect.FirstT);
-                    rightLimits[j] = Mathf.Max(rightLimits[j], intersect.SecondT);
+                    var intersect = Intersection.CalculateSingle(endDatas[i].LeftSide.RawBezier, endDatas[j].RightSide.RawBezier);
+                    if (intersect.IsIntersect)
+                    {
+                        leftMitT[i] = Mathf.Max(leftMitT[i], intersect.FirstT);
+                        rightMinT[j] = Mathf.Max(rightMinT[j], intersect.SecondT);
+                    }
+                    intersect = Intersection.CalculateSingle(endDatas[i].LeftSide.RawBezier, endDatas[j].LeftSide.RawBezier);
+                    if (intersect.IsIntersect)
+                    {
+                        leftMitT[i] = Mathf.Max(leftMitT[i], intersect.FirstT);
+                        leftMitT[j] = Mathf.Max(leftMitT[j], intersect.SecondT);
+                    }
+                    intersect = Intersection.CalculateSingle(endDatas[i].RightSide.RawBezier, endDatas[j].RightSide.RawBezier);
+                    if (intersect.IsIntersect)
+                    {
+                        rightMinT[i] = Mathf.Max(rightMinT[i], intersect.FirstT);
+                        rightMinT[j] = Mathf.Max(rightMinT[j], intersect.SecondT);
+                    }
                 }
-                intersect = Intersection.CalculateSingle(endDatas[i].LeftSide.RawBezier, endDatas[j].LeftSide.RawBezier);
-                if (intersect.IsIntersect)
+                for (var i = 0; i < count; i += 1)
                 {
-                    leftLimits[i] = Mathf.Max(leftLimits[i], intersect.FirstT);
-                    leftLimits[j] = Mathf.Max(leftLimits[j], intersect.SecondT);
-                }
-                intersect = Intersection.CalculateSingle(endDatas[i].RightSide.RawBezier, endDatas[j].RightSide.RawBezier);
-                if (intersect.IsIntersect)
-                {
-                    rightLimits[i] = Mathf.Max(rightLimits[i], intersect.FirstT);
-                    rightLimits[j] = Mathf.Max(rightLimits[j], intersect.SecondT);
+                    endDatas[i].LeftSide.MinT = leftMitT[i];
+                    endDatas[i].RightSide.MinT = rightMinT[i];
+                    endDatas[i].Calculate();
                 }
             }
-            for (var i = 0; i < count; i += 1)
-            {
-                endDatas[i].LeftSide.LimitT = leftLimits[i];
-                endDatas[i].RightSide.LimitT = rightLimits[i];
-                endDatas[i].Calculate();
-            }
+
         }
         private void Calculate()
         {
@@ -368,22 +379,20 @@ namespace NodeController
 
             var startLeft = GetAngle(LeftSide.Bezier.StartPosition - position, direction);
             var endLeft = GetAngle(LeftSide.Bezier.EndPosition - position, direction);
-            var startRight = GetAngle(RightSide.Bezier.StartPosition - position, direction);
-            var endRight = GetAngle(RightSide.Bezier.EndPosition - position, direction);
+            var startRight = GetAngle(position - RightSide.Bezier.StartPosition, direction);
+            var endRight = GetAngle(position - RightSide.Bezier.EndPosition, direction);
 
-            MinRotate = Mathf.Max(startLeft, FixAngle(endRight), MinPossibleRotate);
-            MaxRotate = Mathf.Min(endLeft, FixAngle(startRight), MaxPossibleRotate);
+            MinRotate = Mathf.Clamp(Mathf.Max(startLeft, endRight), MinPossibleRotate, MaxPossibleRotate);
+            MaxRotate = Mathf.Clamp(Mathf.Min(endLeft, startRight), MinPossibleRotate, MaxPossibleRotate);
 
-            RotateAngle = RotateAngle;
+            SetRotate(RotateAngle);
 
             static float GetAngle(Vector3 cornerDir, Vector3 segmentDir)
             {
                 var angle = Vector3.Angle(segmentDir, cornerDir);
                 var sign = Mathf.Sign(Vector3.Cross(segmentDir, cornerDir).y);
-
                 return sign * angle;
             }
-            static float FixAngle(float angle) => angle < 0 ? angle + 180f : angle - 180f;
         }
         private void CalculatePosition()
         {
@@ -513,7 +522,7 @@ namespace NodeController
     }
     public class SegmentSide
     {
-        private float _limitT;
+        private float _minT;
         private BezierTrajectory _rawBezier;
         private float _rawT;
 
@@ -528,12 +537,12 @@ namespace NodeController
             }
         }
         public BezierTrajectory Bezier { get; private set; }
-        public float LimitT
+        public float MinT
         {
-            get => _limitT;
+            get => _minT;
             set
             {
-                _limitT = value;
+                _minT = value;
                 Update();
             }
         }
@@ -546,12 +555,10 @@ namespace NodeController
                 Update();
             }
         }
-        private float T => Mathf.Max(RawT, LimitT);
-
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
 
-        public bool IsNotOverlap => RawT >= LimitT;
+        public bool IsNotOverlap => RawT >= MinT;
 
         public SegmentSide(SideType type)
         {
@@ -559,27 +566,25 @@ namespace NodeController
         }
         private void Update()
         {
-            Bezier = RawBezier.Cut(_limitT, 1f);
+            Bezier = RawBezier.Cut(_minT, 1f);
 
-            var t = T;
-            if (RawT <= LimitT)
-                t += RawBezier.Travel(0f, 0.01f);
-
+            var delta = 0.01f / RawBezier.Length;
+            var t = Mathf.Max(RawT + delta, MinT);
             Position = RawBezier.Position(t);
             Direction = RawBezier.Tangent(t);
         }
 
         public void Render(OverlayData dataAllow, OverlayData dataForbidden)
         {
-            if (LimitT == 0f)
+            if (MinT == 0f)
                 RawBezier.Cut(0f, RawT).Render(dataAllow);
             else
             {
                 dataForbidden.CutEnd = true;
                 dataAllow.CutStart = true;
-                RawBezier.Cut(0f, Math.Min(RawT, LimitT)).Render(dataForbidden);
-                if (RawT > LimitT)
-                    RawBezier.Cut(LimitT, RawT).Render(dataAllow);
+                RawBezier.Cut(0f, Math.Min(RawT, MinT)).Render(dataForbidden);
+                if (RawT > MinT)
+                    RawBezier.Cut(MinT, RawT).Render(dataAllow);
             }
         }
     }

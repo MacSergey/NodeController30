@@ -16,11 +16,10 @@ namespace NodeController.Patches
     {
         public static void CalculateNodePostfix(ushort nodeID)
         {
-            var data = Manager.Instance[nodeID];
-            ref var node = ref nodeID.GetNodeRef();
-
-            if (data == null || !data.IsMain)
+            if (Manager.Instance[nodeID] is not NodeData data)
                 return;
+
+            ref var node = ref nodeID.GetNodeRef();
             if (node.m_flags.IsFlagSet(NetNode.Flags.Outside))
                 return;
 
@@ -31,26 +30,24 @@ namespace NodeController.Patches
 
             if (data.IsMiddleNode)
             {
-                node.m_flags &= ~(NetNode.Flags.Junction | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward);
                 node.m_flags |= NetNode.Flags.Middle;
-            }
+                node.m_flags &= ~(NetNode.Flags.Junction | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward);
 
-            if (data.IsBendNode)
+                if (data.IsMoveableNode)
+                    node.m_flags |= NetNode.Flags.Moveable;
+                else
+                    node.m_flags &= ~NetNode.Flags.Moveable;
+            }
+            else if (data.IsBendNode)
             {
-                node.m_flags &= ~(NetNode.Flags.Junction | NetNode.Flags.Middle);
                 node.m_flags |= NetNode.Flags.Bend; // TODO set asymForward and asymBackward
+                node.m_flags &= ~(NetNode.Flags.Junction | NetNode.Flags.Middle);
             }
-
-            if (data.IsJunctionNode)
+            else if (data.IsJunctionNode)
             {
                 node.m_flags |= NetNode.Flags.Junction;
                 node.m_flags &= ~(NetNode.Flags.Middle | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward | NetNode.Flags.Bend | NetNode.Flags.End);
             }
-
-            if (data.IsMoveableNode)
-                node.m_flags |= NetNode.Flags.Moveable;
-            else
-                node.m_flags &= ~NetNode.Flags.Moveable;
         }
 
         public static void RefreshJunctionDataPostfix(ref NetNode __instance, ref RenderManager.Instance data)

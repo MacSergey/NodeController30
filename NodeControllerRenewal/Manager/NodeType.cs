@@ -14,35 +14,34 @@ namespace NodeController
         Middle,
         Bend,
         Stretch,
-        Crossing, // change dataMatrix.w to render crossings in the middle.
-        UTurn, // set offset to 5.
+        Crossing,
+        UTurn,
         Custom,
         End,
     }
     public abstract class NodeStyle
     {
+        public static float DefaultShift => 0f;
+        public static float DefaultRotate => 0f;
+        public static float DefaultSlope => 0f;
+        public static float DefaultTwist => 0f;
+        public static bool DefaultNoMarking => false;
+        public static bool DefaultSlopeJunction => false;
+
+
         public abstract NodeStyleType Type { get; }
 
+        public virtual float MinOffset => 0f;
+        public virtual float MaxOffset => 0f;
+
         public virtual bool SupportOffset => false;
-        public virtual float DefaultOffset => 0f;
-
         public virtual bool SupportShift => false;
-        public virtual float DefaultShift => 0f;
-
         public virtual bool SupportRotate => false;
-        public virtual float DefaultRotate => 0f;
-
         public virtual bool SupportSlope => false;
-        public virtual float DefaultSlope => 0f;
-
         public virtual bool SupportTwist => false;
-        public virtual float DefaultTwist => 0f;
-
         public virtual bool SupportNoMarking => false;
-        public virtual bool DefaultNoMarking => false;
-
         public virtual bool SupportSlopeJunction => false;
-        public virtual bool DefaultSlopeJunction => false;
+
 
         public virtual bool IsMoveable => false;
 
@@ -50,9 +49,10 @@ namespace NodeController
         {
             get
             {
-                if (Mathf.Abs(Data.Offset - DefaultOffset) > 0.001f)
-                    return false;
-                else if (Mathf.Abs(Data.Shift - DefaultShift) > 0.001f)
+                //if (Mathf.Abs(Data.Offset - DefaultOffset) > 0.001f)
+                //    return false;
+                //else
+                if (Mathf.Abs(Data.Shift - DefaultShift) > 0.001f)
                     return false;
                 else if (Mathf.Abs(Data.RotateAngle - DefaultRotate) > 0.001f)
                     return false;
@@ -271,6 +271,8 @@ namespace NodeController
     public class BendNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Bend;
+        public override float MaxOffset => 100f;
+
         public override bool SupportOffset => true;
         public override bool SupportRotate => true;
         public override bool SupportNoMarking => true;
@@ -290,6 +292,7 @@ namespace NodeController
     public class StretchNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Stretch;
+        public override float MaxOffset => 100f;
 
         public override bool SupportOffset => true;
         public override bool SupportRotate => true;
@@ -309,7 +312,9 @@ namespace NodeController
     public class CrossingNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Crossing;
-     
+        public override float MinOffset => 2f;
+        public override float MaxOffset => 2f;
+
         public override bool SupportNoMarking => true;
         public override bool SupportSlopeJunction => true;
 
@@ -325,11 +330,11 @@ namespace NodeController
     public class UTurnNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.UTurn;
-      
+        public override float MinOffset => 8f;
+        public override float MaxOffset => 8f;
+
         public override bool SupportNoMarking => true;
         public override bool SupportSlopeJunction => true;
-
-        public override float DefaultOffset => 8f;
 
         public UTurnNode(NodeData data) : base(data) { }
 
@@ -362,6 +367,7 @@ namespace NodeController
     public class CustomNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Custom;
+        public override float MaxOffset => 100f;
 
         public override bool SupportOffset => true;
         public override bool SupportShift => true;

@@ -32,7 +32,7 @@ namespace NodeController
             get => Style.Type;
             set
             {
-                SetType(value);
+                SetType(value, false);
                 UpdateNode();
             }
         }
@@ -135,7 +135,7 @@ namespace NodeController
         public bool IsMiddleNode => Type == NodeStyleType.Middle;
         public bool IsBendNode => Type == NodeStyleType.Bend;
         public bool IsJunctionNode => !IsMiddleNode && !IsBendNode && !IsEndNode;
-        public bool IsMoveableNode => IsMiddleNode && Style.IsDefault;
+        public bool IsMoveableNode => Style.IsDefault;
 
         public bool IsMoveableEnds => Style.IsMoveable;
 
@@ -166,7 +166,7 @@ namespace NodeController
             else
                 throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
 
-            SetType(nodeType != null && IsPossibleType(nodeType.Value) ? nodeType.Value : DefaultType);
+            SetType(nodeType != null && IsPossibleType(nodeType.Value) ? nodeType.Value : DefaultType, true);
         }
         public void Update()
         {
@@ -238,21 +238,16 @@ namespace NodeController
         public void UpdateNode() => Manager.Instance.Update(Id);
         public void ResetToDefault()
         {
-            SetOffset(Style.DefaultOffset);
-            SetShift(Style.DefaultShift);
-            SetRotate(Style.DefaultRotate);
-            SetSlope(Style.DefaultSlope);
-            SetTwist(Style.DefaultTwist);
-            SetNoMarking(Style.DefaultNoMarking);
-            SetIsSlopeJunctions(Style.DefaultSlopeJunction);
-
-            foreach (var segmentEnd in SegmentEndDatas)
-                segmentEnd.ResetToDefault();
-
+            ResetToDefaultImpl(true);
             UpdateNode();
         }
+        private void ResetToDefaultImpl(bool force)
+        {
+            foreach (var segmentEnd in SegmentEndDatas)
+                segmentEnd.ResetToDefault(Style, force);
+        }
 
-        private void SetType(NodeStyleType type)
+        private void SetType(NodeStyleType type, bool force)
         {
             NodeStyle newStyle = type switch
             {
@@ -267,23 +262,7 @@ namespace NodeController
             };
             Style = newStyle;
 
-            if (!Style.SupportOffset)
-                SetOffset(Style.DefaultOffset);
-            if (!Style.SupportShift)
-                SetShift(Style.DefaultShift);
-            if (!Style.SupportRotate)
-                SetRotate(Style.DefaultRotate);
-            if (!Style.SupportSlope)
-                SetSlope(Style.DefaultSlope);
-            if (!Style.SupportTwist)
-                SetTwist(Style.DefaultTwist);
-            if (!Style.SupportNoMarking)
-                SetNoMarking(Style.DefaultNoMarking);
-            if (!Style.SupportSlopeJunction)
-                SetIsSlopeJunctions(Style.DefaultSlopeJunction);
-
-            foreach (var segmentEnd in SegmentEndDatas)
-                segmentEnd.ResetToDefault();
+            ResetToDefaultImpl(force);
         }
         private void SetOffset(float value)
         {
