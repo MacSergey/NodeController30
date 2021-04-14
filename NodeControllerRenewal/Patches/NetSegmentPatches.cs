@@ -16,9 +16,9 @@ namespace NodeController.Patches
     [UsedImplicitly]
     public static class NetSegmentPatches
     {
-        public static bool CalculateCornerPrefix(ushort ignoreSegmentID, ushort startNodeID, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection, ref bool smooth)
+        public static bool CalculateCornerPrefix(NetInfo extraInfo1, NetInfo extraInfo2, ushort ignoreSegmentID, ushort startNodeID, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection, ref bool smooth)
         {
-            if (Manager.Instance[startNodeID, ignoreSegmentID] is not SegmentEndData data)
+            if (extraInfo1 != null || extraInfo2 != null || Manager.Instance[startNodeID, ignoreSegmentID] is not SegmentEndData data)
                 return true;
 
             smooth = (data.Node.m_flags & NetNode.Flags.Middle) != 0;
