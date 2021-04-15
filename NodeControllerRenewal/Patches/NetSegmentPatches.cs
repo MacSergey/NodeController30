@@ -21,19 +21,8 @@ namespace NodeController.Patches
             if (extraInfo1 != null || extraInfo2 != null || Manager.Instance[startNodeID, ignoreSegmentID] is not SegmentEndData data)
                 return true;
 
-            var isMiddle = data.Node.m_flags.IsFlagSet(NetNode.Flags.Middle);
-            smooth = isMiddle;
-
-            if (leftSide)
-            {
-                cornerPos = data.LeftSide.Position;
-                cornerDirection = data.LeftSide.Direction;
-            }
-            else
-            {
-                cornerPos = data.RightSide.Position;
-                cornerDirection = data.RightSide.Direction;
-            }
+            smooth = data.Node.m_flags.IsFlagSet(NetNode.Flags.Middle);
+            data.GetCorner(leftSide, out cornerPos, out cornerDirection);
 
             return false;
         }

@@ -36,12 +36,13 @@ namespace NodeController
         public NetNode Node => NodeId.GetNode();
         public NodeData NodeData => Manager.Instance[NodeId];
         public bool IsStartNode => Segment.IsStartNode(NodeId);
+        public bool IsMain => NodeData.IsMainSegment(Id);
         public SegmentEndData Other => Manager.Instance[Segment.GetOtherNode(NodeId), Id, true];
 
         public BezierTrajectory RawSegmentBezier { get; private set; }
         public BezierTrajectory SegmentBezier { get; private set; }
-        public SegmentSide LeftSide { get; }
-        public SegmentSide RightSide { get; }
+        private SegmentSide LeftSide { get; }
+        private SegmentSide RightSide { get; }
         public float AbsoluteAngle => RawSegmentBezier.StartDirection.AbsoluteAngle();
 
         public float SegmentMinT { get; private set; }
@@ -327,6 +328,9 @@ namespace NodeController
                 endDatas[i].LeftSide.MinT = leftMitT[i];
                 endDatas[i].RightSide.MinT = rightMinT[i];
 
+                endDatas[i].LeftSide.UseDelta = !isMiddle;
+                endDatas[i].RightSide.UseDelta = !isMiddle;
+
                 endDatas[i].Calculate();
             }
         }
@@ -354,6 +358,8 @@ namespace NodeController
                 side.RawT = t <= 0.5f ? 0f : 1f;
             else
                 side.RawT = side.Type == SideType.Left ^ RotateAngle > 0f ? 0f : 1f;
+
+            side.Update();
         }
         private void CalculateSegmentLimit()
         {
@@ -413,6 +419,13 @@ namespace NodeController
 
         #region UTILITIES
 
+        public void GetCorner(bool isLeft, out Vector3 position, out Vector3 direction)
+        {
+            if (isLeft)
+                LeftSide.GetCorner(out position, out direction);
+            else
+                RightSide.GetCorner(out position, out direction);
+        }
         public override string ToString() => $"segment:{Id} node:{NodeId}";
 
         #endregion
@@ -495,42 +508,19 @@ namespace NodeController
     }
     public class SegmentSide
     {
-        private float _minT;
-        private BezierTrajectory _rawBezier;
-        private float _rawT;
-
         public SideType Type { get; }
         public SegmentEndData Data { get; }
-        public BezierTrajectory RawBezier
-        {
-            get => _rawBezier;
-            set
-            {
-                _rawBezier = value;
-                Update();
-            }
-        }
+
+        public BezierTrajectory RawBezier { get; set; }
         public BezierTrajectory Bezier { get; private set; }
-        public float MinT
-        {
-            get => _minT;
-            set
-            {
-                _minT = value;
-                Update();
-            }
-        }
-        public float RawT
-        {
-            get => _rawT;
-            set
-            {
-                _rawT = value;
-                Update();
-            }
-        }
+
+        public float MinT { get; set; }
+        public float RawT { get; set; }
+        public bool UseDelta { get; set; }
+
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
+
         public bool IsBorderT => RawT - 0.001f <= MinT;
 
         public SegmentSide(SegmentEndData data, SideType type)
@@ -538,23 +528,30 @@ namespace NodeController
             Data = data;
             Type = type;
         }
-        private void Update()
+        public void Update()
         {
             Bezier = RawBezier.Cut(MinT, 1f);
 
-            var delta = !Data.NodeData.IsMiddleNode ? 0.05f / RawBezier.Length : 0f;
+            var delta = UseDelta ? 0.05f / RawBezier.Length : 0f;
             var t = Mathf.Max(RawT + delta, MinT);
-            var position = RawBezier.Position(t);
-            var direction = RawBezier.Tangent(t);
+            Position = RawBezier.Position(t);
+            Direction = RawBezier.Tangent(t).normalized;
+        }
+        public void GetCorner(out Vector3 position, out Vector3 direction)
+        {
+            position = Position;
+            direction = Direction;
+
             if (!Data.IsSlope)
             {
                 position.y = Data.Node.m_position.y;
                 direction.y = RawBezier.StartDirection.y;
+                direction.Normalize();
             }
-            direction.Normalize();
+            else if(!Data.IsMain)
+            {
 
-            Position = position;
-            Direction = direction;
+            }
         }
 
         public void Render(OverlayData dataAllow, OverlayData dataForbidden)

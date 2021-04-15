@@ -264,7 +264,7 @@ namespace NodeController
             var main = SegmentEnds.Values.Aggregate(default(SegmentEndData), (i, j) => Compare(i, j, ignore));
             return main?.Id ?? 0;
         }
-        SegmentEndData Compare(SegmentEndData first, SegmentEndData second, ushort ignore)
+        private SegmentEndData Compare(SegmentEndData first, SegmentEndData second, ushort ignore)
         {
             if (first == null || first.Id == ignore)
                 return second;
@@ -390,7 +390,9 @@ namespace NodeController
                 _ => throw new Exception("Unreachable code"),
             };
         }
-        bool CrossingIsRemoved(ushort segmentId) => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(Id, segmentId);
+        public bool IsMainSegment(ushort segmentId) => MainRoad.IsMain(segmentId);
+        private bool CrossingIsRemoved(ushort segmentId) => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(Id, segmentId);
+
 
         public override string ToString() => $"NodeData(id:{Id} type:{Type})";
 
