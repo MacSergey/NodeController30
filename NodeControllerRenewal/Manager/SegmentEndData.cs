@@ -342,7 +342,7 @@ namespace NodeController
             CalculateCornerOffset(LeftSide);
             CalculateCornerOffset(RightSide);
             CalculateSegmentLimit();
-            CalculatePosition();
+            CalculatePositionAndDirection();
             CalculateMinMaxRotate();
             UpdateCachedSuperElevation();
         }
@@ -379,7 +379,7 @@ namespace NodeController
                 MinOffset = 0f;
             }
         }
-        private void CalculatePosition()
+        private void CalculatePositionAndDirection()
         {
             var line = new StraightTrajectory(LeftSide.Position, RightSide.Position);
             var intersect = Intersection.CalculateSingle(line, RawSegmentBezier);
