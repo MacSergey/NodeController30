@@ -48,8 +48,8 @@ namespace NodeController
 
 
         public float DefaultOffset => Mathf.Max(Info.m_minCornerOffset, Info.m_halfWidth < 4f ? 0f : 8f);
-        public bool DefaultIsFlat => Info.m_flatJunctions || Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
-        public bool DefaultIsTwist => DefaultIsFlat && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
+        public bool DefaultIsSlope => !Info.m_flatJunctions && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
+        public bool DefaultIsTwist => !DefaultIsSlope && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public NetSegment.Flags DefaultFlags { get; set; }
 
         public int PedestrianLaneCount { get; set; }
@@ -58,7 +58,6 @@ namespace NodeController
         public bool NoCrossings { get; set; }
         public bool NoMarkings { get; set; }
         public bool IsSlope { get; set; }
-        public bool IsTwist { get; set; }
 
         public bool IsDefault
         {
@@ -66,8 +65,7 @@ namespace NodeController
             {
                 var ret = SlopeAngle == 0f;
                 ret &= TwistAngle == 0;
-                ret &= IsSlope == !DefaultIsFlat;
-                ret &= IsTwist == DefaultIsTwist;
+                ret &= IsSlope == DefaultIsSlope;
 
                 ret &= NoCrossings == false;
                 ret &= NoMarkings == false;
@@ -185,8 +183,7 @@ namespace NodeController
             if (!style.SupportSlopeJunction || force)
                 IsSlope = NodeStyle.DefaultSlopeJunction;
 
-            IsSlope = !DefaultIsFlat;
-            IsTwist = DefaultIsTwist;
+            IsSlope = DefaultIsSlope;
             NoCrossings = false;
 
             Calculate();
@@ -329,9 +326,6 @@ namespace NodeController
             {
                 endDatas[i].LeftSide.MinT = leftMitT[i];
                 endDatas[i].RightSide.MinT = rightMinT[i];
-
-                endDatas[i].LeftSide.SetDelta = !isMiddle;
-                endDatas[i].RightSide.SetDelta = !isMiddle;
 
                 endDatas[i].Calculate();
             }
@@ -535,7 +529,6 @@ namespace NodeController
                 Update();
             }
         }
-        public bool SetDelta { get; set; }
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
         public bool IsBorderT => RawT - 0.001f <= MinT;
@@ -547,15 +540,15 @@ namespace NodeController
         }
         private void Update()
         {
-            Bezier = RawBezier.Cut(_minT, 1f);
+            Bezier = RawBezier.Cut(MinT, 1f);
 
-            var delta = SetDelta ? 0.05f / RawBezier.Length : 0f;
+            var delta = !Data.NodeData.IsMiddleNode ? 0.05f / RawBezier.Length : 0f;
             var t = Mathf.Max(RawT + delta, MinT);
             var position = RawBezier.Position(t);
             var direction = RawBezier.Tangent(t);
             if (!Data.IsSlope)
             {
-                position.y = RawBezier.StartPosition.y;
+                position.y = Data.Node.m_position.y;
                 direction.y = RawBezier.StartDirection.y;
             }
             direction.Normalize();
