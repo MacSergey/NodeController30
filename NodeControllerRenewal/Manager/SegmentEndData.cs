@@ -545,12 +545,19 @@ namespace NodeController
             if (!Data.IsSlope)
             {
                 position.y = Data.Node.m_position.y;
-                direction.y = RawBezier.StartDirection.y;
-                direction.Normalize();
+                direction = direction.MakeFlatNormalized();
             }
             else if(!Data.IsMain)
             {
-
+                position.y = Data.NodeData.GetHeight(position);
+                var line = new StraightTrajectory(position, position - direction);
+                var bezier = Data.NodeData.MainBezier;
+                var intersect = Intersection.CalculateSingle(bezier, line);
+                if (intersect.IsIntersect)
+                {
+                    var intersectPos = bezier.Position(intersect.FirstT);
+                    direction = (position - intersectPos).normalized;
+                }
             }
         }
 
