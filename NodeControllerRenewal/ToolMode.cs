@@ -181,7 +181,7 @@ namespace NodeController
         {
             SegmentEnd.RawSegmentBezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out _);
             SegmentEnd.Offset = SegmentEnd.RawSegmentBezier.Cut(0f, t).Length.RoundToNearest(RoundTo);
-            SegmentEnd.RotateAngle = CachedRotate;
+            SegmentEnd.SetRotate(CachedRotate);
             SegmentEnd.UpdateNode();
 
             Tool.Panel.UpdatePanel();

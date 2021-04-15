@@ -113,7 +113,7 @@ namespace NodeController
 
         public bool IsBorderOffset => Offset == MinOffset;
         public bool IsBorderRotate => RotateAngle == MinRotate || RotateAngle == MaxRotate;
-        public bool IsBorderT => LeftSide.IsBorderT || RightSide.IsBorderT;
+        public bool IsBorderT => LeftSide.RawT >= RightSide.RawT ? LeftSide.IsBorderT : RightSide.IsBorderT;
 
         public bool CanModifyTwist => CanTwist(Id, NodeId);
         public bool? ShouldHideCrossingTexture
@@ -205,10 +205,12 @@ namespace NodeController
             _offsetValue = Mathf.Clamp(Math.Max(value, _minOffset), MinPossibleOffset, MaxPossibleOffset);
 
             if (changeRotate && IsBorderT)
-            {
-                CalculateMinMaxRotate();
-                RotateAngle = 0f;
-            }
+                SetRotate(0f);              
+        }
+        public void SetRotate(float value)
+        {
+            CalculateMinMaxRotate();
+            RotateAngle = value;
         }
 
         #endregion
