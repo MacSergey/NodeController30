@@ -109,7 +109,6 @@ namespace NodeController
         public bool IsBorderRotate => RotateAngle == MinRotate || RotateAngle == MaxRotate;
         public bool IsBorderT => LeftSide.RawT >= RightSide.RawT ? LeftSide.IsBorderT : RightSide.IsBorderT;
 
-        public bool CanModifyTwist => CanTwist(Id, NodeId);
         public bool? ShouldHideCrossingTexture
         {
             get
@@ -239,8 +238,8 @@ namespace NodeController
             bezier = new BezierTrajectory(startPos, startDir, endPos, endDir);
 
             var halfWidth = segment.Info.m_halfWidth;
-            var startNormal = startDir.MakeFlat().Turn90(false);
-            var endNormal = endDir.MakeFlat().Turn90(true);
+            var startNormal = startDir.MakeFlatNormalized().Turn90(false);
+            var endNormal = endDir.MakeFlatNormalized().Turn90(true);
 
             leftSide = new BezierTrajectory(startPos + startNormal * halfWidth, startDir, endPos + endNormal * halfWidth, endDir);
             rightSide = new BezierTrajectory(startPos - startNormal * halfWidth, startDir, endPos - endNormal * halfWidth, endDir);
@@ -350,7 +349,7 @@ namespace NodeController
         {
             var t = RawSegmentBezier.Travel(0f, Offset);
             var position = RawSegmentBezier.Position(t);
-            var direction = RawSegmentBezier.Tangent(t).MakeFlat().TurnDeg(90 + RotateAngle, true);
+            var direction = RawSegmentBezier.Tangent(t).MakeFlatNormalized().TurnDeg(90 + RotateAngle, true);
 
             var line = new StraightTrajectory(position, position + direction, false);
             var intersection = Intersection.CalculateSingle(side.RawBezier, line);
@@ -384,13 +383,13 @@ namespace NodeController
             var line = new StraightTrajectory(LeftSide.Position, RightSide.Position);
             var intersect = Intersection.CalculateSingle(line, RawSegmentBezier);
             Position = RawSegmentBezier.Position(intersect.IsIntersect ? intersect.SecondT : 0f);
-            Direction = RawSegmentBezier.Tangent(intersect.IsIntersect ? intersect.SecondT : 0f);
+            Direction = RawSegmentBezier.Tangent(intersect.IsIntersect ? intersect.SecondT : 0f).normalized;
         }
         private void CalculateMinMaxRotate()
         {
             var t = RawSegmentBezier.Travel(0f, Offset);
             var position = RawSegmentBezier.Position(t);
-            var direction = RawSegmentBezier.Tangent(t).MakeFlat().Turn90(false);
+            var direction = RawSegmentBezier.Tangent(t).MakeFlatNormalized().Turn90(false);
 
             var startLeft = GetAngle(LeftSide.Bezier.StartPosition - position, direction);
             var endLeft = GetAngle(LeftSide.Bezier.EndPosition - position, direction);
@@ -420,35 +419,6 @@ namespace NodeController
 
         #region UTILITIES
 
-        public static bool CanTwist(ushort segmentId, ushort nodeId)
-        {
-            var segmentIds = nodeId.GetNode().SegmentIds().ToArray();
-
-            if (segmentIds.Length == 1)
-                return false;
-
-            var segment = segmentId.GetSegment();
-            var firstSegmentId = segment.GetLeftSegment(nodeId);
-            var secondSegmentId = segment.GetRightSegment(nodeId);
-            var nodeData = Manager.Instance[nodeId];
-            var segmentEnd1 = nodeData[firstSegmentId];
-            var segmentEnd2 = nodeData[secondSegmentId];
-
-            bool flat1 = !segmentEnd1?.IsSlope ?? firstSegmentId.GetSegment().Info.m_flatJunctions;
-            bool flat2 = !segmentEnd2?.IsSlope ?? secondSegmentId.GetSegment().Info.m_flatJunctions;
-            if (flat1 && flat2)
-                return false;
-
-            if (segmentIds.Length == 2)
-            {
-                var dir1 = firstSegmentId.GetSegment().GetDirection(nodeId);
-                var dir = segmentId.GetSegment().GetDirection(nodeId);
-                if (Mathf.Abs(VectorUtils.DotXZ(dir, dir1)) > 0.999f)
-                    return false;
-            }
-
-            return true;
-        }
         public override string ToString() => $"segment:{Id} node:{NodeId}";
 
         #endregion
@@ -587,8 +557,8 @@ namespace NodeController
             {
                 position.y = RawBezier.StartPosition.y;
                 direction.y = RawBezier.StartDirection.y;
-                direction.Normalize();
             }
+            direction.Normalize();
 
             Position = position;
             Direction = direction;

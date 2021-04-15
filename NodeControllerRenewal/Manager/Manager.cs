@@ -62,6 +62,7 @@ namespace NodeController
             start = Buffer[segment.m_startNode]?[segmentId];
             end = Buffer[segment.m_endNode]?[segmentId];
         }
+        public bool ContainsNode(ushort nodeId) => Buffer[nodeId] != null;
         public bool ContainsSegment(ushort segmentId)
         {
             var segment = segmentId.GetSegment();

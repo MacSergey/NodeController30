@@ -21,13 +21,9 @@ namespace NodeController.Patches
                 centerPos = data.Position;
         }
 
-        public static void RefreshJunctionDataPostfix(ref NetNode __instance, ref RenderManager.Instance data)
+        public static void RefreshJunctionDataPostfix(ushort nodeID, ref RenderManager.Instance data)
         {
-            var nodeId = __instance.GetID();
-            if (Manager.Instance[nodeId] is not NodeData blendData)
-                return;
-
-            if (blendData.ShouldRenderCenteralCrossingTexture)
+            if (Manager.Instance[nodeID] is NodeData blendData && blendData.ShouldRenderCenteralCrossingTexture)
                 data.m_dataVector1.w = 0.01f;
         }
 
