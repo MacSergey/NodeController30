@@ -123,11 +123,17 @@ namespace NodeController
 
         private void PatchNetNode(ref bool success)
         {
+            success &= Patch_NetNode_RefreshJunctionData_Prefix();
             success &= Patch_NetNode_RefreshJunctionData_Postfix();
             success &= Patch_NetNode_RefreshJunctionData_Transpiler();
             success &= Patch_NetNode_RenderInstance();
             success &= Patch_NetNode_CalculateNode();
             success &= Patch_NetNode_UpdateNode();
+        }
+        private bool Patch_NetNode_RefreshJunctionData_Prefix()
+        {
+            var parameters = new Type[] { typeof(ushort), typeof(int), typeof(ushort), typeof(Vector3), typeof(uint).MakeByRefType(), typeof(RenderManager.Instance).MakeByRefType() };
+            return AddPrefix(typeof(NetNodePatches), nameof(NetNodePatches.RefreshJunctionDataPrefix), typeof(NetNode), "RefreshJunctionData", parameters);
         }
         private bool Patch_NetNode_RefreshJunctionData_Postfix()
         {

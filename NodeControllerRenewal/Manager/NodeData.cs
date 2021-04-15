@@ -39,12 +39,12 @@ namespace NodeController
         private Dictionary<ushort, SegmentEndData> SegmentEnds { get; set; } = new Dictionary<ushort, SegmentEndData>();
         public IEnumerable<SegmentEndData> SegmentEndDatas => SegmentEnds.Values;
         public SegmentEndData this[ushort segmentId] => SegmentEnds.TryGetValue(segmentId, out var data) ? data : null;
+        public Vector3 Position { get; private set; }
         private MainRoad MainRoad { get; set; } = new MainRoad();
 
         public bool IsDefault => Type == DefaultType && !SegmentEndDatas.Any(s => s?.IsDefault != true);
 
         public NetNode.Flags DefaultFlags { get; private set; }
-        //public NetNode.Flags CurrentFlags { get; private set; }
         public NodeStyleType DefaultType { get; private set; }
 
         public bool IsEnd => SegmentEnds.Count == 1;
@@ -185,8 +185,6 @@ namespace NodeController
             }
 
             SegmentEnds = newSegmentsEnd;
-
-            //SegmentEndData.CalculateLimits(this);
         }
         private void UpdateMainRoad()
         {
@@ -247,6 +245,18 @@ namespace NodeController
                 throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
 
             SetType(nodeType != null && IsPossibleType(nodeType.Value) ? nodeType.Value : DefaultType, true);
+        }
+        public void UpdatePosition()
+        {
+            var defaultPosition = Node.m_position;
+            if (!IsMiddleNode && !IsEndNode && FirstMainSegmentEnd is SegmentEndData first && SecondMainSegmentEnd is SegmentEndData second)
+            {
+                var bezier = new BezierTrajectory(first.Position, -first.Direction, second.Position, -second.Direction);
+                var closestPos = bezier.Trajectory.ClosestPosition(defaultPosition);
+                defaultPosition.y = closestPos.y;
+            }
+
+            Position = defaultPosition;
         }
 
         private ushort FindMain(ushort ignore)

@@ -15,6 +15,12 @@ namespace NodeController.Patches
 {
     public static class NetNodePatches
     {
+        public static void RefreshJunctionDataPrefix(ushort nodeID, ref Vector3 centerPos)
+        {
+            if (Manager.Instance[nodeID] is NodeData data)
+                centerPos = data.Position;
+        }
+
         public static void RefreshJunctionDataPostfix(ref NetNode __instance, ref RenderManager.Instance data)
         {
             var nodeId = __instance.GetID();

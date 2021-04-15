@@ -131,8 +131,7 @@ namespace NodeController
         };
 
         public Vector3 Position { get; private set; }
-        public Vector3 Direction => (RightSide.Direction + LeftSide.Direction).normalized;
-        public Vector3 EndDirection => (RightSide.Position - LeftSide.Position).normalized;
+        public Vector3 Direction { get; private set; }
 
 
         #endregion
@@ -384,7 +383,8 @@ namespace NodeController
         {
             var line = new StraightTrajectory(LeftSide.Position, RightSide.Position);
             var intersect = Intersection.CalculateSingle(line, RawSegmentBezier);
-            Position = line.Position(intersect.IsIntersect ? intersect.FirstT : 0.5f);
+            Position = RawSegmentBezier.Position(intersect.IsIntersect ? intersect.SecondT : 0f);
+            Direction = RawSegmentBezier.Tangent(intersect.IsIntersect ? intersect.SecondT : 0f);
         }
         private void CalculateMinMaxRotate()
         {

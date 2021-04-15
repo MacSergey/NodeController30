@@ -102,7 +102,10 @@ namespace NodeController
         public static void UpdateNodePostfix(ushort nodeID)
         {
             if (Instance.Buffer[nodeID] is NodeData data)
+            {
                 SegmentEndData.Update(data);
+                data.UpdatePosition();
+            }
         }
     }
 }
