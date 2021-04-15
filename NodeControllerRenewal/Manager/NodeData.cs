@@ -244,7 +244,7 @@ namespace NodeController
             else
                 throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
 
-            SetType(nodeType != null && IsPossibleType(nodeType.Value) ? nodeType.Value : DefaultType, true);
+            SetType(nodeType != null && IsPossibleTypeImpl(nodeType.Value) ? nodeType.Value : DefaultType, true);
         }
         public void UpdatePosition()
         {
@@ -355,17 +355,14 @@ namespace NodeController
         {
             foreach (var data in SegmentEnds.Values)
             {
-                if (value)
-                {
-                    data.IsSlope = true;
-                    data.IsTwist = false;
-                }
-                else
-                {
-                    var isMain = MainRoad.IsMain(data.Id);
-                    data.IsSlope = !isMain;
-                    data.IsTwist = !isMain;
-                }
+                data.IsSlope = value;
+                //if (value)
+                //    data.IsSlope = true;
+                //else
+                //{
+                //    var isMain = MainRoad.IsMain(data.Id);
+                //    data.IsSlope = !isMain;
+                //}
             }
         }
 
@@ -374,7 +371,8 @@ namespace NodeController
         #region UTILITIES
 
         public bool ContainsSegment(ushort segmentId) => SegmentEnds.ContainsKey(segmentId);
-        public bool IsPossibleType(NodeStyleType newNodeType)
+        public bool IsPossibleType(NodeStyleType type) => type == Type || IsPossibleTypeImpl(type);
+        private bool IsPossibleTypeImpl(NodeStyleType newNodeType)
         {
             if (IsJunction || IsCSUR)
                 return newNodeType == NodeStyleType.Custom;
