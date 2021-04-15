@@ -35,11 +35,6 @@ namespace NodeController.Patches
                 cornerDirection = data.RightSide.Direction;
             }
 
-            if(!isMiddle)
-            {
-
-            }
-
             return false;
         }
         public static void CalculateCornerPostfix(ushort segmentID, bool start, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection)

@@ -67,20 +67,20 @@ namespace NodeController
             if (IsHoverSegment)
             {
                 var segment = HoverSegment.Id.GetSegment();
-                var hitPos = HoverSegment.GetHitPosition(Tool.Ray, out _);
-                segment.GetClosestPositionAndDirection(hitPos, out var position, out var direction);
-
+                SegmentEndData.CalculateSegmentBeziers(HoverSegment.Id, out var bezier, out _, out _);
+                bezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out var position);
+                var direction = bezier.Tangent(t).normalized;
 
                 var overlayData = new OverlayData(cameraInfo) { Width = segment.Info.m_halfWidth * 2, Color = PossibleInsertNode(position) ? Colors.Green : Colors.Red, AlphaBlend = false, Cut = true };
 
-                var bezier = new Bezier3()
+                var middle = new Bezier3()
                 {
                     a = position + direction,
                     b = position,
                     c = position,
                     d = position - direction,
                 };
-                bezier.RenderBezier(overlayData);
+                middle.RenderBezier(overlayData);
 
                 overlayData.Width = Selection.BorderOverlayWidth;
                 overlayData.Cut = false;

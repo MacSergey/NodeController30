@@ -6,6 +6,7 @@ using ModsCommon.Utilities;
 using NodeController.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
@@ -26,7 +27,7 @@ namespace NodeController.Patches
 
         public static IEnumerable<CodeInstruction> RefreshJunctionDataTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
         {
-            var codes = instructions.ToCodeList();
+            var codes = instructions.ToList();
 
             var ldarg_nodeID = TranspilerUtilities.GetLDArg(original, "nodeID");
             var ldarg_segmentID = BuildSegmentLDLocFromSTLoc(codes);
@@ -45,18 +46,18 @@ namespace NodeController.Patches
             }
         }
 
-        public static CodeInstruction BuildSegmentLDLocFromSTLoc(List<CodeInstruction> codes, int startIndex = 0, int count = 1)
+        private static CodeInstruction BuildSegmentLDLocFromSTLoc(List<CodeInstruction> codes, int startIndex = 0, int count = 1)
         {
             var GetSegmentMethod = AccessTools.Method(typeof(NetNode), nameof(NetNode.GetSegment));
             int index = codes.Search(c => c.Calls(GetSegmentMethod), startIndex, count);
             index = codes.Search(c => c.IsStloc(), index);
             return codes[index].BuildLdLocFromStLoc();
         }
-        public static float GetMinCornerOffset(float cornerOffset, ushort nodeId, ushort segmentId) => Manager.Instance[nodeId, segmentId]?.Offset ?? cornerOffset;
+        private static float GetMinCornerOffset(float cornerOffset, ushort nodeId, ushort segmentId) => Manager.Instance[nodeId, segmentId]?.Offset ?? cornerOffset;
 
         public static IEnumerable<CodeInstruction> RenderInstanceTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase method)
         {
-            var codes = TranspilerUtilities.ToCodeList(instructions);
+            var codes = instructions.ToList();
             PatchCheckFlags(codes, 2, method);
 
             return codes;
@@ -106,7 +107,6 @@ namespace NodeController.Patches
                 var newInstructions = new[]
                 {
                     LDArg_NodeID,
-                    LDLoc_segmentID,
                     new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(ShouldContinueMedian))),
                     new CodeInstruction(OpCodes.Or)
                 };
@@ -115,27 +115,23 @@ namespace NodeController.Patches
             }
         }
 
-        public static CodeInstruction BuildSegnentLDLocFromPrevSTLoc(List<CodeInstruction> codes, int index, int counter = 1)
+        private static CodeInstruction BuildSegnentLDLocFromPrevSTLoc(List<CodeInstruction> codes, int index, int counter = 1)
         {
             var getSegmentMethod = AccessTools.Method(typeof(NetNode), nameof(NetNode.GetSegment));
             index = TranspilerUtilities.SearchInstruction(codes, new CodeInstruction(OpCodes.Call, getSegmentMethod), index, counter: counter, dir: -1);
             return codes[index + 1].BuildLdLocFromStLoc();
         }
-        public static bool ShouldContinueMedian(ushort nodeID, ushort segmentID)
+        private static bool ShouldContinueMedian(ushort nodeID) => Manager.Instance[nodeID] is NodeData data && data.Type == NodeStyleType.Stretch;
+        private static Material CalculateMaterial(Material material, ushort nodeId, ushort segmentId)
         {
-            var data = Manager.Instance[nodeID];
-            return data != null && data.Type == NodeStyleType.Stretch;
-        }
-        public static Material CalculateMaterial(Material material, ushort nodeId, ushort segmentId)
-        {
-            if (ShouldContinueMedian(nodeId, segmentId))
+            if (ShouldContinueMedian(nodeId))
                 material = MaterialUtilities.ContinuesMedian(material, segmentId.GetSegment().Info, false);
 
             return material;
         }
-        public static Mesh CalculateMesh(Mesh mesh, ushort nodeId, ushort segmentId)
+        private static Mesh CalculateMesh(Mesh mesh, ushort nodeId, ushort segmentId)
         {
-            if (ShouldContinueMedian(nodeId, segmentId))
+            if (ShouldContinueMedian(nodeId))
                 mesh = MaterialUtilities.ContinuesMedian(mesh, segmentId.GetSegment().Info);
 
             return mesh;

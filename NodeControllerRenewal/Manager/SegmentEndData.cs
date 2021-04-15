@@ -40,8 +40,8 @@ namespace NodeController
 
         public BezierTrajectory RawSegmentBezier { get; private set; }
         public BezierTrajectory SegmentBezier { get; private set; }
-        public SegmentSide LeftSide { get; } = new SegmentSide(SideType.Left);
-        public SegmentSide RightSide { get; } = new SegmentSide(SideType.Right);
+        public SegmentSide LeftSide { get; }
+        public SegmentSide RightSide { get; }
         public float AbsoluteAngle => RawSegmentBezier.StartDirection.AbsoluteAngle();
 
         public float SegmentMinT { get; private set; }
@@ -57,9 +57,6 @@ namespace NodeController
 
         public bool NoCrossings { get; set; }
         public bool NoMarkings { get; set; }
-        public bool NoJunctionTexture { get; set; }
-        public bool NoJunctionProps { get; set; }
-        public bool NoTLProps { get; set; }
         public bool IsSlope { get; set; }
         public bool IsTwist { get; set; }
 
@@ -74,9 +71,6 @@ namespace NodeController
 
                 ret &= NoCrossings == false;
                 ret &= NoMarkings == false;
-                ret &= NoJunctionTexture == false;
-                ret &= NoJunctionProps == false;
-                ret &= NoTLProps == false;
                 return ret;
             }
         }
@@ -150,6 +144,9 @@ namespace NodeController
             Id = segmentId;
             NodeId = nodeId;
 
+            LeftSide = new SegmentSide(this, SideType.Left);
+            RightSide = new SegmentSide(this, SideType.Right);
+
             DefaultFlags = Segment.m_flags;
             PedestrianLaneCount = Info.CountPedestrianLanes();
 
@@ -193,9 +190,6 @@ namespace NodeController
             IsSlope = !DefaultIsFlat;
             IsTwist = DefaultIsTwist;
             NoCrossings = false;
-            NoJunctionTexture = false;
-            NoJunctionProps = false;
-            NoTLProps = false;
 
             Calculate();
         }
@@ -205,7 +199,7 @@ namespace NodeController
             _offsetValue = Mathf.Clamp(Math.Max(value, _minOffset), MinPossibleOffset, MaxPossibleOffset);
 
             if (changeRotate && IsBorderT)
-                SetRotate(0f);              
+                SetRotate(0f);
         }
         public void SetRotate(float value)
         {
@@ -235,7 +229,7 @@ namespace NodeController
                 end.RightSide.RawBezier = leftSide.Invert();
             }
         }
-        private static void CalculateSegmentBeziers(ushort segmentId, out BezierTrajectory bezier, out BezierTrajectory leftSide, out BezierTrajectory rightSide)
+        public static void CalculateSegmentBeziers(ushort segmentId, out BezierTrajectory bezier, out BezierTrajectory leftSide, out BezierTrajectory rightSide)
         {
             var segment = segmentId.GetSegment();
             GetSegmentPosAndDir(segmentId, segment.m_startNode, out var startPos, out var startDir, out var endPos, out var endDir);
@@ -246,8 +240,8 @@ namespace NodeController
             bezier = new BezierTrajectory(startPos, startDir, endPos, endDir);
 
             var halfWidth = segment.Info.m_halfWidth;
-            var startNormal = startDir.Turn90(false);
-            var endNormal = endDir.Turn90(true);
+            var startNormal = startDir.MakeFlat().Turn90(false);
+            var endNormal = endDir.MakeFlat().Turn90(true);
 
             leftSide = new BezierTrajectory(startPos + startNormal * halfWidth, startDir, endPos + endNormal * halfWidth, endDir);
             rightSide = new BezierTrajectory(startPos - startNormal * halfWidth, startDir, endPos - endNormal * halfWidth, endDir);
@@ -357,7 +351,7 @@ namespace NodeController
         {
             var t = RawSegmentBezier.Travel(0f, Offset);
             var position = RawSegmentBezier.Position(t);
-            var direction = RawSegmentBezier.Tangent(t).TurnDeg(90 + RotateAngle, true);
+            var direction = RawSegmentBezier.Tangent(t).MakeFlat().TurnDeg(90 + RotateAngle, true);
 
             var line = new StraightTrajectory(position, position + direction, false);
             var intersection = Intersection.CalculateSingle(side.RawBezier, line);
@@ -396,7 +390,7 @@ namespace NodeController
         {
             var t = RawSegmentBezier.Travel(0f, Offset);
             var position = RawSegmentBezier.Position(t);
-            var direction = RawSegmentBezier.Tangent(t).Turn90(false);
+            var direction = RawSegmentBezier.Tangent(t).MakeFlat().Turn90(false);
 
             var startLeft = GetAngle(LeftSide.Bezier.StartPosition - position, direction);
             var endLeft = GetAngle(LeftSide.Bezier.EndPosition - position, direction);
@@ -542,6 +536,7 @@ namespace NodeController
         private float _rawT;
 
         public SideType Type { get; }
+        public SegmentEndData Data { get; }
         public BezierTrajectory RawBezier
         {
             get => _rawBezier;
@@ -575,8 +570,9 @@ namespace NodeController
         public Vector3 Direction { get; private set; }
         public bool IsBorderT => RawT - 0.001f <= MinT;
 
-        public SegmentSide(SideType type)
+        public SegmentSide(SegmentEndData data, SideType type)
         {
+            Data = data;
             Type = type;
         }
         private void Update()
@@ -585,8 +581,17 @@ namespace NodeController
 
             var delta = SetDelta ? 0.05f / RawBezier.Length : 0f;
             var t = Mathf.Max(RawT + delta, MinT);
-            Position = RawBezier.Position(t);
-            Direction = RawBezier.Tangent(t);
+            var position = RawBezier.Position(t);
+            var direction = RawBezier.Tangent(t);
+            if (!Data.IsSlope)
+            {
+                position.y = RawBezier.StartPosition.y;
+                direction.y = RawBezier.StartDirection.y;
+                direction.Normalize();
+            }
+
+            Position = position;
+            Direction = direction;
         }
 
         public void Render(OverlayData dataAllow, OverlayData dataForbidden)

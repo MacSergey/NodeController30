@@ -10,13 +10,6 @@ namespace KianCommons.Patches
 {
     public static class TranspilerUtilities
     {
-        public static List<CodeInstruction> ToCodeList(this IEnumerable<CodeInstruction> instructions)
-        {
-            var originalCodes = new List<CodeInstruction>(instructions);
-            var codes = new List<CodeInstruction>(originalCodes); // is this redundant?
-            return codes;
-        }
-
         public static CodeInstruction GetLDArg(MethodBase method, string argName, bool throwOnError = true)
         {
             if (!throwOnError && !HasParameter(method, argName))

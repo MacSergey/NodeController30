@@ -11,6 +11,7 @@ using ColossalFramework;
 using NodeController;
 using ModsCommon;
 using ModsCommon.Utilities;
+using System.Linq;
 
 namespace NodeController.Patches
 {
@@ -53,7 +54,7 @@ namespace NodeController.Patches
         {
             try
             {
-                var codes = instructions.ToCodeList();
+                var codes = instructions.ToList();
                 bool predicate(int i)
                 {
                     if (i + 2 >= codes.Count)
