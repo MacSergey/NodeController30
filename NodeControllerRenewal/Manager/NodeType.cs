@@ -54,11 +54,11 @@ namespace NodeController
                 //else
                 if (Mathf.Abs(Data.Shift - DefaultShift) > 0.001f)
                     return false;
-                else if (Mathf.Abs(Data.RotateAngle - DefaultRotate) > 0.001f)
+                else if (Mathf.Abs(Data.RotateAngle - DefaultRotate) > 0.1f)
                     return false;
-                else if (Mathf.Abs(Data.SlopeAngle - DefaultSlope) > 0.001f)
+                else if (Mathf.Abs(Data.SlopeAngle - DefaultSlope) > 0.1f)
                     return false;
-                else if (Mathf.Abs(Data.TwistAngle - DefaultTwist) > 0.001f)
+                else if (Mathf.Abs(Data.TwistAngle - DefaultTwist) > 0.1f)
                     return false;
                 else if (Data.NoMarkings != DefaultNoMarking)
                     return false;

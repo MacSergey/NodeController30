@@ -116,7 +116,7 @@ namespace NodeController.Patches
             if (float.IsNaN(offset) || float.IsInfinity(offset))
                 return 0;
 
-            Manager.GetSegmentData(pathPos.m_segment, out var start, out var end);
+            Manager.Instance.GetSegmentData(pathPos.m_segment, out var start, out var end);
             var startSE = start?.CachedSuperElevationDeg ?? 0f;
             var endSE = -end?.CachedSuperElevationDeg ?? 0f;
             var se = startSE * (1 - offset) + endSE * offset;

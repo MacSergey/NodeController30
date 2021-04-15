@@ -110,23 +110,23 @@ namespace NodeController
         private void PatchNetManager(ref bool success)
         {
             success &= Patch_NetManager_ReleaseNodeImplementation();
-            success &= Patch_NetManager_UpdateNode();
-            success &= Patch_NetManager_SimulationStepImpl();
+            //success &= Patch_NetManager_UpdateNode();
+            //success &= Patch_NetManager_SimulationStepImpl();
         }
 
         private bool Patch_NetManager_ReleaseNodeImplementation()
         {
             return AddPrefix(typeof(Manager), nameof(Manager.ReleaseNodeImplementationPrefix), typeof(NetManager), "ReleaseNodeImplementation", new Type[] { typeof(ushort) });
         }
-        private bool Patch_NetManager_UpdateNode()
-        {
-            var parameters = new Type[] { typeof(ushort), typeof(ushort), typeof(int) };
-            return AddPostfix(typeof(Manager), nameof(Manager.NetManagerUpdateNodePostfix), typeof(NetManager), nameof(NetManager.UpdateNode), parameters);
-        }
-        private bool Patch_NetManager_SimulationStepImpl()
-        {
-            return AddPostfix(typeof(Manager), nameof(Manager.NetManagerSimulationStepImplPostfix), typeof(NetManager), "SimulationStepImpl");
-        }
+        //private bool Patch_NetManager_UpdateNode()
+        //{
+        //    var parameters = new Type[] { typeof(ushort), typeof(ushort), typeof(int) };
+        //    return AddPostfix(typeof(Manager), nameof(Manager.NetManagerUpdateNodePostfix), typeof(NetManager), nameof(NetManager.UpdateNode), parameters);
+        //}
+        //private bool Patch_NetManager_SimulationStepImpl()
+        //{
+        //    return AddPostfix(typeof(Manager), nameof(Manager.NetManagerSimulationStepImplPostfix), typeof(NetManager), "SimulationStepImpl");
+        //}
 
         #endregion
 
@@ -137,6 +137,8 @@ namespace NodeController
             success &= Patch_NetNode_RefreshJunctionData_Postfix();
             success &= Patch_NetNode_RefreshJunctionData_Transpiler();
             success &= Patch_NetNode_RenderInstance();
+            success &= Patch_NetNode_CalculateNode();
+            success &= Patch_NetNode_UpdateNode();
         }
         private bool Patch_NetNode_RefreshJunctionData_Postfix()
         {
@@ -153,6 +155,14 @@ namespace NodeController
             var parameters = new Type[] { typeof(RenderManager.CameraInfo), typeof(ushort), typeof(NetInfo), typeof(int), typeof(NetNode.Flags), typeof(uint).MakeByRefType(), typeof(RenderManager.Instance).MakeByRefType() };
             return AddTranspiler(typeof(NetNodePatches), nameof(NetNodePatches.RenderInstanceTranspiler), typeof(NetNode), nameof(NetNode.RenderInstance), parameters);
         }
+        private bool Patch_NetNode_CalculateNode()
+        {
+            return AddPostfix(typeof(Manager), nameof(Manager.CalculateNodePostfix), typeof(NetNode), nameof(NetNode.CalculateNode));
+        }
+        private bool Patch_NetNode_UpdateNode()
+        {
+            return AddPostfix(typeof(Manager), nameof(Manager.UpdateNodePostfix), typeof(NetNode), nameof(NetNode.UpdateNode));
+        }
 
         #endregion
 
@@ -162,7 +172,7 @@ namespace NodeController
             success &= Patch_NetSegment_CalculateCorner_Prefix();
             success &= Patch_NetSegment_CalculateCorner_Postfix();
             success &= Patch_NetSegment_FindDirection();
-            success &= Patch_NetSegment_CalculateSegment_Prefix();
+            success &= Patch_NetSegment_CalculateSegment_Postfix();
         }
 
         private bool Patch_NetSegment_CalculateCorner_Prefix()
@@ -180,9 +190,9 @@ namespace NodeController
         {
             return AddTranspiler(typeof(NetSegmentPatches), nameof(NetSegmentPatches.FindDirectionTranspiler), typeof(NetSegment), nameof(NetSegment.FindDirection));
         }
-        private bool Patch_NetSegment_CalculateSegment_Prefix()
+        private bool Patch_NetSegment_CalculateSegment_Postfix()
         {
-            return AddPrefix(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateSegmentPrefix), typeof(NetSegment), nameof(NetSegment.CalculateSegment));
+            return AddPostfix(typeof(Manager), nameof(Manager.CalculateSegmentPostfix), typeof(NetSegment), nameof(NetSegment.CalculateSegment));
         }
 
 

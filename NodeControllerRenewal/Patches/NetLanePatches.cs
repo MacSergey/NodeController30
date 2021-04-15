@@ -29,7 +29,7 @@ namespace NodeController.Patches
             bool segmentInvert = segmentId.GetSegment().m_flags.IsFlagSet(NetSegment.Flags.Invert);
             bool reverse = backward != segmentInvert;
 
-            Manager.GetSegmentData(segmentId, out var start, out var end);
+            Manager.Instance.GetSegmentData(segmentId, out var start, out var end);
 
             //float stretchStart = start?.Stretch ?? 0;
             //float stretchEnd = end?.Stretch ?? 0;

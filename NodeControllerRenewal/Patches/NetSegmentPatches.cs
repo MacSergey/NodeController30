@@ -44,7 +44,7 @@ namespace NodeController.Patches
         }
         public static void CalculateCornerPostfix(ushort segmentID, bool start, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection)
         {
-            if (Manager.GetSegmentData(segmentID, start) is not SegmentEndData data)
+            if (Manager.Instance.GetSegmentData(segmentID, start) is not SegmentEndData data)
                 return;
 
             var segment = segmentID.GetSegment();
@@ -116,11 +116,6 @@ namespace NodeController.Patches
         {
             var data = Manager.Instance[nodeId, segmentId];
             return !data?.IsSlope ?? flatJunctions;
-        }
-
-        public static void CalculateSegmentPrefix(ushort segmentID)
-        {
-            SegmentEndData.CalculateSegmentBeziers(segmentID);
         }
     }
 }

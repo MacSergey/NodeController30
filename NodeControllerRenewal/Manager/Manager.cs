@@ -14,7 +14,6 @@ namespace NodeController
         public static Manager Instance { get; private set; } = new Manager();
 
         private NodeData[] Buffer { get; } = new NodeData[NetManager.MAX_NODE_COUNT];
-        protected HashSet<ushort> NeedUpdate { get; } = new HashSet<ushort>();
 
         public NodeData InsertNode(NetTool.ControlPoint controlPoint, NodeStyleType nodeType = NodeStyleType.Crossing)
         {
@@ -31,7 +30,7 @@ namespace NodeController
         {
             get
             {
-                if (Instance.Buffer[nodeId] is not NodeData data)
+                if (Buffer[nodeId] is not NodeData data)
                     data = create ? Create(nodeId) : null;
 
                 return data;
@@ -47,7 +46,7 @@ namespace NodeController
                 Update(nodeId, false);
                 return data;
             }
-            catch(NotImplementedException)
+            catch (NotImplementedException)
             {
                 return null;
             }
@@ -57,16 +56,21 @@ namespace NodeController
                 return null;
             }
         }
-        public static void GetSegmentData(ushort id, out SegmentEndData start, out SegmentEndData end)
+        public void GetSegmentData(ushort segmentId, out SegmentEndData start, out SegmentEndData end)
         {
-            var segment = id.GetSegment();
-            start = Instance[segment.m_startNode]?[id];
-            end = Instance[segment.m_endNode]?[id];
+            var segment = segmentId.GetSegment();
+            start = Buffer[segment.m_startNode]?[segmentId];
+            end = Buffer[segment.m_endNode]?[segmentId];
         }
-        public static SegmentEndData GetSegmentData(ushort id, bool isStart)
+        public bool ContainsSegment(ushort segmentId)
+        {
+            var segment = segmentId.GetSegment();
+            return Buffer[segment.m_startNode] != null || Buffer[segment.m_endNode] != null;
+        }
+        public SegmentEndData GetSegmentData(ushort id, bool isStart)
         {
             var segment = id.GetSegment();
-            return Instance[isStart ? segment.m_startNode : segment.m_endNode]?[id];
+            return Buffer[segment.GetNode(isStart)]?[id];
         }
 
         public void Update(ushort nodeId) => Update(nodeId, true);
@@ -85,23 +89,20 @@ namespace NodeController
         }
 
         public static void ReleaseNodeImplementationPrefix(ushort node) => Instance.Buffer[node] = null;
-        public static void NetManagerUpdateNodePostfix(ushort node)
+        public static void CalculateNodePostfix(ushort nodeID)
         {
-            if (Instance.Buffer[node] != null)
-                Instance.NeedUpdate.Add(node);
+            if (Instance.Buffer[nodeID] is NodeData data)
+                data.Update();
         }
-        public static void NetManagerSimulationStepImplPostfix()
+        public static void CalculateSegmentPostfix(ushort segmentID)
         {
-            if (Instance.NeedUpdate.Count != 0)
-            {
-                var needUpdate = Instance.NeedUpdate.ToArray();
-                Instance.NeedUpdate.Clear();
-                foreach (var nodeId in needUpdate)
-                {
-                    if (Instance.Buffer[nodeId] is NodeData data)
-                        data.Update();
-                }
-            }
+            if (Instance.ContainsSegment(segmentID))
+                SegmentEndData.Update(segmentID);
+        }
+        public static void UpdateNodePostfix(ushort nodeID)
+        {
+            if (Instance.Buffer[nodeID] is NodeData data)
+                SegmentEndData.Update(data);
         }
     }
 }

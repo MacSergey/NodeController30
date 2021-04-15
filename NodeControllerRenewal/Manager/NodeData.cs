@@ -186,7 +186,7 @@ namespace NodeController
 
             SegmentEnds = newSegmentsEnd;
 
-            SegmentEndData.CalculateLimits(this);
+            //SegmentEndData.CalculateLimits(this);
         }
         private void UpdateMainRoad()
         {
@@ -274,7 +274,6 @@ namespace NodeController
             return result >= 0 ? first : second;
         }
         public void UpdateNode() => Manager.Instance.Update(Id);
-        //public void UpdateFlags() => CurrentFlags = Node.m_flags;
         public void ResetToDefault()
         {
             ResetToDefaultImpl(true);

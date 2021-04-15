@@ -92,7 +92,7 @@ namespace NodeController.GUI
                 {
                     // update only those that have flat junctions and not customized (custom nodes use enforced flat junctions).
                     var segment = segmentId.GetSegment();
-                    Manager.GetSegmentData(segmentId, out var start, out var end);
+                    Manager.Instance.GetSegmentData(segmentId, out var start, out var end);
                     if (segment.Info.m_flatJunctions == false && !segment.m_startNode.GetNode().m_flags.IsFlagSet(NetNode.Flags.Middle) && !segment.m_endNode.GetNode().m_flags.IsFlagSet(NetNode.Flags.Middle) && start == null && end == null)
                     {
                         NetManager.instance.UpdateSegment(segmentId);
