@@ -90,20 +90,25 @@ namespace NodeController
         }
 
         public static void ReleaseNodeImplementationPrefix(ushort node) => Instance.Buffer[node] = null;
-        public static void CalculateNodePostfix(ushort nodeID)
+
+        public static void SimulationStep()
         {
-            if (Instance.Buffer[nodeID] is NodeData data)
-                data.Update();
+            foreach(var nodeId in NetManager.instance.GetUpdateNodes())
+            {
+                if (Instance.Buffer[nodeId] is NodeData data)
+                    data.Update();
+            }
+            foreach (var segmentId in NetManager.instance.GetUpdateSegments())
+            {
+                if (Instance.ContainsSegment(segmentId))
+                    SegmentEndData.UpdateBySegment(segmentId);
+            }
+            foreach (var nodeId in NetManager.instance.GetUpdateNodes())
+            {
+                if (Instance.Buffer[nodeId] is NodeData data)
+                    data.LateUpdate();
+            }
         }
-        public static void CalculateSegmentPostfix(ushort segmentID)
-        {
-            if (Instance.ContainsSegment(segmentID))
-                SegmentEndData.UpdateBySegment(segmentID);
-        }
-        public static void UpdateNodePostfix(ushort nodeID)
-        {
-            if (Instance.Buffer[nodeID] is NodeData data)
-                data.LateUpdate();
-        }
+        
     }
 }
