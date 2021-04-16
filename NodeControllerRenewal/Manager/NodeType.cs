@@ -76,7 +76,24 @@ namespace NodeController
             Data = data;
         }
 
-        public virtual void GetUIComponents(UIComponent parent, Action refresh) { }
+        public virtual void GetUIComponents(UIComponent parent, Action refresh)
+        {
+            if (SupportSlopeJunction)
+                GetJunctionButtons(parent);
+            if (SupportOffset)
+                GetOffsetUIComponents(parent);
+            if (SupportShift)
+                GetShiftUIComponents(parent);
+            if (SupportRotate)
+                GetRotateUIComponents(parent);
+            if (SupportSlope)
+                GetSlopeUIComponents(parent);
+            if (SupportTwist)
+                GetTwistUIComponents(parent);
+            if (SupportNoMarking)
+                GetHideMarkingProperty(parent);
+            GetResetButton(parent, refresh);
+        }
 
         protected void GetOffsetUIComponents(UIComponent parent) => GetUIComponents(parent, GetOffsetProperty, GetSegmentOffsetProperty, (data) => data.Offset, (data, value) => data.Offset = value);
         protected void GetShiftUIComponents(UIComponent parent) => GetUIComponents(parent, GetShiftProperty, GetSegmentShiftProperty, (data) => data.Shift, (data, value) => data.Shift = value);
@@ -219,7 +236,7 @@ namespace NodeController
 
             return property;
         }
-        protected BoolListPropertyPanel GetActionButtons(UIComponent parent)
+        protected BoolListPropertyPanel GetJunctionButtons(UIComponent parent)
         {
             var flatJunctionProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
             flatJunctionProperty.Text = "Style";
@@ -260,13 +277,6 @@ namespace NodeController
         public override bool SupportTwist => true;
 
         public MiddleNode(NodeData data) : base(data) { }
-
-        public override void GetUIComponents(UIComponent parent, Action refresh)
-        {
-            GetSlopeUIComponents(parent);
-            GetTwistUIComponents(parent);
-            GetResetButton(parent, refresh);
-        }
     }
     public class BendNode : NodeStyle
     {
@@ -275,19 +285,10 @@ namespace NodeController
 
         public override bool SupportOffset => true;
         public override bool SupportRotate => true;
-        public override bool SupportNoMarking => true;
         public override bool SupportSlopeJunction => true;
         public override bool IsMoveable => true;
 
         public BendNode(NodeData data) : base(data) { }
-
-        public override void GetUIComponents(UIComponent parent, Action refresh)
-        {
-            GetOffsetUIComponents(parent);
-            GetShiftUIComponents(parent);
-            GetRotateUIComponents(parent);
-            GetResetButton(parent, refresh);
-        }
     }
     public class StretchNode : NodeStyle
     {
@@ -301,13 +302,6 @@ namespace NodeController
         public override bool IsMoveable => true;
 
         public StretchNode(NodeData data) : base(data) { }
-
-        public override void GetUIComponents(UIComponent parent, Action refresh)
-        {
-            GetOffsetUIComponents(parent);
-            GetRotateUIComponents(parent);
-            GetResetButton(parent, refresh);
-        }
     }
     public class CrossingNode : NodeStyle
     {
@@ -319,13 +313,6 @@ namespace NodeController
         public override bool SupportSlopeJunction => true;
 
         public CrossingNode(NodeData data) : base(data) { }
-
-        public override void GetUIComponents(UIComponent parent, Action refresh)
-        {
-            GetActionButtons(parent);
-            GetHideMarkingProperty(parent);
-            GetResetButton(parent, refresh);
-        }
     }
     public class UTurnNode : NodeStyle
     {
@@ -337,13 +324,6 @@ namespace NodeController
         public override bool SupportSlopeJunction => true;
 
         public UTurnNode(NodeData data) : base(data) { }
-
-        public override void GetUIComponents(UIComponent parent, Action refresh)
-        {
-            GetActionButtons(parent);
-            GetHideMarkingProperty(parent);
-            GetResetButton(parent, refresh);
-        }
     }
     public class EndNode : NodeStyle
     {
@@ -355,14 +335,6 @@ namespace NodeController
         public override bool SupportSlopeJunction => true;
 
         public EndNode(NodeData data) : base(data) { }
-
-        public override void GetUIComponents(UIComponent parent, Action refresh)
-        {
-            GetActionButtons(parent);
-            GetSlopeUIComponents(parent);
-            GetTwistUIComponents(parent);
-            GetResetButton(parent, refresh);
-        }
     }
     public class CustomNode : NodeStyle
     {
@@ -377,15 +349,5 @@ namespace NodeController
         public override bool IsMoveable => true;
 
         public CustomNode(NodeData data) : base(data) { }
-
-        public override void GetUIComponents(UIComponent parent, Action refresh)
-        {
-            GetActionButtons(parent);
-            GetOffsetUIComponents(parent);
-            GetShiftUIComponents(parent);
-            GetRotateUIComponents(parent);
-            GetHideMarkingProperty(parent);
-            GetResetButton(parent, refresh);
-        }
     }
 }
