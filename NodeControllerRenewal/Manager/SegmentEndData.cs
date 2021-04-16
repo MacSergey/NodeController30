@@ -81,6 +81,7 @@ namespace NodeController
             get => _offsetValue;
             set => SetOffset(value, true);
         }
+        public float OffsetT => Offset == MinOffset ? SegmentMinT : RawSegmentBezier.Travel(0f, Offset);
         public float MinPossibleOffset { get; private set; }
         public float MaxPossibleOffset { get; private set; }
         public float MinOffset
@@ -185,8 +186,6 @@ namespace NodeController
 
             IsSlope = DefaultIsSlope;
             NoCrossings = false;
-
-            //Calculate();
         }
 
         private void SetOffset(float value, bool changeRotate = false)
@@ -325,11 +324,6 @@ namespace NodeController
             {
                 endDatas[i].LeftSide.MinT = leftMitT[i];
                 endDatas[i].RightSide.MinT = rightMinT[i];
-
-                endDatas[i].LeftSide.UseDelta = !isMiddle;
-                endDatas[i].RightSide.UseDelta = !isMiddle;
-
-                //endDatas[i].Calculate();
             }
         }
         public void Calculate(bool isMain)
@@ -347,7 +341,7 @@ namespace NodeController
         }
         private void CalculateCornerOffset(SegmentSide side)
         {
-            var t = RawSegmentBezier.Travel(0f, Offset);
+            var t = OffsetT;
             var position = RawSegmentBezier.Position(t);
             var direction = RawSegmentBezier.Tangent(t).MakeFlatNormalized().TurnDeg(90 + RotateAngle, true);
 
@@ -389,7 +383,7 @@ namespace NodeController
         }
         private void CalculateMinMaxRotate()
         {
-            var t = RawSegmentBezier.Travel(0f, Offset);
+            var t = OffsetT;
             var position = RawSegmentBezier.Position(t);
             var direction = RawSegmentBezier.Tangent(t).MakeFlatNormalized().Turn90(false);
 
@@ -517,7 +511,6 @@ namespace NodeController
 
         public float MinT { get; set; }
         public float RawT { get; set; }
-        public bool UseDelta { get; set; }
 
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
@@ -569,7 +562,7 @@ namespace NodeController
                 dataForbidden.CutEnd = true;
                 dataAllow.CutStart = true;
                 RawBezier.Cut(0f, Math.Min(RawT, MinT)).Render(dataForbidden);
-                if (RawT > MinT)
+                if (RawT - MinT >= 0.2f / RawBezier.Length)
                     RawBezier.Cut(MinT, RawT).Render(dataAllow);
             }
         }
