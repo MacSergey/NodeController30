@@ -98,15 +98,12 @@ namespace NodeController
         public static void CalculateSegmentPostfix(ushort segmentID)
         {
             if (Instance.ContainsSegment(segmentID))
-                SegmentEndData.Update(segmentID);
+                SegmentEndData.UpdateBySegment(segmentID);
         }
         public static void UpdateNodePostfix(ushort nodeID)
         {
             if (Instance.Buffer[nodeID] is NodeData data)
-            {
-                SegmentEndData.Update(data);
-                data.UpdatePosition();
-            }
+                data.LateUpdate();
         }
     }
 }

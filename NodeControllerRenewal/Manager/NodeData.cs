@@ -253,16 +253,30 @@ namespace NodeController
 
             SetType(nodeType != null && IsPossibleTypeImpl(nodeType.Value) ? nodeType.Value : DefaultType, true);
         }
-        public void UpdatePosition()
+
+        public void LateUpdate()
         {
+            SegmentEndData.UpdateByNode(this);
+
+            foreach (var segmentEnd in SegmentEndDatas)
+            {
+                if (MainRoad.IsMain(segmentEnd.Id))
+                    segmentEnd.Calculate(true);
+            }
+
             var defaultPosition = Node.m_position;
             if (!IsMiddleNode && !IsEndNode && FirstMainSegmentEnd is SegmentEndData first && SecondMainSegmentEnd is SegmentEndData second)
             {
                 MainBezier = new BezierTrajectory(first.Position, -first.Direction, second.Position, -second.Direction);
                 defaultPosition.y = GetHeight(defaultPosition);
             }
-
             Position = defaultPosition;
+
+            foreach (var segmentEnd in SegmentEndDatas)
+            {
+                if (!MainRoad.IsMain(segmentEnd.Id))
+                    segmentEnd.Calculate(false);
+            }
         }
 
         private ushort FindMain(ushort ignore)

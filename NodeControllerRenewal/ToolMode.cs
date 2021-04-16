@@ -157,6 +157,9 @@ namespace NodeController
         {
             var data = Tool.Data;
 
+            if (data.IsJunction)
+                data.MainBezier?.Render(new OverlayData(cameraInfo) { Width = SegmentEndData.CircleRadius * 2 + 2, Color = Colors.Yellow });
+
             var hoverData = new OverlayData(cameraInfo);
             foreach (var segmentData in data.SegmentEndDatas)
             {
