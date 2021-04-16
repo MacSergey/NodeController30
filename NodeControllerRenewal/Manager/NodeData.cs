@@ -48,7 +48,11 @@ namespace NodeController
         }
         public SegmentEndData this[ushort segmentId] => SegmentEnds.TryGetValue(segmentId, out var data) ? data : null;
         public Vector3 Position { get; private set; }
+
         public BezierTrajectory MainBezier { get; private set; }
+        public BezierTrajectory LeftMainBezier { get; private set; }
+        public BezierTrajectory RightMainBezier { get; private set; }
+
         private MainRoad MainRoad { get; set; } = new MainRoad();
 
         public bool IsDefault => Type == DefaultType && !SegmentEndDatas.Any(s => s?.IsDefault != true);
@@ -276,7 +280,16 @@ namespace NodeController
             if (!IsMiddleNode && !IsEndNode && FirstMainSegmentEnd is SegmentEndData first && SecondMainSegmentEnd is SegmentEndData second)
             {
                 MainBezier = new BezierTrajectory(first.Position, -first.Direction, second.Position, -second.Direction);
-                defaultPosition.y = GetHeight(defaultPosition);
+                var closestPosition = MainBezier.Trajectory.ClosestPosition(defaultPosition);
+                defaultPosition.y = closestPosition.y;
+
+                first.GetCorner(true, out var firstLeftPos, out var firstLeftDir);
+                second.GetCorner(false, out var secondRightPos, out var secondRightDir);
+                LeftMainBezier = new BezierTrajectory(firstLeftPos, -firstLeftDir, secondRightPos, -secondRightDir);
+
+                first.GetCorner(false, out var firstRightPos, out var firstRightDir);
+                second.GetCorner(true, out var secondLeftPos, out var secondLeftDir);
+                RightMainBezier = new BezierTrajectory(firstRightPos, -firstRightDir, secondLeftPos, -secondLeftDir);
             }
             Position = defaultPosition;
 
@@ -426,12 +439,7 @@ namespace NodeController
                 _ => throw new Exception("Unreachable code"),
             };
         }
-        public bool IsMainSegment(ushort segmentId) => MainRoad.IsMain(segmentId);
-        public float GetHeight(Vector3 position)
-        {
-            var closestPos = MainBezier.Trajectory.ClosestPosition(position);
-            return closestPos.y;
-        }
+
         private bool CrossingIsRemoved(ushort segmentId) => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(Id, segmentId);
 
         public override string ToString() => $"NodeData(id:{Id} type:{Type})";

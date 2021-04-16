@@ -528,19 +528,34 @@ namespace NodeController
             }
             else if (!isMain)
             {
-                position.y = nodeData.GetHeight(position);
-                var line = new StraightTrajectory(position, position - direction);
-                var bezier = nodeData.MainBezier;
-                var intersect = Intersection.CalculateSingle(bezier, line);
-                if (intersect.IsIntersect)
-                {
-                    var intersectPos = bezier.Position(intersect.FirstT);
-                    direction = (position - intersectPos).normalized;
-                }
+                GetClosest(nodeData, position, out var closestPos, out var closestDir);
+                position.y = closestPos.y;
+
+                var closestLine = new StraightTrajectory(closestPos, closestPos + closestDir, false);
+                var line = new StraightTrajectory(position, position - direction, false);
+                var intersect = Intersection.CalculateSingle(closestLine, line);
+                var intersectPos = closestPos + intersect.FirstT * closestDir;
+                direction = (position - intersectPos).normalized;
             }
 
             Position = position;
             Direction = direction;
+        }
+        private void GetClosest(NodeData nodeData, Vector3 position, out Vector3 closestPos, out Vector3 closestDir)
+        {
+            nodeData.LeftMainBezier.Trajectory.ClosestPositionAndDirection(position, out var leftClosestPos, out var leftClosestDir, out _);
+            nodeData.RightMainBezier.Trajectory.ClosestPositionAndDirection(position, out var rightClosestPos, out var rightClosestDir, out _);
+
+            if ((leftClosestPos - position).sqrMagnitude < (rightClosestPos - position).sqrMagnitude)
+            {
+                closestPos = leftClosestPos;
+                closestDir = leftClosestDir;
+            }
+            else
+            {
+                closestPos = rightClosestPos;
+                closestDir = rightClosestDir;
+            }
         }
 
         public void Render(OverlayData dataAllow, OverlayData dataForbidden)
