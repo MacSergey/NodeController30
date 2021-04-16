@@ -18,7 +18,7 @@ namespace NodeController
         #region STATIC
 
         public static float CircleRadius => 2.5f;
-        public static float DotRadius => 0.75f;
+        public static float DotRadius => 1f;
         public static float MinPossibleRotate => -80f;
         public static float MaxPossibleRotate => 80f;
 
@@ -448,7 +448,7 @@ namespace NodeController
             LeftSide.Render(dataAllow, dataForbidden);
             RightSide.Render(dataAllow, dataForbidden);
         }
-        private void RenderCutEnd(OverlayData data)
+        public void RenderCutEnd(OverlayData data)
         {
             var leftLine = new StraightTrajectory(LeftSide.Position, Position);
             leftLine = leftLine.Cut(0f, 1f - (CircleRadius / leftLine.Length));
@@ -458,8 +458,8 @@ namespace NodeController
             rightLine = rightLine.Cut(0f, 1f - (CircleRadius / rightLine.Length));
             rightLine.Render(data);
         }
-        private void RenderEnd(OverlayData data) => new StraightTrajectory(LeftSide.Position, RightSide.Position).Render(data);
-        private void RenderOther(OverlayData data)
+        public void RenderEnd(OverlayData data) => new StraightTrajectory(LeftSide.Position, RightSide.Position).Render(data);
+        public void RenderOther(OverlayData data)
         {
             if (Other is SegmentEndData otherSegmentData)
             {
@@ -475,20 +475,10 @@ namespace NodeController
             }
         }
 
-        private void RenderInnerCircle(OverlayData data) => RenderCircle(data, DotRadius * 2, 0f);
-        private void RenderOutterCircle(OverlayData data) => RenderCircle(data, CircleRadius * 2 + 0.5f, CircleRadius * 2 - 0.5f);
+        public void RenderInnerCircle(OverlayData data) => Position.RenderCircle(data, DotRadius * 2, 0f);
+        public void RenderOutterCircle(OverlayData data) => Position.RenderCircle(data, CircleRadius * 2 + 0.5f, CircleRadius * 2 - 0.5f);
 
         private void RenderCircle(OverlayData data) => Position.RenderCircle(data);
-        private void RenderCircle(OverlayData data, float from, float to)
-        {
-            data.Width = from;
-            do
-            {
-                RenderCircle(data);
-                data.Width = Mathf.Max(data.Width.Value - 0.43f, to);
-            }
-            while (data.Width > to);
-        }
 
         #endregion
 

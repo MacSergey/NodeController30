@@ -38,6 +38,14 @@ namespace NodeController
         }
         private Dictionary<ushort, SegmentEndData> SegmentEnds { get; set; } = new Dictionary<ushort, SegmentEndData>();
         public IEnumerable<SegmentEndData> SegmentEndDatas => SegmentEnds.Values;
+        public IEnumerable<SegmentEndData> MainSegmentEndDatas
+        {
+            get
+            {
+                yield return FirstMainSegmentEnd;
+                yield return SecondMainSegmentEnd;
+            }
+        }
         public SegmentEndData this[ushort segmentId] => SegmentEnds.TryGetValue(segmentId, out var data) ? data : null;
         public Vector3 Position { get; private set; }
         public BezierTrajectory MainBezier { get; private set; }
@@ -383,6 +391,14 @@ namespace NodeController
                 //    var isMain = MainRoad.IsMain(data.Id);
                 //    data.IsSlope = !isMain;
                 //}
+            }
+        }
+        public void SetMain(ushort first, ushort second)
+        {
+            if (ContainsSegment(first) && ContainsSegment(second))
+            {
+                MainRoad = new MainRoad(first, second);
+                UpdateNode();
             }
         }
 

@@ -114,7 +114,10 @@ namespace NodeController
 
         public override void OnToolUpdate()
         {
-            if (Tool.MouseRayValid && Tool.Data.IsMoveableEnds)
+            if (Tool.Data.IsJunction && InputExtension.OnlyShiftIsPressed)
+                Tool.SetMode(ToolModeType.ChangeMain);
+
+            else if (Tool.MouseRayValid && Tool.Data.IsMoveableEnds)
             {
                 foreach (var segmentData in Tool.Data.SegmentEndDatas)
                 {
@@ -155,16 +158,129 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
-            var data = Tool.Data;
-
-            if (data.IsJunction)
-                data.MainBezier?.Render(new OverlayData(cameraInfo) { Width = SegmentEndData.CircleRadius * 2 + 2, Color = Colors.Yellow });
-
             var hoverData = new OverlayData(cameraInfo);
-            foreach (var segmentData in data.SegmentEndDatas)
+            foreach (var segmentData in Tool.Data.SegmentEndDatas)
             {
                 var normalData = new OverlayData(cameraInfo) { Color = Colors.Green };
                 segmentData.Render(normalData, segmentData == HoverSegmentEndCircle ? hoverData : normalData, segmentData == HoverSegmentEndCenter ? hoverData : normalData);
+            }
+        }
+    }
+    public class ChangeMainRoadToolMode : NodeControllerToolMode
+    {
+        public override ToolModeType Type => ToolModeType.ChangeMain;
+        private SegmentEndData HoverSegmentEnd { get; set; }
+        private bool IsHoverSegmentEnd => HoverSegmentEnd != null;
+        private SegmentEndData SelectedSegmentEnd { get; set; }
+        private bool IsSelectedSegmentEnd => SelectedSegmentEnd != null;
+
+        protected override void Reset(IToolMode prevMode)
+        {
+            HoverSegmentEnd = null;
+            SelectedSegmentEnd = null;
+        }
+        public override void OnToolUpdate()
+        {
+            if (!IsSelectedSegmentEnd && !InputExtension.ShiftIsPressed)
+                Tool.SetDefaultMode();
+
+            else if (Tool.MouseRayValid)
+            {
+                if (!IsSelectedSegmentEnd)
+                {
+                    foreach (var segmentData in Tool.Data.MainSegmentEndDatas)
+                    {
+                        var hitPos = Tool.Ray.GetRayPosition(segmentData.Position.y, out _);
+
+                        var magnitude = (segmentData.Position - hitPos).magnitude;
+                        if (magnitude < SegmentEndData.DotRadius)
+                        {
+                            HoverSegmentEnd = segmentData;
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var segmentData in Tool.Data.SegmentEndDatas)
+                    {
+                        if (segmentData == SelectedSegmentEnd)
+                            continue;
+
+                        var hitPos = Tool.Ray.GetRayPosition(segmentData.Position.y, out _);
+
+                        var magnitude = (segmentData.Position - hitPos).magnitude;
+                        if (magnitude < SegmentEndData.CircleRadius - 0.5f)
+                        {
+                            HoverSegmentEnd = segmentData;
+                            return;
+                        }
+                    }
+                }
+            }
+
+            HoverSegmentEnd = null;
+        }
+        public override void OnMouseDown(Event e)
+        {
+            if (IsHoverSegmentEnd)
+                SelectedSegmentEnd = HoverSegmentEnd == Tool.Data.FirstMainSegmentEnd ? Tool.Data.SecondMainSegmentEnd : Tool.Data.FirstMainSegmentEnd;
+        }
+        public override void OnMouseUp(Event e)
+        {
+            if (IsHoverSegmentEnd)
+                Tool.Data.SetMain(SelectedSegmentEnd.Id, HoverSegmentEnd.Id);
+
+            SelectedSegmentEnd = null;
+        }
+        public override void OnSecondaryMouseClicked()
+        {
+            Tool.SetDefaultMode();
+        }
+
+        public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
+        {
+            var width = SegmentEndData.DotRadius * 2;
+
+            if (!IsSelectedSegmentEnd)
+            {
+                Tool.Data.MainBezier.Render(new OverlayData(cameraInfo) { Width = width, Color = Colors.Yellow });
+
+                foreach (var segmentEnd in Tool.Data.SegmentEndDatas)
+                    segmentEnd.RenderOutterCircle(new OverlayData(cameraInfo) { Color = Colors.Green });
+
+                foreach (var segmentData in Tool.Data.MainSegmentEndDatas)
+                    segmentData.RenderInnerCircle(new OverlayData(cameraInfo) { Color = segmentData == HoverSegmentEnd ? Color.white : Colors.Yellow });
+            }
+            else
+            {
+                if (IsHoverSegmentEnd)
+                {
+                    var bezier = new BezierTrajectory(SelectedSegmentEnd.Position, -SelectedSegmentEnd.Direction, HoverSegmentEnd.Position, -HoverSegmentEnd.Direction);
+                    bezier.Render(new OverlayData(cameraInfo) { Width = width, Color = Colors.Yellow });
+                }
+                else
+                {
+                    var endPosition = Tool.Ray.GetRayPosition(Tool.Data.Position.y, out _);
+                    var bezier = new BezierTrajectory(SelectedSegmentEnd.Position, -SelectedSegmentEnd.Direction, endPosition);
+                    bezier.Render(new OverlayData(cameraInfo) { Width = width, Color = Colors.Yellow });
+                }
+
+                foreach (var segmentEnd in Tool.Data.SegmentEndDatas)
+                {
+                    if (segmentEnd != SelectedSegmentEnd)
+                        segmentEnd.RenderOutterCircle(new OverlayData(cameraInfo) { Color = segmentEnd == HoverSegmentEnd ? Color.white : Colors.Green });
+                }
+
+                SelectedSegmentEnd.RenderInnerCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow });
+
+                if (IsHoverSegmentEnd)
+                    HoverSegmentEnd.RenderInnerCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow });
+                else
+                {
+                    var endPosition = Tool.Ray.GetRayPosition(Tool.Data.Position.y, out _);
+                    endPosition.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow }, width, 0f);
+                }
             }
         }
     }
@@ -195,7 +311,7 @@ namespace NodeController
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             SegmentEnd.RenderSides(new OverlayData(cameraInfo), new OverlayData(cameraInfo) { Color = Colors.Red });
-            SegmentEnd.SegmentBezier.Render(new OverlayData(cameraInfo) { Width = 3f });
+            SegmentEnd.SegmentBezier.Render(new OverlayData(cameraInfo) { Width = SegmentEndData.DotRadius * 2 + 1 });
 
             var normalData = new OverlayData(cameraInfo) { Color = Colors.Green };
             var dragData = new OverlayData(cameraInfo) { Color = Colors.Yellow };
