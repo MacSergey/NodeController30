@@ -160,9 +160,7 @@ namespace NodeController
         private void PatchNetSegment(ref bool success)
         {
             success &= Patch_NetSegment_CalculateCorner_Prefix();
-            //success &= Patch_NetSegment_CalculateCorner_Postfix();
             success &= Patch_NetSegment_FindDirection();
-            //success &= Patch_NetSegment_IsStraight();
         }
 
         private bool Patch_NetSegment_CalculateCorner_Prefix()
@@ -170,17 +168,6 @@ namespace NodeController
             var parameters = new Type[] { typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(ushort), typeof(ushort), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType() };
             return AddPrefix(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerPrefix), typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
         }
-        private bool Patch_NetSegment_IsStraight()
-        {
-            var parameters = new Type[] { typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(float).MakeByRefType() };
-            return AddTranspiler(typeof(NetSegmentPatches), nameof(NetSegmentPatches.IsStraightTranspiler), typeof(NetSegment), nameof(NetSegment.IsStraight), parameters);
-        }
-        //private bool Patch_NetSegment_CalculateCorner_Postfix()
-        //{
-        //    var parameters = new Type[] { typeof(ushort), typeof(bool), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType() };
-        //    return AddPostfix(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerPostfix), typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
-        //}
-
         private bool Patch_NetSegment_FindDirection()
         {
             return AddTranspiler(typeof(NetSegmentPatches), nameof(NetSegmentPatches.FindDirectionTranspiler), typeof(NetSegment), nameof(NetSegment.FindDirection));
