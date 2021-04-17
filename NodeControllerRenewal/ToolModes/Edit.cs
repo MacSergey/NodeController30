@@ -23,9 +23,9 @@ namespace NodeController
 
         public override void OnToolUpdate()
         {
-            if (Tool.Data.IsJunction && InputExtension.OnlyShiftIsPressed)
+            if (Tool.Data.IsJunction && InputExtension.OnlyAltIsPressed)
                 Tool.SetMode(ToolModeType.ChangeMain);
-            else if(!Tool.Data.IsMiddleNode && InputExtension.OnlyAltIsPressed)
+            else if(!Tool.Data.IsMiddleNode && InputExtension.OnlyShiftIsPressed)
                 Tool.SetMode(ToolModeType.Aling);
             else if (Tool.MouseRayValid && Tool.Data.IsMoveableEnds)
             {
@@ -65,6 +65,7 @@ namespace NodeController
             else if (IsHoverSegmentEndCircle)
                 Tool.SetMode(ToolModeType.Rotate);
         }
+        public override string GetToolInfo() => $"Hold Shift to alignment roads\nHold Alt to change main road";
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {

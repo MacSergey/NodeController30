@@ -5,11 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static ToolBase;
 using ColossalFramework.UI;
 using ColossalFramework;
 using ModsCommon;
-using NodeController.Patches;
 
 namespace NodeController
 {
@@ -17,6 +15,8 @@ namespace NodeController
     {
         public bool ShowPanel => false;
         public ToolModeType Type => ToolModeType.Select;
+        protected override Color32 NodeColor => Colors.Yellow;
+
         public override string GetToolInfo() => IsHoverNode ? $"Node {HoverNode.Id}" : "Select node";
 
         protected override bool IsValidNode(ushort nodeId)
