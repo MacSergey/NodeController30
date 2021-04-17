@@ -50,7 +50,7 @@ namespace NodeController.Patches
             return pos;
         }
 
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase method)
+        public static IEnumerable<CodeInstruction> NetLaneTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase method)
         {
             try
             {

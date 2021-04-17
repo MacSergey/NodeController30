@@ -199,7 +199,7 @@ namespace NodeController
         private bool Patch_NetLane_RenderInstance() => Patch_NetLane(nameof(NetLane.RenderInstance));
         private bool Patch_NetLane(string methodName)
         {
-            return AddTranspiler(typeof(NetLanePatches), nameof(NetLanePatches.Transpiler), typeof(NetLane), methodName);
+            return AddTranspiler(typeof(NetLanePatches), nameof(NetLanePatches.NetLaneTranspiler), typeof(NetLane), methodName);
         }
 
         #endregion

@@ -163,6 +163,13 @@ namespace NodeController
             {
                 var normalData = new OverlayData(cameraInfo) { Color = Colors.Green };
                 segmentData.Render(normalData, segmentData == HoverSegmentEndCircle ? hoverData : normalData, segmentData == HoverSegmentEndCenter ? hoverData : normalData);
+
+                if (Tool.Data.Style.SupportShift)
+                {
+                    var bezier = segmentData.RawSegmentBezier;
+                    var line = new StraightTrajectory(bezier.StartPosition, bezier.StartPosition + 5 * bezier.StartDirection.MakeFlatNormalized());
+                    line.Render(new OverlayData(cameraInfo) { Color = Colors.Blue });
+                }
             }
         }
     }

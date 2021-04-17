@@ -26,7 +26,7 @@ namespace NodeController
         public ushort Id { get; set; }
         public NetNode Node => Id.GetNode();
         public NetInfo Info => Node.Info;
-        private NodeStyle Style { get; set; }
+        public NodeStyle Style { get; private set; }
         public NodeStyleType Type
         {
             get => Style.Type;

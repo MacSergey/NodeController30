@@ -12,7 +12,6 @@ using NodeController.Utilities;
 
 namespace NodeController
 {
-    [Serializable]
     public class SegmentEndData : INetworkData, IOverlay
     {
         #region STATIC
@@ -167,10 +166,7 @@ namespace NodeController
         {
             MinPossibleOffset = style.MinOffset;
             MaxPossibleOffset = style.MaxOffset;
-            if (!style.SupportOffset || force)
-                SetOffset(DefaultOffset);
-            else
-                SetOffset(Offset);
+
             if (!style.SupportShift || force)
                 Shift = NodeStyle.DefaultShift;
             if (!style.SupportRotate || force)
@@ -183,9 +179,10 @@ namespace NodeController
                 NoMarkings = NodeStyle.DefaultNoMarking;
             if (!style.SupportSlopeJunction || force)
                 IsSlope = NodeStyle.DefaultSlopeJunction;
-
-            IsSlope = DefaultIsSlope;
-            NoCrossings = false;
+            if (!style.SupportOffset || force)
+                SetOffset(DefaultOffset);
+            else
+                SetOffset(Offset);
         }
 
         private void SetOffset(float value, bool changeRotate = false)
@@ -233,12 +230,12 @@ namespace NodeController
 
             bezier = new BezierTrajectory(startPos, startDir, endPos, endDir);
 
-            var halfWidth = segment.Info.m_halfWidth;
             var startNormal = startDir.MakeFlatNormalized().Turn90(false);
             var endNormal = endDir.MakeFlatNormalized().Turn90(true);
+            GetSegmentHalfWidth(segmentId, out var startHalfWidth, out var endHalfWidth);
 
-            leftSide = new BezierTrajectory(startPos + startNormal * halfWidth, startDir, endPos + endNormal * halfWidth, endDir);
-            rightSide = new BezierTrajectory(startPos - startNormal * halfWidth, startDir, endPos - endNormal * halfWidth, endDir);
+            leftSide = new BezierTrajectory(startPos + startNormal * startHalfWidth, startDir, endPos + endNormal * endHalfWidth, endDir);
+            rightSide = new BezierTrajectory(startPos - startNormal * startHalfWidth, startDir, endPos - endNormal * endHalfWidth, endDir);
 
             static void Fix(ushort nodeId, ushort ignoreSegmentId, ref Vector3 dir)
             {
@@ -277,6 +274,17 @@ namespace NodeController
             endPos += normal * endShift;
             startDir = startDir.TurnRad(deltaAngle, true);
             endDir = endDir.TurnRad(deltaAngle, true);
+        }
+        private static void GetSegmentHalfWidth(ushort segmentId, out float startWidth, out float endWidth)
+        {
+            var segment = segmentId.GetSegment();
+
+            Manager.Instance.GetSegmentData(segmentId, out var start, out var end);
+            var startTwist = start?.TwistAngle ?? 0f;
+            var endTwist = end?.TwistAngle ?? 0f;
+
+            startWidth = segment.Info.m_halfWidth * Mathf.Cos(startTwist * Mathf.Deg2Rad);
+            endWidth = segment.Info.m_halfWidth * Mathf.Cos(endTwist * Mathf.Deg2Rad);
         }
 
         public static void UpdateByNode(NodeData data)
@@ -521,7 +529,15 @@ namespace NodeController
             var position = RawBezier.Position(t);
             var direction = RawBezier.Tangent(t).normalized;
 
-            if (!data.IsSlope)
+            if(nodeData.IsMiddleNode || nodeData.IsEndNode)
+            {
+                var quaternion = Quaternion.FromToRotation(Vector3.forward, direction);
+                var result = quaternion * Quaternion.Euler(data.SlopeAngle, 0, 0);
+                direction = result * Vector3.forward;
+
+                position.y += (Type == SideType.Left ? -1 : 1) * data.Info.m_halfWidth * Mathf.Sin(data.TwistAngle * Mathf.Deg2Rad);
+            }
+            else if (!data.IsSlope)
             {
                 position.y = data.Node.m_position.y;
                 direction = direction.MakeFlatNormalized();
