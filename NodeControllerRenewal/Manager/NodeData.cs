@@ -75,6 +75,7 @@ namespace NodeController
         private int PedestrianLaneCount => SegmentEnds.Keys.Max(s => s.GetSegment().Info.CountPedestrianLanes());
         private float MainDot => DotXZ(FirstSegment.GetDirection(Id).XZ(), SecondSegment.GetDirection(Id).XZ());
         public bool IsStraight => IsMain && MainDot < -0.99f;
+
         public bool Is180 => IsMain && MainDot > 0.99f;
         public bool IsEqualWidth => IsMain && Math.Abs(FirstSegment.Info.m_halfWidth - SecondSegment.Info.m_halfWidth) < 0.001f;
 
@@ -438,6 +439,38 @@ namespace NodeController
                 NodeStyleType.End => IsEnd,
                 _ => throw new Exception("Unreachable code"),
             };
+        }
+        public void Align(SegmentEndData segmentEnd, SegmentEndData alignTo, SideType side)
+        {
+            var segmentSide = GetSideLane(segmentEnd, side);
+            var alignSide = GetSideLane(alignTo, side.Invert());
+
+            segmentEnd.Shift = -(alignTo.Shift + (segmentSide + alignSide));
+
+            UpdateNode();
+        }
+        private float GetSideLane(SegmentEndData segmentEnd, SideType side)
+        {
+            var segment = segmentEnd.Segment;
+            var isStart = segmentEnd.IsStartNode;
+            var isInvert = segment.IsInvert();
+            var isLeft = side == SideType.Left;
+
+            var isLaneInvert = isStart ^ isInvert;
+            var info = segment.Info;
+
+            var list = (isLaneInvert ^ !isLeft ? info.m_sortedLanes : info.m_sortedLanes.Reverse()).ToArray();
+            var first = info.m_lanes[list.First(i => info.m_lanes[i].IsDriveLane())];
+            var last = info.m_lanes[list.Last(i => info.m_lanes[i].IsDriveLane())];
+
+            foreach (var i in isLaneInvert ^ !isLeft ? info.m_sortedLanes : info.m_sortedLanes.Reverse())
+            {
+                var lane = info.m_lanes[i];
+                if (lane.IsDriveLane())
+                    return (isLaneInvert ? -1 : 1) * lane.m_position + (isLeft ? 0.5f : -0.5f) * lane.m_width;
+            }
+
+            return 0f;
         }
 
         private bool CrossingIsRemoved(ushort segmentId) => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(Id, segmentId);

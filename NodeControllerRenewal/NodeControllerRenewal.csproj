@@ -92,6 +92,12 @@
     <Compile Include="Manager\AssetDataExtension.cs" />
     <Compile Include="Manager\NodeType.cs" />
     <Compile Include="Patches\NetManagerPatches.cs" />
+    <Compile Include="ToolModes\AlignSegmentEnds.cs" />
+    <Compile Include="ToolModes\ChangeMainRoad.cs" />
+    <Compile Include="ToolModes\DragSegmentEnd.cs" />
+    <Compile Include="ToolModes\Edit.cs" />
+    <Compile Include="ToolModes\RotateSegmentEnd.cs" />
+    <Compile Include="ToolModes\Select.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\Panel.cs" />
     <Compile Include="Utilities\CornerSource.cs" />
@@ -109,7 +115,6 @@
     <Compile Include="Patches\ExternalModPatches.cs" />
     <Compile Include="Patches\SimulationStepPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ToolMode.cs" />
     <Compile Include="Tool.cs" />
     <Compile Include="Utilities\Material.cs" />
     <Compile Include="Utilities\Net.cs" />
@@ -151,7 +156,7 @@
   </Target>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Build" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Debug" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_ConfigurationName="Debug" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="Build" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- <Target Name="AfterBuildRelease" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'"> -->

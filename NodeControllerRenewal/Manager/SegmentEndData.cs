@@ -387,7 +387,7 @@ namespace NodeController
             var t = intersect.IsIntersect ? intersect.FirstT : 0.5f;
 
             Position = line.Position(t);
-            Direction = (LeftSide.Direction * t + RightSide.Direction * (1 - t)).normalized;
+            Direction = VectorUtils.NormalizeXZ(LeftSide.Direction * t + RightSide.Direction * (1 - t));
         }
         private void CalculateMinMaxRotate()
         {
@@ -441,52 +441,68 @@ namespace NodeController
         {
             var data = Manager.Instance[NodeId];
 
-            RenderOther(contourData);
+            RenderÑontour(contourData);
             if (data.IsMoveableEnds)
             {
-                RenderCutEnd(contourData);
+                RenderEnd(contourData, (LeftSide.Position - Position).magnitude + CircleRadius, 0f);
+                RenderEnd(contourData, 0f, (RightSide.Position - Position).magnitude + CircleRadius);
                 RenderOutterCircle(outterData);
                 RenderInnerCircle(innerData);
             }
             else
                 RenderEnd(contourData);
         }
+        public void RenderAlign(OverlayData contourData, OverlayData? leftData = null, OverlayData? rightData = null)
+        {
+            var leftCut = leftData != null ? DotRadius : 0f;
+            var rightCut = rightData != null ? DotRadius : 0f;
+
+            RenderÑontour(contourData, leftCut, rightCut);
+            RenderEnd(contourData, leftCut, rightCut);
+
+            if (leftData != null)
+                LeftSide.Position.RenderCircle(leftData.Value, DotRadius * 2, 0f);
+            if (rightData != null)
+                RightSide.Position.RenderCircle(rightData.Value, DotRadius * 2, 0f);
+        }
+
         public void RenderSides(OverlayData dataAllow, OverlayData dataForbidden)
         {
             LeftSide.Render(dataAllow, dataForbidden);
             RightSide.Render(dataAllow, dataForbidden);
         }
-        public void RenderCutEnd(OverlayData data)
+        public void RenderEnd(OverlayData data, float? leftCut = null, float? rightCut = null)
         {
-            var leftLine = new StraightTrajectory(LeftSide.Position, Position);
-            leftLine = leftLine.Cut(0f, 1f - (CircleRadius / leftLine.Length));
-            leftLine.Render(data);
-
-            var rightLine = new StraightTrajectory(RightSide.Position, Position);
-            rightLine = rightLine.Cut(0f, 1f - (CircleRadius / rightLine.Length));
-            rightLine.Render(data);
+            var line = new StraightTrajectory(LeftSide.Position, RightSide.Position);
+            var startT = (leftCut ?? 0f) / line.Length;
+            var endT = (rightCut ?? 0f) / line.Length;
+            line = line.Cut(startT, 1 - endT);
+            line.Render(data);
         }
-        public void RenderEnd(OverlayData data) => new StraightTrajectory(LeftSide.Position, RightSide.Position).Render(data);
-        public void RenderOther(OverlayData data)
+        public void RenderÑontour(OverlayData data, float? leftCut = null, float? rightCut = null)
         {
             if (Other is SegmentEndData otherSegmentData)
             {
-                var otherLeftCorner = otherSegmentData[SideType.Left];
-                var otherRightCorner = otherSegmentData[SideType.Right];
+                var otherLeftSide = otherSegmentData[SideType.Left];
+                var otherRightSide = otherSegmentData[SideType.Right];
 
-                var leftSide = new BezierTrajectory(LeftSide.Position, LeftSide.Direction, otherRightCorner.Position, otherRightCorner.Direction);
-                leftSide.Render(data);
-                var rightSide = new BezierTrajectory(RightSide.Position, RightSide.Direction, otherLeftCorner.Position, otherLeftCorner.Direction);
-                rightSide.Render(data);
-                var endSide = new StraightTrajectory(otherLeftCorner.Position, otherRightCorner.Position);
-                endSide.Render(data);
+                RenderSide(LeftSide, otherRightSide, data, leftCut);
+                RenderSide(RightSide, otherLeftSide, data, rightCut);
             }
+        }
+        private void RenderSide(SegmentSide side, SegmentSide otherSide, OverlayData data, float? cut)
+        {
+            var bezier = new BezierTrajectory(side.Position, side.Direction, otherSide.Position, otherSide.Direction);
+            if (cut != null)
+            {
+                var t = bezier.Travel(0f, cut.Value);
+                bezier = bezier.Cut(t, 1f);
+            }
+            bezier.Render(data);
         }
 
         public void RenderInnerCircle(OverlayData data) => Position.RenderCircle(data, DotRadius * 2, 0f);
         public void RenderOutterCircle(OverlayData data) => Position.RenderCircle(data, CircleRadius * 2 + 0.5f, CircleRadius * 2 - 0.5f);
-
-        private void RenderCircle(OverlayData data) => Position.RenderCircle(data);
 
         #endregion
 
@@ -529,7 +545,7 @@ namespace NodeController
             var position = RawBezier.Position(t);
             var direction = RawBezier.Tangent(t).normalized;
 
-            if(nodeData.IsMiddleNode || nodeData.IsEndNode)
+            if (nodeData.IsMiddleNode || nodeData.IsEndNode)
             {
                 var quaternion = Quaternion.AngleAxis(data.SlopeAngle, direction.MakeFlat().Turn90(true));
                 direction = quaternion * direction;
@@ -593,5 +609,9 @@ namespace NodeController
     {
         Left,
         Right
+    }
+    public static class SideTypeExtension
+    {
+        public static SideType Invert(this SideType side) => side == SideType.Left ? SideType.Right : SideType.Left;
     }
 }
