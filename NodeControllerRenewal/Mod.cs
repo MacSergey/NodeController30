@@ -88,10 +88,14 @@ namespace NodeController
         {
             var success = true;
 
-            success &= AddTool<NodeControllerTool>();
-            success &= AddNetToolButton<NodeControllerButton>();
-            success &= ToolOnEscape<NodeControllerTool>();
+            //success &= AddTool<NodeControllerTool>();
+            //success &= AddNetToolButton<NodeControllerButton>();
+            //success &= ToolOnEscape<NodeControllerTool>();
             //success &= AssetDataExtensionFix<AssetDataExtension>();
+
+            success &= AddTool();
+            success &= AddNetToolButton();
+            success &= ToolOnEscape();
 
             PatchNetManager(ref success);
             PatchNetNode(ref success);
@@ -104,6 +108,24 @@ namespace NodeController
 
             return success;
         }
+
+        private bool AddTool()
+        {
+            return AddTranspiler(typeof(Mod), nameof(Mod.ToolControllerAwakeTranspiler), typeof(ToolController), "Awake");
+        }
+        public static IEnumerable<CodeInstruction> ToolControllerAwakeTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions) => ToolControllerAwakeTranspiler<NodeControllerTool>(generator, instructions);
+
+        private bool AddNetToolButton()
+        {
+            return AddPostfix(typeof(Mod), nameof(Mod.GeneratedScrollPanelCreateOptionPanelPostfix), typeof(GeneratedScrollPanel), "CreateOptionPanel");
+        }
+        public static void GeneratedScrollPanelCreateOptionPanelPostfix(string templateName, ref OptionPanelBase __result) => GeneratedScrollPanelCreateOptionPanelPostfix<NodeControllerButton>(templateName, ref __result);
+
+        protected bool ToolOnEscape()
+        {
+            return AddTranspiler(typeof(Mod), nameof(Mod.GameKeyShortcutsEscapeTranspiler), typeof(GameKeyShortcuts), "Escape");
+        }
+        protected static IEnumerable<CodeInstruction> GameKeyShortcutsEscapeTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions) => GameKeyShortcutsEscapeTranspiler<NodeControllerTool>(generator, instructions);
 
         #region NETMANAGER
 
