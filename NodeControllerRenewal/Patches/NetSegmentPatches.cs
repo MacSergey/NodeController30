@@ -2,14 +2,12 @@ using ColossalFramework;
 using ColossalFramework.Math;
 using HarmonyLib;
 using JetBrains.Annotations;
-using KianCommons;
 using KianCommons.Patches;
 using ModsCommon.Utilities;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
-using static ColossalFramework.Math.VectorUtils;
 
 namespace NodeController.Patches
 {
@@ -47,6 +45,33 @@ namespace NodeController.Patches
         {
             var data = Manager.Instance[nodeId, segmentId];
             return !data?.IsSlope ?? flatJunctions;
+        }
+
+        public static IEnumerable<CodeInstruction> IsStraightTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions)
+        {
+            var method = AccessTools.Method(typeof(VectorUtils), nameof(VectorUtils.NormalizeXZ), new System.Type[] { typeof(Vector3)});
+            yield return new CodeInstruction(OpCodes.Ldarg_S, 1);
+            yield return new CodeInstruction(OpCodes.Call, method);
+            yield return new CodeInstruction(OpCodes.Starg_S, 1);
+            yield return new CodeInstruction(OpCodes.Ldarg_S, 3);
+            yield return new CodeInstruction(OpCodes.Call, method);
+            yield return new CodeInstruction(OpCodes.Starg_S, 3);
+
+            foreach (var instruction in instructions)
+                yield return instruction;
+
+            //foreach(var instruction in instructions)
+            //{
+            //    if(instruction.opcode == OpCodes.Ldc_R4)
+            //    {
+            //        if ((float)instruction.operand == -0.999f)
+            //            instruction.operand = -0.99f;
+            //        else if ((float)instruction.operand == 0.999f)
+            //            instruction.operand = 0.99f;
+            //    }
+
+                //    yield return instruction;
+                //}
         }
     }
 }

@@ -531,9 +531,8 @@ namespace NodeController
 
             if(nodeData.IsMiddleNode || nodeData.IsEndNode)
             {
-                var quaternion = Quaternion.FromToRotation(Vector3.forward, direction);
-                var result = quaternion * Quaternion.Euler(data.SlopeAngle, 0, 0);
-                direction = result * Vector3.forward;
+                var quaternion = Quaternion.AngleAxis(data.SlopeAngle, direction.MakeFlat().Turn90(true));
+                direction = quaternion * direction;
 
                 position.y += (Type == SideType.Left ? -1 : 1) * data.Info.m_halfWidth * Mathf.Sin(data.TwistAngle * Mathf.Deg2Rad);
             }
@@ -555,7 +554,7 @@ namespace NodeController
             }
 
             Position = position;
-            Direction = direction;
+            Direction = VectorUtils.NormalizeXZ(direction);
         }
         private void GetClosest(NodeData nodeData, Vector3 position, out Vector3 closestPos, out Vector3 closestDir)
         {
