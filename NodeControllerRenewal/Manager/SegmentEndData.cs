@@ -88,7 +88,7 @@ namespace NodeController
                 else if (Offset == MaxOffset)
                     return SegmentMaxT;
                 else
-                    return RawSegmentBezier.Travel(0f, Offset);
+                    return RawSegmentBezier.Trajectory.Travel(Offset);
             }
         }
         public float MinPossibleOffset { get; private set; } = 0f;
@@ -411,8 +411,11 @@ namespace NodeController
             SegmentMinT = startIntersect.IsIntersect ? startIntersect.FirstT : 0f;
             SegmentMaxT = endIntersect.IsIntersect ? endIntersect.FirstT : 1f;
 
-            MinOffset = Mathf.Max(RawSegmentBezier.Cut(0f, SegmentMinT).Length, MinPossibleOffset);
-            MaxOffset = Mathf.Min(RawSegmentBezier.Cut(0f, SegmentMaxT).Length, MaxPossibleOffset);
+            var minLength = RawSegmentBezier.Distance(0f, SegmentMinT);
+            var maxLength = RawSegmentBezier.Distance(0f, SegmentMaxT);
+
+            MinOffset = Mathf.Max(minLength, MinPossibleOffset);
+            MaxOffset = Mathf.Min(maxLength, MaxPossibleOffset);
 
             SegmentBezier = RawSegmentBezier.Cut(SegmentMinT, SegmentMaxT);
 
