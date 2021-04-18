@@ -336,18 +336,16 @@ namespace NodeController
         }
         public void Calculate(bool isMain)
         {
-            CalculateCornerOffset(LeftSide);
-            CalculateCornerOffset(RightSide);
-
-            LeftSide.Update(this, isMain);
-            RightSide.Update(this, isMain);
-
             CalculateSegmentLimit();
             CalculateMinMaxRotate();
+
+            CalculateCornerOffset(LeftSide, isMain);
+            CalculateCornerOffset(RightSide, isMain);
+
             CalculatePositionAndDirection();
             UpdateCachedSuperElevation();
         }
-        private void CalculateCornerOffset(SegmentSide side)
+        private void CalculateCornerOffset(SegmentSide side, bool isMain)
         {
             var t = OffsetT;
             var position = RawSegmentBezier.Position(t);
@@ -362,6 +360,8 @@ namespace NodeController
                 side.RawT = t <= 0.5f ? 0f : 1f;
             else
                 side.RawT = side.Type == SideType.Left ^ RotateAngle > 0f ? 0f : 1f;
+
+            side.Calculate(this, isMain);
         }
         private void CalculateSegmentLimit()
         {
@@ -518,12 +518,22 @@ namespace NodeController
     }
     public class SegmentSide
     {
+        private float _minT;
+
         public SideType Type { get; }
 
         public BezierTrajectory RawBezier { get; set; }
         public BezierTrajectory Bezier { get; private set; }
 
-        public float MinT { get; set; }
+        public float MinT
+        {
+            get => _minT;
+            set
+            {
+                _minT = value;
+                Bezier = RawBezier.Cut(MinT, 1f);
+            }
+        }
         public float RawT { get; set; }
 
         public Vector3 Position { get; private set; }
@@ -535,10 +545,9 @@ namespace NodeController
         {
             Type = type;
         }
-        public void Update(SegmentEndData data, bool isMain)
+        public void Calculate(SegmentEndData data, bool isMain)
         {
             var nodeData = data.NodeData;
-            Bezier = RawBezier.Cut(MinT, 1f);
 
             var delta = !nodeData.IsMiddleNode ? 0.05f / RawBezier.Length : 0f;
             var t = Mathf.Max(RawT + delta, MinT);
