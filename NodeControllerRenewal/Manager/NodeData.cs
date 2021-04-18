@@ -269,8 +269,6 @@ namespace NodeController
 
         public void LateUpdate()
         {
-            SegmentEndData.UpdateByNode(this);
-
             foreach (var segmentEnd in SegmentEndDatas)
             {
                 if (MainRoad.IsMain(segmentEnd.Id))

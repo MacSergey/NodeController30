@@ -93,22 +93,24 @@ namespace NodeController
 
         public static void SimulationStep()
         {
-            foreach(var nodeId in NetManager.instance.GetUpdateNodes())
-            {
-                if (Instance.Buffer[nodeId] is NodeData data)
-                    data.Update();
-            }
-            foreach (var segmentId in NetManager.instance.GetUpdateSegments())
-            {
-                if (Instance.ContainsSegment(segmentId))
-                    SegmentEndData.UpdateBySegment(segmentId);
-            }
-            foreach (var nodeId in NetManager.instance.GetUpdateNodes())
-            {
-                if (Instance.Buffer[nodeId] is NodeData data)
-                    data.LateUpdate();
-            }
+            var nodeIds = NetManager.instance.GetUpdateNodes().Where(n => Instance.Buffer[n] != null).ToArray();
+            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => Instance.ContainsSegment(s)).ToArray();
+
+            foreach (var nodeId in nodeIds)
+                Instance.Buffer[nodeId].Update();
+
+            foreach (var segmentId in segmentIds)
+                SegmentEndData.UpdateBeziers(segmentId);
+
+            foreach (var nodeId in nodeIds)
+                SegmentEndData.UpdateMinLimits(Instance.Buffer[nodeId]);
+
+            foreach (var segmentId in segmentIds)
+                SegmentEndData.UpdateMaxLimits(segmentId);
+
+            foreach (var nodeId in nodeIds)
+                Instance.Buffer[nodeId].LateUpdate();
         }
-        
+
     }
 }
