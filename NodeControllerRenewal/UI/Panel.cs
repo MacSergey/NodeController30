@@ -6,6 +6,7 @@ using ModsCommon.UI;
 using ColossalFramework.UI;
 using ModsCommon;
 using UnityEngine;
+using ModsCommon.Utilities;
 
 namespace NodeController.UI
 {
@@ -38,6 +39,7 @@ namespace NodeController.UI
                 isVisible = value;
             }
         }
+        public bool IsHover => (isVisible && this.IsHover(SingletonTool<NodeControllerTool>.Instance.MousePosition)) || components.Any(c => c.isVisible && c.IsHover(SingletonTool<NodeControllerTool>.Instance.MousePosition));
 
         private PropertyGroupPanel Content { get; set; }
         public INetworkData Data { get; private set; }

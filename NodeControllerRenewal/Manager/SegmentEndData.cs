@@ -73,8 +73,6 @@ namespace NodeController
         }
         private float _offsetValue;
         private float _rotateValue;
-        private float _minOffset = 0f;
-        private float _maxOffset = 100f;
 
         public float Offset
         {
@@ -93,26 +91,10 @@ namespace NodeController
                     return RawSegmentBezier.Travel(0f, Offset);
             }
         }
-        public float MinPossibleOffset { get; private set; }
-        public float MaxPossibleOffset { get; private set; }
-        public float MinOffset
-        {
-            get => Mathf.Max(_minOffset, MinPossibleOffset);
-            private set
-            {
-                _minOffset = value;
-                SetOffset(Offset);
-            }
-        }
-        public float MaxOffset
-        {
-            get => Mathf.Min(_maxOffset, MaxPossibleOffset);
-            private set
-            {
-                _maxOffset = value;
-                SetOffset(Offset);
-            }
-        }
+        public float MinPossibleOffset { get; private set; } = 0f;
+        public float MaxPossibleOffset { get; private set; } = 100f;
+        public float MinOffset { get; private set; } = 0f;
+        public float MaxOffset { get; private set; } = 100f;
 
         public float Shift { get; set; }
         public float RotateAngle
@@ -397,8 +379,8 @@ namespace NodeController
                 startT -= delta;
                 endT -= delta;
             }
-            startSide.MaxT = 1f - endT;
-            endSide.MaxT = 1f - startT;
+            startSide.MaxT = Mathf.Clamp01(1f - endT - startSide.DeltaT);
+            endSide.MaxT = Mathf.Clamp01(1f - startT - endSide.DeltaT);
         }
 
         #endregion
@@ -423,16 +405,18 @@ namespace NodeController
             var startLimitLine = new StraightTrajectory(LeftSide.Bezier.StartPosition, RightSide.Bezier.StartPosition);
             var startIntersect = Intersection.CalculateSingle(RawSegmentBezier, startLimitLine);
 
-            SegmentMinT = startIntersect.IsIntersect ? startIntersect.FirstT : 0f;
-            MinOffset = RawSegmentBezier.Cut(0f, SegmentMinT).Length;
-
             var endLimitLine = new StraightTrajectory(LeftSide.Bezier.EndPosition, RightSide.Bezier.EndPosition);
             var endIntersect = Intersection.CalculateSingle(RawSegmentBezier, endLimitLine);
 
+            SegmentMinT = startIntersect.IsIntersect ? startIntersect.FirstT : 0f;
             SegmentMaxT = endIntersect.IsIntersect ? endIntersect.FirstT : 1f;
-            MaxOffset = RawSegmentBezier.Cut(0f, SegmentMaxT).Length;
+
+            MinOffset = Mathf.Max(RawSegmentBezier.Cut(0f, SegmentMinT).Length, MinPossibleOffset);
+            MaxOffset = Mathf.Min(RawSegmentBezier.Cut(0f, SegmentMaxT).Length, MaxPossibleOffset);
 
             SegmentBezier = RawSegmentBezier.Cut(SegmentMinT, SegmentMaxT);
+
+            SetOffset(Offset);
         }
         private void CalculateMinMaxRotate()
         {
@@ -596,8 +580,13 @@ namespace NodeController
             get => _rawBezier;
             set
             {
-                _rawBezier = value;
-                Bezier = value;
+                if(value != _rawBezier)
+                {
+                    _rawBezier = value;
+                    _minT = 0f;
+                    _maxT = 1f;
+                    Update();
+                }    
             }
         }
         public float MinT
@@ -605,8 +594,11 @@ namespace NodeController
             get => _minT;
             set
             {
-                _minT = value;
-                Update();
+                if (value != _minT)
+                {
+                    _minT = value;
+                    Update();
+                }
             }
         }
         public float MaxT
@@ -614,8 +606,11 @@ namespace NodeController
             get => _maxT;
             set
             {
-                _maxT = value;
-                Update();
+                if (Mathf.Abs(value - _maxT) > 0.001f)
+                {
+                    _maxT = value;
+                    Update();
+                }
             }
         }
 

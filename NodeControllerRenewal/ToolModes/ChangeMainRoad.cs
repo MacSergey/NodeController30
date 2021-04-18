@@ -16,6 +16,8 @@ namespace NodeController
     public class ChangeMainRoadToolMode : NodeControllerToolMode
     {
         public override ToolModeType Type => ToolModeType.ChangeMain;
+        public override bool ShowPanel => false;
+
         private SegmentEndData HoverSegmentEnd { get; set; }
         private bool IsHoverSegmentEnd => HoverSegmentEnd != null;
         private SegmentEndData SelectedSegmentEnd { get; set; }

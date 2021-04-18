@@ -16,6 +16,7 @@ namespace NodeController
     public class AlignSegmentEndsToolMode : NodeControllerToolMode
     {
         public override ToolModeType Type => ToolModeType.Aling;
+        public override bool ShowPanel => false;
 
         private SegmentEndData HoverSegmentEnd { get; set; }
         private SideType HoverSide { get; set; }

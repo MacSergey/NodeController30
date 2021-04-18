@@ -83,8 +83,8 @@ namespace NodeController
                 foreach (var segment in nodeId.GetNode().Segments())
                 {
                     var otherNodeId = segment.GetOtherNode(nodeId);
-                    _ = this[otherNodeId, true];
-                    NetManager.instance.UpdateNode(otherNodeId);
+                    if (this[otherNodeId, true] != null)
+                        NetManager.instance.UpdateNode(otherNodeId, 0, 2);
                 }
             }
         }
