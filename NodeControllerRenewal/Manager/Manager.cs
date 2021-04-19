@@ -88,14 +88,32 @@ namespace NodeController
                 }
             }
         }
+        public void UpdateNow(ushort nodeId)
+        {
+            var nodeIds = new List<ushort>() { nodeId };
+            var segmentIds = nodeId.GetNode().SegmentIds().ToArray();
 
-        public static void ReleaseNodeImplementationPrefix(ushort node) => Instance.Buffer[node] = null;
+            foreach (var segmentIs in segmentIds)
+            {
+                var otherNodeId = segmentIs.GetSegment().GetOtherNode(nodeId);
+                if (this[otherNodeId, true] != null)
+                    nodeIds.Add(otherNodeId);
+            }
+
+            Update(nodeIds.ToArray(), segmentIds);
+        }
+
+
 
         public static void SimulationStep()
         {
             var nodeIds = NetManager.instance.GetUpdateNodes().Where(n => Instance.Buffer[n] != null).ToArray();
             var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => Instance.ContainsSegment(s)).ToArray();
 
+            Update(nodeIds, segmentIds);
+        }
+        private static void Update(ushort[] nodeIds, ushort[] segmentIds)
+        {
             foreach (var nodeId in nodeIds)
                 Instance.Buffer[nodeId].Update();
 
@@ -112,5 +130,6 @@ namespace NodeController
                 Instance.Buffer[nodeId].LateUpdate();
         }
 
+        public static void ReleaseNodeImplementationPrefix(ushort node) => Instance.Buffer[node] = null;
     }
 }

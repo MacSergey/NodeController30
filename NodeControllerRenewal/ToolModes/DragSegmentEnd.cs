@@ -49,7 +49,7 @@ namespace NodeController
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
         {
             text = SegmentEnd.Offset.ToString("0.0");
-            color = SegmentEnd.IsBorderOffset ? Colors.Red : Colors.Yellow;
+            color = SegmentEnd.IsStartBorderOffset || SegmentEnd.IsEndBorderOffset ? Colors.Red : Colors.Yellow;
             size = 2f;
             position = SegmentEnd.Position + SegmentEnd.Direction * SegmentEndData.CircleRadius;
             direction = SegmentEnd.Direction;

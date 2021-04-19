@@ -107,7 +107,8 @@ namespace NodeController
         public float SlopeAngle { get; set; }
         public float TwistAngle { get; set; }
 
-        public bool IsBorderOffset => Offset == MinOffset;
+        public bool IsStartBorderOffset => Offset == MinOffset;
+        public bool IsEndBorderOffset => Offset == MaxOffset;
         public bool IsBorderRotate => RotateAngle == MinRotate || RotateAngle == MaxRotate;
         public bool IsBorderT => LeftSide.RawT >= RightSide.RawT ? LeftSide.IsBorderT : RightSide.IsBorderT;
 
@@ -514,7 +515,7 @@ namespace NodeController
             var leftCut = leftData != null ? DotRadius : 0f;
             var rightCut = rightData != null ? DotRadius : 0f;
 
-            Render—ontour(contourData, leftCut, rightCut);
+            Render—ontour(contourData);
             RenderEnd(contourData, leftCut, rightCut);
 
             if (leftData != null)
@@ -536,22 +537,17 @@ namespace NodeController
             line = line.Cut(startT, 1 - endT);
             line.Render(data);
         }
-        public void Render—ontour(OverlayData data, float? leftCut = null, float? rightCut = null)
+        public void Render—ontour(OverlayData data)
         {
-            RenderSide(LeftSide, data, leftCut);
-            RenderSide(RightSide, data, rightCut);
+            RenderSide(LeftSide, data);
+            RenderSide(RightSide, data);
 
             var endSide = new StraightTrajectory(LeftSide.Bezier.EndPosition, RightSide.Bezier.EndPosition);
             endSide.Render(data);
         }
-        private void RenderSide(SegmentSide side, OverlayData data, float? cut)
+        private void RenderSide(SegmentSide side, OverlayData data)
         {
             var bezier = new BezierTrajectory(side.Position, side.Direction, side.Bezier.EndPosition, side.Bezier.EndDirection);
-            if (cut != null)
-            {
-                var t = bezier.Travel(0f, cut.Value);
-                bezier = bezier.Cut(t, 1f);
-            }
             bezier.Render(data);
         }
 
@@ -588,6 +584,8 @@ namespace NodeController
                     _rawBezier = value;
                     _minT = 0f;
                     _maxT = 1f;
+                    Position = _rawBezier.StartPosition;
+                    Direction = _rawBezier.StartDirection;
                     Update();
                 }    
             }

@@ -187,8 +187,8 @@ namespace NodeController
         protected FloatPropertyPanel GetSegmentOffsetProperty(UIComponent parent, SegmentEndData segmentData)
         {
             var offsetProperty = GetSegmentProperty(parent, $"Segment #{segmentData.Id} offset");
-            offsetProperty.MinValue = 0;
-            offsetProperty.MaxValue = 100;
+            offsetProperty.MinValue = segmentData.MinOffset;
+            offsetProperty.MaxValue = segmentData.MaxOffset;
 
             return offsetProperty;
         }
