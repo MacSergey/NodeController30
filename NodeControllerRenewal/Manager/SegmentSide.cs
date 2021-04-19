@@ -62,13 +62,16 @@ namespace NodeController
         public float DefaultT { get; set; }
 
         public BezierTrajectory Bezier { get; private set; }
-        public float CurrentT { get; set; }
+        public float RawT { get; set; }
+        public float CurrentT => Mathf.Clamp(RawT, MinT + DeltaT, MaxT - DeltaT);
         public float DeltaT => 0.05f / RawBezier.Length;
 
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
 
-        public bool IsBorderT => CurrentT - 0.001f <= MinT;
+        public bool IsMinBorderT => RawT - 0.001f <= MinT;
+        public bool IsMaxBorderT => RawT + 0.001f >= MaxT;
+        public bool IsDefaultT => Mathf.Abs(RawT - DefaultT) < 0.001f;
 
         public SegmentSide(SideType type)
         {
@@ -79,7 +82,7 @@ namespace NodeController
         {
             var nodeData = data.NodeData;
 
-            var t = Mathf.Clamp(CurrentT, MinT + (!nodeData.IsMiddleNode ? DeltaT : 0f), MaxT - DeltaT);
+            var t = Mathf.Clamp(RawT, MinT + (!nodeData.IsMiddleNode ? DeltaT : 0f), MaxT - DeltaT);
             var position = RawBezier.Position(t);
             var direction = RawBezier.Tangent(t).normalized;
 
@@ -130,20 +133,20 @@ namespace NodeController
         public void Render(OverlayData dataAllow, OverlayData dataForbidden)
         {
             if (MinT == 0f)
-                RawBezier.Cut(0f, CurrentT).Render(dataAllow);
+                RawBezier.Cut(0f, RawT).Render(dataAllow);
             else
             {
                 dataForbidden.CutEnd = true;
                 dataAllow.CutStart = true;
-                RawBezier.Cut(0f, Math.Min(CurrentT, MinT)).Render(dataForbidden);
-                if (CurrentT - MinT >= 0.2f / RawBezier.Length)
-                    RawBezier.Cut(MinT, CurrentT).Render(dataAllow);
+                RawBezier.Cut(0f, Math.Min(RawT, MinT)).Render(dataForbidden);
+                if (RawT - MinT >= 0.2f / RawBezier.Length)
+                    RawBezier.Cut(MinT, RawT).Render(dataAllow);
             }
 
             RawBezier.Position(DefaultT).RenderCircle(new OverlayData(dataAllow.CameraInfo) { Color = Colors.Purple });
         }
 
-        public override string ToString() => $"{Type}: {nameof(CurrentT)}={CurrentT}; {nameof(MinT)}={MinT}; {nameof(MaxT)}={MaxT}; {nameof(Position)}={Position};";
+        public override string ToString() => $"{Type}: {nameof(RawT)}={RawT}; {nameof(MinT)}={MinT}; {nameof(MaxT)}={MaxT}; {nameof(Position)}={Position};";
     }
 
     public enum SideType : byte

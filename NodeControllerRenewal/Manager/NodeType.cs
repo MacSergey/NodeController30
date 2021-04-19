@@ -49,9 +49,6 @@ namespace NodeController
         {
             get
             {
-                //if (Mathf.Abs(Data.Offset - DefaultOffset) > 0.001f)
-                //    return false;
-                //else
                 if (Mathf.Abs(Data.Shift - DefaultShift) > 0.001f)
                     return false;
                 else if (Mathf.Abs(Data.RotateAngle - DefaultRotate) > 0.1f)

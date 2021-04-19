@@ -76,7 +76,7 @@ namespace NodeController
         }
 
 
-        public void Update(ushort nodeId) => Update(nodeId, Options.IncludeNearby | Options.Update);
+        public void Update(ushort nodeId, bool now = false) => Update(nodeId, Options.IncludeNearby | (now ? Options.UpdateNow : Options.Update));
         private void Update(ushort nodeId, Options options)
         {
             if ((options & Options.Update) ==  Options.Update)

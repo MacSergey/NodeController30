@@ -324,7 +324,7 @@ namespace NodeController
 
             return result >= 0 ? first : second;
         }
-        public void UpdateNode() => Manager.Instance.Update(Id);
+        public void UpdateNode() => Manager.Instance.Update(Id, true);
         public void ResetToDefault()
         {
             ResetToDefaultImpl(true);

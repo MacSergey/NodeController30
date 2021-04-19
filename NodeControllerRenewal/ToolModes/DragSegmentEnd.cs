@@ -23,13 +23,13 @@ namespace NodeController
         protected override void Reset(IToolMode prevMode)
         {
             SegmentEnd = prevMode is EditToolMode editMode ? editMode.HoverSegmentEndCenter : null;
-            CachedRotate = SegmentEnd.IsBorderT ? 0f : SegmentEnd.RotateAngle;
+            CachedRotate = SegmentEnd.IsMinBorderT ? 0f : SegmentEnd.RotateAngle;
         }
         public override void OnMouseDrag(Event e)
         {
             SegmentEnd.RawSegmentBezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out _);
             SegmentEnd.Offset = SegmentEnd.RawSegmentBezier.Cut(0f, t).Length.RoundToNearest(RoundTo);
-            SegmentEnd.SetRotate(CachedRotate);
+            SegmentEnd.SetRotate(CachedRotate, true);
             SegmentEnd.UpdateNode();
 
             Tool.Panel.UpdatePanel();
