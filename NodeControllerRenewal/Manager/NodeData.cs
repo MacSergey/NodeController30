@@ -168,11 +168,12 @@ namespace NodeController
             UpdateMainRoad();
             UpdateStyle(nodeType);
         }
-        public void Update()
+        public void Update(bool flags = true)
         {
             UpdateSegmentEnds();
             UpdateMainRoad();
-            UpdateFlags();
+            if (flags)
+                UpdateFlags();
         }
         private void UpdateSegmentEnds()
         {
@@ -199,7 +200,7 @@ namespace NodeController
                     var newsegmentEnd = new SegmentEndData(segmentId, Id);
                     newSegmentsEnd.Add(segmentId, newsegmentEnd);
 
-                    if(Style is NodeStyle style)
+                    if (Style is NodeStyle style)
                         newsegmentEnd.ResetToDefault(style, true);
                 }
             }

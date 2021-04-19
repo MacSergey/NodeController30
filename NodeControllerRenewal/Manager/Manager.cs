@@ -79,13 +79,13 @@ namespace NodeController
         public void Update(ushort nodeId) => Update(nodeId, Options.IncludeNearby | Options.Update);
         private void Update(ushort nodeId, Options options)
         {
-            if ((options & Options.Update) != 0)
+            if ((options & Options.Update) ==  Options.Update)
             {
-                GetUpdateList(nodeId, (options & Options.IncludeNearby) != 0, out var nodeIds, out var segmentIds);
+                GetUpdateList(nodeId, (options & Options.IncludeNearby) == Options.IncludeNearby, out var nodeIds, out var segmentIds);
 
                 AddToUpdate(nodeIds, segmentIds);
-                if ((options & Options.UpdateNow) != 0)
-                    UpdateNow(nodeIds, segmentIds);
+                if ((options & Options.UpdateNow) == Options.UpdateNow)
+                    UpdateNow(nodeIds, segmentIds, false);
             }
         }
         private void AddToUpdate(List<ushort> nodeIds, List<ushort> segmentIds)
@@ -118,12 +118,12 @@ namespace NodeController
             var nodeIds = NetManager.instance.GetUpdateNodes().Where(n => Instance.Buffer[n] != null).ToList();
             var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => Instance.ContainsSegment(s)).ToList();
 
-            UpdateNow(nodeIds, segmentIds);
+            UpdateNow(nodeIds, segmentIds, true);
         }
-        private static void UpdateNow(List<ushort> nodeIds, List<ushort> segmentIds)
+        private static void UpdateNow(List<ushort> nodeIds, List<ushort> segmentIds, bool flags)
         {
             foreach (var nodeId in nodeIds)
-                Instance.Buffer[nodeId].Update();
+                Instance.Buffer[nodeId].Update(flags);
 
             foreach (var segmentId in segmentIds)
                 SegmentEndData.UpdateBeziers(segmentId);
