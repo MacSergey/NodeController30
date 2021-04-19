@@ -213,7 +213,7 @@ namespace NodeController
         }
         public void SetRotate(float value, bool recalculateLimits = false)
         {
-            if(recalculateLimits)
+            if (recalculateLimits)
                 CalculateMinMaxRotate();
 
             _rotateValue = Mathf.Clamp(value, MinRotate, MaxRotate);
@@ -346,6 +346,18 @@ namespace NodeController
 
                     GetDefaultLimit(endDatas[j].RightSide.RawBezier, endDatas[i].LeftSide.RawBezier, ref rightDefaultT[j]);
                     GetDefaultLimit(endDatas[j].LeftSide.RawBezier, endDatas[i].LeftSide.RawBezier, ref leftDefaultT[j]);
+                }
+
+                for (var i = 0; i < count; i += 1)
+                {
+                    var j = (i + 1) % count;
+                    var iDir = endDatas[i].RawSegmentBezier.StartDirection;
+                    var jDir = endDatas[j].RawSegmentBezier.StartDirection;
+                    if (iDir.x * jDir.x + iDir.z * jDir.z < -0.75)
+                    {
+                        leftDefaultT[i] = Mathf.Max(leftDefaultT[i], rightDefaultT[i]);
+                        rightDefaultT[j] = Mathf.Max(rightDefaultT[j], leftDefaultT[j]);
+                    }
                 }
 
                 for (var i = 0; i < count; i += 1)
