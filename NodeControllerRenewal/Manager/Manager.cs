@@ -23,27 +23,28 @@ namespace NodeController
                 nodeId.GetNodeRef().m_flags |= NetNode.Flags.Middle | NetNode.Flags.Moveable;
 
             var info = controlPoint.m_segment.GetSegment().Info;
-            var data = (nodeType == NodeStyleType.Crossing && info.m_netAI is RoadBaseAI && info.CountPedestrianLanes() >= 2) ? Create(nodeId, nodeType) : Create(nodeId);
+            var data = (nodeType == NodeStyleType.Crossing && info.m_netAI is RoadBaseAI && info.CountPedestrianLanes() >= 2) ? Create(nodeId, nodeType: nodeType) : Create(nodeId);
             return data;
         }
-        public NodeData this[ushort nodeId, bool create = false]
+        public NodeData this[ushort nodeId, bool create = false] => this[nodeId, create ? Options.All : Options.NotCreate];
+        private NodeData this[ushort nodeId, Options options = Options.NotCreate]
         {
             get
             {
                 if (Buffer[nodeId] is not NodeData data)
-                    data = create ? Create(nodeId) : null;
+                    data = (options & Options.Create) != 0 ? Create(nodeId, options) : null;
 
                 return data;
             }
         }
         public SegmentEndData this[ushort nodeId, ushort segmentId, bool create = false] => this[nodeId, create] is NodeData data ? data[segmentId] : null;
-        private NodeData Create(ushort nodeId, NodeStyleType? nodeType = null)
+        private NodeData Create(ushort nodeId, Options options = Options.Create, NodeStyleType? nodeType = null)
         {
             try
             {
                 var data = new NodeData(nodeId, nodeType);
                 Buffer[nodeId] = data;
-                Update(nodeId, false);
+                Update(nodeId, options);
                 return data;
             }
             catch (NotImplementedException)
@@ -74,45 +75,52 @@ namespace NodeController
             return Buffer[segment.GetNode(isStart)]?[id];
         }
 
-        public void Update(ushort nodeId) => Update(nodeId, true);
-        private void Update(ushort nodeId, bool updateNearby)
+
+        public void Update(ushort nodeId) => Update(nodeId, Options.IncludeNearby | Options.Update);
+        private void Update(ushort nodeId, Options options)
         {
-            NetManager.instance.UpdateNode(nodeId);
-            if (updateNearby)
+            if ((options & Options.Update) != 0)
             {
-                foreach (var segment in nodeId.GetNode().Segments())
+                GetUpdateList(nodeId, (options & Options.IncludeNearby) != 0, out var nodeIds, out var segmentIds);
+
+                AddToUpdate(nodeIds, segmentIds);
+                if ((options & Options.UpdateNow) != 0)
+                    UpdateNow(nodeIds, segmentIds);
+            }
+        }
+        private void AddToUpdate(List<ushort> nodeIds, List<ushort> segmentIds)
+        {
+            foreach (var nodeId in nodeIds)
+                NetManager.instance.UpdateNode(nodeId, 0, 2);
+            foreach (var segmentId in segmentIds)
+                NetManager.instance.UpdateSegment(segmentId);
+        }
+
+        private void GetUpdateList(ushort nodeId, bool includeNearby, out List<ushort> nodeIds, out List<ushort> segmentIds)
+        {
+            nodeIds = new List<ushort>() { nodeId };
+            segmentIds = nodeId.GetNode().SegmentIds().ToList();
+
+            if (includeNearby)
+            {
+                foreach (var segmentIs in segmentIds)
                 {
-                    var otherNodeId = segment.GetOtherNode(nodeId);
-                    if (this[otherNodeId, true] != null)
-                        NetManager.instance.UpdateNode(otherNodeId, 0, 2);
+                    var otherNodeId = segmentIs.GetSegment().GetOtherNode(nodeId);
+                    if (this[otherNodeId, Options.Create] != null)
+                        nodeIds.Add(otherNodeId);
                 }
             }
         }
-        public void UpdateNow(ushort nodeId)
-        {
-            var nodeIds = new List<ushort>() { nodeId };
-            var segmentIds = nodeId.GetNode().SegmentIds().ToArray();
-
-            foreach (var segmentIs in segmentIds)
-            {
-                var otherNodeId = segmentIs.GetSegment().GetOtherNode(nodeId);
-                if (this[otherNodeId, true] != null)
-                    nodeIds.Add(otherNodeId);
-            }
-
-            Update(nodeIds.ToArray(), segmentIds);
-        }
-
 
 
         public static void SimulationStep()
         {
-            var nodeIds = NetManager.instance.GetUpdateNodes().Where(n => Instance.Buffer[n] != null).ToArray();
-            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => Instance.ContainsSegment(s)).ToArray();
+            var nodeIds = NetManager.instance.GetUpdateNodes().Where(n => Instance.Buffer[n] != null).ToList();
+            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => Instance.ContainsSegment(s)).ToList();
 
-            Update(nodeIds, segmentIds);
+            UpdateNow(nodeIds, segmentIds);
         }
-        private static void Update(ushort[] nodeIds, ushort[] segmentIds)
+        private static void UpdateNow(List<ushort> nodeIds, List<ushort> segmentIds)
         {
             foreach (var nodeId in nodeIds)
                 Instance.Buffer[nodeId].Update();
@@ -131,5 +139,16 @@ namespace NodeController
         }
 
         public static void ReleaseNodeImplementationPrefix(ushort node) => Instance.Buffer[node] = null;
+
+        private enum Options
+        {
+            NotCreate = 0,
+            Create = 1,
+            IncludeNearby = Create | 2,
+            Update = Create | 4,
+            UpdateNow = Update | 8,
+            
+            All = IncludeNearby | UpdateNow,
+        }
     }
 }
