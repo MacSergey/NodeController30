@@ -1,6 +1,6 @@
-using KianCommons;
 using ModsCommon;
 using ModsCommon.Utilities;
+using NodeController.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace NodeController
                 nodeId.GetNodeRef().m_flags |= NetNode.Flags.Middle | NetNode.Flags.Moveable;
 
             var info = controlPoint.m_segment.GetSegment().Info;
-            var data = (nodeType == NodeStyleType.Crossing && info.m_netAI is RoadBaseAI && info.CountPedestrianLanes() >= 2) ? Create(nodeId, nodeType: nodeType) : Create(nodeId);
+            var data = (nodeType == NodeStyleType.Crossing && info.m_netAI is RoadBaseAI && info.PedestrianLanes() >= 2) ? Create(nodeId, nodeType: nodeType) : Create(nodeId);
             return data;
         }
         public NodeData this[ushort nodeId, bool create = false] => this[nodeId, create ? Options.All : Options.NotCreate];

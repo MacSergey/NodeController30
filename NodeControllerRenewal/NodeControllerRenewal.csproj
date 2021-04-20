@@ -101,7 +101,7 @@
     <Compile Include="ToolModes\Select.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\Panel.cs" />
-    <Compile Include="Utilities\CornerSource.cs" />
+    <None Include="Utilities\CornerSource.cs" />
     <Compile Include="Utilities\MoveItIntegration.cs" />
     <Compile Include="Manager\SerializableDataExtension.cs" />
     <Compile Include="Manager\INetworkData.cs" />
@@ -118,7 +118,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tool.cs" />
     <Compile Include="Utilities\Material.cs" />
-    <Compile Include="Utilities\Net.cs" />
     <Compile Include="Utilities\Textures.cs" />
     <Compile Include="Utilities\Plugins.cs" />
     <Compile Include="Utilities\Settings.cs" />

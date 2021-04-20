@@ -1,15 +1,16 @@
-namespace KianCommons.Plugins
-{
-    using ColossalFramework;
-    using ColossalFramework.PlatformServices;
-    using ColossalFramework.Plugins;
-    using ICities;
-    using ModsCommon;
-    using NodeController;
-    using System;
-    using System.Reflection;
-    using static ColossalFramework.Plugins.PluginManager;
+using ColossalFramework;
+using ColossalFramework.PlatformServices;
+using ColossalFramework.Plugins;
+using ICities;
+using ModsCommon;
+using ModsCommon.Utilities;
+using NodeController;
+using System;
+using System.Reflection;
+using static ColossalFramework.Plugins.PluginManager;
 
+namespace NodeController.Utilities
+{
     public static class PluginExtensions
     {
         public static ulong GetWorkshopID(this PluginInfo plugin) => plugin.publishedFileID.AsUInt64;
@@ -165,6 +166,28 @@ namespace KianCommons.Plugins
                     return true;
             }
             return false;
+        }
+    }
+    public static class CSURUtilities
+    {
+        public const string HARMONY_ID = "csur.toolbox";
+        internal static bool CSUREnabled { get; } = PluginUtilities.GetCSUR().IsActive();
+
+        public static float GetMinCornerOffset(ushort segmentID, ushort nodeID)
+        {
+            NetInfo info = nodeID.GetNode().Info;
+            if (CSUREnabled && info.m_netAI is RoadBaseAI && info.name.Contains("CSUR"))
+                return GetMinCornerOffset(info.m_minCornerOffset, nodeID);
+            else
+                return segmentID.GetSegment().Info.m_minCornerOffset;
+        }
+        private static float GetMinCornerOffset(float cornerOffset, ushort nodeId) => CSURToolBox.Util.CSURUtil.GetMinCornerOffset(cornerOffset, nodeId);
+
+        public static bool IsCSUR(this NetInfo info)
+        {
+            if (info == null || (info.m_netAI.GetType() != typeof(RoadAI) && info.m_netAI.GetType() != typeof(RoadBridgeAI) && info.m_netAI.GetType() != typeof(RoadTunnelAI)))
+                return false;
+            return info.name.Contains(".CSUR ");
         }
     }
 }

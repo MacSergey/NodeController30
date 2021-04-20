@@ -1,8 +1,8 @@
 using ColossalFramework;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
-using KianCommons;
 using ModsCommon.Utilities;
+using NodeController.Utilities;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -167,7 +167,7 @@ namespace NodeController
             RightSide = new SegmentSide(SideType.Right);
 
             DefaultFlags = Segment.m_flags;
-            PedestrianLaneCount = Info.CountPedestrianLanes();
+            PedestrianLaneCount = Info.PedestrianLanes();
 
             CalculateSegmentBeziers(Id, out var bezier, out var leftBezier, out var rightBezier);
             if (IsStartNode)

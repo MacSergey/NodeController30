@@ -70,18 +70,6 @@ namespace NodeController.GUI
             universalFixes_.tooltip = "changing this may influence existing custom nodes.";
         }
 
-        public static void UpdateGameSettings()
-        {
-            if (GameConfig == null)
-            {
-                SingletonMod<Mod>.Logger.Error("GameConfig==null");
-                return;
-            }
-            SingletonMod<Mod>.Logger.Debug($"UpdateGameSettings: UnviversalSlopeFixes ={GameConfig.UnviversalSlopeFixes}");
-            if (universalFixes_)
-                universalFixes_.isChecked = GameConfig.UnviversalSlopeFixes;
-        }
-
         private static void ApplyUniversalSlopeFixes(bool value)
         {
             GameConfig.UnviversalSlopeFixes = value;
