@@ -29,6 +29,7 @@ namespace NodeController.UI
                 SingletonMod<Mod>.Logger.Debug($"Panel removed");
             }
         }
+        private static Vector2 DefaultPosition { get; } = new Vector2(100f, 100f);
 
         public bool Active
         {
@@ -59,6 +60,24 @@ namespace NodeController.UI
             Content.width = 300f;
             Active = false;
         }
+        public override void Start()
+        {
+            base.Start();
+
+            SetDefaultPosition();
+        }
+        public override void OnEnable()
+        {
+            base.OnEnable();
+
+            if (absolutePosition.x < 0 || absolutePosition.y < 0)
+                SetDefaultPosition();
+        }
+        private void SetDefaultPosition()
+        {
+            SingletonMod<Mod>.Logger.Debug($"Set default panel position");
+            absolutePosition = DefaultPosition;
+        }
 
         public void SetData(INetworkData data)
         {
@@ -86,11 +105,16 @@ namespace NodeController.UI
         {
             Content.StopLayout();
 
-            var header = ComponentPool.Get<TextProperty>(Content);
+            var header = ComponentPool.Get<PanelHeader>(Content);
             header.Text = Data.Title;
+            header.Init();
             Data.GetUIComponents(Content, UpdatePanel);
 
             Content.StartLayout();
         }
+    }
+    public class PanelHeader : HeaderMoveablePanel<BaseHeaderContent> 
+    {
+        protected override float DefaultHeight => 40f;
     }
 }

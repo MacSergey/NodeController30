@@ -20,7 +20,7 @@ namespace NodeController
 
         public static readonly SavedBool Hide_TMPE_Overlay = new SavedBool("Hide_TMPE_Overlay", GUI.Settings.FileName, def: false, true);
 
-        protected override bool ShowToolTip => true;
+        protected override bool ShowToolTip => !Panel.IsHover;
         protected override IToolMode DefaultMode => ToolModes[ToolModeType.Select];
         public override Shortcut Activation => ActivationShortcut;
         public NodeControllerPanel Panel => SingletonItem<NodeControllerPanel>.Instance;
