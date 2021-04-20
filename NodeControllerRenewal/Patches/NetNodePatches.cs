@@ -48,29 +48,26 @@ namespace NodeController.Patches
             var prev = default(CodeInstruction);
             var segmentLocal = default(LocalBuilder);
             var renderCount = 0;
+            var needCount = 2;
 
             foreach (var instruction in instructions)
             {
                 yield return instruction;
 
-                if (prev != null && prev.opcode == OpCodes.Call)
+                if (prev != null && prev.opcode == OpCodes.Call && prev.operand == getSegmentMethod)
+                    segmentLocal = instruction.operand as LocalBuilder;
+                else if(instruction != null && instruction.opcode == OpCodes.Callvirt && instruction.operand == checkRenderDistanceMethod)
                 {
-                    if (prev.operand == getSegmentMethod)
-                        segmentLocal = instruction.operand as LocalBuilder;
+                    renderCount += 1;
 
-                    else if (prev.operand == checkRenderDistanceMethod)
+                    if (renderCount == needCount)
                     {
-                        renderCount += 1;
-
-                        if (renderCount == 2)
-                        {
-                            yield return original.GetLDArg("nodeID");
-                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(ShouldContinueMedian)));
-                            yield return new CodeInstruction(OpCodes.Or);
-                        }
+                        yield return original.GetLDArg("nodeID");
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(ShouldContinueMedian)));
+                        yield return new CodeInstruction(OpCodes.Or);
                     }
                 }
-                else if (renderCount == 2 && instruction.opcode == OpCodes.Ldfld)
+                else if (renderCount == needCount && instruction.opcode == OpCodes.Ldfld)
                 {
                     if (instruction.operand == nodeMeshField)
                     {
