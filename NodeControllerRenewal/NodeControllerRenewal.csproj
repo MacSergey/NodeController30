@@ -136,9 +136,9 @@
   <Import Project="..\ModsCommon\ModsCommonShared\ModsCommonShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <!-- <WorkshopId>2069057130</WorkshopId> -->
+    <WorkshopId>2462845270</WorkshopId>
     <LocalDir>$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)</LocalDir>
-    <!-- <WorkshopDir>C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\$(WorkshopId)</WorkshopDir> -->
+    <WorkshopDir>C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\$(WorkshopId)</WorkshopDir>
   </PropertyGroup>
   <Target Name="AfterBuild">
     <ItemGroup>
@@ -147,7 +147,7 @@
       <FilesToDelete Include="$(OutDir)ICSharpCode.SharpZipLib.dll" />
       <FilesToDelete Include="$(OutDir)PopsApiWrapper.dll" />
     </ItemGroup>
-    <!-- <Message Text="AfterBuild event $(LocalDir) $(WorkshopDir)" Importance="high">     </Message>-->
+    <Message Text="AfterBuild event $(LocalDir) $(WorkshopDir)" Importance="high" />
     <Delete Files="@(FilesToDelete)" />
     <RemoveDir Directories="$(LocalDir)" />
     <ItemGroup>
@@ -160,9 +160,9 @@
       <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Build" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Debug" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
-  <!-- <Target Name="AfterBuildRelease" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'"> -->
-  <!-- <RemoveDir Directories="$(WorkshopDir)" /> -->
-  <!-- <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(WorkshopDir)\%(RecursiveDir)%(Filename)%(Extension)')" /> -->
+  <Target Name="AfterBuildRelease" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'">
+  <RemoveDir Directories="$(WorkshopDir)" />
+  <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(WorkshopDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
   <!-- <Copy SourceFiles="$(ProjectDir)PreviewImage.png" DestinationFiles="$(WorkshopDir)\PreviewImage.png" /> -->
-  <!-- </Target> -->
+  </Target>
 </Project>

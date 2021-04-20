@@ -22,7 +22,7 @@ namespace NodeController
     {
         #region PROPERTIES
 
-        public override string WorkshopUrl => throw new NotImplementedException();
+        public override string WorkshopUrl => "https://steamcommunity.com/sharedfiles/filedetails/?id=2462845270";
         public override string NameRaw => "Node Controller Renewal";
         public override string Description => string.Empty;
         public override List<Version> Versions => new List<Version>();
