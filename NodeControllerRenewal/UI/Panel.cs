@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ModsCommon.UI;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 using ModsCommon;
-using UnityEngine;
+using ModsCommon.UI;
 using ModsCommon.Utilities;
+using System.Linq;
+using UnityEngine;
 
 namespace NodeController.UI
 {
@@ -113,7 +110,7 @@ namespace NodeController.UI
             Content.StartLayout();
         }
     }
-    public class PanelHeader : HeaderMoveablePanel<BaseHeaderContent> 
+    public class PanelHeader : HeaderMoveablePanel<BaseHeaderContent>
     {
         protected override float DefaultHeight => 40f;
     }

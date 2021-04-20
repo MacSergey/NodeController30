@@ -1,10 +1,7 @@
 using ColossalFramework;
-using ColossalFramework.Math;
 using HarmonyLib;
 using JetBrains.Annotations;
-using KianCommons.Patches;
 using ModsCommon.Utilities;
-using NodeController.Utilities;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -44,8 +41,8 @@ namespace NodeController.Patches
                 yield return instruction;
                 if (instruction.opcode == OpCodes.Ldfld && instruction.operand == flatJunctionsField)
                 {
-                    yield return new CodeInstruction(original.GetLDArg("segmentID"));
-                    yield return new CodeInstruction(original.GetLDArg("nodeID"));
+                    yield return original.GetLDArg("segmentID");
+                    yield return original.GetLDArg("nodeID");
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(GetFlatJunctions)));
                 }
             }

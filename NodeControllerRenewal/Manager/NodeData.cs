@@ -1,18 +1,13 @@
-using System;
-using System.Runtime.Serialization;
-using System.Collections.Generic;
-using UnityEngine;
 using ColossalFramework;
-using static ColossalFramework.Math.VectorUtils;
-using KianCommons;
-
-using System.Diagnostics;
-using System.Linq;
-using ModsCommon.Utilities;
-using ModsCommon.UI;
 using ColossalFramework.UI;
-using System.Collections;
-using NodeController.Utilities;
+using KianCommons;
+using ModsCommon.UI;
+using ModsCommon.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using static ColossalFramework.Math.VectorUtils;
 
 namespace NodeController
 {

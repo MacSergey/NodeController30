@@ -2,13 +2,10 @@ using ColossalFramework;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
 using KianCommons;
-using System;
-using System.Runtime.Serialization;
-using UnityEngine;
-using System.Linq;
-using System.Collections.Generic;
 using ModsCommon.Utilities;
-using NodeController.Utilities;
+using System;
+using System.Linq;
+using UnityEngine;
 
 namespace NodeController
 {

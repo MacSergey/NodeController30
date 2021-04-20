@@ -1,10 +1,9 @@
 using KianCommons;
-using System;
+using ModsCommon;
 using ModsCommon.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using ModsCommon;
 
 namespace NodeController
 {
@@ -79,7 +78,7 @@ namespace NodeController
         public void Update(ushort nodeId, bool now = false) => Update(nodeId, Options.IncludeNearby | (now ? Options.UpdateNow : Options.Update));
         private void Update(ushort nodeId, Options options)
         {
-            if ((options & Options.Update) ==  Options.Update)
+            if ((options & Options.Update) == Options.Update)
             {
                 GetUpdateList(nodeId, (options & Options.IncludeNearby) == Options.IncludeNearby, out var nodeIds, out var segmentIds);
 
@@ -147,7 +146,7 @@ namespace NodeController
             IncludeNearby = Create | 2,
             Update = Create | 4,
             UpdateNow = Update | 8,
-            
+
             All = IncludeNearby | UpdateNow,
         }
     }

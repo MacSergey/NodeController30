@@ -1,7 +1,6 @@
 using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
-using KianCommons;
 using ModsCommon;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
@@ -61,7 +60,7 @@ namespace NodeController.GUI
                 label.textAlignment = UIHorizontalAlignment.Left;
         }
 
-        static UICheckBox universalFixes_;
+        private static UICheckBox universalFixes_;
         public static void MakeGameSettings(UIHelperBase helper)
         {
             UIHelper group = helper.AddGroup("Game settings") as UIHelper;
@@ -83,7 +82,7 @@ namespace NodeController.GUI
                 universalFixes_.isChecked = GameConfig.UnviversalSlopeFixes;
         }
 
-        static void ApplyUniversalSlopeFixes(bool value)
+        private static void ApplyUniversalSlopeFixes(bool value)
         {
             GameConfig.UnviversalSlopeFixes = value;
             for (ushort segmentId = 0; segmentId < NetManager.MAX_SEGMENT_COUNT; ++segmentId)

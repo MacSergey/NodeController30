@@ -1,18 +1,14 @@
 namespace KianCommons.Plugins
 {
-    using System;
+    using ColossalFramework;
+    using ColossalFramework.PlatformServices;
     using ColossalFramework.Plugins;
     using ICities;
-    using System.Reflection;
-    using ColossalFramework;
-    using static ColossalFramework.Plugins.PluginManager;
-    using ColossalFramework.PlatformServices;
-    using UnityEngine.Assertions;
-    using System.Linq;
-    using System.Collections;
-    using System.Collections.Generic;
-    using NodeController;
     using ModsCommon;
+    using NodeController;
+    using System;
+    using System.Reflection;
+    using static ColossalFramework.Plugins.PluginManager;
 
     public static class PluginExtensions
     {

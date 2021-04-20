@@ -122,7 +122,6 @@
     <Compile Include="Utilities\Textures.cs" />
     <Compile Include="Utilities\Plugins.cs" />
     <Compile Include="Utilities\Settings.cs" />
-    <Compile Include="Utilities\Transpiler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

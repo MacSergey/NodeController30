@@ -1,15 +1,11 @@
 using ColossalFramework;
-using ColossalFramework.Math;
 using KianCommons.Plugins;
 using ModsCommon;
 using ModsCommon.Utilities;
 using NodeController;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using UnityEngine;
 
 namespace KianCommons
 {
@@ -39,7 +35,7 @@ namespace KianCommons
     {
         internal static int CountPedestrianLanes(this NetInfo info) => info.m_lanes.Count(lane => lane.m_laneType == NetInfo.LaneType.Pedestrian);
 
-        static bool CheckID(this ref NetNode node1, ushort nodeId2)
+        private static bool CheckID(this ref NetNode node1, ushort nodeId2)
         {
             var node2 = nodeId2.GetNode();
             return node1.m_buildIndex == node2.m_buildIndex && node1.m_position == node2.m_position;

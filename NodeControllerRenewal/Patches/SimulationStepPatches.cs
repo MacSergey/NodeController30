@@ -2,7 +2,6 @@ namespace NodeController.Patches
 {
     using ColossalFramework;
     using HarmonyLib;
-    using KianCommons;
     using ModsCommon;
     using ModsCommon.Utilities;
     using System;
@@ -16,7 +15,8 @@ namespace NodeController.Patches
     {
         internal static bool RotationUpdated { get; set; } = false;
         internal static void OnRotationUpdated() => RotationUpdated = true;
-        static PathUnit[] PathUnitBuffer => Singleton<PathManager>.instance.m_pathUnits.m_buffer;
+
+        private static PathUnit[] PathUnitBuffer => Singleton<PathManager>.instance.m_pathUnits.m_buffer;
 
         public static IEnumerable<CodeInstruction> TranspilerBase(IEnumerable<CodeInstruction> instructions, MethodInfo targetMethod)
         {
@@ -59,7 +59,7 @@ namespace NodeController.Patches
         }
         public static IEnumerable<CodeInstruction> CarAISimulationStepTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase method) => TranspilerBase(instructions, method as MethodInfo);
 
-        static Vehicle[] VehicleBuffer { get; } = VehicleManager.instance.m_vehicles.m_buffer;
+        private static Vehicle[] VehicleBuffer { get; } = VehicleManager.instance.m_vehicles.m_buffer;
         public static void CarTrailerAISimulationStepPostfix(ref Vehicle vehicleData, ref Vehicle.Frame frameData)
         {
             if (vehicleData.Info.m_leanMultiplier < 0)
@@ -95,7 +95,7 @@ namespace NodeController.Patches
         public static void TrainAISimulationStepPostfix(ref Vehicle vehicleData, ref Vehicle.Frame frameData) => PostfixBase(ref vehicleData, ref frameData);
         public static void TramBaseAISimulationStepPostfix(ref Vehicle vehicleData, ref Vehicle.Frame frameData) => PostfixBase(ref vehicleData, ref frameData);
 
-        static string ToSTR(this ref PathUnit.Position pathPos)
+        private static string ToSTR(this ref PathUnit.Position pathPos)
         {
             var info = pathPos.m_segment.GetSegment().Info;
             return $"segment:{pathPos.m_segment} info:{info} nLanes={info.m_lanes.Length} laneIndex={pathPos.m_lane}";

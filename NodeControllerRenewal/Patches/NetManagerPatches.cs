@@ -1,9 +1,6 @@
 ﻿using HarmonyLib;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection.Emit;
-using System.Text;
 
 namespace NodeController.Patches
 {
@@ -16,7 +13,7 @@ namespace NodeController.Patches
             var ldLoc1Found = false;
             var brFalseLabel = default(Label);
 
-            while(enumerator.MoveNext())
+            while (enumerator.MoveNext())
             {
                 var instruction = enumerator.Current;
                 if (instruction.opcode == OpCodes.Ldloc_1)
@@ -40,7 +37,7 @@ namespace NodeController.Patches
             while (enumerator.MoveNext())
             {
                 var instruction = enumerator.Current;
-                if(instruction.labels.Contains(brFalseLabel))
+                if (instruction.labels.Contains(brFalseLabel))
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Manager), nameof(Manager.SimulationStep)));
 
                 yield return instruction;

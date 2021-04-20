@@ -1,15 +1,8 @@
-﻿using ColossalFramework.Math;
-using ModsCommon.UI;
+﻿using ModsCommon;
 using ModsCommon.Utilities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static ToolBase;
-using ColossalFramework.UI;
-using ColossalFramework;
-using ModsCommon;
-using NodeController.Patches;
 
 namespace NodeController
 {

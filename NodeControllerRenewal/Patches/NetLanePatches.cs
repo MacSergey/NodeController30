@@ -1,15 +1,11 @@
 using ColossalFramework.Math;
 using HarmonyLib;
+using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
-using ColossalFramework;
-using NodeController;
-using ModsCommon;
-using ModsCommon.Utilities;
-using System.Linq;
 
 namespace NodeController.Patches
 {

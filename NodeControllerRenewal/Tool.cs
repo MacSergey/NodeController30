@@ -1,13 +1,8 @@
 ﻿using ColossalFramework;
-using ColossalFramework.UI;
-using ICities;
 using ModsCommon;
 using ModsCommon.Utilities;
 using NodeController.UI;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace NodeController

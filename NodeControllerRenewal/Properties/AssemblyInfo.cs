@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("NodeController30")]
@@ -13,5 +12,5 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef")]
 
-[assembly: AssemblyVersion("3.0.0.553")]
-[assembly: AssemblyFileVersion("3.0.0.547")]
+[assembly: AssemblyVersion("3.0.0.557")]
+[assembly: AssemblyFileVersion("3.0.0.550")]
