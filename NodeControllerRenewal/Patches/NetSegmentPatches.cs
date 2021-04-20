@@ -44,8 +44,8 @@ namespace NodeController.Patches
                 yield return instruction;
                 if (instruction.opcode == OpCodes.Ldfld && instruction.operand == flatJunctionsField)
                 {
-                    yield return TranspilerUtilities.GetLDArg(targetMethod, "segmentID");
-                    yield return TranspilerUtilities.GetLDArg(targetMethod, "nodeID");
+                    yield return new CodeInstruction(OpCodes.Ldarg_1);
+                    yield return new CodeInstruction(OpCodes.Ldarg_2);
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(GetFlatJunctions)));
                 }
             }

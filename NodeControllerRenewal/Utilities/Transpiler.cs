@@ -27,14 +27,6 @@ namespace KianCommons.Patches
             else
                 return new CodeInstruction(OpCodes.Ldarg_S, idx);
         }
-        public static CodeInstruction GetLDArgRef(MethodBase method, string argName, bool throwOnError = true)
-        {
-            if (!throwOnError && !HasParameter(method, argName))
-                return null;
-
-            byte idx = method.GetArgLoc(argName);
-            return new CodeInstruction(OpCodes.Ldarga_S, idx);
-        }
 
         public static byte GetArgLoc(this MethodBase method, string argName)
         {
@@ -60,19 +52,9 @@ namespace KianCommons.Patches
         public static bool IsSameInstruction(this CodeInstruction a, CodeInstruction b)
         {
             if (a.opcode == b.opcode)
-            {
-                if (a.operand == b.operand)
-                {
-                    return true;
-                }
-
-                // This special code is needed for some reason because the == operator doesn't work on System.Byte
-                return (a.operand is byte aByte && b.operand is byte bByte && aByte == bByte);
-            }
+                return a.operand == b.operand || (a.operand is byte aByte && b.operand is byte bByte && aByte == bByte);
             else
-            {
                 return false;
-            }
         }
         public static CodeInstruction BuildLdLocFromStLoc(this CodeInstruction instruction)
         {
@@ -92,72 +74,12 @@ namespace KianCommons.Patches
                 throw new Exception("instruction is not stloc! : " + instruction);
         }
 
-        public static CodeInstruction BuildStLocFromLdLoc(this CodeInstruction instruction)
-        {
-            if (instruction.opcode == OpCodes.Ldloc_0)
-                return new CodeInstruction(OpCodes.Stloc_0);
-            else if (instruction.opcode == OpCodes.Ldloc_1)
-                return new CodeInstruction(OpCodes.Stloc_1);
-            else if (instruction.opcode == OpCodes.Ldloc_2)
-                return new CodeInstruction(OpCodes.Stloc_2);
-            else if (instruction.opcode == OpCodes.Ldloc_3)
-                return new CodeInstruction(OpCodes.Stloc_3);
-            else if (instruction.opcode == OpCodes.Ldloc_S)
-                return new CodeInstruction(OpCodes.Stloc_S, instruction.operand);
-            else if (instruction.opcode == OpCodes.Ldloc)
-                return new CodeInstruction(OpCodes.Stloc, instruction.operand);
-            else
-                throw new Exception($"instruction is not ldloc! : {instruction}");
-        }
-
-        internal static string IL2STR(this IEnumerable<CodeInstruction> instructions)
-        {
-            string ret = "";
-            foreach (var code in instructions)
-                ret += code + "\n";
-            return ret;
-        }
-
         public class InstructionNotFoundException : Exception
         {
-            public InstructionNotFoundException() : base() { }
-            public InstructionNotFoundException(string m) : base(m) { }
+            public InstructionNotFoundException(string message) : base(message) { }
         }
-
-        public static int Search(this List<CodeInstruction> codes, Func<CodeInstruction, bool> predicate, int startIndex = 0, int count = 1, bool throwOnError = true)
-        {
-            return codes.Search(
-                (int i) => predicate(codes[i]),
-                startIndex: startIndex,
-                count: count,
-                throwOnError: throwOnError);
-
-        }
-
-        public static int Search(this List<CodeInstruction> codes, Func<int, bool> predicate, int startIndex = 0, int count = 1, bool throwOnError = true)
-        {
-            if (count == 0)
-                throw new ArgumentOutOfRangeException("count can't be zero");
-
-            int dir = count > 0 ? 1 : -1;
-            int counter = Math.Abs(count);
-            int n = 0;
-            int index = startIndex;
-
-            for (; 0 <= index && index < codes.Count; index += dir)
-            {
-                if (predicate(index))
-                {
-                    if (++n == counter)
-                        break;
-                }
-            }
-
-            return n == counter ? index : (!throwOnError ? -1 : throw new InstructionNotFoundException($"count: found={n} requested={count}"));
-        }
-
         [Obsolete]
-        public static int SearchInstruction(List<CodeInstruction> codes, CodeInstruction instruction, int index, int dir = +1, int counter = 1)
+        public static int SearchInstruction(List<CodeInstruction> codes, CodeInstruction instruction, int index, int dir = 1, int counter = 1)
         {
             try
             {
@@ -169,7 +91,7 @@ namespace KianCommons.Patches
             }
         }
 
-        public static int SearchGeneric(List<CodeInstruction> codes, Func<int, bool> predicate, int index, int dir = +1, int counter = 1, bool throwOnError = true)
+        public static int SearchGeneric(List<CodeInstruction> codes, Func<int, bool> predicate, int index, int dir = 1, int counter = 1, bool throwOnError = true)
         {
             int count = 0;
             for (; 0 <= index && index < codes.Count; index += dir)
@@ -182,24 +104,13 @@ namespace KianCommons.Patches
             }
             return count == counter ? index : (!throwOnError ? -1 : throw new InstructionNotFoundException(" Did not found instruction[s]."));
         }
-        public static void MoveLabels(CodeInstruction source, CodeInstruction target)
+        public static void InsertInstructions(List<CodeInstruction> codes, CodeInstruction[] insertion, int index)
         {
-            // move labels
-            var labels = source.labels;
-            target.labels.AddRange(labels);
+            var labels = codes[index].labels;
+            insertion[0].labels.AddRange(labels);
             labels.Clear();
-        }
-        public static void InsertInstructions(List<CodeInstruction> codes, CodeInstruction[] insertion, int index, bool moveLabels = true)
-        {
-            foreach (var code in insertion)
-            {
-                if (code == null)
-                    throw new Exception("Bad Instructions:\n" + insertion.IL2STR());
-            }
 
-            MoveLabels(codes[index], insertion[0]);
             codes.InsertRange(index, insertion);
-
         }
     }
 }
