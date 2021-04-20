@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
-using static KianCommons.Patches.TranspilerUtilities;
-using KianCommons;
 using ColossalFramework;
 using NodeController;
 using ModsCommon;
@@ -17,7 +15,7 @@ namespace NodeController.Patches
 {
     public static class NetLanePatches
     {
-        public static IEnumerable<CodeInstruction> NetLaneTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase method)
+        public static IEnumerable<CodeInstruction> NetLaneTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
         {
             var bezierPosition = AccessTools.Method(typeof(Bezier3), nameof(Bezier3.Position), new Type[] { typeof(float) });
             var propPosition = AccessTools.Field(typeof(NetLaneProps.Prop), nameof(NetLaneProps.Prop.m_position));
@@ -33,8 +31,8 @@ namespace NodeController.Patches
                 else if (tInstruction != null && instruction.opcode == OpCodes.Ldflda && instruction.operand == propPosition)
                 {
                     yield return tInstruction;
-                    yield return GetLDArg(method, "laneID");
-                    yield return GetLDArg(method, "laneInfo");
+                    yield return original.GetLDArg("laneID");
+                    yield return original.GetLDArg("laneInfo");
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetLanePatches), nameof(NetLanePatches.FixPropPosition)));
                 }
 

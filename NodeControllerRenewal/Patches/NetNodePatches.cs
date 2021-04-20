@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
+using TranspilerUtilities = KianCommons.Patches.TranspilerUtilities;
 
 namespace NodeController.Patches
 {
@@ -35,7 +36,7 @@ namespace NodeController.Patches
                 yield return instruction;
                 if (instruction.opcode == OpCodes.Ldfld && instruction.operand == minCornerOffsetField)
                 {
-                    yield return new CodeInstruction(OpCodes.Ldarg_1);
+                    yield return new CodeInstruction(original.GetLDArg("nodeID"));
                     yield return new CodeInstruction(OpCodes.Ldloc_3);
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(GetMinCornerOffset)));
                 }
@@ -43,7 +44,7 @@ namespace NodeController.Patches
         }
         private static float GetMinCornerOffset(float cornerOffset, ushort nodeId, ushort segmentId) => Manager.Instance[nodeId, segmentId]?.Offset ?? cornerOffset;
 
-        public static IEnumerable<CodeInstruction> RenderInstanceTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase method)
+        public static IEnumerable<CodeInstruction> RenderInstanceTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
         {
             var codes = instructions.ToList();
 
@@ -63,27 +64,28 @@ namespace NodeController.Patches
             index = TranspilerUtilities.SearchInstruction(codes, new CodeInstruction(OpCodes.Callvirt, checkRenderDistanceMethod), index, dir: -1);
             int insertIndex1 = index + 1; // at this point boloean is in stack
 
-            var LDLoc_segmentID = BuildSegnentLDLocFromPrevSTLoc(codes, index, counter: 1);
+            var ldLocNodeID = original.GetLDArg("nodeID");
+            var ldLocSegmentID = BuildSegnentLDLocFromPrevSTLoc(codes, index, counter: 1);
 
             var calculateMaterialInstructions = new[]
             {
-                new CodeInstruction(OpCodes.Ldarg_2),
-                LDLoc_segmentID,
+                ldLocNodeID,
+                ldLocSegmentID,
                 new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(CalculateMaterial))),
             };
             TranspilerUtilities.InsertInstructions(codes, calculateMaterialInstructions, insertIndex3);
 
             var calculateMeshInstructions = new[]
             {
-                new CodeInstruction(OpCodes.Ldarg_2),
-                LDLoc_segmentID,
+                ldLocNodeID,
+                ldLocSegmentID,
                 new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(CalculateMesh))),
             };
             TranspilerUtilities.InsertInstructions(codes, calculateMeshInstructions, insertIndex2);
 
             var shouldContinueMedianInstructions = new[]
             {
-                new CodeInstruction(OpCodes.Ldarg_2),
+                ldLocNodeID,
                 new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(ShouldContinueMedian))),
                 new CodeInstruction(OpCodes.Or)
             };

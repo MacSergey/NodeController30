@@ -36,7 +36,7 @@ namespace NodeController.Patches
             return false;
         }
 
-        public static IEnumerable<CodeInstruction> FindDirectionTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase targetMethod)
+        public static IEnumerable<CodeInstruction> FindDirectionTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
         {
             var flatJunctionsField = AccessTools.Field(typeof(NetInfo), nameof(NetInfo.m_flatJunctions));
             foreach (var instruction in instructions)
@@ -44,8 +44,8 @@ namespace NodeController.Patches
                 yield return instruction;
                 if (instruction.opcode == OpCodes.Ldfld && instruction.operand == flatJunctionsField)
                 {
-                    yield return new CodeInstruction(OpCodes.Ldarg_1);
-                    yield return new CodeInstruction(OpCodes.Ldarg_2);
+                    yield return new CodeInstruction(original.GetLDArg("segmentID"));
+                    yield return new CodeInstruction(original.GetLDArg("nodeID"));
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(GetFlatJunctions)));
                 }
             }
