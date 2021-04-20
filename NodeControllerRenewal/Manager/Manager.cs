@@ -97,8 +97,14 @@ namespace NodeController
 
         private void GetUpdateList(ushort nodeId, bool includeNearby, out List<ushort> nodeIds, out List<ushort> segmentIds)
         {
-            nodeIds = new List<ushort>() { nodeId };
-            segmentIds = nodeId.GetNode().SegmentIds().ToList();
+            nodeIds = new List<ushort>();
+            segmentIds = new List<ushort>();
+
+            if (!ContainsNode(nodeId))
+                return;
+
+            nodeIds.Add(nodeId);
+            segmentIds.AddRange(nodeId.GetNode().SegmentIds());
 
             if (includeNearby)
             {
