@@ -43,7 +43,7 @@ namespace NodeController
         public float SegmentMinT { get; private set; }
         public float SegmentMaxT { get; private set; }
 
-        public float DefaultOffset => Mathf.Clamp(Mathf.Max(Info.m_minCornerOffset, Info.m_halfWidth < 4f ? 2f : 10f), MinPossibleOffset, MaxPossibleOffset);
+        public float DefaultOffset => Mathf.Clamp(Mathf.Max(Info.m_minCornerOffset, Info.m_halfWidth < 4f ? 0f : 8f), MinPossibleOffset, MaxPossibleOffset);
         public bool DefaultIsSlope => !Info.m_flatJunctions && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public bool DefaultIsTwist => !DefaultIsSlope && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public NetSegment.Flags DefaultFlags { get; set; }
@@ -370,8 +370,8 @@ namespace NodeController
                 for (var i = 0; i < count; i += 1)
                 {
                     var defaultOffset = endDatas[i].DefaultOffset;
-                    CorrectDefaultOffset(endDatas[i].LeftSide.RawBezier, ref leftDefaultT[i], defaultOffset);
-                    CorrectDefaultOffset(endDatas[i].RightSide.RawBezier, ref rightDefaultT[i], defaultOffset);
+                    CorrectDefaultOffset(endDatas[i].LeftSide.RawBezier, ref leftDefaultT[i], defaultOffset, data.Style.AdditionalOffset);
+                    CorrectDefaultOffset(endDatas[i].RightSide.RawBezier, ref rightDefaultT[i], defaultOffset, data.Style.AdditionalOffset);
                 }
             }
 
@@ -400,10 +400,10 @@ namespace NodeController
                 var intersect = Intersection.CalculateSingle(bezier, line);
                 defaultT = Mathf.Max(defaultT, intersect.IsIntersect ? intersect.FirstT : 0f);
             }
-            static void CorrectDefaultOffset(BezierTrajectory bezier, ref float defaultT, float minOffset)
+            static void CorrectDefaultOffset(BezierTrajectory bezier, ref float defaultT, float minOffset, float additionalOffset)
             {
                 var distance = bezier.Distance(0f, defaultT);
-                defaultT = bezier.Travel(defaultT, Mathf.Max(minOffset - distance, 0f));
+                defaultT = bezier.Travel(defaultT, Mathf.Max(minOffset - distance, additionalOffset));
             }
         }
 
