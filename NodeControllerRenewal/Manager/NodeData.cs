@@ -1,5 +1,6 @@
 using ColossalFramework;
 using ColossalFramework.UI;
+using ModsCommon;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using NodeController.Utilities;
@@ -321,7 +322,7 @@ namespace NodeController
 
             return result >= 0 ? first : second;
         }
-        public void UpdateNode() => Manager.Instance.Update(Id, true);
+        public void UpdateNode() => SingletonManager<Manager>.Instance.Update(Id, true);
         public void ResetToDefault()
         {
             ResetToDefaultImpl(true);

@@ -1,5 +1,6 @@
 using ColossalFramework.Math;
 using HarmonyLib;
+using ModsCommon;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace NodeController.Patches
             var backward = (laneInfo.m_finalDirection & NetInfo.Direction.Both) == NetInfo.Direction.Backward || (laneInfo.m_finalDirection & NetInfo.Direction.AvoidBoth) == NetInfo.Direction.AvoidForward;
             bool reverse = backward ^ segmentId.GetSegment().IsInvert();
 
-            Manager.Instance.GetSegmentData(segmentId, out var start, out var end);
+            SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
 
             var twistStart = start?.TwistAngle ?? 0;
             var twistEnd = end?.TwistAngle ?? 0;

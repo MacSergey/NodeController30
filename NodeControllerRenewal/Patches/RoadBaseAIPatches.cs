@@ -1,3 +1,4 @@
+using ModsCommon;
 using ModsCommon.Utilities;
 using NodeController.Utilities;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace NodeController.Patches
         }
         public static void UpdateNodeFlagsPostfix(ushort nodeID, ref NetNode data)
         {
-            if (data.CountSegments() == 2 && Manager.Instance[nodeID] is NodeData nodeData)
+            if (data.CountSegments() == 2 && SingletonManager<Manager>.Instance[nodeID] is NodeData nodeData)
             {
                 //if (nodeData.FirstTimeTrafficLight && TrafficLightManager.Instance.CanEnableTrafficLight(nodeID, ref data, out var res))
                 //{

@@ -8,11 +8,8 @@ using System.Xml.Linq;
 
 namespace NodeController
 {
-    [Serializable]
-    public class Manager
+    public class Manager : IManager
     {
-        public static Manager Instance { get; private set; } = new Manager();
-
         private NodeData[] Buffer { get; } = new NodeData[NetManager.MAX_NODE_COUNT];
 
         public NodeData InsertNode(NetTool.ControlPoint controlPoint, NodeStyleType nodeType = NodeStyleType.Crossing)
@@ -121,30 +118,30 @@ namespace NodeController
 
         public static void SimulationStep()
         {
-            var nodeIds = NetManager.instance.GetUpdateNodes().Where(n => Instance.Buffer[n] != null).ToList();
-            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => Instance.ContainsSegment(s)).ToList();
+            var nodeIds = NetManager.instance.GetUpdateNodes().Where(n => SingletonManager<Manager>.Instance.Buffer[n] != null).ToList();
+            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => SingletonManager<Manager>.Instance.ContainsSegment(s)).ToList();
 
             UpdateNow(nodeIds, segmentIds, true);
         }
         private static void UpdateNow(List<ushort> nodeIds, List<ushort> segmentIds, bool flags)
         {
             foreach (var nodeId in nodeIds)
-                Instance.Buffer[nodeId].Update(flags);
+                SingletonManager<Manager>.Instance.Buffer[nodeId].Update(flags);
 
             foreach (var segmentId in segmentIds)
                 SegmentEndData.UpdateBeziers(segmentId);
 
             foreach (var nodeId in nodeIds)
-                SegmentEndData.UpdateMinLimits(Instance.Buffer[nodeId]);
+                SegmentEndData.UpdateMinLimits(SingletonManager<Manager>.Instance.Buffer[nodeId]);
 
             foreach (var segmentId in segmentIds)
                 SegmentEndData.UpdateMaxLimits(segmentId);
 
             foreach (var nodeId in nodeIds)
-                Instance.Buffer[nodeId].LateUpdate();
+                SingletonManager<Manager>.Instance.Buffer[nodeId].LateUpdate();
         }
 
-        public static void ReleaseNodeImplementationPrefix(ushort node) => Instance.Buffer[node] = null;
+        public static void ReleaseNodeImplementationPrefix(ushort node) => SingletonManager<Manager>.Instance.Buffer[node] = null;
 
         public XElement ToXml()
         {

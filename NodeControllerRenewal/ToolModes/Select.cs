@@ -22,13 +22,13 @@ namespace NodeController
         public override void OnPrimaryMouseClicked(Event e)
         {
             if (IsHoverNode)
-                Set(Manager.Instance[HoverNode.Id, true]);
+                Set(SingletonManager<Manager>.Instance[HoverNode.Id, true]);
             else if (IsHoverSegment)
             {
                 var controlPoint = new NetTool.ControlPoint() { m_segment = HoverSegment.Id };
                 HoverSegment.GetHitPosition(Tool.Ray, out _, out controlPoint.m_position);
                 if (PossibleInsertNode(controlPoint.m_position))
-                    Set(Manager.Instance.InsertNode(controlPoint));
+                    Set(SingletonManager<Manager>.Instance.InsertNode(controlPoint));
             }
         }
         private void Set(NodeData data)

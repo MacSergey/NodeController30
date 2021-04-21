@@ -76,8 +76,8 @@ namespace NodeController.Utilities
 
         protected override string Id => nameof(NodeController);
 
-        protected override XElement GetSaveData() => Manager.Instance.ToXml();
-        protected override void SetLoadData(XElement config) => Manager.Instance.FromXml(config);
+        protected override XElement GetSaveData() => SingletonManager<Manager>.Instance.ToXml();
+        protected override void SetLoadData(XElement config) => SingletonManager<Manager>.Instance.FromXml(config);
 
         //public override void OnLoadData()
         //{

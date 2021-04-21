@@ -36,6 +36,7 @@ namespace NodeController.Patches
         {
             if (!vehicleData.GetCurrentPathPos(out var pathPos))
                 return;
+
             try
             {
                 float se = GetCurrentSE(pathPos, vehicleData.m_lastPathOffset * (1f / 255f), ref vehicleData);
@@ -43,10 +44,7 @@ namespace NodeController.Patches
                 var rot = Quaternion.Euler(0, 0f, se);
                 frameData.m_rotation *= rot;
             }
-            catch (Exception error)
-            {
-                SingletonMod<Mod>.Logger.Error(pathPos.ToSTR(), error);
-            }
+            catch { }
         }
 
         public static void CarAISimulationStepPostfix(ref Vehicle vehicleData, ref Vehicle.Frame frameData)
@@ -95,12 +93,6 @@ namespace NodeController.Patches
         public static void TrainAISimulationStepPostfix(ref Vehicle vehicleData, ref Vehicle.Frame frameData) => PostfixBase(ref vehicleData, ref frameData);
         public static void TramBaseAISimulationStepPostfix(ref Vehicle vehicleData, ref Vehicle.Frame frameData) => PostfixBase(ref vehicleData, ref frameData);
 
-        private static string ToSTR(this ref PathUnit.Position pathPos)
-        {
-            var info = pathPos.m_segment.GetSegment().Info;
-            return $"segment:{pathPos.m_segment} info:{info} nLanes={info.m_lanes.Length} laneIndex={pathPos.m_lane}";
-        }
-
         internal static bool GetCurrentPathPos(this ref Vehicle vehicleData, out PathUnit.Position pathPos)
         {
             byte pathIndex = vehicleData.m_pathPositionIndex;
@@ -116,7 +108,7 @@ namespace NodeController.Patches
             if (float.IsNaN(offset) || float.IsInfinity(offset))
                 return 0;
 
-            Manager.Instance.GetSegmentData(pathPos.m_segment, out var start, out var end);
+            SingletonManager<Manager>.Instance.GetSegmentData(pathPos.m_segment, out var start, out var end);
             var startSE = start?.CachedSuperElevationDeg ?? 0f;
             var endSE = -end?.CachedSuperElevationDeg ?? 0f;
             var se = startSE * (1 - offset) + endSE * offset;
@@ -135,11 +127,6 @@ namespace NodeController.Patches
 
             return se;
         }
-
-        #region ROTATION UPDATED
-
-
-        #endregion
     }
 }
 

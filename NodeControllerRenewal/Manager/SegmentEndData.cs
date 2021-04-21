@@ -1,6 +1,7 @@
 using ColossalFramework;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
+using ModsCommon;
 using ModsCommon.Utilities;
 using NodeController.Utilities;
 using System;
@@ -33,9 +34,9 @@ namespace NodeController
         public NetSegment Segment => Id.GetSegment();
         public NetInfo Info => Segment.Info;
         public NetNode Node => NodeId.GetNode();
-        public NodeData NodeData => Manager.Instance[NodeId];
+        public NodeData NodeData => SingletonManager<Manager>.Instance[NodeId];
         public bool IsStartNode => Segment.IsStartNode(NodeId);
-        public SegmentEndData Other => Manager.Instance[Segment.GetOtherNode(NodeId), Id, true];
+        public SegmentEndData Other => SingletonManager<Manager>.Instance[Segment.GetOtherNode(NodeId), Id, true];
 
         public BezierTrajectory RawSegmentBezier { get; private set; }
         public BezierTrajectory SegmentBezier { get; private set; }
@@ -171,7 +172,7 @@ namespace NodeController
                 RightSide.RawBezier = leftBezier.Invert();
             }
         }
-        public void UpdateNode() => Manager.Instance.Update(NodeId, true);
+        public void UpdateNode() => SingletonManager<Manager>.Instance.Update(NodeId, true);
 
         public void ResetToDefault(NodeStyle style, bool force)
         {
@@ -221,7 +222,7 @@ namespace NodeController
         public static void UpdateBeziers(ushort segmentId)
         {
             CalculateSegmentBeziers(segmentId, out var bezier, out var leftBezier, out var rightBezier);
-            Manager.Instance.GetSegmentData(segmentId, out var start, out var end);
+            SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
 
             if (start != null)
             {
@@ -255,7 +256,7 @@ namespace NodeController
 
             static void Fix(ushort nodeId, ushort ignoreSegmentId, ref Vector3 dir)
             {
-                if (Manager.Instance[nodeId] is NodeData startData && startData.IsMiddleNode)
+                if (SingletonManager<Manager>.Instance[nodeId] is NodeData startData && startData.IsMiddleNode)
                 {
                     var startNearSegmentId = startData.SegmentIds.First(s => s != ignoreSegmentId);
                     GetSegmentPosAndDir(startNearSegmentId, nodeId, out _, out var nearDir, out _, out _);
@@ -273,7 +274,7 @@ namespace NodeController
             endPos = (isStart ? segment.m_endNode : segment.m_startNode).GetNode().m_position;
             endDir = isStart ? segment.m_endDirection : segment.m_startDirection;
 
-            Manager.Instance.GetSegmentData(segmentId, out var start, out var end);
+            SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
             var startShift = (isStart ? start : end)?.Shift ?? 0f;
             var endShift = (isStart ? end : start)?.Shift ?? 0f;
 
@@ -295,7 +296,7 @@ namespace NodeController
         {
             var segment = segmentId.GetSegment();
 
-            Manager.Instance.GetSegmentData(segmentId, out var start, out var end);
+            SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
             var startTwist = start?.TwistAngle ?? 0f;
             var endTwist = end?.TwistAngle ?? 0f;
 
@@ -397,7 +398,7 @@ namespace NodeController
 
         public static void UpdateMaxLimits(ushort segmentId)
         {
-            Manager.Instance.GetSegmentData(segmentId, out var start, out var end);
+            SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
 
             if (start == null)
                 SetNoMaxLimits(end);
@@ -569,7 +570,7 @@ namespace NodeController
         public void Render(OverlayData data) => Render(data, data, data);
         public void Render(OverlayData contourData, OverlayData outterData, OverlayData innerData)
         {
-            var data = Manager.Instance[NodeId];
+            var data = SingletonManager<Manager>.Instance[NodeId];
 
             Render—ontour(contourData);
             if (data.IsMoveableEnds)

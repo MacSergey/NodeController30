@@ -1,4 +1,5 @@
 using HarmonyLib;
+using ModsCommon;
 using ModsCommon.Utilities;
 using NodeController.Utilities;
 using System.Collections.Generic;
@@ -12,13 +13,13 @@ namespace NodeController.Patches
     {
         public static void RefreshJunctionDataPrefix(ushort nodeID, ref Vector3 centerPos)
         {
-            if (Manager.Instance[nodeID] is NodeData data)
+            if (SingletonManager<Manager>.Instance[nodeID] is NodeData data)
                 centerPos = data.Position;
         }
 
         public static void RefreshJunctionDataPostfix(ushort nodeID, ref RenderManager.Instance data)
         {
-            if (Manager.Instance[nodeID] is NodeData blendData && blendData.ShouldRenderCenteralCrossingTexture)
+            if (SingletonManager<Manager>.Instance[nodeID] is NodeData blendData && blendData.ShouldRenderCenteralCrossingTexture)
                 data.m_dataVector1.w = 0.01f;
         }
 
@@ -36,7 +37,7 @@ namespace NodeController.Patches
                 }
             }
         }
-        private static float GetMinCornerOffset(float cornerOffset, ushort nodeId, ushort segmentId) => Manager.Instance[nodeId, segmentId]?.Offset ?? cornerOffset;
+        private static float GetMinCornerOffset(float cornerOffset, ushort nodeId, ushort segmentId) => SingletonManager<Manager>.Instance[nodeId, segmentId]?.Offset ?? cornerOffset;
 
         public static IEnumerable<CodeInstruction> RenderInstanceTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
         {
@@ -87,7 +88,7 @@ namespace NodeController.Patches
             }
         }
 
-        private static bool ShouldContinueMedian(ushort nodeID) => Manager.Instance[nodeID] is NodeData data && data.Type == NodeStyleType.Stretch;
+        private static bool ShouldContinueMedian(ushort nodeID) => SingletonManager<Manager>.Instance[nodeID] is NodeData data && data.Type == NodeStyleType.Stretch;
         private static Material CalculateMaterial(Material material, ushort nodeId, ushort segmentId) => ShouldContinueMedian(nodeId) ? MaterialUtilities.ContinuesMedian(material, segmentId.GetSegment().Info, false) : material;
         private static Mesh CalculateMesh(Mesh mesh, ushort nodeId, ushort segmentId) => ShouldContinueMedian(nodeId) ? MaterialUtilities.ContinuesMedian(mesh, segmentId.GetSegment().Info) : mesh;
     }

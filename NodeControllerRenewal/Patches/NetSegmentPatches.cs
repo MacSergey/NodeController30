@@ -1,6 +1,7 @@
 using ColossalFramework;
 using HarmonyLib;
 using JetBrains.Annotations;
+using ModsCommon;
 using ModsCommon.Utilities;
 using System.Collections.Generic;
 using System.Reflection;
@@ -14,7 +15,7 @@ namespace NodeController.Patches
     {
         public static bool CalculateCornerPrefix(NetInfo extraInfo1, NetInfo extraInfo2, ushort ignoreSegmentID, ushort startNodeID, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection, ref bool smooth)
         {
-            if (extraInfo1 != null || extraInfo2 != null || Manager.Instance[startNodeID, ignoreSegmentID] is not SegmentEndData data)
+            if (extraInfo1 != null || extraInfo2 != null || SingletonManager<Manager>.Instance[startNodeID, ignoreSegmentID] is not SegmentEndData data)
                 return true;
 
             smooth = data.Node.m_flags.IsFlagSet(NetNode.Flags.Middle);
@@ -51,7 +52,7 @@ namespace NodeController.Patches
 
         public static bool GetFlatJunctions(bool flatJunctions, ushort segmentId, ushort nodeId)
         {
-            var data = Manager.Instance[nodeId, segmentId];
+            var data = SingletonManager<Manager>.Instance[nodeId, segmentId];
             return !data?.IsSlope ?? flatJunctions;
         }
     }

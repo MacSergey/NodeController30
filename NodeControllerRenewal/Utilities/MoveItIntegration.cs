@@ -1,3 +1,4 @@
+using ModsCommon;
 using ModsCommon.Utilities;
 using MoveItIntegration;
 using System;
@@ -20,7 +21,7 @@ namespace NodeController.Utilities
 
         public override object Copy(InstanceID sourceInstanceID)
         {
-            if (Manager.Instance[sourceInstanceID.NetNode] is NodeData data)
+            if (SingletonManager<Manager>.Instance[sourceInstanceID.NetNode] is NodeData data)
                 return data.ToXml();
             else
                 return null;
@@ -30,9 +31,11 @@ namespace NodeController.Utilities
             if (record is not XElement config || targetInstanceID.NetNode == 0)
                 return;
 
-            targetInstanceID.NetNode.GetNodeRef().CalculateNode(targetInstanceID.NetNode);
+            //need while moveit dont fixed
+            ref var node = ref targetInstanceID.NetNode.GetNodeRef();
+            node.CalculateNode(targetInstanceID.NetNode);
 
-            if (Manager.Instance[targetInstanceID.NetNode, true] is NodeData data)
+            if (SingletonManager<Manager>.Instance[targetInstanceID.NetNode, true] is NodeData data)
                 data.FromXml(config, map);
         }
 
