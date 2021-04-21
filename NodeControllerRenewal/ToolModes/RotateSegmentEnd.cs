@@ -34,7 +34,7 @@ namespace NodeController
 
         protected override void Reset(IToolMode prevMode)
         {
-            SegmentEnd = prevMode is EditToolMode editMode ? editMode.HoverSegmentEndCircle : null;
+            SegmentEnd = prevMode is EditNodeToolMode editMode ? editMode.HoverSegmentEndCircle : null;
             BeginDirection = CurrentDirection;
             BeginRotate = SegmentEnd.RotateAngle;
         }

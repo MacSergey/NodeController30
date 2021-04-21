@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace NodeController
 {
-    public class SelectToolMode : BaseSelectToolMode<Mod, NodeControllerTool>, IToolModePanel, IToolMode<ToolModeType>
+    public class SelectNodeToolMode : BaseSelectToolMode<Mod, NodeControllerTool>, IToolModePanel, IToolMode<ToolModeType>
     {
         public bool ShowPanel => false;
         public ToolModeType Type => ToolModeType.Select;

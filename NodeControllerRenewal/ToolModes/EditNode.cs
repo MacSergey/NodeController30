@@ -3,13 +3,19 @@ using UnityEngine;
 
 namespace NodeController
 {
-    public class EditToolMode : NodeControllerToolMode
+    public class EditNodeToolMode : NodeControllerToolMode
     {
         public override ToolModeType Type => ToolModeType.Edit;
-        public SegmentEndData HoverSegmentEndCenter { get; set; }
+
+        public SegmentEndData HoverSegmentEndCenter { get; private set; }
         private bool IsHoverSegmentEndCenter => HoverSegmentEndCenter != null;
-        public SegmentEndData HoverSegmentEndCircle { get; set; }
+
+        public SegmentEndData HoverSegmentEndCircle { get; private set; }
         private bool IsHoverSegmentEndCircle => HoverSegmentEndCircle != null;
+
+        public SegmentEndData HoverSegmentEndCorner { get; private set; }
+        public SideType HoverCorner { get; private set; }
+        private bool IsHoverSegmentEndCorner => HoverSegmentEndCorner != null;
 
         public override void OnToolUpdate()
         {
@@ -24,23 +30,43 @@ namespace NodeController
                     var hitPos = Tool.Ray.GetRayPosition(segmentData.Position.y, out _);
 
                     var magnitude = (segmentData.Position - hitPos).magnitude;
-                    if (magnitude < SegmentEndData.DotRadius)
+                    if (magnitude < SegmentEndData.CenterDotRadius)
                     {
                         HoverSegmentEndCenter = segmentData;
                         HoverSegmentEndCircle = null;
+                        HoverSegmentEndCorner = null;
                         return;
-                    }
+                    }                   
                     else if (magnitude < SegmentEndData.CircleRadius + 1f && magnitude > SegmentEndData.CircleRadius - 0.5f)
                     {
                         HoverSegmentEndCenter = null;
                         HoverSegmentEndCircle = segmentData;
+                        HoverSegmentEndCorner = null;
                         return;
-                    }
+                    }                   
+                    else if (CheckCorner(segmentData, SideType.Left) || CheckCorner(segmentData, SideType.Right))
+                        return;
                 }
             }
 
             HoverSegmentEndCenter = null;
             HoverSegmentEndCircle = null;
+            HoverSegmentEndCorner = null;
+        }
+        private bool CheckCorner(SegmentEndData segmentData, SideType side)
+        {
+            var hitPos = Tool.Ray.GetRayPosition(segmentData[side].Position.y, out _);
+
+            if ((segmentData[side].Position - hitPos).magnitude < SegmentEndData.CornerDotRadius)
+            {
+                HoverSegmentEndCenter = null;
+                HoverSegmentEndCircle = null;
+                HoverSegmentEndCorner = segmentData;
+                HoverCorner = side;
+                return true;
+            }
+            else
+                return false;
         }
 
         public override void OnSecondaryMouseClicked()
@@ -51,9 +77,11 @@ namespace NodeController
         public override void OnMouseDown(Event e)
         {
             if (IsHoverSegmentEndCenter)
-                Tool.SetMode(ToolModeType.Drag);
+                Tool.SetMode(ToolModeType.DragEnd);
             else if (IsHoverSegmentEndCircle)
                 Tool.SetMode(ToolModeType.Rotate);
+            else if (IsHoverSegmentEndCorner)
+                Tool.SetMode(ToolModeType.DragCorner);
         }
         public override string GetToolInfo() => $"Hold Shift to alignment roads\nHold Alt to change main road";
 
@@ -64,7 +92,11 @@ namespace NodeController
             var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow };
             foreach (var segmentData in Tool.Data.SegmentEndDatas)
             {
-                segmentData.Render(green, segmentData == HoverSegmentEndCircle ? hover : yellow, segmentData == HoverSegmentEndCenter ? hover : yellow);
+                var outter = segmentData == HoverSegmentEndCircle ? hover : yellow;
+                var inner = segmentData == HoverSegmentEndCenter ? hover : yellow;
+                var left = segmentData == HoverSegmentEndCorner && HoverCorner == SideType.Left ? hover : yellow;
+                var right = segmentData == HoverSegmentEndCorner && HoverCorner == SideType.Right ? hover : yellow;
+                segmentData.Render(green, outter, inner, left, right);
             }
         }
     }

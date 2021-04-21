@@ -13,7 +13,7 @@ namespace NodeController
         private bool IsHoverSegmentEnd => HoverSegmentEnd != null;
         private SegmentEndData SelectedSegmentEnd { get; set; }
         private bool IsSelectedSegmentEnd => SelectedSegmentEnd != null;
-        private float Radius => SegmentEndData.DotRadius + 0.5f;
+        private float Radius => SegmentEndData.CenterDotRadius + 0.5f;
 
         protected override void Reset(IToolMode prevMode)
         {

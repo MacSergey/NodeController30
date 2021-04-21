@@ -69,7 +69,7 @@ namespace NodeController
         {
             segmentEnd.GetCorner(side == SideType.Left, out var position, out _);
             var hitPos = Tool.Ray.GetRayPosition(position.y, out _);
-            return (position - hitPos).sqrMagnitude < SegmentEndData.DotRadius * SegmentEndData.DotRadius;
+            return (position - hitPos).sqrMagnitude < SegmentEndData.CenterDotRadius * SegmentEndData.CenterDotRadius;
         }
 
         public override void OnPrimaryMouseClicked(Event e)
@@ -99,10 +99,11 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
+            var width = SegmentEndData.CenterDotRadius * 2;
             var green = new OverlayData(cameraInfo) { Color = Colors.Green };
-            var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow };
-            var purple = new OverlayData(cameraInfo) { Color = Colors.Purple };
-            var white = new OverlayData(cameraInfo);
+            var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow, Width = width };
+            var purple = new OverlayData(cameraInfo) { Color = Colors.Purple, Width = width };
+            var white = new OverlayData(cameraInfo) { Width = width };
 
             foreach (var segmentEnd in Tool.Data.SegmentEndDatas)
             {

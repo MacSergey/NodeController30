@@ -24,9 +24,10 @@ namespace NodeController
 
         protected override IEnumerable<IToolMode<ToolModeType>> GetModes()
         {
-            yield return CreateToolMode<SelectToolMode>();
-            yield return CreateToolMode<EditToolMode>();
+            yield return CreateToolMode<SelectNodeToolMode>();
+            yield return CreateToolMode<EditNodeToolMode>();
             yield return CreateToolMode<DragSegmentEndToolMode>();
+            yield return CreateToolMode<DragCornerToolMode>();
             yield return CreateToolMode<RotateSegmentEndToolMode>();
             yield return CreateToolMode<ChangeMainRoadToolMode>();
             yield return CreateToolMode<AlignSegmentEndsToolMode>();
@@ -61,10 +62,11 @@ namespace NodeController
         None = 0,
         Select = 1,
         Edit = 2,
-        Drag = 4,
-        Rotate = 8,
-        ChangeMain = 16,
-        Aling = 32,
+        DragEnd = 4,
+        DragCorner = 8,
+        Rotate = 16,
+        ChangeMain = 32,
+        Aling = 64,
     }
     public class NodeControllerToolThreadingExtension : BaseThreadingExtension<Mod, NodeControllerTool> { }
     public class NodeControllerToolLoadingExtension : BaseToolLoadingExtension<Mod, NodeControllerTool> { }

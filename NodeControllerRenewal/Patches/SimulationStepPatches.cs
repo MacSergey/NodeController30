@@ -36,10 +36,7 @@ namespace NodeController.Patches
         private static Quaternion GetTwist(ref Vehicle vehicleData)
         {
             if (vehicleData.GetCurrentPathPos(out var pathPos))
-            {
-                var twist = GetCurrentTwist(pathPos, vehicleData.m_lastPathOffset * (1f / 255f), ref vehicleData);
-                return Quaternion.Euler(0, 0f, twist);
-            }
+                return GetCurrentTwist(pathPos, vehicleData.m_lastPathOffset * (1f / 255f), ref vehicleData);
             else
                 return Quaternion.identity;
         }
@@ -64,8 +61,7 @@ namespace NodeController.Patches
             if (float.IsNaN(offset))
                 return Quaternion.identity;
 
-            var twist = GetCurrentTwist(pathPos, offset, ref vehicleData);
-            return Quaternion.Euler(0, 0f, twist);
+            return GetCurrentTwist(pathPos, offset, ref vehicleData);
         }
 
         private static bool GetCurrentPathPos(this ref Vehicle vehicleData, out PathUnit.Position pathPos)
@@ -77,14 +73,14 @@ namespace NodeController.Patches
             return Singleton<PathManager>.instance.m_pathUnits.m_buffer[vehicleData.m_path].GetPosition(pathIndex >> 1, out pathPos);
         }
 
-        private static float GetCurrentTwist(PathUnit.Position pathPos, float offset, ref Vehicle vehicleData)
+        private static Quaternion GetCurrentTwist(PathUnit.Position pathPos, float offset, ref Vehicle vehicleData)
         {
             if (float.IsNaN(offset) || float.IsInfinity(offset))
-                return 0;
+                return Quaternion.identity;
 
             var segment = pathPos.m_segment.GetSegment();
             if (segment.Info.m_lanes[pathPos.m_lane] is not NetInfo.Lane lane)
-                return 0;
+                return Quaternion.identity;
 
             SingletonManager<Manager>.Instance.GetSegmentData(pathPos.m_segment, out var start, out var end);
             var startTwist = start?.VehicleTwist ?? 0f;
@@ -99,7 +95,7 @@ namespace NodeController.Patches
             if (isInvert ^ isBackward ^ (isReversed & !isAvoid))
                 twist = -twist;
 
-            return twist;
+            return Quaternion.Euler(0, 0f, twist);
         }
     }
 }

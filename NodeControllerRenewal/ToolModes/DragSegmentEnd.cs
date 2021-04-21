@@ -7,20 +7,20 @@ namespace NodeController
 {
     public class DragSegmentEndToolMode : NodeControllerToolMode
     {
-        public override ToolModeType Type => ToolModeType.Drag;
+        public override ToolModeType Type => ToolModeType.DragEnd;
         public SegmentEndData SegmentEnd { get; private set; } = null;
         private float CachedRotate { get; set; }
         private float RoundTo => InputExtension.OnlyShiftIsPressed ? 1f : 0.1f;
 
         protected override void Reset(IToolMode prevMode)
         {
-            SegmentEnd = prevMode is EditToolMode editMode ? editMode.HoverSegmentEndCenter : null;
+            SegmentEnd = prevMode is EditNodeToolMode editMode ? editMode.HoverSegmentEndCenter : null;
             CachedRotate = SegmentEnd.IsMinBorderT ? 0f : SegmentEnd.RotateAngle;
         }
         public override void OnMouseDrag(Event e)
         {
             SegmentEnd.RawSegmentBezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out _);
-            SegmentEnd.Offset = SegmentEnd.RawSegmentBezier.Cut(0f, t).Length.RoundToNearest(RoundTo);
+            SegmentEnd.Offset = SegmentEnd.RawSegmentBezier.Distance(0f, t).RoundToNearest(RoundTo);
             SegmentEnd.SetRotate(CachedRotate, true);
             SegmentEnd.UpdateNode();
 
@@ -32,7 +32,7 @@ namespace NodeController
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             SegmentEnd.RenderSides(new OverlayData(cameraInfo), new OverlayData(cameraInfo) { Color = Colors.Red });
-            SegmentEnd.SegmentBezier.Render(new OverlayData(cameraInfo) { Width = SegmentEndData.DotRadius * 2 + 1 });
+            SegmentEnd.SegmentBezier.Render(new OverlayData(cameraInfo) { Width = SegmentEndData.CenterDotRadius * 2 + 1 });
 
             var green = new OverlayData(cameraInfo) { Color = Colors.Green };
             var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow };

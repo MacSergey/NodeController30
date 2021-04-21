@@ -16,7 +16,8 @@ namespace NodeController
         #region STATIC
 
         public static float CircleRadius => 2.5f;
-        public static float DotRadius => 1f;
+        public static float CenterDotRadius => 1f;
+        public static float CornerDotRadius => 0.5f;
         public static float MinPossibleRotate => -80f;
         public static float MaxPossibleRotate => 80f;
         public static string XmlName => "SE";
@@ -213,6 +214,13 @@ namespace NodeController
                 CalculateMinMaxRotate();
 
             _rotateValue = Mathf.Clamp(value, MinRotate, MaxRotate);
+        }
+        public void SetCornerOffset(float value, SideType sideType)
+        {
+            var side = this[sideType];
+            side.RawT = side.RawBezier.Travel(value);
+
+            SetByCorners();
         }
 
         #endregion
@@ -487,22 +495,7 @@ namespace NodeController
                 LeftSide.RawT = LeftSide.DefaultT;
                 RightSide.RawT = RightSide.DefaultT;
 
-                var leftPosition = LeftSide.RawBezier.Position(LeftSide.CurrentT);
-                var rightPosition = RightSide.RawBezier.Position(RightSide.CurrentT);
-                var line = new StraightTrajectory(rightPosition, leftPosition);
-                if (Intersection.CalculateSingle(RawSegmentBezier, line, out var t, out _))
-                {
-                    var offset = RawSegmentBezier.Distance(0f, t);
-                    SetOffset(offset);
-                    var direction = Vector3.Cross(RawSegmentBezier.Tangent(t), Vector3.up).normalized;
-                    var rotate = GetAngle(line.Direction, direction);
-                    SetRotate(rotate, true);
-                }
-                else
-                {
-                    SetOffset(0f);
-                    SetRotate(0f, true);
-                }
+                SetByCorners();
             }
             else
             {
@@ -513,6 +506,27 @@ namespace NodeController
                 RightSide.RawT = GetCornerOffset(RightSide);
             }
         }
+        private void SetByCorners()
+        {
+            var leftPosition = LeftSide.RawBezier.Position(LeftSide.CurrentT);
+            var rightPosition = RightSide.RawBezier.Position(RightSide.CurrentT);
+
+            var line = new StraightTrajectory(rightPosition, leftPosition);
+            if (Intersection.CalculateSingle(RawSegmentBezier, line, out var t, out _))
+            {
+                var offset = RawSegmentBezier.Distance(0f, t);
+                SetOffset(offset);
+                var direction = Vector3.Cross(RawSegmentBezier.Tangent(t), Vector3.up).normalized;
+                var rotate = GetAngle(line.Direction, direction);
+                SetRotate(rotate, true);
+            }
+            else
+            {
+                SetOffset(0f);
+                SetRotate(0f, true);
+            }
+        }
+
         private float GetAngle(Vector3 cornerDir, Vector3 segmentDir)
         {
             var angle = Vector3.Angle(segmentDir, cornerDir);
@@ -566,8 +580,8 @@ namespace NodeController
 
         #region RENDER
 
-        public void Render(OverlayData data) => Render(data, data, data);
-        public void Render(OverlayData contourData, OverlayData outterData, OverlayData innerData)
+        public void Render(OverlayData data) => Render(data, data, data, data, data);
+        public void Render(OverlayData contourData, OverlayData outterData, OverlayData innerData, OverlayData? leftData = null, OverlayData? rightData = null)
         {
             var data = SingletonManager<Manager>.Instance[NodeId];
 
@@ -578,22 +592,26 @@ namespace NodeController
                 RenderEnd(contourData, 0f, (RightSide.Position - Position).magnitude + CircleRadius);
                 RenderOutterCircle(outterData);
                 RenderInnerCircle(innerData);
+                if (leftData != null)
+                    LeftSide.RenderCircle(leftData.Value);
+                if (rightData != null)
+                    RightSide.RenderCircle(rightData.Value);
             }
             else
                 RenderEnd(contourData);
         }
         public void RenderAlign(OverlayData contourData, OverlayData? leftData = null, OverlayData? rightData = null)
         {
-            var leftCut = leftData != null ? DotRadius : 0f;
-            var rightCut = rightData != null ? DotRadius : 0f;
+            var leftCut = leftData != null ? CenterDotRadius : 0f;
+            var rightCut = rightData != null ? CenterDotRadius : 0f;
 
             RenderÑontour(contourData);
             RenderEnd(contourData, leftCut, rightCut);
 
             if (leftData != null)
-                LeftSide.Position.RenderCircle(leftData.Value, DotRadius * 2, 0f);
+                LeftSide.RenderCircle(leftData.Value);
             if (rightData != null)
-                RightSide.Position.RenderCircle(rightData.Value, DotRadius * 2, 0f);
+                RightSide.RenderCircle(rightData.Value);
         }
 
         public void RenderSides(OverlayData dataAllow, OverlayData dataForbidden)
@@ -623,7 +641,7 @@ namespace NodeController
             bezier.Render(data);
         }
 
-        public void RenderInnerCircle(OverlayData data) => Position.RenderCircle(data, DotRadius * 2, 0f);
+        public void RenderInnerCircle(OverlayData data) => Position.RenderCircle(data, CenterDotRadius * 2, 0f);
         public void RenderOutterCircle(OverlayData data) => Position.RenderCircle(data, CircleRadius * 2 + 0.5f, CircleRadius * 2 - 0.5f);
 
         #endregion

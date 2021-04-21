@@ -59,6 +59,7 @@ namespace NodeController
         public float RawT { get; set; }
         public float CurrentT => Mathf.Clamp(RawT, MinT + DeltaT, MaxT - DeltaT);
         public float DeltaT => 0.05f / RawBezier.Length;
+        public float Offset => RawBezier.Distance(0f, CurrentT);
 
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
@@ -139,6 +140,7 @@ namespace NodeController
 
             RawBezier.Position(DefaultT).RenderCircle(new OverlayData(dataAllow.CameraInfo) { Color = Colors.Purple });
         }
+        public void RenderCircle(OverlayData data) => Position.RenderCircle(data, data.Width ?? SegmentEndData.CornerDotRadius * 2, 0f);
 
         public override string ToString() => $"{Type}: {nameof(RawT)}={RawT}; {nameof(MinT)}={MinT}; {nameof(MaxT)}={MaxT}; {nameof(Position)}={Position};";
     }

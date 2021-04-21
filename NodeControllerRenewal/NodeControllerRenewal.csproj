@@ -95,10 +95,11 @@
     <Compile Include="Patches\NetManagerPatches.cs" />
     <Compile Include="ToolModes\AlignSegmentEnds.cs" />
     <Compile Include="ToolModes\ChangeMainRoad.cs" />
+    <Compile Include="ToolModes\DragCorner.cs" />
     <Compile Include="ToolModes\DragSegmentEnd.cs" />
-    <Compile Include="ToolModes\Edit.cs" />
+    <Compile Include="ToolModes\EditNode.cs" />
     <Compile Include="ToolModes\RotateSegmentEnd.cs" />
-    <Compile Include="ToolModes\Select.cs" />
+    <Compile Include="ToolModes\SelectNode.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\Panel.cs" />
     <None Include="Utilities\CornerSource.cs" />
