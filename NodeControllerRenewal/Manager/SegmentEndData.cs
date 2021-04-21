@@ -53,7 +53,7 @@ namespace NodeController
         public NetSegment.Flags DefaultFlags { get; set; }
 
         public int PedestrianLaneCount { get; set; }
-        public float CachedSuperElevationDeg { get; set; }
+        public float VehicleTwist { get; set; }
 
         private float _offsetValue;
         private float _minOffset = 0f;
@@ -450,7 +450,7 @@ namespace NodeController
             RightSide.Calculate(this, isMain);
 
             CalculatePositionAndDirection();
-            UpdateCachedSuperElevation();
+            UpdateVehicleTwist();
         }
 
         private void CalculateSegmentLimit()
@@ -543,11 +543,10 @@ namespace NodeController
             Position = line.Position(t);
             Direction = VectorUtils.NormalizeXZ(LeftSide.Direction * t + RightSide.Direction * (1 - t));
         }
-        private void UpdateCachedSuperElevation()
+        private void UpdateVehicleTwist()
         {
             var diff = RightSide.Position - LeftSide.Position;
-            var se = Mathf.Atan2(diff.y, VectorUtils.LengthXZ(diff));
-            CachedSuperElevationDeg = se * Mathf.Rad2Deg;
+            VehicleTwist = Mathf.Atan2(diff.y, VectorUtils.LengthXZ(diff)) * Mathf.Rad2Deg;
         }
 
         #endregion

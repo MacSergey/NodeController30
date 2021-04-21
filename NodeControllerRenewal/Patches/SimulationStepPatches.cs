@@ -13,119 +13,93 @@ namespace NodeController.Patches
 
     public static class SimulationStepPatches
     {
-        internal static bool RotationUpdated { get; set; } = false;
-        internal static void OnRotationUpdated() => RotationUpdated = true;
+        private delegate Quaternion GetDelegate(ref Vehicle vehicleData);
 
-        private static PathUnit[] PathUnitBuffer => Singleton<PathManager>.instance.m_pathUnits.m_buffer;
-
-        public static IEnumerable<CodeInstruction> TranspilerBase(IEnumerable<CodeInstruction> instructions, MethodInfo targetMethod)
+        public static IEnumerable<CodeInstruction> SimulationStepTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original) => SimulationStepTranspilerBase(instructions, original, GetTwist);
+        public static IEnumerable<CodeInstruction> SimulationStepTrailerTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original) => SimulationStepTranspilerBase(instructions, original, GetTrailerTwist);
+        private static IEnumerable<CodeInstruction> SimulationStepTranspilerBase(IEnumerable<CodeInstruction> instructions, MethodBase original, GetDelegate getDelegate)
         {
-            var call_OnRotationUpdated = new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SimulationStepPatches), nameof(OnRotationUpdated)));
             var rotationField = AccessTools.Field(typeof(Vehicle.Frame), nameof(Vehicle.Frame.m_rotation));
 
             foreach (var instruction in instructions)
             {
-                yield return instruction;
                 if (instruction.opcode == OpCodes.Stfld && instruction.operand == rotationField)
-                    yield return call_OnRotationUpdated;
+                {
+                    yield return new CodeInstruction(original.GetLDArg("vehicleData"));
+                    yield return new CodeInstruction(OpCodes.Call, getDelegate.Method);
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Quaternion), "op_Multiply", new Type[] { typeof(Quaternion), typeof(Quaternion) }));
+                }
+                yield return instruction;
             }
-            yield break;
         }
 
-        private static void PostfixBase(ref Vehicle vehicleData, ref Vehicle.Frame frameData)
+        private static Quaternion GetTwist(ref Vehicle vehicleData)
         {
-            if (!vehicleData.GetCurrentPathPos(out var pathPos))
-                return;
-
-            try
+            if (vehicleData.GetCurrentPathPos(out var pathPos))
             {
-                float se = GetCurrentSE(pathPos, vehicleData.m_lastPathOffset * (1f / 255f), ref vehicleData);
-
-                var rot = Quaternion.Euler(0, 0f, se);
-                frameData.m_rotation *= rot;
+                var twist = GetCurrentTwist(pathPos, vehicleData.m_lastPathOffset * (1f / 255f), ref vehicleData);
+                return Quaternion.Euler(0, 0f, twist);
             }
-            catch { }
+            else
+                return Quaternion.identity;
         }
-
-        public static void CarAISimulationStepPostfix(ref Vehicle vehicleData, ref Vehicle.Frame frameData)
-        {
-            if (RotationUpdated)
-            {
-                RotationUpdated = false;
-                PostfixBase(ref vehicleData, ref frameData);
-            }
-        }
-        public static IEnumerable<CodeInstruction> CarAISimulationStepTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase method) => TranspilerBase(instructions, method as MethodInfo);
-
-        private static Vehicle[] VehicleBuffer { get; } = VehicleManager.instance.m_vehicles.m_buffer;
-        public static void CarTrailerAISimulationStepPostfix(ref Vehicle vehicleData, ref Vehicle.Frame frameData)
+        private static Quaternion GetTrailerTwist(ref Vehicle vehicleData)
         {
             if (vehicleData.Info.m_leanMultiplier < 0)
-                return; // motor cycle.
+                return Quaternion.identity; // motor cycle.
 
-            if (!RotationUpdated)
-                return;
-
-            RotationUpdated = false;
-
-            ref Vehicle leadingVehicle = ref VehicleBuffer[vehicleData.m_leadingVehicle];
-            VehicleInfo leadningInfo = leadingVehicle.Info;
+            ref var leadingVehicle = ref VehicleManager.instance.m_vehicles.m_buffer[vehicleData.m_leadingVehicle];
+            var leadningInfo = leadingVehicle.Info;
             if (!leadingVehicle.GetCurrentPathPos(out var pathPos))
-                return;
+                return Quaternion.identity;
 
-            uint laneID = PathManager.GetLaneID(pathPos);
+            var laneID = PathManager.GetLaneID(pathPos);
 
             // Calculate trailer lane offset based on how far the trailer is from the car its attached to.
-            bool inverted = leadingVehicle.m_flags.IsFlagSet(Vehicle.Flags.Inverted);
-            float deltaPos = inverted ? leadningInfo.m_attachOffsetBack : leadningInfo.m_attachOffsetFront;
-            float deltaOffset = deltaPos / laneID.GetLane().m_length;
-            float offset = leadingVehicle.m_lastPathOffset * (1f / 255f) - deltaOffset;
+            var inverted = leadingVehicle.m_flags.IsFlagSet(Vehicle.Flags.Inverted);
+            var deltaPos = inverted ? leadningInfo.m_attachOffsetBack : leadningInfo.m_attachOffsetFront;
+            var deltaOffset = deltaPos / laneID.GetLane().m_length;
+            var offset = leadingVehicle.m_lastPathOffset * (1f / 255f) - deltaOffset;
             offset = Mathf.Clamp(offset, 0, 1);
             if (float.IsNaN(offset))
-                return;
+                return Quaternion.identity;
 
-            float se = GetCurrentSE(pathPos, offset, ref vehicleData);
-            var rot = Quaternion.Euler(0, 0f, se);
-            frameData.m_rotation *= rot;
+            var twist = GetCurrentTwist(pathPos, offset, ref vehicleData);
+            return Quaternion.Euler(0, 0f, twist);
         }
-        public static IEnumerable<CodeInstruction> CarTrailerAISimulationStepTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase method) => TranspilerBase(instructions, method as MethodInfo);
 
-        public static void TrainAISimulationStepPostfix(ref Vehicle vehicleData, ref Vehicle.Frame frameData) => PostfixBase(ref vehicleData, ref frameData);
-        public static void TramBaseAISimulationStepPostfix(ref Vehicle vehicleData, ref Vehicle.Frame frameData) => PostfixBase(ref vehicleData, ref frameData);
-
-        internal static bool GetCurrentPathPos(this ref Vehicle vehicleData, out PathUnit.Position pathPos)
+        private static bool GetCurrentPathPos(this ref Vehicle vehicleData, out PathUnit.Position pathPos)
         {
-            byte pathIndex = vehicleData.m_pathPositionIndex;
+            var pathIndex = vehicleData.m_pathPositionIndex;
             if (pathIndex == 255)
                 pathIndex = 0;
-            return PathUnitBuffer[vehicleData.m_path].GetPosition(pathIndex >> 1, out pathPos);
+
+            return Singleton<PathManager>.instance.m_pathUnits.m_buffer[vehicleData.m_path].GetPosition(pathIndex >> 1, out pathPos);
         }
 
-        internal static NetInfo.Lane GetLaneInfo(this ref PathUnit.Position pathPos) => pathPos.m_segment.GetSegment().Info.m_lanes[pathPos.m_lane];
-
-        internal static float GetCurrentSE(PathUnit.Position pathPos, float offset, ref Vehicle vehicleData)
+        private static float GetCurrentTwist(PathUnit.Position pathPos, float offset, ref Vehicle vehicleData)
         {
             if (float.IsNaN(offset) || float.IsInfinity(offset))
                 return 0;
 
-            SingletonManager<Manager>.Instance.GetSegmentData(pathPos.m_segment, out var start, out var end);
-            var startSE = start?.CachedSuperElevationDeg ?? 0f;
-            var endSE = -end?.CachedSuperElevationDeg ?? 0f;
-            var se = startSE * (1 - offset) + endSE * offset;
-
-            if (pathPos.GetLaneInfo() is not NetInfo.Lane lane)
+            var segment = pathPos.m_segment.GetSegment();
+            if (segment.Info.m_lanes[pathPos.m_lane] is not NetInfo.Lane lane)
                 return 0;
 
-            var avoid = lane.m_finalDirection == NetInfo.Direction.AvoidForward | lane.m_finalDirection == NetInfo.Direction.AvoidBackward;
+            SingletonManager<Manager>.Instance.GetSegmentData(pathPos.m_segment, out var start, out var end);
+            var startTwist = start?.VehicleTwist ?? 0f;
+            var endTwist = end?.VehicleTwist ?? 0f;
+            var twist = startTwist * (1 - offset) - endTwist * offset;
 
-            if (pathPos.m_segment.GetSegment().m_flags.IsFlagSet(NetSegment.Flags.Invert))
-                se = -se;
-            if (lane.m_finalDirection == NetInfo.Direction.Backward)
-                se = -se;
-            if (vehicleData.m_flags.IsFlagSet(Vehicle.Flags.Reversed) & !avoid)
-                se = -se;
+            var isInvert = segment.IsInvert();
+            var isBackward = lane.m_finalDirection == NetInfo.Direction.Backward;
+            var isReversed = vehicleData.m_flags.IsFlagSet(Vehicle.Flags.Reversed);
+            var isAvoid = lane.m_finalDirection == NetInfo.Direction.AvoidForward | lane.m_finalDirection == NetInfo.Direction.AvoidBackward;
 
-            return se;
+            if (isInvert ^ isBackward ^ (isReversed & !isAvoid))
+                twist = -twist;
+
+            return twist;
         }
     }
 }
