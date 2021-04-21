@@ -305,9 +305,7 @@ namespace NodeController
         {
             var parameters = new Type[] { typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(Vehicle.Frame).MakeByRefType(), typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(int) };
 
-            //success &= Patch_CarAI_SimulationStep_Prefix(parameters);
             success &= Patch_CarAI_SimulationStep_Transpiler(parameters);
-            //success &= Patch_CarTrailerAI_SimulationStep_Prefix(parameters);
             success &= Patch_CarTrailerAI_SimulationStep_Transpiler(parameters);
             success &= Patch_TrainAI_SimulationStep(parameters);
             success &= Patch_TramBaseAI_SimulationStep(parameters);
@@ -322,18 +320,10 @@ namespace NodeController
             success &= Patch_TMPE_CustomTrainAI_CustomSimulationStep(parameters);
             success &= Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(parameters);
         }
-        //private bool Patch_CarAI_SimulationStep_Prefix(Type[] parameters)
-        //{
-        //    return AddPrefix(typeof(SimulationStepPatches), nameof(SimulationStepPatches.CarAISimulationStepPostfix), typeof(CarAI), nameof(CarAI.SimulationStep), parameters);
-        //}
         private bool Patch_CarAI_SimulationStep_Transpiler(Type[] parameters)
         {
             return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(CarAI), nameof(CarAI.SimulationStep), parameters);
         }
-        //private bool Patch_CarTrailerAI_SimulationStep_Prefix(Type[] parameters)
-        //{
-        //    return AddPrefix(typeof(SimulationStepPatches), nameof(SimulationStepPatches.CarTrailerAISimulationStepPostfix), typeof(CarTrailerAI), nameof(CarTrailerAI.SimulationStep), parameters);
-        //}
         private bool Patch_CarTrailerAI_SimulationStep_Transpiler(Type[] parameters)
         {
             return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTrailerTranspiler), typeof(CarTrailerAI), nameof(CarTrailerAI.SimulationStep), parameters);
