@@ -41,9 +41,9 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
+            SegmentEnd[Corner].Render(new OverlayData(cameraInfo), new OverlayData(cameraInfo) { Color = Colors.Red });
             SegmentEnd.RenderСontour(new OverlayData(cameraInfo) { Color = Colors.Green });
             SegmentEnd.RenderEnd(new OverlayData(cameraInfo) { Color = Colors.Green });
-            SegmentEnd[Corner].Render(new OverlayData(cameraInfo), new OverlayData(cameraInfo) { Color = Colors.Red });
             SegmentEnd[Corner].RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow });
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
