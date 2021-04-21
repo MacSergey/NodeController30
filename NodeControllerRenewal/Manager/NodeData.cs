@@ -491,7 +491,7 @@ namespace NodeController
 
             return config;
         }
-        public void FromXml(XElement config)
+        public void FromXml(XElement config, Dictionary<InstanceID, InstanceID> map = null)
         {
             if (config.Element(MainRoad.XmlName) is XElement mainRoadConfig)
                 MainRoad.FromXml(mainRoadConfig);
@@ -499,6 +499,10 @@ namespace NodeController
             foreach(var segmentEndConfig in config.Elements(SegmentEndData.XmlName))
             {
                 var id = segmentEndConfig.GetAttrValue(nameof(SegmentEndData.Id), (ushort)0);
+
+                if (map != null && map.TryGetValue(new InstanceID() { NetSegment = id }, out var instance))
+                    id = instance.NetSegment;
+
                 if (SegmentEnds.TryGetValue(id, out var segmentEnd))
                     segmentEnd.FromXml(segmentEndConfig);
             }
