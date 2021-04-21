@@ -5,11 +5,12 @@ using ModsCommon.Utilities;
 using NodeController.Utilities;
 using System;
 using System.Linq;
+using System.Xml.Linq;
 using UnityEngine;
 
 namespace NodeController
 {
-    public class SegmentEndData : INetworkData, IOverlay
+    public class SegmentEndData : INetworkData, IOverlay, IToXml, IFromXml
     {
         #region STATIC
 
@@ -17,12 +18,14 @@ namespace NodeController
         public static float DotRadius => 1f;
         public static float MinPossibleRotate => -80f;
         public static float MaxPossibleRotate => 80f;
+        public static string XmlName => "SE";
 
         #endregion
 
         #region PROPERTIES
 
         public string Title => $"Segment #{Id}";
+        public string XmlSection => XmlName;
 
         public ushort NodeId { get; set; }
         public ushort Id { get; set; }
@@ -51,23 +54,6 @@ namespace NodeController
         public int PedestrianLaneCount { get; set; }
         public float CachedSuperElevationDeg { get; set; }
 
-        public bool NoCrossings { get; set; }
-        public bool NoMarkings { get; set; }
-        public bool IsSlope { get; set; }
-
-        public bool IsDefault
-        {
-            get
-            {
-                var ret = SlopeAngle == 0f;
-                ret &= TwistAngle == 0;
-                ret &= IsSlope == DefaultIsSlope;
-
-                ret &= NoCrossings == false;
-                ret &= NoMarkings == false;
-                return ret;
-            }
-        }
         private float _offsetValue;
         private float _minOffset = 0f;
         private float _maxOffse = 100f;
@@ -121,6 +107,10 @@ namespace NodeController
         public float MaxRotate { get; set; }
         public float SlopeAngle { get; set; }
         public float TwistAngle { get; set; }
+        public bool NoMarkings { get; set; }
+        public bool IsSlope { get; set; }
+        private bool KeepDefaults { get; set; }
+
 
         public bool IsStartBorderOffset => Offset == MinOffset;
         public bool IsEndBorderOffset => Offset == MaxOffset;
@@ -128,7 +118,6 @@ namespace NodeController
         public bool IsMinBorderT => RotateAngle >= 0 ? LeftSide.IsMinBorderT : RightSide.IsMinBorderT;
         public bool IsMaxBorderT => RotateAngle >= 0 ? LeftSide.IsMaxBorderT : RightSide.IsMaxBorderT;
         public bool IsDefaultT => LeftSide.IsDefaultT && RightSide.IsDefaultT;
-        private bool KeepDefaults { get; set; }
 
         public bool? ShouldHideCrossingTexture
         {
@@ -152,7 +141,6 @@ namespace NodeController
 
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
-
 
         #endregion
 
@@ -637,6 +625,39 @@ namespace NodeController
 
         public void RenderInnerCircle(OverlayData data) => Position.RenderCircle(data, DotRadius * 2, 0f);
         public void RenderOutterCircle(OverlayData data) => Position.RenderCircle(data, CircleRadius * 2 + 0.5f, CircleRadius * 2 - 0.5f);
+
+        #endregion
+
+        #region XML
+
+        public XElement ToXml()
+        {
+            var config = new XElement(XmlSection);
+
+            config.AddAttr(nameof(Id), Id);
+            config.AddAttr("O", _offsetValue);
+            config.AddAttr("S", Shift);
+            config.AddAttr("RA", _rotateValue);
+            config.AddAttr("SA", SlopeAngle);
+            config.AddAttr("TA", TwistAngle);
+            config.AddAttr("NM", NoMarkings ? 1 : 0);
+            config.AddAttr("IS", IsSlope ? 1 : 0);
+            config.AddAttr("KD", KeepDefaults ? 1 : 0);
+
+            return config;
+        }
+
+        public void FromXml(XElement config)
+        {
+            _offsetValue = config.GetAttrValue("O", 0f);
+            Shift = config.GetAttrValue("S", 0f);
+            _rotateValue = config.GetAttrValue("RA", 0f);
+            SlopeAngle = config.GetAttrValue("SA", 0f);
+            TwistAngle = config.GetAttrValue("TA", 0f);
+            NoMarkings = config.GetAttrValue("NM", 0) == 1;
+            IsSlope = config.GetAttrValue("IS", 0) == 1;
+            KeepDefaults = config.GetAttrValue("KD", 0) == 1;
+        }
 
         #endregion
 

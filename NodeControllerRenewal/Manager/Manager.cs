@@ -4,6 +4,7 @@ using NodeController.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace NodeController
 {
@@ -100,7 +101,7 @@ namespace NodeController
             nodeIds = new List<ushort>();
             segmentIds = new List<ushort>();
 
-            if (!ContainsNode(nodeId))
+            if (Buffer[nodeId] == null)
                 return;
 
             nodeIds.Add(nodeId);
@@ -144,6 +145,34 @@ namespace NodeController
         }
 
         public static void ReleaseNodeImplementationPrefix(ushort node) => Instance.Buffer[node] = null;
+
+        public XElement ToXml()
+        {
+            var config = new XElement(nameof(NodeController));
+
+            config.AddAttr("V", SingletonMod<Mod>.Version);
+
+            foreach (var data in Buffer)
+            {
+                if (data != null)
+                    config.Add(data.ToXml());
+            }
+
+            return config;
+        }
+        public void FromXml(XElement config)
+        {
+            foreach (var nodeConfig in config.Elements(NodeData.XmlName))
+            {
+                if (NodeData.FromXml(nodeConfig, out NodeData data))
+                    Buffer[data.Id] = data;
+            }
+            foreach (var data in Buffer)
+            {
+                if (data != null)
+                    Update(data.Id);
+            }
+        }
 
         private enum Options
         {

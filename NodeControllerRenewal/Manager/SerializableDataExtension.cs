@@ -1,8 +1,12 @@
-namespace NodeController.LifeCycle
-{
-    using ICities;
-    using JetBrains.Annotations;
+using ICities;
+using JetBrains.Annotations;
+using ModsCommon;
+using ModsCommon.Utilities;
+using System;
+using System.Xml.Linq;
 
+namespace NodeController.Utilities
+{
     //[Serializable]
     //public class NCState
     //{
@@ -64,34 +68,60 @@ namespace NodeController.LifeCycle
     //}
 
     [UsedImplicitly]
-    public class SerializableDataExtension : SerializableDataExtensionBase
+    public class SerializableDataExtension : BaseSerializableDataExtension<SerializableDataExtension, Mod>
     {
         private const string DATA_ID0 = "RoadTransitionManager_V1.0";
         private const string DATA_ID1 = "NodeController_V1.0";
         private const string DATA_ID = "NodeController_V2.0";
 
-        public static int LoadingVersion;
-        public override void OnLoadData()
-        {
-            //byte[] data = serializableDataManager.LoadData(DATA_ID);
-            //if (data != null)
-            //{
-            //    LoadingVersion = 2;
-            //    NCState.Deserialize(data);
-            //}
-            //else
-            //{
-            //    // convert to new version
-            //    LoadingVersion = 1;
-            //    data = serializableDataManager.LoadData(DATA_ID1) ?? serializableDataManager.LoadData(DATA_ID0);
-            //    NodeManager.Deserialize(data, new Version(1, 0));
-            //}
-        }
+        protected override string Id => nameof(NodeController);
 
-        public override void OnSaveData()
-        {
-            //byte[] data = NCState.Serialize();
-            //serializableDataManager.SaveData(DATA_ID, data);
-        }
+        protected override XElement GetSaveData() => Manager.Instance.ToXml();
+        protected override void SetLoadData(XElement config) => Manager.Instance.FromXml(config);
+
+        //public override void OnLoadData()
+        //{
+        //    if (serializableDataManager.LoadData(DATA_ID) is byte[] data)
+        //    {
+        //        NCState.Deserialize(data);
+        //    }
+        //    else
+        //    {
+        //        data = serializableDataManager.LoadData(DATA_ID1) ?? serializableDataManager.LoadData(DATA_ID0);
+        //        NodeManager.Deserialize(data, new Version(1, 0));
+        //    }
+
+        //    base.OnLoadData();
+        //}
+
+
+        //public static int LoadingVersion;
+        //public override void OnLoadData()
+        //{
+        //    //byte[] data = serializableDataManager.LoadData(DATA_ID);
+        //    //if (data != null)
+        //    //{
+        //    //    LoadingVersion = 2;
+        //    //    NCState.Deserialize(data);
+        //    //}
+        //    //else
+        //    //{
+        //    //    // convert to new version
+        //    //    LoadingVersion = 1;
+        //    //    data = serializableDataManager.LoadData(DATA_ID1) ?? serializableDataManager.LoadData(DATA_ID0);
+        //    //    NodeManager.Deserialize(data, new Version(1, 0));
+        //    //}
+        //}
+
+        //public override void OnSaveData()
+        //{
+        //    //byte[] data = NCState.Serialize();
+        //    //serializableDataManager.SaveData(DATA_ID, data);
+        //}
+    }
+
+    [Serializable]
+    public class NCState
+    {
     }
 }

@@ -6,7 +6,6 @@ namespace NodeController
     public interface INetworkData
     {
         public string Title { get; }
-        bool IsDefault { get; }
 
         public float Offset { get; set; }
         public float Shift { get; set; }

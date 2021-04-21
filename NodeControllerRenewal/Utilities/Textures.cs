@@ -33,7 +33,7 @@ namespace NodeController.Utilities
 
         static NodeControllerTextures()
         {
-            Atlas = TextureHelper.CreateAtlas(nameof(NodeMarkup), Files);
+            Atlas = TextureHelper.CreateAtlas(nameof(NodeController), Files);
         }
 
         private static UITextureAtlas.SpriteInfo[] Button(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 31, 31, ButtonNormal, ButtonActive, ButtonHover, Icon, IconActive, IconHover).ToArray();

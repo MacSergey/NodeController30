@@ -6,17 +6,21 @@ using NodeController.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using UnityEngine;
 using static ColossalFramework.Math.VectorUtils;
 
 namespace NodeController
 {
     [Serializable]
-    public class NodeData : INetworkData
+    public class NodeData : INetworkData, IToXml
     {
         #region PROPERTIES
 
+        public static string XmlName => "N";
+
         public string Title => $"Node #{Id}";
+        public string XmlSection => XmlName;
 
         public ushort Id { get; set; }
         public NetNode Node => Id.GetNode();
@@ -49,8 +53,6 @@ namespace NodeController
         public BezierTrajectory RightMainBezier { get; private set; }
 
         private MainRoad MainRoad { get; set; } = new MainRoad();
-
-        public bool IsDefault => Type == DefaultType && !SegmentEndDatas.Any(s => s?.IsDefault != true);
 
         public NetNode.Flags DefaultFlags { get; private set; }
         public NodeStyleType DefaultType { get; private set; }
@@ -473,6 +475,57 @@ namespace NodeController
 
         #endregion
 
+        #region XML
+
+        public XElement ToXml()
+        {
+            var config = new XElement(XmlSection);
+
+            config.AddAttr(nameof(Id), Id);
+            config.AddAttr("T", (int)Type);
+
+            foreach (var segmentEnd in SegmentEndDatas)
+                config.Add(segmentEnd.ToXml());
+
+            config.Add(MainRoad.ToXml());
+
+            return config;
+        }
+        public void FromXml(XElement config)
+        {
+            if (config.Element(MainRoad.XmlName) is XElement mainRoadConfig)
+                MainRoad.FromXml(mainRoadConfig);
+
+            foreach(var segmentEndConfig in config.Elements(SegmentEndData.XmlName))
+            {
+                var id = segmentEndConfig.GetAttrValue(nameof(SegmentEndData.Id), (ushort)0);
+                if (SegmentEnds.TryGetValue(id, out var segmentEnd))
+                    segmentEnd.FromXml(segmentEndConfig);
+            }
+        }
+
+        public static bool FromXml(XElement config, out NodeData data)
+        {
+            var id = config.GetAttrValue("Id", (ushort)0);
+            var type = (NodeStyleType)config.GetAttrValue("T", (int)NodeStyleType.Custom);
+
+            if (id != 0 && id <= NetManager.MAX_NODE_COUNT)
+            {
+                try
+                {
+                    data = new NodeData(id, type);
+                    data.FromXml(config);
+                    return true;
+                }
+                catch { }
+            }
+
+            data = null;
+            return false;
+        }
+
+        #endregion
+
         #region UI COMPONENTS
 
         public void GetUIComponents(UIComponent parent, Action refresh)
@@ -511,8 +564,11 @@ namespace NodeController
         #endregion
 
     }
-    public class MainRoad
+    public class MainRoad : IToXml, IFromXml
     {
+        public static string XmlName => "MR";
+        public string XmlSection => XmlName;
+
         public ushort First { get; set; }
         public ushort Second { get; set; }
 
@@ -527,7 +583,6 @@ namespace NodeController
                     yield return Second;
             }
         }
-
         public MainRoad() { }
         public MainRoad(ushort first, ushort second)
         {
@@ -541,6 +596,22 @@ namespace NodeController
                 First = to;
             else if (Second == from)
                 Second = to;
+        }
+
+        public XElement ToXml()
+        {
+            var config = new XElement(XmlSection);
+
+            config.AddAttr("F", First);
+            config.AddAttr("S", Second);
+
+            return config;
+        }
+
+        public void FromXml(XElement config)
+        {
+            First = config.GetAttrValue<ushort>("F", 0);
+            Second = config.GetAttrValue<ushort>("S", 0);
         }
     }
 
