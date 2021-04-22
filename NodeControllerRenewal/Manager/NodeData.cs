@@ -1,4 +1,5 @@
 using ColossalFramework;
+using ColossalFramework.Math;
 using ColossalFramework.UI;
 using ModsCommon;
 using ModsCommon.UI;
@@ -79,64 +80,64 @@ namespace NodeController
 
         public float Offset
         {
-            get => SegmentEnds.Values.Average(s => s.Offset);
+            get => Style.GetOffset();
             set
             {
-                SetOffset(value);
+                Style.SetOffset(value);
                 UpdateNode();
             }
         }
         public float Shift
         {
-            get => SegmentEnds.Values.Average(s => s.Shift);
+            get => Style.GetShift();
             set
             {
-                SetShift(value);
+                Style.SetShift(value);
                 UpdateNode();
             }
         }
         public float RotateAngle
         {
-            get => SegmentEnds.Values.Average(s => s.RotateAngle);
+            get => Style.GetRotate();
             set
             {
-                SetRotate(value);
+                Style.SetRotate(value);
                 UpdateNode();
             }
         }
         public float SlopeAngle
         {
-            get => IsMain ? (FirstMainSegmentEnd.SlopeAngle - SecondMainSegmentEnd.SlopeAngle) / 2 : 0f;
+            get => Style.GetSlope();
             set
             {
-                SetSlope(value);
+                Style.SetSlope(value);
                 UpdateNode();
             }
         }
         public float TwistAngle
         {
-            get => IsMain ? (FirstMainSegmentEnd.TwistAngle - SecondMainSegmentEnd.TwistAngle) / 2 : 0f;
+            get => Style.GetTwist();
             set
             {
-                SetTwist(value);
+                Style.SetTwist(value);
                 UpdateNode();
             }
         }
         public bool NoMarkings
         {
-            get => SegmentEnds.Values.Any(s => s.NoMarkings);
+            get => Style.GetNoMarkings();
             set
             {
-                SetNoMarking(value);
+                Style.SetNoMarkings(value);
                 UpdateNode();
             }
         }
         public bool IsSlopeJunctions
         {
-            get => MainRoad.Segments.Any(s => SegmentEnds[s].IsSlope);
+            get => Style.GetIsSlopeJunctions();
             set
             {
-                SetIsSlopeJunctions(value);
+                Style.SetIsSlopeJunctions(value);
                 UpdateNode();
             }
         }
@@ -274,12 +275,9 @@ namespace NodeController
                     segmentEnd.Calculate(true);
             }
 
-            var defaultPosition = Node.m_position;
             if (!IsMiddleNode && !IsEndNode && FirstMainSegmentEnd is SegmentEndData first && SecondMainSegmentEnd is SegmentEndData second)
             {
-                MainBezier = new BezierTrajectory(first.Position, -first.Direction, second.Position, -second.Direction);
-                var closestPosition = MainBezier.Trajectory.ClosestPosition(defaultPosition);
-                defaultPosition.y = closestPosition.y;
+                MainBezier = new BezierTrajectory(first.Position, -NormalizeXZ(first.Direction), second.Position, -NormalizeXZ(second.Direction));
 
                 first.GetCorner(true, out var firstLeftPos, out var firstLeftDir);
                 second.GetCorner(false, out var secondRightPos, out var secondRightDir);
@@ -289,13 +287,19 @@ namespace NodeController
                 second.GetCorner(true, out var secondLeftPos, out var secondLeftDir);
                 RightMainBezier = new BezierTrajectory(firstRightPos, -firstRightDir, secondLeftPos, -secondLeftDir);
             }
-            Position = defaultPosition;
 
             foreach (var segmentEnd in SegmentEndDatas)
             {
                 if (!MainRoad.IsMain(segmentEnd.Id))
                     segmentEnd.Calculate(false);
             }
+
+            if (IsEndNode)
+                Position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
+            else if (!IsMiddleNode)
+                Position = MainBezier.Position(0.5f);
+            else
+                Position = Node.m_position;
         }
 
         private ushort FindMain(ushort ignore)
@@ -353,56 +357,6 @@ namespace NodeController
             Style = newStyle;
 
             ResetToDefaultImpl(force);
-        }
-        private void SetOffset(float value)
-        {
-            foreach (var data in SegmentEnds.Values)
-                data.Offset = value;
-        }
-        private void SetShift(float value)
-        {
-            foreach (var data in SegmentEnds.Values)
-                data.Shift = value;
-        }
-        private void SetRotate(float value)
-        {
-            foreach (var data in SegmentEnds.Values)
-                data.RotateAngle = value;
-        }
-        private void SetSlope(float value)
-        {
-            if (IsMain)
-            {
-                FirstMainSegmentEnd.SlopeAngle = value;
-                SecondMainSegmentEnd.SlopeAngle = -value;
-            }
-        }
-        private void SetTwist(float value)
-        {
-            if (IsMain)
-            {
-                FirstMainSegmentEnd.TwistAngle = value;
-                SecondMainSegmentEnd.TwistAngle = -value;
-            }
-        }
-        private void SetNoMarking(bool value)
-        {
-            foreach (var data in SegmentEnds.Values)
-                data.NoMarkings = value;
-        }
-        private void SetIsSlopeJunctions(bool value)
-        {
-            foreach (var data in SegmentEnds.Values)
-            {
-                data.IsSlope = value;
-                //if (value)
-                //    data.IsSlope = true;
-                //else
-                //{
-                //    var isMain = MainRoad.IsMain(data.Id);
-                //    data.IsSlope = !isMain;
-                //}
-            }
         }
         public void SetMain(ushort first, ushort second)
         {
@@ -497,7 +451,7 @@ namespace NodeController
             if (config.Element(MainRoad.XmlName) is XElement mainRoadConfig)
                 MainRoad.FromXml(mainRoadConfig);
 
-            foreach(var segmentEndConfig in config.Elements(SegmentEndData.XmlName))
+            foreach (var segmentEndConfig in config.Elements(SegmentEndData.XmlName))
             {
                 var id = segmentEndConfig.GetAttrValue(nameof(SegmentEndData.Id), (ushort)0);
 

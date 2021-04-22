@@ -1,7 +1,9 @@
 ﻿using ColossalFramework.UI;
 using ModsCommon.UI;
+using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace NodeController
@@ -32,13 +34,13 @@ namespace NodeController
         public virtual float MaxOffset => 0f;
         public virtual float AdditionalOffset => 0f;
 
-        public virtual bool SupportOffset => false;
-        public virtual bool SupportShift => false;
-        public virtual bool SupportRotate => false;
-        public virtual bool SupportSlope => false;
-        public virtual bool SupportTwist => false;
-        public virtual bool SupportNoMarking => false;
-        public virtual bool SupportSlopeJunction => false;
+        public virtual SupportOption SupportOffset => SupportOption.None;
+        public virtual SupportOption SupportShift => SupportOption.None;
+        public virtual SupportOption SupportRotate => SupportOption.None;
+        public virtual SupportOption SupportSlope => SupportOption.None;
+        public virtual SupportOption SupportTwist => SupportOption.None;
+        public virtual SupportOption SupportNoMarking => SupportOption.None;
+        public virtual SupportOption SupportSlopeJunction => SupportOption.None;
 
 
         public virtual bool IsMoveable => false;
@@ -49,16 +51,22 @@ namespace NodeController
             {
                 if (Mathf.Abs(Data.Shift - DefaultShift) > 0.001f)
                     return false;
+
                 else if (Mathf.Abs(Data.RotateAngle - DefaultRotate) > 0.1f)
                     return false;
+
                 else if (Mathf.Abs(Data.SlopeAngle - DefaultSlope) > 0.1f)
                     return false;
+
                 else if (Mathf.Abs(Data.TwistAngle - DefaultTwist) > 0.1f)
                     return false;
+
                 else if (Data.NoMarkings != DefaultNoMarking)
                     return false;
+
                 else if (Data.IsSlopeJunctions != DefaultSlopeJunction)
                     return false;
+
                 else
                     return true;
             }
@@ -71,37 +79,97 @@ namespace NodeController
             Data = data;
         }
 
+        public virtual float GetOffset() => Data.SegmentEndDatas.Average(s => s.Offset);
+        public virtual void SetOffset(float value)
+        {
+            foreach (var segmentData in Data.SegmentEndDatas)
+                segmentData.Offset = value;
+        }
+
+        public virtual float GetShift() => Data.SegmentEndDatas.Average(s => s.Shift);
+        public virtual void SetShift(float value)
+        {
+            foreach (var segmentData in Data.SegmentEndDatas)
+                segmentData.Shift = value;
+        }
+
+        public virtual float GetRotate() => Data.SegmentEndDatas.Average(s => s.RotateAngle);
+        public virtual void SetRotate(float value)
+        {
+            foreach (var segmentData in Data.SegmentEndDatas)
+                segmentData.RotateAngle = value;
+        }
+
+        public virtual float GetSlope() => Data.SegmentEndDatas.Average(s => s.SlopeAngle);
+        public virtual void SetSlope(float value)
+        {
+            foreach (var segmentData in Data.SegmentEndDatas)
+                segmentData.SlopeAngle = value;
+        }
+
+        public virtual float GetTwist() => Data.SegmentEndDatas.Average(s => s.TwistAngle);
+        public virtual void SetTwist(float value)
+        {
+            foreach (var segmentData in Data.SegmentEndDatas)
+                segmentData.TwistAngle = value;
+        }
+
+        public virtual bool GetNoMarkings() => Data.SegmentEndDatas.Any(s => s.NoMarkings);
+        public virtual void SetNoMarkings(bool value)
+        {
+            foreach (var segmentData in Data.SegmentEndDatas)
+                segmentData.NoMarkings = value;
+        }
+
+        public virtual bool GetIsSlopeJunctions() => Data.SegmentEndDatas.Any(s => s.IsSlope);
+        public virtual void SetIsSlopeJunctions(bool value)
+        {
+            foreach (var segmentData in Data.SegmentEndDatas)
+                segmentData.IsSlope = value;
+        }
+
+        #region UICOMPONENTS
+
         public virtual void GetUIComponents(UIComponent parent, Action refresh)
         {
-            if (SupportSlopeJunction)
+            if (SupportSlopeJunction != SupportOption.None)
                 GetJunctionButtons(parent);
-            if (SupportOffset)
-                GetOffsetUIComponents(parent);
-            if (SupportShift)
-                GetShiftUIComponents(parent);
-            if (SupportRotate)
-                GetRotateUIComponents(parent);
-            if (SupportSlope)
-                GetSlopeUIComponents(parent);
-            if (SupportTwist)
-                GetTwistUIComponents(parent);
-            if (SupportNoMarking)
+
+            GetOffsetUIComponents(parent);
+            GetShiftUIComponents(parent);
+            GetRotateUIComponents(parent);
+            GetSlopeUIComponents(parent);
+            GetTwistUIComponents(parent);
+
+            if (SupportNoMarking != SupportOption.None)
                 GetHideMarkingProperty(parent);
+
             GetResetButton(parent, refresh);
         }
 
-        protected void GetOffsetUIComponents(UIComponent parent) => GetUIComponents(parent, GetOffsetProperty, GetSegmentOffsetProperty, (data) => data.Offset, (data, value) => data.Offset = value);
-        protected void GetShiftUIComponents(UIComponent parent) => GetUIComponents(parent, GetShiftProperty, GetSegmentShiftProperty, (data) => data.Shift, (data, value) => data.Shift = value);
-        protected void GetRotateUIComponents(UIComponent parent) => GetUIComponents(parent, GetRotateProperty, GetSegmentRotateProperty, (data) => data.RotateAngle, (data, value) => data.RotateAngle = value);
-        protected void GetSlopeUIComponents(UIComponent parent) => GetUIComponents(parent, GetSlopeProperty, null, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value);
-        protected void GetTwistUIComponents(UIComponent parent) => GetUIComponents(parent, GetTwistProperty, null, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value);
-        protected void GetUIComponents(UIComponent parent, Func<UIComponent, FloatPropertyPanel> getNodeProperty, Func<UIComponent, SegmentEndData, FloatPropertyPanel> getSegmentProperty, Func<INetworkData, float> getValue, Action<INetworkData, float> setValue)
+        protected void GetOffsetUIComponents(UIComponent parent) => GetUIComponents(parent, SupportOffset, GetOffsetProperty, GetSegmentOffsetProperty, (data) => data.Offset, (data, value) => data.Offset = value);
+        protected void GetShiftUIComponents(UIComponent parent) => GetUIComponents(parent, SupportShift, GetShiftProperty, GetSegmentShiftProperty, (data) => data.Shift, (data, value) => data.Shift = value);
+        protected void GetRotateUIComponents(UIComponent parent) => GetUIComponents(parent, SupportRotate, GetRotateProperty, GetSegmentRotateProperty, (data) => data.RotateAngle, (data, value) => data.RotateAngle = value);
+        protected void GetSlopeUIComponents(UIComponent parent) => GetUIComponents(parent, SupportSlope, GetSlopeProperty, null, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value);
+        protected void GetTwistUIComponents(UIComponent parent) => GetUIComponents(parent, SupportTwist, GetTwistProperty, null, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value);
+        protected void GetUIComponents(UIComponent parent, SupportOption option, Func<UIComponent, FloatPropertyPanel> getNodeProperty, Func<UIComponent, SegmentEndData, FloatPropertyPanel> getSegmentProperty, Func<INetworkData, float> getValue, Action<INetworkData, float> setValue)
         {
-            var nodeProperty = getNodeProperty(parent);
-            nodeProperty.Value = getValue(Data);
-
+            var nodeProperty = default(FloatPropertyPanel);
             var segmentProperties = new List<FloatPropertyPanel>();
-            if (getSegmentProperty != null)
+
+            if (option.IsSet(SupportOption.Group))
+            {
+                nodeProperty = getNodeProperty(parent);
+                nodeProperty.Value = getValue(Data);
+                nodeProperty.OnValueChanged += (float newValue) =>
+                {
+                    setValue(Data, newValue);
+                    foreach (var segmentProperty in segmentProperties)
+                        segmentProperty.Value = newValue;
+                };
+            }
+
+            if (option.IsSet(SupportOption.Individually))
             {
                 foreach (var segmentData in Data.SegmentEndDatas)
                 {
@@ -110,19 +178,13 @@ namespace NodeController
                     segmentProperty.OnValueChanged += (newValue) =>
                     {
                         setValue(segmentData, newValue);
-                        nodeProperty.Value = getValue(Data);
+                        if (option.IsSet(SupportOption.Group))
+                            nodeProperty.Value = getValue(Data);
                         Data.UpdateNode();
                     };
                     segmentProperties.Add(segmentProperty);
                 }
             }
-
-            nodeProperty.OnValueChanged += (float newValue) =>
-            {
-                setValue(Data, newValue);
-                foreach (var segmentProperty in segmentProperties)
-                    segmentProperty.Value = newValue;
-            };
         }
 
         protected FloatPropertyPanel GetOffsetProperty(UIComponent parent)
@@ -264,14 +326,39 @@ namespace NodeController
 
             return resetButton;
         }
+
+        #endregion
     }
+
     public class MiddleNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Middle;
-        public override bool SupportSlope => true;
-        public override bool SupportTwist => true;
+        public override SupportOption SupportSlope => SupportOption.Group;
+        public override SupportOption SupportTwist => SupportOption.Group;
+        public override SupportOption SupportShift => SupportOption.Group;
 
         public MiddleNode(NodeData data) : base(data) { }
+
+        public override float GetSlope() => (Data.FirstMainSegmentEnd.SlopeAngle - Data.SecondMainSegmentEnd.SlopeAngle) / 2;
+        public override void SetSlope(float value)
+        {
+            Data.FirstMainSegmentEnd.SlopeAngle = value;
+            Data.SecondMainSegmentEnd.SlopeAngle = -value;
+        }
+
+        public override float GetTwist() => (Data.FirstMainSegmentEnd.TwistAngle - Data.SecondMainSegmentEnd.TwistAngle) / 2;
+        public override void SetTwist(float value)
+        {
+            Data.FirstMainSegmentEnd.TwistAngle = value;
+            Data.SecondMainSegmentEnd.TwistAngle = -value;
+        }
+
+        public override float GetShift() => (Data.FirstMainSegmentEnd.Shift - Data.SecondMainSegmentEnd.Shift) / 2;
+        public override void SetShift(float value)
+        {
+            Data.FirstMainSegmentEnd.Shift = value;
+            Data.SecondMainSegmentEnd.Shift = -value;
+        }
     }
     public class BendNode : NodeStyle
     {
@@ -279,9 +366,10 @@ namespace NodeController
         public override float MaxOffset => 100f;
         public override float AdditionalOffset => 2f;
 
-        public override bool SupportOffset => true;
-        public override bool SupportRotate => true;
-        public override bool SupportSlopeJunction => true;
+        public override SupportOption SupportOffset => SupportOption.All;
+        public override SupportOption SupportRotate => SupportOption.All;
+        public override SupportOption SupportShift => SupportOption.Group;
+        public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool IsMoveable => true;
 
         public BendNode(NodeData data) : base(data) { }
@@ -292,10 +380,11 @@ namespace NodeController
         public override float MaxOffset => 100f;
         public override float AdditionalOffset => 2f;
 
-        public override bool SupportOffset => true;
-        public override bool SupportRotate => true;
-        public override bool SupportNoMarking => true;
-        public override bool SupportSlopeJunction => true;
+        public override SupportOption SupportOffset => SupportOption.All;
+        public override SupportOption SupportRotate => SupportOption.All;
+        public override SupportOption SupportShift => SupportOption.All;
+        public override SupportOption SupportNoMarking => SupportOption.All;
+        public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool IsMoveable => true;
 
         public StretchNode(NodeData data) : base(data) { }
@@ -306,8 +395,9 @@ namespace NodeController
         public override float MinOffset => 2f;
         public override float MaxOffset => 2f;
 
-        public override bool SupportNoMarking => true;
-        public override bool SupportSlopeJunction => true;
+        public override SupportOption SupportShift => SupportOption.Group;
+        public override SupportOption SupportNoMarking => SupportOption.All;
+        public override SupportOption SupportSlopeJunction => SupportOption.Group;
 
         public CrossingNode(NodeData data) : base(data) { }
     }
@@ -317,8 +407,9 @@ namespace NodeController
         public override float MinOffset => 8f;
         public override float MaxOffset => 8f;
 
-        public override bool SupportNoMarking => true;
-        public override bool SupportSlopeJunction => true;
+        public override SupportOption SupportShift => SupportOption.Group;
+        public override SupportOption SupportNoMarking => SupportOption.All;
+        public override SupportOption SupportSlopeJunction => SupportOption.Group;
 
         public UTurnNode(NodeData data) : base(data) { }
     }
@@ -326,10 +417,11 @@ namespace NodeController
     {
         public override NodeStyleType Type => NodeStyleType.End;
 
-        public override bool SupportSlope => true;
-        public override bool SupportTwist => true;
-        public override bool SupportNoMarking => true;
-        public override bool SupportSlopeJunction => true;
+        public override SupportOption SupportShift => SupportOption.Group;
+        public override SupportOption SupportSlope => SupportOption.Group;
+        public override SupportOption SupportTwist => SupportOption.Group;
+        public override SupportOption SupportNoMarking => SupportOption.Group;
+        public override SupportOption SupportSlopeJunction => SupportOption.Group;
 
         public EndNode(NodeData data) : base(data) { }
     }
@@ -339,13 +431,21 @@ namespace NodeController
         public override float MaxOffset => 100f;
         public override float AdditionalOffset => 2f;
 
-        public override bool SupportOffset => true;
-        public override bool SupportShift => true;
-        public override bool SupportRotate => true;
-        public override bool SupportNoMarking => true;
-        public override bool SupportSlopeJunction => true;
+        public override SupportOption SupportOffset => SupportOption.All;
+        public override SupportOption SupportShift => SupportOption.All;
+        public override SupportOption SupportRotate => SupportOption.All;
+        public override SupportOption SupportNoMarking => SupportOption.All;
+        public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool IsMoveable => true;
 
         public CustomNode(NodeData data) : base(data) { }
+    }
+
+    public enum SupportOption
+    {
+        None = 0,
+        Individually = 1,
+        Group = 2,
+        All = Individually | Group,
     }
 }

@@ -11,6 +11,30 @@ namespace NodeController.Patches
 {
     public static class NetNodePatches
     {
+        public static IEnumerable<CodeInstruction> RefreshDataTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
+        {
+            var positionField = AccessTools.Field(typeof(NetNode), nameof(NetNode.m_position));
+            var positionLocal = generator.DeclareLocal(typeof(Vector3));
+
+            yield return new CodeInstruction(original.GetLDArg("nodeID"));
+            yield return new CodeInstruction(OpCodes.Ldarg_0);
+            yield return new CodeInstruction(OpCodes.Ldfld, positionField);
+            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.GetNodePosition)));
+            yield return new CodeInstruction(OpCodes.Stloc_S, positionLocal);
+
+            foreach(var instruction in instructions)
+            {
+                if (instruction.opcode == OpCodes.Ldfld && instruction.operand == positionField)
+                {
+                    yield return new CodeInstruction(OpCodes.Pop);
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, positionLocal);
+                }
+                else
+                    yield return instruction;
+            }
+        }
+        private static Vector3 GetNodePosition(ushort nodeId, Vector3 defaultPosition) => SingletonManager<Manager>.Instance[nodeId] is NodeData data ? data.Position : defaultPosition;
+
         public static void RefreshJunctionDataPrefix(ushort nodeID, ref Vector3 centerPos)
         {
             if (SingletonManager<Manager>.Instance[nodeID] is NodeData data)
@@ -22,22 +46,6 @@ namespace NodeController.Patches
             if (SingletonManager<Manager>.Instance[nodeID] is NodeData blendData && blendData.ShouldRenderCenteralCrossingTexture)
                 data.m_dataVector1.w = 0.01f;
         }
-
-        public static IEnumerable<CodeInstruction> RefreshJunctionDataTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
-        {
-            var minCornerOffsetField = AccessTools.Field(typeof(NetInfo), nameof(NetInfo.m_minCornerOffset));
-            foreach (var instruction in instructions)
-            {
-                yield return instruction;
-                if (instruction.opcode == OpCodes.Ldfld && instruction.operand == minCornerOffsetField)
-                {
-                    yield return original.GetLDArg("nodeID");
-                    yield return new CodeInstruction(OpCodes.Ldloc_3);
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(GetMinCornerOffset)));
-                }
-            }
-        }
-        private static float GetMinCornerOffset(float cornerOffset, ushort nodeId, ushort segmentId) => SingletonManager<Manager>.Instance[nodeId, segmentId]?.Offset ?? cornerOffset;
 
         public static IEnumerable<CodeInstruction> RenderInstanceTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
         {

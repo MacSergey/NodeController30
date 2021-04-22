@@ -191,23 +191,23 @@ namespace NodeController
 
         public void ResetToDefault(NodeStyle style, bool force)
         {
-            if (!style.SupportShift || force)
+            if (style.SupportShift == SupportOption.None || force)
                 Shift = NodeStyle.DefaultShift;
-            if (!style.SupportSlope || force)
+            if (style.SupportSlope == SupportOption.None || force)
                 SlopeAngle = NodeStyle.DefaultSlope;
-            if (!style.SupportTwist || force)
+            if (style.SupportTwist == SupportOption.None || force)
                 TwistAngle = NodeStyle.DefaultTwist;
-            if (!style.SupportNoMarking || force)
+            if (style.SupportNoMarking == SupportOption.None || force)
                 NoMarkings = NodeStyle.DefaultNoMarking;
-            if (!style.SupportSlopeJunction || force)
+            if (style.SupportSlopeJunction == SupportOption.None || force)
                 IsSlope = NodeStyle.DefaultSlopeJunction;
 
             MinPossibleOffset = style.MinOffset;
             MaxPossibleOffset = style.MaxOffset;
 
-            if (!style.SupportRotate || force)
+            if (style.SupportRotate == SupportOption.None || force)
                 SetRotate(NodeStyle.DefaultRotate);
-            if (!style.SupportOffset || force)
+            if (style.SupportOffset == SupportOption.None || force)
                 SetOffset(DefaultOffset);
             else
                 SetOffset(Offset);
@@ -304,8 +304,8 @@ namespace NodeController
                 return;
 
             var shift = (startShift + endShift) / 2;
-            var dir = endPos - startPos;
-            var sin = shift / dir.XZ().magnitude;
+            var dir = (endPos - startPos).MakeFlat();
+            var sin = shift / dir.magnitude;
             var deltaAngle = Mathf.Asin(sin);
             var normal = dir.TurnRad(Mathf.PI / 2 + deltaAngle, true).normalized;
 

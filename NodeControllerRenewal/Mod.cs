@@ -146,26 +146,33 @@ namespace NodeController
 
         private void PatchNetNode(ref bool success)
         {
-            success &= Patch_NetNode_RefreshJunctionData_Prefix();
-            success &= Patch_NetNode_RefreshJunctionData_Postfix();
-            success &= Patch_NetNode_RefreshJunctionData_Transpiler();
+            var junctionParams1 = new Type[] { typeof(ushort), typeof(NetInfo), typeof(uint) };
+            var junctionParams2 = new Type[] { typeof(ushort), typeof(int), typeof(int), typeof(NetInfo), typeof(NetInfo), typeof(ushort), typeof(ushort), typeof(uint).MakeByRefType(), typeof(RenderManager.Instance).MakeByRefType() };
+            var junctionParams3 = new Type[] { typeof(ushort), typeof(int), typeof(ushort), typeof(Vector3), typeof(uint).MakeByRefType(), typeof(RenderManager.Instance).MakeByRefType() };
+            
+            success &= Patch_NetNode_RefreshData_Transpiler("RefreshBendData");
+            success &= Patch_NetNode_RefreshData_Transpiler("RefreshEndData");
+            success &= Patch_NetNode_RefreshData_Transpiler("RefreshJunctionData", junctionParams1);
+            success &= Patch_NetNode_RefreshData_Transpiler("RefreshJunctionData", junctionParams2);
+            success &= Patch_NetNode_RefreshData_Transpiler("RefreshJunctionData", junctionParams3);
+
+            success &= Patch_NetNode_RefreshJunctionData_Prefix(junctionParams3);
+            success &= Patch_NetNode_RefreshJunctionData_Postfix(junctionParams3);
             success &= Patch_NetNode_RenderInstance();
         }
-        private bool Patch_NetNode_RefreshJunctionData_Prefix()
+        private bool Patch_NetNode_RefreshData_Transpiler(string methodName, Type[] parameters = null)
         {
-            var parameters = new Type[] { typeof(ushort), typeof(int), typeof(ushort), typeof(Vector3), typeof(uint).MakeByRefType(), typeof(RenderManager.Instance).MakeByRefType() };
+            return AddTranspiler(typeof(NetNodePatches), nameof(NetNodePatches.RefreshDataTranspiler), typeof(NetNode), methodName, parameters);
+        }
+        private bool Patch_NetNode_RefreshJunctionData_Prefix(Type[] parameters)
+        {
             return AddPrefix(typeof(NetNodePatches), nameof(NetNodePatches.RefreshJunctionDataPrefix), typeof(NetNode), "RefreshJunctionData", parameters);
         }
-        private bool Patch_NetNode_RefreshJunctionData_Postfix()
+        private bool Patch_NetNode_RefreshJunctionData_Postfix(Type[] parameters)
         {
-            var parameters = new Type[] { typeof(ushort), typeof(int), typeof(ushort), typeof(Vector3), typeof(uint).MakeByRefType(), typeof(RenderManager.Instance).MakeByRefType() };
             return AddPostfix(typeof(NetNodePatches), nameof(NetNodePatches.RefreshJunctionDataPostfix), typeof(NetNode), "RefreshJunctionData", parameters);
         }
-        private bool Patch_NetNode_RefreshJunctionData_Transpiler()
-        {
-            var parameters = new Type[] { typeof(ushort), typeof(NetInfo), typeof(uint) };
-            return AddTranspiler(typeof(NetNodePatches), nameof(NetNodePatches.RefreshJunctionDataTranspiler), typeof(NetNode), "RefreshJunctionData", parameters);
-        }
+
         private bool Patch_NetNode_RenderInstance()
         {
             var parameters = new Type[] { typeof(RenderManager.CameraInfo), typeof(ushort), typeof(NetInfo), typeof(int), typeof(NetNode.Flags), typeof(uint).MakeByRefType(), typeof(RenderManager.Instance).MakeByRefType() };

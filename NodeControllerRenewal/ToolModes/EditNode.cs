@@ -98,6 +98,11 @@ namespace NodeController
                 var right = segmentData == HoverSegmentEndCorner && HoverCorner == SideType.Right ? hover : yellow;
                 segmentData.Render(green, outter, inner, left, right);
             }
+
+            foreach (var segmentData in Tool.Data.SegmentEndDatas)
+                segmentData.RawSegmentBezier.StartPosition.RenderCircle(new OverlayData(cameraInfo) {Color = Color.blue });
+
+            Tool.Data.Position.RenderCircle(new OverlayData(cameraInfo) { Color = Color.red });
         }
     }
 }
