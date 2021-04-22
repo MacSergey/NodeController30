@@ -1,8 +1,6 @@
-﻿
-using HarmonyLib;
+﻿using HarmonyLib;
 using ICities;
 using ModsCommon;
-using NodeController.GUI;
 using NodeController.Patches;
 using NodeController.UI;
 using System;
@@ -27,54 +25,15 @@ namespace NodeController
         public override bool IsBeta => true;
         protected override string Locale => string.Empty;
 
-        public static SimulationManager.UpdateMode UpdateMode => SimulationManager.instance.m_metaData.m_updateMode;
-        public static LoadMode Mode => (LoadMode)UpdateMode;
-        public static bool Loaded { get; private set; }
-        public static string Scene => SceneManager.GetActiveScene().name;
-
         #endregion
 
         #region BASIC
 
-        public override void OnEnabled()
+        protected override void GetSettings(UIHelperBase helper)
         {
-            base.OnEnabled();
-
-            Loaded = false;
-
-            LoadingManager.instance.m_simulationDataReady += SimulationDataReady; // load/update data
-            if (SceneManager.GetActiveScene().name != "IntroScreen" && SceneManager.GetActiveScene().name != "Startup")
-                SimulationDataReady();
+            var settings = new Settings();
+            settings.OnSettingsUI(helper);
         }
-
-        public override void OnDisabled()
-        {
-            base.OnDisabled();
-
-            LoadingManager.instance.m_simulationDataReady -= SimulationDataReady;
-        }
-        public void SimulationDataReady()
-        {
-            try
-            {
-                if (Scene == "ThemeEditor")
-                    return;
-
-                GUI.Settings.GameConfig ??= Mode switch
-                {
-                    LoadMode.NewGameFromScenario or LoadMode.LoadScenario or LoadMode.LoadMap => GameConfigT.LoadGameDefault,// no NC or old NC
-                    _ => GameConfigT.NewGameDefault,
-                };
-
-                Loaded = true;
-            }
-            catch (Exception e)
-            {
-                Logger.Error(e);
-            }
-        }
-
-        protected override void GetSettings(UIHelperBase helper) => GUI.Settings.OnSettingsUI(helper);
 
         #endregion
 

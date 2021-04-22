@@ -9,11 +9,7 @@ namespace NodeController
 {
     public class NodeControllerTool : BaseTool<Mod, NodeControllerTool, ToolModeType>
     {
-        public static string SettingsFile => $"{nameof(NodeController)}{nameof(SettingsFile)}";
-        public static Shortcut ActivationShortcut { get; } = new Shortcut(SettingsFile, nameof(ActivationShortcut), "Activation", SavedInputKey.Encode(KeyCode.N, false, false, true));
-        public static readonly SavedBool SnapToMiddleNode = new SavedBool("SnapToMiddleNode", GUI.Settings.FileName, def: false, true);
-
-        public static readonly SavedBool Hide_TMPE_Overlay = new SavedBool("Hide_TMPE_Overlay", GUI.Settings.FileName, def: false, true);
+        public static Shortcut ActivationShortcut { get; } = new Shortcut(Settings.SettingsFile, nameof(ActivationShortcut), "Activation", SavedInputKey.Encode(KeyCode.N, false, false, true));
 
         protected override bool ShowToolTip => !Panel.IsHover;
         protected override IToolMode DefaultMode => ToolModes[ToolModeType.Select];
