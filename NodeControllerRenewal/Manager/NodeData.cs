@@ -150,6 +150,7 @@ namespace NodeController
         public bool IsBendNode => Type == NodeStyleType.Bend;
         public bool IsJunctionNode => !IsMiddleNode && !IsBendNode && !IsEndNode;
         public bool IsMoveableEnds => Style.IsMoveable;
+        public bool IsIndividuallyShift => Style.SupportShift.IsSet(SupportOption.Individually);
 
 
         public bool CanModifyTextures => IsRoad && !IsCSUR;

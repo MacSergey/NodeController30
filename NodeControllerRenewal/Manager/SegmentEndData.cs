@@ -264,9 +264,6 @@ namespace NodeController
             var segment = segmentId.GetSegment();
             GetSegmentPosAndDir(segmentId, segment.m_startNode, out var startPos, out var startDir, out var endPos, out var endDir);
 
-            Fix(segment.m_startNode, segmentId, ref startDir);
-            Fix(segment.m_endNode, segmentId, ref endDir);
-
             bezier = new BezierTrajectory(startPos, startDir, endPos, endDir);
 
             var startNormal = Vector3.Cross(startDir, Vector3.up).normalized;
@@ -275,16 +272,6 @@ namespace NodeController
 
             leftSide = new BezierTrajectory(startPos + startNormal * startHalfWidth, startDir, endPos - endNormal * endHalfWidth, endDir);
             rightSide = new BezierTrajectory(startPos - startNormal * startHalfWidth, startDir, endPos + endNormal * endHalfWidth, endDir);
-
-            static void Fix(ushort nodeId, ushort ignoreSegmentId, ref Vector3 dir)
-            {
-                if (SingletonManager<Manager>.Instance[nodeId] is NodeData startData && startData.IsMiddleNode)
-                {
-                    var startNearSegmentId = startData.SegmentIds.First(s => s != ignoreSegmentId);
-                    GetSegmentPosAndDir(startNearSegmentId, nodeId, out _, out var nearDir, out _, out _);
-                    dir = (dir - nearDir).normalized;
-                }
-            }
         }
         private static void GetSegmentPosAndDir(ushort segmentId, ushort startNodeId, out Vector3 startPos, out Vector3 startDir, out Vector3 endPos, out Vector3 endDir)
         {
@@ -305,14 +292,24 @@ namespace NodeController
 
             var shift = (startShift + endShift) / 2;
             var dir = (endPos - startPos).MakeFlat();
-            var sin = shift / dir.magnitude;
-            var deltaAngle = Mathf.Asin(sin);
+            var deltaAngle = Mathf.Asin(shift / dir.magnitude);
             var normal = dir.TurnRad(Mathf.PI / 2 + deltaAngle, true).normalized;
 
-            startPos -= normal * startShift;
-            endPos += normal * endShift;
-            startDir = startDir.TurnRad(deltaAngle, true);
-            endDir = endDir.TurnRad(deltaAngle, true);
+            if (SingletonManager<Manager>.Instance[isStart ? segment.m_startNode : segment.m_endNode]?.IsIndividuallyShift != false)
+            {
+                startPos -= normal * startShift;
+                startDir = startDir.TurnRad(deltaAngle, true);
+            }
+            else
+                startPos -= dir.Turn90(true).normalized * startShift;
+
+            if (SingletonManager<Manager>.Instance[isStart ? segment.m_endNode : segment.m_startNode]?.IsIndividuallyShift != false)
+            {
+                endPos += normal * endShift;
+                endDir = endDir.TurnRad(deltaAngle, true);
+            }
+            else
+                endPos += dir.Turn90(true).normalized * endShift;
         }
         private static void GetSegmentHalfWidth(ushort segmentId, out float startWidth, out float endWidth)
         {

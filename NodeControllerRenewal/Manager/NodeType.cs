@@ -368,7 +368,7 @@ namespace NodeController
 
         public override SupportOption SupportOffset => SupportOption.All;
         public override SupportOption SupportRotate => SupportOption.All;
-        public override SupportOption SupportShift => SupportOption.Group;
+        public override SupportOption SupportShift => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool IsMoveable => true;
 
@@ -400,6 +400,13 @@ namespace NodeController
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
 
         public CrossingNode(NodeData data) : base(data) { }
+
+        public override float GetShift() => (Data.FirstMainSegmentEnd.Shift - Data.SecondMainSegmentEnd.Shift) / 2;
+        public override void SetShift(float value)
+        {
+            Data.FirstMainSegmentEnd.Shift = value;
+            Data.SecondMainSegmentEnd.Shift = -value;
+        }
     }
     public class UTurnNode : NodeStyle
     {
@@ -412,6 +419,13 @@ namespace NodeController
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
 
         public UTurnNode(NodeData data) : base(data) { }
+
+        public override float GetShift() => (Data.FirstMainSegmentEnd.Shift - Data.SecondMainSegmentEnd.Shift) / 2;
+        public override void SetShift(float value)
+        {
+            Data.FirstMainSegmentEnd.Shift = value;
+            Data.SecondMainSegmentEnd.Shift = -value;
+        }
     }
     public class EndNode : NodeStyle
     {
