@@ -15,6 +15,9 @@ namespace NodeController
 
         protected override bool IsValidNode(ushort nodeId)
         {
+            if (!Settings.SnapToggle)
+                return true;
+
             var node = nodeId.GetNode();
             return node.m_flags.CheckFlags(0, NetNode.Flags.Middle) || node.m_flags.CheckFlags(0, NetNode.Flags.Moveable);
         }
@@ -47,7 +50,7 @@ namespace NodeController
             foreach (var data in HoverSegment.Datas)
             {
                 var node = data.Id.GetNode();
-                if (node.m_flags.CheckFlags(NetNode.Flags.Moveable, NetNode.Flags.End))
+                if (Settings.SnapToggle && node.m_flags.CheckFlags(NetNode.Flags.Moveable, NetNode.Flags.End))
                     continue;
 
                 var gap = 8f + data.halfWidth * 2f * Mathf.Sqrt(1 - data.DeltaAngleCos * data.DeltaAngleCos);

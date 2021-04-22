@@ -377,7 +377,7 @@ namespace NodeController
     public class BendNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Bend;
-        public override float MaxOffset => 100f;
+        public override float MaxOffset => 1000f;
         public override float AdditionalOffset => 2f;
 
         public override SupportOption SupportOffset => SupportOption.All;
@@ -391,7 +391,7 @@ namespace NodeController
     public class StretchNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Stretch;
-        public override float MaxOffset => 100f;
+        public override float MaxOffset => 1000f;
         public override float AdditionalOffset => 2f;
 
         public override SupportOption SupportOffset => SupportOption.All;
@@ -456,7 +456,7 @@ namespace NodeController
     public class CustomNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Custom;
-        public override float MaxOffset => 100f;
+        public override float MaxOffset => 1000f;
         public override float AdditionalOffset => 2f;
 
         public override SupportOption SupportOffset => SupportOption.All;
