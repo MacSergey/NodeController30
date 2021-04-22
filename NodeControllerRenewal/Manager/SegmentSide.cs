@@ -77,7 +77,7 @@ namespace NodeController
         {
             var nodeData = data.NodeData;
 
-            var t = Mathf.Clamp(RawT, MinT + (!nodeData.IsMiddleNode ? DeltaT : 0f), MaxT - DeltaT);
+            var t = Mathf.Clamp(RawT, MinT + (nodeData.IsMiddleNode || data.IsNodeLess ? 0f :DeltaT), MaxT - DeltaT);
             var position = RawBezier.Position(t);
             var direction = RawBezier.Tangent(t).normalized;
 

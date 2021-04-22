@@ -60,7 +60,7 @@ namespace NodeController
         public NodeStyleType DefaultType { get; private set; }
 
         public bool IsEnd => SegmentEnds.Count == 1;
-        public bool IsMain => SegmentEnds.Count == 2;
+        public bool IsTwoRoads => SegmentEnds.Count == 2;
         public bool IsJunction => SegmentEnds.Count > 2;
         public IEnumerable<ushort> SegmentIds => SegmentEnds.Keys;
         public int SegmentCount => SegmentEnds.Count;
@@ -73,10 +73,10 @@ namespace NodeController
         public bool HasPedestrianLanes => SegmentEnds.Keys.Any(s => s.GetSegment().Info.m_hasPedestrianLanes);
         private int PedestrianLaneCount => SegmentEnds.Keys.Max(s => s.GetSegment().Info.PedestrianLanes());
         private float MainDot => DotXZ(FirstSegment.GetDirection(Id).XZ(), SecondSegment.GetDirection(Id).XZ());
-        public bool IsStraight => IsMain && MainDot < -0.99f;
-
-        public bool Is180 => IsMain && MainDot > 0.99f;
-        public bool IsEqualWidth => IsMain && Math.Abs(FirstSegment.Info.m_halfWidth - SecondSegment.Info.m_halfWidth) < 0.001f;
+        public bool IsStraight => IsTwoRoads && MainDot < -0.99f;
+        public bool Is180 => IsTwoRoads && MainDot > 0.99f;
+        public bool IsEqualWidth => IsTwoRoads && Math.Abs(FirstSegment.Info.m_halfWidth - SecondSegment.Info.m_halfWidth) < 0.001f;
+        public bool HasNodeLess => SegmentEndDatas.Any(s => s.IsNodeLess);
 
         public float Offset
         {
@@ -154,7 +154,7 @@ namespace NodeController
 
 
         public bool CanModifyTextures => IsRoad && !IsCSUR;
-        public bool NeedsTransitionFlag => IsMain && (Type == NodeStyleType.Custom || Type == NodeStyleType.Crossing || Type == NodeStyleType.UTurn);
+        public bool NeedsTransitionFlag => IsTwoRoads && (Type == NodeStyleType.Custom || Type == NodeStyleType.Crossing || Type == NodeStyleType.UTurn);
         public bool ShouldRenderCenteralCrossingTexture => Type == NodeStyleType.Crossing && CrossingIsRemoved(MainRoad.First) && CrossingIsRemoved(MainRoad.Second);
 
         #endregion
@@ -233,11 +233,6 @@ namespace NodeController
             {
                 node.m_flags |= NetNode.Flags.Middle;
                 node.m_flags &= ~(NetNode.Flags.Junction | NetNode.Flags.Bend | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward);
-
-                if (Style.IsDefault)
-                    node.m_flags |= NetNode.Flags.Moveable;
-                else
-                    node.m_flags &= ~NetNode.Flags.Moveable;
             }
             else if (IsBendNode)
             {
@@ -249,6 +244,11 @@ namespace NodeController
                 node.m_flags |= NetNode.Flags.Junction;
                 node.m_flags &= ~(NetNode.Flags.Middle | NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward | NetNode.Flags.Bend | NetNode.Flags.End);
             }
+
+            if (IsMiddleNode && Style.IsDefault)
+                node.m_flags |= NetNode.Flags.Moveable;
+            else
+                node.m_flags &= ~NetNode.Flags.Moveable;
         }
         private void UpdateStyle(NodeStyleType? nodeType = null)
         {
@@ -344,18 +344,7 @@ namespace NodeController
             if (type == Style?.Type)
                 return;
 
-            NodeStyle newStyle = type switch
-            {
-                NodeStyleType.Middle => new MiddleNode(this),
-                NodeStyleType.Bend => new BendNode(this),
-                NodeStyleType.Stretch => new StretchNode(this),
-                NodeStyleType.Crossing => new CrossingNode(this),
-                NodeStyleType.UTurn => new UTurnNode(this),
-                NodeStyleType.Custom => new CustomNode(this),
-                NodeStyleType.End => new EndNode(this),
-                _ => throw new NotImplementedException(),
-            };
-            Style = newStyle;
+            Style = type.GetStyle(this);
 
             ResetToDefaultImpl(force);
         }
@@ -382,11 +371,11 @@ namespace NodeController
             bool middle = DefaultFlags.IsFlagSet(NetNode.Flags.Middle);
             return newNodeType switch
             {
-                NodeStyleType.Crossing => IsEqualWidth && IsStraight && PedestrianLaneCount >= 2,
-                NodeStyleType.UTurn => IsMain && IsRoad && Info.m_forwardVehicleLaneCount > 0 && Info.m_backwardVehicleLaneCount > 0,
+                NodeStyleType.Crossing => IsEqualWidth && IsStraight && PedestrianLaneCount >= 2 && !HasNodeLess,
+                NodeStyleType.UTurn => IsTwoRoads && IsRoad && !HasNodeLess && Info.m_forwardVehicleLaneCount > 0 && Info.m_backwardVehicleLaneCount > 0,
                 NodeStyleType.Stretch => CanModifyTextures && !middle && IsStraight,
                 NodeStyleType.Bend => !middle,
-                NodeStyleType.Middle => middle && IsStraight || Is180,
+                NodeStyleType.Middle => middle && (IsStraight || Is180),
                 NodeStyleType.Custom => true,
                 NodeStyleType.End => IsEnd,
                 _ => throw new Exception("Unreachable code"),
@@ -460,7 +449,7 @@ namespace NodeController
                     id = instance.NetSegment;
 
                 if (SegmentEnds.TryGetValue(id, out var segmentEnd))
-                    segmentEnd.FromXml(segmentEndConfig);
+                    segmentEnd.FromXml(segmentEndConfig, Style);
             }
         }
 
@@ -508,18 +497,6 @@ namespace NodeController
 
             return typeProperty;
         }
-
-        //public string ToolTip(NodeTypeT nodeType) => nodeType switch
-        //{
-        //    NodeTypeT.Crossing => "Crossing node.",
-        //    NodeTypeT.Middle => "Middle: No node.",
-        //    NodeTypeT.Bend => IsAsymRevert ? "Bend: Asymmetrical road changes direction." : (HalfWidthDelta > 0.05f ? "Bend: Linearly match segment widths." : "Bend: Simple road corner."),
-        //    NodeTypeT.Stretch => "Stretch: Match both pavement and road.",
-        //    NodeTypeT.UTurn => "U-Turn: node with enough space for U-Turn.",
-        //    NodeTypeT.Custom => "Custom: transition size and traffic rules are configrable.",
-        //    NodeTypeT.End => "when there is only one segment at the node.",
-        //    _ => null,
-        //};
 
         #endregion
 

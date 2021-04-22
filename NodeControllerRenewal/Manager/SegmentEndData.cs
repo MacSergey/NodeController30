@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace NodeController
 {
-    public class SegmentEndData : INetworkData, IOverlay, IToXml, IFromXml
+    public class SegmentEndData : INetworkData, IOverlay, IToXml
     {
         #region STATIC
 
@@ -51,9 +51,11 @@ namespace NodeController
         public float DefaultOffset => Mathf.Clamp(Mathf.Max(Info.m_minCornerOffset, Info.m_halfWidth < 4f ? 0f : 8f), MinPossibleOffset, MaxPossibleOffset);
         public bool DefaultIsSlope => !Info.m_flatJunctions && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public bool DefaultIsTwist => !DefaultIsSlope && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
+        public bool IsMoveable => !IsNodeLess;
 
-        public int PedestrianLaneCount { get; set; }
-        public float VehicleTwist { get; set; }
+        public bool IsNodeLess { get; }
+        public int PedestrianLaneCount { get; }
+        public float VehicleTwist { get; private set; }
 
         private float _offsetValue;
         private float _minOffset = 0f;
@@ -171,6 +173,7 @@ namespace NodeController
             LeftSide = new SegmentSide(SideType.Left);
             RightSide = new SegmentSide(SideType.Right);
 
+            IsNodeLess = !Info.m_nodes.Any();
             PedestrianLaneCount = Info.PedestrianLanes();
 
             CalculateSegmentBeziers(Id, out var bezier, out var leftBezier, out var rightBezier);
@@ -202,8 +205,8 @@ namespace NodeController
             if (style.SupportSlopeJunction == SupportOption.None || force)
                 IsSlope = NodeStyle.DefaultSlopeJunction;
 
-            MinPossibleOffset = style.MinOffset;
-            MaxPossibleOffset = style.MaxOffset;
+            MinPossibleOffset = !IsNodeLess ? style.MinOffset : 0f;
+            MaxPossibleOffset = !IsNodeLess ? style.MaxOffset : 0f;
 
             if (style.SupportRotate == SupportOption.None || force)
                 SetRotate(NodeStyle.DefaultRotate);
@@ -378,8 +381,8 @@ namespace NodeController
                 for (var i = 0; i < count; i += 1)
                 {
                     var defaultOffset = endDatas[i].DefaultOffset;
-                    CorrectDefaultOffset(endDatas[i].LeftSide.RawBezier, ref leftDefaultT[i], defaultOffset, data.Style.AdditionalOffset);
-                    CorrectDefaultOffset(endDatas[i].RightSide.RawBezier, ref rightDefaultT[i], defaultOffset, data.Style.AdditionalOffset);
+                    CorrectDefaultOffset(endDatas[i].LeftSide.RawBezier, ref leftDefaultT[i], defaultOffset, endDatas[i].IsNodeLess ? 0f : data.Style.AdditionalOffset);
+                    CorrectDefaultOffset(endDatas[i].RightSide.RawBezier, ref rightDefaultT[i], defaultOffset, endDatas[i].IsNodeLess ? 0f : data.Style.AdditionalOffset);
                 }
             }
 
@@ -597,7 +600,7 @@ namespace NodeController
             var data = SingletonManager<Manager>.Instance[NodeId];
 
             Render—ontour(contourData);
-            if (data.IsMoveableEnds)
+            if (data.IsMoveableEnds && IsMoveable)
             {
                 RenderEnd(contourData, (LeftSide.Position - Position).magnitude + CircleRadius, 0f);
                 RenderEnd(contourData, 0f, (RightSide.Position - Position).magnitude + CircleRadius);
@@ -676,7 +679,7 @@ namespace NodeController
             return config;
         }
 
-        public void FromXml(XElement config)
+        public void FromXml(XElement config, NodeStyle style)
         {
             var leftOffset = config.GetAttrValue("LO", 0f);
             var rightOffset = config.GetAttrValue("RO", 0f);
@@ -686,15 +689,29 @@ namespace NodeController
                 RightSide.RawT = RightSide.RawBezier.Travel(leftOffset);
                 SetByCorners();
             }
+            else if (style.SupportOffset != SupportOption.None)
+                SetOffset(config.GetAttrValue("O", DefaultOffset));
             else
-                _offsetValue = config.GetAttrValue("O", DefaultOffset);
+                SetOffset(config.GetAttrValue("O", 0f));
 
-            Shift = config.GetAttrValue("S", 0f);
-            _rotateValue = config.GetAttrValue("RA", 0f);
-            SlopeAngle = config.GetAttrValue("SA", 0f);
-            TwistAngle = config.GetAttrValue("TA", 0f);
-            NoMarkings = config.GetAttrValue("NM", 0) == 1;
-            IsSlope = config.GetAttrValue("IS", 0) == 1;
+            if (style.SupportShift != SupportOption.None)
+                Shift = config.GetAttrValue("S", NodeStyle.DefaultShift);
+
+            if (style.SupportRotate != SupportOption.None)
+                _rotateValue = config.GetAttrValue("RA", NodeStyle.DefaultRotate);
+
+            if (style.SupportSlope != SupportOption.None)
+                SlopeAngle = config.GetAttrValue("SA", NodeStyle.DefaultSlope);
+
+            if (style.SupportTwist != SupportOption.None)
+                TwistAngle = config.GetAttrValue("TA", NodeStyle.DefaultTwist);
+
+            if (style.SupportNoMarking != SupportOption.None)
+                NoMarkings = config.GetAttrValue("NM", NodeStyle.DefaultNoMarking ? 1 : 0) == 1;
+
+            if (style.SupportSlopeJunction != SupportOption.None)
+                IsSlope = config.GetAttrValue("IS", NodeStyle.DefaultSlopeJunction ? 1 : 0) == 1;
+
             KeepDefaults = config.GetAttrValue("KD", 0) == 1;
         }
 

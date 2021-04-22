@@ -49,7 +49,9 @@ namespace NodeController
                 var node = data.Id.GetNode();
                 if (node.m_flags.CheckFlags(NetNode.Flags.Moveable, NetNode.Flags.End))
                     continue;
-                if ((data.Position - position).magnitude < 8f)
+
+                var gap = 8f + data.halfWidth * 2f * Mathf.Sqrt(1 - data.DeltaAngleCos * data.DeltaAngleCos);
+                if ((data.Position - position).sqrMagnitude < gap * gap)
                     return false;
             }
 

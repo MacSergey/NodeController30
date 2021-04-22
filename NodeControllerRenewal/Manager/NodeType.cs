@@ -18,6 +18,20 @@ namespace NodeController
         Custom,
         End,
     }
+    public static class NodeStyleTypeExtension
+    {
+        public static NodeStyle GetStyle(this NodeStyleType type, NodeData data) => type switch
+        {
+            NodeStyleType.Middle => new MiddleNode(data),
+            NodeStyleType.Bend => new BendNode(data),
+            NodeStyleType.Stretch => new StretchNode(data),
+            NodeStyleType.Crossing => new CrossingNode(data),
+            NodeStyleType.UTurn => new UTurnNode(data),
+            NodeStyleType.Custom => new CustomNode(data),
+            NodeStyleType.End => new EndNode(data),
+            _ => throw new NotImplementedException(),
+        };
+    }
     public abstract class NodeStyle
     {
         public static float DefaultShift => 0f;

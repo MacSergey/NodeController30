@@ -23,7 +23,7 @@ namespace NodeController.Patches
         private static bool? IsPedestrianCrossingAllowedConfigurable(NodeData node) => node?.Type switch
         {
             NodeStyleType.Crossing or NodeStyleType.UTurn or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,
-            NodeStyleType.Custom => (node.IsMain && !node.HasPedestrianLanes) ? false : null,
+            NodeStyleType.Custom => (node.IsTwoRoads && !node.HasPedestrianLanes) ? false : null,
             NodeStyleType.End => null,
             _ => null,
         };
@@ -31,7 +31,7 @@ namespace NodeController.Patches
         {
             NodeStyleType.Crossing => true,
             NodeStyleType.UTurn or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,
-            NodeStyleType.Custom when node.IsMain && node.FirstSegment.Info.m_netAI.GetType() != node.SecondSegment.Info.m_netAI.GetType() => false,
+            NodeStyleType.Custom when node.IsTwoRoads && node.FirstSegment.Info.m_netAI.GetType() != node.SecondSegment.Info.m_netAI.GetType() => false,
             NodeStyleType.Custom or NodeStyleType.End => null,
             _ => null,
         };

@@ -27,6 +27,9 @@ namespace NodeController
             {
                 foreach (var segmentData in Tool.Data.SegmentEndDatas)
                 {
+                    if (!segmentData.IsMoveable)
+                        continue;
+
                     var hitPos = Tool.Ray.GetRayPosition(segmentData.Position.y, out _);
 
                     var magnitude = (segmentData.Position - hitPos).magnitude;
@@ -98,11 +101,6 @@ namespace NodeController
                 var right = segmentData == HoverSegmentEndCorner && HoverCorner == SideType.Right ? hover : yellow;
                 segmentData.Render(green, outter, inner, left, right);
             }
-
-            foreach (var segmentData in Tool.Data.SegmentEndDatas)
-                segmentData.RawSegmentBezier.StartPosition.RenderCircle(new OverlayData(cameraInfo) {Color = Color.blue });
-
-            Tool.Data.Position.RenderCircle(new OverlayData(cameraInfo) { Color = Color.red });
         }
     }
 }
