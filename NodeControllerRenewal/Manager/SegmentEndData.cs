@@ -681,12 +681,12 @@ namespace NodeController
 
         public void FromXml(XElement config, NodeStyle style)
         {
-            var leftOffset = config.GetAttrValue("LO", 0f);
-            var rightOffset = config.GetAttrValue("RO", 0f);
-            if (leftOffset > 0f || rightOffset > 0f)
+            var leftOffset = config.GetAttrValue("LO", -1f);
+            var rightOffset = config.GetAttrValue("RO", -1f);
+            if (leftOffset != -1f || rightOffset != -1f)
             {
-                LeftSide.RawT = LeftSide.RawBezier.Travel(leftOffset);
-                RightSide.RawT = RightSide.RawBezier.Travel(leftOffset);
+                LeftSide.RawT = LeftSide.RawBezier.Travel(Mathf.Max(leftOffset, 0f));
+                RightSide.RawT = RightSide.RawBezier.Travel(Mathf.Max(leftOffset, 0f));
                 SetByCorners();
             }
             else if (style.SupportOffset != SupportOption.None)

@@ -72,7 +72,7 @@ namespace NodeController
 
         public bool HasPedestrianLanes => SegmentEnds.Keys.Any(s => s.GetSegment().Info.m_hasPedestrianLanes);
         private int PedestrianLaneCount => SegmentEnds.Keys.Max(s => s.GetSegment().Info.PedestrianLanes());
-        private float MainDot => DotXZ(FirstSegment.GetDirection(Id).XZ(), SecondSegment.GetDirection(Id).XZ());
+        private float MainDot => DotXZ(FirstSegment.GetDirection(Id), SecondSegment.GetDirection(Id));
         public bool IsStraight => IsTwoRoads && MainDot < -0.99f;
         public bool Is180 => IsTwoRoads && MainDot > 0.99f;
         public bool IsEqualWidth => IsTwoRoads && Math.Abs(FirstSegment.Info.m_halfWidth - SecondSegment.Info.m_halfWidth) < 0.001f;

@@ -27,7 +27,7 @@ namespace NodeController
 
             var keymappings = AddKeyMappingPanel(group);
             keymappings.AddKeymapping(NodeControllerTool.ActivationShortcut);
-            AddCheckBox(group, "Snap toggle", SnapToggle);
+            AddCheckBox(group, "Snap to middle node", SnapToggle);
         }
     }
 }

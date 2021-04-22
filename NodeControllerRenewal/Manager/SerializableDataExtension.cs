@@ -123,7 +123,7 @@ namespace NodeController.BackwardÑompatibility
             var config = new XElement(nameof(NodeController));
             config.AddAttr("V", Version);
 
-            var segmentsBuffer = SegmentEndManager.Buffer.Where(i => i != null).GroupBy(i => i.NodeId).ToDictionary(i => i.Key, i => i.ToArray());
+            var segmentsBuffer = SegmentEndManager.Buffer.GroupBy(i => i.NodeId).ToDictionary(i => i.Key, i => i.ToArray());
 
             foreach (var node in NodeManager.Buffer)
             {
@@ -162,7 +162,8 @@ namespace NodeController.BackwardÑompatibility
         public SegmentEndData[] Buffer;
         public SegmentEndManager(SerializationInfo info, StreamingContext context)
         {
-            Buffer = (SegmentEndData[])info.GetValue("buffer", typeof(SegmentEndData[]));
+            var buffer = (SegmentEndData[])info.GetValue("buffer", typeof(SegmentEndData[]));
+            Buffer = buffer.Where(i => i != null).ToArray();
         }
         public void GetObjectData(SerializationInfo info, StreamingContext context) { }
     }
@@ -188,6 +189,7 @@ namespace NodeController.BackwardÑompatibility
             config.AddAttr("T", (int)NodeType);
             return config;
         }
+        public override string ToString() => $"Node #{Id}";
     }
     [Serializable]
     public class SegmentEndData : ISerializable, IToXml
@@ -223,23 +225,27 @@ namespace NodeController.BackwardÑompatibility
             var config = new XElement(XmlSection);
 
             config.AddAttr(nameof(Id), Id);
-            config.AddAttr("LO", LeftCorner.Offset);
-            config.AddAttr("RO", RightCorner.Offset);
+            config.AddAttr("LO", LeftCorner.Offset + LeftCorner.DeltaPos.z);
+            config.AddAttr("RO", RightCorner.Offset + RightCorner.DeltaPos.z);
             config.AddAttr("SA", SlopeAngle);
             config.AddAttr("TA", TwistAngle);
+            config.AddAttr("S", (LeftCorner.DeltaPos.x - RightCorner.DeltaPos.x) / 2f);
             config.AddAttr("NM", NoMarkings ? 1 : 0);
             config.AddAttr("IS", IsSlope ? 1 : 0);
 
             return config;
         }
+        public override string ToString() => $"Segment #{Id}; Node #{NodeId}";
     }
     [Serializable]
     public class CornerData : ISerializable
     {
         public float Offset;
+        public Vector3 DeltaPos;
         public CornerData(SerializationInfo info, StreamingContext context)
         {
             Offset = info.GetSingle("Offset");
+            DeltaPos = (Vector3)info.GetValue("DeltaPos", typeof(Vector3));
         }
         public void GetObjectData(SerializationInfo info, StreamingContext context) { }
     }

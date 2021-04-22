@@ -9,7 +9,7 @@ namespace NodeController
 {
     public class NodeControllerTool : BaseTool<Mod, NodeControllerTool, ToolModeType>
     {
-        public static Shortcut ActivationShortcut { get; } = new Shortcut(Settings.SettingsFile, nameof(ActivationShortcut), "Activation", SavedInputKey.Encode(KeyCode.N, false, false, true));
+        public static Shortcut ActivationShortcut { get; } = new Shortcut(Settings.SettingsFile, nameof(ActivationShortcut), "Activation", SavedInputKey.Encode(KeyCode.N, true, false, false));
 
         protected override bool ShowToolTip => !Panel.IsHover;
         protected override IToolMode DefaultMode => ToolModes[ToolModeType.Select];
