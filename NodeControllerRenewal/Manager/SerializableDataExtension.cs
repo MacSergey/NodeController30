@@ -1,6 +1,7 @@
 using ModsCommon;
 using ModsCommon.Utilities;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -27,7 +28,8 @@ namespace NodeController.Utilities
             if (serializableDataManager.LoadData(DATA_ID) is byte[] data)
             {
                 var state = Backward—ompatibility.Loader.Load<Backward—ompatibility.NCState>(data);
-
+                var config = state.ToXml();
+                SetLoadData(config);
             }
             //else
             //{
@@ -36,6 +38,14 @@ namespace NodeController.Utilities
             //}
 
             base.OnLoadData();
+        }
+        public override void OnSaveData()
+        {
+            base.OnSaveData();
+
+            serializableDataManager.EraseData(DATA_ID);
+            serializableDataManager.EraseData(DATA_ID1);
+            serializableDataManager.EraseData(DATA_ID0);
         }
     }
 }
@@ -88,21 +98,45 @@ namespace NodeController.Backward—ompatibility
     }
 
     [Serializable]
-    public class NCState : ISerializable
+    public class NCState : ISerializable, IToXml
     {
         public SegmentEndManager SegmentEndManager { get; }
-        public NodeManager NodeManager { get;  }
+        public NodeManager NodeManager { get; }
+        public Version Version { get; }
+
+        public string XmlSection => throw new NotImplementedException();
+
         public NCState(SerializationInfo info, StreamingContext context)
         {
-            if(info.GetValue("NodeManagerData", typeof(byte[])) is byte[] nodeManagerData)
+            Version = new Version(info.GetString("Version"));
+
+            if (info.GetValue("NodeManagerData", typeof(byte[])) is byte[] nodeManagerData)
                 NodeManager = Loader.Load<NodeManager>(nodeManagerData);
 
             if (info.GetValue("SegmentEndManagerData", typeof(byte[])) is byte[] segmentEndManagerData)
                 SegmentEndManager = Loader.Load<SegmentEndManager>(segmentEndManagerData);
         }
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
+        public void GetObjectData(SerializationInfo info, StreamingContext context) { }
 
+        public XElement ToXml()
+        {
+            var config = new XElement(nameof(NodeController));
+            config.AddAttr("V", Version);
+
+            var segmentsBuffer = SegmentEndManager.Buffer.Where(i => i != null).GroupBy(i => i.NodeId).ToDictionary(i => i.Key, i => i.ToArray());
+
+            foreach (var node in NodeManager.Buffer)
+            {
+                var nodeConfig = node.ToXml();
+                config.Add(nodeConfig);
+                if (segmentsBuffer.TryGetValue(node.Id, out var segments))
+                {
+                    foreach (var segment in segments)
+                        nodeConfig.Add(segment.ToXml());
+                }
+            }
+
+            return config;
         }
     }
     [Serializable]
@@ -115,7 +149,7 @@ namespace NodeController.Backward—ompatibility
     public class NodeManager : ISerializable
     {
         public NodeData[] Buffer;
-        public NodeManager(SerializationInfo info, StreamingContext context) 
+        public NodeManager(SerializationInfo info, StreamingContext context)
         {
             var buffer = (NodeData[])info.GetValue("buffer", typeof(NodeData[]));
             Buffer = buffer.Where(i => i != null).ToArray();
@@ -126,27 +160,37 @@ namespace NodeController.Backward—ompatibility
     public class SegmentEndManager : ISerializable
     {
         public SegmentEndData[] Buffer;
-        public SegmentEndManager(SerializationInfo info, StreamingContext context) 
+        public SegmentEndManager(SerializationInfo info, StreamingContext context)
         {
-            var buffer = (SegmentEndData[])info.GetValue("buffer", typeof(SegmentEndData[]));
-            Buffer = buffer.Where(i => i != null).ToArray();
+            Buffer = (SegmentEndData[])info.GetValue("buffer", typeof(SegmentEndData[]));
         }
         public void GetObjectData(SerializationInfo info, StreamingContext context) { }
     }
     [Serializable]
-    public class NodeData : ISerializable
+    public class NodeData : ISerializable, IToXml
     {
         public ushort Id;
         public NodeStyleType NodeType;
-        public NodeData(SerializationInfo info, StreamingContext context) 
+        public NodeData(SerializationInfo info, StreamingContext context)
         {
             Id = info.GetUInt16("NodeID");
             NodeType = (NodeStyleType)info.GetValue("NodeType", typeof(NodeStyleType));
         }
+
+        public string XmlSection => NodeController.NodeData.XmlName;
+
         public void GetObjectData(SerializationInfo info, StreamingContext context) { }
+
+        public XElement ToXml()
+        {
+            var config = new XElement(NodeController.NodeData.XmlName);
+            config.AddAttr(nameof(Id), Id);
+            config.AddAttr("T", (int)NodeType);
+            return config;
+        }
     }
     [Serializable]
-    public class SegmentEndData : ISerializable
+    public class SegmentEndData : ISerializable, IToXml
     {
         public ushort Id;
         public ushort NodeId;
@@ -157,7 +201,7 @@ namespace NodeController.Backward—ompatibility
         public float Stretch;
         public bool IsSlope;
         public bool NoMarkings;
-        public SegmentEndData(SerializationInfo info, StreamingContext context) 
+        public SegmentEndData(SerializationInfo info, StreamingContext context)
         {
             Id = info.GetUInt16("SegmentID");
             NodeId = info.GetUInt16("NodeID");
@@ -169,13 +213,31 @@ namespace NodeController.Backward—ompatibility
             IsSlope = !info.GetBoolean("FlatJunctions");
             NoMarkings = info.GetBoolean("NoMarkings");
         }
+
+        public string XmlSection => NodeController.SegmentEndData.XmlName;
+
         public void GetObjectData(SerializationInfo info, StreamingContext context) { }
+
+        public XElement ToXml()
+        {
+            var config = new XElement(XmlSection);
+
+            config.AddAttr(nameof(Id), Id);
+            config.AddAttr("LO", LeftCorner.Offset);
+            config.AddAttr("RO", RightCorner.Offset);
+            config.AddAttr("SA", SlopeAngle);
+            config.AddAttr("TA", TwistAngle);
+            config.AddAttr("NM", NoMarkings ? 1 : 0);
+            config.AddAttr("IS", IsSlope ? 1 : 0);
+
+            return config;
+        }
     }
     [Serializable]
     public class CornerData : ISerializable
     {
         public float Offset;
-        public CornerData(SerializationInfo info, StreamingContext context) 
+        public CornerData(SerializationInfo info, StreamingContext context)
         {
             Offset = info.GetSingle("Offset");
         }

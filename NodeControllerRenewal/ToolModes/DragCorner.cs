@@ -31,9 +31,13 @@ namespace NodeController
         public override void OnMouseDrag(Event e)
         {
             SegmentEnd[Corner].RawBezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out _);
-            SegmentEnd.SetCornerOffset(SegmentEnd[Corner].RawBezier.Distance(0f, t).RoundToNearest(RoundTo), Corner);
-            SegmentEnd.UpdateNode();
+            var offset = SegmentEnd[Corner].RawBezier.Distance(0f, t).RoundToNearest(RoundTo);
+            if (Corner == SideType.Left)
+                SegmentEnd.LeftOffset = offset;
+            else
+                SegmentEnd.RightOffset = offset;
 
+            SegmentEnd.UpdateNode();
             Tool.Panel.UpdatePanel();
         }
         public override void OnPrimaryMouseClicked(Event e) => OnMouseUp(e);

@@ -72,6 +72,11 @@ namespace NodeController
 
             Tool.SetDefaultMode();
         }
+        public override void OnPrimaryMouseClicked(Event e)
+        {
+            if (IsSelectedSegmentEnd)
+                SelectedSegmentEnd = null;
+        }
         public override void OnSecondaryMouseClicked()
         {
             Tool.SetDefaultMode();

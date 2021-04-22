@@ -51,7 +51,6 @@ namespace NodeController
         public float DefaultOffset => Mathf.Clamp(Mathf.Max(Info.m_minCornerOffset, Info.m_halfWidth < 4f ? 0f : 8f), MinPossibleOffset, MaxPossibleOffset);
         public bool DefaultIsSlope => !Info.m_flatJunctions && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public bool DefaultIsTwist => !DefaultIsSlope && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
-        public NetSegment.Flags DefaultFlags { get; set; }
 
         public int PedestrianLaneCount { get; set; }
         public float VehicleTwist { get; set; }
@@ -67,6 +66,22 @@ namespace NodeController
             set
             {
                 SetOffset(value, true);
+                KeepDefaults = false;
+            }
+        }
+        public float LeftOffset
+        {
+            set
+            {
+                SetCornerOffset(value, SideType.Left);
+                KeepDefaults = false;
+            }
+        }
+        public float RightOffset
+        {
+            set
+            {
+                SetCornerOffset(value, SideType.Right);
                 KeepDefaults = false;
             }
         }
@@ -156,7 +171,6 @@ namespace NodeController
             LeftSide = new SegmentSide(SideType.Left);
             RightSide = new SegmentSide(SideType.Right);
 
-            DefaultFlags = Segment.m_flags;
             PedestrianLaneCount = Info.PedestrianLanes();
 
             CalculateSegmentBeziers(Id, out var bezier, out var leftBezier, out var rightBezier);
@@ -215,7 +229,7 @@ namespace NodeController
 
             _rotateValue = Mathf.Clamp(value, MinRotate, MaxRotate);
         }
-        public void SetCornerOffset(float value, SideType sideType)
+        private void SetCornerOffset(float value, SideType sideType)
         {
             var side = this[sideType];
             side.RawT = side.RawBezier.Travel(value);
@@ -667,7 +681,17 @@ namespace NodeController
 
         public void FromXml(XElement config)
         {
-            _offsetValue = config.GetAttrValue("O", 0f);
+            var leftOffset = config.GetAttrValue("LO", 0f);
+            var rightOffset = config.GetAttrValue("RO", 0f);
+            if (leftOffset > 0f || rightOffset > 0f)
+            {
+                LeftSide.RawT = LeftSide.RawBezier.Travel(leftOffset);
+                RightSide.RawT = RightSide.RawBezier.Travel(leftOffset);
+                SetByCorners();
+            }
+            else
+                _offsetValue = config.GetAttrValue("O", DefaultOffset);
+
             Shift = config.GetAttrValue("S", 0f);
             _rotateValue = config.GetAttrValue("RA", 0f);
             SlopeAngle = config.GetAttrValue("SA", 0f);
