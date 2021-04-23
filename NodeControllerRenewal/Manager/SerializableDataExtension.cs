@@ -231,6 +231,10 @@ namespace NodeController.Backward—ompatibility
             config.AddAttr("NM", NoMarkings ? 1 : 0);
             config.AddAttr("IS", IsSlope ? 1 : 0);
 
+            var leftOffset = LeftCorner.Offset + LeftCorner.DeltaPos.z;
+            var rightOffset = RightCorner.Offset + RightCorner.DeltaPos.z;
+            config.AddAttr("O", (leftOffset + rightOffset) / 2f);
+
             if (Id.GetSegment().Info is NetInfo info)
             {
                 var width = info.m_halfWidth * 2;
@@ -238,10 +242,6 @@ namespace NodeController.Backward—ompatibility
                 var stretch = (1 + Stretch * 0.01f) * ((width + deltaWidth) / width);
                 config.AddAttr("ST", stretch);
 
-                var leftOffset = LeftCorner.Offset + LeftCorner.DeltaPos.z;
-                var rightOffset = RightCorner.Offset + RightCorner.DeltaPos.z;
-
-                config.AddAttr("O", (leftOffset + rightOffset) / 2f);
                 var tan = (leftOffset - rightOffset) / (width * stretch);
                 config.AddAttr("RA", Mathf.Atan(tan) * Mathf.Rad2Deg);
             }
