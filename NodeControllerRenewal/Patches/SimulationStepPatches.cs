@@ -26,7 +26,6 @@ namespace NodeController.Patches
                 if (instruction.opcode == OpCodes.Stfld && instruction.operand == rotationField)
                 {
                     yield return new CodeInstruction(original.GetLDArg("vehicleData"));
-                    yield return new CodeInstruction(original.GetLDArg("vehicleID") ?? original.GetLDArg("vehicleId"));
                     yield return new CodeInstruction(OpCodes.Call, getDelegate.Method);
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Quaternion), "op_Multiply", new Type[] { typeof(Quaternion), typeof(Quaternion) }));
                 }
@@ -92,7 +91,7 @@ namespace NodeController.Patches
                 var endTwist = (nextPos.m_offset == byte.MaxValue ? nextStart : nextEnd)?.VehicleTwist ?? 0f;
                 var twist = Mathf.Lerp(-startTwist, endTwist, t);
 
-                return Quaternion.Euler(0, 0f, prevPos.m_offset == byte.MaxValue ? twist : -twist);
+                return Quaternion.Euler(0, 0f, twist);
             }
         }
     }
