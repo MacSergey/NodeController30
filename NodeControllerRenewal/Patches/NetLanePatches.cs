@@ -45,12 +45,16 @@ namespace NodeController.Patches
 
             SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
 
-            var twistStart = start?.TwistAngle ?? 0;
-            var twistEnd = end?.TwistAngle ?? 0;
+            var twistStart = start?.TwistAngle ?? NodeStyle.DefaultTwist;
+            var twistEnd = end?.TwistAngle ?? NodeStyle.DefaultTwist;
             var twist = Mathf.Lerp(twistStart, twistEnd, t) * Mathf.Deg2Rad;
 
-            position.y += (reverse ? 1 : -1) * position.x * Mathf.Sin(twist);
-            position.x *= Mathf.Cos(twist);
+            var stretchStart = start?.Stretch ?? NodeStyle.DefaultStretch;
+            var stretchEnd = end?.Stretch ?? NodeStyle.DefaultStretch;
+            var stretch = Mathf.Lerp(stretchStart, stretchEnd, t);
+
+            position.y += (reverse ? 1 : -1) * position.x * stretch * Mathf.Sin(twist);
+            position.x *= stretch * Mathf.Cos(twist);
             return position;
         }
     }

@@ -111,8 +111,6 @@ namespace NodeController
             get => Mathf.Min(_maxOffse, MaxPossibleOffset);
             private set => _maxOffse = value;
         }
-
-        public float Shift { get; set; }
         public float RotateAngle
         {
             get => _rotateValue;
@@ -126,6 +124,13 @@ namespace NodeController
         public float MaxRotate { get; set; }
         public float SlopeAngle { get; set; }
         public float TwistAngle { get; set; }
+        public float Shift { get; set; }
+        public float Stretch { get; set; }
+        public float StretchPercent
+        {
+            get => Stretch * 100f;
+            set => Stretch = value / 100f;
+        }
         public bool NoMarkings { get; set; }
         public bool IsSlope { get; set; }
         private bool KeepDefaults { get; set; }
@@ -194,14 +199,21 @@ namespace NodeController
 
         public void ResetToDefault(NodeStyle style, bool force)
         {
-            if (style.SupportShift == SupportOption.None || force)
-                Shift = NodeStyle.DefaultShift;
             if (style.SupportSlope == SupportOption.None || force)
                 SlopeAngle = NodeStyle.DefaultSlope;
+
             if (style.SupportTwist == SupportOption.None || force)
                 TwistAngle = NodeStyle.DefaultTwist;
+
+            if (style.SupportShift == SupportOption.None || force)
+                Shift = NodeStyle.DefaultShift;
+
+            if (style.SupportStretch == SupportOption.None || force)
+                Stretch = NodeStyle.DefaultStretch;
+
             if (style.SupportNoMarking == SupportOption.None || force)
                 NoMarkings = NodeStyle.DefaultNoMarking;
+
             if (style.SupportSlopeJunction == SupportOption.None || force)
                 IsSlope = NodeStyle.DefaultSlopeJunction;
 
@@ -210,6 +222,7 @@ namespace NodeController
 
             if (style.SupportRotate == SupportOption.None || force)
                 SetRotate(NodeStyle.DefaultRotate);
+
             if (style.SupportOffset == SupportOption.None || force)
                 SetOffset(DefaultOffset);
             else
@@ -319,11 +332,15 @@ namespace NodeController
             var segment = segmentId.GetSegment();
 
             SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
-            var startTwist = start?.TwistAngle ?? 0f;
-            var endTwist = end?.TwistAngle ?? 0f;
 
-            startWidth = segment.Info.m_halfWidth * Mathf.Cos(startTwist * Mathf.Deg2Rad);
-            endWidth = segment.Info.m_halfWidth * Mathf.Cos(endTwist * Mathf.Deg2Rad);
+            var startTwist = start?.TwistAngle ?? NodeStyle.DefaultTwist;
+            var endTwist = end?.TwistAngle ?? NodeStyle.DefaultTwist;
+
+            var startStretch = start?.Stretch ?? NodeStyle.DefaultStretch;
+            var endStretch = end?.Stretch ?? NodeStyle.DefaultStretch;
+
+            startWidth = segment.Info.m_halfWidth * startStretch * Mathf.Cos(startTwist * Mathf.Deg2Rad);
+            endWidth = segment.Info.m_halfWidth * endStretch * Mathf.Cos(endTwist * Mathf.Deg2Rad);
         }
 
         #endregion
@@ -668,10 +685,11 @@ namespace NodeController
 
             config.AddAttr(nameof(Id), Id);
             config.AddAttr("O", _offsetValue);
-            config.AddAttr("S", Shift);
             config.AddAttr("RA", _rotateValue);
             config.AddAttr("SA", SlopeAngle);
             config.AddAttr("TA", TwistAngle);
+            config.AddAttr("S", Shift);
+            config.AddAttr("ST", Stretch);
             config.AddAttr("NM", NoMarkings ? 1 : 0);
             config.AddAttr("IS", IsSlope ? 1 : 0);
             config.AddAttr("KD", KeepDefaults ? 1 : 0);
@@ -694,9 +712,6 @@ namespace NodeController
             else
                 SetOffset(config.GetAttrValue("O", 0f));
 
-            if (style.SupportShift != SupportOption.None)
-                Shift = config.GetAttrValue("S", NodeStyle.DefaultShift);
-
             if (style.SupportRotate != SupportOption.None)
                 _rotateValue = config.GetAttrValue("RA", NodeStyle.DefaultRotate);
 
@@ -705,6 +720,12 @@ namespace NodeController
 
             if (style.SupportTwist != SupportOption.None)
                 TwistAngle = config.GetAttrValue("TA", NodeStyle.DefaultTwist);
+
+            if (style.SupportShift != SupportOption.None)
+                Shift = config.GetAttrValue("S", NodeStyle.DefaultShift);
+
+            if (style.SupportStretch != SupportOption.None)
+                Stretch = config.GetAttrValue("ST", NodeStyle.DefaultStretch);
 
             if (style.SupportNoMarking != SupportOption.None)
                 NoMarkings = config.GetAttrValue("NM", NodeStyle.DefaultNoMarking ? 1 : 0) == 1;

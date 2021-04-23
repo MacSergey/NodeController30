@@ -40,6 +40,7 @@ namespace NodeController
         public static float DefaultTwist => 0f;
         public static bool DefaultNoMarking => false;
         public static bool DefaultSlopeJunction => false;
+        public static float DefaultStretch => 1f;
 
 
         public abstract NodeStyleType Type { get; }
@@ -55,6 +56,7 @@ namespace NodeController
         public virtual SupportOption SupportTwist => SupportOption.None;
         public virtual SupportOption SupportNoMarking => SupportOption.None;
         public virtual SupportOption SupportSlopeJunction => SupportOption.None;
+        public virtual SupportOption SupportStretch => SupportOption.None;
 
 
         public virtual bool IsMoveable => false;
@@ -73,6 +75,9 @@ namespace NodeController
                     return false;
 
                 else if (Mathf.Abs(Data.TwistAngle - DefaultTwist) > 0.1f)
+                    return false;
+
+                else if (Mathf.Abs(Data.Stretch - DefaultStretch) > 0.1f)
                     return false;
 
                 else if (Data.NoMarkings != DefaultNoMarking)
@@ -128,6 +133,13 @@ namespace NodeController
                 segmentData.TwistAngle = value;
         }
 
+        public virtual float GetStretch() => Data.SegmentEndDatas.Average(s => s.Stretch);
+        public virtual void SetStretch(float value)
+        {
+            foreach (var segmentData in Data.SegmentEndDatas)
+                segmentData.Stretch = value;
+        }
+
         public virtual bool GetNoMarkings() => Data.SegmentEndDatas.Any(s => s.NoMarkings);
         public virtual void SetNoMarkings(bool value)
         {
@@ -154,6 +166,7 @@ namespace NodeController
             GetRotateUIComponents(parent);
             GetSlopeUIComponents(parent);
             GetTwistUIComponents(parent);
+            GetStretchUIComponents(parent);
 
             if (SupportNoMarking != SupportOption.None)
                 GetHideMarkingProperty(parent);
@@ -166,21 +179,17 @@ namespace NodeController
         protected void GetRotateUIComponents(UIComponent parent) => GetUIComponents(parent, SupportRotate, GetRotateProperty, GetSegmentRotateProperty, (data) => data.RotateAngle, (data, value) => data.RotateAngle = value);
         protected void GetSlopeUIComponents(UIComponent parent) => GetUIComponents(parent, SupportSlope, GetSlopeProperty, null, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value);
         protected void GetTwistUIComponents(UIComponent parent) => GetUIComponents(parent, SupportTwist, GetTwistProperty, null, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value);
+        protected void GetStretchUIComponents(UIComponent parent) => GetUIComponents(parent, SupportStretch, GetStretchProperty, GetSegmentStretchProperty, (data) => data.StretchPercent, (data, value) => data.StretchPercent = value);
         protected void GetUIComponents(UIComponent parent, SupportOption option, Func<UIComponent, FloatPropertyPanel> getNodeProperty, Func<UIComponent, SegmentEndData, FloatPropertyPanel> getSegmentProperty, Func<INetworkData, float> getValue, Action<INetworkData, float> setValue)
         {
             var nodeProperty = default(FloatPropertyPanel);
-            var segmentProperties = new List<FloatPropertyPanel>();
+            var segmentProperties = new Dictionary<SegmentEndData, FloatPropertyPanel>();
 
             if (option.IsSet(SupportOption.Group))
             {
                 nodeProperty = getNodeProperty(parent);
                 nodeProperty.Value = getValue(Data);
-                nodeProperty.OnValueChanged += (float newValue) =>
-                {
-                    setValue(Data, newValue);
-                    foreach (var segmentProperty in segmentProperties)
-                        segmentProperty.Value = newValue;
-                };
+                nodeProperty.OnValueChanged += SetNodeValue;
             }
 
             if (option.IsSet(SupportOption.Individually))
@@ -189,21 +198,42 @@ namespace NodeController
                 {
                     var segmentProperty = getSegmentProperty(parent, segmentData);
                     segmentProperty.Value = getValue(segmentData);
-                    segmentProperty.OnValueChanged += (newValue) =>
-                    {
-                        setValue(segmentData, newValue);
-                        if (option.IsSet(SupportOption.Group))
-                            nodeProperty.Value = getValue(Data);
-                        Data.UpdateNode();
-                    };
-                    segmentProperties.Add(segmentProperty);
+                    segmentProperty.OnValueChanged += (newValue) => SetSegmentEndValue(segmentData, newValue);
+                    segmentProperties.Add(segmentData, segmentProperty);
                 }
             }
+
+            void SetNodeValue(float newValue)
+            {
+                setValue(Data, newValue);
+                foreach (var segmentProperty in segmentProperties)
+                    segmentProperty.Value.Value = getValue(segmentProperty.Key);
+            }
+            void SetSegmentEndValue(SegmentEndData segmentData, float newValue)
+            {
+                setValue(segmentData, newValue);
+                if (option.IsSet(SupportOption.Group))
+                    nodeProperty.Value = getValue(Data);
+                Data.UpdateNode();
+            }
+        }
+
+        private FloatPropertyPanel GetProperty(UIComponent parent, string name)
+        {
+            var property = ComponentPool.Get<FloatPropertyPanel>(parent, name);
+            property.Text = name;
+            property.CheckMin = true;
+            property.CheckMax = true;
+            property.UseWheel = true;
+            property.WheelStep = 1f;
+            property.Init();
+
+            return property;
         }
 
         protected FloatPropertyPanel GetOffsetProperty(UIComponent parent)
         {
-            var offsetProperty = GetNodeProperty(parent, "Offset");
+            var offsetProperty = GetProperty(parent, "Offset");
             offsetProperty.MinValue = 0;
             offsetProperty.MaxValue = 100;
 
@@ -211,7 +241,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetShiftProperty(UIComponent parent)
         {
-            var offsetProperty = GetNodeProperty(parent, "Shift");
+            var offsetProperty = GetProperty(parent, "Shift");
             offsetProperty.MinValue = -32;
             offsetProperty.MaxValue = 32;
 
@@ -219,7 +249,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetRotateProperty(UIComponent parent)
         {
-            var rotateProperty = GetNodeProperty(parent, "Rotate");
+            var rotateProperty = GetProperty(parent, "Rotate");
             rotateProperty.MinValue = SegmentEndData.MinPossibleRotate;
             rotateProperty.MaxValue = SegmentEndData.MaxPossibleRotate;
 
@@ -227,7 +257,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetSlopeProperty(UIComponent parent)
         {
-            var slopeProperty = GetNodeProperty(parent, "Slope");
+            var slopeProperty = GetProperty(parent, "Slope");
             slopeProperty.MinValue = -60;
             slopeProperty.MaxValue = 60;
 
@@ -235,29 +265,24 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetTwistProperty(UIComponent parent)
         {
-            var twistProperty = GetNodeProperty(parent, "Twist");
+            var twistProperty = GetProperty(parent, "Twist");
             twistProperty.MinValue = -60;
             twistProperty.MaxValue = 60;
 
             return twistProperty;
         }
-
-        private FloatPropertyPanel GetNodeProperty(UIComponent parent, string name)
+        protected FloatPropertyPanel GetStretchProperty(UIComponent parent)
         {
-            var property = ComponentPool.Get<FloatPropertyPanel>(parent, name);
-            property.Text = name;
-            property.CheckMin = true;
-            property.CheckMax = true;
-            property.UseWheel = true;
-            property.WheelStep = 1f;
-            property.Init();
+            var stretchProperty = GetProperty(parent, "Stretch");
+            stretchProperty.MinValue = 1f;
+            stretchProperty.MaxValue = 500f;
 
-            return property;
+            return stretchProperty;
         }
 
         protected FloatPropertyPanel GetSegmentOffsetProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var offsetProperty = GetSegmentProperty(parent, $"Segment #{segmentData.Id} offset");
+            var offsetProperty = GetProperty(parent, $"Segment #{segmentData.Id} offset");
             offsetProperty.MinValue = segmentData.MinOffset;
             offsetProperty.MaxValue = segmentData.MaxOffset;
 
@@ -265,7 +290,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetSegmentShiftProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var offsetProperty = GetSegmentProperty(parent, $"Segment #{segmentData.Id} shift");
+            var offsetProperty = GetProperty(parent, $"Segment #{segmentData.Id} shift");
             offsetProperty.MinValue = -32;
             offsetProperty.MaxValue = 32;
 
@@ -273,7 +298,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetSegmentRotateProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var rotateProperty = GetSegmentProperty(parent, $"Segment #{segmentData.Id} rotate");
+            var rotateProperty = GetProperty(parent, $"Segment #{segmentData.Id} rotate");
             rotateProperty.MinValue = segmentData.MinRotate;
             rotateProperty.MaxValue = segmentData.MaxRotate;
 
@@ -281,7 +306,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetSegmentSlopeProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var slopeProperty = GetSegmentProperty(parent, $"Segment #{segmentData.Id} slope");
+            var slopeProperty = GetProperty(parent, $"Segment #{segmentData.Id} slope");
             slopeProperty.MinValue = -60;
             slopeProperty.MaxValue = 60;
 
@@ -289,24 +314,21 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetSegmentTwistProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var twistProperty = GetSegmentProperty(parent, $"Segment #{segmentData.Id} twist");
+            var twistProperty = GetProperty(parent, $"Segment #{segmentData.Id} twist");
             twistProperty.MinValue = -60;
             twistProperty.MaxValue = 60;
 
             return twistProperty;
         }
-        private FloatPropertyPanel GetSegmentProperty(UIComponent parent, string name)
+        protected FloatPropertyPanel GetSegmentStretchProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var property = ComponentPool.Get<FloatPropertyPanel>(parent, name);
-            property.Text = name;
-            property.CheckMin = true;
-            property.CheckMax = true;
-            property.UseWheel = true;
-            property.WheelStep = 1f;
-            property.Init();
+            var stretchProperty = GetProperty(parent, $"Segment #{segmentData.Id} stretch");
+            stretchProperty.MinValue = 1f;
+            stretchProperty.MaxValue = 500f;
 
-            return property;
+            return stretchProperty;
         }
+
         protected BoolListPropertyPanel GetJunctionButtons(UIComponent parent)
         {
             var flatJunctionProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
@@ -350,6 +372,7 @@ namespace NodeController
         public override SupportOption SupportSlope => SupportOption.Group;
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportShift => SupportOption.Group;
+        public override SupportOption SupportStretch => SupportOption.Group;
 
         public MiddleNode(NodeData data) : base(data) { }
 
@@ -373,6 +396,12 @@ namespace NodeController
             Data.FirstMainSegmentEnd.Shift = value;
             Data.SecondMainSegmentEnd.Shift = -value;
         }
+        public override float GetStretch() => (Data.FirstMainSegmentEnd.Stretch + Data.SecondMainSegmentEnd.Stretch) / 2;
+        public override void SetStretch(float value)
+        {
+            Data.FirstMainSegmentEnd.Stretch = value;
+            Data.SecondMainSegmentEnd.Stretch = value;
+        }
     }
     public class BendNode : NodeStyle
     {
@@ -383,6 +412,7 @@ namespace NodeController
         public override SupportOption SupportOffset => SupportOption.All;
         public override SupportOption SupportRotate => SupportOption.All;
         public override SupportOption SupportShift => SupportOption.All;
+        public override SupportOption SupportStretch => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool IsMoveable => true;
 
@@ -397,6 +427,7 @@ namespace NodeController
         public override SupportOption SupportOffset => SupportOption.All;
         public override SupportOption SupportRotate => SupportOption.All;
         public override SupportOption SupportShift => SupportOption.All;
+        public override SupportOption SupportStretch => SupportOption.All;
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool IsMoveable => true;
@@ -410,6 +441,7 @@ namespace NodeController
         public override float MaxOffset => 2f;
 
         public override SupportOption SupportShift => SupportOption.Group;
+        public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
 
@@ -429,6 +461,7 @@ namespace NodeController
         public override float MaxOffset => 8f;
 
         public override SupportOption SupportShift => SupportOption.Group;
+        public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
 
@@ -448,6 +481,7 @@ namespace NodeController
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportSlope => SupportOption.Group;
         public override SupportOption SupportTwist => SupportOption.Group;
+        public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportNoMarking => SupportOption.Group;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
 
@@ -462,6 +496,7 @@ namespace NodeController
         public override SupportOption SupportOffset => SupportOption.All;
         public override SupportOption SupportShift => SupportOption.All;
         public override SupportOption SupportRotate => SupportOption.All;
+        public override SupportOption SupportStretch => SupportOption.All;
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool IsMoveable => true;

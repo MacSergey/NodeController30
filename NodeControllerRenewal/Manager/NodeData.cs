@@ -87,15 +87,6 @@ namespace NodeController
                 UpdateNode();
             }
         }
-        public float Shift
-        {
-            get => Style.GetShift();
-            set
-            {
-                Style.SetShift(value);
-                UpdateNode();
-            }
-        }
         public float RotateAngle
         {
             get => Style.GetRotate();
@@ -122,6 +113,29 @@ namespace NodeController
                 Style.SetTwist(value);
                 UpdateNode();
             }
+        }
+        public float Shift
+        {
+            get => Style.GetShift();
+            set
+            {
+                Style.SetShift(value);
+                UpdateNode();
+            }
+        }
+        public float Stretch
+        {
+            get => Style.GetStretch();
+            set
+            {
+                Style.SetStretch(value);
+                UpdateNode();
+            }
+        }
+        public float StretchPercent
+        {
+            get => Stretch * 100f;
+            set => Stretch = value / 100f;
         }
         public bool NoMarkings
         {
@@ -408,7 +422,7 @@ namespace NodeController
             {
                 var lane = info.m_lanes[i];
                 if (lane.IsDriveLane())
-                    return (isLaneInvert ? -1 : 1) * lane.m_position + (isLeft ? 0.5f : -0.5f) * lane.m_width;
+                    return (isLaneInvert ? -1 : 1) * lane.m_position * segmentEnd.Stretch + (isLeft ? 0.5f : -0.5f) * lane.m_width * segmentEnd.Stretch;
             }
 
             return 0f;

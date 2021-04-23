@@ -77,7 +77,7 @@ namespace NodeController
         {
             var nodeData = data.NodeData;
 
-            var t = Mathf.Clamp(RawT, MinT + (nodeData.IsMiddleNode || data.IsNodeLess ? 0f :DeltaT), MaxT - DeltaT);
+            var t = Mathf.Clamp(RawT, MinT + (nodeData.IsMiddleNode || data.IsNodeLess ? 0f : DeltaT), MaxT - DeltaT);
             var position = RawBezier.Position(t);
             var direction = RawBezier.Tangent(t).normalized;
 
@@ -86,7 +86,7 @@ namespace NodeController
                 var quaternion = Quaternion.AngleAxis(data.SlopeAngle, direction.MakeFlat().Turn90(true));
                 direction = quaternion * direction;
 
-                position.y += (Type == SideType.Left ? -1 : 1) * data.Info.m_halfWidth * Mathf.Sin(data.TwistAngle * Mathf.Deg2Rad);
+                position.y += (Type == SideType.Left ? -1 : 1) * data.Info.m_halfWidth * data.Stretch * Mathf.Sin(data.TwistAngle * Mathf.Deg2Rad);
             }
             else if (!data.IsSlope)
             {
