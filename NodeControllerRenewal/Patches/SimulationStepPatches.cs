@@ -36,7 +36,7 @@ namespace NodeController.Patches
         private static Quaternion GetTwist(ref Vehicle vehicleData)
         {
             if (vehicleData.GetPathPosition(out var prevPos, out var nextPos))
-                return vehicleData.GetCurrentTwist(prevPos, nextPos, vehicleData.m_lastPathOffset * (1f / 255f));
+                return vehicleData.GetCurrentTwist(prevPos, nextPos, vehicleData.m_lastPathOffset / 255f);
             else
                 return Quaternion.identity;
         }
@@ -45,22 +45,19 @@ namespace NodeController.Patches
             if (vehicleData.Info.m_leanMultiplier < 0)
                 return Quaternion.identity; // motor cycle.
 
-            ref var leadingVehicle = ref VehicleManager.instance.m_vehicles.m_buffer[vehicleData.m_leadingVehicle];
+            var leadingVehicle = VehicleManager.instance.m_vehicles.m_buffer[vehicleData.m_leadingVehicle];
             var leadningInfo = leadingVehicle.Info;
             leadingVehicle.GetPathPosition(out var prevPos, out var nextPos);
 
             var laneID = PathManager.GetLaneID(prevPos);
 
             // Calculate trailer lane offset based on how far the trailer is from the car its attached to.
-            var inverted = leadingVehicle.m_flags.IsFlagSet(Vehicle.Flags.Inverted);
-            var deltaPos = inverted ? leadningInfo.m_attachOffsetBack : leadningInfo.m_attachOffsetFront;
+            var deltaPos = leadingVehicle.m_flags.IsFlagSet(Vehicle.Flags.Inverted) ? leadningInfo.m_attachOffsetBack : leadningInfo.m_attachOffsetFront;
             var deltaOffset = deltaPos / laneID.GetLane().m_length;
-            var offset = leadingVehicle.m_lastPathOffset * (1f / 255f) - deltaOffset;
-            offset = Mathf.Clamp(offset, 0, 1);
-            if (float.IsNaN(offset))
-                return Quaternion.identity;
+            var offset = leadingVehicle.m_lastPathOffset / 255f + (prevPos.m_offset == 0 ? 1 : -1) * deltaOffset;
+            offset = Mathf.Clamp01(offset);
 
-            return vehicleData.GetCurrentTwist(prevPos, nextPos, offset);
+            return leadingVehicle.GetCurrentTwist(prevPos, nextPos, offset);
         }
 
         private static bool GetPathPosition(this ref Vehicle vehicleData, out PathUnit.Position prevPos, out PathUnit.Position nextPos)
