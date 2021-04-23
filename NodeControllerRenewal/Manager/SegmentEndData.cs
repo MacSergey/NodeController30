@@ -688,32 +688,32 @@ namespace NodeController
 
         public void FromXml(XElement config, NodeStyle style)
         {
-            if (style.SupportSlope <= SupportOption.OnceValue)
+            if (style.SupportSlope != SupportOption.None)
                 SlopeAngle = config.GetAttrValue("SA", style.DefaultSlope);
 
-            if (style.SupportTwist <= SupportOption.OnceValue)
+            if (style.SupportTwist != SupportOption.None)
                 TwistAngle = config.GetAttrValue("TA", style.DefaultTwist);
 
-            if (style.SupportShift <= SupportOption.OnceValue)
+            if (style.SupportShift != SupportOption.None)
                 Shift = config.GetAttrValue("S", style.DefaultShift);
 
-            if (style.SupportStretch <= SupportOption.OnceValue)
+            if (style.SupportStretch != SupportOption.None)
                 Stretch = config.GetAttrValue("ST", style.DefaultStretch);
 
-            if (style.SupportNoMarking <= SupportOption.OnceValue)
+            if (style.SupportNoMarking != SupportOption.None)
                 NoMarkings = config.GetAttrValue("NM", style.DefaultNoMarking ? 1 : 0) == 1;
 
-            if (style.SupportSlopeJunction <= SupportOption.OnceValue)
+            if (style.SupportSlopeJunction != SupportOption.None)
                 IsSlope = config.GetAttrValue("IS", style.DefaultSlopeJunction ? 1 : 0) == 1;
 
             KeepDefaults = config.GetAttrValue("KD", 0) == 1;
 
-            if (style.SupportOffset <= SupportOption.OnceValue)
+            if (style.SupportOffset != SupportOption.None)
                 SetOffset(config.GetAttrValue("O", DefaultOffset));
             else
                 SetOffset(config.GetAttrValue("O", 0f));
 
-            if (style.SupportRotate <= SupportOption.OnceValue)
+            if (style.SupportRotate != SupportOption.None)
                 SetRotate(config.GetAttrValue("RA", style.DefaultRotate), true);
         }
 

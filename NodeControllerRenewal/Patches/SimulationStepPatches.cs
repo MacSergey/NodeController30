@@ -13,7 +13,7 @@ namespace NodeController.Patches
 
     public static class SimulationStepPatches
     {
-        private delegate Quaternion GetDelegate(ref Vehicle vehicleData);
+        private delegate Quaternion GetDelegate(ref Vehicle vehicleData, ushort vehicleId);
 
         public static IEnumerable<CodeInstruction> SimulationStepTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original) => SimulationStepTranspilerBase(instructions, original, GetTwist);
         public static IEnumerable<CodeInstruction> SimulationStepTrailerTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original) => SimulationStepTranspilerBase(instructions, original, GetTrailerTwist);
@@ -26,6 +26,7 @@ namespace NodeController.Patches
                 if (instruction.opcode == OpCodes.Stfld && instruction.operand == rotationField)
                 {
                     yield return new CodeInstruction(original.GetLDArg("vehicleData"));
+                    yield return new CodeInstruction(original.GetLDArg("vehicleID") ?? original.GetLDArg("vehicleId"));
                     yield return new CodeInstruction(OpCodes.Call, getDelegate.Method);
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Quaternion), "op_Multiply", new Type[] { typeof(Quaternion), typeof(Quaternion) }));
                 }
@@ -35,8 +36,8 @@ namespace NodeController.Patches
 
         private static Quaternion GetTwist(ref Vehicle vehicleData)
         {
-            if (vehicleData.GetCurrentPathPos(out var pathPos))
-                return GetCurrentTwist(pathPos, vehicleData.m_lastPathOffset * (1f / 255f), ref vehicleData);
+            if (vehicleData.GetPathPosition(out var prevPos, out var nextPos))
+                return vehicleData.GetCurrentTwist(prevPos, nextPos, vehicleData.m_lastPathOffset * (1f / 255f));
             else
                 return Quaternion.identity;
         }
@@ -47,10 +48,9 @@ namespace NodeController.Patches
 
             ref var leadingVehicle = ref VehicleManager.instance.m_vehicles.m_buffer[vehicleData.m_leadingVehicle];
             var leadningInfo = leadingVehicle.Info;
-            if (!leadingVehicle.GetCurrentPathPos(out var pathPos))
-                return Quaternion.identity;
+            leadingVehicle.GetPathPosition(out var prevPos, out var nextPos);
 
-            var laneID = PathManager.GetLaneID(pathPos);
+            var laneID = PathManager.GetLaneID(prevPos);
 
             // Calculate trailer lane offset based on how far the trailer is from the car its attached to.
             var inverted = leadingVehicle.m_flags.IsFlagSet(Vehicle.Flags.Inverted);
@@ -61,41 +61,39 @@ namespace NodeController.Patches
             if (float.IsNaN(offset))
                 return Quaternion.identity;
 
-            return GetCurrentTwist(pathPos, offset, ref vehicleData);
+            return vehicleData.GetCurrentTwist(prevPos, nextPos, offset);
         }
 
-        private static bool GetCurrentPathPos(this ref Vehicle vehicleData, out PathUnit.Position pathPos)
+        private static bool GetPathPosition(this ref Vehicle vehicleData, out PathUnit.Position prevPos, out PathUnit.Position nextPos)
         {
-            var pathIndex = vehicleData.m_pathPositionIndex;
-            if (pathIndex == byte.MaxValue)
-                pathIndex = 0;
-
-            return Singleton<PathManager>.instance.m_pathUnits.m_buffer[vehicleData.m_path].GetPosition(pathIndex >> 1, out pathPos);
+            var buffer = Singleton<PathManager>.instance.m_pathUnits.m_buffer;
+            var result = true;
+            result &= buffer[vehicleData.m_path].GetPosition(vehicleData.m_pathPositionIndex >> 1, out prevPos);
+            result &= buffer[vehicleData.m_path].GetNextPosition(vehicleData.m_pathPositionIndex >> 1, out nextPos);
+            return result;
         }
-
-        private static Quaternion GetCurrentTwist(PathUnit.Position pathPos, float t, ref Vehicle vehicleData)
+        private static Quaternion GetCurrentTwist(this ref Vehicle vehicleData, PathUnit.Position prevPos, PathUnit.Position nextPos, float t)
         {
-            if (float.IsNaN(t) || float.IsInfinity(t))
-                return Quaternion.identity;
+            if (vehicleData.m_pathPositionIndex % 2 == 0)
+            {
+                SingletonManager<Manager>.Instance.GetSegmentData(prevPos.m_segment, out var start, out var end);
+                var startTwist = start?.VehicleTwist ?? 0f;
+                var endTwist = end?.VehicleTwist ?? 0f;
+                var twist = Mathf.Lerp(startTwist, -endTwist, t);
 
-            var segment = pathPos.m_segment.GetSegment();
-            if (segment.Info.m_lanes[pathPos.m_lane] is not NetInfo.Lane lane)
-                return Quaternion.identity;
+                return Quaternion.Euler(0, 0f, prevPos.m_offset == byte.MaxValue ? twist : -twist);
+            }
+            else
+            {
+                SingletonManager<Manager>.Instance.GetSegmentData(prevPos.m_segment, out var prevStart, out var prevEnd);
+                SingletonManager<Manager>.Instance.GetSegmentData(nextPos.m_segment, out var nextStart, out var nextEnd);
 
-            SingletonManager<Manager>.Instance.GetSegmentData(pathPos.m_segment, out var start, out var end);
-            var startTwist = start?.VehicleTwist ?? 0f;
-            var endTwist = end?.VehicleTwist ?? 0f;
-            var twist = Mathf.Lerp(startTwist, endTwist, t);
+                var startTwist = (prevPos.m_offset == 0 ? prevStart : prevEnd)?.VehicleTwist ?? 0f;
+                var endTwist = (nextPos.m_offset == byte.MaxValue ? nextStart : nextEnd)?.VehicleTwist ?? 0f;
+                var twist = Mathf.Lerp(-startTwist, endTwist, t);
 
-            var isInvert = segment.IsInvert();
-            var isBackward = lane.m_finalDirection == NetInfo.Direction.Backward;
-            var isReversed = vehicleData.m_flags.IsFlagSet(Vehicle.Flags.Reversed);
-            var isAvoid = lane.m_finalDirection == NetInfo.Direction.AvoidForward | lane.m_finalDirection == NetInfo.Direction.AvoidBackward;
-
-            if (isInvert ^ isBackward ^ (isReversed & !isAvoid))
-                twist = -twist;
-
-            return Quaternion.Euler(0, 0f, twist);
+                return Quaternion.Euler(0, 0f, prevPos.m_offset == byte.MaxValue ? twist : -twist);
+            }
         }
     }
 }

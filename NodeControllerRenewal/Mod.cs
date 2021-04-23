@@ -164,12 +164,10 @@ namespace NodeController
 
         private void PatchNetLane(ref bool success)
         {
-            HarmonyLib.Harmony.DEBUG = true;
             success &= Patch_NetLane_PopulateGroupData();
             success &= Patch_NetLane_RefreshInstance();
             success &= Patch_NetLane_RenderDestroyedInstance();
             success &= Patch_NetLane_RenderInstance();
-            HarmonyLib.Harmony.DEBUG = false;
         }
 
         private bool Patch_NetLane_PopulateGroupData()
