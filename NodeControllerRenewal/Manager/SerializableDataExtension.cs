@@ -225,22 +225,26 @@ namespace NodeController.Backward—ompatibility
             var config = new XElement(XmlSection);
 
             config.AddAttr(nameof(Id), Id);
-            config.AddAttr("LO", LeftCorner.Offset + LeftCorner.DeltaPos.z);
-            config.AddAttr("RO", RightCorner.Offset + RightCorner.DeltaPos.z);
             config.AddAttr("SA", SlopeAngle);
             config.AddAttr("TA", TwistAngle);
             config.AddAttr("S", (LeftCorner.DeltaPos.x - RightCorner.DeltaPos.x) / 2f);
             config.AddAttr("NM", NoMarkings ? 1 : 0);
             config.AddAttr("IS", IsSlope ? 1 : 0);
 
-            var stretch = 1 + Stretch * 0.01f;
-            var width = Id.GetSegment().Info?.m_halfWidth * 2 ?? 0;
-            if (width != 0f)
+            if (Id.GetSegment().Info is NetInfo info)
             {
+                var width = info.m_halfWidth * 2;
                 var deltaWidth = LeftCorner.DeltaPos.x + RightCorner.DeltaPos.x;
-                stretch *= (width + deltaWidth) / width;
+                var stretch = (1 + Stretch * 0.01f) * ((width + deltaWidth) / width);
+                config.AddAttr("ST", stretch);
+
+                var leftOffset = LeftCorner.Offset + LeftCorner.DeltaPos.z;
+                var rightOffset = RightCorner.Offset + RightCorner.DeltaPos.z;
+
+                config.AddAttr("O", (leftOffset + rightOffset) / 2f);
+                var tan = (leftOffset - rightOffset) / (width * stretch);
+                config.AddAttr("RA", Mathf.Atan(tan) * Mathf.Rad2Deg);
             }
-            config.AddAttr("ST", stretch);
 
             return config;
         }

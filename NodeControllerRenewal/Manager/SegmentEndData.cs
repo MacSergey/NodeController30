@@ -699,22 +699,6 @@ namespace NodeController
 
         public void FromXml(XElement config, NodeStyle style)
         {
-            var leftOffset = config.GetAttrValue("LO", -1f);
-            var rightOffset = config.GetAttrValue("RO", -1f);
-            if (leftOffset != -1f || rightOffset != -1f)
-            {
-                LeftSide.RawT = LeftSide.RawBezier.Travel(Mathf.Max(leftOffset, 0f));
-                RightSide.RawT = RightSide.RawBezier.Travel(Mathf.Max(leftOffset, 0f));
-                SetByCorners();
-            }
-            else if (style.SupportOffset != SupportOption.None)
-                SetOffset(config.GetAttrValue("O", DefaultOffset));
-            else
-                SetOffset(config.GetAttrValue("O", 0f));
-
-            if (style.SupportRotate != SupportOption.None)
-                _rotateValue = config.GetAttrValue("RA", NodeStyle.DefaultRotate);
-
             if (style.SupportSlope != SupportOption.None)
                 SlopeAngle = config.GetAttrValue("SA", NodeStyle.DefaultSlope);
 
@@ -734,6 +718,14 @@ namespace NodeController
                 IsSlope = config.GetAttrValue("IS", NodeStyle.DefaultSlopeJunction ? 1 : 0) == 1;
 
             KeepDefaults = config.GetAttrValue("KD", 0) == 1;
+
+            if (style.SupportOffset != SupportOption.None)
+                SetOffset(config.GetAttrValue("O", DefaultOffset));
+            else
+                SetOffset(config.GetAttrValue("O", 0f));
+
+            if (style.SupportRotate != SupportOption.None)
+                SetRotate(config.GetAttrValue("RA", NodeStyle.DefaultRotate), true);
         }
 
         #endregion
