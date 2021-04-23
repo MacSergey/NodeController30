@@ -67,15 +67,15 @@ namespace NodeController.Patches
         private static bool GetCurrentPathPos(this ref Vehicle vehicleData, out PathUnit.Position pathPos)
         {
             var pathIndex = vehicleData.m_pathPositionIndex;
-            //if (pathIndex == 255)
-            //    pathIndex = 0;
+            if (pathIndex == byte.MaxValue)
+                pathIndex = 0;
 
             return Singleton<PathManager>.instance.m_pathUnits.m_buffer[vehicleData.m_path].GetPosition(pathIndex >> 1, out pathPos);
         }
 
-        private static Quaternion GetCurrentTwist(PathUnit.Position pathPos, float offset, ref Vehicle vehicleData)
+        private static Quaternion GetCurrentTwist(PathUnit.Position pathPos, float t, ref Vehicle vehicleData)
         {
-            if (float.IsNaN(offset) || float.IsInfinity(offset))
+            if (float.IsNaN(t) || float.IsInfinity(t))
                 return Quaternion.identity;
 
             var segment = pathPos.m_segment.GetSegment();
@@ -85,7 +85,7 @@ namespace NodeController.Patches
             SingletonManager<Manager>.Instance.GetSegmentData(pathPos.m_segment, out var start, out var end);
             var startTwist = start?.VehicleTwist ?? 0f;
             var endTwist = end?.VehicleTwist ?? 0f;
-            var twist = startTwist * (1 - offset) - endTwist * offset;
+            var twist = Mathf.Lerp(startTwist, endTwist, t);
 
             var isInvert = segment.IsInvert();
             var isBackward = lane.m_finalDirection == NetInfo.Direction.Backward;

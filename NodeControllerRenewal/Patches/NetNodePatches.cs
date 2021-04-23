@@ -27,7 +27,7 @@ namespace NodeController.Patches
                 if (instruction.opcode == OpCodes.Ldfld && instruction.operand == positionField)
                 {
                     yield return new CodeInstruction(OpCodes.Pop);
-                    yield return new CodeInstruction(OpCodes.Ldloc_S, positionLocal);
+                    yield return new CodeInstruction(OpCodes.Ldloca_S, positionLocal);
                 }
                 else
                     yield return instruction;

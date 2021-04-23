@@ -34,15 +34,6 @@ namespace NodeController
     }
     public abstract class NodeStyle
     {
-        public static float DefaultShift => 0f;
-        public static float DefaultRotate => 0f;
-        public static float DefaultSlope => 0f;
-        public static float DefaultTwist => 0f;
-        public static bool DefaultNoMarking => false;
-        public static bool DefaultSlopeJunction => false;
-        public static float DefaultStretch => 1f;
-
-
         public abstract NodeStyleType Type { get; }
 
         public virtual float MinOffset => 0f;
@@ -58,6 +49,13 @@ namespace NodeController
         public virtual SupportOption SupportSlopeJunction => SupportOption.None;
         public virtual SupportOption SupportStretch => SupportOption.None;
 
+        public virtual float DefaultShift => 0f;
+        public virtual float DefaultRotate => 0f;
+        public virtual float DefaultSlope => 0f;
+        public virtual float DefaultTwist => 0f;
+        public virtual bool DefaultNoMarking => false;
+        public virtual bool DefaultSlopeJunction => false;
+        public virtual float DefaultStretch => 1f;
 
         public virtual bool IsMoveable => false;
 
@@ -158,7 +156,7 @@ namespace NodeController
 
         public virtual void GetUIComponents(UIComponent parent, Action refresh)
         {
-            if (SupportSlopeJunction != SupportOption.None)
+            if (SupportSlopeJunction > SupportOption.OnceValue)
                 GetJunctionButtons(parent);
 
             GetOffsetUIComponents(parent);
@@ -168,7 +166,7 @@ namespace NodeController
             GetTwistUIComponents(parent);
             GetStretchUIComponents(parent);
 
-            if (SupportNoMarking != SupportOption.None)
+            if (SupportNoMarking > SupportOption.OnceValue)
                 GetHideMarkingProperty(parent);
 
             GetResetButton(parent, refresh);
@@ -373,6 +371,9 @@ namespace NodeController
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
+        public override SupportOption SupportSlopeJunction => SupportOption.OnceValue;
+
+        public override bool DefaultSlopeJunction => true;
 
         public MiddleNode(NodeData data) : base(data) { }
 
@@ -515,8 +516,9 @@ namespace NodeController
     public enum SupportOption
     {
         None = 0,
-        Individually = 1,
-        Group = 2,
+        OnceValue = 1,
+        Individually = 2,
+        Group = 4,
         All = Individually | Group,
     }
 }

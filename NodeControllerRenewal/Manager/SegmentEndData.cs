@@ -202,31 +202,31 @@ namespace NodeController
 
         public void ResetToDefault(NodeStyle style, bool force)
         {
-            if (style.SupportSlope == SupportOption.None || force)
-                SlopeAngle = NodeStyle.DefaultSlope;
+            if (style.SupportSlope <= SupportOption.OnceValue || force)
+                SlopeAngle = style.DefaultSlope;
 
-            if (style.SupportTwist == SupportOption.None || force)
-                TwistAngle = NodeStyle.DefaultTwist;
+            if (style.SupportTwist <= SupportOption.OnceValue || force)
+                TwistAngle = style.DefaultTwist;
 
-            if (style.SupportShift == SupportOption.None || force)
-                Shift = NodeStyle.DefaultShift;
+            if (style.SupportShift <= SupportOption.OnceValue || force)
+                Shift = style.DefaultShift;
 
-            if (style.SupportStretch == SupportOption.None || force)
-                Stretch = NodeStyle.DefaultStretch;
+            if (style.SupportStretch <= SupportOption.OnceValue || force)
+                Stretch = style.DefaultStretch;
 
-            if (style.SupportNoMarking == SupportOption.None || force)
-                NoMarkings = NodeStyle.DefaultNoMarking;
+            if (style.SupportNoMarking <= SupportOption.OnceValue || force)
+                NoMarkings = style.DefaultNoMarking;
 
-            if (style.SupportSlopeJunction == SupportOption.None || force)
-                IsSlope = NodeStyle.DefaultSlopeJunction;
+            if (style.SupportSlopeJunction <= SupportOption.OnceValue || force)
+                IsSlope = style.DefaultSlopeJunction;
 
             MinPossibleOffset = !IsNodeLess ? style.MinOffset : 0f;
             MaxPossibleOffset = !IsNodeLess ? style.MaxOffset : 0f;
 
-            if (style.SupportRotate == SupportOption.None || force)
-                SetRotate(NodeStyle.DefaultRotate);
+            if (style.SupportRotate <= SupportOption.OnceValue || force)
+                SetRotate(style.DefaultRotate);
 
-            if (style.SupportOffset == SupportOption.None || force)
+            if (style.SupportOffset <= SupportOption.OnceValue || force)
                 SetOffset(DefaultOffset);
             else
                 SetOffset(Offset);
@@ -688,33 +688,33 @@ namespace NodeController
 
         public void FromXml(XElement config, NodeStyle style)
         {
-            if (style.SupportSlope != SupportOption.None)
-                SlopeAngle = config.GetAttrValue("SA", NodeStyle.DefaultSlope);
+            if (style.SupportSlope <= SupportOption.OnceValue)
+                SlopeAngle = config.GetAttrValue("SA", style.DefaultSlope);
 
-            if (style.SupportTwist != SupportOption.None)
-                TwistAngle = config.GetAttrValue("TA", NodeStyle.DefaultTwist);
+            if (style.SupportTwist <= SupportOption.OnceValue)
+                TwistAngle = config.GetAttrValue("TA", style.DefaultTwist);
 
-            if (style.SupportShift != SupportOption.None)
-                Shift = config.GetAttrValue("S", NodeStyle.DefaultShift);
+            if (style.SupportShift <= SupportOption.OnceValue)
+                Shift = config.GetAttrValue("S", style.DefaultShift);
 
-            if (style.SupportStretch != SupportOption.None)
-                Stretch = config.GetAttrValue("ST", NodeStyle.DefaultStretch);
+            if (style.SupportStretch <= SupportOption.OnceValue)
+                Stretch = config.GetAttrValue("ST", style.DefaultStretch);
 
-            if (style.SupportNoMarking != SupportOption.None)
-                NoMarkings = config.GetAttrValue("NM", NodeStyle.DefaultNoMarking ? 1 : 0) == 1;
+            if (style.SupportNoMarking <= SupportOption.OnceValue)
+                NoMarkings = config.GetAttrValue("NM", style.DefaultNoMarking ? 1 : 0) == 1;
 
-            if (style.SupportSlopeJunction != SupportOption.None)
-                IsSlope = config.GetAttrValue("IS", NodeStyle.DefaultSlopeJunction ? 1 : 0) == 1;
+            if (style.SupportSlopeJunction <= SupportOption.OnceValue)
+                IsSlope = config.GetAttrValue("IS", style.DefaultSlopeJunction ? 1 : 0) == 1;
 
             KeepDefaults = config.GetAttrValue("KD", 0) == 1;
 
-            if (style.SupportOffset != SupportOption.None)
+            if (style.SupportOffset <= SupportOption.OnceValue)
                 SetOffset(config.GetAttrValue("O", DefaultOffset));
             else
                 SetOffset(config.GetAttrValue("O", 0f));
 
-            if (style.SupportRotate != SupportOption.None)
-                SetRotate(config.GetAttrValue("RA", NodeStyle.DefaultRotate), true);
+            if (style.SupportRotate <= SupportOption.OnceValue)
+                SetRotate(config.GetAttrValue("RA", style.DefaultRotate), true);
         }
 
         #endregion

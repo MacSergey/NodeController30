@@ -51,13 +51,12 @@ namespace NodeController.Patches
         }
         public static Vector3 FixPropPosition(ref Vector3 pos0, float t, uint laneId, NetInfo.Lane laneInfo)
         {
+            var position = pos0;
             var segmentId = laneId.GetLane().m_segment;
             SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
             if (start == null && end == null)
-                return pos0;
+                return position;
 
-            var position = pos0;
-            //var backward = (laneInfo.m_finalDirection & NetInfo.Direction.Both) == NetInfo.Direction.Backward || (laneInfo.m_finalDirection & NetInfo.Direction.AvoidBoth) == NetInfo.Direction.AvoidForward;
             var reverse = segmentId.GetSegment().IsInvert();
 
             var startWidthRatio = start?.WidthRatio ?? 1f;
@@ -69,10 +68,9 @@ namespace NodeController.Patches
             var heightRatio = Mathf.Lerp(startHeightRatio, endHeightRatio, t);
 
             position.x *= widthRatio;
-            position.y += (reverse ? 1 : -1) * DeltaY * position.x * heightRatio;
+            position.y += (reverse ? 1 : -1) * position.x * heightRatio;
 
             return position;
         }
-        private static float DeltaY = 1f;
     }
 }
