@@ -81,19 +81,12 @@ namespace NodeController
             var position = RawBezier.Position(t);
             var direction = RawBezier.Tangent(t).normalized;
 
-            if (nodeData.IsMiddleNode || nodeData.IsEndNode)
-            {
-                var quaternion = Quaternion.AngleAxis(data.SlopeAngle, direction.MakeFlat().Turn90(true));
-                direction = quaternion * direction;
-
-                position.y += (Type == SideType.Left ? -1 : 1) * data.Info.m_halfWidth * data.Stretch * Mathf.Sin(data.TwistAngle * Mathf.Deg2Rad);
-            }
-            else if (!data.IsSlope)
+            if(!data.IsSlope)
             {
                 position.y = data.Node.m_position.y;
                 direction = direction.MakeFlatNormalized();
             }
-            else if (!isMain)
+            else if(!isMain)
             {
                 GetClosest(nodeData, position, out var closestPos, out var closestDir);
                 position.y = closestPos.y;
@@ -104,9 +97,27 @@ namespace NodeController
                 var intersectPos = closestPos + intersect.FirstT * closestDir;
                 direction = (position - intersectPos).normalized;
             }
+            else
+            {
+                if(nodeData.Style.SupportSlope != SupportOption.None)
+                {
+                    var quaternion = Quaternion.AngleAxis(data.SlopeAngle, direction.MakeFlat().Turn90(true));
+                    direction = quaternion * direction;
+                }
+                if (nodeData.Style.SupportTwist != SupportOption.None)
+                {
+                    var ratio = Mathf.Sin(data.TwistAngle * Mathf.Deg2Rad);
+                    if (nodeData.Style.SupportStretch != SupportOption.None)
+                        ratio *= data.Stretch;
+
+                    position.y += (Type == SideType.Left ? -1 : 1) * data.Info.m_halfWidth * ratio;
+                }           
+            }
 
             Position = position;
             Direction = VectorUtils.NormalizeXZ(direction);
+            if (nodeData.IsEndNode)
+                Direction *= data.Stretch;
         }
         private void GetClosest(NodeData nodeData, Vector3 position, out Vector3 closestPos, out Vector3 closestDir)
         {

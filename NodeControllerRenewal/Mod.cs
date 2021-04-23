@@ -164,19 +164,29 @@ namespace NodeController
 
         private void PatchNetLane(ref bool success)
         {
+            HarmonyLib.Harmony.DEBUG = true;
             success &= Patch_NetLane_PopulateGroupData();
             success &= Patch_NetLane_RefreshInstance();
             success &= Patch_NetLane_RenderDestroyedInstance();
             success &= Patch_NetLane_RenderInstance();
+            HarmonyLib.Harmony.DEBUG = false;
         }
 
-        private bool Patch_NetLane_PopulateGroupData() => Patch_NetLane(nameof(NetLane.PopulateGroupData));
-        private bool Patch_NetLane_RefreshInstance() => Patch_NetLane(nameof(NetLane.RefreshInstance));
-        private bool Patch_NetLane_RenderDestroyedInstance() => Patch_NetLane(nameof(NetLane.RenderDestroyedInstance));
-        private bool Patch_NetLane_RenderInstance() => Patch_NetLane(nameof(NetLane.RenderInstance));
-        private bool Patch_NetLane(string methodName)
+        private bool Patch_NetLane_PopulateGroupData()
         {
-            return AddTranspiler(typeof(NetLanePatches), nameof(NetLanePatches.NetLaneTranspiler), typeof(NetLane), methodName);
+            return AddTranspiler(typeof(NetLanePatches), nameof(NetLanePatches.NetLanePopulateGroupDataTranspiler), typeof(NetLane), nameof(NetLane.PopulateGroupData));
+        }
+        private bool Patch_NetLane_RefreshInstance()
+        {
+            return AddTranspiler(typeof(NetLanePatches), nameof(NetLanePatches.NetLaneRefreshInstanceTranspiler), typeof(NetLane), nameof(NetLane.RefreshInstance));
+        }
+        private bool Patch_NetLane_RenderInstance()
+        {
+            return AddTranspiler(typeof(NetLanePatches), nameof(NetLanePatches.NetLaneRenderInstanceTranspiler), typeof(NetLane), nameof(NetLane.RenderInstance));
+        }
+        private bool Patch_NetLane_RenderDestroyedInstance()
+        {
+            return AddTranspiler(typeof(NetLanePatches), nameof(NetLanePatches.NetLaneRenderDestroyedInstanceTranspiler), typeof(NetLane), nameof(NetLane.RenderDestroyedInstance));
         }
 
         #endregion

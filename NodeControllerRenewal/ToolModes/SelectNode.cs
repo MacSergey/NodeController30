@@ -65,12 +65,13 @@ namespace NodeController
         {
             if (IsHoverSegment)
             {
-                var segment = HoverSegment.Id.GetSegment();
                 SegmentEndData.CalculateSegmentBeziers(HoverSegment.Id, out var bezier, out _, out _);
                 bezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out var position);
                 var direction = bezier.Tangent(t).MakeFlatNormalized();
 
-                var overlayData = new OverlayData(cameraInfo) { Width = segment.Info.m_halfWidth * 2, Color = PossibleInsertNode(position) ? Colors.Green : Colors.Red, AlphaBlend = false, Cut = true };
+                var halfWidth =SingletonManager<Manager>.Instance.GetSegmentWidth(HoverSegment.Id, t);
+
+                var overlayData = new OverlayData(cameraInfo) { Width = halfWidth * 2, Color = PossibleInsertNode(position) ? Colors.Green : Colors.Red, AlphaBlend = false, Cut = true };
 
                 var middle = new Bezier3()
                 {
@@ -85,8 +86,8 @@ namespace NodeController
                 overlayData.Cut = false;
 
                 var normal = direction.MakeFlatNormalized().Turn90(true);
-                RenderBorder(overlayData, position + direction, normal, segment.Info.m_halfWidth);
-                RenderBorder(overlayData, position - direction, normal, segment.Info.m_halfWidth);
+                RenderBorder(overlayData, position + direction, normal, halfWidth);
+                RenderBorder(overlayData, position - direction, normal, halfWidth);
             }
             else
                 base.RenderOverlay(cameraInfo);

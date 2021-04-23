@@ -177,8 +177,8 @@ namespace NodeController
         protected void GetOffsetUIComponents(UIComponent parent) => GetUIComponents(parent, SupportOffset, GetOffsetProperty, GetSegmentOffsetProperty, (data) => data.Offset, (data, value) => data.Offset = value);
         protected void GetShiftUIComponents(UIComponent parent) => GetUIComponents(parent, SupportShift, GetShiftProperty, GetSegmentShiftProperty, (data) => data.Shift, (data, value) => data.Shift = value);
         protected void GetRotateUIComponents(UIComponent parent) => GetUIComponents(parent, SupportRotate, GetRotateProperty, GetSegmentRotateProperty, (data) => data.RotateAngle, (data, value) => data.RotateAngle = value);
-        protected void GetSlopeUIComponents(UIComponent parent) => GetUIComponents(parent, SupportSlope, GetSlopeProperty, null, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value);
-        protected void GetTwistUIComponents(UIComponent parent) => GetUIComponents(parent, SupportTwist, GetTwistProperty, null, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value);
+        protected void GetSlopeUIComponents(UIComponent parent) => GetUIComponents(parent, SupportSlope, GetSlopeProperty, GetSegmentSlopeProperty, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value);
+        protected void GetTwistUIComponents(UIComponent parent) => GetUIComponents(parent, SupportTwist, GetTwistProperty, GetSegmentTwistProperty, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value);
         protected void GetStretchUIComponents(UIComponent parent) => GetUIComponents(parent, SupportStretch, GetStretchProperty, GetSegmentStretchProperty, (data) => data.StretchPercent, (data, value) => data.StretchPercent = value);
         protected void GetUIComponents(UIComponent parent, SupportOption option, Func<UIComponent, FloatPropertyPanel> getNodeProperty, Func<UIComponent, SegmentEndData, FloatPropertyPanel> getSegmentProperty, Func<INetworkData, float> getValue, Action<INetworkData, float> setValue)
         {
@@ -411,12 +411,20 @@ namespace NodeController
 
         public override SupportOption SupportOffset => SupportOption.All;
         public override SupportOption SupportRotate => SupportOption.All;
+        public override SupportOption SupportTwist => SupportOption.All;
         public override SupportOption SupportShift => SupportOption.All;
         public override SupportOption SupportStretch => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool IsMoveable => true;
 
         public BendNode(NodeData data) : base(data) { }
+
+        public override float GetTwist() => (Data.FirstMainSegmentEnd.TwistAngle - Data.SecondMainSegmentEnd.TwistAngle) / 2;
+        public override void SetTwist(float value)
+        {
+            Data.FirstMainSegmentEnd.TwistAngle = value;
+            Data.SecondMainSegmentEnd.TwistAngle = -value;
+        }
     }
     public class StretchNode : NodeStyle
     {

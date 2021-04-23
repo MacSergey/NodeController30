@@ -233,7 +233,10 @@ namespace NodeController.Backward—ompatibility
 
             var leftOffset = LeftCorner.Offset + LeftCorner.DeltaPos.z;
             var rightOffset = RightCorner.Offset + RightCorner.DeltaPos.z;
-            config.AddAttr("O", (leftOffset + rightOffset) / 2f);
+            if (leftOffset != 0f || rightOffset != 0f)
+                config.AddAttr("O", (leftOffset + rightOffset) / 2f);
+            else
+                config.AddAttr("KD", 1);
 
             if (Id.GetSegment().Info is NetInfo info)
             {

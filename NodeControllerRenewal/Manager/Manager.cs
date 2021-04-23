@@ -1,3 +1,4 @@
+using HarmonyLib;
 using ModsCommon;
 using ModsCommon.Utilities;
 using NodeController.Utilities;
@@ -5,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using UnityEngine;
 
 namespace NodeController
 {
@@ -60,6 +62,29 @@ namespace NodeController
             start = Buffer[segment.m_startNode]?[segmentId];
             end = Buffer[segment.m_endNode]?[segmentId];
         }
+        public void GetSegmentWidth(ushort segmentId, float position, out float startWidth, out float endWidth)
+        {
+            GetSegmentData(segmentId, out var start, out var end);
+
+            startWidth = position * (start?.WidthRatio ?? 1f);
+            endWidth = position * (end?.WidthRatio ?? 1f);
+        }
+        public void GetSegmentWidth(ushort segmentId, out float startWidth, out float endWidth)
+        {
+            var segment = segmentId.GetSegment();
+            GetSegmentWidth(segmentId, segment.Info.m_halfWidth, out startWidth, out endWidth);
+        }
+        public float GetSegmentWidth(ushort segmentId, float t)
+        {
+            GetSegmentWidth(segmentId, out var start, out var end);
+            return Mathf.Lerp(start, end, t);
+        }
+        public float GetSegmentWidth(ushort segmentId, float position, float t)
+        {
+            GetSegmentWidth(segmentId, position, out var start, out var end);
+            return Mathf.Lerp(start, end, t);
+        }
+
         public bool ContainsNode(ushort nodeId) => Buffer[nodeId] != null;
         public bool ContainsSegment(ushort segmentId)
         {
@@ -85,18 +110,18 @@ namespace NodeController
                     UpdateNow(nodeIds, segmentIds, false);
             }
         }
-        private void AddToUpdate(List<ushort> nodeIds, List<ushort> segmentIds)
+        private void AddToUpdate(HashSet<ushort> nodeIds, HashSet<ushort> segmentIds)
         {
             foreach (var nodeId in nodeIds)
-                NetManager.instance.UpdateNode(nodeId, 0, 2);
+                NetManager.instance.UpdateOnceNode(nodeId);
             foreach (var segmentId in segmentIds)
-                NetManager.instance.UpdateSegment(segmentId);
+                NetManager.instance.UpdateOnceSegment(segmentId);
         }
 
-        private void GetUpdateList(ushort nodeId, bool includeNearby, out List<ushort> nodeIds, out List<ushort> segmentIds)
+        private void GetUpdateList(ushort nodeId, bool includeNearby, out HashSet<ushort> nodeIds, out HashSet<ushort> segmentIds)
         {
-            nodeIds = new List<ushort>();
-            segmentIds = new List<ushort>();
+            nodeIds = new HashSet<ushort>();
+            segmentIds = new HashSet<ushort>();
 
             if (Buffer[nodeId] == null)
                 return;
@@ -115,15 +140,24 @@ namespace NodeController
             }
         }
 
-
         public static void SimulationStep()
         {
-            var nodeIds = NetManager.instance.GetUpdateNodes().Where(n => SingletonManager<Manager>.Instance.Buffer[n] != null).ToList();
-            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => SingletonManager<Manager>.Instance.ContainsSegment(s)).ToList();
+            var nodeIds = new HashSet<ushort>();
+            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => SingletonManager<Manager>.Instance.ContainsSegment(s)).ToHashSet();
+
+            foreach (var segmentId in segmentIds)
+            {
+                var segment = segmentId.GetSegment();
+
+                if (SingletonManager<Manager>.Instance.Buffer[segment.m_startNode] != null)
+                    nodeIds.Add(segment.m_startNode);
+                if (SingletonManager<Manager>.Instance.Buffer[segment.m_endNode] != null)
+                    nodeIds.Add(segment.m_endNode);
+            }
 
             UpdateNow(nodeIds, segmentIds, true);
         }
-        private static void UpdateNow(List<ushort> nodeIds, List<ushort> segmentIds, bool flags)
+        private static void UpdateNow(HashSet<ushort> nodeIds, HashSet<ushort> segmentIds, bool flags)
         {
             foreach (var nodeId in nodeIds)
                 SingletonManager<Manager>.Instance.Buffer[nodeId].Update(flags);

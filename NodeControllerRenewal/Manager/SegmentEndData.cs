@@ -136,6 +136,9 @@ namespace NodeController
         private bool KeepDefaults { get; set; }
 
 
+        public float WidthRatio => Stretch * (IsSlope ? Mathf.Cos(TwistAngle * Mathf.Deg2Rad) : 1f);
+        public float HeightRatio => IsSlope ? Mathf.Sin(TwistAngle * Mathf.Deg2Rad) : 0f;
+
         public bool IsStartBorderOffset => Offset == MinOffset;
         public bool IsEndBorderOffset => Offset == MaxOffset;
         public bool IsBorderRotate => RotateAngle == MinRotate || RotateAngle == MaxRotate;
@@ -284,7 +287,8 @@ namespace NodeController
 
             var startNormal = Vector3.Cross(startDir, Vector3.up).normalized;
             var endNormal = Vector3.Cross(endDir, Vector3.up).normalized;
-            GetSegmentHalfWidth(segmentId, out var startHalfWidth, out var endHalfWidth);
+
+            SingletonManager<Manager>.Instance.GetSegmentWidth(segmentId, out var startHalfWidth, out var endHalfWidth);
 
             leftSide = new BezierTrajectory(startPos + startNormal * startHalfWidth, startDir, endPos - endNormal * endHalfWidth, endDir);
             rightSide = new BezierTrajectory(startPos - startNormal * startHalfWidth, startDir, endPos + endNormal * endHalfWidth, endDir);
@@ -326,21 +330,6 @@ namespace NodeController
             }
             else
                 endPos += dir.Turn90(true).normalized * endShift;
-        }
-        private static void GetSegmentHalfWidth(ushort segmentId, out float startWidth, out float endWidth)
-        {
-            var segment = segmentId.GetSegment();
-
-            SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
-
-            var startTwist = start?.TwistAngle ?? NodeStyle.DefaultTwist;
-            var endTwist = end?.TwistAngle ?? NodeStyle.DefaultTwist;
-
-            var startStretch = start?.Stretch ?? NodeStyle.DefaultStretch;
-            var endStretch = end?.Stretch ?? NodeStyle.DefaultStretch;
-
-            startWidth = segment.Info.m_halfWidth * startStretch * Mathf.Cos(startTwist * Mathf.Deg2Rad);
-            endWidth = segment.Info.m_halfWidth * endStretch * Mathf.Cos(endTwist * Mathf.Deg2Rad);
         }
 
         #endregion
@@ -619,8 +608,8 @@ namespace NodeController
             Render—ontour(contourData);
             if (data.IsMoveableEnds && IsMoveable)
             {
-                RenderEnd(contourData, (LeftSide.Position - Position).magnitude + CircleRadius, 0f);
-                RenderEnd(contourData, 0f, (RightSide.Position - Position).magnitude + CircleRadius);
+                RenderEnd(contourData, VectorUtils.LengthXZ(LeftSide.Position - Position) + CircleRadius, 0f);
+                RenderEnd(contourData, 0f, VectorUtils.LengthXZ(RightSide.Position - Position) + CircleRadius);
                 RenderOutterCircle(outterData);
                 RenderInnerCircle(innerData);
                 if (leftData != null)
@@ -633,11 +622,8 @@ namespace NodeController
         }
         public void RenderAlign(OverlayData contourData, OverlayData? leftData = null, OverlayData? rightData = null)
         {
-            var leftCut = leftData != null ? CenterDotRadius : 0f;
-            var rightCut = rightData != null ? CenterDotRadius : 0f;
-
             Render—ontour(contourData);
-            RenderEnd(contourData, leftCut, rightCut);
+            RenderEnd(contourData);
 
             if (leftData != null)
                 LeftSide.RenderCircle(leftData.Value);
@@ -653,8 +639,11 @@ namespace NodeController
         public void RenderEnd(OverlayData data, float? leftCut = null, float? rightCut = null)
         {
             var line = new StraightTrajectory(LeftSide.Position, RightSide.Position);
-            var startT = (leftCut ?? 0f) / line.Length;
-            var endT = (rightCut ?? 0f) / line.Length;
+            var length = VectorUtils.LengthXZ(line.StartPosition - line.EndPosition);
+            var height = Mathf.Abs(line.StartPosition.y - line.EndPosition.y);
+            var angle = Mathf.Atan(height / length);
+            var startT = (leftCut ?? 0f) / Mathf.Cos(angle) / line.Length;
+            var endT = (rightCut ?? 0f) / Mathf.Cos(angle) / line.Length;
             line = line.Cut(startT, 1 - endT);
             line.Render(data);
         }

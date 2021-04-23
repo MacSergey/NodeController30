@@ -67,8 +67,8 @@ namespace NodeController.Patches
         private static bool GetCurrentPathPos(this ref Vehicle vehicleData, out PathUnit.Position pathPos)
         {
             var pathIndex = vehicleData.m_pathPositionIndex;
-            if (pathIndex == 255)
-                pathIndex = 0;
+            //if (pathIndex == 255)
+            //    pathIndex = 0;
 
             return Singleton<PathManager>.instance.m_pathUnits.m_buffer[vehicleData.m_path].GetPosition(pathIndex >> 1, out pathPos);
         }

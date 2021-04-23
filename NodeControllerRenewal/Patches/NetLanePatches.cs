@@ -12,50 +12,67 @@ namespace NodeController.Patches
 {
     public static class NetLanePatches
     {
-        public static IEnumerable<CodeInstruction> NetLaneTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
+        public static IEnumerable<CodeInstruction> NetLanePopulateGroupDataTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original) => NetLaneTranspilerBase(generator, instructions, original, 6);
+        public static IEnumerable<CodeInstruction> NetLaneRefreshInstanceTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original) => NetLaneTranspilerBase(generator, instructions, original, 5);
+        public static IEnumerable<CodeInstruction> NetLaneRenderInstanceTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original) => NetLaneTranspilerBase(generator, instructions, original, 12);
+        public static IEnumerable<CodeInstruction> NetLaneRenderDestroyedInstanceTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original) => NetLaneTranspilerBase(generator, instructions, original, 6);
+
+        public static IEnumerable<CodeInstruction> NetLaneTranspilerBase(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original, int propLocal)
         {
             var bezierPosition = AccessTools.Method(typeof(Bezier3), nameof(Bezier3.Position), new Type[] { typeof(float) });
             var propPosition = AccessTools.Field(typeof(NetLaneProps.Prop), nameof(NetLaneProps.Prop.m_position));
 
-            var tInstruction = default(CodeInstruction);
+            var prevPrev = default(CodeInstruction);
             var prev = default(CodeInstruction);
+            var positionLocal = default(LocalBuilder);
             foreach (var instruction in instructions)
             {
                 yield return instruction;
-
-                if (instruction.opcode == OpCodes.Call && instruction.operand == bezierPosition)
-                    tInstruction = prev;
-                else if (tInstruction != null && instruction.opcode == OpCodes.Ldflda && instruction.operand == propPosition)
+                if (prev != null && prev.opcode == OpCodes.Call && prev.operand == bezierPosition)
                 {
-                    yield return tInstruction;
+                    positionLocal = generator.DeclareLocal(typeof(Vector3));
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, propLocal);
+                    yield return new CodeInstruction(OpCodes.Ldflda, propPosition);
+                    yield return prevPrev;
                     yield return original.GetLDArg("laneID");
                     yield return original.GetLDArg("laneInfo");
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetLanePatches), nameof(NetLanePatches.FixPropPosition)));
+                    yield return new CodeInstruction(OpCodes.Stloc_S, positionLocal);
+                }
+                else if (positionLocal != null && instruction.opcode == OpCodes.Ldflda && instruction.operand == propPosition)
+                {
+                    yield return new CodeInstruction(OpCodes.Pop);
+                    yield return new CodeInstruction(OpCodes.Ldloca_S, positionLocal);
                 }
 
+                prevPrev = prev;
                 prev = instruction;
             }
         }
         public static Vector3 FixPropPosition(ref Vector3 pos0, float t, uint laneId, NetInfo.Lane laneInfo)
         {
-            var position = pos0;
             var segmentId = laneId.GetLane().m_segment;
-            var backward = (laneInfo.m_finalDirection & NetInfo.Direction.Both) == NetInfo.Direction.Backward || (laneInfo.m_finalDirection & NetInfo.Direction.AvoidBoth) == NetInfo.Direction.AvoidForward;
-            bool reverse = backward ^ segmentId.GetSegment().IsInvert();
-
             SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
+            if (start == null && end == null)
+                return pos0;
 
-            var twistStart = start?.TwistAngle ?? NodeStyle.DefaultTwist;
-            var twistEnd = end?.TwistAngle ?? NodeStyle.DefaultTwist;
-            var twist = Mathf.Lerp(twistStart, twistEnd, t) * Mathf.Deg2Rad;
+            var position = pos0;
+            //var backward = (laneInfo.m_finalDirection & NetInfo.Direction.Both) == NetInfo.Direction.Backward || (laneInfo.m_finalDirection & NetInfo.Direction.AvoidBoth) == NetInfo.Direction.AvoidForward;
+            var reverse = segmentId.GetSegment().IsInvert();
 
-            var stretchStart = start?.Stretch ?? NodeStyle.DefaultStretch;
-            var stretchEnd = end?.Stretch ?? NodeStyle.DefaultStretch;
-            var stretch = Mathf.Lerp(stretchStart, stretchEnd, t);
+            var startWidthRatio = start?.WidthRatio ?? 1f;
+            var endWidthRatio = end?.WidthRatio ?? 1f;
+            var widthRatio = Mathf.Lerp(startWidthRatio, endWidthRatio, t);
 
-            position.y += (reverse ? 1 : -1) * position.x * stretch * Mathf.Sin(twist);
-            position.x *= stretch * Mathf.Cos(twist);
+            var startHeightRatio = start?.HeightRatio ?? 0f;
+            var endHeightRatio = end?.HeightRatio ?? 0f;
+            var heightRatio = Mathf.Lerp(startHeightRatio, endHeightRatio, t);
+
+            position.x *= widthRatio;
+            position.y += (reverse ? 1 : -1) * DeltaY * position.x * heightRatio;
+
             return position;
         }
+        private static float DeltaY = 1f;
     }
 }
