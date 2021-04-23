@@ -233,6 +233,15 @@ namespace NodeController.BackwardÑompatibility
             config.AddAttr("NM", NoMarkings ? 1 : 0);
             config.AddAttr("IS", IsSlope ? 1 : 0);
 
+            var stretch = 1 + Stretch * 0.01f;
+            var width = Id.GetSegment().Info?.m_halfWidth * 2 ?? 0;
+            if (width != 0f)
+            {
+                var deltaWidth = LeftCorner.DeltaPos.x + RightCorner.DeltaPos.x;
+                stretch *= (width + deltaWidth) / width;
+            }
+            config.AddAttr("ST", stretch);
+
             return config;
         }
         public override string ToString() => $"Segment #{Id}; Node #{NodeId}";
