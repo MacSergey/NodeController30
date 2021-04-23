@@ -13,7 +13,7 @@ namespace NodeController.Patches
 
     public static class SimulationStepPatches
     {
-        private delegate Quaternion GetDelegate(ref Vehicle vehicleData, ushort vehicleId);
+        private delegate Quaternion GetDelegate(ref Vehicle vehicleData);
 
         public static IEnumerable<CodeInstruction> SimulationStepTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original) => SimulationStepTranspilerBase(instructions, original, GetTwist);
         public static IEnumerable<CodeInstruction> SimulationStepTrailerTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original) => SimulationStepTranspilerBase(instructions, original, GetTrailerTwist);
