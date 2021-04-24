@@ -21,6 +21,7 @@ namespace NodeController
             var node = nodeId.GetNode();
             return node.m_flags.CheckFlags(0, NetNode.Flags.Middle) || node.m_flags.CheckFlags(0, NetNode.Flags.Moveable);
         }
+        protected override bool CheckSegment(ushort segmentId) => segmentId.GetSegment().m_flags.CheckFlags(0, NetSegment.Flags.Untouchable) && base.CheckSegment(segmentId);
 
         public override void OnPrimaryMouseClicked(Event e)
         {
