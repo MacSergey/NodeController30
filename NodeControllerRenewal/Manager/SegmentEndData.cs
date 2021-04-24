@@ -33,9 +33,9 @@ namespace NodeController
         public ushort NodeId { get; set; }
         public ushort Id { get; set; }
 
-        public NetSegment Segment => Id.GetSegment();
+        public ref NetSegment Segment => ref Id.GetSegment();
         public NetInfo Info => Segment.Info;
-        public NetNode Node => NodeId.GetNode();
+        public ref NetNode Node => ref NodeId.GetNode();
         public NodeData NodeData => SingletonManager<Manager>.Instance[NodeId];
         public bool IsStartNode => Segment.IsStartNode(NodeId);
         public SegmentEndData Other => SingletonManager<Manager>.Instance[Segment.GetOtherNode(NodeId), Id, true];
@@ -300,7 +300,7 @@ namespace NodeController
         }
         private static void GetSegmentPosAndDir(ushort segmentId, out Vector3 startPos, out Vector3 startDir, out Vector3 endPos, out Vector3 endDir)
         {
-            var segment = segmentId.GetSegment();
+            ref var segment = ref segmentId.GetSegment();
             startPos = segment.m_startNode.GetNode().m_position;
             startDir = segment.m_startDirection;
             endPos = segment.m_endNode.GetNode().m_position;
@@ -608,7 +608,7 @@ namespace NodeController
         }
         public static void GetSegmentWidth(ushort segmentId, out float startWidth, out float endWidth)
         {
-            var segment = segmentId.GetSegment();
+            ref var segment = ref segmentId.GetSegment();
             GetSegmentWidth(segmentId, segment.Info.m_halfWidth, out startWidth, out endWidth);
         }
         public static float GetSegmentWidth(ushort segmentId, float t)

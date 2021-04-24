@@ -18,7 +18,7 @@ namespace NodeController
             if (!Settings.SnapToggle)
                 return true;
 
-            var node = nodeId.GetNode();
+            ref var node = ref nodeId.GetNode();
             return node.m_flags.CheckFlags(0, NetNode.Flags.Middle) || node.m_flags.CheckFlags(0, NetNode.Flags.Moveable);
         }
         protected override bool CheckSegment(ushort segmentId) => segmentId.GetSegment().m_flags.CheckFlags(0, NetSegment.Flags.Untouchable) && base.CheckSegment(segmentId);
@@ -50,7 +50,7 @@ namespace NodeController
 
             foreach (var data in HoverSegment.Datas)
             {
-                var node = data.Id.GetNode();
+                ref var node = ref data.Id.GetNode();
                 if (Settings.SnapToggle && node.m_flags.CheckFlags(NetNode.Flags.Moveable, NetNode.Flags.End))
                     continue;
 

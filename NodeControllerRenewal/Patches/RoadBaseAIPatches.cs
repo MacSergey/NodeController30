@@ -9,7 +9,7 @@ namespace NodeController.Patches
     {
         public static void UpdateLanesPostfix(ushort segmentID)
         {
-            var segment = segmentID.GetSegment();
+            ref var segment = ref segmentID.GetSegment();
             if (!segment.IsValid())
                 return;
 
@@ -19,14 +19,13 @@ namespace NodeController.Patches
 
                 foreach (var lineId in laneIds)
                 {
-                    var lane = lineId.GetLane();
-                    if (((NetLane.Flags)lane.m_flags & NetLane.Flags.LeftForwardRight) != NetLane.Flags.Forward)
+                    if (((NetLane.Flags)lineId.GetLane().m_flags & NetLane.Flags.LeftForwardRight) != NetLane.Flags.Forward)
                         return;
                 }
 
                 foreach (var lineId in laneIds)
                 {
-                    var lane = lineId.GetLaneRef();
+                    var lane = lineId.GetLane();
                     lane.m_flags = (ushort)(((NetLane.Flags)lane.m_flags) & ~NetLane.Flags.LeftForwardRight);
                 }
             }

@@ -19,7 +19,7 @@ namespace NodeController
             if (NetTool.CreateNode(controlPoint.m_segment.GetSegment().Info, controlPoint, controlPoint, controlPoint, NetTool.m_nodePositionsSimulation, 0, false, false, true, false, false, false, 0, out var nodeId, out _, out _, out _) != ToolBase.ToolErrors.None)
                 return null;
             else
-                nodeId.GetNodeRef().m_flags |= NetNode.Flags.Middle | NetNode.Flags.Moveable;
+                nodeId.GetNode().m_flags |= NetNode.Flags.Middle | NetNode.Flags.Moveable;
 
             var info = controlPoint.m_segment.GetSegment().Info;
             var data = (nodeType == NodeStyleType.Crossing && info.m_netAI is RoadBaseAI && info.PedestrianLanes() >= 2) ? Create(nodeId, nodeType: nodeType) : Create(nodeId);
@@ -58,7 +58,7 @@ namespace NodeController
         }
         public void GetSegmentData(ushort segmentId, out SegmentEndData start, out SegmentEndData end)
         {
-            var segment = segmentId.GetSegment();
+            ref var segment = ref segmentId.GetSegment();
             start = Buffer[segment.m_startNode]?[segmentId];
             end = Buffer[segment.m_endNode]?[segmentId];
         }
@@ -88,12 +88,12 @@ namespace NodeController
         public bool ContainsNode(ushort nodeId) => Buffer[nodeId] != null;
         public bool ContainsSegment(ushort segmentId)
         {
-            var segment = segmentId.GetSegment();
+            ref var segment = ref segmentId.GetSegment();
             return Buffer[segment.m_startNode] != null || Buffer[segment.m_endNode] != null;
         }
         public SegmentEndData GetSegmentData(ushort id, bool isStart)
         {
-            var segment = id.GetSegment();
+            ref var segment = ref id.GetSegment();
             return Buffer[segment.GetNode(isStart)]?[id];
         }
 
@@ -147,7 +147,7 @@ namespace NodeController
 
             foreach (var segmentId in segmentIds)
             {
-                var segment = segmentId.GetSegment();
+                ref var segment = ref segmentId.GetSegment();
 
                 if (SingletonManager<Manager>.Instance.Buffer[segment.m_startNode] != null)
                     nodeIds.Add(segment.m_startNode);

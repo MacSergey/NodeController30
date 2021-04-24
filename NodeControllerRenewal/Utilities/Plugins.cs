@@ -175,7 +175,8 @@ namespace NodeController.Utilities
 
         public static float GetMinCornerOffset(ushort segmentID, ushort nodeID)
         {
-            NetInfo info = nodeID.GetNode().Info;
+            var info = nodeID.GetNode().Info;
+
             if (CSUREnabled && info.m_netAI is RoadBaseAI && info.name.Contains("CSUR"))
                 return GetMinCornerOffset(info.m_minCornerOffset, nodeID);
             else

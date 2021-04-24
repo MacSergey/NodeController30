@@ -25,7 +25,7 @@ namespace NodeController
         public string XmlSection => XmlName;
 
         public ushort Id { get; set; }
-        public NetNode Node => Id.GetNode();
+        public ref NetNode Node => ref Id.GetNode();
         public NetInfo Info => Node.Info;
         public NodeStyle Style { get; private set; }
         public NodeStyleType Type
@@ -230,7 +230,7 @@ namespace NodeController
         }
         private void UpdateFlags()
         {
-            ref var node = ref Id.GetNodeRef();
+            ref var node = ref Id.GetNode();
 
             if (node.m_flags == NetNode.Flags.None || node.m_flags.IsFlagSet(NetNode.Flags.Outside))
                 return;

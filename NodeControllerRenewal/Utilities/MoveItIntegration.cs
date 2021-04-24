@@ -32,7 +32,7 @@ namespace NodeController.Utilities
                 return;
 
             //need while moveit dont fixed
-            ref var node = ref targetInstanceID.NetNode.GetNodeRef();
+            ref var node = ref targetInstanceID.NetNode.GetNode();
             node.CalculateNode(targetInstanceID.NetNode);
 
             if (SingletonManager<Manager>.Instance[targetInstanceID.NetNode, true] is NodeData data)
