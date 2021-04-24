@@ -292,15 +292,15 @@ namespace NodeController
 
             if (!IsMiddleNode && !IsEndNode && FirstMainSegmentEnd is SegmentEndData first && SecondMainSegmentEnd is SegmentEndData second)
             {
-                MainBezier = new BezierTrajectory(first.Position, -NormalizeXZ(first.Direction), second.Position, -NormalizeXZ(second.Direction));
+                MainBezier = new BezierTrajectory(first.Position, -first.Direction, second.Position, -second.Direction, false);
 
                 first.GetCorner(true, out var firstLeftPos, out var firstLeftDir);
                 second.GetCorner(false, out var secondRightPos, out var secondRightDir);
-                LeftMainBezier = new BezierTrajectory(firstLeftPos, -firstLeftDir, secondRightPos, -secondRightDir);
+                LeftMainBezier = new BezierTrajectory(firstLeftPos, -firstLeftDir, secondRightPos, -secondRightDir, false);
 
                 first.GetCorner(false, out var firstRightPos, out var firstRightDir);
                 second.GetCorner(true, out var secondLeftPos, out var secondLeftDir);
-                RightMainBezier = new BezierTrajectory(firstRightPos, -firstRightDir, secondLeftPos, -secondLeftDir);
+                RightMainBezier = new BezierTrajectory(firstRightPos, -firstRightDir, secondLeftPos, -secondLeftDir, false);
             }
 
             foreach (var segmentEnd in SegmentEndDatas)
@@ -312,7 +312,7 @@ namespace NodeController
             if (IsEndNode)
                 Position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
             else if (!IsMiddleNode)
-                Position = MainBezier.Position(0.5f);
+                Position = (LeftMainBezier.Position(0.5f) + RightMainBezier.Position(0.5f)) /2f;
             else
                 Position = Node.m_position;
         }
