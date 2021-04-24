@@ -398,38 +398,6 @@ namespace NodeController
                 _ => throw new Exception("Unreachable code"),
             };
         }
-        public void Align(SegmentEndData segmentEnd, SegmentEndData alignTo, SideType side)
-        {
-            var segmentSide = GetSideLane(segmentEnd, side);
-            var alignSide = GetSideLane(alignTo, side.Invert());
-
-            segmentEnd.Shift = -(alignTo.Shift + (segmentSide + alignSide));
-
-            UpdateNode();
-        }
-        private float GetSideLane(SegmentEndData segmentEnd, SideType side)
-        {
-            var segment = segmentEnd.Segment;
-            var isStart = segmentEnd.IsStartNode;
-            var isInvert = segment.IsInvert();
-            var isLeft = side == SideType.Left;
-
-            var isLaneInvert = isStart ^ isInvert;
-            var info = segment.Info;
-
-            var list = (isLaneInvert ^ !isLeft ? info.m_sortedLanes : info.m_sortedLanes.Reverse()).ToArray();
-            var first = info.m_lanes[list.First(i => info.m_lanes[i].IsDriveLane())];
-            var last = info.m_lanes[list.Last(i => info.m_lanes[i].IsDriveLane())];
-
-            foreach (var i in isLaneInvert ^ !isLeft ? info.m_sortedLanes : info.m_sortedLanes.Reverse())
-            {
-                var lane = info.m_lanes[i];
-                if (lane.IsDriveLane())
-                    return (isLaneInvert ? -1 : 1) * lane.m_position * segmentEnd.Stretch + (isLeft ? 0.5f : -0.5f) * lane.m_width * segmentEnd.Stretch;
-            }
-
-            return 0f;
-        }
         public void GetClosest(Vector3 position, out Vector3 closestPos, out Vector3 closestDir)
         {
             LeftMainBezier.Trajectory.ClosestPositionAndDirection(position, out var leftClosestPos, out var leftClosestDir, out _);

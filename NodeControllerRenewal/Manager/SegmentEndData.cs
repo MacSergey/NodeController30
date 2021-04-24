@@ -166,8 +166,8 @@ namespace NodeController
             Id = segmentId;
             NodeId = nodeId;
 
-            LeftSide = new SegmentSide(SideType.Left);
-            RightSide = new SegmentSide(SideType.Right);
+            LeftSide = new SegmentSide(this, SideType.Left);
+            RightSide = new SegmentSide(this, SideType.Right);
 
             IsNodeLess = !Info.m_nodes.Any();
             PedestrianLaneCount = Info.PedestrianLanes();
@@ -479,8 +479,8 @@ namespace NodeController
             CalculateSegmentLimit();
             CalculateOffset();
 
-            LeftSide.Calculate(this, isMain);
-            RightSide.Calculate(this, isMain);
+            LeftSide.Calculate(isMain);
+            RightSide.Calculate(isMain);
 
             CalculatePositionAndDirection();
             UpdateVehicleTwist();

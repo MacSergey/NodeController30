@@ -21,7 +21,7 @@ namespace NodeController
         {
             if (Tool.Data.IsJunction && !Tool.Panel.IsHover && InputExtension.OnlyAltIsPressed)
                 Tool.SetMode(ToolModeType.ChangeMain);
-            else if (!Tool.Data.IsMiddleNode && !Tool.Panel.IsHover && InputExtension.OnlyShiftIsPressed)
+            else if (!Tool.Panel.IsHover && InputExtension.OnlyShiftIsPressed)
                 Tool.SetMode(ToolModeType.Aling);
             else if (Tool.MouseRayValid && Tool.Data.IsMoveableEnds)
             {

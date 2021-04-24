@@ -11,117 +11,155 @@ namespace NodeController
         public override ToolModeType Type => ToolModeType.Aling;
         public override bool ShowPanel => false;
 
-        private SegmentEndData HoverSegmentEnd { get; set; }
-        private SideType HoverSide { get; set; }
-        private bool IsHoverSegmentEnd => HoverSegmentEnd != null;
+        private List<SegmentSide> Targets { get; set; } = new List<SegmentSide>();
 
-        private SegmentEndData SelectedSegmentEnd { get; set; }
-        private SideType SelectedSide { get; set; }
-        private bool IsSelectedSegmentEnd => SelectedSegmentEnd != null;
-        private bool IsLeftSelected => IsSelectedSegmentEnd && SelectedSide == SideType.Left;
-        private bool IsRightSelected => IsSelectedSegmentEnd && SelectedSide == SideType.Right;
+        private SegmentSide HoverSide { get; set; }
+        private bool IsHoverSide => HoverSide != null;
 
-        private IEnumerable<SideType> Sides
-        {
-            get
-            {
-                if (!IsLeftSelected)
-                    yield return SideType.Left;
-                if (!IsRightSelected)
-                    yield return SideType.Right;
-            }
-        }
+        private SegmentSide SelectedSide { get; set; }
+        private bool IsSelectedSide => SelectedSide != null;
 
         protected override void Reset(IToolMode prevMode)
         {
-            HoverSegmentEnd = null;
-            SelectedSegmentEnd = null;
+            HoverSide = null;
+            SelectedSide = null;
+
+            SelectTargets();
         }
         public override void OnToolUpdate()
         {
-            if (!IsSelectedSegmentEnd && !InputExtension.ShiftIsPressed)
+            if (!IsSelectedSide && !InputExtension.ShiftIsPressed)
                 Tool.SetDefaultMode();
 
             else if (Tool.MouseRayValid)
             {
-                var sides = Sides.ToArray();
-
-                foreach (var segmentData in Tool.Data.SegmentEndDatas)
+                foreach (var target in Targets)
                 {
-                    if (segmentData == SelectedSegmentEnd)
-                        continue;
-
-                    foreach (var side in sides)
+                    var hitPos = Tool.Ray.GetRayPosition(target.Position.y, out _);
+                    if ((target.Position - hitPos).sqrMagnitude < SegmentEndData.CenterDotRadius * SegmentEndData.CenterDotRadius)
                     {
-                        if (IsHover(segmentData, side))
-                        {
-                            HoverSegmentEnd = segmentData;
-                            HoverSide = side;
-                            return;
-                        }
+                        HoverSide = target;
+                        return;
                     }
                 }
             }
 
-            HoverSegmentEnd = null;
-        }
-        private bool IsHover(SegmentEndData segmentEnd, SideType side)
-        {
-            segmentEnd.GetCorner(side == SideType.Left, out var position, out _);
-            var hitPos = Tool.Ray.GetRayPosition(position.y, out _);
-            return (position - hitPos).sqrMagnitude < SegmentEndData.CenterDotRadius * SegmentEndData.CenterDotRadius;
+            HoverSide = null;
         }
 
         public override void OnPrimaryMouseClicked(Event e)
         {
-            if (!IsSelectedSegmentEnd)
+            if (!IsSelectedSide)
             {
-                if (IsHoverSegmentEnd)
+                if (IsHoverSide)
                 {
-                    SelectedSegmentEnd = HoverSegmentEnd;
                     SelectedSide = HoverSide;
+                    SelectTargets();
                 }
             }
-            else if (IsHoverSegmentEnd)
+            else if (IsHoverSide)
             {
-                Tool.Data.Align(SelectedSegmentEnd, HoverSegmentEnd, SelectedSide);
+                var segmentSide = GetSideLane(SelectedSide.Data, SelectedSide.Type);
+                var alignSide = GetSideLane(HoverSide.Data, HoverSide.Type);
+                var newShift = (SelectedSide.Type != HoverSide.Type ? -1 : 1) * (HoverSide.Data.Shift + segmentSide) - alignSide;
+
+                if (Tool.Data.Style.SupportShift.IsSet(SupportOption.Individually))
+                    SelectedSide.Data.Shift = newShift;
+                else
+                    Tool.Data.Shift = Tool.Data.FirstMainSegmentEnd == SelectedSide.Data ? newShift : -newShift;
+
+                Tool.Data.UpdateNode();
                 Tool.Panel.UpdatePanel();
                 Tool.SetDefaultMode();
             }
         }
         public override void OnSecondaryMouseClicked()
         {
-            if (IsSelectedSegmentEnd)
-                SelectedSegmentEnd = null;
+            if (IsSelectedSide)
+            {
+                SelectedSide = null;
+                SelectTargets();
+            }
             else
                 Tool.SetDefaultMode();
+        }
+        private void SelectTargets()
+        {
+            Targets.Clear();
+
+            foreach (var segmentData in Tool.Data.SegmentEndDatas)
+            {
+                if (!IsSelectedSide)
+                {
+                    Targets.Add(segmentData[SideType.Left]);
+                    Targets.Add(segmentData[SideType.Right]);
+                }
+                else if (segmentData != SelectedSide.Data && Tool.Data.Style.SupportShift.IsSet(SupportOption.Individually))
+                    Targets.Add(segmentData[SelectedSide.Type.Invert()]);
+            }
+
+            if(IsSelectedSide)
+            {
+                if (Tool.Data.Style.SupportShift.IsSet(SupportOption.Individually))
+                {
+                    var data = SingletonManager<Manager>.Instance.GetSegmentData(SelectedSide.Data.Id, !SelectedSide.Data.IsStartNode);
+                    Targets.Add(data[SelectedSide.Type.Invert()]);
+                }
+                else if(Tool.Data.IsTwoRoads)
+                {
+                    foreach(var segmentEnd in Tool.Data.SegmentEndDatas)
+                    {
+                        var otherData = SingletonManager<Manager>.Instance.GetSegmentData(segmentEnd.Id, !segmentEnd.IsStartNode);
+                        Targets.Add(otherData[segmentEnd == SelectedSide.Data ? SelectedSide.Type.Invert() : SelectedSide.Type]);
+                    }
+                }
+            }
+        }
+        private float GetSideLane(SegmentEndData segmentEnd, SideType side)
+        {
+            var segment = segmentEnd.Segment;
+            var isStart = segmentEnd.IsStartNode;
+            var isInvert = segment.IsInvert();
+            var isLeft = side == SideType.Left;
+
+            var isLaneInvert = isStart ^ isInvert;
+            var info = segment.Info;
+
+            var list = (isLaneInvert ^ !isLeft ? info.m_sortedLanes : info.m_sortedLanes.Reverse()).ToArray();
+            var first = info.m_lanes[list.First(i => info.m_lanes[i].IsDriveLane())];
+            var last = info.m_lanes[list.Last(i => info.m_lanes[i].IsDriveLane())];
+
+            foreach (var i in isLaneInvert ^ !isLeft ? info.m_sortedLanes : info.m_sortedLanes.Reverse())
+            {
+                var lane = info.m_lanes[i];
+                if (lane.IsDriveLane())
+                    return (isLaneInvert ? -1 : 1) * lane.m_position * segmentEnd.Stretch + (isLeft ? 0.5f : -0.5f) * lane.m_width * segmentEnd.Stretch;
+            }
+
+            return 0f;
         }
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             var width = SegmentEndData.CenterDotRadius * 2;
-            var green = new OverlayData(cameraInfo) { Color = Colors.Green };
-            var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow, Width = width };
-            var purple = new OverlayData(cameraInfo) { Color = Colors.Purple, Width = width };
-            var white = new OverlayData(cameraInfo) { Width = width };
 
             foreach (var segmentEnd in Tool.Data.SegmentEndDatas)
             {
-                if (segmentEnd == SelectedSegmentEnd)
-                    segmentEnd.RenderAlign(green, SelectedSide == SideType.Left ? purple : null, SelectedSide == SideType.Right ? purple : null);
-                else if (segmentEnd == HoverSegmentEnd)
-                {
-                    var leftData = IsLeftSelected ? default(OverlayData?) : (HoverSide == SideType.Left ? white : yellow);
-                    var rightData = IsRightSelected ? default(OverlayData?) : (HoverSide == SideType.Right ? white : yellow);
-                    segmentEnd.RenderAlign(green, leftData, rightData);
-                }
-                else
-                {
-                    var leftData = IsLeftSelected ? default(OverlayData?) : yellow;
-                    var rightData = IsRightSelected ? default(OverlayData?) : yellow;
-                    segmentEnd.RenderAlign(green, leftData, rightData);
-                }
+                segmentEnd.RenderСontour(new OverlayData(cameraInfo) { Color = Colors.Green });
+                segmentEnd.RenderEnd(new OverlayData(cameraInfo) { Color = Colors.Green });
             }
+
+            foreach (var target in Targets)
+            {
+                if (target != HoverSide)
+                    target.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow, Width = width });
+            }
+
+            if (IsHoverSide)
+                HoverSide.RenderCircle(new OverlayData(cameraInfo) { Width = width });
+
+            if (IsSelectedSide)
+                SelectedSide.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Purple, Width = width });
         }
     }
 }
