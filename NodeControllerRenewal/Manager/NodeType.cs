@@ -36,8 +36,6 @@ namespace NodeController
     {
         public abstract NodeStyleType Type { get; }
 
-        public virtual float MinOffset => 0f;
-        public virtual float MaxOffset => 0f;
         public virtual float AdditionalOffset => 0f;
 
         public virtual SupportOption SupportOffset => SupportOption.None;
@@ -49,6 +47,7 @@ namespace NodeController
         public virtual SupportOption SupportSlopeJunction => SupportOption.None;
         public virtual SupportOption SupportStretch => SupportOption.None;
 
+        public virtual float DefaultOffset => 0f;
         public virtual float DefaultShift => 0f;
         public virtual float DefaultRotate => 0f;
         public virtual float DefaultSlope => 0f;
@@ -415,7 +414,7 @@ namespace NodeController
     public class BendNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Bend;
-        public override float MaxOffset => 1000f;
+
         public override float AdditionalOffset => 2f;
 
         public override SupportOption SupportOffset => SupportOption.All;
@@ -438,7 +437,7 @@ namespace NodeController
     public class StretchNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Stretch;
-        public override float MaxOffset => 1000f;
+
         public override float AdditionalOffset => 2f;
 
         public override SupportOption SupportOffset => SupportOption.All;
@@ -454,8 +453,7 @@ namespace NodeController
     public class CrossingNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Crossing;
-        public override float MinOffset => 2f;
-        public override float MaxOffset => 2f;
+        public override float DefaultOffset => 2f;
 
         public override SupportOption SupportOffset => SupportOption.OnceValue;
         public override SupportOption SupportShift => SupportOption.Group;
@@ -468,8 +466,7 @@ namespace NodeController
     public class UTurnNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.UTurn;
-        public override float MinOffset => 8f;
-        public override float MaxOffset => 8f;
+        public override float DefaultOffset => 8f;
 
         public override SupportOption SupportOffset => SupportOption.OnceValue;
         public override SupportOption SupportShift => SupportOption.Group;
@@ -495,7 +492,7 @@ namespace NodeController
     public class CustomNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Custom;
-        public override float MaxOffset => 1000f;
+
         public override float AdditionalOffset => 2f;
 
         public override SupportOption SupportOffset => SupportOption.All;

@@ -46,8 +46,6 @@ namespace NodeController
         private SegmentSide RightSide { get; }
         public float AbsoluteAngle => RawSegmentBezier.StartDirection.AbsoluteAngle();
 
-        public float SegmentMinT { get; private set; }
-        public float SegmentMaxT { get; private set; }
 
         public float DefaultOffset => Mathf.Clamp(Mathf.Max(Info.m_minCornerOffset, Info.m_halfWidth < 4f ? 0f : 8f), MinPossibleOffset, MaxPossibleOffset);
         public bool DefaultIsSlope => !Info.m_flatJunctions && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
@@ -88,20 +86,9 @@ namespace NodeController
                 KeepDefaults = false;
             }
         }
-        public float OffsetT
-        {
-            get
-            {
-                if (Offset == MinOffset)
-                    return SegmentMinT;
-                else if (Offset == MaxOffset)
-                    return SegmentMaxT;
-                else
-                    return RawSegmentBezier.Trajectory.Travel(Offset);
-            }
-        }
+        public float OffsetT => RawSegmentBezier.Trajectory.Travel(Offset);
         public float MinPossibleOffset { get; private set; } = 0f;
-        public float MaxPossibleOffset { get; private set; } = 100f;
+        public float MaxPossibleOffset { get; private set; } = 1000f;
         public float MinOffset
         {
             get => Mathf.Max(_minOffset, MinPossibleOffset);
@@ -221,13 +208,30 @@ namespace NodeController
             if (style.SupportSlopeJunction <= SupportOption.OnceValue || force)
                 IsSlope = style.DefaultSlopeJunction;
 
-            MinPossibleOffset = !IsNodeLess ? style.MinOffset : 0f;
-            MaxPossibleOffset = !IsNodeLess ? style.MaxOffset : 0f;
+
+            if(IsNodeLess || style.SupportOffset == SupportOption.None)
+            {
+                MinPossibleOffset = 0f;
+                MaxPossibleOffset = 0f;
+            }
+            else if(style.SupportOffset == SupportOption.OnceValue)
+            {
+                MinPossibleOffset = style.DefaultOffset;
+                MaxPossibleOffset = style.DefaultOffset;
+            }
+            else
+            {
+                MinPossibleOffset = 0f;
+                MaxPossibleOffset = 1000f;
+            }
+
 
             if (style.SupportRotate <= SupportOption.OnceValue || force)
                 SetRotate(style.DefaultRotate);
 
-            if (style.SupportOffset <= SupportOption.OnceValue || force)
+            if(style.SupportOffset == SupportOption.OnceValue)
+                SetOffset(style.DefaultOffset);
+            else if(style.SupportOffset == SupportOption.None || force)
                 SetOffset(DefaultOffset);
             else
                 SetOffset(Offset);
@@ -305,8 +309,8 @@ namespace NodeController
             var start = SingletonManager<Manager>.Instance[segment.m_startNode];
             var end = SingletonManager<Manager>.Instance[segment.m_endNode];
 
-            var startShift = start?[segmentId].Shift ?? 0f;
-            var endShift = end?[segmentId].Shift ?? 0f;
+            var startShift = start?[segmentId]?.Shift ?? 0f;
+            var endShift = end?[segmentId]?.Shift ?? 0f;
 
             if (startShift == 0f && endShift == 0f)
                 return;
@@ -487,13 +491,13 @@ namespace NodeController
             var startLimitLine = new StraightTrajectory(LeftSide.Bezier.StartPosition, RightSide.Bezier.StartPosition);
             var endLimitLine = new StraightTrajectory(LeftSide.Bezier.EndPosition, RightSide.Bezier.EndPosition);
 
-            SegmentMinT = Intersection.CalculateSingle(RawSegmentBezier, startLimitLine, out var minFirstT, out _) ? minFirstT : 0f;
-            SegmentMaxT = Intersection.CalculateSingle(RawSegmentBezier, endLimitLine, out var maxFirstT, out _) ? maxFirstT : 1f;
+            var segmentMinT = Intersection.CalculateSingle(RawSegmentBezier, startLimitLine, out var minFirstT, out _) ? minFirstT : 0f;
+            var segmentMaxT = Intersection.CalculateSingle(RawSegmentBezier, endLimitLine, out var maxFirstT, out _) ? maxFirstT : 1f;
 
-            MinOffset = RawSegmentBezier.Distance(0f, SegmentMinT);
-            MaxOffset = RawSegmentBezier.Distance(0f, SegmentMaxT);
+            MinOffset = RawSegmentBezier.Distance(0f, segmentMinT);
+            MaxOffset = RawSegmentBezier.Distance(0f, segmentMaxT);
 
-            SegmentBezier = RawSegmentBezier.Cut(SegmentMinT, SegmentMaxT);
+            SegmentBezier = RawSegmentBezier.Cut(segmentMinT, segmentMaxT);
         }
         private void CalculateMinMaxRotate()
         {
