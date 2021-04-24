@@ -11,7 +11,7 @@ namespace NodeController.Patches
 {
     public static class NetNodePatches
     {
-        public static IEnumerable<CodeInstruction> RefreshDataTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
+        public static IEnumerable<CodeInstruction> ReplaceNodePositionTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
         {
             var positionField = AccessTools.Field(typeof(NetNode), nameof(NetNode.m_position));
             var positionLocal = generator.DeclareLocal(typeof(Vector3));

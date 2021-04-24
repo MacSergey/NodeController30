@@ -108,21 +108,21 @@ namespace NodeController
             var junctionParams1 = new Type[] { typeof(ushort), typeof(NetInfo), typeof(uint) };
             var junctionParams2 = new Type[] { typeof(ushort), typeof(int), typeof(int), typeof(NetInfo), typeof(NetInfo), typeof(ushort), typeof(ushort), typeof(uint).MakeByRefType(), typeof(RenderManager.Instance).MakeByRefType() };
             var junctionParams3 = new Type[] { typeof(ushort), typeof(int), typeof(ushort), typeof(Vector3), typeof(uint).MakeByRefType(), typeof(RenderManager.Instance).MakeByRefType() };
-            HarmonyLib.Harmony.DEBUG = true;
-            success &= Patch_NetNode_RefreshData_Transpiler("RefreshBendData");
-            success &= Patch_NetNode_RefreshData_Transpiler("RefreshEndData");
-            success &= Patch_NetNode_RefreshData_Transpiler("RefreshJunctionData", junctionParams1);
-            success &= Patch_NetNode_RefreshData_Transpiler("RefreshJunctionData", junctionParams2);
-            success &= Patch_NetNode_RefreshData_Transpiler("RefreshJunctionData", junctionParams3);
+
+            success &= Patch_NetNode_Position_Transpiler("RefreshBendData");
+            success &= Patch_NetNode_Position_Transpiler("RefreshEndData");
+            success &= Patch_NetNode_Position_Transpiler("RefreshJunctionData", junctionParams1);
+            success &= Patch_NetNode_Position_Transpiler("RefreshJunctionData", junctionParams2);
+            success &= Patch_NetNode_Position_Transpiler("RefreshJunctionData", junctionParams3);
+            success &= Patch_NetNode_Position_Transpiler(nameof(NetNode.TerrainUpdated));
 
             success &= Patch_NetNode_RefreshJunctionData_Prefix(junctionParams3);
             success &= Patch_NetNode_RefreshJunctionData_Postfix(junctionParams3);
             success &= Patch_NetNode_RenderInstance();
-            HarmonyLib.Harmony.DEBUG = false;
         }
-        private bool Patch_NetNode_RefreshData_Transpiler(string methodName, Type[] parameters = null)
+        private bool Patch_NetNode_Position_Transpiler(string methodName, Type[] parameters = null)
         {
-            return AddTranspiler(typeof(NetNodePatches), nameof(NetNodePatches.RefreshDataTranspiler), typeof(NetNode), methodName, parameters);
+            return AddTranspiler(typeof(NetNodePatches), nameof(NetNodePatches.ReplaceNodePositionTranspiler), typeof(NetNode), methodName, parameters);
         }
         private bool Patch_NetNode_RefreshJunctionData_Prefix(Type[] parameters)
         {
