@@ -59,17 +59,7 @@ namespace NodeController
             }
             else if (IsHoverSide)
             {
-                var segmentSide = GetSideLane(SelectedSide.Data, SelectedSide.Type);
-                var alignSide = GetSideLane(HoverSide.Data, HoverSide.Type);
-                var newShift = (SelectedSide.Type != HoverSide.Type ? -1 : 1) * (HoverSide.Data.Shift + segmentSide) - alignSide;
-
-                if (Tool.Data.Style.SupportShift.IsSet(SupportOption.Individually))
-                    SelectedSide.Data.Shift = newShift;
-                else
-                    Tool.Data.Shift = Tool.Data.FirstMainSegmentEnd == SelectedSide.Data ? newShift : -newShift;
-
-                Tool.Data.UpdateNode();
-                Tool.Panel.UpdatePanel();
+                SetAlign();
                 Tool.SetDefaultMode();
             }
         }
@@ -82,6 +72,21 @@ namespace NodeController
             }
             else
                 Tool.SetDefaultMode();
+        }
+        private void SetAlign()
+        {
+            var segmentSide = GetSideLane(SelectedSide.Data, SelectedSide.Type);
+            var alignSide = GetSideLane(HoverSide.Data, HoverSide.Type);
+            var newShift = (SelectedSide.Type != HoverSide.Type ? -1 : 1) * (HoverSide.Data.Shift + segmentSide) - alignSide;
+            newShift = Mathf.Clamp(newShift, NodeStyle.MinShift, NodeStyle.MaxShift);
+
+            if (Tool.Data.Style.SupportShift.IsSet(SupportOption.Individually))
+                SelectedSide.Data.Shift = newShift;
+            else
+                Tool.Data.Shift = Tool.Data.FirstMainSegmentEnd == SelectedSide.Data ? newShift : -newShift;
+
+            Tool.Data.UpdateNode();
+            Tool.Panel.UpdatePanel();
         }
         private void SelectTargets()
         {

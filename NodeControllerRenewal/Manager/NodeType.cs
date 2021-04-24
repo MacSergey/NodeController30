@@ -36,6 +36,17 @@ namespace NodeController
     {
         public abstract NodeStyleType Type { get; }
 
+        public static float MaxShift => 32f;
+        public static float MinShift => -32f;
+        public static float MaxSlope => 60f;
+        public static float MinSlope => -60f;
+        public static float MaxTwist => 60f;
+        public static float MinTwist => -60f;
+        public static float MaxStretch => 500f;
+        public static float MinStretch => 1f;
+        public static float MaxOffset => 1000f;
+        public static float MinOffset => 0f;
+
         public virtual float AdditionalOffset => 0f;
 
         public virtual SupportOption SupportOffset => SupportOption.None;
@@ -245,18 +256,18 @@ namespace NodeController
         protected FloatPropertyPanel GetOffsetProperty(UIComponent parent)
         {
             var offsetProperty = GetProperty(parent, "Offset");
-            offsetProperty.MinValue = 0;
-            offsetProperty.MaxValue = 100;
+            offsetProperty.MinValue = MinOffset;
+            offsetProperty.MaxValue = MaxOffset;
 
             return offsetProperty;
         }
         protected FloatPropertyPanel GetShiftProperty(UIComponent parent)
         {
-            var offsetProperty = GetProperty(parent, "Shift");
-            offsetProperty.MinValue = -32;
-            offsetProperty.MaxValue = 32;
+            var shiftProperty = GetProperty(parent, "Shift");
+            shiftProperty.MinValue = MinShift;
+            shiftProperty.MaxValue = MaxShift;
 
-            return offsetProperty;
+            return shiftProperty;
         }
         protected FloatPropertyPanel GetRotateProperty(UIComponent parent)
         {
@@ -269,24 +280,24 @@ namespace NodeController
         protected FloatPropertyPanel GetSlopeProperty(UIComponent parent)
         {
             var slopeProperty = GetProperty(parent, "Slope");
-            slopeProperty.MinValue = -60;
-            slopeProperty.MaxValue = 60;
+            slopeProperty.MinValue = MinSlope;
+            slopeProperty.MaxValue = MaxSlope;
 
             return slopeProperty;
         }
         protected FloatPropertyPanel GetTwistProperty(UIComponent parent)
         {
             var twistProperty = GetProperty(parent, "Twist");
-            twistProperty.MinValue = -60;
-            twistProperty.MaxValue = 60;
+            twistProperty.MinValue = MinTwist;
+            twistProperty.MaxValue = MaxTwist;
 
             return twistProperty;
         }
         protected FloatPropertyPanel GetStretchProperty(UIComponent parent)
         {
             var stretchProperty = GetProperty(parent, "Stretch");
-            stretchProperty.MinValue = 1f;
-            stretchProperty.MaxValue = 500f;
+            stretchProperty.MinValue = MinStretch;
+            stretchProperty.MaxValue = MaxStretch;
 
             return stretchProperty;
         }
@@ -301,11 +312,11 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetSegmentShiftProperty(UIComponent parent, SegmentEndData segmentData)
         {
-            var offsetProperty = GetProperty(parent, $"Segment #{segmentData.Id} shift");
-            offsetProperty.MinValue = -32;
-            offsetProperty.MaxValue = 32;
+            var shiftProperty = GetProperty(parent, $"Segment #{segmentData.Id} shift");
+            shiftProperty.MinValue = MinShift;
+            shiftProperty.MaxValue = MaxShift;
 
-            return offsetProperty;
+            return shiftProperty;
         }
         protected FloatPropertyPanel GetSegmentRotateProperty(UIComponent parent, SegmentEndData segmentData)
         {
@@ -318,24 +329,24 @@ namespace NodeController
         protected FloatPropertyPanel GetSegmentSlopeProperty(UIComponent parent, SegmentEndData segmentData)
         {
             var slopeProperty = GetProperty(parent, $"Segment #{segmentData.Id} slope");
-            slopeProperty.MinValue = -60;
-            slopeProperty.MaxValue = 60;
+            slopeProperty.MinValue = MinSlope;
+            slopeProperty.MaxValue = MaxSlope;
 
             return slopeProperty;
         }
         protected FloatPropertyPanel GetSegmentTwistProperty(UIComponent parent, SegmentEndData segmentData)
         {
             var twistProperty = GetProperty(parent, $"Segment #{segmentData.Id} twist");
-            twistProperty.MinValue = -60;
-            twistProperty.MaxValue = 60;
+            twistProperty.MinValue = MinTwist;
+            twistProperty.MaxValue = MaxTwist;
 
             return twistProperty;
         }
         protected FloatPropertyPanel GetSegmentStretchProperty(UIComponent parent, SegmentEndData segmentData)
         {
             var stretchProperty = GetProperty(parent, $"Segment #{segmentData.Id} stretch");
-            stretchProperty.MinValue = 1f;
-            stretchProperty.MaxValue = 500f;
+            stretchProperty.MinValue = MinStretch;
+            stretchProperty.MaxValue = MaxStretch;
 
             return stretchProperty;
         }
