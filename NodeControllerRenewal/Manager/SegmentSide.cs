@@ -2,6 +2,7 @@
 using ModsCommon.Utilities;
 using System;
 using UnityEngine;
+using static ColossalFramework.Math.VectorUtils;
 
 namespace NodeController
 {
@@ -81,14 +82,14 @@ namespace NodeController
             var position = RawBezier.Position(t);
             var direction = RawBezier.Tangent(t).normalized;
 
-            if(!data.IsSlope)
+            if (!data.IsSlope)
             {
                 position.y = data.Node.m_position.y;
                 direction = direction.MakeFlatNormalized();
             }
-            else if(!isMain)
+            else if (!isMain)
             {
-                GetClosest(nodeData, position, out var closestPos, out var closestDir);
+                nodeData.GetClosest(position, out var closestPos, out var closestDir);
                 position.y = closestPos.y;
 
                 var closestLine = new StraightTrajectory(closestPos, closestPos + closestDir, false);
@@ -99,7 +100,7 @@ namespace NodeController
             }
             else
             {
-                if(nodeData.Style.SupportSlope != SupportOption.None)
+                if (nodeData.Style.SupportSlope != SupportOption.None)
                 {
                     var quaternion = Quaternion.AngleAxis(data.SlopeAngle, direction.MakeFlat().Turn90(true));
                     direction = quaternion * direction;
@@ -111,7 +112,7 @@ namespace NodeController
                         ratio *= data.Stretch;
 
                     position.y += (Type == SideType.Left ? -1 : 1) * data.Info.m_halfWidth * ratio;
-                }           
+                }
             }
 
             Position = position;
@@ -119,21 +120,21 @@ namespace NodeController
             if (nodeData.IsEndNode)
                 Direction *= data.Stretch;
         }
-        private void GetClosest(NodeData nodeData, Vector3 position, out Vector3 closestPos, out Vector3 closestDir)
+        public static void FixMiddle(SegmentSide first, SegmentSide second)
         {
-            nodeData.LeftMainBezier.Trajectory.ClosestPositionAndDirection(position, out var leftClosestPos, out var leftClosestDir, out _);
-            nodeData.RightMainBezier.Trajectory.ClosestPositionAndDirection(position, out var rightClosestPos, out var rightClosestDir, out _);
+            var fixPosition = (first.Position + second.Position) / 2f;
+            first.Position = fixPosition;
+            second.Position = fixPosition;
 
-            if ((leftClosestPos - position).sqrMagnitude < (rightClosestPos - position).sqrMagnitude)
-            {
-                closestPos = leftClosestPos;
-                closestDir = leftClosestDir;
-            }
-            else
-            {
-                closestPos = rightClosestPos;
-                closestDir = rightClosestDir;
-            }
+            var fixDirection = NormalizeXZ(first.Direction - second.Direction);
+
+            var firstFixDirection = fixDirection;
+            firstFixDirection.y = first.Direction.y;
+            first.Direction = firstFixDirection;
+
+            var secondFixDirection = -fixDirection;
+            secondFixDirection.y = second.Direction.y;
+            second.Direction = secondFixDirection;
         }
 
         public void Render(OverlayData dataAllow, OverlayData dataForbidden)

@@ -103,11 +103,25 @@ namespace NodeController
                 segmentData.Offset = value;
         }
 
-        public virtual float GetShift() => Data.SegmentEndDatas.Average(s => s.Shift);
+        public virtual float GetShift()
+        {
+            if (Data.IsTwoRoads)
+                return (Data.FirstMainSegmentEnd.Shift - Data.SecondMainSegmentEnd.Shift) / 2f;
+            else
+                return Data.SegmentEndDatas.Average(s => s.Shift);
+        }
         public virtual void SetShift(float value)
         {
-            foreach (var segmentData in Data.SegmentEndDatas)
-                segmentData.Shift = value;
+            if (Data.IsTwoRoads)
+            {
+                Data.FirstMainSegmentEnd.Shift = value;
+                Data.SecondMainSegmentEnd.Shift = -value;
+            }
+            else
+            {
+                foreach (var segmentData in Data.SegmentEndDatas)
+                    segmentData.Shift = value;
+            }
         }
 
         public virtual float GetRotate() => Data.SegmentEndDatas.Average(s => s.RotateAngle);
@@ -391,12 +405,6 @@ namespace NodeController
             Data.SecondMainSegmentEnd.TwistAngle = -value;
         }
 
-        public override float GetShift() => (Data.FirstMainSegmentEnd.Shift - Data.SecondMainSegmentEnd.Shift) / 2;
-        public override void SetShift(float value)
-        {
-            Data.FirstMainSegmentEnd.Shift = value;
-            Data.SecondMainSegmentEnd.Shift = -value;
-        }
         public override float GetStretch() => (Data.FirstMainSegmentEnd.Stretch + Data.SecondMainSegmentEnd.Stretch) / 2;
         public override void SetStretch(float value)
         {
@@ -449,19 +457,13 @@ namespace NodeController
         public override float MinOffset => 2f;
         public override float MaxOffset => 2f;
 
+        public override SupportOption SupportOffset => SupportOption.OnceValue;
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
 
         public CrossingNode(NodeData data) : base(data) { }
-
-        public override float GetShift() => (Data.FirstMainSegmentEnd.Shift - Data.SecondMainSegmentEnd.Shift) / 2;
-        public override void SetShift(float value)
-        {
-            Data.FirstMainSegmentEnd.Shift = value;
-            Data.SecondMainSegmentEnd.Shift = -value;
-        }
     }
     public class UTurnNode : NodeStyle
     {
@@ -469,19 +471,13 @@ namespace NodeController
         public override float MinOffset => 8f;
         public override float MaxOffset => 8f;
 
+        public override SupportOption SupportOffset => SupportOption.OnceValue;
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
 
         public UTurnNode(NodeData data) : base(data) { }
-
-        public override float GetShift() => (Data.FirstMainSegmentEnd.Shift - Data.SecondMainSegmentEnd.Shift) / 2;
-        public override void SetShift(float value)
-        {
-            Data.FirstMainSegmentEnd.Shift = value;
-            Data.SecondMainSegmentEnd.Shift = -value;
-        }
     }
     public class EndNode : NodeStyle
     {

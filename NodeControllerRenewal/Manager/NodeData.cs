@@ -180,7 +180,7 @@ namespace NodeController
             Id = nodeId;
             UpdateSegmentEnds();
             UpdateMainRoad();
-            UpdateStyle(nodeType);
+            UpdateStyle(true, nodeType);
         }
         public void Update(bool flags = true)
         {
@@ -236,7 +236,7 @@ namespace NodeController
                 return;
 
             if (node.m_flags != DefaultFlags)
-                UpdateStyle(Style.Type);
+                UpdateStyle(false, Style.Type);
 
             if (NeedsTransitionFlag)
                 node.m_flags |= NetNode.Flags.Transition;
@@ -264,7 +264,7 @@ namespace NodeController
             else
                 node.m_flags &= ~NetNode.Flags.Moveable;
         }
-        private void UpdateStyle(NodeStyleType? nodeType = null)
+        private void UpdateStyle(bool force, NodeStyleType? nodeType = null)
         {
             DefaultFlags = Node.m_flags;
 
@@ -279,7 +279,7 @@ namespace NodeController
             else
                 throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
 
-            SetType(nodeType != null && IsPossibleTypeImpl(nodeType.Value) ? nodeType.Value : DefaultType, true);
+            SetType(nodeType != null && IsPossibleTypeImpl(nodeType.Value) ? nodeType.Value : DefaultType, force);
         }
 
         public void LateUpdate()
@@ -312,9 +312,12 @@ namespace NodeController
             if (IsEndNode)
                 Position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
             else if (!IsMiddleNode)
-                Position = (LeftMainBezier.Position(0.5f) + RightMainBezier.Position(0.5f)) /2f;
+                Position = (LeftMainBezier.Position(0.5f) + RightMainBezier.Position(0.5f)) / 2f;
             else
+            {
+                SegmentEndData.FixMiddle(FirstMainSegmentEnd, SecondMainSegmentEnd);
                 Position = Node.m_position;
+            }
         }
 
         private ushort FindMain(ushort ignore)
@@ -426,6 +429,22 @@ namespace NodeController
             }
 
             return 0f;
+        }
+        public void GetClosest(Vector3 position, out Vector3 closestPos, out Vector3 closestDir)
+        {
+            LeftMainBezier.Trajectory.ClosestPositionAndDirection(position, out var leftClosestPos, out var leftClosestDir, out _);
+            RightMainBezier.Trajectory.ClosestPositionAndDirection(position, out var rightClosestPos, out var rightClosestDir, out _);
+
+            if ((leftClosestPos - position).sqrMagnitude < (rightClosestPos - position).sqrMagnitude)
+            {
+                closestPos = leftClosestPos;
+                closestDir = leftClosestDir;
+            }
+            else
+            {
+                closestPos = rightClosestPos;
+                closestDir = rightClosestDir;
+            }
         }
 
         private bool CrossingIsRemoved(ushort segmentId) => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(Id, segmentId);

@@ -51,7 +51,6 @@ namespace NodeController.Patches
 
             var laneID = PathManager.GetLaneID(prevPos);
 
-            // Calculate trailer lane offset based on how far the trailer is from the car its attached to.
             var deltaPos = leadingVehicle.m_flags.IsFlagSet(Vehicle.Flags.Inverted) ? leadningInfo.m_attachOffsetBack : leadningInfo.m_attachOffsetFront;
             var deltaOffset = deltaPos / laneID.GetLane().m_length;
             var offset = leadingVehicle.m_lastPathOffset / 255f + (prevPos.m_offset == 0 ? 1 : -1) * deltaOffset;
@@ -84,7 +83,7 @@ namespace NodeController.Patches
                 SingletonManager<Manager>.Instance.GetSegmentData(prevPos.m_segment, out var prevStart, out var prevEnd);
                 SingletonManager<Manager>.Instance.GetSegmentData(nextPos.m_segment, out var nextStart, out var nextEnd);
 
-                var startTwist = (prevPos.m_offset == 0 ? prevStart : prevEnd)?.VehicleTwist ?? 0f;
+                var startTwist = (prevPos.m_offset == byte.MinValue ? prevStart : prevEnd)?.VehicleTwist ?? 0f;
                 var endTwist = (nextPos.m_offset == byte.MaxValue ? nextStart : nextEnd)?.VehicleTwist ?? 0f;
                 var twist = Mathf.Lerp(-startTwist, endTwist, t);
 

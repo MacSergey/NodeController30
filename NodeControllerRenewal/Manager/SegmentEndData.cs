@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
+using static ColossalFramework.Math.VectorUtils;
 
 namespace NodeController
 {
@@ -231,7 +232,8 @@ namespace NodeController
             else
                 SetOffset(Offset);
 
-            KeepDefaults = true;
+            if (force)
+                KeepDefaults = true;
         }
 
         private void SetOffset(float value, bool changeRotate = false)
@@ -294,11 +296,14 @@ namespace NodeController
         }
         private static void GetSegmentPosAndDir(ushort segmentId, out Vector3 startPos, out Vector3 startDir, out Vector3 endPos, out Vector3 endDir)
         {
-            Get(segmentId, true, out var startId, out startPos, out startDir);
-            Get(segmentId, false, out var endId, out endPos, out endDir);
+            var segment = segmentId.GetSegment();
+            startPos = segment.m_startNode.GetNode().m_position;
+            startDir = segment.m_startDirection;
+            endPos = segment.m_endNode.GetNode().m_position;
+            endDir = segment.m_endDirection;
 
-            var start = SingletonManager<Manager>.Instance[startId];
-            var end = SingletonManager<Manager>.Instance[endId];
+            var start = SingletonManager<Manager>.Instance[segment.m_startNode];
+            var end = SingletonManager<Manager>.Instance[segment.m_endNode];
 
             var startShift = start?[segmentId].Shift ?? 0f;
             var endShift = end?[segmentId].Shift ?? 0f;
@@ -326,25 +331,6 @@ namespace NodeController
             }
             else
                 endPos += dir.Turn90(true).normalized * endShift;
-
-
-            static void Get(ushort segmentId, bool isStart, out ushort nodeId, out Vector3 position, out Vector3 direction)
-            {
-                var segment = segmentId.GetSegment();
-                nodeId = isStart ? segment.m_startNode : segment.m_endNode;
-
-                var node = nodeId.GetNode();
-                position = node.m_position;
-                direction = isStart ? segment.m_startDirection : segment.m_endDirection;
-
-                if (node.m_flags.IsFlagSet(NetNode.Flags.Middle))
-                {
-                    var otherSegmentId = node.SegmentIds().FirstOrDefault(s => s != segmentId);
-                    var otherSegment = otherSegmentId.GetSegment();
-                    var otherDirection = otherSegment.m_startNode == nodeId ? otherSegment.m_startDirection : otherSegment.m_endDirection;
-                    direction = (direction - otherDirection)/ 2f;
-                }                    
-            }
         }
 
         #endregion
@@ -590,12 +576,12 @@ namespace NodeController
             var t = Intersection.CalculateSingle(line, RawSegmentBezier, out var fitstT, out _) ? fitstT : 0.5f;
 
             Position = line.Position(t);
-            Direction = VectorUtils.NormalizeXZ(LeftSide.Direction * t + RightSide.Direction * (1 - t));
+            Direction = NormalizeXZ(LeftSide.Direction * t + RightSide.Direction * (1 - t));
         }
         private void UpdateVehicleTwist()
         {
             var diff = RightSide.Position - LeftSide.Position;
-            VehicleTwist = Mathf.Atan2(diff.y, VectorUtils.LengthXZ(diff)) * Mathf.Rad2Deg;
+            VehicleTwist = Mathf.Atan2(diff.y, LengthXZ(diff)) * Mathf.Rad2Deg;
         }
 
         #endregion
@@ -631,6 +617,11 @@ namespace NodeController
             GetSegmentWidth(segmentId, position, out var start, out var end);
             return Mathf.Lerp(start, end, t);
         }
+        public static void FixMiddle(SegmentEndData first, SegmentEndData second)
+        {
+            SegmentSide.FixMiddle(first.LeftSide, second.RightSide);
+            SegmentSide.FixMiddle(first.RightSide, second.LeftSide);
+        }
         public override string ToString() => $"segment:{Id} node:{NodeId}";
 
         #endregion
@@ -645,8 +636,8 @@ namespace NodeController
             Render—ontour(contourData);
             if (data.IsMoveableEnds && IsMoveable)
             {
-                RenderEnd(contourData, VectorUtils.LengthXZ(LeftSide.Position - Position) + CircleRadius, 0f);
-                RenderEnd(contourData, 0f, VectorUtils.LengthXZ(RightSide.Position - Position) + CircleRadius);
+                RenderEnd(contourData, LengthXZ(LeftSide.Position - Position) + CircleRadius, 0f);
+                RenderEnd(contourData, 0f, LengthXZ(RightSide.Position - Position) + CircleRadius);
                 RenderOutterCircle(outterData);
                 RenderInnerCircle(innerData);
                 if (leftData != null)
@@ -676,7 +667,7 @@ namespace NodeController
         public void RenderEnd(OverlayData data, float? leftCut = null, float? rightCut = null)
         {
             var line = new StraightTrajectory(LeftSide.Position, RightSide.Position);
-            var length = VectorUtils.LengthXZ(line.StartPosition - line.EndPosition);
+            var length = LengthXZ(line.StartPosition - line.EndPosition);
             var height = Mathf.Abs(line.StartPosition.y - line.EndPosition.y);
             var angle = Mathf.Atan(height / length);
             var startT = (leftCut ?? 0f) / Mathf.Cos(angle) / line.Length;
