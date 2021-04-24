@@ -69,7 +69,7 @@ namespace NodeController
                 bezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out var position);
                 var direction = bezier.Tangent(t).MakeFlatNormalized();
 
-                var halfWidth =SingletonManager<Manager>.Instance.GetSegmentWidth(HoverSegment.Id, t);
+                var halfWidth = SegmentEndData.GetSegmentWidth(HoverSegment.Id, t);
 
                 var overlayData = new OverlayData(cameraInfo) { Width = halfWidth * 2, Color = PossibleInsertNode(position) ? Colors.Green : Colors.Red, AlphaBlend = false, Cut = true };
 

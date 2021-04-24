@@ -62,28 +62,28 @@ namespace NodeController
             start = Buffer[segment.m_startNode]?[segmentId];
             end = Buffer[segment.m_endNode]?[segmentId];
         }
-        public void GetSegmentWidth(ushort segmentId, float position, out float startWidth, out float endWidth)
-        {
-            GetSegmentData(segmentId, out var start, out var end);
+        //public void GetSegmentWidth(ushort segmentId, float position, out float startWidth, out float endWidth)
+        //{
+        //    GetSegmentData(segmentId, out var start, out var end);
 
-            startWidth = position * (start?.WidthRatio ?? 1f);
-            endWidth = position * (end?.WidthRatio ?? 1f);
-        }
-        public void GetSegmentWidth(ushort segmentId, out float startWidth, out float endWidth)
-        {
-            var segment = segmentId.GetSegment();
-            GetSegmentWidth(segmentId, segment.Info.m_halfWidth, out startWidth, out endWidth);
-        }
-        public float GetSegmentWidth(ushort segmentId, float t)
-        {
-            GetSegmentWidth(segmentId, out var start, out var end);
-            return Mathf.Lerp(start, end, t);
-        }
-        public float GetSegmentWidth(ushort segmentId, float position, float t)
-        {
-            GetSegmentWidth(segmentId, position, out var start, out var end);
-            return Mathf.Lerp(start, end, t);
-        }
+        //    startWidth = position * (start?.WidthRatio ?? 1f);
+        //    endWidth = position * (end?.WidthRatio ?? 1f);
+        //}
+        //public void GetSegmentWidth(ushort segmentId, out float startWidth, out float endWidth)
+        //{
+        //    var segment = segmentId.GetSegment();
+        //    GetSegmentWidth(segmentId, segment.Info.m_halfWidth, out startWidth, out endWidth);
+        //}
+        //public float GetSegmentWidth(ushort segmentId, float t)
+        //{
+        //    GetSegmentWidth(segmentId, out var start, out var end);
+        //    return Mathf.Lerp(start, end, t);
+        //}
+        //public float GetSegmentWidth(ushort segmentId, float position, float t)
+        //{
+        //    GetSegmentWidth(segmentId, position, out var start, out var end);
+        //    return Mathf.Lerp(start, end, t);
+        //}
 
         public bool ContainsNode(ushort nodeId) => Buffer[nodeId] != null;
         public bool ContainsSegment(ushort segmentId)

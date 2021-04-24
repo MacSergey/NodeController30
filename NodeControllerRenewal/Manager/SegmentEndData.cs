@@ -280,32 +280,28 @@ namespace NodeController
         }
         public static void CalculateSegmentBeziers(ushort segmentId, out BezierTrajectory bezier, out BezierTrajectory leftSide, out BezierTrajectory rightSide)
         {
-            var segment = segmentId.GetSegment();
-            GetSegmentPosAndDir(segmentId, segment.m_startNode, out var startPos, out var startDir, out var endPos, out var endDir);
+            GetSegmentPosAndDir(segmentId, out var startPos, out var startDir, out var endPos, out var endDir);
 
             bezier = new BezierTrajectory(startPos, startDir, endPos, endDir);
 
             var startNormal = Vector3.Cross(startDir, Vector3.up).normalized;
             var endNormal = Vector3.Cross(endDir, Vector3.up).normalized;
 
-            SingletonManager<Manager>.Instance.GetSegmentWidth(segmentId, out var startHalfWidth, out var endHalfWidth);
+            GetSegmentWidth(segmentId, out var startHalfWidth, out var endHalfWidth);
 
             leftSide = new BezierTrajectory(startPos + startNormal * startHalfWidth, startDir, endPos - endNormal * endHalfWidth, endDir);
             rightSide = new BezierTrajectory(startPos - startNormal * startHalfWidth, startDir, endPos + endNormal * endHalfWidth, endDir);
         }
-        private static void GetSegmentPosAndDir(ushort segmentId, ushort startNodeId, out Vector3 startPos, out Vector3 startDir, out Vector3 endPos, out Vector3 endDir)
+        private static void GetSegmentPosAndDir(ushort segmentId, out Vector3 startPos, out Vector3 startDir, out Vector3 endPos, out Vector3 endDir)
         {
-            var segment = segmentId.GetSegment();
-            var isStart = segment.IsStartNode(startNodeId);
+            Get(segmentId, true, out var startId, out startPos, out startDir);
+            Get(segmentId, false, out var endId, out endPos, out endDir);
 
-            startPos = (isStart ? segment.m_startNode : segment.m_endNode).GetNode().m_position;
-            startDir = isStart ? segment.m_startDirection : segment.m_endDirection;
-            endPos = (isStart ? segment.m_endNode : segment.m_startNode).GetNode().m_position;
-            endDir = isStart ? segment.m_endDirection : segment.m_startDirection;
+            var start = SingletonManager<Manager>.Instance[startId];
+            var end = SingletonManager<Manager>.Instance[endId];
 
-            SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
-            var startShift = (isStart ? start : end)?.Shift ?? 0f;
-            var endShift = (isStart ? end : start)?.Shift ?? 0f;
+            var startShift = start?[segmentId].Shift ?? 0f;
+            var endShift = end?[segmentId].Shift ?? 0f;
 
             if (startShift == 0f && endShift == 0f)
                 return;
@@ -315,7 +311,7 @@ namespace NodeController
             var deltaAngle = Mathf.Asin(shift / dir.magnitude);
             var normal = dir.TurnRad(Mathf.PI / 2 + deltaAngle, true).normalized;
 
-            if (SingletonManager<Manager>.Instance[isStart ? segment.m_startNode : segment.m_endNode]?.IsIndividuallyShift != false)
+            if (start?.IsIndividuallyShift != false)
             {
                 startPos -= normal * startShift;
                 startDir = startDir.TurnRad(deltaAngle, true);
@@ -323,13 +319,32 @@ namespace NodeController
             else
                 startPos -= dir.Turn90(true).normalized * startShift;
 
-            if (SingletonManager<Manager>.Instance[isStart ? segment.m_endNode : segment.m_startNode]?.IsIndividuallyShift != false)
+            if (end?.IsIndividuallyShift != false)
             {
                 endPos += normal * endShift;
                 endDir = endDir.TurnRad(deltaAngle, true);
             }
             else
                 endPos += dir.Turn90(true).normalized * endShift;
+
+
+            static void Get(ushort segmentId, bool isStart, out ushort nodeId, out Vector3 position, out Vector3 direction)
+            {
+                var segment = segmentId.GetSegment();
+                nodeId = isStart ? segment.m_startNode : segment.m_endNode;
+
+                var node = nodeId.GetNode();
+                position = node.m_position;
+                direction = isStart ? segment.m_startDirection : segment.m_endDirection;
+
+                if (node.m_flags.IsFlagSet(NetNode.Flags.Middle))
+                {
+                    var otherSegmentId = node.SegmentIds().FirstOrDefault(s => s != segmentId);
+                    var otherSegment = otherSegmentId.GetSegment();
+                    var otherDirection = otherSegment.m_startNode == nodeId ? otherSegment.m_startDirection : otherSegment.m_endDirection;
+                    direction = (direction - otherDirection)/ 2f;
+                }                    
+            }
         }
 
         #endregion
@@ -593,6 +608,28 @@ namespace NodeController
 
             position = side.Position;
             direction = side.Direction;
+        }
+        public static void GetSegmentWidth(ushort segmentId, float position, out float startWidth, out float endWidth)
+        {
+            SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
+
+            startWidth = position * (start?.WidthRatio ?? 1f);
+            endWidth = position * (end?.WidthRatio ?? 1f);
+        }
+        public static void GetSegmentWidth(ushort segmentId, out float startWidth, out float endWidth)
+        {
+            var segment = segmentId.GetSegment();
+            GetSegmentWidth(segmentId, segment.Info.m_halfWidth, out startWidth, out endWidth);
+        }
+        public static float GetSegmentWidth(ushort segmentId, float t)
+        {
+            GetSegmentWidth(segmentId, out var start, out var end);
+            return Mathf.Lerp(start, end, t);
+        }
+        public static float GetSegmentWidth(ushort segmentId, float position, float t)
+        {
+            GetSegmentWidth(segmentId, position, out var start, out var end);
+            return Mathf.Lerp(start, end, t);
         }
         public override string ToString() => $"segment:{Id} node:{NodeId}";
 
