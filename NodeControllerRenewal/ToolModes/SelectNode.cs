@@ -19,9 +19,17 @@ namespace NodeController
                 return true;
 
             ref var node = ref nodeId.GetNode();
-            return node.m_flags.CheckFlags(0, NetNode.Flags.Middle) || node.m_flags.CheckFlags(0, NetNode.Flags.Moveable);
+            return node.m_flags.CheckFlags(0, NetNode.Flags.Middle | NetNode.Flags.Outside) || node.m_flags.CheckFlags(0, NetNode.Flags.Moveable | NetNode.Flags.Outside);
         }
         protected override bool CheckSegment(ushort segmentId) => segmentId.GetSegment().m_flags.CheckFlags(0, NetSegment.Flags.Untouchable) && base.CheckSegment(segmentId);
+        protected override bool CheckItemClass(ItemClass itemClass) => itemClass switch
+        {
+            { m_service: ItemClass.Service.Road } => true,
+            { m_service: ItemClass.Service.PublicTransport } => true,
+            { m_service: ItemClass.Service.Beautification, m_level: >= (ItemClass.Level)3 } => true,
+            { m_service: ItemClass.Service.Beautification, m_subService: ItemClass.SubService.BeautificationParks } => true,
+            _ => false,
+        };
 
         public override void OnPrimaryMouseClicked(Event e)
         {

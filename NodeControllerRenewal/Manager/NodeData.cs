@@ -385,15 +385,13 @@ namespace NodeController
             if (IsJunction || IsCSUR)
                 return newNodeType == NodeStyleType.Custom;
 
-            bool middle = DefaultFlags.IsFlagSet(NetNode.Flags.Middle);
             return newNodeType switch
             {
-                NodeStyleType.Crossing => IsEqualWidth && IsStraight && PedestrianLaneCount >= 2 && !HasNodeLess,
-                NodeStyleType.UTurn => IsTwoRoads && IsRoad && !HasNodeLess && Info.m_forwardVehicleLaneCount > 0 && Info.m_backwardVehicleLaneCount > 0,
-                NodeStyleType.Stretch => CanModifyTextures && !middle && IsStraight,
-                NodeStyleType.Bend => !middle,
-                NodeStyleType.Middle => middle && (IsStraight || Is180),
-                NodeStyleType.Custom => true,
+                NodeStyleType.Crossing => IsRoad && IsEqualWidth && IsStraight && PedestrianLaneCount >= 2 && !HasNodeLess,
+                NodeStyleType.UTurn => IsRoad && IsTwoRoads && !HasNodeLess && Info.m_forwardVehicleLaneCount > 0 && Info.m_backwardVehicleLaneCount > 0,
+                NodeStyleType.Stretch => IsRoad && CanModifyTextures && IsStraight,
+                NodeStyleType.Middle => IsStraight || Is180,
+                NodeStyleType.Custom or NodeStyleType.Bend => true,
                 NodeStyleType.End => IsEnd,
                 _ => throw new Exception("Unreachable code"),
             };
