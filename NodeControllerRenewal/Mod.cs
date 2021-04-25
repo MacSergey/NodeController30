@@ -27,12 +27,16 @@ namespace NodeController
         };
 
         protected override string IdRaw => nameof(NodeController);
-        public override bool IsBeta => true;
         public override CultureInfo Culture
         {
             get => Localize.Culture;
             protected set => Localize.Culture = value;
         }
+#if BETA
+        public override bool IsBeta => true;
+#else
+        protected override bool ModIsBeta => false;
+#endif
 
         #endregion
 
