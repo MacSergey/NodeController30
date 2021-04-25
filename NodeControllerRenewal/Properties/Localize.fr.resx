@@ -136,10 +136,10 @@
     <value>Alerte de version BETA</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Obtenez la version stable</value>
+    <value>Obtenir la version stable</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
+    <value>Vous utilisez la version bêta de {0}. C'est une version de test avec de nouvelles fonctionnalités et elle peut contenir des erreurs qui vont briser ou supprimer vos configurations. Si vous vous êtes abonné par erreur, veuillez vous abonner à la version stable.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value></value>
@@ -166,7 +166,7 @@
     <value>Espagnol</value>
   </data>
   <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Finnois</value>
+    <value>Finlandais</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
     <value>Français</value>
@@ -192,6 +192,9 @@
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Chinois simplifié</value>
   </data>
+  <data name="Mod_WhatsNewCaption" xml:space="preserve">
+    <value>Nouveautés dans {0}</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
@@ -199,70 +202,79 @@
     <value>Version {0}</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
-    <value>Bend</value>
+    <value>Courbe</value>
   </data>
   <data name="NodeStyle_Crossing" xml:space="preserve">
-    <value>Crossing</value>
+    <value>Passage piéton</value>
   </data>
   <data name="NodeStyle_Custom" xml:space="preserve">
-    <value>Custom</value>
+    <value>Personnalisé</value>
   </data>
   <data name="NodeStyle_End" xml:space="preserve">
-    <value>End</value>
+    <value>Fin</value>
   </data>
   <data name="NodeStyle_Middle" xml:space="preserve">
-    <value>Middle</value>
+    <value>Milieu</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
-    <value>Stretch</value>
+    <value>Étirer</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
-    <value>UTurn</value>
+    <value>Demi-tour</value>
   </data>
   <data name="Option_HideMarking" xml:space="preserve">
-    <value>Hide crosswalk marking</value>
+    <value>Cacher les passages piétons</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
-    <value>Offset</value>
+    <value>Décalage</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
-    <value>Reset to default</value>
+    <value>Rétablir les paramètres par défaut</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>Rotate</value>
+    <value>Pivoter</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
-    <value>Shift</value>
+    <value>Décalé</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
-    <value>Slope</value>
+    <value>Pente</value>
   </data>
   <data name="Option_Stretch" xml:space="preserve">
-    <value>Stretch</value>
+    <value>Étirement</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
     <value>Style</value>
   </data>
   <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Flat</value>
+    <value>Plat</value>
   </data>
   <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Slope</value>
+    <value>En pente</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>Twist</value>
+    <value>Torsion</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
-    <value>Node type</value>
+    <value>Type de nœud</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
-    <value>Node #{0}</value>
+    <value>Nœud #{0}</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>Langue</value>
   </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>Paramètres de notification</value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Activer l'outil</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>Uniquement notifier les mise à jour majeures</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>Afficher les nouveautés</value>
   </data>
   <data name="Settings_SnapToMiddleNode" xml:space="preserve">
     <value>Snap to middle node</value>

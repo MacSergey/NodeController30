@@ -192,6 +192,9 @@
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Vereinfachtes Chinesisch</value>
   </data>
+  <data name="Mod_WhatsNewCaption" xml:space="preserve">
+    <value>Was ist neu in {0}</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
@@ -261,8 +264,17 @@
   <data name="Settings_Language" xml:space="preserve">
     <value>Sprache</value>
   </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>Benachrichtigungen</value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Tool aktivieren</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>Benachrichtigungen nur bei Haupt-Versions-Updates</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>"Was gibt es neues" zeigen</value>
   </data>
   <data name="Settings_SnapToMiddleNode" xml:space="preserve">
     <value>Snap to middle node</value>
