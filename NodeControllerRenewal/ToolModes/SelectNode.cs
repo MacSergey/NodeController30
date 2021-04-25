@@ -119,7 +119,7 @@ namespace NodeController
                 };
                 middle.RenderBezier(overlayData);
 
-                overlayData.Width = Selection.BorderOverlayWidth;
+                overlayData.Width = Mathf.Min(halfWidth * 2, Selection.BorderOverlayWidth);
                 overlayData.Cut = false;
 
                 var normal = direction.MakeFlatNormalized().Turn90(true);
@@ -131,12 +131,13 @@ namespace NodeController
         }
         private void RenderBorder(OverlayData overlayData, Vector3 position, Vector3 normal, float halfWidth)
         {
+            var delta = Mathf.Max(halfWidth - Selection.BorderOverlayWidth / 2, 0f);
             var bezier = new Bezier3
             {
-                a = position + normal * (halfWidth - Selection.BorderOverlayWidth / 2),
+                a = position + normal * delta,
                 b = position,
                 c = position,
-                d = position - normal * (halfWidth - Selection.BorderOverlayWidth / 2),
+                d = position - normal * delta,
             };
             bezier.RenderBezier(overlayData);
         }
