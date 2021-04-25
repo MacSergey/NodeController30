@@ -10,12 +10,29 @@ namespace NodeController
         public bool ShowPanel => false;
         public ToolModeType Type => ToolModeType.Select;
         protected override Color32 NodeColor => Colors.Yellow;
+        private bool IsPossibleInsertNode { get; set; }
+        private Vector3 InsertPosition { get; set; }
 
-        public override string GetToolInfo() => IsHoverNode ? $"Node {HoverNode.Id}" : "Select node";
+        public override string GetToolInfo()
+        {
+            if (IsHoverNode)
+                return string.Format(Localize.Tool_InfoClickNode, HoverNode.Id);
+            else if (IsHoverSegment)
+            {
+                if (!IsPossibleInsertNode)
+                    return Localize.Tool_InfoTooCloseNode;
+                else if (HoverSegment.Id.GetSegment().Info.PedestrianLanes() >= 2)
+                    return Localize.Tool_InfoInsertCrossingNode;
+                else
+                    return Localize.Tool_InfoInsertNode;
+            }
+            else
+                return Localize.Tool_InfoSelectNode;
+        }
 
         protected override bool IsValidNode(ushort nodeId)
         {
-            if (!Settings.SnapToggle)
+            if (Settings.SelectMiddleNodes)
                 return true;
 
             ref var node = ref nodeId.GetNode();
@@ -31,16 +48,28 @@ namespace NodeController
             _ => false,
         };
 
+        public override void OnToolUpdate()
+        {
+            base.OnToolUpdate();
+
+            if (IsHoverSegment)
+            {
+                SegmentEndData.CalculateSegmentBeziers(HoverSegment.Id, out var bezier, out _, out _);
+                bezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out var position);
+                IsPossibleInsertNode = PossibleInsertNode(position);
+                InsertPosition = position;
+            }
+        }
+
         public override void OnPrimaryMouseClicked(Event e)
         {
             if (IsHoverNode)
                 Set(SingletonManager<Manager>.Instance[HoverNode.Id, true]);
-            else if (IsHoverSegment)
+            else if (IsHoverSegment && IsPossibleInsertNode)
             {
-                var controlPoint = new NetTool.ControlPoint() { m_segment = HoverSegment.Id };
-                HoverSegment.GetHitPosition(Tool.Ray, out _, out controlPoint.m_position);
-                if (PossibleInsertNode(controlPoint.m_position))
-                    Set(SingletonManager<Manager>.Instance.InsertNode(controlPoint));
+                var controlPoint = new NetTool.ControlPoint() { m_segment = HoverSegment.Id, m_position = InsertPosition};
+                var newNode = SingletonManager<Manager>.Instance.InsertNode(controlPoint);
+                Set(newNode);
             }
         }
         private void Set(NodeData data)
@@ -59,7 +88,7 @@ namespace NodeController
             foreach (var data in HoverSegment.Datas)
             {
                 ref var node = ref data.Id.GetNode();
-                if (Settings.SnapToggle && node.m_flags.CheckFlags(NetNode.Flags.Moveable, NetNode.Flags.End))
+                if (!Settings.SelectMiddleNodes && node.m_flags.CheckFlags(NetNode.Flags.Moveable, NetNode.Flags.End))
                     continue;
 
                 var gap = 8f + data.halfWidth * 2f * Mathf.Sqrt(1 - data.DeltaAngleCos * data.DeltaAngleCos);
@@ -77,7 +106,6 @@ namespace NodeController
                 SegmentEndData.CalculateSegmentBeziers(HoverSegment.Id, out var bezier, out _, out _);
                 bezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out var position);
                 var direction = bezier.Tangent(t).MakeFlatNormalized();
-
                 var halfWidth = SegmentEndData.GetSegmentWidth(HoverSegment.Id, t);
 
                 var overlayData = new OverlayData(cameraInfo) { Width = halfWidth * 2, Color = PossibleInsertNode(position) ? Colors.Green : Colors.Red, AlphaBlend = false, Cut = true };

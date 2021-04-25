@@ -143,7 +143,23 @@ namespace NodeController
 
             return 0f;
         }
-
+        public override string GetToolInfo()
+        {
+            if(!IsSelectedSide)
+            {
+                if (!IsHoverSide)
+                    return Localize.Tool_InfoSelectToAlign;
+                else
+                    return Localize.Tool_InfoClickToSelectFirstAlign;
+            }
+            else
+            {
+                if (!IsHoverSide)
+                    return Localize.Tool_InfoSelectAlignRelative;
+                else
+                    return Localize.Tool_InfoApplyAlign;
+            }
+        }
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             var width = SegmentEndData.CenterDotRadius * 2;

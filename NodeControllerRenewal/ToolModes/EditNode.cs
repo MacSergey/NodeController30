@@ -1,4 +1,5 @@
 ﻿using ModsCommon.Utilities;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace NodeController
@@ -86,7 +87,24 @@ namespace NodeController
             else if (IsHoverSegmentEndCorner)
                 Tool.SetMode(ToolModeType.DragCorner);
         }
-        public override string GetToolInfo() => $"Hold Shift to alignment roads\nHold Alt to change main road";
+        public override string GetToolInfo()
+        {
+            if (IsHoverSegmentEndCenter)
+                return Localize.Tool_InfoDragCenter;
+            else if (IsHoverSegmentEndCircle)
+                return Localize.Tool_InfoDragCircle;
+            if (IsHoverSegmentEndCorner)
+                return Localize.Tool_InfoDragCorner;
+            else
+            {
+                var info = new List<string>();
+                info.Add(Localize.Tool_InfoAlignMode);
+                if (Tool.Data.IsJunction)
+                    info.Add(Localize.Tool_InfoChangeMainMode);
+
+                return string.Join("\n", info.ToArray());
+            }
+        }
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {

@@ -511,6 +511,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Select middle nodes.
+        /// </summary>
+        internal static string Settings_SelectMiddleNodes {
+            get {
+                return ResourceManager.GetString("Settings_SelectMiddleNodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Activate tool.
         /// </summary>
         internal static string Settings_ShortcutActivateTool {
@@ -538,11 +547,166 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Snap to middle node.
+        ///   Ищет локализованную строку, похожую на Hold Shift to alignment roads.
         /// </summary>
-        internal static string Settings_SnapToMiddleNode {
+        internal static string Tool_InfoAlignMode {
             get {
-                return ResourceManager.GetString("Settings_SnapToMiddleNode", resourceCulture);
+                return ResourceManager.GetString("Tool_InfoAlignMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Click to align with this corner.
+        /// </summary>
+        internal static string Tool_InfoApplyAlign {
+            get {
+                return ResourceManager.GetString("Tool_InfoApplyAlign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hold Alt to change main road.
+        /// </summary>
+        internal static string Tool_InfoChangeMainMode {
+            get {
+                return ResourceManager.GetString("Tool_InfoChangeMainMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Node #{0}
+        ///Click to edit.
+        /// </summary>
+        internal static string Tool_InfoClickNode {
+            get {
+                return ResourceManager.GetString("Tool_InfoClickNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Click to select corner you want to align.
+        /// </summary>
+        internal static string Tool_InfoClickToSelectFirstAlign {
+            get {
+                return ResourceManager.GetString("Tool_InfoClickToSelectFirstAlign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Drag to change offset.
+        /// </summary>
+        internal static string Tool_InfoDragCenter {
+            get {
+                return ResourceManager.GetString("Tool_InfoDragCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Drag to change rotate.
+        /// </summary>
+        internal static string Tool_InfoDragCircle {
+            get {
+                return ResourceManager.GetString("Tool_InfoDragCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Drag to change corner offset.
+        /// </summary>
+        internal static string Tool_InfoDragCorner {
+            get {
+                return ResourceManager.GetString("Tool_InfoDragCorner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Drag this end to change main road.
+        /// </summary>
+        internal static string Tool_InfoDragMainRoadEnd {
+            get {
+                return ResourceManager.GetString("Tool_InfoDragMainRoadEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Drop this end to change main road.
+        /// </summary>
+        internal static string Tool_InfoDropMainRoadEnd {
+            get {
+                return ResourceManager.GetString("Tool_InfoDropMainRoadEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Click to insert crossing node.
+        /// </summary>
+        internal static string Tool_InfoInsertCrossingNode {
+            get {
+                return ResourceManager.GetString("Tool_InfoInsertCrossingNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Click to insert node.
+        /// </summary>
+        internal static string Tool_InfoInsertNode {
+            get {
+                return ResourceManager.GetString("Tool_InfoInsertNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Select corner you want to align with.
+        /// </summary>
+        internal static string Tool_InfoSelectAlignRelative {
+            get {
+                return ResourceManager.GetString("Tool_InfoSelectAlignRelative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Change to desired main road.
+        /// </summary>
+        internal static string Tool_InfoSelectMainRoad {
+            get {
+                return ResourceManager.GetString("Tool_InfoSelectMainRoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Select main road end position.
+        /// </summary>
+        internal static string Tool_InfoSelectNewMainRoadEnd {
+            get {
+                return ResourceManager.GetString("Tool_InfoSelectNewMainRoadEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Select node.
+        /// </summary>
+        internal static string Tool_InfoSelectNode {
+            get {
+                return ResourceManager.GetString("Tool_InfoSelectNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Select corners you want to align.
+        /// </summary>
+        internal static string Tool_InfoSelectToAlign {
+            get {
+                return ResourceManager.GetString("Tool_InfoSelectToAlign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Can&apos;t insert node
+        ///Too close to nearby node.
+        /// </summary>
+        internal static string Tool_InfoTooCloseNode {
+            get {
+                return ResourceManager.GetString("Tool_InfoTooCloseNode", resourceCulture);
             }
         }
     }

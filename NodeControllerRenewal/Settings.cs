@@ -11,7 +11,7 @@ namespace NodeController
 {
     public class Settings : BaseSettings<Mod>
     {
-        public static SavedBool SnapToggle { get; } = new SavedBool(nameof(SnapToggle), SettingsFile, true, true);
+        public static SavedBool SelectMiddleNodes { get; } = new SavedBool(nameof(SelectMiddleNodes), SettingsFile, true, true);
 
         static Settings()
         {
@@ -28,7 +28,7 @@ namespace NodeController
 
             var keymappings = AddKeyMappingPanel(mainGroup);
             keymappings.AddKeymapping(NodeControllerTool.ActivationShortcut);
-            AddCheckBox(mainGroup, Localize.Settings_SnapToMiddleNode, SnapToggle);
+            AddCheckBox(mainGroup, Localize.Settings_SelectMiddleNodes, SelectMiddleNodes);
 
             var notificationsGroup = GeneralTab.AddGroup(Localize.Settings_Notifications) as UIHelper;
 

@@ -82,6 +82,23 @@ namespace NodeController
             Tool.SetDefaultMode();
         }
 
+        public override string GetToolInfo()
+        {
+            if (!IsSelectedSegmentEnd)
+            {
+                if (!IsHoverSegmentEnd)
+                    return Localize.Tool_InfoSelectMainRoad;
+                else
+                    return Localize.Tool_InfoDragMainRoadEnd;
+            }
+            else
+            {
+                if (!IsHoverSegmentEnd)
+                    return Localize.Tool_InfoSelectNewMainRoadEnd;
+                else
+                    return Localize.Tool_InfoDropMainRoadEnd;
+            }
+        }
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             var width = Radius * 2;
