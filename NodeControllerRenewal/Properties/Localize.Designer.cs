@@ -286,6 +286,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на What&apos;s new in {0}.
+        /// </summary>
+        internal static string Mod_WhatsNewCaption {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Look for actual beta change log on Discord.
         /// </summary>
         internal static string Mod_WhatsNewMessageBeta {

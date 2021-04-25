@@ -50,9 +50,9 @@ namespace NodeController
         public SegmentEndData this[ushort segmentId] => SegmentEnds.TryGetValue(segmentId, out var data) ? data : null;
         public Vector3 Position { get; private set; }
 
-        public BezierTrajectory MainBezier { get; private set; }
-        public BezierTrajectory LeftMainBezier { get; private set; }
-        public BezierTrajectory RightMainBezier { get; private set; }
+        public BezierTrajectory MainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
+        public BezierTrajectory LeftMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
+        public BezierTrajectory RightMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
 
         private MainRoad MainRoad { get; set; } = new MainRoad();
 
