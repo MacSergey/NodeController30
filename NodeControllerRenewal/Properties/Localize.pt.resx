@@ -267,6 +267,9 @@
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Notificações</value>
   </data>
+  <data name="Settings_SelectMiddleNodes" xml:space="preserve">
+    <value>Select middle nodes</value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Activar a ferramenta</value>
   </data>
@@ -276,7 +279,60 @@
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>Mostrar as novidades</value>
   </data>
-  <data name="Settings_SnapToMiddleNode" xml:space="preserve">
-    <value>Snap to middle node</value>
+  <data name="Tool_InfoAlignMode" xml:space="preserve">
+    <value>Hold Shift to alignment roads</value>
+  </data>
+  <data name="Tool_InfoApplyAlign" xml:space="preserve">
+    <value>Click to align with this corner</value>
+  </data>
+  <data name="Tool_InfoChangeMainMode" xml:space="preserve">
+    <value>Hold Alt to change main road</value>
+  </data>
+  <data name="Tool_InfoClickNode" xml:space="preserve">
+    <value>Node #{0}
+Click to edit</value>
+  </data>
+  <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
+    <value>Click to select corner you want to align</value>
+  </data>
+  <data name="Tool_InfoDragCenter" xml:space="preserve">
+    <value>Drag to change offset</value>
+  </data>
+  <data name="Tool_InfoDragCircle" xml:space="preserve">
+    <value>Drag to change rotate</value>
+  </data>
+  <data name="Tool_InfoDragCorner" xml:space="preserve">
+    <value>Drag to change corner offset</value>
+  </data>
+  <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
+    <value>Drag this end to change main road</value>
+  </data>
+  <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
+    <value>Drop this end to change main road</value>
+  </data>
+  <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
+    <value>Click to insert crossing node</value>
+  </data>
+  <data name="Tool_InfoInsertNode" xml:space="preserve">
+    <value>Click to insert node</value>
+  </data>
+  <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
+    <value>Select corner you want to align with</value>
+  </data>
+  <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
+    <value>Change to desired main road</value>
+  </data>
+  <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
+    <value>Select main road end position</value>
+  </data>
+  <data name="Tool_InfoSelectNode" xml:space="preserve">
+    <value>Select node</value>
+  </data>
+  <data name="Tool_InfoSelectToAlign" xml:space="preserve">
+    <value>Select corners you want to align</value>
+  </data>
+  <data name="Tool_InfoTooCloseNode" xml:space="preserve">
+    <value>Can't insert node
+Too close to nearby node</value>
   </data>
 </root>
