@@ -2,6 +2,7 @@
 using ModsCommon;
 using ModsCommon.Utilities;
 using NodeController.UI;
+using NodeController.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace NodeController
 {
     public class NodeControllerTool : BaseTool<Mod, NodeControllerTool, ToolModeType>
     {
-        public static Shortcut ActivationShortcut { get; } = new Shortcut(Settings.SettingsFile, nameof(ActivationShortcut), nameof(Localize.Settings_ShortcutActivateTool), SavedInputKey.Encode(KeyCode.N, true, false, false));
+        public static NodeControllerShortcut ActivationShortcut { get; } = new NodeControllerShortcut(nameof(ActivationShortcut), nameof(Localize.Settings_ShortcutActivateTool), SavedInputKey.Encode(KeyCode.N, true, false, false));
 
         protected override bool ShowToolTip => !Panel.IsHover;
         protected override IToolMode DefaultMode => ToolModes[ToolModeType.Select];
