@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -118,100 +118,100 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Annuleren</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
-    <value>No</value>
+    <value>Nee</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
-    <value>OK</value>
+    <value>Ok</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>Ja</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>I agree</value>
+    <value>Ik ga akkoord</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>BETA version warning</value>
+    <value>Bèta versie waarschuwing</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Get stable version</value>
+    <value>Overstappen naar stabiele versie</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Game Language</value>
+    <value>Gebruik dezelfde taal als spel</value>
   </data>
   <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Czech</value>
+    <value>Tsjechisch</value>
   </data>
   <data name="Mod_Locale_de" xml:space="preserve">
-    <value>German</value>
+    <value>Duits</value>
   </data>
   <data name="Mod_Locale_en" xml:space="preserve">
-    <value>English US</value>
+    <value>Engels VS</value>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>English UK</value>
+    <value>Engels VK</value>
   </data>
   <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Spanish</value>
+    <value>Spaans</value>
   </data>
   <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Finnish</value>
+    <value>Fins</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>French</value>
+    <value>Frans</value>
   </data>
   <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Italian</value>
+    <value>Italiaans</value>
   </data>
   <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Japanese</value>
+    <value>Japans</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Dutch</value>
+    <value>Nederlands</value>
   </data>
   <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Polish</value>
+    <value>Pools</value>
   </data>
   <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Portuguese</value>
+    <value>Portugees</value>
   </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Russian</value>
+    <value>Russisch</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Chinese Simplified</value>
+    <value>Chinees (vereenvoudigd)</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Version {0}</value>
+    <value>Versie {0}</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
-    <value>Bend</value>
+    <value>Bocht</value>
   </data>
   <data name="NodeStyle_Crossing" xml:space="preserve">
-    <value>Crossing</value>
+    <value>Kruising</value>
   </data>
   <data name="NodeStyle_Custom" xml:space="preserve">
-    <value>Custom</value>
+    <value>Aangepast</value>
   </data>
   <data name="NodeStyle_End" xml:space="preserve">
-    <value>End</value>
+    <value>Einde</value>
   </data>
   <data name="NodeStyle_Middle" xml:space="preserve">
-    <value>Middle</value>
+    <value>Midden</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
     <value>Stretch</value>
@@ -259,10 +259,10 @@
     <value>Node #{0}</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value>Language</value>
+    <value>Taal</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Activate tool</value>
+    <value>Tool activeren</value>
   </data>
   <data name="Settings_SnapToMiddleNode" xml:space="preserve">
     <value>Snap to middle node</value>
