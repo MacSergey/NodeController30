@@ -192,6 +192,9 @@
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>简体中文</value>
   </data>
+  <data name="Mod_WhatsNewCaption" xml:space="preserve">
+    <value>{0} 版本的新功能</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
@@ -261,8 +264,17 @@
   <data name="Settings_Language" xml:space="preserve">
     <value>语言</value>
   </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>通知消息</value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>启用工具</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>只推送重要更新提示消息</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>显示更新提示框</value>
   </data>
   <data name="Settings_SnapToMiddleNode" xml:space="preserve">
     <value>Snap to middle node</value>

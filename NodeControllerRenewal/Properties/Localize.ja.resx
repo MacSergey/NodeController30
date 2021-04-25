@@ -139,7 +139,9 @@
     <value>安定版を入手</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
+    <value>現在、 {0} のβ版を使用しています。
+新機能をテストするMODで、エラーが発生する可能性があります。
+間違ってサブスクライブした場合は、安定版に切り替えてください。</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value></value>
@@ -192,6 +194,9 @@
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>簡体中国語</value>
   </data>
+  <data name="Mod_WhatsNewCaption" xml:space="preserve">
+    <value>{0} の更新内容</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
@@ -208,7 +213,7 @@
     <value>カスタム</value>
   </data>
   <data name="NodeStyle_End" xml:space="preserve">
-    <value>終了</value>
+    <value>終端</value>
   </data>
   <data name="NodeStyle_Middle" xml:space="preserve">
     <value>ミドル</value>
@@ -261,8 +266,17 @@
   <data name="Settings_Language" xml:space="preserve">
     <value>言語設定</value>
   </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>通知の設定</value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>ノードコントローラーの有効化</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>主要なアップデートのみ通知</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>新着情報を表示する</value>
   </data>
   <data name="Settings_SnapToMiddleNode" xml:space="preserve">
     <value>Snap to middle node</value>

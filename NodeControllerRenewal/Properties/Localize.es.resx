@@ -139,7 +139,7 @@
     <value>Obtener la versión estable</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
+    <value>Está utilizando la versión BETA de {0}. Es para probar nuevas funciones. Si se suscribió por error, cambie a la versión estable.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value></value>
@@ -192,6 +192,9 @@
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Chino Simplificado</value>
   </data>
+  <data name="Mod_WhatsNewCaption" xml:space="preserve">
+    <value>Novedades de {0}</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
@@ -199,70 +202,79 @@
     <value>Versión {0}</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
-    <value>Bend</value>
+    <value>Doblado</value>
   </data>
   <data name="NodeStyle_Crossing" xml:space="preserve">
-    <value>Crossing</value>
+    <value>Paso de peatones</value>
   </data>
   <data name="NodeStyle_Custom" xml:space="preserve">
-    <value>Custom</value>
+    <value>Personalizado</value>
   </data>
   <data name="NodeStyle_End" xml:space="preserve">
-    <value>End</value>
+    <value>Final</value>
   </data>
   <data name="NodeStyle_Middle" xml:space="preserve">
-    <value>Middle</value>
+    <value>Medio</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
-    <value>Stretch</value>
+    <value>Estirado</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
-    <value>UTurn</value>
+    <value>Vuelta en U</value>
   </data>
   <data name="Option_HideMarking" xml:space="preserve">
-    <value>Hide crosswalk marking</value>
+    <value>Ocultar la marca del paso de peatones</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
-    <value>Offset</value>
+    <value>Desplazamiento</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
-    <value>Reset to default</value>
+    <value>Restablecer la configuración predeterminada</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>Rotate</value>
+    <value>Rotar</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
-    <value>Shift</value>
+    <value>Desplazar</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
-    <value>Slope</value>
+    <value>Inclinar</value>
   </data>
   <data name="Option_Stretch" xml:space="preserve">
-    <value>Stretch</value>
+    <value>Estirar</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
-    <value>Style</value>
+    <value>Estilo</value>
   </data>
   <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Flat</value>
+    <value>Plano</value>
   </data>
   <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Slope</value>
+    <value>Cuesta</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>Twist</value>
+    <value>Doblar</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
-    <value>Node type</value>
+    <value>Tipo de nodo</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
-    <value>Node #{0}</value>
+    <value>Nodo #{0}</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>Idioma</value>
   </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>Notificaciones</value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Activar herramienta</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>Notificación solo sobre actualizaciones importantes</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>Mostrar novedades</value>
   </data>
   <data name="Settings_SnapToMiddleNode" xml:space="preserve">
     <value>Snap to middle node</value>

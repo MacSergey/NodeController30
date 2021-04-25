@@ -192,6 +192,9 @@
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Yksinkertaistettu kiina</value>
   </data>
+  <data name="Mod_WhatsNewCaption" xml:space="preserve">
+    <value>Uutta modissa {0}</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
@@ -261,8 +264,17 @@
   <data name="Settings_Language" xml:space="preserve">
     <value>Kieli</value>
   </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>Ilmoitukset</value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Käynnistä työkalu</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>Ilmoita vain merkittävistä päivityksistä</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>Näytä, mikä on uutta</value>
   </data>
   <data name="Settings_SnapToMiddleNode" xml:space="preserve">
     <value>Snap to middle node</value>
