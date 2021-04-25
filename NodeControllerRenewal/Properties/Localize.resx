@@ -264,8 +264,17 @@
   <data name="Settings_Language" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Activate tool</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>Notification only about major updates</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>Show what's new</value>
   </data>
   <data name="Settings_SnapToMiddleNode" xml:space="preserve">
     <value>Snap to middle node</value>

@@ -502,11 +502,38 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Notifications.
+        /// </summary>
+        internal static string Settings_Notifications {
+            get {
+                return ResourceManager.GetString("Settings_Notifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Activate tool.
         /// </summary>
         internal static string Settings_ShortcutActivateTool {
             get {
                 return ResourceManager.GetString("Settings_ShortcutActivateTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Notification only about major updates.
+        /// </summary>
+        internal static string Settings_ShowOnlyMajor {
+            get {
+                return ResourceManager.GetString("Settings_ShowOnlyMajor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show what&apos;s new.
+        /// </summary>
+        internal static string Settings_ShowWhatsNew {
+            get {
+                return ResourceManager.GetString("Settings_ShowWhatsNew", resourceCulture);
             }
         }
         

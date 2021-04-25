@@ -29,6 +29,11 @@ namespace NodeController
             var keymappings = AddKeyMappingPanel(mainGroup);
             keymappings.AddKeymapping(NodeControllerTool.ActivationShortcut);
             AddCheckBox(mainGroup, Localize.Settings_SnapToMiddleNode, SnapToggle);
+
+            var notificationsGroup = GeneralTab.AddGroup(Localize.Settings_Notifications) as UIHelper;
+
+            AddCheckBox(notificationsGroup, Localize.Settings_ShowWhatsNew, ShowWhatsNew);
+            AddCheckBox(notificationsGroup, Localize.Settings_ShowOnlyMajor, ShowOnlyMajor);
         }
     }
 }
