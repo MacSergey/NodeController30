@@ -22,7 +22,9 @@ namespace NodeController
                 nodeId.GetNode().m_flags |= NetNode.Flags.Middle | NetNode.Flags.Moveable;
 
             var info = controlPoint.m_segment.GetSegment().Info;
-            var data = (nodeType == NodeStyleType.Crossing && info.m_netAI is RoadBaseAI && info.PedestrianLanes() >= 2) ? Create(nodeId, nodeType: nodeType) : Create(nodeId);
+            var option = Options.IncludeNearby | Options.Update;
+            var newNodeType = nodeType == NodeStyleType.Crossing && (info.m_netAI is not RoadBaseAI || info.PedestrianLanes() < 2) ? null : (NodeStyleType?)nodeType;
+            var data = Create(nodeId, option, newNodeType);
             return data;
         }
         public NodeData this[ushort nodeId, bool create = false] => this[nodeId, create ? Options.All : Options.NotCreate];
@@ -62,28 +64,6 @@ namespace NodeController
             start = Buffer[segment.m_startNode]?[segmentId];
             end = Buffer[segment.m_endNode]?[segmentId];
         }
-        //public void GetSegmentWidth(ushort segmentId, float position, out float startWidth, out float endWidth)
-        //{
-        //    GetSegmentData(segmentId, out var start, out var end);
-
-        //    startWidth = position * (start?.WidthRatio ?? 1f);
-        //    endWidth = position * (end?.WidthRatio ?? 1f);
-        //}
-        //public void GetSegmentWidth(ushort segmentId, out float startWidth, out float endWidth)
-        //{
-        //    var segment = segmentId.GetSegment();
-        //    GetSegmentWidth(segmentId, segment.Info.m_halfWidth, out startWidth, out endWidth);
-        //}
-        //public float GetSegmentWidth(ushort segmentId, float t)
-        //{
-        //    GetSegmentWidth(segmentId, out var start, out var end);
-        //    return Mathf.Lerp(start, end, t);
-        //}
-        //public float GetSegmentWidth(ushort segmentId, float position, float t)
-        //{
-        //    GetSegmentWidth(segmentId, position, out var start, out var end);
-        //    return Mathf.Lerp(start, end, t);
-        //}
 
         public bool ContainsNode(ushort nodeId) => Buffer[nodeId] != null;
         public bool ContainsSegment(ushort segmentId)
