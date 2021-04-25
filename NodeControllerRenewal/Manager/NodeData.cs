@@ -322,14 +322,14 @@ namespace NodeController
 
         private ushort FindMain(ushort ignore)
         {
-            var main = SegmentEnds.Values.Aggregate(default(SegmentEndData), (i, j) => Compare(i, j, ignore));
+            var main = SegmentEnds.Values.Aggregate(default(SegmentEndData), (i, j) => CompareSegmentEnds(i, j, ignore));
             return main?.Id ?? 0;
         }
-        private SegmentEndData Compare(SegmentEndData first, SegmentEndData second, ushort ignore)
+        private SegmentEndData CompareSegmentEnds(SegmentEndData first, SegmentEndData second, ushort ignore)
         {
-            if (first == null || first.Id == ignore)
-                return second;
-            else if (second == null || second.Id == ignore)
+            if (!IsValid(first))
+                return IsValid(second) ? second : null;
+            else if (!IsValid(second))
                 return first;
 
             var firstInfo = first.Id.GetSegment().Info;
@@ -343,6 +343,8 @@ namespace NodeController
                         result = ((firstInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false).CompareTo((secondInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false);
 
             return result >= 0 ? first : second;
+
+            bool IsValid(SegmentEndData end) => end != null && end.Id != ignore;
         }
         public void UpdateNode() => SingletonManager<Manager>.Instance.Update(Id, true);
         public void ResetToDefault()
@@ -387,11 +389,12 @@ namespace NodeController
 
             return newNodeType switch
             {
-                NodeStyleType.Crossing => IsRoad && IsEqualWidth && IsStraight && PedestrianLaneCount >= 2 && !HasNodeLess,
+                NodeStyleType.Crossing => IsRoad && IsTwoRoads && IsEqualWidth && IsStraight && PedestrianLaneCount >= 2 && !HasNodeLess,
                 NodeStyleType.UTurn => IsRoad && IsTwoRoads && !HasNodeLess && Info.m_forwardVehicleLaneCount > 0 && Info.m_backwardVehicleLaneCount > 0,
-                NodeStyleType.Stretch => IsRoad && CanModifyTextures && IsStraight,
-                NodeStyleType.Middle => IsStraight || Is180,
-                NodeStyleType.Custom or NodeStyleType.Bend => true,
+                NodeStyleType.Stretch => IsRoad && IsTwoRoads && CanModifyTextures && IsStraight,
+                NodeStyleType.Middle => IsTwoRoads && IsStraight || Is180,
+                NodeStyleType.Bend => IsTwoRoads,
+                NodeStyleType.Custom => !IsEnd,
                 NodeStyleType.End => IsEnd,
                 _ => throw new Exception("Unreachable code"),
             };
@@ -549,6 +552,8 @@ namespace NodeController
             First = config.GetAttrValue<ushort>("F", 0);
             Second = config.GetAttrValue<ushort>("S", 0);
         }
+
+        public override string ToString() => $"{First}-{Second}";
     }
 
     public class NodeTypePropertyPanel : EnumOncePropertyPanel<NodeStyleType, NodeTypePropertyPanel.NodeTypeDropDown>
