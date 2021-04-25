@@ -3,6 +3,7 @@ using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 
@@ -10,12 +11,25 @@ namespace NodeController
 {
     public enum NodeStyleType
     {
+        [Description(nameof(Localize.NodeStyle_Middle))]
         Middle,
+
+        [Description(nameof(Localize.NodeStyle_Bend))]
         Bend,
+
+        [Description(nameof(Localize.NodeStyle_Stretch))]
         Stretch,
+
+        [Description(nameof(Localize.NodeStyle_Crossing))]
         Crossing,
+
+        [Description(nameof(Localize.NodeStyle_UTurn))]
         UTurn,
+
+        [Description(nameof(Localize.NodeStyle_Custom))]
         Custom,
+
+        [Description(nameof(Localize.NodeStyle_End))]
         End,
     }
     public static class NodeStyleTypeExtension

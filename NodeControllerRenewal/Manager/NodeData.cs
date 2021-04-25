@@ -485,7 +485,7 @@ namespace NodeController
         private NodeTypePropertyPanel GetNodeTypeProperty(UIComponent parent, Action refresh)
         {
             var typeProperty = ComponentPool.Get<NodeTypePropertyPanel>(parent);
-            typeProperty.Text = "Node type";
+            typeProperty.Text = Localize.Option_Type;
             typeProperty.Init(IsPossibleType);
             typeProperty.SelectedObject = Type;
             typeProperty.OnSelectObjectChanged += (value) =>
@@ -556,6 +556,6 @@ namespace NodeController
         protected override float DropDownWidth => 100f;
         protected override bool IsEqual(NodeStyleType first, NodeStyleType second) => first == second;
         public class NodeTypeDropDown : UIDropDown<NodeStyleType> { }
-        protected override string GetDescription(NodeStyleType value) => value.ToString();
+        protected override string GetDescription(NodeStyleType value) => value.Description();
     }
 }

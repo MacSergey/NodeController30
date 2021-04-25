@@ -241,6 +241,69 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Bend.
+        /// </summary>
+        internal static string NodeStyle_Bend {
+            get {
+                return ResourceManager.GetString("NodeStyle_Bend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Crossing.
+        /// </summary>
+        internal static string NodeStyle_Crossing {
+            get {
+                return ResourceManager.GetString("NodeStyle_Crossing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Custom.
+        /// </summary>
+        internal static string NodeStyle_Custom {
+            get {
+                return ResourceManager.GetString("NodeStyle_Custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на End.
+        /// </summary>
+        internal static string NodeStyle_End {
+            get {
+                return ResourceManager.GetString("NodeStyle_End", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Middle.
+        /// </summary>
+        internal static string NodeStyle_Middle {
+            get {
+                return ResourceManager.GetString("NodeStyle_Middle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Stretch.
+        /// </summary>
+        internal static string NodeStyle_Stretch {
+            get {
+                return ResourceManager.GetString("NodeStyle_Stretch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на UTurn.
+        /// </summary>
+        internal static string NodeStyle_UTurn {
+            get {
+                return ResourceManager.GetString("NodeStyle_UTurn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Hide crosswalk marking.
         /// </summary>
         internal static string Option_HideMarking {
@@ -336,6 +399,15 @@ namespace NodeController {
         internal static string Option_Twist {
             get {
                 return ResourceManager.GetString("Option_Twist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Node type.
+        /// </summary>
+        internal static string Option_Type {
+            get {
+                return ResourceManager.GetString("Option_Type", resourceCulture);
             }
         }
         

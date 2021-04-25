@@ -108,6 +108,7 @@
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\Panel.cs" />
     <None Include="Utilities\CornerSource.cs" />
+    <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Utilities\MoveItIntegration.cs" />
     <Compile Include="Manager\SerializableDataExtension.cs" />
     <Compile Include="Manager\INetworkData.cs" />
