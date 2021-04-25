@@ -118,28 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Отмена</value>
+    <value>Anular</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
-    <value>Нет</value>
+    <value>No</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
-    <value>ОК</value>
+    <value>OK</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Да</value>
+    <value>Sí</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>Я согласен</value>
+    <value>Acepto</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>Предупреждение о BETA версии</value>
+    <value>Aviso de versión BETA</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Получить стабильную</value>
+    <value>Obtener la versión estable</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Вы используете BETA версию {0}. Она предназначена для тестирования новых функций и может содержать ошибки. Если вы подписались по ошибки, то перейдите на стабильную версию.</value>
+    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value></value>
@@ -148,121 +148,121 @@
     <value></value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Язык игры</value>
+    <value>Idioma del Juego</value>
   </data>
   <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Чешский</value>
+    <value>Checo</value>
   </data>
   <data name="Mod_Locale_de" xml:space="preserve">
-    <value>Немецкий</value>
+    <value>Alemán</value>
   </data>
   <data name="Mod_Locale_en" xml:space="preserve">
-    <value>Английский США</value>
+    <value>Inglés EEUU</value>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>Английский Великобритания</value>
+    <value>Inglés Reino Unido</value>
   </data>
   <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Испанский</value>
+    <value>Español</value>
   </data>
   <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Финский</value>
+    <value>Finés</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>Французский</value>
+    <value>Francés</value>
   </data>
   <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Итальянский</value>
+    <value>Italiano</value>
   </data>
   <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Японский</value>
+    <value>Japonés</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Голландский</value>
+    <value>Holandés</value>
   </data>
   <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Польский</value>
+    <value>Polaco</value>
   </data>
   <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Португальский</value>
+    <value>Portugués</value>
   </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Русский</value>
+    <value>Ruso</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Китайский упрощенный</value>
+    <value>Chino Simplificado</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Версия {0}</value>
+    <value>Versión {0}</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
-    <value>Изгиб</value>
+    <value>Bend</value>
   </data>
   <data name="NodeStyle_Crossing" xml:space="preserve">
-    <value>Переход</value>
+    <value>Crossing</value>
   </data>
   <data name="NodeStyle_Custom" xml:space="preserve">
-    <value>Произвольный</value>
+    <value>Custom</value>
   </data>
   <data name="NodeStyle_End" xml:space="preserve">
-    <value>Конец</value>
+    <value>End</value>
   </data>
   <data name="NodeStyle_Middle" xml:space="preserve">
-    <value>Средний</value>
+    <value>Middle</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
-    <value>Растянуты</value>
+    <value>Stretch</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
-    <value>Разворот</value>
+    <value>UTurn</value>
   </data>
   <data name="Option_HideMarking" xml:space="preserve">
-    <value>Скрыть разметку</value>
+    <value>Hide crosswalk marking</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
-    <value>Отступ</value>
+    <value>Offset</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
-    <value>Сбросить к поумолчанию</value>
+    <value>Reset to default</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>Поворот</value>
+    <value>Rotate</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
-    <value>Сдвиг</value>
+    <value>Shift</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
-    <value>Наклон</value>
+    <value>Slope</value>
   </data>
   <data name="Option_Stretch" xml:space="preserve">
-    <value>Растягивание</value>
+    <value>Stretch</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
-    <value>Стиль</value>
+    <value>Style</value>
   </data>
   <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Плоский</value>
+    <value>Flat</value>
   </data>
   <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Наклонный</value>
+    <value>Slope</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>Скручивание</value>
+    <value>Twist</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
-    <value>Тип узла</value>
+    <value>Node type</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
-    <value>Узел #{0}</value>
+    <value>Node #{0}</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value>Язык</value>
+    <value>Idioma</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Активация инструмента</value>
+    <value>Activar herramienta</value>
   </data>
   <data name="Settings_SnapToMiddleNode" xml:space="preserve">
     <value>Snap to middle node</value>
