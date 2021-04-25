@@ -6,6 +6,7 @@ using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
 using UnityEngine.SceneManagement;
+using static ModsCommon.SettingsHelper;
 
 namespace NodeController
 {
@@ -34,7 +35,23 @@ namespace NodeController
 
             AddCheckBox(notificationsGroup, Localize.Settings_ShowWhatsNew, ShowWhatsNew);
             AddCheckBox(notificationsGroup, Localize.Settings_ShowOnlyMajor, ShowOnlyMajor);
+
+#if DEBUG
+            var debugTab = CreateTab("Debug");
+            AddDebug(debugTab);
+#endif
         }
+#if DEBUG
+        private void AddDebug(UIHelperBase helper)
+        {
+            var group = helper.AddGroup("Debug") as UIHelper;
+
+            AddCheckBox(group, "Alpha blend overlay", Selection.AlphaBlendOverlay);
+            AddCheckBox(group, "Render overlay center", Selection.RenderOverlayCentre);
+            AddCheckBox(group, "Render overlay borders", Selection.RenderOverlayBorders);
+            AddFloatField(group, "Overlay width", Selection.OverlayWidth, 3f, 1f);
+        }
+#endif
     }
 }
 
