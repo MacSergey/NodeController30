@@ -11,8 +11,6 @@ namespace NodeController
 {
     public class Settings : BaseSettings<Mod>
     {
-        public static string SettingsFile => $"{nameof(NodeController)}{nameof(SettingsFile)}";
-
         public static SavedBool SnapToggle { get; } = new SavedBool(nameof(SnapToggle), SettingsFile, true, true);
 
         static Settings()
@@ -23,11 +21,14 @@ namespace NodeController
 
         protected override void OnSettingsUI()
         {
-            var group = GeneralTab.AddGroup();
+            var languageGroup = GeneralTab.AddGroup(Localize.Settings_Language) as UIHelper;
+            AddLanguageList(languageGroup);
 
-            var keymappings = AddKeyMappingPanel(group);
+            var mainGroup = GeneralTab.AddGroup();
+
+            var keymappings = AddKeyMappingPanel(mainGroup);
             keymappings.AddKeymapping(NodeControllerTool.ActivationShortcut);
-            AddCheckBox(group, "Snap to middle node", SnapToggle);
+            AddCheckBox(mainGroup, Localize.Settings_SnapToMiddleNode, SnapToggle);
         }
     }
 }

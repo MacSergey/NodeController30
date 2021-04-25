@@ -255,7 +255,7 @@ namespace NodeController
 
         protected FloatPropertyPanel GetOffsetProperty(UIComponent parent)
         {
-            var offsetProperty = GetProperty(parent, "Offset");
+            var offsetProperty = GetProperty(parent, Localize.Option_Offset);
             offsetProperty.MinValue = MinOffset;
             offsetProperty.MaxValue = MaxOffset;
 
@@ -263,7 +263,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetShiftProperty(UIComponent parent)
         {
-            var shiftProperty = GetProperty(parent, "Shift");
+            var shiftProperty = GetProperty(parent, Localize.Option_Shift);
             shiftProperty.MinValue = MinShift;
             shiftProperty.MaxValue = MaxShift;
 
@@ -271,7 +271,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetRotateProperty(UIComponent parent)
         {
-            var rotateProperty = GetProperty(parent, "Rotate");
+            var rotateProperty = GetProperty(parent, Localize.Option_Rotate);
             rotateProperty.MinValue = SegmentEndData.MinPossibleRotate;
             rotateProperty.MaxValue = SegmentEndData.MaxPossibleRotate;
 
@@ -279,7 +279,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetSlopeProperty(UIComponent parent)
         {
-            var slopeProperty = GetProperty(parent, "Slope");
+            var slopeProperty = GetProperty(parent, Localize.Option_Slope);
             slopeProperty.MinValue = MinSlope;
             slopeProperty.MaxValue = MaxSlope;
 
@@ -287,7 +287,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetTwistProperty(UIComponent parent)
         {
-            var twistProperty = GetProperty(parent, "Twist");
+            var twistProperty = GetProperty(parent, Localize.Option_Twist);
             twistProperty.MinValue = MinTwist;
             twistProperty.MaxValue = MaxTwist;
 
@@ -295,7 +295,7 @@ namespace NodeController
         }
         protected FloatPropertyPanel GetStretchProperty(UIComponent parent)
         {
-            var stretchProperty = GetProperty(parent, "Stretch");
+            var stretchProperty = GetProperty(parent, Localize.Option_Stretch);
             stretchProperty.MinValue = MinStretch;
             stretchProperty.MaxValue = MaxStretch;
 
@@ -354,8 +354,8 @@ namespace NodeController
         protected BoolListPropertyPanel GetJunctionButtons(UIComponent parent)
         {
             var flatJunctionProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
-            flatJunctionProperty.Text = "Style";
-            flatJunctionProperty.Init("Flat", "Slope", false);
+            flatJunctionProperty.Text = Localize.Option_Style;
+            flatJunctionProperty.Init(Localize.Option_StyleFlat, Localize.Option_StyleSlope, false);
             flatJunctionProperty.SelectedObject = Data.IsSlopeJunctions;
             flatJunctionProperty.OnSelectObjectChanged += (value) => Data.IsSlopeJunctions = value;
 
@@ -364,8 +364,8 @@ namespace NodeController
         protected BoolListPropertyPanel GetHideMarkingProperty(UIComponent parent)
         {
             var hideMarkingProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
-            hideMarkingProperty.Text = "Hide crosswalk marking";
-            hideMarkingProperty.Init("No", "Yes");
+            hideMarkingProperty.Text = Localize.Option_HideMarking;
+            hideMarkingProperty.Init(Localize.MessageBox_No, Localize.MessageBox_Yes);
             hideMarkingProperty.SelectedObject = Data.NoMarkings;
             hideMarkingProperty.OnSelectObjectChanged += (value) => Data.NoMarkings = value;
 
@@ -374,7 +374,7 @@ namespace NodeController
         protected ButtonPanel GetResetButton(UIComponent parent, Action refresh)
         {
             var resetButton = ComponentPool.Get<ButtonPanel>(parent);
-            resetButton.Text = "Reset to default";
+            resetButton.Text = Localize.Option_ResetToDefault;
             resetButton.Init();
             resetButton.OnButtonClick += () =>
             {

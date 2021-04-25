@@ -21,7 +21,7 @@ namespace NodeController
 
         public static string XmlName => "N";
 
-        public string Title => $"Node #{Id}";
+        public string Title => string.Format(Localize.Panel_NodeId, Id);
         public string XmlSection => XmlName;
 
         public ushort Id { get; set; }

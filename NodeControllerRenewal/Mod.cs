@@ -5,6 +5,7 @@ using NodeController.Patches;
 using NodeController.UI;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection.Emit;
 using TrafficManager.Manager.Impl;
 using UnityEngine;
@@ -18,12 +19,16 @@ namespace NodeController
 
         public override string WorkshopUrl => "https://steamcommunity.com/sharedfiles/filedetails/?id=2462845270";
         public override string NameRaw => "Node Controller Renewal";
-        public override string Description => string.Empty;
+        public override string Description => !IsBeta ? Localize.Mod_Description : Localize.Mod_DescriptionBeta;
         public override List<Version> Versions => new List<Version>();
 
         protected override string IdRaw => nameof(NodeController);
         public override bool IsBeta => true;
-        protected override string Locale => string.Empty;
+        public override CultureInfo Culture
+        {
+            get => Localize.Culture;
+            protected set => Localize.Culture = value;
+        }
 
         #endregion
 
@@ -34,6 +39,7 @@ namespace NodeController
             var settings = new Settings();
             settings.OnSettingsUI(helper);
         }
+        public override string GetLocalizeString(string str, CultureInfo culture = null) => Localize.ResourceManager.GetString(str, culture ?? Culture);
 
         #endregion
 

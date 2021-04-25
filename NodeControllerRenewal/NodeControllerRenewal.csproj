@@ -93,6 +93,11 @@
     <Compile Include="Manager\NodeType.cs" />
     <Compile Include="Manager\SegmentSide.cs" />
     <Compile Include="Patches\NetManagerPatches.cs" />
+    <Compile Include="Properties\Localize.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Localize.resx</DependentUpon>
+    </Compile>
     <Compile Include="ToolModes\AlignSegmentEnds.cs" />
     <Compile Include="ToolModes\ChangeMainRoad.cs" />
     <Compile Include="ToolModes\DragCorner.cs" />
@@ -127,6 +132,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Localize.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Localize.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>NodeController</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Localize.ru.resx">
+      <CustomToolNamespace>NodeController</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Button.png" />
   </ItemGroup>
   <ItemGroup>
@@ -156,7 +169,7 @@
   </Target>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_ConfigurationName="Debug" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="Build" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Build" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Debug" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="AfterBuildRelease" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'">
