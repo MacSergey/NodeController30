@@ -553,7 +553,7 @@ namespace NodeController
 
     public class NodeTypePropertyPanel : EnumOncePropertyPanel<NodeStyleType, NodeTypePropertyPanel.NodeTypeDropDown>
     {
-        protected override float DropDownWidth => 100f;
+        protected override float DropDownWidth => 150f;
         protected override bool IsEqual(NodeStyleType first, NodeStyleType second) => first == second;
         public class NodeTypeDropDown : UIDropDown<NodeStyleType> { }
         protected override string GetDescription(NodeStyleType value) => value.Description();
