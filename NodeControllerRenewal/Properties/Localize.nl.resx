@@ -139,7 +139,7 @@
     <value>Overstappen naar stabiele versie</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
+    <value>Je gebruikt de bèta versie van {0}. Deze wordt gebruikt voor het testen van nieuwe functies en kan fouten bevatten. Als je per ongeluk geabonneerd op de bèta, kan je naar de stabiele versie overstappen.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value></value>
@@ -220,52 +220,55 @@
     <value>Stretch</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
-    <value>UTurn</value>
+    <value>U-bocht</value>
   </data>
   <data name="Option_HideMarking" xml:space="preserve">
-    <value>Hide crosswalk marking</value>
+    <value>Verberg oversteekplaatsmarkering</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Offset</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
-    <value>Reset to default</value>
+    <value>Terug naar standaardwaarde</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>Rotate</value>
+    <value>Draaien</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Shift</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
-    <value>Slope</value>
+    <value>Helling</value>
   </data>
   <data name="Option_Stretch" xml:space="preserve">
     <value>Stretch</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
-    <value>Style</value>
+    <value>Stijl</value>
   </data>
   <data name="Option_StyleFlat" xml:space="preserve">
     <value>Flat</value>
   </data>
   <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Slope</value>
+    <value>Helling</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Twist</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
-    <value>Node type</value>
+    <value>Knooptype</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
-    <value>Node #{0}</value>
+    <value>Knoop #{0}</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>Taal</value>
   </data>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Meldingen</value>
+  </data>
+  <data name="Settings_SelectMiddleNodes" xml:space="preserve">
+    <value>Select middle nodes</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Tool activeren</value>
@@ -276,7 +279,60 @@
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>Toon wat nieuw is</value>
   </data>
-  <data name="Settings_SnapToMiddleNode" xml:space="preserve">
-    <value>Snap to middle node</value>
+  <data name="Tool_InfoAlignMode" xml:space="preserve">
+    <value>Houd Shift ingedrukt om wegen uit te lijnen</value>
+  </data>
+  <data name="Tool_InfoApplyAlign" xml:space="preserve">
+    <value>Klik om met deze hoek uit te lijnen</value>
+  </data>
+  <data name="Tool_InfoChangeMainMode" xml:space="preserve">
+    <value>Houd Alt ingedrukt om de hoofdweg te veranderen</value>
+  </data>
+  <data name="Tool_InfoClickNode" xml:space="preserve">
+    <value>Punt #{0}
+Klik om te wijzigen</value>
+  </data>
+  <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
+    <value>Klik om de hoek te selecteren die je wilt uitlijnen</value>
+  </data>
+  <data name="Tool_InfoDragCenter" xml:space="preserve">
+    <value>Sleep om de verschuiving te veranderen</value>
+  </data>
+  <data name="Tool_InfoDragCircle" xml:space="preserve">
+    <value>Sleep om de draaiing te veranderen</value>
+  </data>
+  <data name="Tool_InfoDragCorner" xml:space="preserve">
+    <value>Sleep om de hoekverschuiving te veranderen</value>
+  </data>
+  <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
+    <value>Sleep dit uiteinde om de hoofdweg te veranderen</value>
+  </data>
+  <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
+    <value>Drop this end to change main road</value>
+  </data>
+  <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
+    <value>Klik om oversteekknooppunt toe te voegen</value>
+  </data>
+  <data name="Tool_InfoInsertNode" xml:space="preserve">
+    <value>Klik om knoop toe te voegen</value>
+  </data>
+  <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
+    <value>Selecteer de hoek waarmee je wilt uitlijnen</value>
+  </data>
+  <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
+    <value>Verander naar de gewenste hoofdweg</value>
+  </data>
+  <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
+    <value>Selecteer eindpositie van de hoofdweg</value>
+  </data>
+  <data name="Tool_InfoSelectNode" xml:space="preserve">
+    <value>Selecteer knoop</value>
+  </data>
+  <data name="Tool_InfoSelectToAlign" xml:space="preserve">
+    <value>Selecteer de hoeken waarmee je wilt uitlijnen</value>
+  </data>
+  <data name="Tool_InfoTooCloseNode" xml:space="preserve">
+    <value>Knoop toevoegen niet mogelijk
+Te dichtbij andere knoop</value>
   </data>
 </root>

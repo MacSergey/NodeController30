@@ -267,6 +267,9 @@
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Уведомления</value>
   </data>
+  <data name="Settings_SelectMiddleNodes" xml:space="preserve">
+    <value>Выбирать средние узлы</value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Активация инструмента</value>
   </data>
@@ -276,7 +279,60 @@
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>Показывать что нового</value>
   </data>
-  <data name="Settings_SnapToMiddleNode" xml:space="preserve">
-    <value>Snap to middle node</value>
+  <data name="Tool_InfoAlignMode" xml:space="preserve">
+    <value>Удерживайте Shift чтобы выровнять дороги</value>
+  </data>
+  <data name="Tool_InfoApplyAlign" xml:space="preserve">
+    <value>Нажмите чтобы выровнять с этим углом</value>
+  </data>
+  <data name="Tool_InfoChangeMainMode" xml:space="preserve">
+    <value>Удерживайте Alt чтобы изменить главную дорогу</value>
+  </data>
+  <data name="Tool_InfoClickNode" xml:space="preserve">
+    <value>Узел #{0}
+Нажмите чтобы изменить</value>
+  </data>
+  <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
+    <value>Нажмите чтобы выбрать угол для выравнивания</value>
+  </data>
+  <data name="Tool_InfoDragCenter" xml:space="preserve">
+    <value>Перетащите для изменения отступа</value>
+  </data>
+  <data name="Tool_InfoDragCircle" xml:space="preserve">
+    <value>Перетащите для изменения поворота</value>
+  </data>
+  <data name="Tool_InfoDragCorner" xml:space="preserve">
+    <value>Перетащите для изменения отступа угла</value>
+  </data>
+  <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
+    <value>Перетащите конец для изменения главной дороги</value>
+  </data>
+  <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
+    <value>Отпустите конец для изменения главной дороги</value>
+  </data>
+  <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
+    <value>Нажмите для вставки узла перехода</value>
+  </data>
+  <data name="Tool_InfoInsertNode" xml:space="preserve">
+    <value>Нажмите для вставки узла</value>
+  </data>
+  <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
+    <value>Выберите угол с которым хотите выровнять</value>
+  </data>
+  <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
+    <value>Выберите главную дорогу</value>
+  </data>
+  <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
+    <value>Выберите позицию конца главной дороги</value>
+  </data>
+  <data name="Tool_InfoSelectNode" xml:space="preserve">
+    <value>Выберите узел</value>
+  </data>
+  <data name="Tool_InfoSelectToAlign" xml:space="preserve">
+    <value>Выберите углы которые хотите выровнять</value>
+  </data>
+  <data name="Tool_InfoTooCloseNode" xml:space="preserve">
+    <value>Невозможно вставить узел
+Слишком близко к соседнему углу</value>
   </data>
 </root>

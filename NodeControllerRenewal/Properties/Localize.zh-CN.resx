@@ -139,7 +139,7 @@
     <value>获取稳定版本</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
+    <value>你在使用 {0} BETA版。此版本为测试新功能用，且可能含有BUG。如果是不小心订阅到了此版本，请订阅回稳定版。</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value></value>
@@ -202,70 +202,73 @@
     <value>版本{0}</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
-    <value>Bend</value>
+    <value>弯曲</value>
   </data>
   <data name="NodeStyle_Crossing" xml:space="preserve">
-    <value>Crossing</value>
+    <value>人行路口</value>
   </data>
   <data name="NodeStyle_Custom" xml:space="preserve">
-    <value>Custom</value>
+    <value>定制</value>
   </data>
   <data name="NodeStyle_End" xml:space="preserve">
-    <value>End</value>
+    <value>终点</value>
   </data>
   <data name="NodeStyle_Middle" xml:space="preserve">
-    <value>Middle</value>
+    <value>中间</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
-    <value>Stretch</value>
+    <value>拉伸</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
-    <value>UTurn</value>
+    <value>掉头</value>
   </data>
   <data name="Option_HideMarking" xml:space="preserve">
-    <value>Hide crosswalk marking</value>
+    <value>隐藏人行横道标记</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
-    <value>Offset</value>
+    <value>偏移</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
-    <value>Reset to default</value>
+    <value>重置为默认值</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>Rotate</value>
+    <value>旋转</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
-    <value>Shift</value>
+    <value>移位</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
-    <value>Slope</value>
+    <value>斜坡</value>
   </data>
   <data name="Option_Stretch" xml:space="preserve">
-    <value>Stretch</value>
+    <value>拉伸</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
-    <value>Style</value>
+    <value>样式</value>
   </data>
   <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Flat</value>
+    <value>平坦</value>
   </data>
   <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Slope</value>
+    <value>斜坡</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>Twist</value>
+    <value>扭曲</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
-    <value>Node type</value>
+    <value>节点类型</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
-    <value>Node #{0}</value>
+    <value>节点 #{0}</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>语言</value>
   </data>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>通知消息</value>
+  </data>
+  <data name="Settings_SelectMiddleNodes" xml:space="preserve">
+    <value>选择中间节点</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>启用工具</value>
@@ -276,7 +279,60 @@
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>显示更新提示框</value>
   </data>
-  <data name="Settings_SnapToMiddleNode" xml:space="preserve">
-    <value>Snap to middle node</value>
+  <data name="Tool_InfoAlignMode" xml:space="preserve">
+    <value>按住Shift对齐道路</value>
+  </data>
+  <data name="Tool_InfoApplyAlign" xml:space="preserve">
+    <value>点击以向此边角对齐</value>
+  </data>
+  <data name="Tool_InfoChangeMainMode" xml:space="preserve">
+    <value>按住Alt更改主要道路</value>
+  </data>
+  <data name="Tool_InfoClickNode" xml:space="preserve">
+    <value>节点 #{0}
+点击以编辑</value>
+  </data>
+  <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
+    <value>选择想要对齐的边角</value>
+  </data>
+  <data name="Tool_InfoDragCenter" xml:space="preserve">
+    <value>拖动以改变偏移</value>
+  </data>
+  <data name="Tool_InfoDragCircle" xml:space="preserve">
+    <value>拖动以改变旋转</value>
+  </data>
+  <data name="Tool_InfoDragCorner" xml:space="preserve">
+    <value>拖动以改变边角偏移</value>
+  </data>
+  <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
+    <value>拖动此端来改变主要道路</value>
+  </data>
+  <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
+    <value>丢下此端来改变主要道路</value>
+  </data>
+  <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
+    <value>点击插入人行路口节点</value>
+  </data>
+  <data name="Tool_InfoInsertNode" xml:space="preserve">
+    <value>点击以插入节点</value>
+  </data>
+  <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
+    <value>选择想要对齐的边角</value>
+  </data>
+  <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
+    <value>切换到新主要道路</value>
+  </data>
+  <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
+    <value>选择主要道路终点</value>
+  </data>
+  <data name="Tool_InfoSelectNode" xml:space="preserve">
+    <value>选择节点</value>
+  </data>
+  <data name="Tool_InfoSelectToAlign" xml:space="preserve">
+    <value>选择想要对齐的边角</value>
+  </data>
+  <data name="Tool_InfoTooCloseNode" xml:space="preserve">
+    <value>无法插入节点
+太靠近附近节点</value>
   </data>
 </root>

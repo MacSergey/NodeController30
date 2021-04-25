@@ -267,6 +267,9 @@
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Notificaciones</value>
   </data>
+  <data name="Settings_SelectMiddleNodes" xml:space="preserve">
+    <value>Seleccionar nodos del medio</value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Activar herramienta</value>
   </data>
@@ -276,7 +279,60 @@
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>Mostrar novedades</value>
   </data>
-  <data name="Settings_SnapToMiddleNode" xml:space="preserve">
-    <value>Snap to middle node</value>
+  <data name="Tool_InfoAlignMode" xml:space="preserve">
+    <value>Mantener tecla "Shift" para alinear carreteras</value>
+  </data>
+  <data name="Tool_InfoApplyAlign" xml:space="preserve">
+    <value>Clic para alinear con esta esquina</value>
+  </data>
+  <data name="Tool_InfoChangeMainMode" xml:space="preserve">
+    <value>Mantener tecla "Alt" para cambiar la carretera principal</value>
+  </data>
+  <data name="Tool_InfoClickNode" xml:space="preserve">
+    <value>Nodo #{0}
+Clic para editar</value>
+  </data>
+  <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
+    <value>Clic para seleccionar la esquina que quieres alinear</value>
+  </data>
+  <data name="Tool_InfoDragCenter" xml:space="preserve">
+    <value>Arrastra para cambiar el desplazamiento</value>
+  </data>
+  <data name="Tool_InfoDragCircle" xml:space="preserve">
+    <value>Arrastra para rotar</value>
+  </data>
+  <data name="Tool_InfoDragCorner" xml:space="preserve">
+    <value>Arrastra para cambiar el desplazamiento de la esquina</value>
+  </data>
+  <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
+    <value>Arrastra este extremo para cambiar la carretera principal</value>
+  </data>
+  <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
+    <value>Suelta este extremo para cambiar la carretera principal</value>
+  </data>
+  <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
+    <value>Clic para insertar el nodo de cruce</value>
+  </data>
+  <data name="Tool_InfoInsertNode" xml:space="preserve">
+    <value>Clic para insertar nodo</value>
+  </data>
+  <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
+    <value>Selecciona la esquina con la que quieres alinear</value>
+  </data>
+  <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
+    <value>Cambiar a la carretera principal</value>
+  </data>
+  <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
+    <value>Selecciona la posición final de la carretera principal</value>
+  </data>
+  <data name="Tool_InfoSelectNode" xml:space="preserve">
+    <value>Seleccionar nodo</value>
+  </data>
+  <data name="Tool_InfoSelectToAlign" xml:space="preserve">
+    <value>Selecciona las esquinas que quieres alinear</value>
+  </data>
+  <data name="Tool_InfoTooCloseNode" xml:space="preserve">
+    <value>No se puede insertar el nodo
+Muy cerca del nodo más cercano</value>
   </data>
 </root>
