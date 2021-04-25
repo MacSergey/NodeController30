@@ -61,6 +61,16 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Scroll the wheel to change
+        ///Shift X10, Ctrl X0.1.
+        /// </summary>
+        internal static string FieldPanel_ScrollWheel {
+            get {
+                return ResourceManager.GetString("FieldPanel_ScrollWheel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Cancel.
         /// </summary>
         internal static string MessageBox_Cancel {
@@ -493,6 +503,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на General.
+        /// </summary>
+        internal static string Settings_General {
+            get {
+                return ResourceManager.GetString("Settings_General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Language.
         /// </summary>
         internal static string Settings_Language {
@@ -520,6 +539,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        internal static string Settings_SelectMiddleNodesDiscription {
+            get {
+                return ResourceManager.GetString("Settings_SelectMiddleNodesDiscription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Activate tool.
         /// </summary>
         internal static string Settings_ShortcutActivateTool {
@@ -534,6 +562,15 @@ namespace NodeController {
         internal static string Settings_ShowOnlyMajor {
             get {
                 return ResourceManager.GetString("Settings_ShowOnlyMajor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show tooltips.
+        /// </summary>
+        internal static string Settings_ShowTooltips {
+            get {
+                return ResourceManager.GetString("Settings_ShowTooltips", resourceCulture);
             }
         }
         

@@ -5,6 +5,7 @@ using ModsCommon;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using static ModsCommon.SettingsHelper;
 
@@ -13,6 +14,7 @@ namespace NodeController
     public class Settings : BaseSettings<Mod>
     {
         public static SavedBool SelectMiddleNodes { get; } = new SavedBool(nameof(SelectMiddleNodes), SettingsFile, true, true);
+        public static SavedBool ShowToolTip { get; } = new SavedBool(nameof(ShowToolTip), SettingsFile, true, true);
 
         static Settings()
         {
@@ -25,11 +27,16 @@ namespace NodeController
             var languageGroup = GeneralTab.AddGroup(Localize.Settings_Language) as UIHelper;
             AddLanguageList(languageGroup);
 
-            var mainGroup = GeneralTab.AddGroup();
 
-            var keymappings = AddKeyMappingPanel(mainGroup);
+            var generalGroup = GeneralTab.AddGroup(Localize.Settings_General) as UIHelper;
+
+            var keymappings = AddKeyMappingPanel(generalGroup);
             keymappings.AddKeymapping(NodeControllerTool.ActivationShortcut);
-            AddCheckBox(mainGroup, Localize.Settings_SelectMiddleNodes, SelectMiddleNodes);
+
+            AddCheckBox(generalGroup, Localize.Settings_SelectMiddleNodes, SelectMiddleNodes);
+            AddLabel(generalGroup, Localize.Settings_SelectMiddleNodesDiscription, 0.8f, padding: 25);
+            AddCheckBox(generalGroup, Localize.Settings_ShowTooltips, ShowToolTip);
+
 
             var notificationsGroup = GeneralTab.AddGroup(Localize.Settings_Notifications) as UIHelper;
 

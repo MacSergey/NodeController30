@@ -262,6 +262,7 @@ namespace NodeController
             property.CheckMax = true;
             property.UseWheel = true;
             property.WheelStep = 1f;
+            property.WheelTip = Settings.ShowToolTip ? Localize.FieldPanel_ScrollWheel : string.Empty;
             property.Init();
 
             return property;

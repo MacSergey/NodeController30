@@ -12,7 +12,7 @@ namespace NodeController
     {
         public static NodeControllerShortcut ActivationShortcut { get; } = new NodeControllerShortcut(nameof(ActivationShortcut), nameof(Localize.Settings_ShortcutActivateTool), SavedInputKey.Encode(KeyCode.N, true, false, false));
 
-        protected override bool ShowToolTip => !Panel.IsHover;
+        protected override bool ShowToolTip => (Settings.ShowToolTip || Mode.Type == ToolModeType.Select) && !Panel.IsHover;
         protected override IToolMode DefaultMode => ToolModes[ToolModeType.Select];
         public override Shortcut Activation => ActivationShortcut;
         public NodeControllerPanel Panel => SingletonItem<NodeControllerPanel>.Instance;
