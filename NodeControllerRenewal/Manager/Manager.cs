@@ -83,7 +83,7 @@ namespace NodeController
         {
             if ((options & Options.Update) == Options.Update)
             {
-                GetUpdateList(nodeId, (options & Options.IncludeNearby) == Options.IncludeNearby, out var nodeIds, out var segmentIds);
+                GetUpdateList(nodeId, options.IsSet(Options.IncludeNearby), out var nodeIds, out var segmentIds);
 
                 AddToUpdate(nodeIds, segmentIds);
                 if ((options & Options.UpdateNow) == Options.UpdateNow)
@@ -107,15 +107,19 @@ namespace NodeController
                 return;
 
             nodeIds.Add(nodeId);
-            segmentIds.AddRange(nodeId.GetNode().SegmentIds());
+            var nodeSegmentIds = nodeId.GetNode().SegmentIds().ToArray();
+            segmentIds.AddRange(nodeSegmentIds);
 
             if (includeNearby)
             {
-                foreach (var segmentIs in segmentIds)
+                foreach (var segmentIs in nodeSegmentIds)
                 {
                     var otherNodeId = segmentIs.GetSegment().GetOtherNode(nodeId);
                     if (this[otherNodeId, Options.Create] != null)
+                    {
                         nodeIds.Add(otherNodeId);
+                        segmentIds.AddRange(otherNodeId.GetNode().SegmentIds());
+                    }
                 }
             }
         }
