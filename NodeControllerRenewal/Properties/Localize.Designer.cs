@@ -61,6 +61,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancel.
+        /// </summary>
+        internal static string MessageBox_Cancel {
+            get {
+                return ResourceManager.GetString("MessageBox_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на No.
         /// </summary>
         internal static string MessageBox_No {
@@ -84,6 +93,51 @@ namespace NodeController {
         internal static string MessageBox_Yes {
             get {
                 return ResourceManager.GetString("MessageBox_Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на I agree.
+        /// </summary>
+        internal static string Mod_BetaWarningAgree {
+            get {
+                return ResourceManager.GetString("Mod_BetaWarningAgree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на BETA version warning.
+        /// </summary>
+        internal static string Mod_BetaWarningCaption {
+            get {
+                return ResourceManager.GetString("Mod_BetaWarningCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на BETA version warning.
+        /// </summary>
+        internal static string Mod_BetaWarningCaption1 {
+            get {
+                return ResourceManager.GetString("Mod_BetaWarningCaption1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Get stable version.
+        /// </summary>
+        internal static string Mod_BetaWarningGetStable {
+            get {
+                return ResourceManager.GetString("Mod_BetaWarningGetStable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version..
+        /// </summary>
+        internal static string Mod_BetaWarningMessage {
+            get {
+                return ResourceManager.GetString("Mod_BetaWarningMessage", resourceCulture);
             }
         }
         
@@ -237,6 +291,24 @@ namespace NodeController {
         internal static string Mod_LocaleGame {
             get {
                 return ResourceManager.GetString("Mod_LocaleGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Look for actual beta change log on Discord.
+        /// </summary>
+        internal static string Mod_WhatsNewMessageBeta {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessageBeta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Version {0}.
+        /// </summary>
+        internal static string Mod_WhatsNewVersion {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewVersion", resourceCulture);
             }
         }
         

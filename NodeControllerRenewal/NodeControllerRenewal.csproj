@@ -89,7 +89,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Manager\AssetDataExtension.cs" />
+    <Compile Include="Manager\Extensions\AssetDataExtension.cs" />
+    <Compile Include="Manager\Extensions\LoadingExtension.cs" />
     <Compile Include="Manager\NodeType.cs" />
     <Compile Include="Manager\SegmentSide.cs" />
     <Compile Include="Patches\NetManagerPatches.cs" />
@@ -110,7 +111,7 @@
     <None Include="Utilities\CornerSource.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Utilities\MoveItIntegration.cs" />
-    <Compile Include="Manager\SerializableDataExtension.cs" />
+    <Compile Include="Manager\Extensions\SerializableDataExtension.cs" />
     <Compile Include="Manager\INetworkData.cs" />
     <Compile Include="Manager\NodeData.cs" />
     <Compile Include="Manager\Manager.cs" />
@@ -171,7 +172,7 @@
   </Target>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Build" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Debug" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_ConfigurationName="Debug" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="Build" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="AfterBuildRelease" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'">

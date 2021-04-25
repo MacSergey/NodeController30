@@ -18,9 +18,13 @@ namespace NodeController
         #region PROPERTIES
 
         public override string WorkshopUrl => "https://steamcommunity.com/sharedfiles/filedetails/?id=2462845270";
+        public override string BetaWorkshopUrl => "https://steamcommunity.com/sharedfiles/filedetails/?id=2462845270";
         public override string NameRaw => "Node Controller Renewal";
         public override string Description => !IsBeta ? Localize.Mod_Description : Localize.Mod_DescriptionBeta;
-        public override List<Version> Versions => new List<Version>();
+        public override List<Version> Versions => new List<Version>()
+        {
+            new Version("1.0")
+        };
 
         protected override string IdRaw => nameof(NodeController);
         public override bool IsBeta => true;

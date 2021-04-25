@@ -1,6 +1,6 @@
 using ModsCommon.Utilities;
 
-namespace NodeController
+namespace NodeController.Utilities
 {
     //[Serializable]
     //public class AssetData

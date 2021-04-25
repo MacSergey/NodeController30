@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MessageBox_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="MessageBox_No" xml:space="preserve">
     <value>No</value>
   </data>
@@ -125,6 +128,21 @@
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="Mod_BetaWarningAgree" xml:space="preserve">
+    <value>I agree</value>
+  </data>
+  <data name="Mod_BetaWarningCaption" xml:space="preserve">
+    <value>BETA version warning</value>
+  </data>
+  <data name="Mod_BetaWarningCaption1" xml:space="preserve">
+    <value>BETA version warning</value>
+  </data>
+  <data name="Mod_BetaWarningGetStable" xml:space="preserve">
+    <value>Get stable version</value>
+  </data>
+  <data name="Mod_BetaWarningMessage" xml:space="preserve">
+    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value />
@@ -176,6 +194,12 @@
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Chinese Simplified</value>
+  </data>
+  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
+    <value>Look for actual beta change log on Discord</value>
+  </data>
+  <data name="Mod_WhatsNewVersion" xml:space="preserve">
+    <value>Version {0}</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bend</value>
