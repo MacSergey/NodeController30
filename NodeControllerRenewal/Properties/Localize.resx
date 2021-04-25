@@ -135,9 +135,6 @@
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
     <value>BETA version warning</value>
   </data>
-  <data name="Mod_BetaWarningCaption1" xml:space="preserve">
-    <value>BETA version warning</value>
-  </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
     <value>Get stable version</value>
   </data>

@@ -115,15 +115,6 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на BETA version warning.
-        /// </summary>
-        internal static string Mod_BetaWarningCaption1 {
-            get {
-                return ResourceManager.GetString("Mod_BetaWarningCaption1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Get stable version.
         /// </summary>
         internal static string Mod_BetaWarningGetStable {
