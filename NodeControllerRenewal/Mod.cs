@@ -122,7 +122,8 @@ namespace NodeController
 
         private bool Patch_NetManager_ReleaseNodeImplementation()
         {
-            return AddPrefix(typeof(Manager), nameof(Manager.ReleaseNodeImplementationPrefix), typeof(NetManager), "ReleaseNodeImplementation", new Type[] { typeof(ushort) });
+            var parameters = new Type[] { typeof(ushort), typeof(NetNode).MakeByRefType() };
+            return AddPrefix(typeof(Manager), nameof(Manager.ReleaseNodeImplementationPrefix), typeof(NetManager), "ReleaseNodeImplementation", parameters);
         }
         private bool Patch_NetManager_SimulationStepImpl()
         {
