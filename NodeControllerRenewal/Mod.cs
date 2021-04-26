@@ -102,6 +102,7 @@ namespace NodeController
         {
             success &= Patch_NetManager_ReleaseNodeImplementation();
             success &= Patch_NetManager_SimulationStepImpl();
+            success &= Patch_NetManager_UpdateSegment();
         }
 
         private bool Patch_NetManager_ReleaseNodeImplementation()
@@ -111,6 +112,11 @@ namespace NodeController
         private bool Patch_NetManager_SimulationStepImpl()
         {
             return AddTranspiler(typeof(NetManagerPatches), nameof(NetManagerPatches.SimulationStepImplTranspiler), typeof(NetManager), "SimulationStepImpl");
+        }
+        private bool Patch_NetManager_UpdateSegment()
+        {
+            var parameters = new Type[] {typeof(ushort), typeof(ushort), typeof(int) };
+            return AddTranspiler(typeof(NetManagerPatches), nameof(NetManagerPatches.UpdateSegmentTranspiler), typeof(NetManager), nameof(NetManager.UpdateSegment), parameters);
         }
 
         #endregion

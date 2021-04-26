@@ -83,22 +83,20 @@ namespace NodeController
         {
             if ((options & Options.Update) == Options.Update)
             {
-                GetUpdateList(nodeId, options.IsSet(Options.IncludeNearby), out var nodeIds, out var segmentIds);
+                GetUpdateList(nodeId, options, out var nodeIds, out var segmentIds);
 
-                AddToUpdate(nodeIds, segmentIds);
+                AddToUpdate(nodeIds);
                 if ((options & Options.UpdateNow) == Options.UpdateNow)
-                    UpdateNow(nodeIds, segmentIds, false);
+                    UpdateNow(nodeIds.ToArray(), segmentIds.ToArray(), false);
             }
         }
-        private void AddToUpdate(HashSet<ushort> nodeIds, HashSet<ushort> segmentIds)
+        private void AddToUpdate(HashSet<ushort> nodeIds)
         {
             foreach (var nodeId in nodeIds)
-                NetManager.instance.UpdateOnceNode(nodeId);
-            foreach (var segmentId in segmentIds)
-                NetManager.instance.UpdateOnceSegment(segmentId);
+                NetManager.instance.UpdateNode(nodeId);
         }
 
-        private void GetUpdateList(ushort nodeId, bool includeNearby, out HashSet<ushort> nodeIds, out HashSet<ushort> segmentIds)
+        private void GetUpdateList(ushort nodeId, Options options, out HashSet<ushort> nodeIds, out HashSet<ushort> segmentIds)
         {
             nodeIds = new HashSet<ushort>();
             segmentIds = new HashSet<ushort>();
@@ -110,38 +108,25 @@ namespace NodeController
             var nodeSegmentIds = nodeId.GetNode().SegmentIds().ToArray();
             segmentIds.AddRange(nodeSegmentIds);
 
-            if (includeNearby)
+            if (options.IsSet(Options.IncludeNearby))
             {
                 foreach (var segmentIs in nodeSegmentIds)
                 {
                     var otherNodeId = segmentIs.GetSegment().GetOtherNode(nodeId);
                     if (this[otherNodeId, Options.Create] != null)
-                    {
                         nodeIds.Add(otherNodeId);
-                        segmentIds.AddRange(otherNodeId.GetNode().SegmentIds());
-                    }
                 }
             }
         }
 
         public static void SimulationStep()
         {
-            var nodeIds = new HashSet<ushort>();
-            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => SingletonManager<Manager>.Instance.ContainsSegment(s)).ToHashSet();
-
-            foreach (var segmentId in segmentIds)
-            {
-                ref var segment = ref segmentId.GetSegment();
-
-                if (SingletonManager<Manager>.Instance.Buffer[segment.m_startNode] != null)
-                    nodeIds.Add(segment.m_startNode);
-                if (SingletonManager<Manager>.Instance.Buffer[segment.m_endNode] != null)
-                    nodeIds.Add(segment.m_endNode);
-            }
+            var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => SingletonManager<Manager>.Instance.ContainsNode(s)).ToArray();
+            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => SingletonManager<Manager>.Instance.ContainsSegment(s)).ToArray();
 
             UpdateNow(nodeIds, segmentIds, true);
         }
-        private static void UpdateNow(HashSet<ushort> nodeIds, HashSet<ushort> segmentIds, bool flags)
+        private static void UpdateNow(ushort[] nodeIds, ushort[] segmentIds, bool flags)
         {
             foreach (var nodeId in nodeIds)
                 SingletonManager<Manager>.Instance.Buffer[nodeId].Update(flags);
