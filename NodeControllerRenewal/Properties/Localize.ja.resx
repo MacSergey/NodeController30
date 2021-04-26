@@ -259,7 +259,7 @@
     <value>スロープ</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>ツイスト（バンク・傾斜）</value>
+    <value>ツイスト（バンク・ねじれ）</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
     <value>ノードの設定</value>

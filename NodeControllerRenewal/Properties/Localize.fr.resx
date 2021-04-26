@@ -170,7 +170,7 @@ Maj X10, Ctrl X0.1</value>
     <value>Espagnol</value>
   </data>
   <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Finlandais</value>
+    <value>Finnois</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
     <value>Français</value>
@@ -346,6 +346,6 @@ Cliquez pour modifier</value>
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
     <value>Impossible d'insérer le noeud
-trop proche du noeud à proximité</value>
+Trop proche d'un noeud à proximité</value>
   </data>
 </root>
