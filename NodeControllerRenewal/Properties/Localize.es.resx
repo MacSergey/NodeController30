@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>Desplazar la rueda para cambiar
+Mayús x10, Ctrl x0.1</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Anular</value>
   </data>
@@ -261,6 +265,9 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nodo #{0}</value>
   </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>Ajustes generales</value>
+  </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>Idioma</value>
   </data>
@@ -270,11 +277,17 @@
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Seleccionar nodos del medio</value>
   </data>
+  <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Activar herramienta</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>Notificación solo sobre actualizaciones importantes</value>
+  </data>
+  <data name="Settings_ShowTooltips" xml:space="preserve">
+    <value>Mostrar las herramientas</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>Mostrar novedades</value>

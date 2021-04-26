@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>Mausrad scrollen zum Ändern
+Shift x10, Strg x0,1</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
@@ -261,6 +265,9 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Node #{0}</value>
   </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>Sprache</value>
   </data>
@@ -270,11 +277,17 @@
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Select middle nodes</value>
   </data>
+  <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Tool aktivieren</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>Benachrichtigungen nur bei Haupt-Versions-Updates</value>
+  </data>
+  <data name="Settings_ShowTooltips" xml:space="preserve">
+    <value>Zeige Tooltips</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>"Was gibt es neues" zeigen</value>

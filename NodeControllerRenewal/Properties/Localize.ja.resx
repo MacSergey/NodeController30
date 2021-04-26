@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>ホイールのスクロールで増減
++Shift ｘ 10倍 / +Ctrl ｘ 0.1倍</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>キャンセル</value>
   </data>
@@ -228,7 +232,7 @@
     <value>横断歩道を非表示</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
-    <value>オフセット</value>
+    <value>オフセット（長さ・距離）</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>既定値に戻す</value>
@@ -237,13 +241,13 @@
     <value>回転（角度）</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
-    <value>シフト</value>
+    <value>シフト（前後左右の移動）</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
-    <value>スロープ</value>
+    <value>スロープ（勾配・傾斜）</value>
   </data>
   <data name="Option_Stretch" xml:space="preserve">
-    <value>ストレッチ</value>
+    <value>ストレッチ（太さ・幅）</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
     <value>スタイル</value>
@@ -255,13 +259,16 @@
     <value>スロープ</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>ねじれ</value>
+    <value>ツイスト（バンク・傾斜）</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
     <value>ノードの設定</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>ノード #{0} を編集中</value>
+  </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>基本設定</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>言語設定</value>
@@ -270,7 +277,10 @@
     <value>通知の設定</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
-    <value>Select middle nodes</value>
+    <value>中間部分にあるノードも選択</value>
+  </data>
+  <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
+    <value></value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>ノードコントローラーの有効化</value>
@@ -278,63 +288,66 @@
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>主要なアップデートのみ通知</value>
   </data>
+  <data name="Settings_ShowTooltips" xml:space="preserve">
+    <value>ツールチップの表示</value>
+  </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>新着情報を表示する</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Hold Shift to alignment roads</value>
+    <value>Shiftキー押下で道路の整列</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
-    <value>Click to align with this corner</value>
+    <value>クリックしてこのコーナーで整列</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main road</value>
+    <value>Altキー押下で主要道路の変更</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
-    <value>Node #{0}
-Click to edit</value>
+    <value>ノード #{0}
+クリックして編集</value>
   </data>
   <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
-    <value>Click to select corner you want to align</value>
+    <value>クリックして整列させたいコーナーを選択</value>
   </data>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
-    <value>Drag to change offset</value>
+    <value>ドラッグしてオフセットを変更</value>
   </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
-    <value>Drag to change rotate</value>
+    <value>ドラッグして回転（角度）を変更</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
-    <value>Drag to change corner offset</value>
+    <value>ドラッグしてコーナーオフセットを変更</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>Drag this end to change main road</value>
+    <value>この終端をドラッグして主要道路を変更</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>Drop this end to change main road</value>
+    <value>この道路へD&amp;Dして主要道路を変更</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
-    <value>Click to insert crossing node</value>
+    <value>クリックして横断歩道（ノード）を追加</value>
   </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
-    <value>Click to insert node</value>
+    <value>クリックしてノードを追加</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
-    <value>Select corner you want to align with</value>
+    <value>コーナーの終点を選択して整列する</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>Change to desired main road</value>
+    <value>接続する主要道路を変更</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>Select main road end position</value>
+    <value>変更したい主要道路を選択</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
-    <value>Select node</value>
+    <value>ノードを選択してください</value>
   </data>
   <data name="Tool_InfoSelectToAlign" xml:space="preserve">
-    <value>Select corners you want to align</value>
+    <value>整列したいコーナーの始点を選択</value>
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
-    <value>Can't insert node
-Too close to nearby node</value>
+    <value>ノードが追加できません
+他のノードと近すぎます</value>
   </data>
 </root>

@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>Faça scroll para mudar
+Shift X10, Ctrl X0.1</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Cancelar</value>
   </data>
@@ -139,7 +143,7 @@
     <value>Obter versão estável</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
+    <value>Está a usar a versão BETA do {0}. Serve para testar novas funcionalidades e pode conter erros. Se subscreveu por engano então troque para a versão estável.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value></value>
@@ -202,64 +206,67 @@
     <value>Versão {0}</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
-    <value>Bend</value>
+    <value>Curva</value>
   </data>
   <data name="NodeStyle_Crossing" xml:space="preserve">
-    <value>Crossing</value>
+    <value>Passadeira</value>
   </data>
   <data name="NodeStyle_Custom" xml:space="preserve">
-    <value>Custom</value>
+    <value>Personalizado</value>
   </data>
   <data name="NodeStyle_End" xml:space="preserve">
-    <value>End</value>
+    <value>Fim</value>
   </data>
   <data name="NodeStyle_Middle" xml:space="preserve">
-    <value>Middle</value>
+    <value>Meio</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
     <value>Stretch</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
-    <value>UTurn</value>
+    <value>Inversão de marcha</value>
   </data>
   <data name="Option_HideMarking" xml:space="preserve">
-    <value>Hide crosswalk marking</value>
+    <value>Esconder marcação da passadeira</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
-    <value>Offset</value>
+    <value>Deslocamento</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
-    <value>Reset to default</value>
+    <value>Repor predefinição</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>Rotate</value>
+    <value>Rodar</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
-    <value>Shift</value>
+    <value>Mudar</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
-    <value>Slope</value>
+    <value>Declive</value>
   </data>
   <data name="Option_Stretch" xml:space="preserve">
     <value>Stretch</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
-    <value>Style</value>
+    <value>Estilo</value>
   </data>
   <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Flat</value>
+    <value>Plano</value>
   </data>
   <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Slope</value>
+    <value>Declive</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>Twist</value>
+    <value>Torcer</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
-    <value>Node type</value>
+    <value>Tipo de Nó</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
-    <value>Node #{0}</value>
+    <value>Nó #{0}</value>
+  </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>Geral</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>Linguagem</value>
@@ -268,7 +275,10 @@
     <value>Notificações</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
-    <value>Select middle nodes</value>
+    <value>Selecione os nós do meio</value>
+  </data>
+  <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
+    <value></value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Activar a ferramenta</value>
@@ -276,33 +286,36 @@
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>Notificar apenas sobre actualizações principais</value>
   </data>
+  <data name="Settings_ShowTooltips" xml:space="preserve">
+    <value>Mostrar dicas</value>
+  </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>Mostrar as novidades</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Hold Shift to alignment roads</value>
+    <value>Segure Shift para alinhar as estradas</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
-    <value>Click to align with this corner</value>
+    <value>Clique para alinhar com este canto</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main road</value>
+    <value>Segure Alt para mudar a estrada principal</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
-    <value>Node #{0}
-Click to edit</value>
+    <value>Nó #{0}
+Clique para editar</value>
   </data>
   <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
-    <value>Click to select corner you want to align</value>
+    <value>Clique para selecionar o canto que quer alinhar</value>
   </data>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
-    <value>Drag to change offset</value>
+    <value>Arraste para alterar o deslocamento</value>
   </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
-    <value>Drag to change rotate</value>
+    <value>Arraste para alterar a rotação</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
-    <value>Drag to change corner offset</value>
+    <value>Arraste para alterar deslocamento do canto</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
     <value>Drag this end to change main road</value>
