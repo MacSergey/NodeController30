@@ -40,6 +40,7 @@ namespace NodeController.BackwardСompatibility
                 switch (typeName)
                 {
                     case "NodeController.LifeCycle.NCState": return typeof(NCState);
+                    case "NodeController.LifeCycle.AssetData": return typeof(AssetData);
                     case "NodeController.GUI.GameConfigT": return typeof(GameConfigT);
                     case "NodeController.SegmentEndManager": return typeof(SegmentEndManager);
                     case "NodeController.NodeManager": return typeof(NodeManager);
@@ -50,6 +51,7 @@ namespace NodeController.BackwardСompatibility
                     case "NodeController.SegmentEndData": return typeof(SegmentEndData);
                     case "NodeController.SegmentEndData[]": return typeof(SegmentEndData[]);
                     case "KianCommons.Math.Vector3Serializable": return typeof(Vector3);
+                    case "NodeController.LifeCycle.MoveItSegmentData": return typeof(SegmentData);
                 }
             }
 
@@ -101,6 +103,21 @@ namespace NodeController.BackwardСompatibility
         }
     }
     [Serializable]
+    public class AssetData : ISerializable
+    {
+        public Version Version { get; }
+        public object[] Records { get; } = new object[0];
+        public AssetData(SerializationInfo info, StreamingContext context)
+        {
+            Version = new Version(info.GetString("VersionString"));
+
+            if (info.GetValue("Records", typeof(byte[])) is byte[] records)
+                Records = Loader.Load<object[]>(records);
+        }
+        public void GetObjectData(SerializationInfo info, StreamingContext context) { }
+    }
+
+    [Serializable]
     public class GameConfigT : ISerializable
     {
         public GameConfigT(SerializationInfo info, StreamingContext context) { }
@@ -151,6 +168,12 @@ namespace NodeController.BackwardСompatibility
             return config;
         }
         public override string ToString() => $"Node #{Id}";
+    }
+    [Serializable]
+    public class SegmentData
+    {
+        public SegmentEndData Start;
+        public SegmentEndData End;
     }
     [Serializable]
     public class SegmentEndData : ISerializable, IToXml

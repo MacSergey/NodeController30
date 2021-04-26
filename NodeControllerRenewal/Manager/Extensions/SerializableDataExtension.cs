@@ -31,11 +31,6 @@ namespace NodeController
                 var config = state.ToXml();
                 SetLoadData(config);
             }
-            //else
-            //{
-            //    data = serializableDataManager.LoadData(DATA_ID1) ?? serializableDataManager.LoadData(DATA_ID0);
-            //    NodeManager.Deserialize(data, new Version(1, 0));
-            //}
 
             base.OnLoadData();
         }
