@@ -291,14 +291,15 @@ namespace NodeController
             if (!IsMiddleNode && !IsEndNode && FirstMainSegmentEnd is SegmentEndData first && SecondMainSegmentEnd is SegmentEndData second)
             {
                 MainBezier = new BezierTrajectory(first.Position, -first.Direction, second.Position, -second.Direction, false);
+                LeftMainBezier = GetBezier(first, second, SideType.Left);
+                RightMainBezier = GetBezier(first, second, SideType.Right);
 
-                first.GetCorner(true, out var firstLeftPos, out var firstLeftDir);
-                second.GetCorner(false, out var secondRightPos, out var secondRightDir);
-                LeftMainBezier = new BezierTrajectory(firstLeftPos, -firstLeftDir, secondRightPos, -secondRightDir, false);
-
-                first.GetCorner(false, out var firstRightPos, out var firstRightDir);
-                second.GetCorner(true, out var secondLeftPos, out var secondLeftDir);
-                RightMainBezier = new BezierTrajectory(firstRightPos, -firstRightDir, secondLeftPos, -secondLeftDir, false);
+                static BezierTrajectory GetBezier(SegmentEndData first, SegmentEndData second, SideType side)
+                {
+                    first.GetCorner(side == SideType.Left, out var firstPos, out var firstDir);
+                    second.GetCorner(side == SideType.Right, out var secondPos, out var secondDir);
+                    return new BezierTrajectory(firstPos, -firstDir, secondPos, -secondDir, false);
+                }
             }
 
             foreach (var segmentEnd in SegmentEndDatas)
