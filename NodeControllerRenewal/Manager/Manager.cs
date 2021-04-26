@@ -77,10 +77,10 @@ namespace NodeController
         }
 
 
-        public void Update(ushort nodeId, bool now = false) => Update(nodeId, Options.This | Options.Nearby | (now ? Options.UpdateNow : Options.Update));
+        public void Update(ushort nodeId, bool now = false) => Update(nodeId, Options.This | Options.Nearby | (now ? Options.UpdateAll : Options.Update));
         private void Update(ushort nodeId, Options options)
         {
-            if (options.IsSet(Options.Update))
+            if ((options & Options.UpdateAll) != 0)
             {
                 if (options.IsSet(Options.UpdateNow))
                 {
@@ -190,13 +190,13 @@ namespace NodeController
             UpdateNow = 16,
             UpdateAll = Update | UpdateNow,
 
-            CreateThis = This | Create,
-            UpdateThis = This | Update,
-            UpdateThisNow = This | UpdateNow,
+            CreateThis = This | Create | 32,
+            UpdateThis = This | Update | 64,
+            UpdateThisNow = This | UpdateNow | 128,
 
-            CreateNearby = Nearby | Create,
-            UpdateNearby = Nearby | Update,
-            UpdateNearbyNow = Nearby | UpdateNow,
+            CreateNearby = Nearby | Create | 256,
+            UpdateNearby = Nearby | Update | 512,
+            UpdateNearbyNow = Nearby | UpdateNow | 1024,
 
             Default = CreateThis | UpdateThis | UpdateThisNow | CreateNearby | UpdateNearby,
         }
