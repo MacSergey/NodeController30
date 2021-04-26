@@ -438,26 +438,30 @@ namespace NodeController
 
             return config;
         }
-        public void FromXml(XElement config, Dictionary<InstanceID, InstanceID> map = null)
+        public void FromXml(XElement config, ObjectsMap map)
         {
             if (config.Element(MainRoad.XmlName) is XElement mainRoadConfig)
-                MainRoad.FromXml(mainRoadConfig);
+                MainRoad.FromXml(mainRoadConfig, map);
 
             foreach (var segmentEndConfig in config.Elements(SegmentEndData.XmlName))
             {
                 var id = segmentEndConfig.GetAttrValue(nameof(SegmentEndData.Id), (ushort)0);
 
-                if (map != null && map.TryGetValue(new InstanceID() { NetSegment = id }, out var instance))
-                    id = instance.NetSegment;
+                if (map.TryGetSegment(id, out var targetId))
+                    id = targetId;
 
                 if (SegmentEnds.TryGetValue(id, out var segmentEnd))
                     segmentEnd.FromXml(segmentEndConfig, Style);
             }
         }
 
-        public static bool FromXml(XElement config, out NodeData data)
+        public static bool FromXml(XElement config, ObjectsMap map, out NodeData data)
         {
             var id = config.GetAttrValue("Id", (ushort)0);
+
+            if (map.TryGetNode(id, out var targetId))
+                id = targetId;
+
             var type = (NodeStyleType)config.GetAttrValue("T", (int)NodeStyleType.Custom);
 
             if (id != 0 && id <= NetManager.MAX_NODE_COUNT)
@@ -465,7 +469,7 @@ namespace NodeController
                 try
                 {
                     data = new NodeData(id, type);
-                    data.FromXml(config);
+                    data.FromXml(config, map);
                     return true;
                 }
                 catch { }
@@ -503,7 +507,7 @@ namespace NodeController
         #endregion
 
     }
-    public class MainRoad : IToXml, IFromXml
+    public class MainRoad : IToXml
     {
         public static string XmlName => "MR";
         public string XmlSection => XmlName;
@@ -547,10 +551,17 @@ namespace NodeController
             return config;
         }
 
-        public void FromXml(XElement config)
+        public void FromXml(XElement config, ObjectsMap map)
         {
-            First = config.GetAttrValue<ushort>("F", 0);
-            Second = config.GetAttrValue<ushort>("S", 0);
+            First = Get("F", config, map);
+            Second = Get("S", config, map);
+
+            static ushort Get(string name, XElement config, ObjectsMap map)
+            {
+                var id = config.GetAttrValue<ushort>(name, 0);
+                return map.TryGetSegment(id, out var targetId) ? targetId : id;
+
+            }
         }
 
         public override string ToString() => $"{First}-{Second}";

@@ -22,18 +22,17 @@ namespace NodeController
                 nodeId.GetNode().m_flags |= NetNode.Flags.Middle | NetNode.Flags.Moveable;
 
             var info = controlPoint.m_segment.GetSegment().Info;
-            var option = Options.IncludeNearby | Options.Update;
             var newNodeType = nodeType == NodeStyleType.Crossing && (info.m_netAI is not RoadBaseAI || info.PedestrianLanes() < 2) ? null : (NodeStyleType?)nodeType;
-            var data = Create(nodeId, option, newNodeType);
+            var data = Create(nodeId, Options.Default, newNodeType);
             return data;
         }
-        public NodeData this[ushort nodeId, bool create = false] => this[nodeId, create ? Options.All : Options.NotCreate];
-        private NodeData this[ushort nodeId, Options options = Options.NotCreate]
+        public NodeData this[ushort nodeId, bool create = false] => this[nodeId, create ? Options.Default : Options.None];
+        private NodeData this[ushort nodeId, Options options = Options.None]
         {
             get
             {
                 if (Buffer[nodeId] is not NodeData data)
-                    data = (options & Options.Create) != 0 ? Create(nodeId, options) : null;
+                    data = options.IsSet(Options.CreateThis) ? Create(nodeId, options) : null;
 
                 return data;
             }
@@ -78,16 +77,21 @@ namespace NodeController
         }
 
 
-        public void Update(ushort nodeId, bool now = false) => Update(nodeId, Options.IncludeNearby | (now ? Options.UpdateNow : Options.Update));
+        public void Update(ushort nodeId, bool now = false) => Update(nodeId, Options.This | Options.Nearby | (now ? Options.UpdateNow : Options.Update));
         private void Update(ushort nodeId, Options options)
         {
-            if ((options & Options.Update) == Options.Update)
+            if (options.IsSet(Options.Update))
             {
-                GetUpdateList(nodeId, options, out var nodeIds, out var segmentIds);
-
-                AddToUpdate(nodeIds);
-                if ((options & Options.UpdateNow) == Options.UpdateNow)
+                if (options.IsSet(Options.UpdateNow))
+                {
+                    GetUpdateList(nodeId, options & ~Options.Update, out var nodeIds, out var segmentIds);
                     UpdateNow(nodeIds.ToArray(), segmentIds.ToArray(), false);
+                }
+                if(options.IsSet(Options.Update))
+                {
+                    GetUpdateList(nodeId, options & ~Options.UpdateNow, out var nodeIds, out _);
+                    AddToUpdate(nodeIds);
+                }
             }
         }
         private void AddToUpdate(HashSet<ushort> nodeIds)
@@ -108,12 +112,12 @@ namespace NodeController
             var nodeSegmentIds = nodeId.GetNode().SegmentIds().ToArray();
             segmentIds.AddRange(nodeSegmentIds);
 
-            if (options.IsSet(Options.IncludeNearby))
+            if ((options & (Options.UpdateNearby | Options.UpdateNearbyNow)) != 0)
             {
                 foreach (var segmentIs in nodeSegmentIds)
                 {
                     var otherNodeId = segmentIs.GetSegment().GetOtherNode(nodeId);
-                    if (this[otherNodeId, Options.Create] != null)
+                    if (this[otherNodeId, options & Options.CreateNearby] != null)
                         nodeIds.Add(otherNodeId);
                 }
             }
@@ -160,11 +164,11 @@ namespace NodeController
 
             return config;
         }
-        public void FromXml(XElement config)
+        public void FromXml(XElement config, ObjectsMap map)
         {
             foreach (var nodeConfig in config.Elements(NodeData.XmlName))
             {
-                if (NodeData.FromXml(nodeConfig, out NodeData data))
+                if (NodeData.FromXml(nodeConfig, map, out NodeData data))
                     Buffer[data.Id] = data;
             }
             foreach (var data in Buffer)
@@ -176,13 +180,25 @@ namespace NodeController
 
         private enum Options
         {
-            NotCreate = 0,
-            Create = 1,
-            IncludeNearby = Create | 2,
-            Update = Create | 4,
-            UpdateNow = Update | 8,
+            None = 0,
 
-            All = IncludeNearby | UpdateNow,
+            This = 1,
+            Nearby = 2,
+
+            Create = 4,
+            Update = 8,
+            UpdateNow = 16,
+            UpdateAll = Update | UpdateNow,
+
+            CreateThis = This | Create,
+            UpdateThis = This | Update,
+            UpdateThisNow = This | UpdateNow,
+
+            CreateNearby = Nearby | Create,
+            UpdateNearby = Nearby | Update,
+            UpdateNearbyNow = Nearby | UpdateNow,
+
+            Default = CreateThis | UpdateThis | UpdateThisNow | CreateNearby | UpdateNearby,
         }
     }
 }
