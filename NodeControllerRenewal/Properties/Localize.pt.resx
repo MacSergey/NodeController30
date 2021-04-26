@@ -221,16 +221,25 @@ Shift X10, Ctrl X0.1</value>
     <value>Meio</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
-    <value>Stretch</value>
+    <value>Alongado</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
     <value>Inversão de marcha</value>
   </data>
-  <data name="Option_HideMarking" xml:space="preserve">
-    <value>Esconder marcação da passadeira</value>
+  <data name="Options_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Option_MakeStraightEnds" xml:space="preserve">
+    <value>Make straight ends</value>
+  </data>
+  <data name="Option_Marking" xml:space="preserve">
+    <value>Marking</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Deslocamento</value>
+  </data>
+  <data name="Option_OffsetFormat" xml:space="preserve">
+    <value>{0}m</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Repor predefinição</value>
@@ -238,14 +247,26 @@ Shift X10, Ctrl X0.1</value>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Rodar</value>
   </data>
+  <data name="Option_RotateFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Mudar</value>
+  </data>
+  <data name="Option_ShiftFormat" xml:space="preserve">
+    <value>{0}m</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
     <value>Declive</value>
   </data>
+  <data name="Option_SlopeFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   <data name="Option_Stretch" xml:space="preserve">
-    <value>Stretch</value>
+    <value>Alargamento</value>
+  </data>
+  <data name="Option_StretchFormat" xml:space="preserve">
+    <value>{0}%</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
     <value>Estilo</value>
@@ -258,6 +279,9 @@ Shift X10, Ctrl X0.1</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Torcer</value>
+  </data>
+  <data name="Option_TwistFormat" xml:space="preserve">
+    <value>{0}°</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
     <value>Tipo de Nó</value>
@@ -281,10 +305,10 @@ Shift X10, Ctrl X0.1</value>
     <value></value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Activar a ferramenta</value>
+    <value>Ativar ferramenta</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Notificar apenas sobre actualizações principais</value>
+    <value>Notificar apenas sobre as atualizações principais</value>
   </data>
   <data name="Settings_ShowTooltips" xml:space="preserve">
     <value>Mostrar dicas</value>
@@ -318,34 +342,34 @@ Clique para editar</value>
     <value>Arraste para alterar deslocamento do canto</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>Drag this end to change main road</value>
+    <value>Arraste esta extremidade para mudar a estrada principal</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>Drop this end to change main road</value>
+    <value>Largue esta extremidade para mudar a estrada principal</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
-    <value>Click to insert crossing node</value>
+    <value>Clique para inserir passadeira</value>
   </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
-    <value>Click to insert node</value>
+    <value>Clique para inserir nó</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
-    <value>Select corner you want to align with</value>
+    <value>Selecione o canto com o qual quer alinhar</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>Change to desired main road</value>
+    <value>Mudar para a estrada principal desejada</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>Select main road end position</value>
+    <value>Selecione a posição final da estrada principal</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
-    <value>Select node</value>
+    <value>Selecionar Nó</value>
   </data>
   <data name="Tool_InfoSelectToAlign" xml:space="preserve">
-    <value>Select corners you want to align</value>
+    <value>Selecione os cantos com os quais quer alinhar</value>
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
-    <value>Can't insert node
-Too close to nearby node</value>
+    <value>Não é possível inserir um nó
+Está demasiado perto de outro nó</value>
   </data>
 </root>

@@ -226,11 +226,20 @@ Shift x10，Ctrl x0.1</value>
   <data name="NodeStyle_UTurn" xml:space="preserve">
     <value>掉头</value>
   </data>
-  <data name="Option_HideMarking" xml:space="preserve">
-    <value>隐藏人行横道标记</value>
+  <data name="Options_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Option_MakeStraightEnds" xml:space="preserve">
+    <value>Make straight ends</value>
+  </data>
+  <data name="Option_Marking" xml:space="preserve">
+    <value>Marking</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>偏移</value>
+  </data>
+  <data name="Option_OffsetFormat" xml:space="preserve">
+    <value>{0}m</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>重置为默认值</value>
@@ -238,14 +247,26 @@ Shift x10，Ctrl x0.1</value>
   <data name="Option_Rotate" xml:space="preserve">
     <value>旋转</value>
   </data>
+  <data name="Option_RotateFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>移位</value>
+  </data>
+  <data name="Option_ShiftFormat" xml:space="preserve">
+    <value>{0}m</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
     <value>斜坡</value>
   </data>
+  <data name="Option_SlopeFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   <data name="Option_Stretch" xml:space="preserve">
     <value>拉伸</value>
+  </data>
+  <data name="Option_StretchFormat" xml:space="preserve">
+    <value>{0}%</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
     <value>样式</value>
@@ -258,6 +279,9 @@ Shift x10，Ctrl x0.1</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>扭曲</value>
+  </data>
+  <data name="Option_TwistFormat" xml:space="preserve">
+    <value>{0}°</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
     <value>节点类型</value>

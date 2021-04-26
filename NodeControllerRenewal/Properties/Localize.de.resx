@@ -226,11 +226,20 @@ Shift x10, Strg x0,1</value>
   <data name="NodeStyle_UTurn" xml:space="preserve">
     <value>Kehrtwende</value>
   </data>
-  <data name="Option_HideMarking" xml:space="preserve">
-    <value>Überwegmarkierung entfernen</value>
+  <data name="Options_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Option_MakeStraightEnds" xml:space="preserve">
+    <value>Gerade Ende erstellen</value>
+  </data>
+  <data name="Option_Marking" xml:space="preserve">
+    <value>Marking</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Versatz</value>
+  </data>
+  <data name="Option_OffsetFormat" xml:space="preserve">
+    <value>{0}m</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Auf Standard zurücksetzen</value>
@@ -238,14 +247,26 @@ Shift x10, Strg x0,1</value>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Drehen</value>
   </data>
+  <data name="Option_RotateFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   <data name="Option_Shift" xml:space="preserve">
-    <value>Verschieben</value>
+    <value>Verschiebung</value>
+  </data>
+  <data name="Option_ShiftFormat" xml:space="preserve">
+    <value>{0}m</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
     <value>Neigung</value>
   </data>
+  <data name="Option_SlopeFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   <data name="Option_Stretch" xml:space="preserve">
-    <value>Strecken</value>
+    <value>Streckung</value>
+  </data>
+  <data name="Option_StretchFormat" xml:space="preserve">
+    <value>{0} %</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
     <value>Stil</value>
@@ -254,10 +275,13 @@ Shift x10, Strg x0,1</value>
     <value>Flach</value>
   </data>
   <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Neigung</value>
+    <value>Geneigt</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>Gedreht</value>
+    <value>Drehung</value>
+  </data>
+  <data name="Option_TwistFormat" xml:space="preserve">
+    <value>{0}°</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
     <value>Node-Typ</value>
@@ -275,7 +299,7 @@ Shift x10, Strg x0,1</value>
     <value>Benachrichtigungen</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
-    <value>Select middle nodes</value>
+    <value>Mittlere Nodes auswählen</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value></value>
@@ -293,59 +317,59 @@ Shift x10, Strg x0,1</value>
     <value>"Was gibt es neues" zeigen</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Hold Shift to alignment roads</value>
+    <value>Shift gedrückt halten um Straßen auszurichten</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
-    <value>Click to align with this corner</value>
+    <value>Klicken zum Ausrichten an dieser Ecke</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main road</value>
+    <value>Alt gedrückt halten um die Hauptstraße zu ändern</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Node #{0}
-Click to edit</value>
+Klicken zum Bearbeiten</value>
   </data>
   <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
-    <value>Click to select corner you want to align</value>
+    <value>Klicke, um die Ecke auszuwählen, die du ausrichten möchtest</value>
   </data>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
-    <value>Drag to change offset</value>
+    <value>Ziehen, um den Versatz zu ändern</value>
   </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
-    <value>Drag to change rotate</value>
+    <value>Ziehen, um die Drehung zu ändern</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
-    <value>Drag to change corner offset</value>
+    <value>Ziehen, um den Versatz der Ecke zu ändern</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>Drag this end to change main road</value>
+    <value>Ziehe dieses Ende um die Hauptstraße zu ändern</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>Drop this end to change main road</value>
+    <value>Loslassen dieses Endes um die Hauptstraße zu ändern</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
-    <value>Click to insert crossing node</value>
+    <value>Klicken, um einen Überweg einzufügen</value>
   </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
-    <value>Click to insert node</value>
+    <value>Klicken, um einen Node einzufügen</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
-    <value>Select corner you want to align with</value>
+    <value>Wähle die Ecke, an der du ausrichten möchtest</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>Change to desired main road</value>
+    <value>Zur gewünschten Hauptstraße wechseln</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>Select main road end position</value>
+    <value>Wähle das Ende der Hauptstraße</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
-    <value>Select node</value>
+    <value>Node auswählen</value>
   </data>
   <data name="Tool_InfoSelectToAlign" xml:space="preserve">
-    <value>Select corners you want to align</value>
+    <value>Wähle die Ecke, die du ausrichten möchtest</value>
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
-    <value>Can't insert node
-Too close to nearby node</value>
+    <value>Node kann nicht eingefügt werden
+Zu nah an einem Node in der Nähe</value>
   </data>
 </root>

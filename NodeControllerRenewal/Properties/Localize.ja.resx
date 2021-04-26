@@ -228,11 +228,20 @@
   <data name="NodeStyle_UTurn" xml:space="preserve">
     <value>Uターン</value>
   </data>
-  <data name="Option_HideMarking" xml:space="preserve">
-    <value>横断歩道を非表示</value>
+  <data name="Options_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Option_MakeStraightEnds" xml:space="preserve">
+    <value>全ての端を直線化</value>
+  </data>
+  <data name="Option_Marking" xml:space="preserve">
+    <value>Marking</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>オフセット（長さ・距離）</value>
+  </data>
+  <data name="Option_OffsetFormat" xml:space="preserve">
+    <value>{0}m</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>既定値に戻す</value>
@@ -240,14 +249,26 @@
   <data name="Option_Rotate" xml:space="preserve">
     <value>回転（角度）</value>
   </data>
+  <data name="Option_RotateFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>シフト（前後左右の移動）</value>
+  </data>
+  <data name="Option_ShiftFormat" xml:space="preserve">
+    <value>{0}m</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
     <value>スロープ（勾配・傾斜）</value>
   </data>
+  <data name="Option_SlopeFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   <data name="Option_Stretch" xml:space="preserve">
     <value>ストレッチ（太さ・幅）</value>
+  </data>
+  <data name="Option_StretchFormat" xml:space="preserve">
+    <value>{0}%</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
     <value>スタイル</value>
@@ -259,7 +280,10 @@
     <value>スロープ</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>ツイスト（バンク・ねじれ）</value>
+    <value>ツイスト（水平方向の傾斜）</value>
+  </data>
+  <data name="Option_TwistFormat" xml:space="preserve">
+    <value>{0}°</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
     <value>ノードの設定</value>
