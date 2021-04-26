@@ -113,7 +113,7 @@ namespace NodeController
                     if (nodeData.Style.SupportStretch != SupportOption.None)
                         ratio *= Data.Stretch;
 
-                    position.y += (Type == SideType.Left ? -1 : 1) * Data.Info.m_halfWidth * ratio;
+                    position.y += (Type == SideType.Left ? -1 : 1) * Data.Id.GetSegment().Info.m_halfWidth * ratio;
                 }
             }
 

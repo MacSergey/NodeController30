@@ -33,12 +33,10 @@ namespace NodeController
         public ushort NodeId { get; set; }
         public ushort Id { get; set; }
 
-        public ref NetSegment Segment => ref Id.GetSegment();
-        public NetInfo Info => Segment.Info;
         public ref NetNode Node => ref NodeId.GetNode();
         public NodeData NodeData => SingletonManager<Manager>.Instance[NodeId];
-        public bool IsStartNode => Segment.IsStartNode(NodeId);
-        public SegmentEndData Other => SingletonManager<Manager>.Instance[Segment.GetOtherNode(NodeId), Id, true];
+        public bool IsStartNode => Id.GetSegment().IsStartNode(NodeId);
+        public SegmentEndData Other => SingletonManager<Manager>.Instance[Id.GetSegment().GetOtherNode(NodeId), Id, true];
 
         public BezierTrajectory RawSegmentBezier { get; private set; }
         public BezierTrajectory SegmentBezier { get; private set; }
@@ -47,8 +45,15 @@ namespace NodeController
         public float AbsoluteAngle => RawSegmentBezier.StartDirection.AbsoluteAngle();
 
 
-        public float DefaultOffset => Mathf.Clamp(Mathf.Max(Info.m_minCornerOffset, Info.m_halfWidth < 4f ? 0f : 8f), MinPossibleOffset, MaxPossibleOffset);
-        public bool DefaultIsSlope => !Info.m_flatJunctions && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
+        public float DefaultOffset
+        {
+            get
+            {
+                var info = Id.GetSegment().Info;
+                return Mathf.Clamp(Mathf.Max(info.m_minCornerOffset, info.m_halfWidth < 4f ? 0f : 8f), MinPossibleOffset, MaxPossibleOffset);
+            }
+        }
+        public bool DefaultIsSlope => !Id.GetSegment().Info.m_flatJunctions && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public bool DefaultIsTwist => !DefaultIsSlope && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public bool IsMoveable => !IsNodeLess;
 
@@ -169,8 +174,9 @@ namespace NodeController
             LeftSide = new SegmentSide(this, SideType.Left);
             RightSide = new SegmentSide(this, SideType.Right);
 
-            IsNodeLess = !Info.m_nodes.Any();
-            PedestrianLaneCount = Info.PedestrianLanes();
+            var info = Id.GetSegment().Info;
+            IsNodeLess = !info.m_nodes.Any();
+            PedestrianLaneCount = info.PedestrianLanes();
 
             CalculateSegmentBeziers(Id, out var bezier, out var leftBezier, out var rightBezier);
             if (IsStartNode)
@@ -209,12 +215,12 @@ namespace NodeController
                 IsSlope = style.DefaultSlopeJunction;
 
 
-            if(IsNodeLess || style.SupportOffset == SupportOption.None)
+            if (IsNodeLess || style.SupportOffset == SupportOption.None)
             {
                 MinPossibleOffset = 0f;
                 MaxPossibleOffset = 0f;
             }
-            else if(style.SupportOffset == SupportOption.OnceValue)
+            else if (style.SupportOffset == SupportOption.OnceValue)
             {
                 MinPossibleOffset = style.DefaultOffset;
                 MaxPossibleOffset = style.DefaultOffset;
@@ -229,9 +235,9 @@ namespace NodeController
             if (style.SupportRotate <= SupportOption.OnceValue || force)
                 SetRotate(style.DefaultRotate);
 
-            if(style.SupportOffset == SupportOption.OnceValue)
+            if (style.SupportOffset == SupportOption.OnceValue)
                 SetOffset(style.DefaultOffset);
-            else if(style.SupportOffset == SupportOption.None || force)
+            else if (style.SupportOffset == SupportOption.None || force)
                 SetOffset(DefaultOffset);
             else
                 SetOffset(Offset);

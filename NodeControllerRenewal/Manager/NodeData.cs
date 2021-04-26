@@ -25,8 +25,6 @@ namespace NodeController
         public string XmlSection => XmlName;
 
         public ushort Id { get; set; }
-        public ref NetNode Node => ref Id.GetNode();
-        public NetInfo Info => Node.Info;
         public NodeStyle Style { get; private set; }
         public NodeStyleType Type
         {
@@ -156,8 +154,8 @@ namespace NodeController
             }
         }
 
-        public bool IsCSUR => Info.IsCSUR();
-        public bool IsRoad => Info.m_netAI is RoadBaseAI;
+        public bool IsCSUR => Id.GetNode().Info.IsCSUR();
+        public bool IsRoad => Id.GetNode().Info.m_netAI is RoadBaseAI;
 
         public bool IsEndNode => Type == NodeStyleType.End;
         public bool IsMiddleNode => Type == NodeStyleType.Middle;
@@ -192,7 +190,7 @@ namespace NodeController
         private void UpdateSegmentEnds()
         {
             var before = SegmentEnds.Values.Select(v => v.Id).ToList();
-            var after = Node.SegmentIds().ToList();
+            var after = Id.GetNode().SegmentIds().ToList();
 
             var still = before.Intersect(after).ToArray();
             var delete = before.Except(still).ToArray();
@@ -266,7 +264,7 @@ namespace NodeController
         }
         private void UpdateStyle(bool force, NodeStyleType? nodeType = null)
         {
-            DefaultFlags = Node.m_flags;
+            DefaultFlags = Id.GetNode().m_flags;
 
             if (DefaultFlags.IsFlagSet(NetNode.Flags.Middle))
                 DefaultType = NodeStyleType.Middle;
@@ -293,14 +291,15 @@ namespace NodeController
             if (!IsMiddleNode && !IsEndNode && FirstMainSegmentEnd is SegmentEndData first && SecondMainSegmentEnd is SegmentEndData second)
             {
                 MainBezier = new BezierTrajectory(first.Position, -first.Direction, second.Position, -second.Direction, false);
+                LeftMainBezier = GetBezier(first, second, SideType.Left);
+                RightMainBezier = GetBezier(first, second, SideType.Right);
 
-                first.GetCorner(true, out var firstLeftPos, out var firstLeftDir);
-                second.GetCorner(false, out var secondRightPos, out var secondRightDir);
-                LeftMainBezier = new BezierTrajectory(firstLeftPos, -firstLeftDir, secondRightPos, -secondRightDir, false);
-
-                first.GetCorner(false, out var firstRightPos, out var firstRightDir);
-                second.GetCorner(true, out var secondLeftPos, out var secondLeftDir);
-                RightMainBezier = new BezierTrajectory(firstRightPos, -firstRightDir, secondLeftPos, -secondLeftDir, false);
+                static BezierTrajectory GetBezier(SegmentEndData first, SegmentEndData second, SideType side)
+                {
+                    first.GetCorner(side == SideType.Left, out var firstPos, out var firstDir);
+                    second.GetCorner(side == SideType.Right, out var secondPos, out var secondDir);
+                    return new BezierTrajectory(firstPos, -firstDir, secondPos, -secondDir, false);
+                }
             }
 
             foreach (var segmentEnd in SegmentEndDatas)
@@ -316,7 +315,7 @@ namespace NodeController
             else
             {
                 SegmentEndData.FixMiddle(FirstMainSegmentEnd, SecondMainSegmentEnd);
-                Position = Node.m_position;
+                Position = Id.GetNode().m_position;
             }
         }
 
@@ -390,7 +389,7 @@ namespace NodeController
             return newNodeType switch
             {
                 NodeStyleType.Crossing => IsRoad && IsTwoRoads && IsEqualWidth && IsStraight && PedestrianLaneCount >= 2 && !HasNodeLess,
-                NodeStyleType.UTurn => IsRoad && IsTwoRoads && !HasNodeLess && Info.m_forwardVehicleLaneCount > 0 && Info.m_backwardVehicleLaneCount > 0,
+                NodeStyleType.UTurn => IsRoad && IsTwoRoads && !HasNodeLess && Id.GetNode().Info.IsTwoWay(),
                 NodeStyleType.Stretch => IsRoad && IsTwoRoads && CanModifyTextures && IsStraight,
                 NodeStyleType.Middle => IsTwoRoads && IsStraight || Is180,
                 NodeStyleType.Bend => IsTwoRoads,
@@ -438,26 +437,30 @@ namespace NodeController
 
             return config;
         }
-        public void FromXml(XElement config, Dictionary<InstanceID, InstanceID> map = null)
+        public void FromXml(XElement config, ObjectsMap map)
         {
             if (config.Element(MainRoad.XmlName) is XElement mainRoadConfig)
-                MainRoad.FromXml(mainRoadConfig);
+                MainRoad.FromXml(mainRoadConfig, map);
 
             foreach (var segmentEndConfig in config.Elements(SegmentEndData.XmlName))
             {
                 var id = segmentEndConfig.GetAttrValue(nameof(SegmentEndData.Id), (ushort)0);
 
-                if (map != null && map.TryGetValue(new InstanceID() { NetSegment = id }, out var instance))
-                    id = instance.NetSegment;
+                if (map.TryGetSegment(id, out var targetId))
+                    id = targetId;
 
                 if (SegmentEnds.TryGetValue(id, out var segmentEnd))
                     segmentEnd.FromXml(segmentEndConfig, Style);
             }
         }
 
-        public static bool FromXml(XElement config, out NodeData data)
+        public static bool FromXml(XElement config, ObjectsMap map, out NodeData data)
         {
             var id = config.GetAttrValue("Id", (ushort)0);
+
+            if (map.TryGetNode(id, out var targetId))
+                id = targetId;
+
             var type = (NodeStyleType)config.GetAttrValue("T", (int)NodeStyleType.Custom);
 
             if (id != 0 && id <= NetManager.MAX_NODE_COUNT)
@@ -465,7 +468,7 @@ namespace NodeController
                 try
                 {
                     data = new NodeData(id, type);
-                    data.FromXml(config);
+                    data.FromXml(config, map);
                     return true;
                 }
                 catch { }
@@ -503,7 +506,7 @@ namespace NodeController
         #endregion
 
     }
-    public class MainRoad : IToXml, IFromXml
+    public class MainRoad : IToXml
     {
         public static string XmlName => "MR";
         public string XmlSection => XmlName;
@@ -547,10 +550,17 @@ namespace NodeController
             return config;
         }
 
-        public void FromXml(XElement config)
+        public void FromXml(XElement config, ObjectsMap map)
         {
-            First = config.GetAttrValue<ushort>("F", 0);
-            Second = config.GetAttrValue<ushort>("S", 0);
+            First = Get("F", config, map);
+            Second = Get("S", config, map);
+
+            static ushort Get(string name, XElement config, ObjectsMap map)
+            {
+                var id = config.GetAttrValue<ushort>(name, 0);
+                return map.TryGetSegment(id, out var targetId) ? targetId : id;
+
+            }
         }
 
         public override string ToString() => $"{First}-{Second}";

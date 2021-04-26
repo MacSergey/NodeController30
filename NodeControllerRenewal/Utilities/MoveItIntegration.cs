@@ -26,7 +26,7 @@ namespace NodeController.Utilities
             else
                 return null;
         }
-        public override void Paste(InstanceID targetInstanceID, object record, Dictionary<InstanceID, InstanceID> map)
+        public override void Paste(InstanceID targetInstanceID, object record, Dictionary<InstanceID, InstanceID> sourceMap)
         {
             if (record is not XElement config || targetInstanceID.NetNode == 0)
                 return;
@@ -36,7 +36,11 @@ namespace NodeController.Utilities
             node.CalculateNode(targetInstanceID.NetNode);
 
             if (SingletonManager<Manager>.Instance[targetInstanceID.NetNode, true] is NodeData data)
+            {
+                var map = new ObjectsMap();
+                map.FromDictionary(sourceMap);
                 data.FromXml(config, map);
+            }
         }
 
         public override string Encode64(object record) => record == null ? null : EncodeUtil.BinaryEncode64(record?.ToString());

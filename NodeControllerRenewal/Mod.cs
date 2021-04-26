@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using ColossalFramework.UI;
+using HarmonyLib;
 using ICities;
 using ModsCommon;
 using NodeController.Patches;
@@ -65,6 +66,8 @@ namespace NodeController
             success &= AddTool();
             success &= AddNetToolButton();
             success &= ToolOnEscape();
+            success &= AssetDataExtensionFix();
+            success &= AssetDataLoad();
 
             PatchNetManager(ref success);
             PatchNetNode(ref success);
@@ -95,6 +98,18 @@ namespace NodeController
             return AddTranspiler(typeof(Mod), nameof(Mod.GameKeyShortcutsEscapeTranspiler), typeof(GameKeyShortcuts), "Escape");
         }
         protected static IEnumerable<CodeInstruction> GameKeyShortcutsEscapeTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions) => GameKeyShortcutsEscapeTranspiler<NodeControllerTool>(generator, instructions);
+
+        private bool AssetDataExtensionFix()
+        {
+            return AddPostfix(typeof(Mod), nameof(Mod.LoadAssetPanelOnLoadPostfix), typeof(LoadAssetPanel), nameof(LoadAssetPanel.OnLoad));
+        }
+        private static void LoadAssetPanelOnLoadPostfix(LoadAssetPanel __instance, UIListBox ___m_SaveList) => AssetDataExtension.LoadAssetPanelOnLoadPostfix(__instance, ___m_SaveList);
+
+        private bool AssetDataLoad()
+        {
+            return AddTranspiler(typeof(Mod), nameof(Mod.BuildingDecorationLoadPathsTranspiler), typeof(BuildingDecoration), nameof(BuildingDecoration.LoadPaths));
+        }
+        private static IEnumerable<CodeInstruction> BuildingDecorationLoadPathsTranspiler(IEnumerable<CodeInstruction> instructions) => AssetDataExtension.BuildingDecorationLoadPathsTranspiler(instructions);
 
         #region NETMANAGER
 

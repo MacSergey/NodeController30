@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using ModsCommon.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -7,7 +8,7 @@ namespace NodeController.Patches
 {
     public static class NetManagerPatches
     {
-        public static IEnumerable<CodeInstruction> SimulationStepImplTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> SimulationStepImplTranspiler(IEnumerable<CodeInstruction> instructions)
         {
             var enumerator = instructions.GetEnumerator();
 
@@ -44,6 +45,7 @@ namespace NodeController.Patches
                 yield return instruction;
             }
         }
+
         public static IEnumerable<CodeInstruction> UpdateSegmentTranspiler(IEnumerable<CodeInstruction> instructions)
         {
             var list = instructions.ToList();
