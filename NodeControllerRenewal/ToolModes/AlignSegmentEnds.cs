@@ -122,7 +122,7 @@ namespace NodeController
         }
         private float GetSideLane(SegmentEndData segmentEnd, SideType side)
         {
-            var segment = segmentEnd.Segment;
+            var segment = segmentEnd.Id.GetSegment();
             var isStart = segmentEnd.IsStartNode;
             var isInvert = segment.IsInvert();
             var isLeft = side == SideType.Left;

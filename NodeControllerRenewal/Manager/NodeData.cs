@@ -25,8 +25,6 @@ namespace NodeController
         public string XmlSection => XmlName;
 
         public ushort Id { get; set; }
-        public ref NetNode Node => ref Id.GetNode();
-        public NetInfo Info => Node.Info;
         public NodeStyle Style { get; private set; }
         public NodeStyleType Type
         {
@@ -156,8 +154,8 @@ namespace NodeController
             }
         }
 
-        public bool IsCSUR => Info.IsCSUR();
-        public bool IsRoad => Info.m_netAI is RoadBaseAI;
+        public bool IsCSUR => Id.GetNode().Info.IsCSUR();
+        public bool IsRoad => Id.GetNode().Info.m_netAI is RoadBaseAI;
 
         public bool IsEndNode => Type == NodeStyleType.End;
         public bool IsMiddleNode => Type == NodeStyleType.Middle;
@@ -192,7 +190,7 @@ namespace NodeController
         private void UpdateSegmentEnds()
         {
             var before = SegmentEnds.Values.Select(v => v.Id).ToList();
-            var after = Node.SegmentIds().ToList();
+            var after = Id.GetNode().SegmentIds().ToList();
 
             var still = before.Intersect(after).ToArray();
             var delete = before.Except(still).ToArray();
@@ -266,7 +264,7 @@ namespace NodeController
         }
         private void UpdateStyle(bool force, NodeStyleType? nodeType = null)
         {
-            DefaultFlags = Node.m_flags;
+            DefaultFlags = Id.GetNode().m_flags;
 
             if (DefaultFlags.IsFlagSet(NetNode.Flags.Middle))
                 DefaultType = NodeStyleType.Middle;
@@ -316,7 +314,7 @@ namespace NodeController
             else
             {
                 SegmentEndData.FixMiddle(FirstMainSegmentEnd, SecondMainSegmentEnd);
-                Position = Node.m_position;
+                Position = Id.GetNode().m_position;
             }
         }
 
@@ -390,7 +388,7 @@ namespace NodeController
             return newNodeType switch
             {
                 NodeStyleType.Crossing => IsRoad && IsTwoRoads && IsEqualWidth && IsStraight && PedestrianLaneCount >= 2 && !HasNodeLess,
-                NodeStyleType.UTurn => IsRoad && IsTwoRoads && !HasNodeLess && Info.m_forwardVehicleLaneCount > 0 && Info.m_backwardVehicleLaneCount > 0,
+                NodeStyleType.UTurn => IsRoad && IsTwoRoads && !HasNodeLess && Id.GetNode().Info.IsTwoWay(),
                 NodeStyleType.Stretch => IsRoad && IsTwoRoads && CanModifyTextures && IsStraight,
                 NodeStyleType.Middle => IsTwoRoads && IsStraight || Is180,
                 NodeStyleType.Bend => IsTwoRoads,
