@@ -207,6 +207,9 @@ namespace NodeController
             if (SupportNoMarking > SupportOption.OnceValue)
                 GetHideMarkingProperty(parent);
 
+            if (SupportOffset.IsSet(SupportOption.Individually))
+                GetStraightButton(parent, refresh);
+
             GetResetButton(parent, refresh);
         }
 
@@ -385,6 +388,19 @@ namespace NodeController
             hideMarkingProperty.OnSelectObjectChanged += (value) => Data.NoMarkings = value;
 
             return hideMarkingProperty;
+        }
+        protected ButtonPanel GetStraightButton(UIComponent parent, Action refresh)
+        {
+            var resetButton = ComponentPool.Get<ButtonPanel>(parent);
+            resetButton.Text = Localize.Option_MakeStraightEnds;
+            resetButton.Init();
+            resetButton.OnButtonClick += () =>
+            {
+                Data.MakeStraightEnds();
+                refresh();
+            };
+
+            return resetButton;
         }
         protected ButtonPanel GetResetButton(UIComponent parent, Action refresh)
         {

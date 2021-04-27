@@ -395,6 +395,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Make straight ends.
+        /// </summary>
+        internal static string Option_MakeStraightEnds {
+            get {
+                return ResourceManager.GetString("Option_MakeStraightEnds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Offset.
         /// </summary>
         internal static string Option_Offset {

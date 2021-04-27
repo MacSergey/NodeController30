@@ -598,6 +598,28 @@ namespace NodeController
             position = side.Position;
             direction = side.Direction;
         }
+        public void MakeStraight()
+        {
+            if (MinRotate <= 0f && 0f <= MaxRotate)
+                SetRotate(0f);
+            else
+            {
+                var left = GetStraightT(LeftSide);
+                var right = GetStraightT(RightSide);
+                var offset = RawSegmentBezier.Distance(0f, Mathf.Max(left, right));
+                SetOffset(offset);
+                SetRotate(0f, true);
+            }
+        }
+        private float GetStraightT(SegmentSide side)
+        {
+            var position = side.RawBezier.Position(side.CurrentT);
+            var direction = side.RawBezier.Tangent(side.CurrentT).Turn90(true);
+            var line = new StraightTrajectory(position, position + direction, false);
+            return Intersection.CalculateSingle(RawSegmentBezier, line, out var t, out _) ? t : 0f;
+        }
+
+
         public static void GetSegmentWidth(ushort segmentId, float position, out float startWidth, out float endWidth)
         {
             SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);

@@ -378,6 +378,13 @@ namespace NodeController
                 UpdateNode();
             }
         }
+        public void MakeStraightEnds()
+        {
+            foreach (var segmentEnd in SegmentEndDatas)
+                segmentEnd.MakeStraight();
+
+            UpdateNode();
+        }
 
         #endregion
 

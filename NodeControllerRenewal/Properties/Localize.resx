@@ -229,6 +229,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="Option_HideMarking" xml:space="preserve">
     <value>Hide crosswalk marking</value>
   </data>
+  <data name="Option_MakeStraightEnds" xml:space="preserve">
+    <value>Make straight ends</value>
+  </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Offset</value>
   </data>
