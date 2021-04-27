@@ -325,6 +325,7 @@ namespace NodeController
             var dir = (endPos - startPos).MakeFlat();
             var deltaAngle = Mathf.Asin(shift / dir.magnitude);
             var normal = dir.TurnRad(Mathf.PI / 2 + deltaAngle, true).normalized;
+            var normal90 = dir.Turn90(true).normalized;
 
             if (start?.IsIndividuallyShift != false)
             {
@@ -332,7 +333,7 @@ namespace NodeController
                 startDir = startDir.TurnRad(deltaAngle, true);
             }
             else
-                startPos -= dir.Turn90(true).normalized * startShift;
+                startPos -= normal90 * startShift;
 
             if (end?.IsIndividuallyShift != false)
             {
@@ -340,7 +341,7 @@ namespace NodeController
                 endDir = endDir.TurnRad(deltaAngle, true);
             }
             else
-                endPos += dir.Turn90(true).normalized * endShift;
+                endPos += normal90 * endShift;
         }
 
         #endregion

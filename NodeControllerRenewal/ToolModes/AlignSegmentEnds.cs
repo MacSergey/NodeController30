@@ -130,15 +130,11 @@ namespace NodeController
             var isLaneInvert = isStart ^ isInvert;
             var info = segment.Info;
 
-            var list = (isLaneInvert ^ !isLeft ? info.m_sortedLanes : info.m_sortedLanes.Reverse()).ToArray();
-            var first = info.m_lanes[list.First(i => info.m_lanes[i].IsDriveLane())];
-            var last = info.m_lanes[list.Last(i => info.m_lanes[i].IsDriveLane())];
-
             foreach (var i in isLaneInvert ^ !isLeft ? info.m_sortedLanes : info.m_sortedLanes.Reverse())
             {
                 var lane = info.m_lanes[i];
-                if (lane.IsDriveLane())
-                    return (isLaneInvert ? -1 : 1) * lane.m_position * segmentEnd.Stretch + (isLeft ? 0.5f : -0.5f) * lane.m_width * segmentEnd.Stretch;
+                if (lane.IsGroundLane())
+                    return ((isLaneInvert ? -1 : 1) * lane.m_position + (isLeft ? 0.5f : -0.5f) * lane.m_width) * segmentEnd.Stretch;
             }
 
             return 0f;

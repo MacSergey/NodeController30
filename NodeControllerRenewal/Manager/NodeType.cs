@@ -532,6 +532,7 @@ namespace NodeController
         public CustomNode(NodeData data) : base(data) { }
     }
 
+    [Flags]
     public enum SupportOption
     {
         None = 0,

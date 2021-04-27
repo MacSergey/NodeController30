@@ -31,10 +31,6 @@ namespace NodeController.Utilities
             if (record is not XElement config || targetInstanceID.NetNode == 0)
                 return;
 
-            //need while moveit dont fixed
-            ref var node = ref targetInstanceID.NetNode.GetNode();
-            node.CalculateNode(targetInstanceID.NetNode);
-
             if (SingletonManager<Manager>.Instance[targetInstanceID.NetNode, true] is NodeData data)
             {
                 var map = new ObjectsMap();

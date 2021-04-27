@@ -264,7 +264,11 @@ namespace NodeController
         }
         private void UpdateStyle(bool force, NodeStyleType? nodeType = null)
         {
-            DefaultFlags = Id.GetNode().m_flags;
+            var node = Id.GetNode();
+            if (node.m_flags == (NetNode.Flags.Created | NetNode.Flags.Original))
+                node.CalculateNode(Id);
+
+            DefaultFlags = node.m_flags;
 
             if (DefaultFlags.IsFlagSet(NetNode.Flags.Middle))
                 DefaultType = NodeStyleType.Middle;
