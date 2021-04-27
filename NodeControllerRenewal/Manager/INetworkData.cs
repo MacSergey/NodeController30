@@ -14,7 +14,5 @@ namespace NodeController
         public float Shift { get; set; }
         public float Stretch { get; set; }
         public float StretchPercent { get; set; }
-
-        public void GetUIComponents(UIComponent parent, Action refresh);
     }
 }

@@ -2,6 +2,7 @@
 using ModsCommon;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
+using NodeController.Utilities;
 using System.Linq;
 using UnityEngine;
 
@@ -40,11 +41,12 @@ namespace NodeController.UI
         public bool IsHover => (isVisible && this.IsHover(SingletonTool<NodeControllerTool>.Instance.MousePosition)) || components.Any(c => c.isVisible && c.IsHover(SingletonTool<NodeControllerTool>.Instance.MousePosition));
 
         private PropertyGroupPanel Content { get; set; }
-        public INetworkData Data { get; private set; }
+        public NodeData Data { get; private set; }
 
         public NodeControllerPanel()
         {
             Content = ComponentPool.Get<PropertyGroupPanel>(this);
+            Content.color = new Color32(72, 80, 80, 255);
             Content.autoLayoutDirection = LayoutDirection.Vertical;
             Content.autoFitChildrenVertically = true;
             Content.eventSizeChanged += (UIComponent component, Vector2 value) => size = value;
@@ -76,7 +78,7 @@ namespace NodeController.UI
             absolutePosition = DefaultPosition;
         }
 
-        public void SetData(INetworkData data)
+        public void SetData(NodeData data)
         {
             if ((Data = data) != null)
                 UpdatePanel();
@@ -105,13 +107,53 @@ namespace NodeController.UI
             var header = ComponentPool.Get<PanelHeader>(Content);
             header.Text = Data.Title;
             header.Init();
-            Data.GetUIComponents(Content, UpdatePanel);
+            GetNodeTypeProperty();
+            Data.Style.GetUIComponents(Content);
 
             Content.StartLayout();
         }
+        private NodeTypePropertyPanel GetNodeTypeProperty()
+        {
+            var typeProperty = ComponentPool.Get<NodeTypePropertyPanel>(Content);
+            typeProperty.Text = NodeController.Localize.Option_Type;
+            typeProperty.Init(Data.IsPossibleType);
+            typeProperty.SelectedObject = Data.Type;
+            typeProperty.OnSelectObjectChanged += (value) =>
+            {
+                Data.Type = value;
+                UpdatePanel();
+            };
+
+            return typeProperty;
+        }
     }
-    public class PanelHeader : HeaderMoveablePanel<BaseHeaderContent>
+    public class PanelHeader : HeaderMoveablePanel<PanelHeaderContent>
     {
         protected override float DefaultHeight => 40f;
+    }
+    public class PanelHeaderContent : BasePanelHeaderContent<PanelHeaderButton, AdditionallyHeaderButton>
+    {
+        private PanelHeaderButton MakeStraight { get; set; }
+
+        protected override void AddButtons()
+        {
+            AddButton(NodeControllerTextures.Reset, NodeController.Localize.Option_ResetToDefault, OnResetClick);
+            MakeStraight = AddButton(NodeControllerTextures.MakeStraight, NodeController.Localize.Option_MakeStraightEnds, OnMakeStraightClick);
+
+            SetMakeStraightEnabled();
+        }
+
+        private void OnResetClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.ResetToDefault();
+        private void OnMakeStraightClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds();
+
+        private void SetMakeStraightEnabled() => MakeStraight.isVisible = SingletonTool<NodeControllerTool>.Instance.Data.Style.SupportOffset.IsSet(SupportOption.Individually);
+    }
+    public class PanelHeaderButton : BasePanelHeaderButton
+    {
+        protected override UITextureAtlas IconAtlas => NodeControllerTextures.Atlas;
+    }
+    public class AdditionallyHeaderButton : BaseAdditionallyHeaderButton
+    {
+        protected override UITextureAtlas IconAtlas => NodeControllerTextures.Atlas;
     }
 }

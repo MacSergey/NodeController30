@@ -48,6 +48,16 @@ namespace NodeController
             Data?.UpdateNode();
             Panel.SetData(data);
         }
+        public void ResetToDefault()
+        {
+            Data.ResetToDefault();
+            Panel.UpdatePanel();
+        }
+        public void MakeStraightEnds()
+        {
+            Data.MakeStraightEnds();
+            Panel.UpdatePanel();
+        }
     }
     public abstract class NodeControllerToolMode : BaseToolMode<Mod, NodeControllerTool>, IToolMode<ToolModeType>, IToolModePanel
     {

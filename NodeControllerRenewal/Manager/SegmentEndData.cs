@@ -32,6 +32,7 @@ namespace NodeController
 
         public ushort NodeId { get; set; }
         public ushort Id { get; set; }
+        public int Index { get; set; }
 
         public ref NetNode Node => ref NodeId.GetNode();
         public NodeData NodeData => SingletonManager<Manager>.Instance[NodeId];
@@ -771,15 +772,5 @@ namespace NodeController
         }
 
         #endregion
-
-        #region UI COMPONENTS
-
-        public void GetUIComponents(UIComponent parent, Action refresh)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
     }
 }

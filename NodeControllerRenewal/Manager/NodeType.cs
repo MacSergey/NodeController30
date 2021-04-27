@@ -1,6 +1,7 @@
 ﻿using ColossalFramework.UI;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
+using NodeController.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -192,181 +193,61 @@ namespace NodeController
 
         #region UICOMPONENTS
 
-        public virtual void GetUIComponents(UIComponent parent, Action refresh)
+        public virtual void GetUIComponents(UIComponent parent)
         {
             if (SupportSlopeJunction > SupportOption.OnceValue)
                 GetJunctionButtons(parent);
 
-            GetOffsetUIComponents(parent);
-            GetShiftUIComponents(parent);
-            GetRotateUIComponents(parent);
-            GetSlopeUIComponents(parent);
-            GetTwistUIComponents(parent);
-            GetStretchUIComponents(parent);
-
             if (SupportNoMarking > SupportOption.OnceValue)
                 GetHideMarkingProperty(parent);
 
-            if (SupportOffset.IsSet(SupportOption.Individually))
-                GetStraightButton(parent, refresh);
+            var space = ComponentPool.Get<SpacePanel>(parent);
+            space.Init(20f);
 
-            GetResetButton(parent, refresh);
-        }
+            var id = ComponentPool.Get<TextOptionPanel>(parent);
+            id.Init(Data);
 
-        protected void GetOffsetUIComponents(UIComponent parent) => GetUIComponents(parent, SupportOffset, GetOffsetProperty, GetSegmentOffsetProperty, (data) => data.Offset, (data, value) => data.Offset = value);
-        protected void GetShiftUIComponents(UIComponent parent) => GetUIComponents(parent, SupportShift, GetShiftProperty, GetSegmentShiftProperty, (data) => data.Shift, (data, value) => data.Shift = value);
-        protected void GetRotateUIComponents(UIComponent parent) => GetUIComponents(parent, SupportRotate, GetRotateProperty, GetSegmentRotateProperty, (data) => data.RotateAngle, (data, value) => data.RotateAngle = value);
-        protected void GetSlopeUIComponents(UIComponent parent) => GetUIComponents(parent, SupportSlope, GetSlopeProperty, GetSegmentSlopeProperty, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value);
-        protected void GetTwistUIComponents(UIComponent parent) => GetUIComponents(parent, SupportTwist, GetTwistProperty, GetSegmentTwistProperty, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value);
-        protected void GetStretchUIComponents(UIComponent parent) => GetUIComponents(parent, SupportStretch, GetStretchProperty, GetSegmentStretchProperty, (data) => data.StretchPercent, (data, value) => data.StretchPercent = value);
-        protected void GetUIComponents(UIComponent parent, SupportOption option, Func<UIComponent, FloatPropertyPanel> getNodeProperty, Func<UIComponent, SegmentEndData, FloatPropertyPanel> getSegmentProperty, Func<INetworkData, float> getValue, Action<INetworkData, float> setValue)
-        {
-            var nodeProperty = default(FloatPropertyPanel);
-            var segmentProperties = new Dictionary<SegmentEndData, FloatPropertyPanel>();
-
-            if (option.IsSet(SupportOption.Group))
+            if (SupportOffset != SupportOption.None)
             {
-                nodeProperty = getNodeProperty(parent);
-                nodeProperty.Value = getValue(Data);
-                nodeProperty.OnValueChanged += SetNodeValue;
+                var offset = ComponentPool.Get<FloatOptionPanel>(parent);
+                offset.Text = Localize.Option_Offset;
+                offset.Init(Data, SupportOffset, (data) => data.Offset, (data, value) => data.Offset = value);
             }
 
-            if (option.IsSet(SupportOption.Individually))
+            if (SupportShift != SupportOption.None)
             {
-                foreach (var segmentData in Data.SegmentEndDatas)
-                {
-                    var segmentProperty = getSegmentProperty(parent, segmentData);
-                    segmentProperty.Value = getValue(segmentData);
-                    segmentProperty.OnValueChanged += (newValue) => SetSegmentEndValue(segmentData, newValue);
-                    segmentProperties.Add(segmentData, segmentProperty);
-                }
+                var shift = ComponentPool.Get<FloatOptionPanel>(parent);
+                shift.Text = Localize.Option_Shift;
+                shift.Init(Data, SupportShift, (data) => data.Shift, (data, value) => data.Shift = value);
             }
 
-            void SetNodeValue(float newValue)
+            if (SupportRotate != SupportOption.None)
             {
-                setValue(Data, newValue);
-                foreach (var segmentProperty in segmentProperties)
-                    segmentProperty.Value.Value = getValue(segmentProperty.Key);
+                var rotate = ComponentPool.Get<FloatOptionPanel>(parent);
+                rotate.Text = Localize.Option_Rotate;
+                rotate.Init(Data, SupportRotate, (data) => data.RotateAngle, (data, value) => data.RotateAngle = value);
             }
-            void SetSegmentEndValue(SegmentEndData segmentData, float newValue)
+
+            if (SupportStretch != SupportOption.None)
             {
-                setValue(segmentData, newValue);
-                if (option.IsSet(SupportOption.Group))
-                    nodeProperty.Value = getValue(Data);
-                Data.UpdateNode();
+                var stretch = ComponentPool.Get<FloatOptionPanel>(parent);
+                stretch.Text = Localize.Option_Stretch;
+                stretch.Init(Data, SupportStretch, (data) => data.Stretch, (data, value) => data.Stretch = value);
             }
-        }
 
-        private FloatPropertyPanel GetProperty(UIComponent parent, string name)
-        {
-            var property = ComponentPool.Get<FloatPropertyPanel>(parent, name);
-            property.Text = name;
-            property.CheckMin = true;
-            property.CheckMax = true;
-            property.UseWheel = true;
-            property.WheelStep = 1f;
-            property.WheelTip = Settings.ShowToolTip ? Localize.FieldPanel_ScrollWheel : string.Empty;
-            property.Init();
+            if (SupportSlope != SupportOption.None)
+            {
+                var slope = ComponentPool.Get<FloatOptionPanel>(parent);
+                slope.Text = Localize.Option_Slope;
+                slope.Init(Data, SupportSlope, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value);
+            }
 
-            return property;
-        }
-
-        protected FloatPropertyPanel GetOffsetProperty(UIComponent parent)
-        {
-            var offsetProperty = GetProperty(parent, Localize.Option_Offset);
-            offsetProperty.MinValue = MinOffset;
-            offsetProperty.MaxValue = MaxOffset;
-
-            return offsetProperty;
-        }
-        protected FloatPropertyPanel GetShiftProperty(UIComponent parent)
-        {
-            var shiftProperty = GetProperty(parent, Localize.Option_Shift);
-            shiftProperty.MinValue = MinShift;
-            shiftProperty.MaxValue = MaxShift;
-
-            return shiftProperty;
-        }
-        protected FloatPropertyPanel GetRotateProperty(UIComponent parent)
-        {
-            var rotateProperty = GetProperty(parent, Localize.Option_Rotate);
-            rotateProperty.MinValue = SegmentEndData.MinPossibleRotate;
-            rotateProperty.MaxValue = SegmentEndData.MaxPossibleRotate;
-
-            return rotateProperty;
-        }
-        protected FloatPropertyPanel GetSlopeProperty(UIComponent parent)
-        {
-            var slopeProperty = GetProperty(parent, Localize.Option_Slope);
-            slopeProperty.MinValue = MinSlope;
-            slopeProperty.MaxValue = MaxSlope;
-
-            return slopeProperty;
-        }
-        protected FloatPropertyPanel GetTwistProperty(UIComponent parent)
-        {
-            var twistProperty = GetProperty(parent, Localize.Option_Twist);
-            twistProperty.MinValue = MinTwist;
-            twistProperty.MaxValue = MaxTwist;
-
-            return twistProperty;
-        }
-        protected FloatPropertyPanel GetStretchProperty(UIComponent parent)
-        {
-            var stretchProperty = GetProperty(parent, Localize.Option_Stretch);
-            stretchProperty.MinValue = MinStretch;
-            stretchProperty.MaxValue = MaxStretch;
-
-            return stretchProperty;
-        }
-
-        protected FloatPropertyPanel GetSegmentOffsetProperty(UIComponent parent, SegmentEndData segmentData)
-        {
-            var offsetProperty = GetProperty(parent, $"Segment #{segmentData.Id} offset");
-            offsetProperty.MinValue = segmentData.MinOffset;
-            offsetProperty.MaxValue = segmentData.MaxOffset;
-
-            return offsetProperty;
-        }
-        protected FloatPropertyPanel GetSegmentShiftProperty(UIComponent parent, SegmentEndData segmentData)
-        {
-            var shiftProperty = GetProperty(parent, $"Segment #{segmentData.Id} shift");
-            shiftProperty.MinValue = MinShift;
-            shiftProperty.MaxValue = MaxShift;
-
-            return shiftProperty;
-        }
-        protected FloatPropertyPanel GetSegmentRotateProperty(UIComponent parent, SegmentEndData segmentData)
-        {
-            var rotateProperty = GetProperty(parent, $"Segment #{segmentData.Id} rotate");
-            rotateProperty.MinValue = segmentData.MinRotate;
-            rotateProperty.MaxValue = segmentData.MaxRotate;
-
-            return rotateProperty;
-        }
-        protected FloatPropertyPanel GetSegmentSlopeProperty(UIComponent parent, SegmentEndData segmentData)
-        {
-            var slopeProperty = GetProperty(parent, $"Segment #{segmentData.Id} slope");
-            slopeProperty.MinValue = MinSlope;
-            slopeProperty.MaxValue = MaxSlope;
-
-            return slopeProperty;
-        }
-        protected FloatPropertyPanel GetSegmentTwistProperty(UIComponent parent, SegmentEndData segmentData)
-        {
-            var twistProperty = GetProperty(parent, $"Segment #{segmentData.Id} twist");
-            twistProperty.MinValue = MinTwist;
-            twistProperty.MaxValue = MaxTwist;
-
-            return twistProperty;
-        }
-        protected FloatPropertyPanel GetSegmentStretchProperty(UIComponent parent, SegmentEndData segmentData)
-        {
-            var stretchProperty = GetProperty(parent, $"Segment #{segmentData.Id} stretch");
-            stretchProperty.MinValue = MinStretch;
-            stretchProperty.MaxValue = MaxStretch;
-
-            return stretchProperty;
+            if (SupportTwist != SupportOption.None)
+            {
+                var twist = ComponentPool.Get<FloatOptionPanel>(parent);
+                twist.Text = Localize.Option_Twist;
+                twist.Init(Data, SupportTwist, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value);
+            }
         }
 
         protected BoolListPropertyPanel GetJunctionButtons(UIComponent parent)
@@ -388,32 +269,6 @@ namespace NodeController
             hideMarkingProperty.OnSelectObjectChanged += (value) => Data.NoMarkings = value;
 
             return hideMarkingProperty;
-        }
-        protected ButtonPanel GetStraightButton(UIComponent parent, Action refresh)
-        {
-            var resetButton = ComponentPool.Get<ButtonPanel>(parent);
-            resetButton.Text = Localize.Option_MakeStraightEnds;
-            resetButton.Init();
-            resetButton.OnButtonClick += () =>
-            {
-                Data.MakeStraightEnds();
-                refresh();
-            };
-
-            return resetButton;
-        }
-        protected ButtonPanel GetResetButton(UIComponent parent, Action refresh)
-        {
-            var resetButton = ComponentPool.Get<ButtonPanel>(parent);
-            resetButton.Text = Localize.Option_ResetToDefault;
-            resetButton.Init();
-            resetButton.OnButtonClick += () =>
-            {
-                Data.ResetToDefault();
-                refresh();
-            };
-
-            return resetButton;
         }
 
         #endregion

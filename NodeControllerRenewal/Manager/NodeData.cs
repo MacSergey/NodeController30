@@ -37,6 +37,7 @@ namespace NodeController
         }
         private Dictionary<ushort, SegmentEndData> SegmentEnds { get; set; } = new Dictionary<ushort, SegmentEndData>();
         public IEnumerable<SegmentEndData> SegmentEndDatas => SegmentEnds.Values;
+
         public IEnumerable<SegmentEndData> MainSegmentEndDatas
         {
             get
@@ -196,28 +197,35 @@ namespace NodeController
             var delete = before.Except(still).ToArray();
             var add = after.Except(still).ToArray();
 
-            var newSegmentsEnd = still.ToDictionary(i => i, i => SegmentEnds[i]);
+            var newSegmentsEnd = still.Select(i => SegmentEnds[i]).ToList();
 
             if (delete.Length == 1 && add.Length == 1)
             {
                 var changed = SegmentEnds[delete[0]];
                 changed.Id = add[0];
-                newSegmentsEnd.Add(changed.Id, changed);
+                newSegmentsEnd.Add(changed);
                 MainRoad.Replace(delete[0], add[0]);
             }
             else
             {
                 foreach (var segmentId in add)
                 {
-                    var newsegmentEnd = new SegmentEndData(segmentId, Id);
-                    newSegmentsEnd.Add(segmentId, newsegmentEnd);
+                    var newSegmentEnd = new SegmentEndData(segmentId, Id);
+                    newSegmentsEnd.Add(newSegmentEnd);
 
                     if (Style is NodeStyle style)
-                        newsegmentEnd.ResetToDefault(style, true);
+                        newSegmentEnd.ResetToDefault(style, true);
                 }
             }
 
-            SegmentEnds = newSegmentsEnd;
+            var segmentEnds = new Dictionary<ushort, SegmentEndData>();
+            foreach (var newSegmentEnd in newSegmentsEnd.OrderBy(s => s.AbsoluteAngle))
+            {
+                newSegmentEnd.Index = segmentEnds.Count + 1;
+                segmentEnds[newSegmentEnd.Id] = newSegmentEnd;
+            }
+
+            SegmentEnds = segmentEnds;
         }
         private void UpdateMainRoad()
         {
@@ -490,32 +498,6 @@ namespace NodeController
         }
 
         #endregion
-
-        #region UI COMPONENTS
-
-        public void GetUIComponents(UIComponent parent, Action refresh)
-        {
-            GetNodeTypeProperty(parent, refresh);
-            Style.GetUIComponents(parent, refresh);
-        }
-
-        private NodeTypePropertyPanel GetNodeTypeProperty(UIComponent parent, Action refresh)
-        {
-            var typeProperty = ComponentPool.Get<NodeTypePropertyPanel>(parent);
-            typeProperty.Text = Localize.Option_Type;
-            typeProperty.Init(IsPossibleType);
-            typeProperty.SelectedObject = Type;
-            typeProperty.OnSelectObjectChanged += (value) =>
-            {
-                Type = value;
-                refresh();
-            };
-
-            return typeProperty;
-        }
-
-        #endregion
-
     }
     public class MainRoad : IToXml
     {

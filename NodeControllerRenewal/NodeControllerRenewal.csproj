@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Manager\Extensions\AssetDataExtension.cs" />
+    <Compile Include="UI\OptionPanel.cs" />
     <Compile Include="Utilities\BackwardСompatibility.cs" />
     <Compile Include="Manager\Extensions\LoadingExtension.cs" />
     <Compile Include="Manager\NodeType.cs" />
@@ -158,6 +159,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Cursor.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\HeaderButtons.png" />
+  </ItemGroup>
   <Import Project="..\ModsCommon\ModsCommonShared\ModsCommonShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -182,7 +186,7 @@
   </Target>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_ConfigurationName="Debug" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="Build" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Build" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Debug" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="AfterBuildRelease" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'">
