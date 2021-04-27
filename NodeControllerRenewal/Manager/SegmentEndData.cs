@@ -324,24 +324,16 @@ namespace NodeController
             var shift = (startShift + endShift) / 2;
             var dir = (endPos - startPos).MakeFlat();
             var deltaAngle = Mathf.Asin(shift / dir.magnitude);
-            var normal = dir.TurnRad(Mathf.PI / 2 + deltaAngle, true).normalized;
-            var normal90 = dir.Turn90(true).normalized;
+            var normal = dir.Turn90(true).normalized;
+
+            startPos -= normal * startShift;
+            endPos += normal * endShift;
 
             if (start?.IsIndividuallyShift != false)
-            {
-                startPos -= normal * startShift;
                 startDir = startDir.TurnRad(deltaAngle, true);
-            }
-            else
-                startPos -= normal90 * startShift;
 
             if (end?.IsIndividuallyShift != false)
-            {
-                endPos += normal * endShift;
                 endDir = endDir.TurnRad(deltaAngle, true);
-            }
-            else
-                endPos += normal90 * endShift;
         }
 
         #endregion
