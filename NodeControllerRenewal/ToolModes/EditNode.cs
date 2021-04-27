@@ -20,7 +20,7 @@ namespace NodeController
 
         public override void OnToolUpdate()
         {
-            if (Tool.Data.IsJunction && !Tool.Panel.IsHover && InputExtension.OnlyAltIsPressed)
+            if (Tool.Data.IsJunction && Tool.Data.IsSlopeJunctions && !Tool.Panel.IsHover && InputExtension.OnlyAltIsPressed)
                 Tool.SetMode(ToolModeType.ChangeMain);
             else if (!Tool.Panel.IsHover && InputExtension.OnlyShiftIsPressed)
                 Tool.SetMode(ToolModeType.Aling);
@@ -99,7 +99,7 @@ namespace NodeController
             {
                 var info = new List<string>();
                 info.Add(Localize.Tool_InfoAlignMode);
-                if (Tool.Data.IsJunction)
+                if (Tool.Data.IsJunction && Tool.Data.IsSlopeJunctions)
                     info.Add(Localize.Tool_InfoChangeMainMode);
 
                 return string.Join("\n", info.ToArray());
