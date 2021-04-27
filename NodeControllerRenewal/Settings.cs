@@ -16,12 +16,6 @@ namespace NodeController
         public static SavedBool SelectMiddleNodes { get; } = new SavedBool(nameof(SelectMiddleNodes), SettingsFile, true, true);
         public static SavedBool ShowToolTip { get; } = new SavedBool(nameof(ShowToolTip), SettingsFile, true, true);
 
-        static Settings()
-        {
-            if (GameSettings.FindSettingsFileByName(SettingsFile) == null)
-                GameSettings.AddSettingsFile(new SettingsFile[] { new SettingsFile() { fileName = SettingsFile } });
-        }
-
         protected override void OnSettingsUI()
         {
             var languageGroup = GeneralTab.AddGroup(Localize.Settings_Language) as UIHelper;
