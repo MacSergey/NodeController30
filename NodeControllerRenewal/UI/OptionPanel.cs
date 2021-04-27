@@ -13,15 +13,15 @@ namespace NodeController.UI
         where TypeItem : UIComponent
     {
         protected NodeData Data { get; set; }
+        protected SupportOption Option { get; set; }
 
-        protected TypeItem GroupItem { get; set; }
-        protected List<TypeItem> Items { get; set; } = new List<TypeItem>();
-
-        public void Init(NodeData data)
+        public void Init(NodeData data, SupportOption option)
         {
             Data = data;
+            Option = option;
 
             PlaceItems();
+            Content.Refresh();
 
             base.Init();
         }
@@ -31,21 +31,24 @@ namespace NodeController.UI
 
             Data = null;
 
-            ComponentPool.Free(GroupItem);
-            foreach (var item in Items)
-                ComponentPool.Free(item);
-            Items.Clear();
+            foreach (var component in Content.components.ToArray())
+                ComponentPool.Free(component);
         }
-        protected virtual void PlaceItems()
+        private void PlaceItems()
         {
-            GroupItem = AddItem(Data);
-            foreach (var segmentData in Data.SegmentEndDatas)
-                Items.Add(AddItem(segmentData));
+            if (Option.IsSet(SupportOption.Group))
+                AddItem(Data);
+
+            if (Option.IsSet(SupportOption.Individually))
+            {
+                foreach (var segmentData in Data.SegmentEndDatas)
+                    AddItem(segmentData);
+            }
         }
+
         protected virtual TypeItem AddItem(INetworkData data)
         {
             var item = Content.AddUIComponent<TypeItem>();
-            item.width = 50f;
             return item;
         }
     }
@@ -55,17 +58,16 @@ namespace NodeController.UI
         public delegate TypeValue Getter(INetworkData data);
         public delegate void Setter(INetworkData data, TypeValue value);
 
-        private SupportOption Option { get; set; }
         private Getter ValueGetter { get; set; }
         private Setter ValueSetter { get; set; }
+        private Dictionary<INetworkData, TypeItem> Items { get; } = new Dictionary<INetworkData, TypeItem>();
 
         public void Init(NodeData data, SupportOption option, Getter getter, Setter setter)
         {
-            Option = option;
             ValueGetter = getter;
             ValueSetter = setter;
 
-            Init(data);
+            Init(data, option);
         }
         public override void DeInit()
         {
@@ -73,37 +75,58 @@ namespace NodeController.UI
 
             ValueGetter = null;
             ValueSetter = null;
-        }
-        protected override void PlaceItems()
-        {
-            if (Option.IsSet(SupportOption.Group))
-            {
-                GroupItem = AddItem(Data);
-            }
-
-            if (Option.IsSet(SupportOption.Individually))
-            {
-                foreach (var segmentData in Data.SegmentEndDatas)
-                    Items.Add(AddItem(segmentData));
-            }
+            Items.Clear();
         }
 
         protected override TypeItem AddItem(INetworkData data)
         {
-            var item = base.AddItem(data);
+            var item = ComponentPool.Get<TypeItem>(Content);
 
+            item.width = 50f;
             item.Value = ValueGetter(data);
-            item.OnValueChanged += (value) => ValueSetter(data, value);
+            item.OnValueChanged += (value) => ValueChanged(data, value);
+            Items[data] = item;
 
             return item;
+        }
+        private void ValueChanged(INetworkData data, TypeValue value)
+        {
+            ValueSetter(data, value);
+
+            foreach (var item in Items)
+                item.Value.Value = ValueGetter(item.Key);
         }
     }
     public class FloatOptionPanel : OptionPanel<FloatUITextField, float>
     {
+        public delegate void MinMaxGetter(INetworkData data, out float min, out float max);
+
+        private MinMaxGetter MinMax { get; set; }
+
+        public void Init(NodeData data, SupportOption option, Getter getter, Setter setter, MinMaxGetter minMax)
+        {
+            MinMax = minMax;
+            Init(data, option, getter, setter);
+        }
+
         protected override FloatUITextField AddItem(INetworkData data)
         {
             var item = base.AddItem(data);
+
             item.SetDefaultStyle();
+            item.CheckMin = true;
+            item.CheckMax = true;
+            item.UseWheel = true;
+            item.WheelStep = 1f;
+            item.WheelTip = Settings.ShowToolTip ? NodeController.Localize.FieldPanel_ScrollWheel : string.Empty;
+
+            if (MinMax != null)
+            {
+                MinMax(data, out var min, out var max);
+                item.MinValue = min;
+                item.MaxValue = max;
+            }
+
             return item;
         }
     }

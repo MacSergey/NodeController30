@@ -72,6 +72,7 @@ namespace NodeController
         public virtual SupportOption SupportNoMarking => SupportOption.None;
         public virtual SupportOption SupportSlopeJunction => SupportOption.None;
         public virtual SupportOption SupportStretch => SupportOption.None;
+        public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch) & SupportOption.All;
 
         public virtual float DefaultOffset => 0f;
         public virtual float DefaultShift => 0f;
@@ -201,52 +202,55 @@ namespace NodeController
             if (SupportNoMarking > SupportOption.OnceValue)
                 GetHideMarkingProperty(parent);
 
-            var space = ComponentPool.Get<SpacePanel>(parent);
-            space.Init(20f);
+            if (TotalSupport == SupportOption.All)
+            {
+                var space = ComponentPool.Get<SpacePanel>(parent);
+                space.Init(20f);
 
-            var id = ComponentPool.Get<TextOptionPanel>(parent);
-            id.Init(Data);
+                var id = ComponentPool.Get<TextOptionPanel>(parent);
+                id.Init(Data, SupportOption.All);
+            }
 
-            if (SupportOffset != SupportOption.None)
+            if (SupportOffset > SupportOption.OnceValue)
             {
                 var offset = ComponentPool.Get<FloatOptionPanel>(parent);
                 offset.Text = Localize.Option_Offset;
-                offset.Init(Data, SupportOffset, (data) => data.Offset, (data, value) => data.Offset = value);
+                offset.Init(Data, SupportOffset, (data) => data.Offset, (data, value) => data.Offset = value, MinMaxOffset);
             }
 
-            if (SupportShift != SupportOption.None)
+            if (SupportShift > SupportOption.OnceValue)
             {
                 var shift = ComponentPool.Get<FloatOptionPanel>(parent);
                 shift.Text = Localize.Option_Shift;
-                shift.Init(Data, SupportShift, (data) => data.Shift, (data, value) => data.Shift = value);
+                shift.Init(Data, SupportShift, (data) => data.Shift, (data, value) => data.Shift = value, MinMaxShift);
             }
 
-            if (SupportRotate != SupportOption.None)
+            if (SupportRotate > SupportOption.OnceValue)
             {
                 var rotate = ComponentPool.Get<FloatOptionPanel>(parent);
                 rotate.Text = Localize.Option_Rotate;
-                rotate.Init(Data, SupportRotate, (data) => data.RotateAngle, (data, value) => data.RotateAngle = value);
+                rotate.Init(Data, SupportRotate, (data) => data.RotateAngle, (data, value) => data.RotateAngle = value, MinMaxRotate);
             }
 
-            if (SupportStretch != SupportOption.None)
+            if (SupportStretch > SupportOption.OnceValue)
             {
                 var stretch = ComponentPool.Get<FloatOptionPanel>(parent);
                 stretch.Text = Localize.Option_Stretch;
-                stretch.Init(Data, SupportStretch, (data) => data.Stretch, (data, value) => data.Stretch = value);
+                stretch.Init(Data, SupportStretch, (data) => data.StretchPercent, (data, value) => data.StretchPercent = value, MinMaxStretch);
             }
 
-            if (SupportSlope != SupportOption.None)
+            if (SupportSlope > SupportOption.OnceValue)
             {
                 var slope = ComponentPool.Get<FloatOptionPanel>(parent);
                 slope.Text = Localize.Option_Slope;
-                slope.Init(Data, SupportSlope, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value);
+                slope.Init(Data, SupportSlope, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value, MinMaxSlope);
             }
 
-            if (SupportTwist != SupportOption.None)
+            if (SupportTwist > SupportOption.OnceValue)
             {
                 var twist = ComponentPool.Get<FloatOptionPanel>(parent);
                 twist.Text = Localize.Option_Twist;
-                twist.Init(Data, SupportTwist, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value);
+                twist.Init(Data, SupportTwist, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value, MinMaxTwist);
             }
         }
 
@@ -269,6 +273,53 @@ namespace NodeController
             hideMarkingProperty.OnSelectObjectChanged += (value) => Data.NoMarkings = value;
 
             return hideMarkingProperty;
+        }
+
+        private void MinMaxOffset(INetworkData data, out float min, out float max)
+        {
+            if(data is SegmentEndData segmentEnd)
+            {
+                min = segmentEnd.MinOffset;
+                max = segmentEnd.MaxOffset;
+            }
+            else
+            {
+                min = 0f;
+                max = 1000f;
+            }  
+        }
+        private void MinMaxShift(INetworkData data, out float min, out float max)
+        {
+            min = -32f;
+            max = 32f;
+        }
+        private void MinMaxRotate(INetworkData data, out float min, out float max)
+        {
+            if (data is SegmentEndData segmentEnd)
+            {
+                min = segmentEnd.MinRotate;
+                max = segmentEnd.MaxRotate;
+            }
+            else
+            {
+                min = -80f;
+                max = 80f;
+            }
+        }
+        private void MinMaxStretch(INetworkData data, out float min, out float max)
+        {
+            min = 1f;
+            max = 500f;
+        }
+        private void MinMaxSlope(INetworkData data, out float min, out float max)
+        {
+            min = -60f;
+            max = 60;
+        }
+        private void MinMaxTwist(INetworkData data, out float min, out float max)
+        {
+            min = -60f;
+            max = 60;
         }
 
         #endregion

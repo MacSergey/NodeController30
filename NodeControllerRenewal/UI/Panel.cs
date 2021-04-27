@@ -46,6 +46,7 @@ namespace NodeController.UI
         public NodeControllerPanel()
         {
             Content = ComponentPool.Get<PropertyGroupPanel>(this);
+            Content.minimumSize = new Vector2(300f, 0f);
             Content.color = new Color32(72, 80, 80, 255);
             Content.autoLayoutDirection = LayoutDirection.Vertical;
             Content.autoFitChildrenVertically = true;
@@ -55,8 +56,6 @@ namespace NodeController.UI
         public override void Awake()
         {
             base.Awake();
-
-            Content.width = 300f;
             Active = false;
         }
         public override void Start()
@@ -88,6 +87,7 @@ namespace NodeController.UI
         public void UpdatePanel()
         {
             ResetPanel();
+            Content.width = Data.Style.TotalSupport == SupportOption.All ? Mathf.Max((Data.SegmentCount + 1) * 55f + 100f, 300f) : 300f;
             FillProperties();
         }
         private void ResetPanel()
