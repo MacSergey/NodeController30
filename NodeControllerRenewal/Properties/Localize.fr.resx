@@ -133,6 +133,13 @@ Maj X10, Ctrl X0.1</value>
   <data name="MessageBox_Yes" xml:space="preserve">
     <value>Oui</value>
   </data>
+  <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
+    <value>Original Node Controller data was imported.
+Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
+  </data>
+  <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
+    <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
+  </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
     <value>J'accepte</value>
   </data>
@@ -145,11 +152,22 @@ Maj X10, Ctrl X0.1</value>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>Vous utilisez la version bêta de {0}. C'est une version de test avec de nouvelles fonctionnalités et elle peut contenir des erreurs qui vont briser ou supprimer vos configurations. Si vous vous êtes abonné par erreur, veuillez vous abonner à la version stable.</value>
   </data>
+  <data name="Mod_ConflictMessage" xml:space="preserve">
+    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
+  </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value></value>
+    <value>Control node type and shape</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value></value>
+    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+  </data>
+  <data name="Mod_DisableOriginal" xml:space="preserve">
+    <value>Disable original Node Controller</value>
+  </data>
+  <data name="Mod_LoaledWithErrors" xml:space="preserve">
+    <value>Le mod a chargé avec des erreurs. 
+Il n'est pas conseillé d'utiliser le mod dans cet état car il peut avoir un comportement instable. 
+Rechargez le jeu.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>Langue du jeu</value>
@@ -196,6 +214,9 @@ Maj X10, Ctrl X0.1</value>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Chinois simplifié</value>
   </data>
+  <data name="Mod_Support" xml:space="preserve">
+    <value>Support</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Nouveautés dans {0}</value>
   </data>
@@ -227,13 +248,13 @@ Maj X10, Ctrl X0.1</value>
     <value>Demi-tour</value>
   </data>
   <data name="Options_All" xml:space="preserve">
-    <value>All</value>
+    <value>Tout</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Rendre droit les extrémités</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
-    <value>Marking</value>
+    <value>Marquage</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Décalage</value>
@@ -302,7 +323,7 @@ Maj X10, Ctrl X0.1</value>
     <value>Sélectionnez les nœuds du milieu</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value></value>
+    <value>If this option is disabled, the middle nodes will move to clicked position</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Activer l'outil</value>

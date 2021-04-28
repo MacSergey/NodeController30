@@ -133,6 +133,13 @@ Shift x10, Strg x0,1</value>
   <data name="MessageBox_Yes" xml:space="preserve">
     <value>Ja</value>
   </data>
+  <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
+    <value>Original Node Controller Daten wurden importiert.
+Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher manuell angepasst werden.</value>
+  </data>
+  <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
+    <value>WARNUNG: Wenn neu gespeichert wird, kann der ursprüngliche Node Controller nicht mehr auf dieser Karte verwendet werden.</value>
+  </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
     <value>Ich stimme zu</value>
   </data>
@@ -145,11 +152,22 @@ Shift x10, Strg x0,1</value>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>Du verwendest die BETA Version von {0}. Diese ist zum Testen neuer Funktionen gedacht und kann Fehler beinhalten. Wenn du diese Version ungewollt abonniert haben solltest, wechsele zur stabilen Version.</value>
   </data>
+  <data name="Mod_ConflictMessage" xml:space="preserve">
+    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
+  </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value></value>
+    <value>Control node type and shape</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value></value>
+    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+  </data>
+  <data name="Mod_DisableOriginal" xml:space="preserve">
+    <value>Disable original Node Controller</value>
+  </data>
+  <data name="Mod_LoaledWithErrors" xml:space="preserve">
+    <value>Mod fehlerhaft geladen.
+Es wird nicht empfohlen, den Mod in diesem Status zu nutzen, da es zu unvorhersehbarem Verhalten kommen kann.
+Starte das Spiel neu.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>Spiel-Sprache</value>
@@ -196,6 +214,9 @@ Shift x10, Strg x0,1</value>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Vereinfachtes Chinesisch</value>
   </data>
+  <data name="Mod_Support" xml:space="preserve">
+    <value>Support/Hilfe</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Was ist neu in {0}</value>
   </data>
@@ -227,13 +248,13 @@ Shift x10, Strg x0,1</value>
     <value>Kehrtwende</value>
   </data>
   <data name="Options_All" xml:space="preserve">
-    <value>All</value>
+    <value>Alle</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Gerade Ende erstellen</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
-    <value>Marking</value>
+    <value>Markierung</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Versatz</value>
@@ -302,7 +323,7 @@ Shift x10, Strg x0,1</value>
     <value>Mittlere Nodes auswählen</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value></value>
+    <value>If this option is disabled, the middle nodes will move to clicked position</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Tool aktivieren</value>
