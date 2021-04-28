@@ -226,6 +226,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="NodeStyle_UTurn" xml:space="preserve">
     <value>UTurn</value>
   </data>
+  <data name="Options_All" xml:space="preserve">
+    <value>All</value>
+  </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Make straight ends</value>
   </data>

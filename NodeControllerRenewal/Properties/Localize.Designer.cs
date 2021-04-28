@@ -557,6 +557,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на All.
+        /// </summary>
+        internal static string Options_All {
+            get {
+                return ResourceManager.GetString("Options_All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Node #{0}.
         /// </summary>
         internal static string Panel_NodeId {

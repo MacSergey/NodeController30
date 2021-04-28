@@ -207,7 +207,7 @@ namespace NodeController.UI
             item.backgroundSprite = "ButtonWhite";
 
             if (data is NodeData)
-                item.text = "All";
+                item.text = NodeController.Localize.Options_All;
             if (data is SegmentEndData endData)
             {
                 item.color = endData.Color;
