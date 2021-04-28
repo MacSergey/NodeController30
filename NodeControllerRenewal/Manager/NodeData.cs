@@ -189,7 +189,7 @@ namespace NodeController
             var segmentEnds = new Dictionary<ushort, SegmentEndData>();
             foreach (var newSegmentEnd in newSegmentsEnd.OrderByDescending(s => s.AbsoluteAngle))
             {
-                newSegmentEnd.Index = segmentEnds.Count + 1;
+                newSegmentEnd.Index = segmentEnds.Count;
                 segmentEnds[newSegmentEnd.Id] = newSegmentEnd;
             }
 

@@ -386,20 +386,20 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hide crosswalk marking.
-        /// </summary>
-        internal static string Option_HideMarking {
-            get {
-                return ResourceManager.GetString("Option_HideMarking", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Make straight ends.
         /// </summary>
         internal static string Option_MakeStraightEnds {
             get {
                 return ResourceManager.GetString("Option_MakeStraightEnds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Marking.
+        /// </summary>
+        internal static string Option_Marking {
+            get {
+                return ResourceManager.GetString("Option_Marking", resourceCulture);
             }
         }
         

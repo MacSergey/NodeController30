@@ -94,7 +94,7 @@ namespace NodeController.UI
 
             Content.StopLayout();
 
-            Content.width = Data.Style.TotalSupport == SupportOption.All ? Mathf.Max((Data.SegmentCount + 1) * 55f + 100f, 300f) : 300f;
+            Content.width = Data.Style.TotalSupport == SupportOption.All ? Mathf.Max((Data.SegmentCount + 1) * 55f + 120f, 300f) : 300f;
             AddHeader();
             AddNodeTypeProperty();
 
@@ -118,12 +118,15 @@ namespace NodeController.UI
         {
             foreach (var property in Properties)
                 ComponentPool.Free(property);
+
+            Properties.Clear();
         }
 
         private void AddHeader()
         {
             Header = ComponentPool.Get<PanelHeader>(Content);
             Header.Text = Data.Title;
+            Header.Target = this;
             Header.Init();
         }
         private void AddNodeTypeProperty()

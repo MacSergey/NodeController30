@@ -226,11 +226,11 @@ Shift X10, Ctrl X0.1</value>
   <data name="NodeStyle_UTurn" xml:space="preserve">
     <value>UTurn</value>
   </data>
-  <data name="Option_HideMarking" xml:space="preserve">
-    <value>Hide crosswalk marking</value>
-  </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Make straight ends</value>
+  </data>
+  <data name="Option_Marking" xml:space="preserve">
+    <value>Marking</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Offset</value>

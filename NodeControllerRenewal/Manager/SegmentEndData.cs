@@ -23,6 +23,18 @@ namespace NodeController
         public static float MaxPossibleRotate => 80f;
         public static string XmlName => "SE";
 
+        public static Color32[] OverlayColors { get; } = new Color32[]
+        {
+            Colors.GetOverlayColor(0, 255),
+            Colors.GetOverlayColor(2, 255),
+            Colors.GetOverlayColor(3, 255),
+            Colors.GetOverlayColor(4, 255),
+            Colors.GetOverlayColor(6, 255),
+            Colors.GetOverlayColor(7, 255),
+            Colors.GetOverlayColor(8, 255),
+            Colors.GetOverlayColor(9, 255),
+        };
+
         #endregion
 
         #region PROPERTIES
@@ -33,7 +45,7 @@ namespace NodeController
         public ushort NodeId { get; set; }
         public ushort Id { get; set; }
         public int Index { get; set; }
-        public Color32 Color => Colors.GetOverlayColor(Index, 255);
+        public Color32 Color => OverlayColors[Index];
 
         public ref NetNode Node => ref NodeId.GetNode();
         public NodeData NodeData => SingletonManager<Manager>.Instance[NodeId];
