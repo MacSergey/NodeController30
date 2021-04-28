@@ -219,7 +219,7 @@ namespace NodeController
                 var offset = ComponentPool.Get<FloatOptionPanel>(parent);
                 offset.Text = Localize.Option_Offset;
                 offset.Format = Localize.Option_OffsetFormat;
-                offset.NumberFormat = "0.#";
+                offset.NumberFormat = "0.##";
                 offset.Init(Data, SupportOffset, totalSupport, (data) => data.Offset, (data, value) => data.Offset = value, MinMaxOffset);
                 components.Add(offset);
             }
@@ -229,7 +229,7 @@ namespace NodeController
                 var shift = ComponentPool.Get<FloatOptionPanel>(parent);
                 shift.Text = Localize.Option_Shift;
                 shift.Format = Localize.Option_ShiftFormat;
-                shift.NumberFormat = "0.#";
+                shift.NumberFormat = "0.##";
                 shift.Init(Data, SupportShift, totalSupport, (data) => data.Shift, (data, value) => data.Shift = value, MinMaxShift);
                 components.Add(shift);
             }
