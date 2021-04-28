@@ -226,11 +226,20 @@ Shift X10, Ctrl X0.1</value>
   <data name="NodeStyle_UTurn" xml:space="preserve">
     <value>Разворот</value>
   </data>
-  <data name="Option_HideMarking" xml:space="preserve">
-    <value>Скрыть разметку</value>
+  <data name="Options_All" xml:space="preserve">
+    <value>Все</value>
+  </data>
+  <data name="Option_MakeStraightEnds" xml:space="preserve">
+    <value>Сделать концы прямыми</value>
+  </data>
+  <data name="Option_Marking" xml:space="preserve">
+    <value>Разметка</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Отступ</value>
+  </data>
+  <data name="Option_OffsetFormat" xml:space="preserve">
+    <value>{0}м</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Сбросить к поумолчанию</value>
@@ -238,14 +247,26 @@ Shift X10, Ctrl X0.1</value>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Поворот</value>
   </data>
+  <data name="Option_RotateFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Сдвиг</value>
+  </data>
+  <data name="Option_ShiftFormat" xml:space="preserve">
+    <value>{0}м</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
     <value>Наклон</value>
   </data>
+  <data name="Option_SlopeFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   <data name="Option_Stretch" xml:space="preserve">
     <value>Растягивание</value>
+  </data>
+  <data name="Option_StretchFormat" xml:space="preserve">
+    <value>{0}%</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
     <value>Стиль</value>
@@ -258,6 +279,9 @@ Shift X10, Ctrl X0.1</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Скручивание</value>
+  </data>
+  <data name="Option_TwistFormat" xml:space="preserve">
+    <value>{0}°</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
     <value>Тип узла</value>

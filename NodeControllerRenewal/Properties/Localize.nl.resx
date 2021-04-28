@@ -221,16 +221,25 @@ Shift X10, Ctrl X0.1</value>
     <value>Midden</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
-    <value>Uitrekken</value>
+    <value>Strekkend</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
     <value>U-bocht</value>
   </data>
-  <data name="Option_HideMarking" xml:space="preserve">
-    <value>Verberg oversteekplaatsmarkering</value>
+  <data name="Options_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Option_MakeStraightEnds" xml:space="preserve">
+    <value>Make straight ends</value>
+  </data>
+  <data name="Option_Marking" xml:space="preserve">
+    <value>Marking</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Verschuiven (parallel)</value>
+  </data>
+  <data name="Option_OffsetFormat" xml:space="preserve">
+    <value>{0}m</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Terug naar standaardwaarde</value>
@@ -238,14 +247,26 @@ Shift X10, Ctrl X0.1</value>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Roteren</value>
   </data>
+  <data name="Option_RotateFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Verschuiven (loodrecht)</value>
+  </data>
+  <data name="Option_ShiftFormat" xml:space="preserve">
+    <value>{0}m</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
     <value>Helling</value>
   </data>
+  <data name="Option_SlopeFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   <data name="Option_Stretch" xml:space="preserve">
     <value>Uitrekken</value>
+  </data>
+  <data name="Option_StretchFormat" xml:space="preserve">
+    <value>{0}%</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
     <value>Stijl</value>
@@ -258,6 +279,9 @@ Shift X10, Ctrl X0.1</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Kantelen</value>
+  </data>
+  <data name="Option_TwistFormat" xml:space="preserve">
+    <value>{0}°</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
     <value>Knooptype</value>
