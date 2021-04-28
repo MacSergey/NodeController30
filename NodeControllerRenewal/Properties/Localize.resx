@@ -235,20 +235,35 @@ Shift X10, Ctrl X0.1</value>
   <data name="Option_Offset" xml:space="preserve">
     <value>Offset</value>
   </data>
+  <data name="Option_OffsetFormat" xml:space="preserve">
+    <value>{0}m</value>
+  </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Reset to default</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Rotate</value>
   </data>
+  <data name="Option_RotateFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Shift</value>
+  </data>
+  <data name="Option_ShiftFormat" xml:space="preserve">
+    <value>{0}m</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
     <value>Slope</value>
   </data>
+  <data name="Option_SlopeFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   <data name="Option_Stretch" xml:space="preserve">
     <value>Stretch</value>
+  </data>
+  <data name="Option_StretchFormat" xml:space="preserve">
+    <value>{0}%</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
     <value>Style</value>
@@ -261,6 +276,9 @@ Shift X10, Ctrl X0.1</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Twist</value>
+  </data>
+  <data name="Option_TwistFormat" xml:space="preserve">
+    <value>{0}°</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
     <value>Node type</value>

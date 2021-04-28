@@ -68,6 +68,7 @@ namespace NodeController.UI
         private Getter ValueGetter { get; set; }
         private Setter ValueSetter { get; set; }
         private Dictionary<INetworkData, TypeItem> Items { get; } = new Dictionary<INetworkData, TypeItem>();
+        public string Format { get; set; }
 
         public void Init(NodeData data, SupportOption option, Getter getter, Setter setter)
         {
@@ -83,6 +84,7 @@ namespace NodeController.UI
             ValueGetter = null;
             ValueSetter = null;
             Items.Clear();
+            Format = null;
         }
 
         protected override TypeItem AddItem(INetworkData data)
@@ -90,6 +92,7 @@ namespace NodeController.UI
             var item = ComponentPool.Get<TypeItem>(Content);
 
             item.width = ItemWidth;
+            item.Format = Format;
             item.Value = ValueGetter(data);
             item.OnValueChanged += (value) => ValueChanged(data, value);
             Items[data] = item;
@@ -113,11 +116,17 @@ namespace NodeController.UI
         public delegate void MinMaxGetter(INetworkData data, out float min, out float max);
 
         private MinMaxGetter MinMax { get; set; }
+        public string NumberFormat { get; set; }
 
         public void Init(NodeData data, SupportOption option, Getter getter, Setter setter, MinMaxGetter minMax)
         {
             MinMax = minMax;
             Init(data, option, getter, setter);
+        }
+        public override void DeInit()
+        {
+            base.DeInit();
+            NumberFormat = null;
         }
 
         protected override FloatUITextField AddItem(INetworkData data)
@@ -125,6 +134,7 @@ namespace NodeController.UI
             var item = base.AddItem(data);
 
             item.SetDefaultStyle();
+            item.NumberFormat = NumberFormat;
             item.CheckMin = true;
             item.CheckMax = true;
             item.UseWheel = true;

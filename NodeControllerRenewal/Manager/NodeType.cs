@@ -219,6 +219,8 @@ namespace NodeController
             {
                 var offset = ComponentPool.Get<FloatOptionPanel>(parent);
                 offset.Text = Localize.Option_Offset;
+                offset.Format = Localize.Option_OffsetFormat;
+                offset.NumberFormat = "0.#";
                 offset.Init(Data, SupportOffset, (data) => data.Offset, (data, value) => data.Offset = value, MinMaxOffset);
                 components.Add(offset);
             }
@@ -227,6 +229,8 @@ namespace NodeController
             {
                 var shift = ComponentPool.Get<FloatOptionPanel>(parent);
                 shift.Text = Localize.Option_Shift;
+                shift.Format = Localize.Option_ShiftFormat;
+                shift.NumberFormat = "0.#";
                 shift.Init(Data, SupportShift, (data) => data.Shift, (data, value) => data.Shift = value, MinMaxShift);
                 components.Add(shift);
             }
@@ -235,6 +239,8 @@ namespace NodeController
             {
                 var rotate = ComponentPool.Get<FloatOptionPanel>(parent);
                 rotate.Text = Localize.Option_Rotate;
+                rotate.Format = Localize.Option_RotateFormat;
+                rotate.NumberFormat = "0.#";
                 rotate.Init(Data, SupportRotate, (data) => data.RotateAngle, (data, value) => data.RotateAngle = value, MinMaxRotate);
                 components.Add(rotate);
             }
@@ -243,6 +249,8 @@ namespace NodeController
             {
                 var stretch = ComponentPool.Get<FloatOptionPanel>(parent);
                 stretch.Text = Localize.Option_Stretch;
+                stretch.Format = Localize.Option_StretchFormat;
+                stretch.NumberFormat = "0.#";
                 stretch.Init(Data, SupportStretch, (data) => data.StretchPercent, (data, value) => data.StretchPercent = value, MinMaxStretch);
                 components.Add(stretch);
             }
@@ -251,6 +259,8 @@ namespace NodeController
             {
                 var slope = ComponentPool.Get<FloatOptionPanel>(parent);
                 slope.Text = Localize.Option_Slope;
+                slope.Format = Localize.Option_SlopeFormat;
+                slope.NumberFormat = "0.#";
                 slope.Init(Data, SupportSlope, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value, MinMaxSlope);
                 components.Add(slope);
             }
@@ -259,6 +269,8 @@ namespace NodeController
             {
                 var twist = ComponentPool.Get<FloatOptionPanel>(parent);
                 twist.Text = Localize.Option_Twist;
+                twist.Format = Localize.Option_TwistFormat;
+                twist.NumberFormat = "0.#";
                 twist.Init(Data, SupportTwist, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value, MinMaxTwist);
                 components.Add(twist);
             }

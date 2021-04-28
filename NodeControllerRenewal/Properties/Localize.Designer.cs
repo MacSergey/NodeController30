@@ -413,6 +413,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на {0}m.
+        /// </summary>
+        internal static string Option_OffsetFormat {
+            get {
+                return ResourceManager.GetString("Option_OffsetFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Reset to default.
         /// </summary>
         internal static string Option_ResetToDefault {
@@ -431,11 +440,29 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на {0}°.
+        /// </summary>
+        internal static string Option_RotateFormat {
+            get {
+                return ResourceManager.GetString("Option_RotateFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Shift.
         /// </summary>
         internal static string Option_Shift {
             get {
                 return ResourceManager.GetString("Option_Shift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {0}m.
+        /// </summary>
+        internal static string Option_ShiftFormat {
+            get {
+                return ResourceManager.GetString("Option_ShiftFormat", resourceCulture);
             }
         }
         
@@ -449,11 +476,29 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на {0}°.
+        /// </summary>
+        internal static string Option_SlopeFormat {
+            get {
+                return ResourceManager.GetString("Option_SlopeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Stretch.
         /// </summary>
         internal static string Option_Stretch {
             get {
                 return ResourceManager.GetString("Option_Stretch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {0}%.
+        /// </summary>
+        internal static string Option_StretchFormat {
+            get {
+                return ResourceManager.GetString("Option_StretchFormat", resourceCulture);
             }
         }
         
@@ -490,6 +535,15 @@ namespace NodeController {
         internal static string Option_Twist {
             get {
                 return ResourceManager.GetString("Option_Twist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {0}°.
+        /// </summary>
+        internal static string Option_TwistFormat {
+            get {
+                return ResourceManager.GetString("Option_TwistFormat", resourceCulture);
             }
         }
         
