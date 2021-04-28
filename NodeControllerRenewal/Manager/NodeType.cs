@@ -274,7 +274,7 @@ namespace NodeController
                 components.Add(twist);
             }
 
-            if(SupportNoMarking > SupportOption.OnceValue)
+            if (SupportNoMarking > SupportOption.OnceValue)
             {
                 var hideMarking = ComponentPool.Get<BoolOptionPanel>(parent);
                 hideMarking.Text = Localize.Option_Marking;
@@ -291,7 +291,11 @@ namespace NodeController
             flatJunctionProperty.Text = Localize.Option_Style;
             flatJunctionProperty.Init(Localize.Option_StyleFlat, Localize.Option_StyleSlope, false);
             flatJunctionProperty.SelectedObject = Data.IsSlopeJunctions;
-            flatJunctionProperty.OnSelectObjectChanged += (value) => Data.IsSlopeJunctions = value;
+            flatJunctionProperty.OnSelectObjectChanged += (value) =>
+                {
+                    Data.IsSlopeJunctions = value;
+                    Data.UpdateNode();
+                };
 
             return flatJunctionProperty;
         }
