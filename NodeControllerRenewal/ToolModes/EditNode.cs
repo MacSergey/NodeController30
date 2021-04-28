@@ -114,7 +114,7 @@ namespace NodeController
             foreach (var segmentData in Tool.Data.SegmentEndDatas)
             {
                 var outter = segmentData == HoverSegmentEndCircle ? hover : yellow;
-                var inner = segmentData == HoverSegmentEndCenter ? hover : yellow;
+                var inner = segmentData == HoverSegmentEndCenter ? hover : new OverlayData(cameraInfo) { Color = segmentData.Color };
                 var left = segmentData == HoverSegmentEndCorner && HoverCorner == SideType.Left ? hover : yellow;
                 var right = segmentData == HoverSegmentEndCorner && HoverCorner == SideType.Right ? hover : yellow;
                 segmentData.Render(green, outter, inner, left, right);

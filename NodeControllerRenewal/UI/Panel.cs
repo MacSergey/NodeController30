@@ -3,6 +3,7 @@ using ModsCommon;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using NodeController.Utilities;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -41,6 +42,10 @@ namespace NodeController.UI
         public bool IsHover => (isVisible && this.IsHover(SingletonTool<NodeControllerTool>.Instance.MousePosition)) || components.Any(c => c.isVisible && c.IsHover(SingletonTool<NodeControllerTool>.Instance.MousePosition));
 
         private PropertyGroupPanel Content { get; set; }
+        private PanelHeader Header { get; set; }
+        private NodeTypePropertyPanel TypeProperty { get; set; }
+        private List<EditorItem> Properties { get; set; } = new List<EditorItem>();
+
         public NodeData Data { get; private set; }
 
         public NodeControllerPanel()
@@ -61,7 +66,6 @@ namespace NodeController.UI
         public override void Start()
         {
             base.Start();
-
             SetDefaultPosition();
         }
         public override void OnEnable()
@@ -80,51 +84,70 @@ namespace NodeController.UI
         public void SetData(NodeData data)
         {
             if ((Data = data) != null)
-                UpdatePanel();
+                SetPanel();
             else
                 ResetPanel();
         }
-        public void UpdatePanel()
+        private void SetPanel()
         {
             ResetPanel();
+
+            Content.StopLayout();
+
             Content.width = Data.Style.TotalSupport == SupportOption.All ? Mathf.Max((Data.SegmentCount + 1) * 55f + 100f, 300f) : 300f;
+            AddHeader();
+            AddNodeTypeProperty();
+
             FillProperties();
+
+            Content.StartLayout();
         }
         private void ResetPanel()
         {
             Content.StopLayout();
 
-            foreach (var property in Content.components.ToArray())
+            ComponentPool.Free(Header);
+            ComponentPool.Free(TypeProperty);
+            ClearProperties();
+
+            Content.StartLayout();
+        }
+
+        private void FillProperties() => Properties = Data.Style.GetUIComponents(Content);
+        private void ClearProperties()
+        {
+            foreach (var property in Properties)
                 ComponentPool.Free(property);
-
-            Content.StartLayout();
         }
 
-        private void FillProperties()
+        private void AddHeader()
         {
-            Content.StopLayout();
-
-            var header = ComponentPool.Get<PanelHeader>(Content);
-            header.Text = Data.Title;
-            header.Init();
-            GetNodeTypeProperty();
-            Data.Style.GetUIComponents(Content);
-
-            Content.StartLayout();
+            Header = ComponentPool.Get<PanelHeader>(Content);
+            Header.Text = Data.Title;
+            Header.Init();
         }
-        private NodeTypePropertyPanel GetNodeTypeProperty()
+        private void AddNodeTypeProperty()
         {
-            var typeProperty = ComponentPool.Get<NodeTypePropertyPanel>(Content);
-            typeProperty.Text = NodeController.Localize.Option_Type;
-            typeProperty.Init(Data.IsPossibleType);
-            typeProperty.SelectedObject = Data.Type;
-            typeProperty.OnSelectObjectChanged += (value) =>
+            TypeProperty = ComponentPool.Get<NodeTypePropertyPanel>(Content);
+            TypeProperty.Text = NodeController.Localize.Option_Type;
+            TypeProperty.Init(Data.IsPossibleType);
+            TypeProperty.SelectedObject = Data.Type;
+            TypeProperty.OnSelectObjectChanged += (value) =>
             {
                 Data.Type = value;
-                UpdatePanel();
-            };
 
-            return typeProperty;
+                Content.StopLayout();
+
+                ClearProperties();
+                FillProperties();
+
+                Content.StartLayout();
+            };
+        }
+        public void UpdatePanel()
+        {
+            foreach (var property in Properties.OfType<IOptionPanel>())
+                property.Refresh();
         }
     }
     public class PanelHeader : HeaderMoveablePanel<PanelHeaderContent>
@@ -146,7 +169,13 @@ namespace NodeController.UI
         private void OnResetClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.ResetToDefault();
         private void OnMakeStraightClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds();
 
-        private void SetMakeStraightEnabled() => MakeStraight.isVisible = SingletonTool<NodeControllerTool>.Instance.Data.Style.SupportOffset.IsSet(SupportOption.Individually);
+        private void SetMakeStraightEnabled()
+        {
+            if (SingletonTool<NodeControllerTool>.Instance.Data is NodeData data)
+                MakeStraight.isVisible = data.Style.SupportOffset.IsSet(SupportOption.Individually);
+            else
+                MakeStraight.isVisible = false;
+        }
     }
     public class PanelHeaderButton : BasePanelHeaderButton
     {

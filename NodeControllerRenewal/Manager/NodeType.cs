@@ -194,21 +194,25 @@ namespace NodeController
 
         #region UICOMPONENTS
 
-        public virtual void GetUIComponents(UIComponent parent)
+        public List<EditorItem> GetUIComponents(UIComponent parent)
         {
+            var components = new List<EditorItem>();
+
             if (SupportSlopeJunction > SupportOption.OnceValue)
-                GetJunctionButtons(parent);
+                components.Add(GetJunctionButtons(parent));
 
             if (SupportNoMarking > SupportOption.OnceValue)
-                GetHideMarkingProperty(parent);
+                components.Add(GetHideMarkingProperty(parent));
 
             if (TotalSupport == SupportOption.All)
             {
                 var space = ComponentPool.Get<SpacePanel>(parent);
                 space.Init(20f);
+                components.Add(space);
 
-                var id = ComponentPool.Get<TextOptionPanel>(parent);
-                id.Init(Data, SupportOption.All);
+                var titles = ComponentPool.Get<TextOptionPanel>(parent);
+                titles.Init(Data, SupportOption.All);
+                components.Add(titles);
             }
 
             if (SupportOffset > SupportOption.OnceValue)
@@ -216,6 +220,7 @@ namespace NodeController
                 var offset = ComponentPool.Get<FloatOptionPanel>(parent);
                 offset.Text = Localize.Option_Offset;
                 offset.Init(Data, SupportOffset, (data) => data.Offset, (data, value) => data.Offset = value, MinMaxOffset);
+                components.Add(offset);
             }
 
             if (SupportShift > SupportOption.OnceValue)
@@ -223,6 +228,7 @@ namespace NodeController
                 var shift = ComponentPool.Get<FloatOptionPanel>(parent);
                 shift.Text = Localize.Option_Shift;
                 shift.Init(Data, SupportShift, (data) => data.Shift, (data, value) => data.Shift = value, MinMaxShift);
+                components.Add(shift);
             }
 
             if (SupportRotate > SupportOption.OnceValue)
@@ -230,6 +236,7 @@ namespace NodeController
                 var rotate = ComponentPool.Get<FloatOptionPanel>(parent);
                 rotate.Text = Localize.Option_Rotate;
                 rotate.Init(Data, SupportRotate, (data) => data.RotateAngle, (data, value) => data.RotateAngle = value, MinMaxRotate);
+                components.Add(rotate);
             }
 
             if (SupportStretch > SupportOption.OnceValue)
@@ -237,6 +244,7 @@ namespace NodeController
                 var stretch = ComponentPool.Get<FloatOptionPanel>(parent);
                 stretch.Text = Localize.Option_Stretch;
                 stretch.Init(Data, SupportStretch, (data) => data.StretchPercent, (data, value) => data.StretchPercent = value, MinMaxStretch);
+                components.Add(stretch);
             }
 
             if (SupportSlope > SupportOption.OnceValue)
@@ -244,6 +252,7 @@ namespace NodeController
                 var slope = ComponentPool.Get<FloatOptionPanel>(parent);
                 slope.Text = Localize.Option_Slope;
                 slope.Init(Data, SupportSlope, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value, MinMaxSlope);
+                components.Add(slope);
             }
 
             if (SupportTwist > SupportOption.OnceValue)
@@ -251,7 +260,10 @@ namespace NodeController
                 var twist = ComponentPool.Get<FloatOptionPanel>(parent);
                 twist.Text = Localize.Option_Twist;
                 twist.Init(Data, SupportTwist, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value, MinMaxTwist);
+                components.Add(twist);
             }
+
+            return components;
         }
 
         protected BoolListPropertyPanel GetJunctionButtons(UIComponent parent)

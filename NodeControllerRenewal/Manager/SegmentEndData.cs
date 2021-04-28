@@ -33,6 +33,7 @@ namespace NodeController
         public ushort NodeId { get; set; }
         public ushort Id { get; set; }
         public int Index { get; set; }
+        public Color32 Color => Colors.GetOverlayColor(Index, 255);
 
         public ref NetNode Node => ref NodeId.GetNode();
         public NodeData NodeData => SingletonManager<Manager>.Instance[NodeId];

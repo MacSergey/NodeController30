@@ -9,11 +9,16 @@ using UnityEngine;
 
 namespace NodeController.UI
 {
-    public class OptionPanel<TypeItem> : EditorPropertyPanel, IReusable
+    public interface IOptionPanel
+    {
+        void Refresh();
+    }
+    public abstract class OptionPanel<TypeItem> : EditorPropertyPanel, IReusable, IOptionPanel
         where TypeItem : UIComponent
     {
         protected NodeData Data { get; set; }
         protected SupportOption Option { get; set; }
+        protected float ItemWidth => Option == SupportOption.Group ? 100f : 50f;
 
         public void Init(NodeData data, SupportOption option)
         {
@@ -51,8 +56,10 @@ namespace NodeController.UI
             var item = Content.AddUIComponent<TypeItem>();
             return item;
         }
+
+        public abstract void Refresh();
     }
-    public class OptionPanel<TypeItem, TypeValue> : OptionPanel<TypeItem>
+    public abstract class OptionPanel<TypeItem, TypeValue> : OptionPanel<TypeItem>
         where TypeItem : UIComponent, IValueChanger<TypeValue>
     {
         public delegate TypeValue Getter(INetworkData data);
@@ -82,7 +89,7 @@ namespace NodeController.UI
         {
             var item = ComponentPool.Get<TypeItem>(Content);
 
-            item.width = 50f;
+            item.width = ItemWidth;
             item.Value = ValueGetter(data);
             item.OnValueChanged += (value) => ValueChanged(data, value);
             Items[data] = item;
@@ -92,7 +99,11 @@ namespace NodeController.UI
         private void ValueChanged(INetworkData data, TypeValue value)
         {
             ValueSetter(data, value);
-
+            Data.UpdateNode();
+            Refresh();
+        }
+        public override void Refresh()
+        {
             foreach (var item in Items)
                 item.Value.Value = ValueGetter(item.Key);
         }
@@ -137,7 +148,7 @@ namespace NodeController.UI
             var item = base.AddItem(data);
 
             item.autoSize = false;
-            item.width = 50f;
+            item.width = ItemWidth;
             item.height = 18f;
             item.textScale = 0.65f;
             item.textAlignment = UIHorizontalAlignment.Center;
@@ -150,12 +161,13 @@ namespace NodeController.UI
                 item.text = "All";
             if (data is SegmentEndData endData)
             {
-                item.color = Colors.GetOverlayColor(endData.Index, 255);
+                item.color = endData.Color;
                 item.text = $"#{endData.Id}";
             }
 
             return item;
         }
+        public override void Refresh() { }
     }
     public class SpacePanel : EditorItem, IReusable
     {

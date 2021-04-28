@@ -80,56 +80,32 @@ namespace NodeController
         public float Offset
         {
             get => Style.GetOffset();
-            set
-            {
-                Style.SetOffset(value);
-                UpdateNode();
-            }
+            set => Style.SetOffset(value);
         }
         public float RotateAngle
         {
             get => Style.GetRotate();
-            set
-            {
-                Style.SetRotate(value);
-                UpdateNode();
-            }
+            set => Style.SetRotate(value);
         }
         public float SlopeAngle
         {
             get => Style.GetSlope();
-            set
-            {
-                Style.SetSlope(value);
-                UpdateNode();
-            }
+            set => Style.SetSlope(value);
         }
         public float TwistAngle
         {
             get => Style.GetTwist();
-            set
-            {
-                Style.SetTwist(value);
-                UpdateNode();
-            }
+            set => Style.SetTwist(value);
         }
         public float Shift
         {
             get => Style.GetShift();
-            set
-            {
-                Style.SetShift(value);
-                UpdateNode();
-            }
+            set => Style.SetShift(value);
         }
         public float Stretch
         {
             get => Style.GetStretch();
-            set
-            {
-                Style.SetStretch(value);
-                UpdateNode();
-            }
+            set => Style.SetStretch(value);
         }
         public float StretchPercent
         {
@@ -139,20 +115,12 @@ namespace NodeController
         public bool NoMarkings
         {
             get => Style.GetNoMarkings();
-            set
-            {
-                Style.SetNoMarkings(value);
-                UpdateNode();
-            }
+            set => Style.SetNoMarkings(value);
         }
         public bool IsSlopeJunctions
         {
             get => Style.GetIsSlopeJunctions();
-            set
-            {
-                Style.SetIsSlopeJunctions(value);
-                UpdateNode();
-            }
+            set => Style.SetIsSlopeJunctions(value);
         }
 
         public bool IsCSUR => Id.GetNode().Info.IsCSUR();
@@ -219,7 +187,7 @@ namespace NodeController
             }
 
             var segmentEnds = new Dictionary<ushort, SegmentEndData>();
-            foreach (var newSegmentEnd in newSegmentsEnd.OrderBy(s => s.AbsoluteAngle))
+            foreach (var newSegmentEnd in newSegmentsEnd.OrderByDescending(s => s.AbsoluteAngle))
             {
                 newSegmentEnd.Index = segmentEnds.Count + 1;
                 segmentEnds[newSegmentEnd.Id] = newSegmentEnd;
