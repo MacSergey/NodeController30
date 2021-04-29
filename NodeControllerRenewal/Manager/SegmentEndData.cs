@@ -70,6 +70,7 @@ namespace NodeController
         public bool DefaultIsSlope => !Id.GetSegment().Info.m_flatJunctions && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public bool DefaultIsTwist => !DefaultIsSlope && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public bool IsMoveable => !IsNodeLess;
+        public bool IsMainRoad { get; set; }
 
         public bool IsNodeLess { get; }
         public int PedestrianLaneCount { get; }

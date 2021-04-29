@@ -75,6 +75,13 @@ namespace NodeController.UI
             if (absolutePosition.x < 0 || absolutePosition.y < 0)
                 SetDefaultPosition();
         }
+        protected override void OnVisibilityChanged()
+        {
+            base.OnVisibilityChanged();
+
+            if (isVisible)
+                UpdatePanel();
+        }
         private void SetDefaultPosition()
         {
             SingletonMod<Mod>.Logger.Debug($"Set default panel position");

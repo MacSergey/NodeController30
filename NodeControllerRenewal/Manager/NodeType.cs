@@ -54,10 +54,12 @@ namespace NodeController
 
         public static float MaxShift => 32f;
         public static float MinShift => -32f;
-        public static float MaxSlope => 60f;
-        public static float MinSlope => -60f;
-        public static float MaxTwist => 60f;
-        public static float MinTwist => -60f;
+        public static float MaxSlope => 30f;
+        public static float MinSlope => -30f;
+        public static float MaxRotate => 80f;
+        public static float MinRotate => -80f;
+        public static float MaxTwist => 30f;
+        public static float MinTwist => -30f;
         public static float MaxStretch => 500f;
         public static float MinStretch => 1f;
         public static float MaxOffset => 1000f;
@@ -76,6 +78,7 @@ namespace NodeController
         public virtual SupportOption SupportStretch => SupportOption.None;
         public virtual bool SupportTrafficLights => false;
         public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch) & SupportOption.All;
+        private bool OnlyOnSlope => SupportSlopeJunction > SupportOption.OnceValue || DefaultSlopeJunction;
 
         public virtual float DefaultOffset => 0f;
         public virtual float DefaultShift => 0f;
@@ -201,8 +204,12 @@ namespace NodeController
         {
             var components = new List<EditorItem>();
 
+            var junctionStyle = default(BoolListPropertyPanel);
             if (SupportSlopeJunction > SupportOption.OnceValue)
-                components.Add(GetJunctionButtons(parent));
+            {
+                junctionStyle = GetJunctionButtons(parent);
+                components.Add(junctionStyle);
+            }
 
             var totalSupport = TotalSupport;
 
@@ -257,7 +264,7 @@ namespace NodeController
                 components.Add(stretch);
             }
 
-            if (SupportSlope > SupportOption.OnceValue)
+            if (SupportSlope > SupportOption.OnceValue && OnlyOnSlope)
             {
                 var slope = ComponentPool.Get<FloatOptionPanel>(parent);
                 slope.Text = Localize.Option_Slope;
@@ -265,9 +272,18 @@ namespace NodeController
                 slope.NumberFormat = "0.#";
                 slope.Init(Data, SupportSlope, totalSupport, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value, MinMaxSlope);
                 components.Add(slope);
+                SetVisible(Data.IsSlopeJunctions);
+
+                junctionStyle.OnSelectObjectChanged += SetVisible;
+
+                void SetVisible(bool isSlope)
+                {
+                    slope.isVisible = isSlope;
+                    slope.Refresh();
+                }
             }
 
-            if (SupportTwist > SupportOption.OnceValue)
+            if (SupportTwist > SupportOption.OnceValue && OnlyOnSlope)
             {
                 var twist = ComponentPool.Get<FloatOptionPanel>(parent);
                 twist.Text = Localize.Option_Twist;
@@ -275,6 +291,15 @@ namespace NodeController
                 twist.NumberFormat = "0.#";
                 twist.Init(Data, SupportTwist, totalSupport, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value, MinMaxTwist);
                 components.Add(twist);
+                SetVisible(Data.IsSlopeJunctions);
+
+                junctionStyle.OnSelectObjectChanged += SetVisible;
+
+                void SetVisible(bool isSlope)
+                {
+                    twist.isVisible = isSlope;
+                    twist.Refresh();
+                }
             }
 
             if (SupportNoMarking > SupportOption.OnceValue && HideCrosswalksEnable)
@@ -312,14 +337,14 @@ namespace NodeController
             }
             else
             {
-                min = 0f;
-                max = 1000f;
+                min = MinOffset;
+                max = MaxOffset;
             }
         }
         private void MinMaxShift(INetworkData data, out float min, out float max)
         {
-            min = -32f;
-            max = 32f;
+            min = MinShift;
+            max = MaxShift;
         }
         private void MinMaxRotate(INetworkData data, out float min, out float max)
         {
@@ -330,24 +355,24 @@ namespace NodeController
             }
             else
             {
-                min = -80f;
-                max = 80f;
+                min = MinRotate;
+                max = MaxRotate;
             }
         }
         private void MinMaxStretch(INetworkData data, out float min, out float max)
         {
-            min = 1f;
-            max = 500f;
+            min = MinStretch;
+            max = MaxStretch;
         }
         private void MinMaxSlope(INetworkData data, out float min, out float max)
         {
-            min = -60f;
-            max = 60;
+            min = MinSlope;
+            max = MaxSlope;
         }
         private void MinMaxTwist(INetworkData data, out float min, out float max)
         {
-            min = -60f;
-            max = 60;
+            min = MinTwist;
+            max = MaxTwist;
         }
 
         #endregion
@@ -499,6 +524,7 @@ namespace NodeController
         public override SupportOption SupportOffset => SupportOption.All;
         public override SupportOption SupportShift => SupportOption.All;
         public override SupportOption SupportRotate => SupportOption.All;
+        public override SupportOption SupportTwist => SupportOption.All | SupportOption.MainRoad;
         public override SupportOption SupportStretch => SupportOption.All;
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
@@ -506,6 +532,13 @@ namespace NodeController
         public override bool SupportTrafficLights => true;
 
         public CustomNode(NodeData data) : base(data) { }
+
+        public override float GetTwist() => (Data.FirstMainSegmentEnd.TwistAngle - Data.SecondMainSegmentEnd.TwistAngle) / 2;
+        public override void SetTwist(float value)
+        {
+            Data.FirstMainSegmentEnd.TwistAngle = value;
+            Data.SecondMainSegmentEnd.TwistAngle = -value;
+        }
     }
 
     [Flags]
@@ -514,7 +547,8 @@ namespace NodeController
         None = 0,
         OnceValue = 1,
         Individually = 2,
-        Group = 4,
+        MainRoad = 4,
+        Group = 8,
         All = Individually | Group,
     }
 }

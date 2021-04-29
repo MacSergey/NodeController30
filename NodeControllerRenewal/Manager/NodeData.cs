@@ -42,8 +42,11 @@ namespace NodeController
         {
             get
             {
-                yield return FirstMainSegmentEnd;
-                yield return SecondMainSegmentEnd;
+                foreach (var segment in MainRoad.Segments)
+                {
+                    if (SegmentEnds.TryGetValue(segment, out var data))
+                        yield return data;
+                }
             }
         }
         public SegmentEndData this[ushort segmentId] => SegmentEnds.TryGetValue(segmentId, out var data) ? data : null;
@@ -145,16 +148,19 @@ namespace NodeController
         public NodeData(ushort nodeId, NodeStyleType? nodeType = null)
         {
             Id = nodeId;
+
             UpdateSegmentEnds();
-            UpdateMainRoad();
+            MainRoad.Update(this);
             UpdateStyle(true, nodeType);
+            UpdateMainRoadSegments();
         }
         public void Update(bool flags = true)
         {
             UpdateSegmentEnds();
-            UpdateMainRoad();
+            MainRoad.Update(this);
             if (flags)
                 UpdateFlags();
+            UpdateMainRoadSegments();
         }
         private void UpdateSegmentEnds()
         {
@@ -190,17 +196,11 @@ namespace NodeController
             foreach (var newSegmentEnd in newSegmentsEnd.OrderByDescending(s => s.AbsoluteAngle))
             {
                 newSegmentEnd.Index = segmentEnds.Count;
+                newSegmentEnd.IsMainRoad = false;
                 segmentEnds[newSegmentEnd.Id] = newSegmentEnd;
             }
 
             SegmentEnds = segmentEnds;
-        }
-        private void UpdateMainRoad()
-        {
-            if (!ContainsSegment(MainRoad.First))
-                MainRoad.First = FindMain(MainRoad.Second);
-            if (!ContainsSegment(MainRoad.Second))
-                MainRoad.Second = FindMain(MainRoad.First);
         }
         private void UpdateFlags()
         {
@@ -259,6 +259,18 @@ namespace NodeController
 
             SetType(nodeType != null && IsPossibleTypeImpl(nodeType.Value) ? nodeType.Value : DefaultType, force);
         }
+        private void UpdateMainRoadSegments()
+        {
+            foreach (var segmentEnd in SegmentEndDatas)
+            {
+                segmentEnd.IsMainRoad = IsMainRoad(segmentEnd.Id);
+                if (!segmentEnd.IsMainRoad)
+                {
+                    segmentEnd.TwistAngle = Style.DefaultTwist;
+                    segmentEnd.SlopeAngle = Style.DefaultSlope;
+                }
+            }
+        }
 
         public void LateUpdate()
         {
@@ -299,32 +311,6 @@ namespace NodeController
             }
         }
 
-        private ushort FindMain(ushort ignore)
-        {
-            var main = SegmentEnds.Values.Aggregate(default(SegmentEndData), (i, j) => CompareSegmentEnds(i, j, ignore));
-            return main?.Id ?? 0;
-        }
-        private SegmentEndData CompareSegmentEnds(SegmentEndData first, SegmentEndData second, ushort ignore)
-        {
-            if (!IsValid(first))
-                return IsValid(second) ? second : null;
-            else if (!IsValid(second))
-                return first;
-
-            var firstInfo = first.Id.GetSegment().Info;
-            var secondInfo = second.Id.GetSegment().Info;
-
-            int result;
-
-            if ((result = firstInfo.m_flatJunctions.CompareTo(secondInfo.m_flatJunctions)) == 0)
-                if ((result = firstInfo.m_forwardVehicleLaneCount.CompareTo(secondInfo.m_forwardVehicleLaneCount)) == 0)
-                    if ((result = firstInfo.m_halfWidth.CompareTo(secondInfo.m_halfWidth)) == 0)
-                        result = ((firstInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false).CompareTo((secondInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false);
-
-            return result >= 0 ? first : second;
-
-            bool IsValid(SegmentEndData end) => end != null && end.Id != ignore;
-        }
         public void UpdateNode() => SingletonManager<Manager>.Instance.Update(Id, true);
         public void ResetToDefault()
         {
@@ -385,6 +371,7 @@ namespace NodeController
                 _ => throw new Exception("Unreachable code"),
             };
         }
+        public bool IsMainRoad(ushort segmentId) => MainRoad.IsMain(segmentId);
         public void GetClosest(Vector3 position, out Vector3 closestPos, out Vector3 closestDir)
         {
             LeftMainBezier.Trajectory.ClosestPositionAndDirection(position, out var leftClosestPos, out var leftClosestDir, out _);
@@ -492,13 +479,47 @@ namespace NodeController
             First = first;
             Second = second;
         }
-        public bool IsMain(ushort id) => id != 0 && (id == First || id == Second);
+        public bool IsMain(ushort segmentId) => segmentId != 0 && (segmentId == First || segmentId == Second);
         public void Replace(ushort from, ushort to)
         {
             if (First == from)
                 First = to;
             else if (Second == from)
                 Second = to;
+        }
+
+        public void Update(NodeData data)
+        {
+            if (!data.ContainsSegment(First))
+                First = FindMain(data, Second);
+            if (!data.ContainsSegment(Second))
+                Second = FindMain(data, First);
+        }
+        private ushort FindMain(NodeData data, ushort ignore)
+        {
+            var main = data.SegmentEndDatas.Aggregate(default(SegmentEndData), (i, j) => CompareSegmentEnds(i, j, ignore));
+            return main?.Id ?? 0;
+        }
+        private SegmentEndData CompareSegmentEnds(SegmentEndData first, SegmentEndData second, ushort ignore)
+        {
+            if (!IsValid(first))
+                return IsValid(second) ? second : null;
+            else if (!IsValid(second))
+                return first;
+
+            var firstInfo = first.Id.GetSegment().Info;
+            var secondInfo = second.Id.GetSegment().Info;
+
+            int result;
+
+            if ((result = firstInfo.m_flatJunctions.CompareTo(secondInfo.m_flatJunctions)) == 0)
+                if ((result = firstInfo.m_forwardVehicleLaneCount.CompareTo(secondInfo.m_forwardVehicleLaneCount)) == 0)
+                    if ((result = firstInfo.m_halfWidth.CompareTo(secondInfo.m_halfWidth)) == 0)
+                        result = ((firstInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false).CompareTo((secondInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false);
+
+            return result >= 0 ? first : second;
+
+            bool IsValid(SegmentEndData end) => end != null && end.Id != ignore;
         }
 
         public XElement ToXml()

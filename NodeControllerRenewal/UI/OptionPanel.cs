@@ -55,15 +55,6 @@ namespace NodeController.UI
             }
 
             Content.Refresh();
-
-            if (TotalOption.IsSet(SupportOption.Group) && !Option.IsSet(SupportOption.Group))
-                Items[Data].isVisible = false;
-
-            if (TotalOption.IsSet(SupportOption.Individually) && !Option.IsSet(SupportOption.Individually))
-            {
-                foreach (var segmentData in Data.SegmentEndDatas)
-                    Items[segmentData].isVisible = false;
-            }
         }
 
         protected virtual TypeItem AddItem(INetworkData data)
@@ -72,7 +63,22 @@ namespace NodeController.UI
             return item;
         }
 
-        public abstract void Refresh();
+        public virtual void Refresh()
+        {
+            if (TotalOption.IsSet(SupportOption.Group) && !Option.IsSet(SupportOption.Group))
+                Items[Data].isVisible = false;
+
+            if (TotalOption.IsSet(SupportOption.Individually))
+            {
+                foreach (var segmentData in Data.SegmentEndDatas)
+                {
+                    if (!Option.IsSet(SupportOption.Individually))
+                        Items[segmentData].isVisible = false;
+                    else if (Option.IsSet(SupportOption.MainRoad))
+                        Items[segmentData].isEnabled = segmentData.IsMainRoad;
+                }
+            }
+        }
     }
     public abstract class OptionPanel<TypeItem, TypeValue> : OptionPanel<TypeItem>
         where TypeItem : UIComponent, IValueChanger<TypeValue>
@@ -122,6 +128,8 @@ namespace NodeController.UI
         }
         public override void Refresh()
         {
+            base.Refresh();
+
             foreach (var item in Items)
                 item.Value.Value = ValueGetter(item.Key);
         }
@@ -216,7 +224,6 @@ namespace NodeController.UI
 
             return item;
         }
-        public override void Refresh() { }
     }
     public class SpacePanel : EditorItem, IReusable
     {
