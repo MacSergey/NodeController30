@@ -2,6 +2,7 @@
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using NodeController.UI;
+using NodeController.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -61,6 +62,7 @@ namespace NodeController
         public static float MinStretch => 1f;
         public static float MaxOffset => 1000f;
         public static float MinOffset => 0f;
+        private static bool HideCrosswalksEnable { get; } = DependencyUtilities.HideCrossings?.isEnabled == true;
 
         public virtual float AdditionalOffset => 0f;
 
@@ -72,6 +74,7 @@ namespace NodeController
         public virtual SupportOption SupportNoMarking => SupportOption.None;
         public virtual SupportOption SupportSlopeJunction => SupportOption.None;
         public virtual SupportOption SupportStretch => SupportOption.None;
+        public virtual bool SupportTrafficLights => false;
         public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch) & SupportOption.All;
 
         public virtual float DefaultOffset => 0f;
@@ -274,7 +277,7 @@ namespace NodeController
                 components.Add(twist);
             }
 
-            if (SupportNoMarking > SupportOption.OnceValue)
+            if (SupportNoMarking > SupportOption.OnceValue && HideCrosswalksEnable)
             {
                 var hideMarking = ComponentPool.Get<BoolOptionPanel>(parent);
                 hideMarking.Text = Localize.Option_Marking;
@@ -442,6 +445,7 @@ namespace NodeController
         public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
+        public override bool SupportTrafficLights => true;
 
         public CrossingNode(NodeData data) : base(data) { }
 
@@ -463,6 +467,7 @@ namespace NodeController
         public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
+        public override bool SupportTrafficLights => true;
 
         public UTurnNode(NodeData data) : base(data) { }
 
@@ -482,6 +487,7 @@ namespace NodeController
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
+        public override bool SupportTrafficLights => true;
 
         public EndNode(NodeData data) : base(data) { }
     }
@@ -498,6 +504,7 @@ namespace NodeController
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool IsMoveable => true;
+        public override bool SupportTrafficLights => true;
 
         public CustomNode(NodeData data) : base(data) { }
     }

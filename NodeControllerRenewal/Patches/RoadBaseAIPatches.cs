@@ -32,17 +32,8 @@ namespace NodeController.Patches
         }
         public static void UpdateNodeFlagsPostfix(ushort nodeID, ref NetNode data)
         {
-            if (data.CountSegments() == 2 && SingletonManager<Manager>.Instance[nodeID] is NodeData nodeData)
-            {
-                //if (nodeData.FirstTimeTrafficLight && TrafficLightManager.Instance.CanEnableTrafficLight(nodeID, ref data, out var res))
-                //{
-                //    TrafficLightManager.Instance.SetTrafficLight(nodeID, true, ref data);
-                //    nodeData.FirstTimeTrafficLight = false;
-                //}
-                //else 
-                if (ExternalModPatches.CanHaveTrafficLights(nodeData, out _) == false)
-                    data.m_flags &= ~NetNode.Flags.TrafficLights;
-            }
+            if (data.CountSegments() == 2 && SingletonManager<Manager>.Instance[nodeID] is NodeData nodeData && !nodeData.Style.SupportTrafficLights)
+                data.m_flags &= ~NetNode.Flags.TrafficLights;
         }
     }
 }

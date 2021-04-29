@@ -37,22 +37,9 @@ namespace NodeController.Patches
         };
         public static bool? CanHaveTrafficLights(NodeData node, out ToggleTrafficLightError reason)
         {
-            reason = ToggleTrafficLightError.None;
-            switch (node?.Type)
-            {
-                case NodeStyleType.Crossing:
-                case NodeStyleType.UTurn:
-                case NodeStyleType.End:
-                case NodeStyleType.Custom:
-                    return null;
-                case NodeStyleType.Stretch:
-                case NodeStyleType.Middle:
-                case NodeStyleType.Bend:
-                    reason = ToggleTrafficLightError.NoJunction;
-                    return false;
-                default:
-                    return null;
-            }
+            var result = node?.Style.SupportTrafficLights;
+            reason = result == false ? ToggleTrafficLightError.NoJunction : ToggleTrafficLightError.None;
+            return result;
         }
         private static bool? IsEnteringBlockedJunctionAllowedConfigurable(NodeData node) => node?.Type switch
         {
@@ -64,8 +51,8 @@ namespace NodeController.Patches
         };
         private static bool? IsDefaultEnteringBlockedJunctionAllowed(NodeData node) => node?.Type switch
         {
-            NodeStyleType.Stretch => true,// always on
-            NodeStyleType.Crossing => false,// default off
+            NodeStyleType.Stretch => true,
+            NodeStyleType.Crossing => false,
             NodeStyleType.UTurn or NodeStyleType.Middle or NodeStyleType.Bend or NodeStyleType.End => null,// default
             NodeStyleType.Custom => node.IsJunction ? null : true,
             _ => null,

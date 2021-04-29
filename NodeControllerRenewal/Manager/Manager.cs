@@ -70,10 +70,10 @@ namespace NodeController
             ref var segment = ref segmentId.GetSegment();
             return Buffer[segment.m_startNode] != null || Buffer[segment.m_endNode] != null;
         }
-        public SegmentEndData GetSegmentData(ushort id, bool isStart)
+        public SegmentEndData GetSegmentData(ushort segmentId, bool isStart)
         {
-            ref var segment = ref id.GetSegment();
-            return Buffer[segment.GetNode(isStart)]?[id];
+            ref var segment = ref segmentId.GetSegment();
+            return Buffer[segment.GetNode(isStart)]?[segmentId];
         }
 
 

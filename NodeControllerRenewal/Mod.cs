@@ -2,8 +2,10 @@
 using HarmonyLib;
 using ICities;
 using ModsCommon;
+using ModsCommon.Utilities;
 using NodeController.Patches;
 using NodeController.UI;
+using NodeController.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,6 +13,7 @@ using System.Reflection.Emit;
 using TrafficManager.Manager.Impl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static ColossalFramework.Plugins.PluginManager;
 
 namespace NodeController
 {
@@ -74,9 +77,17 @@ namespace NodeController
             PatchNetSegment(ref success);
             PatchNetLane(ref success);
             PatchRoadBaseAI(ref success);
-            PatchHideCrosswalk(ref success);
-            PatchTMPE(ref success);
             PatchSimulationStep(ref success);
+
+            if (DependencyUtilities.HideCrossings is null)
+                Logger.Debug("Hide Crosswalks not exist, skip patches");
+            else
+                PatchHideCrosswalk(ref success);
+
+            if (DependencyUtilities.TrafficManager is null)
+                Logger.Debug("TMPE not exist, skip patches");
+            else
+                PatchTMPE(ref success);
 
             return success;
         }
@@ -131,7 +142,7 @@ namespace NodeController
         }
         private bool Patch_NetManager_UpdateSegment()
         {
-            var parameters = new Type[] {typeof(ushort), typeof(ushort), typeof(int) };
+            var parameters = new Type[] { typeof(ushort), typeof(ushort), typeof(int) };
             return AddTranspiler(typeof(NetManagerPatches), nameof(NetManagerPatches.UpdateSegmentTranspiler), typeof(NetManager), nameof(NetManager.UpdateSegment), parameters);
         }
 
@@ -248,13 +259,6 @@ namespace NodeController
 
         private void PatchHideCrosswalk(ref bool success)
         {
-            try { var type = typeof(HideCrosswalks.Patches.CalculateMaterialCommons); }
-            catch
-            {
-                Logger.Debug("Hide Crosswalks not exist, skip patches");
-                return;
-            }
-
             success &= AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.ShouldHideCrossingPrefix), typeof(HideCrosswalks.Patches.CalculateMaterialCommons), nameof(HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing));
         }
 
@@ -264,13 +268,6 @@ namespace NodeController
 
         private void PatchTMPE(ref bool success)
         {
-            try { var type = typeof(TrafficLightManager); }
-            catch
-            {
-                Logger.Debug("TMPE not exist, skip patches");
-                return;
-            }
-
             success &= Patch_TrafficLightManager_CanToggleTrafficLight();
             success &= Patch_JunctionRestrictionsManager_GetDefaultEnteringBlockedJunctionAllowed();
             success &= Patch_JunctionRestrictionsManager_GetDefaultPedestrianCrossingAllowed();
@@ -278,6 +275,10 @@ namespace NodeController
             success &= Patch_JunctionRestrictionsManager_IsEnteringBlockedJunctionAllowedConfigurable();
             success &= Patch_JunctionRestrictionsManager_IsPedestrianCrossingAllowedConfigurable();
             success &= Patch_JunctionRestrictionsManager_IsUturnAllowedConfigurable();
+
+            var parameters = new Type[] { typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(Vehicle.Frame).MakeByRefType(), typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(int) };
+            success &= Patch_TMPE_CustomTrainAI_CustomSimulationStep(parameters);
+            success &= Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(parameters);
         }
         private bool Patch_TrafficLightManager_CanToggleTrafficLight()
         {
@@ -320,16 +321,6 @@ namespace NodeController
             success &= Patch_CarTrailerAI_SimulationStep_Transpiler(parameters);
             success &= Patch_TrainAI_SimulationStep(parameters);
             success &= Patch_TramBaseAI_SimulationStep(parameters);
-
-            try { var type = typeof(TrafficLightManager); }
-            catch
-            {
-                Logger.Debug("TMPE not exist, skip patches");
-                return;
-            }
-
-            success &= Patch_TMPE_CustomTrainAI_CustomSimulationStep(parameters);
-            success &= Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(parameters);
         }
         private bool Patch_CarAI_SimulationStep_Transpiler(Type[] parameters)
         {
