@@ -103,7 +103,7 @@ namespace NodeController
             messageBox.Button2Text = Localize.Mod_DisableOriginal;
             messageBox.OnButton2Click = Disable;
 
-            messageBox.SetButtonsRatio(1, 2);
+            messageBox.SetButtonsRatio(2, 5);
 
             static bool Disable()
             {
