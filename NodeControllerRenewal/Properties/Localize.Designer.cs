@@ -161,6 +161,17 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Mod loaded with errors.
+        ///It is not recommended to use the mod in this state as it can lead to unpredictable behavior.
+        ///Restart the game..
+        /// </summary>
+        internal static string Mod_LoaledWithErrors {
+            get {
+                return ResourceManager.GetString("Mod_LoaledWithErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Czech.
         /// </summary>
         internal static string Mod_Locale_cs {
@@ -292,6 +303,15 @@ namespace NodeController {
         internal static string Mod_LocaleGame {
             get {
                 return ResourceManager.GetString("Mod_LocaleGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Support.
+        /// </summary>
+        internal static string Mod_Support {
+            get {
+                return ResourceManager.GetString("Mod_Support", resourceCulture);
             }
         }
         

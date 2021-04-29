@@ -151,6 +151,11 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value />
   </data>
+  <data name="Mod_LoaledWithErrors" xml:space="preserve">
+    <value>Mod loaded with errors.
+It is not recommended to use the mod in this state as it can lead to unpredictable behavior.
+Restart the game.</value>
+  </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>Game Language</value>
   </data>
@@ -195,6 +200,9 @@ Shift X10, Ctrl X0.1</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Chinese Simplified</value>
+  </data>
+  <data name="Mod_Support" xml:space="preserve">
+    <value>Support</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>What's new in {0}</value>

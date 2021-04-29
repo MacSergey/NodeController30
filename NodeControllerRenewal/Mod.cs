@@ -2,6 +2,7 @@
 using HarmonyLib;
 using ICities;
 using ModsCommon;
+using ModsCommon.UI;
 using ModsCommon.Utilities;
 using NodeController.Patches;
 using NodeController.UI;
@@ -46,6 +47,15 @@ namespace NodeController
 
         #region BASIC
 
+        public override void OnLoadedError()
+        {
+            var messageBox = MessageBoxBase.ShowModal<TwoButtonMessageBox>();
+            messageBox.CaptionText = SingletonMod<Mod>.Instance.Name;
+            messageBox.MessageText = Localize.Mod_LoaledWithErrors;
+            messageBox.Button1Text = ModLocalize<Mod>.Ok;
+            messageBox.Button2Text = Localize.Mod_Support;
+            messageBox.OnButton2Click = OpenWorkshop;
+        }
         protected override void GetSettings(UIHelperBase helper)
         {
             var settings = new Settings();
@@ -255,6 +265,44 @@ namespace NodeController
 
         #endregion
 
+        #region SIMULATIONSTEP
+
+        private void PatchSimulationStep(ref bool success)
+        {
+            var parameters = new Type[] { typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(Vehicle.Frame).MakeByRefType(), typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(int) };
+
+            success &= Patch_CarAI_SimulationStep_Transpiler(parameters);
+            success &= Patch_CarTrailerAI_SimulationStep_Transpiler(parameters);
+            success &= Patch_TrainAI_SimulationStep(parameters);
+            success &= Patch_TramBaseAI_SimulationStep(parameters);
+        }
+        private bool Patch_CarAI_SimulationStep_Transpiler(Type[] parameters)
+        {
+            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(CarAI), nameof(CarAI.SimulationStep), parameters);
+        }
+        private bool Patch_CarTrailerAI_SimulationStep_Transpiler(Type[] parameters)
+        {
+            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTrailerTranspiler), typeof(CarTrailerAI), nameof(CarTrailerAI.SimulationStep), parameters);
+        }
+        private bool Patch_TrainAI_SimulationStep(Type[] parameters)
+        {
+            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TrainAI), nameof(TrainAI.SimulationStep), parameters);
+        }
+        private bool Patch_TMPE_CustomTrainAI_CustomSimulationStep(Type[] parameters)
+        {
+            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TrafficManager.Custom.AI.CustomTrainAI), nameof(TrafficManager.Custom.AI.CustomTrainAI.CustomSimulationStep), parameters);
+        }
+        private bool Patch_TramBaseAI_SimulationStep(Type[] parameters)
+        {
+            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TramBaseAI), nameof(TramBaseAI.SimulationStep), parameters);
+        }
+        private bool Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(Type[] parameters)
+        {
+            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TrafficManager.Custom.AI.CustomTramBaseAI), nameof(TrafficManager.Custom.AI.CustomTramBaseAI.CustomSimulationStep), parameters);
+        }
+
+        #endregion
+
         #region HIDECROSSWALK
 
         private void PatchHideCrosswalk(ref bool success)
@@ -307,44 +355,6 @@ namespace NodeController
         private bool Patch_JunctionRestrictionsManager_IsUturnAllowedConfigurable()
         {
             return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.IsUturnAllowedConfigurablePrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsUturnAllowedConfigurable));
-        }
-
-        #endregion
-
-        #region SIMULATIONSTEP
-
-        private void PatchSimulationStep(ref bool success)
-        {
-            var parameters = new Type[] { typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(Vehicle.Frame).MakeByRefType(), typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(int) };
-
-            success &= Patch_CarAI_SimulationStep_Transpiler(parameters);
-            success &= Patch_CarTrailerAI_SimulationStep_Transpiler(parameters);
-            success &= Patch_TrainAI_SimulationStep(parameters);
-            success &= Patch_TramBaseAI_SimulationStep(parameters);
-        }
-        private bool Patch_CarAI_SimulationStep_Transpiler(Type[] parameters)
-        {
-            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(CarAI), nameof(CarAI.SimulationStep), parameters);
-        }
-        private bool Patch_CarTrailerAI_SimulationStep_Transpiler(Type[] parameters)
-        {
-            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTrailerTranspiler), typeof(CarTrailerAI), nameof(CarTrailerAI.SimulationStep), parameters);
-        }
-        private bool Patch_TrainAI_SimulationStep(Type[] parameters)
-        {
-            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TrainAI), nameof(TrainAI.SimulationStep), parameters);
-        }
-        private bool Patch_TMPE_CustomTrainAI_CustomSimulationStep(Type[] parameters)
-        {
-            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TrafficManager.Custom.AI.CustomTrainAI), nameof(TrafficManager.Custom.AI.CustomTrainAI.CustomSimulationStep), parameters);
-        }
-        private bool Patch_TramBaseAI_SimulationStep(Type[] parameters)
-        {
-            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TramBaseAI), nameof(TramBaseAI.SimulationStep), parameters);
-        }
-        private bool Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(Type[] parameters)
-        {
-            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TrafficManager.Custom.AI.CustomTramBaseAI), nameof(TrafficManager.Custom.AI.CustomTramBaseAI.CustomSimulationStep), parameters);
         }
 
         #endregion
