@@ -162,6 +162,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на {0} can&apos;t work with original Node Controller at the same time, need to disable it..
+        /// </summary>
+        internal static string Mod_ConflictMessage {
+            get {
+                return ResourceManager.GetString("Mod_ConflictMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Control node type and shape.
         /// </summary>
         internal static string Mod_Description {
@@ -176,6 +185,15 @@ namespace NodeController {
         internal static string Mod_DescriptionBeta {
             get {
                 return ResourceManager.GetString("Mod_DescriptionBeta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disable original Node Controller.
+        /// </summary>
+        internal static string Mod_DisableOriginal {
+            get {
+                return ResourceManager.GetString("Mod_DisableOriginal", resourceCulture);
             }
         }
         

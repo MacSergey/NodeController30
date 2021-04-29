@@ -131,7 +131,7 @@
     <Compile Include="Utilities\Material.cs" />
     <Compile Include="Utilities\Shortcut.cs" />
     <Compile Include="Utilities\Textures.cs" />
-    <Compile Include="Utilities\Plugins.cs" />
+    <Compile Include="Utilities\Dependency.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>

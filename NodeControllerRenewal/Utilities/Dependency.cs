@@ -8,9 +8,23 @@ namespace NodeController.Utilities
 {
     public static class DependencyUtilities
     {
-        public static PluginInfo CSUR => PluginUtilities.GetPlugin("CSUR ToolBox", 1959342332ul);
-        public static PluginInfo HideCrossings => PluginUtilities.GetPlugin("HideCrosswalks"/*, 1939169189ul*/);
-        public static PluginInfo TrafficManager => PluginUtilities.GetPlugin("TrafficManager"/*, 1637663252ul*/);
+        private static IPluginSearcher CSURSearcher { get; } = PluginUtilities.GetSearcher("CSUR ToolBox", 1959342332ul);
+        private static IPluginSearcher HideCrossingsSearcher { get; } = PluginUtilities.GetSearcher("RM Crossings", 1939169189ul, 1934023593ul);
+        private static IPluginSearcher TMPESearcher { get; } = PluginUtilities.GetSearcher("TM:PE", 1637663252ul, 1806963141ul);
+        private static IPluginSearcher NC2Searcher { get; } = PluginUtilities.GetSearcher("Node controller", 2085403475ul);
+
+
+        public static PluginInfo CSUR { get; } = PluginUtilities.GetPlugin(CSURSearcher);
+        public static PluginInfo HideCrossings { get; } = PluginUtilities.GetPlugin(HideCrossingsSearcher);
+        public static PluginInfo TrafficManager { get; } = PluginUtilities.GetPlugin(TMPESearcher);
+        public static PluginInfo NC2 { get; } = PluginUtilities.GetPlugin(NC2Searcher);
+
+        static DependencyUtilities()
+        {
+            if (NC2 is PluginInfo plugin)
+                NC2StateWatcher = new PlaginStateWatcher(plugin);
+        }
+        public static PlaginStateWatcher NC2StateWatcher { get;}
 
         //public const string HARMONY_ID = "csur.toolbox";
 

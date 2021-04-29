@@ -152,11 +152,17 @@ Backward compatibility does not provide the transfer of all data, may be require
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
   </data>
+  <data name="Mod_ConflictMessage" xml:space="preserve">
+    <value>{0} can't work with original Node Controller at the same time, need to disable it.</value>
+  </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Control node type and shape</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+  </data>
+  <data name="Mod_DisableOriginal" xml:space="preserve">
+    <value>Disable original Node Controller</value>
   </data>
   <data name="Mod_LoaledWithErrors" xml:space="preserve">
     <value>Mod loaded with errors.

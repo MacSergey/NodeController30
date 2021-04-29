@@ -1,4 +1,5 @@
-﻿using ColossalFramework.UI;
+﻿using ColossalFramework.Plugins;
+using ColossalFramework.UI;
 using HarmonyLib;
 using ICities;
 using ModsCommon;
@@ -37,25 +38,92 @@ namespace NodeController
             get => Localize.Culture;
             protected set => Localize.Culture = value;
         }
+        protected override bool LoadError
+        { 
+            get => base.LoadError || ConflictError; 
+            set => base.LoadError = value; 
+        }
+        private bool ConflictError { get; set; }
+
 #if BETA
         public override bool IsBeta => true;
 #else
         protected override bool ModIsBeta => false;
 #endif
-
         #endregion
 
         #region BASIC
 
+        public override void OnEnabled()
+        {
+            base.OnEnabled();
+
+            if (DependencyUtilities.NC2StateWatcher != null)
+            {
+                ConflictError = DependencyUtilities.NC2StateWatcher.IsEnabled;
+                DependencyUtilities.NC2StateWatcher.StateChanged += NS2StateChanged;
+            }
+            else
+                ConflictError = false;
+        }
+        public override void OnDisabled()
+        {
+            base.OnDisabled();
+
+            if (DependencyUtilities.NC2StateWatcher != null)
+                DependencyUtilities.NC2StateWatcher.StateChanged -= NS2StateChanged;
+        }
+
+        private void NS2StateChanged(PluginInfo plugin, bool state)
+        {
+            if (state)
+                OnModsConflict();
+        }
+
         public override void OnLoadedError()
         {
-            var messageBox = MessageBoxBase.ShowModal<TwoButtonMessageBox>();
-            messageBox.CaptionText = SingletonMod<Mod>.Instance.NameRaw;
-            messageBox.MessageText = Localize.Mod_LoaledWithErrors;
-            messageBox.Button1Text = ModLocalize<Mod>.Ok;
-            messageBox.Button2Text = Localize.Mod_Support;
-            messageBox.OnButton2Click = OpenWorkshop;
+            if (base.LoadError)
+            {
+                var messageBox = MessageBoxBase.ShowModal<TwoButtonMessageBox>();
+                messageBox.CaptionText = NameRaw;
+                messageBox.MessageText = Localize.Mod_LoaledWithErrors;
+                messageBox.Button1Text = ModLocalize<Mod>.Ok;
+                messageBox.Button2Text = Localize.Mod_Support;
+                messageBox.OnButton2Click = OpenWorkshop;
+            }
+            else if (ConflictError)
+                OnModsConflict();
         }
+        public void OnModsConflict()
+        {
+            var messageBox = MessageBoxBase.ShowModal<TwoButtonMessageBox>();
+            messageBox.CaptionText = NameRaw;
+            messageBox.MessageText = string.Format(Localize.Mod_ConflictMessage, NameRaw);
+            messageBox.Button1Text = ModLocalize<Mod>.Ok;
+            messageBox.Button2Text = Localize.Mod_DisableOriginal;
+            messageBox.OnButton2Click = Disable;
+
+            messageBox.SetButtonsRatio(1, 2);
+
+            static bool Disable()
+            {
+                DependencyUtilities.NC2.isEnabled = false;
+
+                if(UIView.library.Get<ContentManagerPanel>("ContentManagerPanel") is ContentManagerPanel managerPanel)
+                {
+                    var categoriesContainer = AccessTools.Field(typeof(ContentManagerPanel), "m_CategoriesContainer").GetValue(managerPanel) as UITabContainer;
+                    var modCategory = categoriesContainer.Find("Mods");
+                    if (categoriesContainer.components[categoriesContainer.selectedIndex] == modCategory)
+                    {
+                        var categoryContentPanel = modCategory.Find("Content").GetComponent<CategoryContentPanel>();
+                        AccessTools.Method(typeof(CategoryContentPanel), "RefreshEntries").Invoke(categoryContentPanel, new object[0]);
+                    }
+                }
+
+                return true;
+            }
+        }
+
         protected override void GetSettings(UIHelperBase helper)
         {
             var settings = new Settings();
