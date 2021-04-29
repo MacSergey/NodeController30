@@ -50,7 +50,7 @@ namespace NodeController
         public override void OnLoadedError()
         {
             var messageBox = MessageBoxBase.ShowModal<TwoButtonMessageBox>();
-            messageBox.CaptionText = SingletonMod<Mod>.Instance.Name;
+            messageBox.CaptionText = SingletonMod<Mod>.Instance.NameRaw;
             messageBox.MessageText = Localize.Mod_LoaledWithErrors;
             messageBox.Button1Text = ModLocalize<Mod>.Ok;
             messageBox.Button2Text = Localize.Mod_Support;
@@ -62,6 +62,11 @@ namespace NodeController
             settings.OnSettingsUI(helper);
         }
         public override string GetLocalizeString(string str, CultureInfo culture = null) => Localize.ResourceManager.GetString(str, culture ?? Culture);
+        public void ShowLoadWarning()
+        {
+            if (SingletonItem<SerializableDataExtension>.Instance.WasImported)
+                MessageBoxBase.ShowModal<BackwardСompatibilityMessageBox>();
+        }
 
         #endregion
 

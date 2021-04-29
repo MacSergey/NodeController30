@@ -19,6 +19,7 @@ namespace NodeController
         private const string DATA_ID = "NodeController_V2.0";
 
         protected override string Id => nameof(NodeController);
+        public bool WasImported { get; private set; }
 
         protected override XElement GetSaveData() => SingletonManager<Manager>.Instance.ToXml();
         protected override void SetLoadData(XElement config) => SingletonManager<Manager>.Instance.FromXml(config, new ObjectsMap());
@@ -27,10 +28,13 @@ namespace NodeController
         {
             if (serializableDataManager.LoadData(DATA_ID) is byte[] data)
             {
+                WasImported = true;
                 var state = Backward—ompatibility.Loader.Load<Backward—ompatibility.NCState>(data);
                 var config = state.ToXml();
                 SetLoadData(config);
             }
+            else
+                WasImported = false;
 
             base.OnLoadData();
         }

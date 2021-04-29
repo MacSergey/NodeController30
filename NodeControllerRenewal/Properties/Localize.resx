@@ -133,6 +133,13 @@ Shift X10, Ctrl X0.1</value>
   <data name="MessageBox_Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
+    <value>Original Node Controller data was imported.
+Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
+  </data>
+  <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
+    <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
+  </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
     <value>I agree</value>
   </data>
@@ -146,10 +153,10 @@ Shift X10, Ctrl X0.1</value>
     <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value />
+    <value>Control node type and shape</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value />
+    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
   </data>
   <data name="Mod_LoaledWithErrors" xml:space="preserve">
     <value>Mod loaded with errors.

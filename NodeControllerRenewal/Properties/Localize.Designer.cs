@@ -107,6 +107,25 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Original Node Controller data was imported.
+        ///Backward compatibility does not provide the transfer of all data, may be required manual adjustments..
+        /// </summary>
+        internal static string Mod_BackwardСompatibilityMessage {
+            get {
+                return ResourceManager.GetString("Mod_BackwardСompatibilityMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map..
+        /// </summary>
+        internal static string Mod_BackwardСompatibilityWarning {
+            get {
+                return ResourceManager.GetString("Mod_BackwardСompatibilityWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на I agree.
         /// </summary>
         internal static string Mod_BetaWarningAgree {
@@ -143,7 +162,7 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на Control node type and shape.
         /// </summary>
         internal static string Mod_Description {
             get {
@@ -152,7 +171,7 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на This is a BETA version, errors may occur and stability is not guaranteed!.
         /// </summary>
         internal static string Mod_DescriptionBeta {
             get {
