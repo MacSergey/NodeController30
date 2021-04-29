@@ -650,7 +650,7 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
+        ///   Ищет локализованную строку, похожую на If this option is disabled, the middle nodes will move to clicked position.
         /// </summary>
         internal static string Settings_SelectMiddleNodesDiscription {
             get {
