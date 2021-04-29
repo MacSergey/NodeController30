@@ -159,7 +159,7 @@ Backward compatibility does not provide the transfer of all data, may be require
     <value>Control node type and shape</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+    <value>Wersja BETA, mogą pojawić się błędy oraz może działać niestabilnie!</value>
   </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
     <value>Disable original Node Controller</value>
@@ -251,7 +251,7 @@ Uruchom ponownie grę.</value>
     <value>All</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Make straight ends</value>
+    <value>Make ends straight</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marking</value>

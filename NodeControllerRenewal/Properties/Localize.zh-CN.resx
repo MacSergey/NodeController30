@@ -134,11 +134,11 @@ Shift x10，Ctrl x0.1</value>
     <value>确定</value>
   </data>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
-    <value>Original Node Controller data was imported.
-Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
+    <value>原版节点控制器(Node Controller) mod数据已导入。
+向后兼容无法包括所有数据，可能需要手动调整。</value>
   </data>
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
-    <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
+    <value>警告：如果您保存为新存档，您将无法在此地图上使用原版节点控制器(Node Controller)。</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
     <value>我同意</value>
@@ -153,16 +153,16 @@ Backward compatibility does not provide the transfer of all data, may be require
     <value>你在使用 {0} BETA版。此版本为测试新功能用，且可能含有BUG。如果是不小心订阅到了此版本，请订阅回稳定版。</value>
   </data>
   <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
+    <value>{0} 不能与原版节点控制器(Node Controller)同时使用，需要禁用原版mod。</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Control node type and shape</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+    <value>这是BETA测试版，可能会出现功能性错误。无法担保工作稳定！</value>
   </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Disable original Node Controller</value>
+    <value>禁用原版节点控制器</value>
   </data>
   <data name="Mod_LoaledWithErrors" xml:space="preserve">
     <value>Mod加载出错。

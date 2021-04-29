@@ -134,11 +134,11 @@ Shift X10, Ctrl X0,1</value>
     <value>Kyllä</value>
   </data>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
-    <value>Original Node Controller data was imported.
-Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
+    <value>Alkuperäisen Node Controllerin tiedot tuotiin.
+Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyksistä voi vaatia hienosäätöä.</value>
   </data>
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
-    <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
+    <value>VAROITUS: Jos teet uuden tallennuksen, et voi enää käyttää alkuperäistä Node Controlleria tässä kaupungissa.</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
     <value>Ymmärrän</value>
@@ -153,16 +153,16 @@ Backward compatibility does not provide the transfer of all data, may be require
     <value>Käytät beta-versiota {0}:sta. Se on tarkoitettu uusien ominaisuuksien testaamiseen ja siinä voi olla virheitä. Jos tilasit sen vahingossa, vaihda vakaaseen versioon.</value>
   </data>
   <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
+    <value>{0} ei voi toimia alkuperäisen Node Controllerin kanssa. Poista se käytöstä.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Control node type and shape</value>
+    <value>Säädä risteysten tyyppiä ja muotoa</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+    <value>Tämä on BETA-versio. Virheitä voi esiintyä, eikä vakautta ole taattu!</value>
   </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Disable original Node Controller</value>
+    <value>Poista alkuperäinen Node Controller käytöstä</value>
   </data>
   <data name="Mod_LoaledWithErrors" xml:space="preserve">
     <value>Modi latautui virheellisesti.
@@ -299,7 +299,7 @@ Käynnistä peli uudelleen.</value>
     <value>Kalteva</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>Kiertymä</value>
+    <value>Sivukaltevuus</value>
   </data>
   <data name="Option_TwistFormat" xml:space="preserve">
     <value>{0}°</value>
@@ -320,10 +320,10 @@ Käynnistä peli uudelleen.</value>
     <value>Ilmoitukset</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
-    <value>Select middle nodes</value>
+    <value>Valitse kahden tien risteyksettömät välit</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>If this option is disabled, the middle nodes will move to clicked position</value>
+    <value>Jos tämä asetus ei ole käytössä, kahden tien risteyksettömät välit siirtyvät napautettuun kohtaan</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Käynnistä työkalu</value>
@@ -344,7 +344,7 @@ Käynnistä peli uudelleen.</value>
     <value>Napauta tasataksesi tämän kulman suhteen</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Pidä Alt-näppäintä pohjassa muuttaaksesi päätietä</value>
+    <value>Pidä Alt-näppäintä pohjassa vaihtaaksesi päätie</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Risteys #{0}
@@ -357,31 +357,31 @@ Napauta muokataksesi</value>
     <value>Vedä muuttaaksesi etäisyyttä</value>
   </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
-    <value>Drag to change rotate</value>
+    <value>Vedä kääntääksesi</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Vedä muuttaaksesi kulman etäisyyttä</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>Drag this end to change main road</value>
+    <value>Vedä vaihtaaksesi päätie</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>Drop this end to change main road</value>
+    <value>Pudota vaihtaaksesi päätie</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
-    <value>Click to insert crossing node</value>
+    <value>Napauta lisätäksesi ylityspaikka</value>
   </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
-    <value>Click to insert node</value>
+    <value>Napauta lisätäksesi risteyksen</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
-    <value>Select corner you want to align with</value>
+    <value>Valitse kulma, jonka suhteen haluat tasata</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>Muuta halutuksi päätieksi</value>
+    <value>Vaihda halutuksi päätieksi</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>Select main road end position</value>
+    <value>Valitse päätie</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Valitse risteys</value>
@@ -390,7 +390,7 @@ Napauta muokataksesi</value>
     <value>Valitse kulmat, jotka haluat tasata</value>
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
-    <value>Can't insert node
-Too close to nearby node</value>
+    <value>Risteystä ei voi lisätä
+Se on liian lähellä toista risteystä</value>
   </data>
 </root>

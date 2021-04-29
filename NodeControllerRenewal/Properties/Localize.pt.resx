@@ -159,7 +159,7 @@ Backward compatibility does not provide the transfer of all data, may be require
     <value>Control node type and shape</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+    <value>Isto é uma versão BETA, podem ocorrer erros e não é garantida a estabilidade!</value>
   </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
     <value>Disable original Node Controller</value>
@@ -250,7 +250,7 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
     <value>All</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Make straight ends</value>
+    <value>Make ends straight</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marking</value>

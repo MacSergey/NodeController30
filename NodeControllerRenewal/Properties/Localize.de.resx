@@ -153,16 +153,16 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
     <value>Du verwendest die BETA Version von {0}. Diese ist zum Testen neuer Funktionen gedacht und kann Fehler beinhalten. Wenn du diese Version ungewollt abonniert haben solltest, wechsele zur stabilen Version.</value>
   </data>
   <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
+    <value>{0} kann nicht zusammen mit dem ursprünglichen Node Controller aktiv sein. Dieser muss daher deaktiviert werden.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Control node type and shape</value>
+    <value>Netzwerk-Knoten-Typ und Form steuern</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+    <value>Dies ist eine BETA Version. Stabilität und Fehlerfreiheit sind nicht garantiert!</value>
   </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Disable original Node Controller</value>
+    <value>Original Node Controller deaktivieren</value>
   </data>
   <data name="Mod_LoaledWithErrors" xml:space="preserve">
     <value>Mod fehlerhaft geladen.
@@ -221,7 +221,7 @@ Starte das Spiel neu.</value>
     <value>Was ist neu in {0}</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Look for actual beta change log on Discord</value>
+    <value>Aktuelle Informationen zu Änderungen an der Beta Version sind auf Discord zu finden</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Version {0}</value>
@@ -239,7 +239,7 @@ Starte das Spiel neu.</value>
     <value>Ende</value>
   </data>
   <data name="NodeStyle_Middle" xml:space="preserve">
-    <value>Mitte</value>
+    <value>Direkte Verbindung</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
     <value>Strecken</value>
@@ -251,7 +251,7 @@ Starte das Spiel neu.</value>
     <value>Alle</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Gerade Ende erstellen</value>
+    <value>Enden begradigen</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Markierung</value>
@@ -266,7 +266,7 @@ Starte das Spiel neu.</value>
     <value>Auf Standard zurücksetzen</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>Drehen</value>
+    <value>Links-Rechts-Drehung</value>
   </data>
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>
@@ -299,16 +299,16 @@ Starte das Spiel neu.</value>
     <value>Geneigt</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>Drehung</value>
+    <value>Querneigung</value>
   </data>
   <data name="Option_TwistFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
-    <value>Node-Typ</value>
+    <value>Netzwerk-Knoten-Typ</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
-    <value>Node #{0}</value>
+    <value>Netzwerk-Knoten #{0}</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
     <value>Allgemein</value>
@@ -320,10 +320,10 @@ Starte das Spiel neu.</value>
     <value>Benachrichtigungen</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
-    <value>Mittlere Nodes auswählen</value>
+    <value>Mittige Netzwerk-Knoten zwischen zwei Straßen anwählen</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>If this option is disabled, the middle nodes will move to clicked position</value>
+    <value>Wenn diese Option deaktiviert ist, werden die mittigen Netzwerk-Knoten an die angeklickte Position verschoben</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Tool aktivieren</value>
@@ -347,7 +347,7 @@ Starte das Spiel neu.</value>
     <value>Alt gedrückt halten um die Hauptstraße zu ändern</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
-    <value>Node #{0}
+    <value>Netzwerk-Knoten #{0}
 Klicken zum Bearbeiten</value>
   </data>
   <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
@@ -357,7 +357,7 @@ Klicken zum Bearbeiten</value>
     <value>Ziehen, um den Versatz zu ändern</value>
   </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
-    <value>Ziehen, um die Drehung zu ändern</value>
+    <value>Ziehen, um die Links-Rechts-Drehung zu ändern</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Ziehen, um den Versatz der Ecke zu ändern</value>
@@ -372,7 +372,7 @@ Klicken zum Bearbeiten</value>
     <value>Klicken, um einen Überweg einzufügen</value>
   </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
-    <value>Klicken, um einen Node einzufügen</value>
+    <value>Klicken, um einen Netzwerk-Knoten einzufügen</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Wähle die Ecke, an der du ausrichten möchtest</value>
@@ -384,13 +384,13 @@ Klicken zum Bearbeiten</value>
     <value>Wähle das Ende der Hauptstraße</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
-    <value>Node auswählen</value>
+    <value>Netzwerk-Knoten auswählen</value>
   </data>
   <data name="Tool_InfoSelectToAlign" xml:space="preserve">
     <value>Wähle die Ecke, die du ausrichten möchtest</value>
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
-    <value>Node kann nicht eingefügt werden
-Zu nah an einem Node in der Nähe</value>
+    <value>Netzwerk-Knoten kann nicht eingefügt werden
+Zu nah an einem anderen Netzwerk-Knoten</value>
   </data>
 </root>

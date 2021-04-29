@@ -156,10 +156,10 @@ Shift X10, Ctrl X0.1</value>
     <value>{0} не может работать с оригинальным Node Controller, нужно отключить его.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Control node type and shape</value>
+    <value>Контролируйте тип и форму узлов</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+    <value>Это BETA версия, стабильная работа и отсутствие ошибок не гарантировано!</value>
   </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
     <value>Отключить оригинальный Node Controller</value>
@@ -242,7 +242,7 @@ Shift X10, Ctrl X0.1</value>
     <value>Средний</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
-    <value>Растянуты</value>
+    <value>Растянутый</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
     <value>Разворот</value>
@@ -323,7 +323,7 @@ Shift X10, Ctrl X0.1</value>
     <value>Выбирать средние узлы</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>If this option is disabled, the middle nodes will move to clicked position</value>
+    <value>Если эта опция отключена, средние узлы будет сдвинуты к месту нажатия</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Активация инструмента</value>
