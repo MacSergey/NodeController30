@@ -421,7 +421,6 @@ namespace NodeController
         public override SupportOption SupportTwist => SupportOption.All;
         public override SupportOption SupportShift => SupportOption.All;
         public override SupportOption SupportStretch => SupportOption.All;
-        public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool IsMoveable => true;
 

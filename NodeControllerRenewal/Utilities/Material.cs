@@ -24,11 +24,11 @@ namespace NodeController.Utilities
             return null;
         }
 
-        public static NetInfo.Segment GetSegment(NetInfo info, int textureID)
+        public static NetInfo.Segment GetSegment(NetInfo info)
         {
             foreach (var segmentInfo in info.m_segments ?? Enumerable.Empty<NetInfo.Segment>())
             {
-                if (segmentInfo.m_segmentMaterial.TryGetTexture2D(textureID) != null)
+                if (segmentInfo.m_segmentMaterial.TryGetTexture2D(ID_APRMap) != null)
                     return segmentInfo;
             }
             return null;
@@ -41,7 +41,9 @@ namespace NodeController.Utilities
             if (info == null)
                 throw new ArgumentNullException("info");
 
-            var segment = GetSegment(info, ID_APRMap);
+            if (GetSegment(info) is not NetInfo.Segment segment)
+                return material;
+
             var segmentMaterial = segment.m_material;
 
             material = new Material(material);
@@ -65,7 +67,7 @@ namespace NodeController.Utilities
             if (info == null)
                 throw new ArgumentNullException("info");
 
-            return GetSegment(info, ID_APRMap)?.m_mesh ?? mesh;
+            return GetSegment(info)?.m_mesh ?? mesh;
         }
     }
 }

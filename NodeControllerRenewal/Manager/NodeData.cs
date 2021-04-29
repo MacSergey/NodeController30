@@ -124,7 +124,8 @@ namespace NodeController
         }
 
         public bool IsCSUR => Id.GetNode().Info.IsCSUR();
-        public bool IsRoad => Id.GetNode().Info.m_netAI is RoadBaseAI;
+        public bool IsRoad => Id.GetNode().Segments().All(s => s.Info.m_netAI is RoadBaseAI);
+        public bool IsTunnel => Id.GetNode().Segments().Any(s => s.Info.m_netAI is RoadTunnelAI);
 
         public bool IsEndNode => Type == NodeStyleType.End;
         public bool IsMiddleNode => Type == NodeStyleType.Middle;
@@ -134,7 +135,6 @@ namespace NodeController
         public bool IsIndividuallyShift => Style.SupportShift.IsSet(SupportOption.Individually);
 
 
-        public bool CanModifyTextures => IsRoad && !IsCSUR;
         public bool NeedsTransitionFlag => IsTwoRoads && (Type == NodeStyleType.Custom || Type == NodeStyleType.Crossing || Type == NodeStyleType.UTurn);
         public bool ShouldRenderCenteralCrossingTexture => Type == NodeStyleType.Crossing && CrossingIsRemoved(MainRoad.First) && CrossingIsRemoved(MainRoad.Second);
 
@@ -375,9 +375,9 @@ namespace NodeController
 
             return newNodeType switch
             {
-                NodeStyleType.Crossing => IsRoad && IsTwoRoads && IsEqualWidth && IsStraight && PedestrianLaneCount >= 2 && !HasNodeLess,
-                NodeStyleType.UTurn => IsRoad && IsTwoRoads && !HasNodeLess && Id.GetNode().Info.IsTwoWay(),
-                NodeStyleType.Stretch => IsRoad && IsTwoRoads && CanModifyTextures && IsStraight,
+                NodeStyleType.Crossing => IsTwoRoads && IsRoad && IsEqualWidth && IsStraight && PedestrianLaneCount >= 2 && !HasNodeLess,
+                NodeStyleType.UTurn => IsTwoRoads && IsRoad && !HasNodeLess && Id.GetNode().Info.IsTwoWay(),
+                NodeStyleType.Stretch => IsTwoRoads && IsRoad && !IsTunnel && !IsCSUR && IsStraight,
                 NodeStyleType.Middle => IsTwoRoads && IsStraight || Is180,
                 NodeStyleType.Bend => IsTwoRoads,
                 NodeStyleType.Custom => !IsEnd,
