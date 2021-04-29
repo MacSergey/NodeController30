@@ -438,11 +438,19 @@ namespace NodeController
 
         public override SupportOption SupportOffset => SupportOption.OnceValue;
         public override SupportOption SupportShift => SupportOption.Group;
+        public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
 
         public CrossingNode(NodeData data) : base(data) { }
+
+        public override float GetTwist() => (Data.FirstMainSegmentEnd.TwistAngle - Data.SecondMainSegmentEnd.TwistAngle) / 2;
+        public override void SetTwist(float value)
+        {
+            Data.FirstMainSegmentEnd.TwistAngle = value;
+            Data.SecondMainSegmentEnd.TwistAngle = -value;
+        }
     }
     public class UTurnNode : NodeStyle
     {
@@ -451,11 +459,19 @@ namespace NodeController
 
         public override SupportOption SupportOffset => SupportOption.OnceValue;
         public override SupportOption SupportShift => SupportOption.Group;
+        public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
 
         public UTurnNode(NodeData data) : base(data) { }
+
+        public override float GetTwist() => (Data.FirstMainSegmentEnd.TwistAngle - Data.SecondMainSegmentEnd.TwistAngle) / 2;
+        public override void SetTwist(float value)
+        {
+            Data.FirstMainSegmentEnd.TwistAngle = value;
+            Data.SecondMainSegmentEnd.TwistAngle = -value;
+        }
     }
     public class EndNode : NodeStyle
     {
@@ -465,7 +481,6 @@ namespace NodeController
         public override SupportOption SupportSlope => SupportOption.Group;
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
-        public override SupportOption SupportNoMarking => SupportOption.Group;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
 
         public EndNode(NodeData data) : base(data) { }
