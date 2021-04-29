@@ -40,7 +40,7 @@ namespace NodeController.Utilities
             Atlas = TextureHelper.CreateAtlas(nameof(NodeController), Files);
         }
 
-        private static UITextureAtlas.SpriteInfo[] Button(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 31, 31, ButtonNormal, ButtonActive, ButtonHover, Icon, IconActive, IconHover).ToArray();
+        private static UITextureAtlas.SpriteInfo[] Button(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 31, 31, new RectOffset(0, 0, 0, 0), 2, ButtonNormal, ButtonActive, ButtonHover, Icon, IconActive, IconHover).ToArray();
         private static UITextureAtlas.SpriteInfo[] Cursor(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 31, 31, CursorEdit, CursorError, CursorInsert, CursorCrossing, CursorMove, CursorSearch).ToArray();
 
         private static UITextureAtlas.SpriteInfo[] HeaderButtons(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 25, 25, new RectOffset(4, 4, 4, 4), 2, Reset, MakeStraight).ToArray();

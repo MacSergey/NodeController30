@@ -272,14 +272,17 @@ namespace NodeController
                 slope.NumberFormat = "0.#";
                 slope.Init(Data, SupportSlope, totalSupport, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value, MinMaxSlope);
                 components.Add(slope);
-                SetVisible(Data.IsSlopeJunctions);
 
-                junctionStyle.OnSelectObjectChanged += SetVisible;
-
-                void SetVisible(bool isSlope)
+                if (junctionStyle != null)
                 {
-                    slope.isVisible = isSlope;
-                    slope.Refresh();
+                    SetVisible(Data.IsSlopeJunctions);
+                    junctionStyle.OnSelectObjectChanged += SetVisible;
+
+                    void SetVisible(bool isSlope)
+                    {
+                        slope.isVisible = isSlope;
+                        slope.Refresh();
+                    }
                 }
             }
 
@@ -291,14 +294,17 @@ namespace NodeController
                 twist.NumberFormat = "0.#";
                 twist.Init(Data, SupportTwist, totalSupport, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value, MinMaxTwist);
                 components.Add(twist);
-                SetVisible(Data.IsSlopeJunctions);
 
-                junctionStyle.OnSelectObjectChanged += SetVisible;
-
-                void SetVisible(bool isSlope)
+                if (junctionStyle != null)
                 {
-                    twist.isVisible = isSlope;
-                    twist.Refresh();
+                    SetVisible(Data.IsSlopeJunctions);
+                    junctionStyle.OnSelectObjectChanged += SetVisible;
+
+                    void SetVisible(bool isSlope)
+                    {
+                        twist.isVisible = isSlope;
+                        twist.Refresh();
+                    }
                 }
             }
 
