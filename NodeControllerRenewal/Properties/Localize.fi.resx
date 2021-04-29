@@ -133,6 +133,13 @@ Shift X10, Ctrl X0,1</value>
   <data name="MessageBox_Yes" xml:space="preserve">
     <value>Kyllä</value>
   </data>
+  <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
+    <value>Original Node Controller data was imported.
+Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
+  </data>
+  <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
+    <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
+  </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
     <value>Ymmärrän</value>
   </data>
@@ -143,13 +150,24 @@ Shift X10, Ctrl X0,1</value>
     <value>Hanki vakaa versio</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
+    <value>Käytät beta-versiota {0}:sta. Se on tarkoitettu uusien ominaisuuksien testaamiseen ja siinä voi olla virheitä. Jos tilasit sen vahingossa, vaihda vakaaseen versioon.</value>
+  </data>
+  <data name="Mod_ConflictMessage" xml:space="preserve">
+    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value></value>
+    <value>Control node type and shape</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value></value>
+    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+  </data>
+  <data name="Mod_DisableOriginal" xml:space="preserve">
+    <value>Disable original Node Controller</value>
+  </data>
+  <data name="Mod_LoaledWithErrors" xml:space="preserve">
+    <value>Modi latautui virheellisesti.
+Ei ole suositeltavaa käyttää modia tässä tilassa, koska se voi johtaa ennalta-arvaamattomaan käyttäytymiseen.
+Käynnistä peli uudelleen.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>Pelin kieli</value>
@@ -196,6 +214,9 @@ Shift X10, Ctrl X0,1</value>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Yksinkertaistettu kiina</value>
   </data>
+  <data name="Mod_Support" xml:space="preserve">
+    <value>Tuki</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Uutta modissa {0}</value>
   </data>
@@ -227,13 +248,13 @@ Shift X10, Ctrl X0,1</value>
     <value>U-käännös</value>
   </data>
   <data name="Options_All" xml:space="preserve">
-    <value>All</value>
+    <value>Kaikki</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Make straight ends</value>
+    <value>Suorista päädyt</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
-    <value>Marking</value>
+    <value>Merkinnät</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Etäisyys</value>
@@ -302,7 +323,7 @@ Shift X10, Ctrl X0,1</value>
     <value>Select middle nodes</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value></value>
+    <value>If this option is disabled, the middle nodes will move to clicked position</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Käynnistä työkalu</value>
@@ -317,29 +338,29 @@ Shift X10, Ctrl X0,1</value>
     <value>Näytä, mikä on uutta</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Hold Shift to alignment roads</value>
+    <value>Pidä Shift-näppäintä pohjassa tasateksesi tiet</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
-    <value>Click to align with this corner</value>
+    <value>Napauta tasataksesi tämän kulman suhteen</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main road</value>
+    <value>Pidä Alt-näppäintä pohjassa muuttaaksesi päätietä</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
-    <value>Node #{0}
-Click to edit</value>
+    <value>Risteys #{0}
+Napauta muokataksesi</value>
   </data>
   <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
-    <value>Click to select corner you want to align</value>
+    <value>Napsauta valitaksesi kulman, jonka haluat tasata toisen kulman kanssa</value>
   </data>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
-    <value>Drag to change offset</value>
+    <value>Vedä muuttaaksesi etäisyyttä</value>
   </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Drag to change rotate</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
-    <value>Drag to change corner offset</value>
+    <value>Vedä muuttaaksesi kulman etäisyyttä</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
     <value>Drag this end to change main road</value>
@@ -357,16 +378,16 @@ Click to edit</value>
     <value>Select corner you want to align with</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>Change to desired main road</value>
+    <value>Muuta halutuksi päätieksi</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
     <value>Select main road end position</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
-    <value>Select node</value>
+    <value>Valitse risteys</value>
   </data>
   <data name="Tool_InfoSelectToAlign" xml:space="preserve">
-    <value>Select corners you want to align</value>
+    <value>Valitse kulmat, jotka haluat tasata</value>
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
     <value>Can't insert node

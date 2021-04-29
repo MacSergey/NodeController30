@@ -133,6 +133,13 @@ Shift x10, Ctrl x0.1</value>
   <data name="MessageBox_Yes" xml:space="preserve">
     <value>Tak</value>
   </data>
+  <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
+    <value>Original Node Controller data was imported.
+Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
+  </data>
+  <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
+    <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
+  </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
     <value>Zgadzam się</value>
   </data>
@@ -145,11 +152,22 @@ Shift x10, Ctrl x0.1</value>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
   </data>
+  <data name="Mod_ConflictMessage" xml:space="preserve">
+    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
+  </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value></value>
+    <value>Control node type and shape</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value></value>
+    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+  </data>
+  <data name="Mod_DisableOriginal" xml:space="preserve">
+    <value>Disable original Node Controller</value>
+  </data>
+  <data name="Mod_LoaledWithErrors" xml:space="preserve">
+    <value>Wystąpiły błędy podczas ładowania moda.
+Nie zalecamy używania moda w tym stanie, ponieważ może to doprowadzić do nieprzewidzianego zachowania.
+Uruchom ponownie grę.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>Język gry</value>
@@ -195,6 +213,9 @@ Shift x10, Ctrl x0.1</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Chiński uproszczony</value>
+  </data>
+  <data name="Mod_Support" xml:space="preserve">
+    <value>Wsparcie</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Co nowego w {0}</value>
@@ -302,7 +323,7 @@ Shift x10, Ctrl x0.1</value>
     <value>Select middle nodes</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value></value>
+    <value>If this option is disabled, the middle nodes will move to clicked position</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Aktywuj narzędzie</value>

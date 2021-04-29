@@ -133,6 +133,13 @@ Shift x10，Ctrl x0.1</value>
   <data name="MessageBox_Yes" xml:space="preserve">
     <value>确定</value>
   </data>
+  <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
+    <value>Original Node Controller data was imported.
+Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
+  </data>
+  <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
+    <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
+  </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
     <value>我同意</value>
   </data>
@@ -145,11 +152,22 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>你在使用 {0} BETA版。此版本为测试新功能用，且可能含有BUG。如果是不小心订阅到了此版本，请订阅回稳定版。</value>
   </data>
+  <data name="Mod_ConflictMessage" xml:space="preserve">
+    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
+  </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value></value>
+    <value>Control node type and shape</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value></value>
+    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+  </data>
+  <data name="Mod_DisableOriginal" xml:space="preserve">
+    <value>Disable original Node Controller</value>
+  </data>
+  <data name="Mod_LoaledWithErrors" xml:space="preserve">
+    <value>Mod加载出错。
+不建议此状况下继续使用本mod，否则可能工作异常。
+请重启游戏。</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>游戏语言</value>
@@ -196,6 +214,9 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>简体中文</value>
   </data>
+  <data name="Mod_Support" xml:space="preserve">
+    <value>支持服务</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} 版本的新功能</value>
   </data>
@@ -227,19 +248,19 @@ Shift x10，Ctrl x0.1</value>
     <value>掉头</value>
   </data>
   <data name="Options_All" xml:space="preserve">
-    <value>All</value>
+    <value>全部</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Make straight ends</value>
+    <value>把终点变直</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
-    <value>Marking</value>
+    <value>标线</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>偏移</value>
   </data>
   <data name="Option_OffsetFormat" xml:space="preserve">
-    <value>{0}m</value>
+    <value>{0}米</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>重置为默认值</value>
@@ -254,7 +275,7 @@ Shift x10，Ctrl x0.1</value>
     <value>移位</value>
   </data>
   <data name="Option_ShiftFormat" xml:space="preserve">
-    <value>{0}m</value>
+    <value>{0}米</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
     <value>斜坡</value>
@@ -302,7 +323,7 @@ Shift x10，Ctrl x0.1</value>
     <value>选择中间节点</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value></value>
+    <value>If this option is disabled, the middle nodes will move to clicked position</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>启用工具</value>

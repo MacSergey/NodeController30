@@ -133,6 +133,13 @@
   <data name="MessageBox_Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
+    <value>オリジナルのノードコントローラから、設定がインポートされました。
+部分的に設定の互換性がありません、手動で調整や再適用が必要な場合があります。</value>
+  </data>
+  <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
+    <value>警告: インポート後にマップの保存を行うと、オリジナルのノードコントローラは使用できなくなります。</value>
+  </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
     <value>同意します</value>
   </data>
@@ -147,11 +154,22 @@
 新機能をテストするMODで、エラーが発生する可能性があります。
 間違ってサブスクライブした場合は、安定版に切り替えてください。</value>
   </data>
+  <data name="Mod_ConflictMessage" xml:space="preserve">
+    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
+  </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value></value>
+    <value>Control node type and shape</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value></value>
+    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+  </data>
+  <data name="Mod_DisableOriginal" xml:space="preserve">
+    <value>Disable original Node Controller</value>
+  </data>
+  <data name="Mod_LoaledWithErrors" xml:space="preserve">
+    <value>MODのロード中に、エラーが発生しました。
+この状態で、MODの使用はお勧め出来ません。
+ゲームを再起動してください。</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>ゲームの既定言語</value>
@@ -198,6 +216,9 @@
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>簡体中国語</value>
   </data>
+  <data name="Mod_Support" xml:space="preserve">
+    <value>サポート</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} の更新内容</value>
   </data>
@@ -229,16 +250,16 @@
     <value>Uターン</value>
   </data>
   <data name="Options_All" xml:space="preserve">
-    <value>All</value>
+    <value>すべて</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>全ての端を直線化</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
-    <value>Marking</value>
+    <value>横断歩道の表示</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
-    <value>オフセット（長さ・距離）</value>
+    <value>オフセット（長さ）</value>
   </data>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
@@ -253,19 +274,19 @@
     <value>{0}°</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
-    <value>シフト（前後左右の移動）</value>
+    <value>シフト（左右の移動）</value>
   </data>
   <data name="Option_ShiftFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
-    <value>スロープ（勾配・傾斜）</value>
+    <value>スロープ（勾配）</value>
   </data>
   <data name="Option_SlopeFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Stretch" xml:space="preserve">
-    <value>ストレッチ（太さ・幅）</value>
+    <value>ストレッチ（太さ）</value>
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
@@ -304,7 +325,7 @@
     <value>中間部分にあるノードも選択</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value></value>
+    <value>If this option is disabled, the middle nodes will move to clicked position</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>ノードコントローラーの有効化</value>
