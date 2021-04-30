@@ -242,7 +242,7 @@ Restart the game.</value>
     <value>Middle</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
-    <value>Stretch</value>
+    <value>Stretched</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
     <value>UTurn</value>
@@ -251,7 +251,7 @@ Restart the game.</value>
     <value>All</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Make straight ends</value>
+    <value>Make ends straight</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marking</value>

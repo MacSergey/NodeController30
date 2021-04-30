@@ -128,17 +128,16 @@ Shift X10, Ctrl X0.1</value>
     <value>Nee</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
-    <value>Ok</value>
+    <value>Oké</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
     <value>Ja</value>
   </data>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
-    <value>Original Node Controller data was imported.
-Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
+    <value>Originele Node Controllerdata is geïmporteerd. Achterwaartse compatibiliteit biedt geen overdracht van alle gegevens, handmatige aanpassingen zijn mogelijk nodig.</value>
   </data>
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
-    <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
+    <value>WAARSCHUWING: Als u een nieuwe save maakt is het niet langer mogelijk de originele Node Controller te gebruiken op deze kaart.</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
     <value>Ik ga akkoord</value>
@@ -153,16 +152,16 @@ Backward compatibility does not provide the transfer of all data, may be require
     <value>Je gebruikt de bèta versie van {0}. Deze wordt gebruikt voor het testen van nieuwe functies en kan fouten bevatten. Als je per ongeluk geabonneerd op de bèta, kan je naar de stabiele versie overstappen.</value>
   </data>
   <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
+    <value>{0} werkt niet tegelijk met de originele Node Controller, u moet deze uitschakelen.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Control node type and shape</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+    <value>Dit is een bèta-versie, er kunnen fouten optreden en stabiliteit is niet gegarandeerd!</value>
   </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Disable original Node Controller</value>
+    <value>Originele Node Controller uitschakelen</value>
   </data>
   <data name="Mod_LoaledWithErrors" xml:space="preserve">
     <value>Mod is geladen met errors.
@@ -248,13 +247,13 @@ Herstart het spel.</value>
     <value>U-bocht</value>
   </data>
   <data name="Options_All" xml:space="preserve">
-    <value>All</value>
+    <value>Alle</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Make straight ends</value>
+    <value>Maak rechte uiteindes</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
-    <value>Marking</value>
+    <value>Markering</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Verschuiven (parallel)</value>

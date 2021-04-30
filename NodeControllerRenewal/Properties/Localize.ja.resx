@@ -155,16 +155,16 @@
 間違ってサブスクライブした場合は、安定版に切り替えてください。</value>
   </data>
   <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
+    <value>{0} は、オリジナルのノードコントローラと同時に動作しません。MODを無効化してください。</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Control node type and shape</value>
+    <value>交差点やノードの種類・形状を、調整や変更ができます。</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+    <value>これはβ版で、エラーが発生する可能性があります。安定性は保証されていません！</value>
   </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Disable original Node Controller</value>
+    <value>オリジナルのノードコントローラーを無効化</value>
   </data>
   <data name="Mod_LoaledWithErrors" xml:space="preserve">
     <value>MODのロード中に、エラーが発生しました。
@@ -301,7 +301,7 @@
     <value>スロープ</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>ツイスト（水平方向の傾斜）</value>
+    <value>ツイスト（バンク・カント）</value>
   </data>
   <data name="Option_TwistFormat" xml:space="preserve">
     <value>{0}°</value>
@@ -325,7 +325,7 @@
     <value>中間部分にあるノードも選択</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>If this option is disabled, the middle nodes will move to clicked position</value>
+    <value>このオプションを無効にすると、中間部分にあるノードは選択されません</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>ノードコントローラーの有効化</value>

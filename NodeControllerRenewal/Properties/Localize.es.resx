@@ -134,11 +134,11 @@ Mayús x10, Ctrl x0.1</value>
     <value>Sí</value>
   </data>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
-    <value>Original Node Controller data was imported.
-Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
+    <value>Se importaron los datos del Node Controller original.
+La compatibilidad con versiones anteriores no proporciona la transferencia de todos los datos, es posible que se requieran ajustes manuales.</value>
   </data>
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
-    <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
+    <value>ADVERTENCIA: Si realiza un nuevo guardado, ya no podrá utilizar el Node Controller original en este mapa.</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
     <value>Acepto</value>
@@ -153,16 +153,16 @@ Backward compatibility does not provide the transfer of all data, may be require
     <value>Está utilizando la versión BETA de {0}. Es para probar nuevas funciones. Si se suscribió por error, cambie a la versión estable.</value>
   </data>
   <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
+    <value>{0} no puede trabajar con el Node Controller original al mismo tiempo, necesita desactivarlo.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Control node type and shape</value>
+    <value>Controle el tipo y la forma del nodo</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+    <value>¡Esta es una versión BETA, pueden ocurrir errores y no se garantiza la estabilidad!</value>
   </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Disable original Node Controller</value>
+    <value>Desactivar el Node Controller original</value>
   </data>
   <data name="Mod_LoaledWithErrors" xml:space="preserve">
     <value>Mod cargado con errores.
@@ -221,7 +221,7 @@ Reinicia el juego.</value>
     <value>Novedades de {0}</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Look for actual beta change log on Discord</value>
+    <value>Busque el registro de cambios beta actual en Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Versión {0}</value>
@@ -248,13 +248,13 @@ Reinicia el juego.</value>
     <value>Vuelta en U</value>
   </data>
   <data name="Options_All" xml:space="preserve">
-    <value>All</value>
+    <value>Todos</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Make straight ends</value>
+    <value>Haga las puntas rectas</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
-    <value>Marking</value>
+    <value>Marcado</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Desplazamiento</value>
@@ -323,7 +323,7 @@ Reinicia el juego.</value>
     <value>Seleccionar nodos del medio</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>If this option is disabled, the middle nodes will move to clicked position</value>
+    <value>Si esta opción está desactivada, los nodos medios se moverán a la posición pulsada</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Activar herramienta</value>

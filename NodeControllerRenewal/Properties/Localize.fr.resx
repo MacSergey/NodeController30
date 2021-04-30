@@ -134,11 +134,11 @@ Maj X10, Ctrl X0.1</value>
     <value>Oui</value>
   </data>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
-    <value>Original Node Controller data was imported.
-Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
+    <value>Les données du Node Controller originel ont été importées.
+La rétrocompatibilité n'assure pas le transfert de toutes les données, il est peut être nécessaire de faire des ajustements manuels.</value>
   </data>
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
-    <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
+    <value>AVERTISSEMENT : Si vous faites une nouvelle sauvegarde, vous ne pourrez plus utiliser le Node Controller originel sur cette carte.</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
     <value>J'accepte</value>
@@ -153,16 +153,16 @@ Backward compatibility does not provide the transfer of all data, may be require
     <value>Vous utilisez la version bêta de {0}. C'est une version de test avec de nouvelles fonctionnalités et elle peut contenir des erreurs qui vont briser ou supprimer vos configurations. Si vous vous êtes abonné par erreur, veuillez vous abonner à la version stable.</value>
   </data>
   <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
+    <value>{0} ne peut pas fonctionner avec le Node Controller originel en même temps, vous devez le désactiver.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Control node type and shape</value>
+    <value>Changer le type de nœud et la forme</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+    <value>Ceci est une version BETA, des erreurs peuvent se produire et la stabilité n'est pas garantie!</value>
   </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Disable original Node Controller</value>
+    <value>Désactiver le Node Controller originel</value>
   </data>
   <data name="Mod_LoaledWithErrors" xml:space="preserve">
     <value>Le mod a chargé avec des erreurs. 
@@ -323,7 +323,7 @@ Rechargez le jeu.</value>
     <value>Sélectionnez les nœuds du milieu</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>If this option is disabled, the middle nodes will move to clicked position</value>
+    <value>Si cette option est désactivée, les nœuds du milieu se déplaceront vers l'emplacement cliqué</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Activer l'outil</value>
