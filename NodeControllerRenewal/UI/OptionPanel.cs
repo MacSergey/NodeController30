@@ -66,17 +66,20 @@ namespace NodeController.UI
 
         public virtual void Refresh()
         {
-            if (TotalOption.IsSet(SupportOption.Group) && !Option.IsSet(SupportOption.Group))
-                Items[Data].isVisible = false;
+            if (TotalOption.IsSet(SupportOption.Group) && !Option.IsSet(SupportOption.Group) && Items.TryGetValue(Data, out var nodeItem))
+                nodeItem.isVisible = false;
 
             if (TotalOption.IsSet(SupportOption.Individually))
             {
                 foreach (var segmentData in Data.SegmentEndDatas)
                 {
-                    if (!Option.IsSet(SupportOption.Individually))
-                        Items[segmentData].isVisible = false;
-                    else if (Option.IsSet(SupportOption.MainRoad))
-                        Items[segmentData].isEnabled = segmentData.IsMainRoad;
+                    if (Items.TryGetValue(segmentData, out var segmentEndItem))
+                    {
+                        if (!Option.IsSet(SupportOption.Individually))
+                            segmentEndItem.isVisible = false;
+                        else if (Option.IsSet(SupportOption.MainRoad))
+                            segmentEndItem.isEnabled = segmentData.IsMainRoad;
+                    }
                 }
             }
         }
