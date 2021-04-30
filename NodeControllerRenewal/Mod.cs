@@ -39,9 +39,9 @@ namespace NodeController
             protected set => Localize.Culture = value;
         }
         protected override bool LoadError
-        { 
-            get => base.LoadError || ConflictError; 
-            set => base.LoadError = value; 
+        {
+            get => base.LoadError || ConflictError;
+            set => base.LoadError = value;
         }
         private bool ConflictError { get; set; }
 
@@ -109,7 +109,7 @@ namespace NodeController
             {
                 DependencyUtilities.NC2.isEnabled = false;
 
-                if(UIView.library.Get<ContentManagerPanel>("ContentManagerPanel") is ContentManagerPanel managerPanel)
+                if (UIView.library.Get<ContentManagerPanel>("ContentManagerPanel") is ContentManagerPanel managerPanel)
                 {
                     var categoriesContainer = AccessTools.Field(typeof(ContentManagerPanel), "m_CategoriesContainer").GetValue(managerPanel) as UITabContainer;
                     var modCategory = categoriesContainer.Find("Mods");
@@ -170,7 +170,7 @@ namespace NodeController
             if (DependencyUtilities.TrafficManager is null)
                 Logger.Debug("TMPE not exist, skip patches");
             else
-                PatchTMPE(ref success);
+                PatchTMPE( ref success);
 
             return success;
         }
@@ -373,6 +373,10 @@ namespace NodeController
         {
             return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TrafficManager.Custom.AI.CustomTramBaseAI), nameof(TrafficManager.Custom.AI.CustomTramBaseAI.CustomSimulationStep), parameters);
         }
+        private bool Patch_TMPE_TramBaseAI_SimulationStep2Patch()
+        {
+            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), Type.GetType("TrafficManager.Patch._VehicleAI._TrainAI.SimulationStep2Patch"), "Prefix");
+        }
 
         #endregion
 
@@ -397,9 +401,18 @@ namespace NodeController
             success &= Patch_JunctionRestrictionsManager_IsPedestrianCrossingAllowedConfigurable();
             success &= Patch_JunctionRestrictionsManager_IsUturnAllowedConfigurable();
 
-            var parameters = new Type[] { typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(Vehicle.Frame).MakeByRefType(), typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(int) };
-            success &= Patch_TMPE_CustomTrainAI_CustomSimulationStep(parameters);
-            success &= Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(parameters);
+            if ((Type.GetType("TrafficManager.TrafficManagerMod") ?? Type.GetType("TrafficManager.Lifecycle.TrafficManagerMod")) is Type tmpeMod)
+            {
+                if (tmpeMod.Assembly.GetName().Version < new Version(11, 5, 4))
+                {
+                    var parameters = new Type[] { typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(Vehicle.Frame).MakeByRefType(), typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(int) };
+
+                    success &= Patch_TMPE_CustomTrainAI_CustomSimulationStep(parameters);
+                    success &= Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(parameters);
+                }
+                else
+                    success &= Patch_TMPE_TramBaseAI_SimulationStep2Patch();
+            }
         }
         private bool Patch_TrafficLightManager_CanToggleTrafficLight()
         {
