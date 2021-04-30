@@ -373,7 +373,7 @@ namespace NodeController
         {
             return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TrafficManager.Custom.AI.CustomTramBaseAI), nameof(TrafficManager.Custom.AI.CustomTramBaseAI.CustomSimulationStep), parameters);
         }
-        private bool Patch_TMPE_TramBaseAI_SimulationStep2Patch()
+        private bool Patch_TMPE_TrainAI_SimulationStep2Patch()
         {
             return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), Type.GetType("TrafficManager.Patch._VehicleAI._TrainAI.SimulationStep2Patch"), "Prefix");
         }
@@ -411,7 +411,7 @@ namespace NodeController
                     success &= Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(parameters);
                 }
                 else
-                    success &= Patch_TMPE_TramBaseAI_SimulationStep2Patch();
+                    success &= Patch_TMPE_TrainAI_SimulationStep2Patch();
             }
         }
         private bool Patch_TrafficLightManager_CanToggleTrafficLight()
