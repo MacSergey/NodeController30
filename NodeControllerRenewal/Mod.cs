@@ -54,9 +54,9 @@ namespace NodeController
 
         #region BASIC
 
-        public override void OnEnabled()
+        protected override void Enable()
         {
-            base.OnEnabled();
+            base.Enable();
 
             if (DependencyUtilities.NC2StateWatcher != null)
             {
@@ -66,9 +66,9 @@ namespace NodeController
             else
                 ConflictError = false;
         }
-        public override void OnDisabled()
+        protected override void Disable()
         {
-            base.OnDisabled();
+            base.Disable();
 
             if (DependencyUtilities.NC2StateWatcher != null)
                 DependencyUtilities.NC2StateWatcher.StateChanged -= NS2StateChanged;
