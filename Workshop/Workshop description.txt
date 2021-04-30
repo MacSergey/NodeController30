@@ -43,6 +43,7 @@ To start use Node Controller Renewal you should disable original Node Controller
 [*] [url=https://steamcommunity.com/profiles/76561198109315306/myworkshopfiles/]kian.zarrin[/url] (Author of original Node Controller)
 [*] [url=https://steamcommunity.com/profiles/76561198855893485]Almi[/url] (Spanish translation)
 [*] [url=https://steamcommunity.com/id/chameleonlifede/]Chamëleon[/url] (German translation)
+[*] [url=https://steamcommunity.com/id/citadino/]Citadino[/url] (Spanish translation)
 [*] [url=https://steamcommunity.com/id/claude_speed_]Claude_Speed[/url] (Chinese translation)
 [*] [url=https://steamcommunity.com/id/Dogg_One]Dogg1[/url] (Finnish translation)
 [*] [url=https://steamcommunity.com/id/gocaspro13/]GOCAS[/url] (Portugal translation)
@@ -52,6 +53,6 @@ To start use Node Controller Renewal you should disable original Node Controller
 [*] Sam van den Oetelaar (Dutch translation)
 [*] [url=https://steamcommunity.com/id/shg166yh/]shg166[/url] (Japanese translation)
 [*] [url=https://steamcommunity.com/profiles/76561198076859879/]Sheep[/url] (Workshop preview)
-[*] Svis (French translation)
-[*] Woozie (Polish translation)
+[*] [url=https://steamcommunity.com/profiles/76561199002364272/]Svis[/url] (French translation)
+[*] [url=https://steamcommunity.com/id/mrwoozie/]Woozie[/url] (Polish translation)
 [/list]
