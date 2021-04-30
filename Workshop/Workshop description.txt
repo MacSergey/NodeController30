@@ -3,17 +3,22 @@
 [list][h2]This mod allows you change node type and shape[/h2][/list]
 [/code]
 
-[*] This is renewal version of original [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2085403475]Node Controller[/url] by [url=https://steamcommunity.com/profiles/76561198109315306/myworkshopfiles/]kian.zarrin[/url] with improved UI/UX.
-[/list] 
+This is renewal version of original [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2085403475]Node Controller[/url] by [url=https://steamcommunity.com/profiles/76561198109315306/myworkshopfiles/]kian.zarrin[/url] with improved UI/UX.
+Node Controller Renewal support import original Node Controller data, but not completely, some intersections may be required manually adjustment. 
+To start use Node Controller Renewal you should disable original Node Controller.
+[b]WARNING[/b]: If you import data from original Node Controller and make new save, then you can no longer use original Node Controller on this map.
+
 
 [HR][/HR] 
 [h1]What’s Included[/h1]
 [list] 
 [*] Change node type and shape.
+[*] Make intersection sloped.
 [*] Change segment ends offset, shift, rotate, twist, slope and stretch.
 [*] Alignment of roads with each other.
 [*] Add Crosswalks and UTurns.
 [*] Hide crosswalk markings (required [url=https://steamcommunity.com/workshop/filedetails/?id=1934023593]Hide Crosswalk mod[/url])
+[*] Save data in intersection assets.
 [*] Translation into languages: Chinese, Dutch, Finnish, French, German, Japanese, Polish, Portuguese, Russian, Spanish
 [/list]
 
