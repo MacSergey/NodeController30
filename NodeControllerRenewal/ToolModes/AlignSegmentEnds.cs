@@ -103,19 +103,19 @@ namespace NodeController
                     Targets.Add(segmentData[SelectedSide.Type.Invert()]);
             }
 
-            if(IsSelectedSide)
+            if (IsSelectedSide)
             {
                 if (Tool.Data.Style.SupportShift.IsSet(SupportOption.Individually))
                 {
                     var data = SingletonManager<Manager>.Instance.GetSegmentData(SelectedSide.Data.Id, !SelectedSide.Data.IsStartNode);
                     Targets.Add(data[SelectedSide.Type.Invert()]);
                 }
-                else if(Tool.Data.IsTwoRoads)
+                else if (!Tool.Data.IsJunction)
                 {
-                    foreach(var segmentEnd in Tool.Data.SegmentEndDatas)
+                    foreach (var segmentEnd in Tool.Data.SegmentEndDatas)
                     {
-                        var otherData = SingletonManager<Manager>.Instance.GetSegmentData(segmentEnd.Id, !segmentEnd.IsStartNode);
-                        Targets.Add(otherData[segmentEnd == SelectedSide.Data ? SelectedSide.Type.Invert() : SelectedSide.Type]);
+                        if (SingletonManager<Manager>.Instance.GetSegmentData(segmentEnd.Id, !segmentEnd.IsStartNode) is SegmentEndData otherData)
+                            Targets.Add(otherData[segmentEnd == SelectedSide.Data ? SelectedSide.Type.Invert() : SelectedSide.Type]);
                     }
                 }
             }
@@ -141,7 +141,7 @@ namespace NodeController
         }
         public override string GetToolInfo()
         {
-            if(!IsSelectedSide)
+            if (!IsSelectedSide)
             {
                 if (!IsHoverSide)
                     return Localize.Tool_InfoSelectToAlign;
