@@ -48,7 +48,7 @@ namespace NodeController
 #if BETA
         public override bool IsBeta => true;
 #else
-        protected override bool ModIsBeta => false;
+        public override bool IsBeta => false;
 #endif
         #endregion
 
