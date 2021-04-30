@@ -126,7 +126,6 @@ namespace NodeController
             set => Style.SetIsSlopeJunctions(value);
         }
 
-        public bool IsCSUR => Id.GetNode().Info.IsCSUR();
         public bool IsRoad => Id.GetNode().Segments().All(s => s.Info.m_netAI is RoadBaseAI);
         public bool IsTunnel => Id.GetNode().Segments().Any(s => s.Info.m_netAI is RoadTunnelAI);
 
@@ -356,14 +355,14 @@ namespace NodeController
         public bool IsPossibleType(NodeStyleType type) => type == Type || IsPossibleTypeImpl(type);
         private bool IsPossibleTypeImpl(NodeStyleType newNodeType)
         {
-            if (IsJunction || IsCSUR)
+            if (IsJunction)
                 return newNodeType == NodeStyleType.Custom;
 
             return newNodeType switch
             {
                 NodeStyleType.Crossing => IsTwoRoads && IsRoad && IsEqualWidth && IsStraight && PedestrianLaneCount >= 2 && !HasNodeLess,
                 NodeStyleType.UTurn => IsTwoRoads && IsRoad && !HasNodeLess && Id.GetNode().Info.IsTwoWay(),
-                NodeStyleType.Stretch => IsTwoRoads && IsRoad && !IsTunnel && !IsCSUR && IsStraight,
+                NodeStyleType.Stretch => IsTwoRoads && IsRoad && !IsTunnel && !HasNodeLess && IsStraight,
                 NodeStyleType.Middle => IsTwoRoads && IsStraight || Is180,
                 NodeStyleType.Bend => IsTwoRoads,
                 NodeStyleType.Custom => !IsEnd,
