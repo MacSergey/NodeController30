@@ -211,48 +211,48 @@ namespace NodeController
 
         public void ResetToDefault(NodeStyle style, bool force)
         {
-            if (style.SupportSlope <= SupportOption.OnceValue || force)
+            if (style.SupportSlope == SupportOption.None || force)
                 SlopeAngle = style.DefaultSlope;
 
-            if (style.SupportTwist <= SupportOption.OnceValue || force)
+            if (style.SupportTwist == SupportOption.None || force)
                 TwistAngle = style.DefaultTwist;
 
-            if (style.SupportShift <= SupportOption.OnceValue || force)
+            if (style.SupportShift == SupportOption.None || force)
                 Shift = style.DefaultShift;
 
-            if (style.SupportStretch <= SupportOption.OnceValue || force)
+            if (style.SupportStretch == SupportOption.None || force)
                 Stretch = style.DefaultStretch;
 
-            if (style.SupportNoMarking <= SupportOption.OnceValue || force)
+            if (style.SupportNoMarking == SupportOption.None || force)
                 NoMarkings = style.DefaultNoMarking;
 
-            if (style.SupportSlopeJunction <= SupportOption.OnceValue || force)
+            if (style.SupportSlopeJunction == SupportOption.None || force)
                 IsSlope = style.DefaultSlopeJunction;
 
 
-            if (IsNodeLess || style.SupportOffset == SupportOption.None)
+            if (IsNodeLess)
             {
                 MinPossibleOffset = 0f;
                 MaxPossibleOffset = 0f;
             }
-            else if (style.SupportOffset == SupportOption.OnceValue)
+            else if (style.SupportOffset == SupportOption.None)
             {
                 MinPossibleOffset = style.DefaultOffset;
                 MaxPossibleOffset = style.DefaultOffset;
             }
             else
             {
-                MinPossibleOffset = 0f;
-                MaxPossibleOffset = 1000f;
+                MinPossibleOffset = NodeStyle.MinOffset;
+                MaxPossibleOffset = NodeStyle.MaxOffset;
             }
 
 
-            if (style.SupportRotate <= SupportOption.OnceValue || force)
+            if (style.SupportRotate == SupportOption.None || force)
                 SetRotate(style.DefaultRotate);
 
-            if (style.SupportOffset == SupportOption.OnceValue)
+            if (style.SupportOffset == SupportOption.None)
                 SetOffset(style.DefaultOffset);
-            else if (style.SupportOffset == SupportOption.None || force)
+            else if (force)
                 SetOffset(DefaultOffset);
             else
                 SetOffset(Offset);
@@ -779,7 +779,7 @@ namespace NodeController
             if (style.SupportOffset != SupportOption.None)
                 SetOffset(config.GetAttrValue("O", DefaultOffset));
             else
-                SetOffset(config.GetAttrValue("O", 0f));
+                SetOffset(config.GetAttrValue("O", style.DefaultOffset));
 
             if (style.SupportRotate != SupportOption.None)
                 SetRotate(config.GetAttrValue("RA", style.DefaultRotate), true);

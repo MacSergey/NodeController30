@@ -78,7 +78,7 @@ namespace NodeController
         public virtual SupportOption SupportStretch => SupportOption.None;
         public virtual bool SupportTrafficLights => false;
         public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch) & SupportOption.All;
-        private bool OnlyOnSlope => SupportSlopeJunction > SupportOption.OnceValue || DefaultSlopeJunction;
+        private bool OnlyOnSlope => SupportSlopeJunction != SupportOption.None || DefaultSlopeJunction;
 
         public virtual float DefaultOffset => 0f;
         public virtual float DefaultShift => 0f;
@@ -205,7 +205,7 @@ namespace NodeController
             var components = new List<EditorItem>();
 
             var junctionStyle = default(BoolListPropertyPanel);
-            if (SupportSlopeJunction > SupportOption.OnceValue)
+            if (SupportSlopeJunction != SupportOption.None)
             {
                 junctionStyle = GetJunctionButtons(parent);
                 components.Add(junctionStyle);
@@ -224,7 +224,7 @@ namespace NodeController
                 components.Add(titles);
             }
 
-            if (SupportOffset > SupportOption.OnceValue)
+            if (SupportOffset != SupportOption.None)
             {
                 var offset = ComponentPool.Get<FloatOptionPanel>(parent);
                 offset.Text = Localize.Option_Offset;
@@ -234,7 +234,7 @@ namespace NodeController
                 components.Add(offset);
             }
 
-            if (SupportShift > SupportOption.OnceValue)
+            if (SupportShift != SupportOption.None)
             {
                 var shift = ComponentPool.Get<FloatOptionPanel>(parent);
                 shift.Text = Localize.Option_Shift;
@@ -244,7 +244,7 @@ namespace NodeController
                 components.Add(shift);
             }
 
-            if (SupportRotate > SupportOption.OnceValue)
+            if (SupportRotate != SupportOption.None)
             {
                 var rotate = ComponentPool.Get<FloatOptionPanel>(parent);
                 rotate.Text = Localize.Option_Rotate;
@@ -254,7 +254,7 @@ namespace NodeController
                 components.Add(rotate);
             }
 
-            if (SupportStretch > SupportOption.OnceValue)
+            if (SupportStretch != SupportOption.None)
             {
                 var stretch = ComponentPool.Get<FloatOptionPanel>(parent);
                 stretch.Text = Localize.Option_Stretch;
@@ -264,7 +264,7 @@ namespace NodeController
                 components.Add(stretch);
             }
 
-            if (SupportSlope > SupportOption.OnceValue && OnlyOnSlope)
+            if (SupportSlope != SupportOption.None && OnlyOnSlope)
             {
                 var slope = ComponentPool.Get<FloatOptionPanel>(parent);
                 slope.Text = Localize.Option_Slope;
@@ -286,7 +286,7 @@ namespace NodeController
                 }
             }
 
-            if (SupportTwist > SupportOption.OnceValue && OnlyOnSlope)
+            if (SupportTwist != SupportOption.None && OnlyOnSlope)
             {
                 var twist = ComponentPool.Get<FloatOptionPanel>(parent);
                 twist.Text = Localize.Option_Twist;
@@ -308,7 +308,7 @@ namespace NodeController
                 }
             }
 
-            if (SupportNoMarking > SupportOption.OnceValue && HideCrosswalksEnable)
+            if (SupportNoMarking != SupportOption.None && HideCrosswalksEnable)
             {
                 var hideMarking = ComponentPool.Get<BoolOptionPanel>(parent);
                 hideMarking.Text = Localize.Option_Marking;
@@ -391,7 +391,6 @@ namespace NodeController
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
-        public override SupportOption SupportSlopeJunction => SupportOption.OnceValue;
 
         public override bool DefaultSlopeJunction => true;
 
@@ -469,7 +468,6 @@ namespace NodeController
         public override NodeStyleType Type => NodeStyleType.Crossing;
         public override float DefaultOffset => 2f;
 
-        public override SupportOption SupportOffset => SupportOption.OnceValue;
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
@@ -491,7 +489,6 @@ namespace NodeController
         public override NodeStyleType Type => NodeStyleType.UTurn;
         public override float DefaultOffset => 8f;
 
-        public override SupportOption SupportOffset => SupportOption.OnceValue;
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
@@ -551,10 +548,9 @@ namespace NodeController
     public enum SupportOption
     {
         None = 0,
-        OnceValue = 1,
-        Individually = 2,
-        MainRoad = 4,
-        Group = 8,
+        Individually = 1,
+        MainRoad = 2,
+        Group = 4,
         All = Individually | Group,
     }
 }
