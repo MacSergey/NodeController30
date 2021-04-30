@@ -19,12 +19,5 @@ namespace NodeController.Utilities
         public static PluginInfo HideCrossings => PluginUtilities.GetPlugin(HideCrossingsSearcher);
         public static PluginInfo TrafficManager => PluginUtilities.GetPlugin(TMPESearcher);
         public static PluginInfo NC2 => PluginUtilities.GetPlugin(NC2Searcher);
-
-        static DependencyUtilities()
-        {
-            if (NC2 is PluginInfo plugin)
-                NC2StateWatcher = new PlaginStateWatcher(plugin);
-        }
-        public static PlaginStateWatcher NC2StateWatcher { get; }
     }
 }

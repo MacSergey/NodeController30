@@ -44,6 +44,7 @@ namespace NodeController
             set => base.LoadError = value;
         }
         private bool ConflictError { get; set; }
+        public static PlaginStateWatcher NC2StateWatcher { get; set; }
 
 #if BETA
         public override bool IsBeta => true;
@@ -58,10 +59,13 @@ namespace NodeController
         {
             base.Enable();
 
-            if (DependencyUtilities.NC2StateWatcher != null)
+            if (DependencyUtilities.NC2 is PluginInfo plugin)
+                NC2StateWatcher = new PlaginStateWatcher(plugin);
+
+            if (NC2StateWatcher != null)
             {
-                ConflictError = DependencyUtilities.NC2StateWatcher.IsEnabled;
-                DependencyUtilities.NC2StateWatcher.StateChanged += NS2StateChanged;
+                ConflictError = NC2StateWatcher.IsEnabled;
+                NC2StateWatcher.StateChanged += NS2StateChanged;
             }
             else
                 ConflictError = false;
@@ -70,8 +74,8 @@ namespace NodeController
         {
             base.Disable();
 
-            if (DependencyUtilities.NC2StateWatcher != null)
-                DependencyUtilities.NC2StateWatcher.StateChanged -= NS2StateChanged;
+            if (NC2StateWatcher != null)
+                NC2StateWatcher.StateChanged -= NS2StateChanged;
         }
 
         private void NS2StateChanged(PluginInfo plugin, bool state)
