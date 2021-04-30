@@ -156,7 +156,7 @@ Shift x10，Ctrl x0.1</value>
     <value>{0} 不能与原版节点控制器(Node Controller)同时使用，需要禁用原版mod。</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Control node type and shape</value>
+    <value>控制节点类型和形状</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>这是BETA测试版，可能会出现功能性错误。无法担保工作稳定！</value>
@@ -323,7 +323,7 @@ Shift x10，Ctrl x0.1</value>
     <value>选择中间节点</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>If this option is disabled, the middle nodes will move to clicked position</value>
+    <value>如果禁用此选项，中间点将移动到单击位置</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>启用工具</value>
