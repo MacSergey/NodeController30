@@ -51,6 +51,7 @@ To start use Node Controller Renewal you should disable original Node Controller
 [*] [url=https://steamcommunity.com/id/mrlojnat/]MrLojnat[/url] (French translation)
 [*] Sam van den Oetelaar (Dutch translation)
 [*] [url=https://steamcommunity.com/id/shg166yh/]shg166[/url] (Japanese translation)
+[*] [url=https://steamcommunity.com/profiles/76561198076859879/]Sheep[/url] (Workshop preview)
 [*] Svis (French translation)
 [*] Woozie (Polish translation)
 [/list]
