@@ -1,0 +1,48 @@
+[HR][/HR] 
+[code][h1]Overview[/h1]
+[list][h2]This mod allows you change node type and shape[/h2][/list]
+[/code]
+
+[*] This is renewal version of original [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2085403475]Node Controller[/url] by [url=https://steamcommunity.com/profiles/76561198109315306/myworkshopfiles/]kian.zarrin[/url] with improved UI/UX 
+[/list] 
+
+[HR][/HR] 
+[h1]What’s Included[/h1]
+[list] 
+[*] Change node type and shape.
+[*] Change segment ends offset, shift, rotate, twist, slope and stretch.
+[*] Alignment of roads with each other.
+[*] Add Crosswalks and UTurns.
+[*] Hide crosswalk markings (required [url=https://steamcommunity.com/workshop/filedetails/?id=1934023593]Hide Crosswalk mod[/url])
+[/list]
+
+[HR][/HR]
+[h3]Join to discord for discussion and support[/h3]
+[url=https://discord.gg/NnwhuBKMqj][img]https://i.imgur.com/bnDNN2x.png[/img][/url]
+
+[HR][/HR] 
+[h1]If you like Node Controller Renewal, you can support me[/h1]
+
+[url=https://www.paypal.me/macsergey][img]https://i.imgur.com/vtwKnVr.png[/img][/url][url=https://www.patreon.com/MacSergey][img]https://i.imgur.com/aMLNy32.png[/img][/url]
+
+[HR][/HR]
+[h1]Source code[/h1]
+[url=https://github.com/MacSergey/NodeController30][img]https://i.imgur.com/DczUXYq.png[/img][/url]
+
+[HR][/HR]
+[h1]Thank you for your help in development, testing and translation:[/h1]
+[list]
+[*] [url=https://steamcommunity.com/profiles/76561198109315306/myworkshopfiles/]kian.zarrin[/url] (Author of original Node Controller)
+[*] [url=https://steamcommunity.com/profiles/76561198855893485]Almi[/url] (Spanish translation)
+[*] [url=https://steamcommunity.com/id/chameleonlifede/]Chamëleon[/url] (German translation)
+[*] Claude_Speed (Chinese translation)
+[*] [url=https://steamcommunity.com/id/Dogg_One]Dogg1[/url] (Finnish translation)
+[*] [url=https://steamcommunity.com/id/gocaspro13/]GOCAS[/url] (Portugal translation)
+[*] John Deehe (French translation)
+[*] Koesj (Testing)
+[*] [url=https://steamcommunity.com/id/mrlojnat/]MrLojnat[/url] (French translation)
+[*] Sam van den Oetelaar (Dutch translation)
+[*] [url=https://steamcommunity.com/id/shg166yh/]shg166[/url] (Japanese translation)
+[*] Svis (French translation)
+[*] Woozie (Polish translation)
+[/list]

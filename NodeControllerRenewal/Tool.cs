@@ -46,7 +46,7 @@ namespace NodeController
         {
             Data = data;
             Data?.UpdateNode();
-            Panel.SetData(data);
+            Panel.SetData(Data);
         }
         public void ResetToDefault()
         {
