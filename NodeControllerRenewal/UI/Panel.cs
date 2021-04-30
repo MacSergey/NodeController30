@@ -99,6 +99,8 @@ namespace NodeController.UI
         {
             Content.StopLayout();
 
+            ResetPanel();
+
             Content.width = Data.Style.TotalSupport == SupportOption.All ? Mathf.Max((Data.SegmentCount + 1) * 55f + 120f, 300f) : 300f;
             AddHeader();
             AddNodeTypeProperty();
