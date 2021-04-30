@@ -25,14 +25,14 @@ namespace NodeController
 
         public static Color32[] OverlayColors { get; } = new Color32[]
         {
-            Colors.GetOverlayColor(0, 255),
-            Colors.GetOverlayColor(2, 255),
-            Colors.GetOverlayColor(3, 255),
-            Colors.GetOverlayColor(4, 255),
-            Colors.GetOverlayColor(5, 255),
-            Colors.GetOverlayColor(6, 255),
-            Colors.GetOverlayColor(8, 255),
-            Colors.GetOverlayColor(9, 255),
+            Colors.GetOverlayColor(Colors.Overlay.Red, 255),
+            Colors.GetOverlayColor(Colors.Overlay.Blue, 255),
+            Colors.GetOverlayColor(Colors.Overlay.Lime, 255),
+            Colors.GetOverlayColor(Colors.Overlay.Orange, 255),
+            Colors.GetOverlayColor(Colors.Overlay.Purple, 255),
+            Colors.GetOverlayColor(Colors.Overlay.SkyBlue, 255),
+            Colors.GetOverlayColor(Colors.Overlay.Pink, 255),
+            Colors.GetOverlayColor(Colors.Overlay.Turquoise, 255),
         };
 
         #endregion
