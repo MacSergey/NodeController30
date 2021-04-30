@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using ModsCommon;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
@@ -21,7 +22,7 @@ namespace NodeController.UI
         protected SupportOption Option { get; set; }
         protected SupportOption TotalOption { get; set; }
         protected Dictionary<INetworkData, TypeItem> Items { get; } = new Dictionary<INetworkData, TypeItem>();
-        protected float ItemWidth => Option == SupportOption.Group ? 100f : 50f;
+        protected float ItemWidth => TotalOption == SupportOption.Group ? 100f : 50f;
 
         public void Init(NodeData data, SupportOption option, SupportOption totalOption)
         {
@@ -192,8 +193,16 @@ namespace NodeController.UI
 
             item.AutoButtonSize = false;
             item.ButtonWidth = ItemWidth / 2f;
-            item.AddItem(true, "I");
-            item.AddItem(false, "O");
+            if (TotalOption == SupportOption.Group)
+            {
+                item.AddItem(true, ModLocalize<Mod>.Yes);
+                item.AddItem(false, ModLocalize<Mod>.No);
+            }
+            else
+            {
+                item.AddItem(true, "I");
+                item.AddItem(false, "O");
+            }
 
             item.StartLayout();
         }

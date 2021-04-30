@@ -56,8 +56,8 @@ namespace NodeController
         public static float MinShift => -32f;
         public static float MaxSlope => 30f;
         public static float MinSlope => -30f;
-        public static float MaxRotate => 80f;
-        public static float MinRotate => -80f;
+        public static float MaxRotate => 89f;
+        public static float MinRotate => -89f;
         public static float MaxTwist => 30f;
         public static float MinTwist => -30f;
         public static float MaxStretch => 500f;
@@ -488,6 +488,7 @@ namespace NodeController
     {
         public override NodeStyleType Type => NodeStyleType.UTurn;
         public override float DefaultOffset => 8f;
+        public override bool DefaultNoMarking => true;
 
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportTwist => SupportOption.Group;
