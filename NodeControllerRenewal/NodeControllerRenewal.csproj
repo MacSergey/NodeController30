@@ -179,19 +179,18 @@
       <CustomToolNamespace>NodeController</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Localize.zh-CN.resx" />
-    <EmbeddedResource Include="Resources\Button.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Cursor.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\HeaderButtons.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Button.png" />
   </ItemGroup>
   <Import Project="..\ModsCommon\ModsCommonShared\ModsCommonShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Build" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Debug" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_ConfigurationName="Beta Debug" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="Build" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">
