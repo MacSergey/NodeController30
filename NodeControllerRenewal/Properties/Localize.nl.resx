@@ -155,7 +155,7 @@ Shift X10, Ctrl X0.1</value>
     <value>{0} werkt niet tegelijk met de originele Node Controller, u moet deze uitschakelen.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Control node type and shape</value>
+    <value>Beheer knooppunttype en vorm</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>Dit is een bèta-versie, er kunnen fouten optreden en stabiliteit is niet gegarandeerd!</value>
@@ -322,7 +322,7 @@ Herstart het spel.</value>
     <value>Selecteer middenknopen</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>If this option is disabled, the middle nodes will move to clicked position</value>
+    <value>Als deze optie is uitgeschakeld worden de middenknooppunten naar de klikpositie verplaatst</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Tool activeren</value>
