@@ -23,6 +23,7 @@ namespace NodeController
 
         public string Title => string.Format(Localize.Panel_NodeId, Id);
         public string XmlSection => XmlName;
+        public static NetNode.Flags SupportFlags { get; } = NetNode.Flags.End | NetNode.Flags.Middle | NetNode.Flags.Junction | NetNode.Flags.Bend;
 
         public ushort Id { get; set; }
         public NodeStyle Style { get; private set; }
@@ -240,7 +241,7 @@ namespace NodeController
         private void UpdateStyle(bool force, NodeStyleType? nodeType = null)
         {
             var node = Id.GetNode();
-            if (node.m_flags == (NetNode.Flags.Created | NetNode.Flags.Original))
+            if (node.m_flags.IsSet(NetNode.Flags.Created) && !node.m_flags.IsSet(NetNode.Flags.Deleted) && (node.m_flags & SupportFlags) == 0)
                 node.CalculateNode(Id);
 
             DefaultFlags = node.m_flags;
