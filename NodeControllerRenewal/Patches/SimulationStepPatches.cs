@@ -69,6 +69,9 @@ namespace NodeController.Patches
         }
         private static Quaternion GetCurrentTwist(this ref Vehicle vehicleData, PathUnit.Position prevPos, PathUnit.Position nextPos, float t)
         {
+            if (float.IsNaN(t) || float.IsInfinity(t))
+                return Quaternion.identity;
+
             if (vehicleData.m_pathPositionIndex % 2 == 0)
             {
                 SingletonManager<Manager>.Instance.GetSegmentData(prevPos.m_segment, out var start, out var end);
