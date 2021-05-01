@@ -22,6 +22,7 @@ To start use Node Controller Renewal you should disable original Node Controller
 [*] Alignment of roads with each other.
 [*] Add Crosswalks and UTurns.
 [*] Hide crosswalk markings (required [url=https://steamcommunity.com/workshop/filedetails/?id=1934023593]Hide Crosswalk mod[/url])
+[*] Move It integration.
 [*] Save data in intersection assets.
 [*] Translation into languages: Chinese, Dutch, Finnish, French, German, Japanese, Polish, Portuguese, Russian, Spanish
 [/list]
@@ -51,6 +52,7 @@ To start use Node Controller Renewal you should disable original Node Controller
 [*] [url=https://steamcommunity.com/id/gocaspro13/]GOCAS[/url] (Portugal translation)
 [*] John Deehe (French translation)
 [*] [url=https://steamcommunity.com/id/koesj]Koesj[/url](Testing)
+[*][url=https://steamcommunity.com/profiles/76561198141193559]krzychu124[/url]
 [*] [url=https://steamcommunity.com/id/mrlojnat/]MrLojnat[/url] (French translation)
 [*] [url=https://steamcommunity.com/profiles/76561198087011973/]ristrettoridder[/url] (Dutch translation)
 [*] [url=https://steamcommunity.com/id/shg166yh/]shg166[/url] (Japanese translation)
