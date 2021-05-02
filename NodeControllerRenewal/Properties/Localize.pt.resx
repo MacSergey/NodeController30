@@ -249,6 +249,18 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Options_All" xml:space="preserve">
     <value>All</value>
   </data>
+  <data name="Option_KeepDefault" xml:space="preserve">
+    <value>Reset offset</value>
+  </data>
+  <data name="Option_MainRoad" xml:space="preserve">
+    <value>Main road</value>
+  </data>
+  <data name="Option_MainRoadAuto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="Option_MainRoadManually" xml:space="preserve">
+    <value>Manually</value>
+  </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Make ends straight</value>
   </data>

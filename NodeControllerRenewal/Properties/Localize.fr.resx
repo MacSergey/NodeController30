@@ -250,6 +250,18 @@ Rechargez le jeu.</value>
   <data name="Options_All" xml:space="preserve">
     <value>Tout</value>
   </data>
+  <data name="Option_KeepDefault" xml:space="preserve">
+    <value>Reset offset</value>
+  </data>
+  <data name="Option_MainRoad" xml:space="preserve">
+    <value>Main road</value>
+  </data>
+  <data name="Option_MainRoadAuto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="Option_MainRoadManually" xml:space="preserve">
+    <value>Manually</value>
+  </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Rendre droit les extrémités</value>
   </data>
