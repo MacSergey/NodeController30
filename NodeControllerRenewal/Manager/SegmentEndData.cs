@@ -598,6 +598,8 @@ namespace NodeController
         }
         public void MakeStraight()
         {
+            KeepDefaults = false;
+
             if (MinRotate <= 0f && 0f <= MaxRotate)
                 SetRotate(0f);
             else
