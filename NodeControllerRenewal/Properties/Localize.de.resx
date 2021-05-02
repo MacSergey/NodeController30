@@ -266,7 +266,7 @@ Starte das Spiel neu.</value>
     <value>Auf Standard zurücksetzen</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>Links-Rechts-Drehung</value>
+    <value>Drehung</value>
   </data>
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>

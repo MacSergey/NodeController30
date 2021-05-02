@@ -134,11 +134,11 @@ Shift x10, Ctrl x0.1</value>
     <value>Tak</value>
   </data>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
-    <value>Original Node Controller data was imported.
-Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
+    <value>Dane z oryginalnego Node Controller'a zostały zaimportowane.
+Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być konieczne ręczne korekty.</value>
   </data>
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
-    <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
+    <value>OSTRZEŻENIE: Jeżeli stworzysz nowy zapis nie będziesz już mógł korzystać z oryginalnego Node Controller'a na tej mapie.</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
     <value>Zgadzam się</value>
@@ -150,19 +150,19 @@ Backward compatibility does not provide the transfer of all data, may be require
     <value>Subskrybuj wersję stabilną</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
+    <value>Używasz {0} w wersji BETA. Została ona stworzona w celu testowania nowych funkcjonalności i może zawierać błędy lub skasować wcześniej zapisane wypełnienia. Jeśli została ona zasubskrybowana przypadkiem, przejdź na wersję stabilną.</value>
   </data>
   <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
+    <value>{0} nie może działać jednocześnie z oryginalnym Node Controller'em, musisz go wyłączyć.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Control node type and shape</value>
+    <value>Kontroluj typ i kształt węzła</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>Wersja BETA, mogą pojawić się błędy oraz może działać niestabilnie!</value>
   </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Disable original Node Controller</value>
+    <value>Wyłączy oryginalny Node Controller</value>
   </data>
   <data name="Mod_LoaledWithErrors" xml:space="preserve">
     <value>Wystąpiły błędy podczas ładowania moda.
@@ -248,13 +248,13 @@ Uruchom ponownie grę.</value>
     <value>Zawracanie</value>
   </data>
   <data name="Options_All" xml:space="preserve">
-    <value>All</value>
+    <value>Wszystkie</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Make ends straight</value>
+    <value>Zrób końce proste</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
-    <value>Marking</value>
+    <value>Oznakowanie</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Przesunięcie</value>
@@ -320,10 +320,10 @@ Uruchom ponownie grę.</value>
     <value>Powiadomienia</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
-    <value>Select middle nodes</value>
+    <value>Wybierz węzły środkowe</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>If this option is disabled, the middle nodes will move to clicked position</value>
+    <value>Jeśli ta opcja jest wyłączona, węzły środkowe przeniosą się do klikniętego miejsca</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Aktywuj narzędzie</value>
@@ -338,59 +338,59 @@ Uruchom ponownie grę.</value>
     <value>Pokaż "Co nowego?"</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Hold Shift to alignment roads</value>
+    <value>Przytrzymaj Shift aby wyrównać drogi</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
-    <value>Click to align with this corner</value>
+    <value>Kliknij aby wyrównać do tego rogu</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main road</value>
+    <value>Przytrzymaj Alt aby zmienić główną drogę</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
-    <value>Node #{0}
-Click to edit</value>
+    <value>Skrzyżowanie #{0}
+Kliknij aby edytować</value>
   </data>
   <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
-    <value>Click to select corner you want to align</value>
+    <value>Kliknij aby wybrać róg do którego chcesz wyrównać</value>
   </data>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
-    <value>Drag to change offset</value>
+    <value>Przeciągnij aby zmienić przesunięcie</value>
   </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
-    <value>Drag to change rotate</value>
+    <value>Przeciągnij aby zmienić obrót</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
-    <value>Drag to change corner offset</value>
+    <value>Przeciągnij aby zmienić przesunięcie rogu</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>Drag this end to change main road</value>
+    <value>Przeciągnij ten koniec aby zmienić główną drogę</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>Drop this end to change main road</value>
+    <value>Upuść ten koniec aby zmienić główną drogę</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
-    <value>Click to insert crossing node</value>
+    <value>Kliknij aby wstawić węzeł skrzyżowania</value>
   </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
-    <value>Click to insert node</value>
+    <value>Kliknij aby wstawić węzeł</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
-    <value>Select corner you want to align with</value>
+    <value>Wybierz róg do którego chcesz wrównać</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>Change to desired main road</value>
+    <value>Zmień na oczekiwaną główną drogę</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>Select main road end position</value>
+    <value>Wybierz końcową pozycję głównej drogi</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
-    <value>Select node</value>
+    <value>Wybierz węzeł</value>
   </data>
   <data name="Tool_InfoSelectToAlign" xml:space="preserve">
-    <value>Select corners you want to align</value>
+    <value>Wybierz rogi które chcesz wyrównać</value>
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
-    <value>Can't insert node
-Too close to nearby node</value>
+    <value>Nie można wstawić węzła
+Za blisko do sąsiedniego węzła</value>
   </data>
 </root>
