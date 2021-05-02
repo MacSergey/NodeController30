@@ -60,22 +60,22 @@ namespace NodeController.Utilities
                 }
             }
 
-            var leftBezier = new Bezier3() { a = startPos + startCornerNormal * halfWidth };
-            var rightBezier = new Bezier3() { a = startPos - startCornerNormal * halfWidth };
-            cornerPos = leftBezier.a;
+            var thisBezier = new Bezier3() { a = startPos + startCornerNormal * halfWidth };
+            var otherBezier = new Bezier3() { a = startPos - startCornerNormal * halfWidth };
+            cornerPos = thisBezier.a;
 
             if (((flags & NetNode.Flags.Junction) != 0 && info.m_clipSegmentEnds) || (flags & (NetNode.Flags.Bend | NetNode.Flags.Outside)) != 0)
             {
                 var endCornerNormal = Vector3.Cross(endDir, Vector3.up).normalized;
-                leftBezier.d = endPos - endCornerNormal * halfWidth;
-                rightBezier.d = endPos + endCornerNormal * halfWidth;
-                NetSegment.CalculateMiddlePoints(leftBezier.a, cornerDirection, leftBezier.d, endDir, smoothStart: false, smoothEnd: false, out leftBezier.b, out leftBezier.c);
-                NetSegment.CalculateMiddlePoints(rightBezier.a, cornerDirection, rightBezier.d, endDir, smoothStart: false, smoothEnd: false, out rightBezier.b, out rightBezier.c);
-                var leftBezierXZ = Bezier2.XZ(leftBezier);
-                var rightBezierXZ = Bezier2.XZ(rightBezier);
+                thisBezier.d = endPos - endCornerNormal * halfWidth;
+                otherBezier.d = endPos + endCornerNormal * halfWidth;
+                NetSegment.CalculateMiddlePoints(thisBezier.a, cornerDirection, thisBezier.d, endDir, smoothStart: false, smoothEnd: false, out thisBezier.b, out thisBezier.c);
+                NetSegment.CalculateMiddlePoints(otherBezier.a, cornerDirection, otherBezier.d, endDir, smoothStart: false, smoothEnd: false, out otherBezier.b, out otherBezier.c);
+                var thisBezierXZ = Bezier2.XZ(thisBezier);
+                var otherBezierXZ = Bezier2.XZ(otherBezier);
 
-                float offsetT = -1f;
-                float minOffsetT = -1f;
+                float thisOffsetT = -1f;
+                float otherOffsetT = -1f;
                 bool flag = false;
 
                 var segmentCount = startNodeID != 0 ? 8 : 0;
@@ -155,12 +155,12 @@ namespace NodeController.Utilities
                             NetSegment.CalculateMiddlePoints(currentBezier.a, currentStartDir, currentBezier.d, currentEndDir, smoothStart: false, smoothEnd: false, out currentBezier.b, out currentBezier.c);
 
                             var currentBezierXZ = Bezier2.XZ(currentBezier);
-                            if (leftBezierXZ.Intersect(currentBezierXZ, out var t, out _, 6))
-                                offsetT = Mathf.Max(offsetT, t);
-                            else if (leftBezierXZ.Intersect(currentBezierXZ.a, currentBezierXZ.a - XZ(currentStartDir) * 16f, out t, out _, 6))
-                                offsetT = Mathf.Max(offsetT, t);
-                            else if (currentBezierXZ.Intersect(leftBezierXZ.d + (leftBezierXZ.d - rightBezierXZ.d) * 0.01f, rightBezierXZ.d, out _, out _, 6))
-                                offsetT = Mathf.Max(offsetT, 1f);
+                            if (thisBezierXZ.Intersect(currentBezierXZ, out var t, out _, 6))
+                                thisOffsetT = Mathf.Max(thisOffsetT, t);
+                            else if (thisBezierXZ.Intersect(currentBezierXZ.a, currentBezierXZ.a - XZ(currentStartDir) * 16f, out t, out _, 6))
+                                thisOffsetT = Mathf.Max(thisOffsetT, t);
+                            else if (currentBezierXZ.Intersect(thisBezierXZ.d + (thisBezierXZ.d - otherBezierXZ.d) * 0.01f, otherBezierXZ.d, out _, out _, 6))
+                                thisOffsetT = Mathf.Max(thisOffsetT, 1f);
 
                             if (cornerDirection.x * currentStartDir.x + cornerDirection.z * currentStartDir.z >= -0.75f)
                                 flag = true;
@@ -185,21 +185,21 @@ namespace NodeController.Utilities
                             NetSegment.CalculateMiddlePoints(currentBezier.a, currentStartDir, currentBezier.d, currentEndDir, smoothStart: false, smoothEnd: false, out currentBezier.b, out currentBezier.c);
                             var currentBezierXZ = Bezier2.XZ(currentBezier);
 
-                            if (rightBezierXZ.Intersect(currentBezierXZ, out var t3, out _, 6))
-                                minOffsetT = Mathf.Max(minOffsetT, t3);
-                            else if (rightBezierXZ.Intersect(currentBezierXZ.a, currentBezierXZ.a - XZ(currentStartDir) * 16f, out t3, out _, 6))
-                                minOffsetT = Mathf.Max(minOffsetT, t3);
-                            else if (currentBezierXZ.Intersect(leftBezierXZ.d, rightBezierXZ.d + (rightBezierXZ.d - leftBezierXZ.d) * 0.01f, out _, out _, 6))
-                                minOffsetT = Mathf.Max(minOffsetT, 1f);
+                            if (otherBezierXZ.Intersect(currentBezierXZ, out var t3, out _, 6))
+                                otherOffsetT = Mathf.Max(otherOffsetT, t3);
+                            else if (otherBezierXZ.Intersect(currentBezierXZ.a, currentBezierXZ.a - XZ(currentStartDir) * 16f, out t3, out _, 6))
+                                otherOffsetT = Mathf.Max(otherOffsetT, t3);
+                            else if (currentBezierXZ.Intersect(thisBezierXZ.d, otherBezierXZ.d + (otherBezierXZ.d - thisBezierXZ.d) * 0.01f, out _, out _, 6))
+                                otherOffsetT = Mathf.Max(otherOffsetT, 1f);
                         }
                     }
                     if ((flags & NetNode.Flags.Junction) != 0)
                     {
                         if (!flag)
-                            offsetT = Mathf.Max(offsetT, minOffsetT);
+                            thisOffsetT = Mathf.Max(thisOffsetT, otherOffsetT);
                     }
                     else if ((flags & NetNode.Flags.Bend) != 0 && !flag)
-                        offsetT = Mathf.Max(offsetT, minOffsetT);
+                        thisOffsetT = Mathf.Max(thisOffsetT, otherOffsetT);
 
                     if ((flags & NetNode.Flags.Outside) != 0)
                     {
@@ -209,82 +209,82 @@ namespace NodeController.Utilities
                         var maxMaxPos = new Vector2(maxPos, maxPos);
                         var maxMinPos = new Vector2(maxPos, -maxPos);
 
-                        if (leftBezierXZ.Intersect(minMinPos, minMaxPos, out var t5, out _, 6))
-                            offsetT = Mathf.Max(offsetT, t5);
-                        if (leftBezierXZ.Intersect(minMaxPos, maxMaxPos, out t5, out _, 6))
-                            offsetT = Mathf.Max(offsetT, t5);
-                        if (leftBezierXZ.Intersect(maxMaxPos, maxMinPos, out t5, out _, 6))
-                            offsetT = Mathf.Max(offsetT, t5);
-                        if (leftBezierXZ.Intersect(maxMinPos, minMinPos, out t5, out _, 6))
-                            offsetT = Mathf.Max(offsetT, t5);
+                        if (thisBezierXZ.Intersect(minMinPos, minMaxPos, out var t5, out _, 6))
+                            thisOffsetT = Mathf.Max(thisOffsetT, t5);
+                        if (thisBezierXZ.Intersect(minMaxPos, maxMaxPos, out t5, out _, 6))
+                            thisOffsetT = Mathf.Max(thisOffsetT, t5);
+                        if (thisBezierXZ.Intersect(maxMaxPos, maxMinPos, out t5, out _, 6))
+                            thisOffsetT = Mathf.Max(thisOffsetT, t5);
+                        if (thisBezierXZ.Intersect(maxMinPos, minMinPos, out t5, out _, 6))
+                            thisOffsetT = Mathf.Max(thisOffsetT, t5);
 
-                        offsetT = Mathf.Clamp01(offsetT);
+                        thisOffsetT = Mathf.Clamp01(thisOffsetT);
                     }
                     else
                     {
-                        if (offsetT < 0f)
-                            offsetT = info.m_halfWidth >= 4f ? leftBezierXZ.Travel(0f, 8f) : 0f;
+                        if (thisOffsetT < 0f)
+                            thisOffsetT = info.m_halfWidth >= 4f ? thisBezierXZ.Travel(0f, 8f) : 0f;
 
                         var minCornerOffset = info.m_minCornerOffset;
                         if ((flags & (NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward)) != 0)
                             minCornerOffset = Mathf.Max(minCornerOffset, 8f);
 
-                        offsetT = Mathf.Clamp01(offsetT);
-                        float num23 = LengthXZ(leftBezier.Position(offsetT) - leftBezier.a);
-                        offsetT = leftBezierXZ.Travel(offsetT, Mathf.Max(minCornerOffset - num23, 2f));
+                        thisOffsetT = Mathf.Clamp01(thisOffsetT);
+                        float num23 = LengthXZ(thisBezier.Position(thisOffsetT) - thisBezier.a);
+                        thisOffsetT = thisBezierXZ.Travel(thisOffsetT, Mathf.Max(minCornerOffset - num23, 2f));
 
                         if (info.m_straightSegmentEnds)
                         {
-                            if (minOffsetT < 0f)
-                                minOffsetT = info.m_halfWidth >= 4f ? rightBezierXZ.Travel(0f, 8f) : 0f;
+                            if (otherOffsetT < 0f)
+                                otherOffsetT = info.m_halfWidth >= 4f ? otherBezierXZ.Travel(0f, 8f) : 0f;
 
-                            minOffsetT = Mathf.Clamp01(minOffsetT);
-                            num23 = LengthXZ(rightBezier.Position(minOffsetT) - rightBezier.a);
-                            minOffsetT = rightBezierXZ.Travel(minOffsetT, Mathf.Max(info.m_minCornerOffset - num23, 2f));
-                            offsetT = Mathf.Max(offsetT, minOffsetT);
+                            otherOffsetT = Mathf.Clamp01(otherOffsetT);
+                            num23 = LengthXZ(otherBezier.Position(otherOffsetT) - otherBezier.a);
+                            otherOffsetT = otherBezierXZ.Travel(otherOffsetT, Mathf.Max(info.m_minCornerOffset - num23, 2f));
+                            thisOffsetT = Mathf.Max(thisOffsetT, otherOffsetT);
                         }
                     }
                     var heightTemp = cornerDirection.y;
-                    cornerDirection = leftBezier.Tangent(offsetT);
+                    cornerDirection = thisBezier.Tangent(thisOffsetT);
                     cornerDirection.y = 0f;
                     cornerDirection.Normalize();
                     if (!info.m_flatJunctions)
                         cornerDirection.y = heightTemp;
 
-                    cornerPos = leftBezier.Position(offsetT);
+                    cornerPos = thisBezier.Position(thisOffsetT);
                     cornerPos.y = startPos.y;
                 }
             }
             else if ((flags & NetNode.Flags.Junction) != 0 && info.m_minCornerOffset >= 0.01f)
             {
                 startCornerNormal = Vector3.Cross(endDir, Vector3.up).normalized;
-                leftBezier.d = endPos - startCornerNormal * halfWidth;
-                rightBezier.d = endPos + startCornerNormal * halfWidth;
-                NetSegment.CalculateMiddlePoints(leftBezier.a, cornerDirection, leftBezier.d, endDir, smoothStart: false, smoothEnd: false, out leftBezier.b, out leftBezier.c);
-                NetSegment.CalculateMiddlePoints(rightBezier.a, cornerDirection, rightBezier.d, endDir, smoothStart: false, smoothEnd: false, out rightBezier.b, out rightBezier.c);
-                Bezier2 leftBezierXZ = Bezier2.XZ(leftBezier);
-                Bezier2 rightBezierXZ = Bezier2.XZ(rightBezier);
+                thisBezier.d = endPos - startCornerNormal * halfWidth;
+                otherBezier.d = endPos + startCornerNormal * halfWidth;
+                NetSegment.CalculateMiddlePoints(thisBezier.a, cornerDirection, thisBezier.d, endDir, smoothStart: false, smoothEnd: false, out thisBezier.b, out thisBezier.c);
+                NetSegment.CalculateMiddlePoints(otherBezier.a, cornerDirection, otherBezier.d, endDir, smoothStart: false, smoothEnd: false, out otherBezier.b, out otherBezier.c);
+                Bezier2 leftBezierXZ = Bezier2.XZ(thisBezier);
+                Bezier2 rightBezierXZ = Bezier2.XZ(otherBezier);
 
                 float value = Mathf.Clamp01(info.m_halfWidth >= 4f ? leftBezierXZ.Travel(0f, 8f) : 0f);
-                float num24 = LengthXZ(leftBezier.Position(value) - leftBezier.a);
+                float num24 = LengthXZ(thisBezier.Position(value) - thisBezier.a);
                 value = leftBezierXZ.Travel(value, Mathf.Max(info.m_minCornerOffset - num24, 2f));
 
                 if (info.m_straightSegmentEnds)
                 {
                     float value2 = Mathf.Clamp01(info.m_halfWidth >= 4f ? rightBezierXZ.Travel(0f, 8f) : 0f);
-                    num24 = LengthXZ(rightBezier.Position(value2) - rightBezier.a);
+                    num24 = LengthXZ(otherBezier.Position(value2) - otherBezier.a);
                     value2 = rightBezierXZ.Travel(value2, Mathf.Max(info.m_minCornerOffset - num24, 2f));
                     value = Mathf.Max(value, value2);
                 }
 
                 var tempHeight = cornerDirection.y;
-                cornerDirection = leftBezier.Tangent(value);
+                cornerDirection = thisBezier.Tangent(value);
                 cornerDirection.y = 0f;
                 cornerDirection.Normalize();
                 if (!info.m_flatJunctions)
                     cornerDirection.y = tempHeight;
 
-                cornerPos = leftBezier.Position(value);
+                cornerPos = thisBezier.Position(value);
                 cornerPos.y = startPos.y;
             }
 

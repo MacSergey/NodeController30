@@ -47,7 +47,6 @@ namespace NodeController
         public int Index { get; set; }
         public Color32 Color => OverlayColors[Index];
 
-        public ref NetNode Node => ref NodeId.GetNode();
         public NodeData NodeData => SingletonManager<Manager>.Instance[NodeId];
         public bool IsStartNode => Id.GetSegment().IsStartNode(NodeId);
         public SegmentEndData Other => SingletonManager<Manager>.Instance[Id.GetSegment().GetOtherNode(NodeId), Id, true];
@@ -59,16 +58,8 @@ namespace NodeController
         public float AbsoluteAngle => RawSegmentBezier.StartDirection.AbsoluteAngle();
 
 
-        public float DefaultOffset
-        {
-            get
-            {
-                var info = Id.GetSegment().Info;
-                return Mathf.Clamp(Mathf.Max(info.m_minCornerOffset, info.m_halfWidth < 4f ? 0f : 8f), MinPossibleOffset, MaxPossibleOffset);
-            }
-        }
-        public bool DefaultIsSlope => !Id.GetSegment().Info.m_flatJunctions && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
-        public bool DefaultIsTwist => !DefaultIsSlope && !Node.m_flags.IsFlagSet(NetNode.Flags.Untouchable);
+        public bool DefaultIsSlope => !Id.GetSegment().Info.m_flatJunctions && !NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
+        public bool DefaultIsTwist => !DefaultIsSlope && !NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public bool IsMoveable => !IsNodeLess;
         public bool IsMainRoad { get; set; }
 
@@ -253,7 +244,7 @@ namespace NodeController
             if (style.SupportOffset == SupportOption.None)
                 SetOffset(style.DefaultOffset);
             else if (force)
-                SetOffset(DefaultOffset);
+                SetOffset(GetMinCornerOffset(style.DefaultOffset));
             else
                 SetOffset(Offset);
 
@@ -360,43 +351,49 @@ namespace NodeController
             var endDatas = data.SegmentEndDatas.OrderBy(s => s.AbsoluteAngle).ToArray();
             var count = endDatas.Length;
 
-            var leftMitT = new float[count];
-            var rightMinT = new float[count];
+            var emptyLimits = Enumerable.Range(0, count).Select(_ => -1f).ToArray();
 
-            var leftDefaultT = new float[count];
-            var rightDefaultT = new float[count];
+            var leftMitT = emptyLimits.ToArray();
+            var rightMinT = emptyLimits.ToArray();
+
+            var leftDefaultT = emptyLimits.ToArray();
+            var rightDefaultT = emptyLimits.ToArray();
 
             if (count != 1 && !data.IsMiddleNode)
             {
                 for (var i = 0; i < count; i += 1)
                 {
                     var j = (i + 1) % count;
-
                     GetMinLimit(endDatas[i].LeftSide.RawBezier, endDatas[j].RightSide.RawBezier, ref leftMitT[i], ref rightMinT[j]);
                     GetMinLimit(endDatas[i].LeftSide.RawBezier, endDatas[j].LeftSide.RawBezier, ref leftMitT[i], ref leftMitT[j]);
                     GetMinLimit(endDatas[i].RightSide.RawBezier, endDatas[j].RightSide.RawBezier, ref rightMinT[i], ref rightMinT[j]);
                 }
-
-                Array.Copy(leftMitT, leftDefaultT, count);
-                Array.Copy(rightMinT, rightDefaultT, count);
 
                 for (var i = 0; i < count; i += 1)
                 {
                     var j = (i + 1) % count;
                     var iDir = NormalizeXZ(endDatas[i].RawSegmentBezier.StartDirection);
                     var jDir = NormalizeXZ(endDatas[j].RawSegmentBezier.StartDirection);
-                    if (iDir.x * jDir.x + iDir.z * jDir.z < -0.75)
+                    if (DotXZ(iDir, jDir) < -0.75)
                     {
-                        leftDefaultT[i] = Mathf.Max(leftDefaultT[i], rightDefaultT[i]);
-                        rightDefaultT[j] = Mathf.Max(rightDefaultT[j], leftDefaultT[j]);
+                        leftDefaultT[i] = Mathf.Max(leftMitT[i], rightMinT[i]);
+                        rightDefaultT[j] = Mathf.Max(rightMinT[j], leftMitT[j]);
+                    }
+                    else
+                    {
+                        leftDefaultT[i] = leftMitT[i];
+                        rightDefaultT[j] = rightMinT[j];
                     }
                 }
 
                 for (var i = 0; i < count; i += 1)
                 {
-                    var defaultOffset = endDatas[i].DefaultOffset;
-                    CorrectDefaultOffset(endDatas[i].LeftSide.RawBezier, ref leftDefaultT[i], defaultOffset, endDatas[i].IsNodeLess ? 0f : data.Style.AdditionalOffset);
-                    CorrectDefaultOffset(endDatas[i].RightSide.RawBezier, ref rightDefaultT[i], defaultOffset, endDatas[i].IsNodeLess ? 0f : data.Style.AdditionalOffset);
+                    var minCornerOffset = endDatas[i].GetMinCornerOffset(data.Style.DefaultOffset);
+                    var defaultOffset = endDatas[i].Id.GetSegment().Info.m_halfWidth < 4f ? 0f : 8f;
+                    var additionalOffset = endDatas[i].IsNodeLess ? 0f : data.Style.AdditionalOffset;
+
+                    CorrectDefaultOffset(endDatas[i].LeftSide.RawBezier, ref leftDefaultT[i], defaultOffset, minCornerOffset, additionalOffset);
+                    CorrectDefaultOffset(endDatas[i].RightSide.RawBezier, ref rightDefaultT[i], defaultOffset, minCornerOffset, additionalOffset);
                 }
             }
 
@@ -404,25 +401,31 @@ namespace NodeController
             {
                 var endData = endDatas[i];
 
-                endData.LeftSide.MinT = leftMitT[i];
-                endData.RightSide.MinT = rightMinT[i];
+                endData.LeftSide.MinT = Mathf.Clamp01(leftMitT[i]);
+                endData.RightSide.MinT = Mathf.Clamp01(rightMinT[i]);
 
-                endData.LeftSide.DefaultT = leftDefaultT[i];
-                endData.RightSide.DefaultT = rightDefaultT[i];
+                endData.LeftSide.DefaultT = Mathf.Clamp01(leftDefaultT[i]);
+                endData.RightSide.DefaultT = Mathf.Clamp01(rightDefaultT[i]);
             }
 
             static void GetMinLimit(BezierTrajectory first, BezierTrajectory second, ref float firstMin, ref float secondMin)
             {
+                //if (DotXZ(NormalizeXZ(first.StartDirection), NormalizeXZ(second.StartDirection)) < -0.99f)
+                //    return;
+
                 if (Intersection.CalculateSingle(first, second, out var firstT, out var secondT))
                 {
                     firstMin = Mathf.Max(firstMin, firstT);
                     secondMin = Mathf.Max(secondMin, secondT);
                 }
             }
-            static void CorrectDefaultOffset(BezierTrajectory bezier, ref float defaultT, float minOffset, float additionalOffset)
+            static void CorrectDefaultOffset(BezierTrajectory bezier, ref float defaultT, float defaultOffset, float minCornerOffset, float additionalOffset)
             {
+                if (defaultT < 0f)
+                    defaultT = bezier.Travel(defaultOffset);
+
                 var distance = bezier.Distance(0f, defaultT);
-                defaultT = bezier.Travel(defaultT, Mathf.Max(minOffset - distance, additionalOffset));
+                defaultT = bezier.Travel(defaultT, Mathf.Max(minCornerOffset - distance, additionalOffset));
             }
         }
 
@@ -589,6 +592,7 @@ namespace NodeController
 
         #region UTILITIES
 
+        public float GetMinCornerOffset(float styleOffset) => Mathf.Clamp(Mathf.Max(Id.GetSegment().Info.m_minCornerOffset, styleOffset), MinPossibleOffset, MaxPossibleOffset);
         public void GetCorner(bool isLeft, out Vector3 position, out Vector3 direction)
         {
             var side = isLeft ? LeftSide : RightSide;
@@ -762,7 +766,7 @@ namespace NodeController
             KeepDefaults = config.GetAttrValue("KD", 0) == 1;
 
             if (style.SupportOffset != SupportOption.None)
-                SetOffset(config.GetAttrValue("O", DefaultOffset));
+                SetOffset(config.GetAttrValue("O", GetMinCornerOffset(style.DefaultOffset)));
             else
                 SetOffset(config.GetAttrValue("O", style.DefaultOffset));
 

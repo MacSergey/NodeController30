@@ -168,6 +168,7 @@
     <EmbeddedResource Include="Properties\Localize.fr.resx" />
     <EmbeddedResource Include="Properties\Localize.ja.resx" />
     <EmbeddedResource Include="Properties\Localize.nl.resx" />
+    <EmbeddedResource Include="Properties\Localize.pl.resx" />
     <EmbeddedResource Include="Properties\Localize.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Localize.Designer.cs</LastGenOutput>

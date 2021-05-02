@@ -18,7 +18,7 @@ namespace NodeController.Patches
             if (extraInfo1 != null || extraInfo2 != null || SingletonManager<Manager>.Instance[startNodeID, ignoreSegmentID] is not SegmentEndData data)
                 return true;
 
-            smooth = data.Node.m_flags.IsFlagSet(NetNode.Flags.Middle);
+            smooth = data.NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Middle);
             data.GetCorner(leftSide, out cornerPos, out cornerDirection);
 
             //var segment = ignoreSegmentID.GetSegment();

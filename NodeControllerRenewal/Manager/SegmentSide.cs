@@ -86,7 +86,7 @@ namespace NodeController
 
             if (!Data.IsSlope)
             {
-                position.y = Data.Node.m_position.y;
+                position.y = Data.NodeId.GetNode().m_position.y;
                 direction = direction.MakeFlatNormalized();
             }
             else if (!isMain)
