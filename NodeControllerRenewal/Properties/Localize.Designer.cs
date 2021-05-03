@@ -162,7 +162,7 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на {0} can&apos;t work with original Node Controller at the same time, need to disable it..
+        ///   Ищет локализованную строку, похожую на {0} can&apos;t work with original Node Controller at the same time, you need to disable it..
         /// </summary>
         internal static string Mod_ConflictMessage {
             get {
@@ -425,7 +425,7 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Stretch.
+        ///   Ищет локализованную строку, похожую на Stretched.
         /// </summary>
         internal static string NodeStyle_Stretch {
             get {
@@ -443,7 +443,16 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Make straight ends.
+        ///   Ищет локализованную строку, похожую на Reset offset.
+        /// </summary>
+        internal static string Option_KeepDefault {
+            get {
+                return ResourceManager.GetString("Option_KeepDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Make ends straight.
         /// </summary>
         internal static string Option_MakeStraightEnds {
             get {

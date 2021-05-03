@@ -200,6 +200,7 @@ namespace NodeController
         }
         public void UpdateNode() => SingletonManager<Manager>.Instance.Update(NodeId, true);
 
+        public void SetKeepDefaults() => KeepDefaults = true;
         public void ResetToDefault(NodeStyle style, bool force)
         {
             if (style.SupportSlope == SupportOption.None || force)

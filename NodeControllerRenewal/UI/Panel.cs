@@ -170,13 +170,15 @@ namespace NodeController.UI
 
         protected override void AddButtons()
         {
-            AddButton(NodeControllerTextures.Reset, NodeController.Localize.Option_ResetToDefault, OnResetClick);
+            AddButton(NodeControllerTextures.KeepDefault, NodeController.Localize.Option_KeepDefault, OnKeepDefault);
+            AddButton(NodeControllerTextures.ResetToDefault, NodeController.Localize.Option_ResetToDefault, OnResetToDefault);
             MakeStraight = AddButton(NodeControllerTextures.MakeStraight, NodeController.Localize.Option_MakeStraightEnds, OnMakeStraightClick);
 
             SetMakeStraightEnabled();
         }
 
-        private void OnResetClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.ResetToDefault();
+        private void OnKeepDefault(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.KeepDefaults();
+        private void OnResetToDefault(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.ResetToDefault();
         private void OnMakeStraightClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds();
 
         private void SetMakeStraightEnabled()
