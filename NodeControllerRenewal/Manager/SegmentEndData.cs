@@ -354,9 +354,6 @@ namespace NodeController
             var leftMainMitT = Empty(count);
             var rightMainMinT = Empty(count);
 
-            var leftSubMitT = Empty(count);
-            var rightSubMinT = Empty(count);
-
             var leftDefaultT = Empty(count);
             var rightDefaultT = Empty(count);
 
@@ -365,27 +362,18 @@ namespace NodeController
                 for (var i = 0; i < count; i += 1)
                 {
                     var j = i.NextIndex(count);
-                    GetMainMinLimit(endDatas[i].LeftSide.RawBezier, endDatas[j].RightSide.RawBezier, out leftMainMitT[i], out rightMainMinT[j]);
-                    leftSubMitT[i] = GetSubMinLimit(endDatas[i].RightSide.RawBezier, endDatas[i.PrevIndex(count)].LeftSide.RawBezier, SideType.Left);
-                    rightSubMinT[j] = GetSubMinLimit(endDatas[j].LeftSide.RawBezier, endDatas[j.NextIndex(count)].RightSide.RawBezier, SideType.Right);
-                }
 
-                for (var i = 0; i < count; i += 1)
-                {
-                    var j = i.NextIndex(count);
+                    GetMainMinLimit(endDatas[i].LeftSide.RawBezier, endDatas[j].RightSide.RawBezier, out leftMainMitT[i], out rightMainMinT[j]);
+                    leftDefaultT[i] = leftMainMitT[i];
+                    rightDefaultT[j] = rightMainMinT[j];
 
                     var iDir = NormalizeXZ(endDatas[i].RawSegmentBezier.StartDirection);
                     var jDir = NormalizeXZ(endDatas[j].RawSegmentBezier.StartDirection);
 
                     if (iDir.x * jDir.x + iDir.z * jDir.z < -0.75f || iDir.x * jDir.z - iDir.z * jDir.x <= 0f)
                     {
-                        leftDefaultT[i] = Mathf.Max(leftMainMitT[i], leftSubMitT[i]);
-                        rightDefaultT[j] = Mathf.Max(rightMainMinT[j], rightSubMinT[j]);
-                    }
-                    else
-                    {
-                        leftDefaultT[i] = leftMainMitT[i];
-                        rightDefaultT[j] = rightMainMinT[j];
+                        GetSubMinLimit(endDatas[i].RightSide.RawBezier, endDatas[i.PrevIndex(count)].LeftSide.RawBezier, SideType.Left, ref leftDefaultT[i]);
+                        GetSubMinLimit(endDatas[j].LeftSide.RawBezier, endDatas[j.NextIndex(count)].RightSide.RawBezier, SideType.Right, ref rightDefaultT[j]);
                     }
                 }
 
@@ -436,7 +424,7 @@ namespace NodeController
                 jMint = Intersection.CalculateSingle(iLine, jBezier, out _, out var jT) ? jT : -1;
             }
         }
-        private static float GetSubMinLimit(BezierTrajectory main, BezierTrajectory sub, SideType side)
+        private static void GetSubMinLimit(BezierTrajectory main, BezierTrajectory sub, SideType side, ref float defaultT)
         {
             var dot = DotXZ(NormalizeXZ(main.StartDirection), NormalizeXZ(sub.StartDirection));
             if (dot >= 0f)
@@ -448,7 +436,7 @@ namespace NodeController
                 var subLine = new StraightTrajectory(sub.StartPosition, sub.StartPosition + subNormal, false);
 
                 if (!Intersection.CalculateSingle(mainLine, subLine, out var aLineT, out _))
-                    return -1;
+                    return;
 
                 var point = mainLine.Position(aLineT);
 
@@ -460,11 +448,9 @@ namespace NodeController
             }
 
             if (Intersection.CalculateSingle(main, sub, out var t, out _))
-                return t;
+                defaultT = Mathf.Max(defaultT, t);
             else if (Intersection.CalculateSingle(main, new StraightTrajectory(sub.StartPosition, sub.StartPosition - sub.StartDirection * 16f), out t, out _))
-                return t;
-            else
-                return -1;
+                defaultT = Mathf.Max(defaultT, t);
         }
 
         public static void UpdateMaxLimits(ushort segmentId)
