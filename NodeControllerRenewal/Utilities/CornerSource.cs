@@ -195,6 +195,7 @@ namespace NodeController.Utilities
                     }
                     if ((flags & NetNode.Flags.Junction) != 0)
                     {
+                        //if(currentStartDir.z * cornerDirection.x - currentStartDir.x * cornerDirection.z <= 0f || cornerDirection.x * currentStartDir.x + cornerDirection.z * currentStartDir.z < -0.75f)
                         if (!flag)
                             thisOffsetT = Mathf.Max(thisOffsetT, otherOffsetT);
                     }

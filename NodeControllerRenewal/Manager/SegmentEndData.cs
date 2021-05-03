@@ -365,17 +365,9 @@ namespace NodeController
                 for (var i = 0; i < count; i += 1)
                 {
                     var j = i.NextIndex(count);
-
-                    var iDir = NormalizeXZ(endDatas[i].RawSegmentBezier.StartDirection);
-                    var jDir = NormalizeXZ(endDatas[j].RawSegmentBezier.StartDirection);
-
-                    if (iDir.x * jDir.z - iDir.z * jDir.x > 0f)
-                        GetMainMinLimit(endDatas[i].LeftSide.RawBezier, endDatas[j].RightSide.RawBezier, out leftMainMitT[i], out rightMainMinT[j]);
-                    else
-                    {
-                        GetSubMinLimit(endDatas[i].RightSide.RawBezier, endDatas[i.PrevIndex(count)].LeftSide.RawBezier, SideType.Left, ref leftSubMitT[i]);
-                        GetSubMinLimit(endDatas[j].LeftSide.RawBezier, endDatas[j.NextIndex(count)].RightSide.RawBezier, SideType.Right, ref rightSubMinT[j]);
-                    }
+                    GetMainMinLimit(endDatas[i].LeftSide.RawBezier, endDatas[j].RightSide.RawBezier, out leftMainMitT[i], out rightMainMinT[j]);
+                    leftSubMitT[i] = GetSubMinLimit(endDatas[i].RightSide.RawBezier, endDatas[i.PrevIndex(count)].LeftSide.RawBezier, SideType.Left);
+                    rightSubMinT[j] = GetSubMinLimit(endDatas[j].LeftSide.RawBezier, endDatas[j.NextIndex(count)].RightSide.RawBezier, SideType.Right);
                 }
 
                 for (var i = 0; i < count; i += 1)
@@ -384,16 +376,19 @@ namespace NodeController
 
                     var iDir = NormalizeXZ(endDatas[i].RawSegmentBezier.StartDirection);
                     var jDir = NormalizeXZ(endDatas[j].RawSegmentBezier.StartDirection);
-                    if (DotXZ(iDir, jDir) < -0.75f)
-                    {
-                        leftDefaultT[i] = Mathf.Max(leftMainMitT[i], rightMainMinT[i], leftSubMitT[i], rightSubMinT[i]);
-                        rightDefaultT[j] = Mathf.Max(rightMainMinT[j], leftMainMitT[j], rightSubMinT[j], leftSubMitT[j]);
-                    }
-                    else
-                    {
+
+                    var dot = iDir.x * jDir.x + iDir.z * jDir.z;
+                    var directDot = iDir.x * jDir.z - iDir.z * jDir.x;
+
+                    if (dot < -0.75f || directDot <= 0f)
                         leftDefaultT[i] = Mathf.Max(leftMainMitT[i], leftSubMitT[i]);
+                    else
+                        leftDefaultT[i] = leftMainMitT[i];
+
+                    if (dot < -0.75f || directDot >= 0f)
                         rightDefaultT[j] = Mathf.Max(rightMainMinT[j], rightSubMinT[j]);
-                    }
+                    else
+                        rightDefaultT[j] = rightMainMinT[j];
                 }
 
                 for (var i = 0; i < count; i += 1)
@@ -443,7 +438,7 @@ namespace NodeController
                 jMint = Intersection.CalculateSingle(iLine, jBezier, out _, out var jT) ? jT : -1;
             }
         }
-        private static void GetSubMinLimit(BezierTrajectory main, BezierTrajectory sub, SideType side, ref float defaultT)
+        private static float GetSubMinLimit(BezierTrajectory main, BezierTrajectory sub, SideType side)
         {
             var dot = DotXZ(NormalizeXZ(main.StartDirection), NormalizeXZ(sub.StartDirection));
             if (dot >= 0f)
@@ -455,7 +450,7 @@ namespace NodeController
                 var subLine = new StraightTrajectory(sub.StartPosition, sub.StartPosition + subNormal, false);
 
                 if (!Intersection.CalculateSingle(mainLine, subLine, out var aLineT, out _))
-                    return;
+                    return -1;
 
                 var point = mainLine.Position(aLineT);
 
@@ -467,10 +462,11 @@ namespace NodeController
             }
 
             if (Intersection.CalculateSingle(main, sub, out var t, out _))
-                defaultT = Mathf.Max(defaultT, t);
+                return t;
             else if (Intersection.CalculateSingle(main, new StraightTrajectory(sub.StartPosition, sub.StartPosition - sub.StartDirection * 16f), out t, out _))
-                defaultT = Mathf.Max(defaultT, t);
-
+                return t;
+            else
+                return -1;
         }
 
         public static void UpdateMaxLimits(ushort segmentId)
