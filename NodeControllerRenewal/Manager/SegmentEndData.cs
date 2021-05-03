@@ -377,18 +377,16 @@ namespace NodeController
                     var iDir = NormalizeXZ(endDatas[i].RawSegmentBezier.StartDirection);
                     var jDir = NormalizeXZ(endDatas[j].RawSegmentBezier.StartDirection);
 
-                    var dot = iDir.x * jDir.x + iDir.z * jDir.z;
-                    var directDot = iDir.x * jDir.z - iDir.z * jDir.x;
-
-                    if (dot < -0.75f || directDot <= 0f)
+                    if (iDir.x * jDir.x + iDir.z * jDir.z < -0.75f || iDir.x * jDir.z - iDir.z * jDir.x <= 0f)
+                    {
                         leftDefaultT[i] = Mathf.Max(leftMainMitT[i], leftSubMitT[i]);
-                    else
-                        leftDefaultT[i] = leftMainMitT[i];
-
-                    if (dot < -0.75f || directDot >= 0f)
                         rightDefaultT[j] = Mathf.Max(rightMainMinT[j], rightSubMinT[j]);
+                    }
                     else
+                    {
+                        leftDefaultT[i] = leftMainMitT[i];
                         rightDefaultT[j] = rightMainMinT[j];
+                    }
                 }
 
                 for (var i = 0; i < count; i += 1)
