@@ -68,6 +68,7 @@ namespace NodeController
         public float VehicleTwist { get; private set; }
 
         private float _offsetValue;
+        private float? _offsetT;
         private float _minOffset = 0f;
         private float _maxOffse = 100f;
         private float _rotateValue;
@@ -77,27 +78,13 @@ namespace NodeController
             get => _offsetValue;
             set
             {
-                SetOffset(value, true);
+                SetOffset(value, changeRotate: true);
                 KeepDefaults = false;
             }
         }
-        public float LeftOffset
-        {
-            set
-            {
-                SetCornerOffset(value, SideType.Left);
-                KeepDefaults = false;
-            }
-        }
-        public float RightOffset
-        {
-            set
-            {
-                SetCornerOffset(value, SideType.Right);
-                KeepDefaults = false;
-            }
-        }
-        public float OffsetT => RawSegmentBezier.Trajectory.Travel(Offset);
+        public float LeftOffset { set => SetCornerOffset(LeftSide, value); }
+        public float RightOffset { set => SetCornerOffset(RightSide, value); }
+        public float OffsetT => _offsetT ?? RawSegmentBezier.Travel(Offset);
         public float MinPossibleOffset { get; private set; } = 0f;
         public float MaxPossibleOffset { get; private set; } = 1000f;
         public float MinOffset
@@ -253,9 +240,23 @@ namespace NodeController
                 KeepDefaults = true;
         }
 
-        private void SetOffset(float value, bool changeRotate = false)
+        private void SetOffset(float value, float? t = null, bool changeRotate = false)
         {
+            var oldOffset = _offsetValue;
             _offsetValue = Mathf.Clamp(value, MinOffset, MaxOffset);
+
+            var offsetT = RawSegmentBezier.Travel(_offsetValue);
+            if (_offsetValue == oldOffset)
+            {
+                if (t != null && Mathf.Abs(offsetT - t.Value) < 0.001f)
+                    _offsetT = t;
+                if (_offsetT == null || Mathf.Abs(offsetT - _offsetT.Value) > 0.001f)
+                    _offsetT = offsetT;
+            }
+            else if (_offsetValue == value && t != null && Mathf.Abs(offsetT - t.Value) < 0.001f)
+                _offsetT = t;
+            else
+                _offsetT = offsetT;
 
             if (changeRotate && IsMinBorderT)
                 SetRotate(0f, true);
@@ -267,11 +268,10 @@ namespace NodeController
 
             _rotateValue = Mathf.Clamp(value, MinRotate, MaxRotate);
         }
-        private void SetCornerOffset(float value, SideType sideType)
+        private void SetCornerOffset(SegmentSide side, float value)
         {
-            var side = this[sideType];
+            KeepDefaults = false;
             side.RawT = side.RawBezier.Travel(value);
-
             SetByCorners();
         }
 
@@ -481,8 +481,8 @@ namespace NodeController
                 var startSide = start[side];
                 var endSide = end[side.Invert()];
 
-                var startT = start.GetCornerOffset(startSide);
-                var endT = end.GetCornerOffset(endSide);
+                var startT = start.GetCornerOffset(startSide, start.OffsetT);
+                var endT = end.GetCornerOffset(endSide, end.OffsetT);
                 if (startT + endT > 1f)
                 {
                     var delta = (startT + endT - 1f) / 2;
@@ -552,8 +552,12 @@ namespace NodeController
                 SetOffset(Offset);
                 SetRotate(RotateAngle, true);
 
-                LeftSide.RawT = GetCornerOffset(LeftSide);
-                RightSide.RawT = GetCornerOffset(RightSide);
+                var t = OffsetT;
+                LeftSide.RawT = GetCornerOffset(LeftSide, t);
+                RightSide.RawT = GetCornerOffset(RightSide, t);
+
+                if (Id == 2989)
+                    SingletonMod<Mod>.Logger.Debug($"After: Left={LeftSide.RawT};Right={RightSide.RawT};t={OffsetT};Offset={Offset};Rotate={RotateAngle}");
             }
         }
         private void SetByCorners()
@@ -565,10 +569,13 @@ namespace NodeController
             if (Intersection.CalculateSingle(RawSegmentBezier, line, out var t, out _))
             {
                 var offset = RawSegmentBezier.Distance(0f, t);
-                SetOffset(offset);
-                var direction = Vector3.Cross(RawSegmentBezier.Tangent(t), Vector3.up);
+                SetOffset(offset, t);
+                var direction = Vector3.Cross(RawSegmentBezier.Tangent(t).MakeFlatNormalized(), Vector3.up);
                 var rotate = GetAngle(line.Direction, direction);
                 SetRotate(rotate, true);
+
+                if (Id == 2989)
+                    SingletonMod<Mod>.Logger.Debug($"Before: Left={LeftSide.RawT};Right={RightSide.RawT};t={t};Offset={offset};Rotate={rotate};Direction={direction}");
             }
             else
             {
@@ -587,17 +594,19 @@ namespace NodeController
 
             return sign * angle * Mathf.Rad2Deg;
         }
-        private float GetCornerOffset(SegmentSide side)
+        private float GetCornerOffset(SegmentSide side, float t)
         {
-            var t = OffsetT;
             var position = RawSegmentBezier.Position(t);
             var direction = RawSegmentBezier.Tangent(t).MakeFlatNormalized().TurnDeg(90 + RotateAngle, true);
 
             var line = new StraightTrajectory(position, position + direction, false);
-            var intersection = Intersection.CalculateSingle(side.RawBezier, line);
+            var intersections = Intersection.Calculate(side.RawBezier, line);
 
-            if (intersection.IsIntersect)
-                return intersection.FirstT;
+            if (intersections.Any(i => i.IsIntersect))
+            {
+                var intersect = intersections.Aggregate((i, j) => Mathf.Abs(i.FirstT - t) < Mathf.Abs(j.FirstT - t) ? i : j);
+                return intersect.FirstT;
+            }
             else if (RotateAngle == 0f)
                 return t <= 0.5f ? 0f : 1f;
             else
