@@ -72,6 +72,7 @@ namespace NodeController.Patches
             if (float.IsNaN(t) || float.IsInfinity(t))
                 return Quaternion.identity;
 
+            var isReversed = vehicleData.m_flags.IsFlagSet(Vehicle.Flags.Reversed);
             if (vehicleData.m_pathPositionIndex % 2 == 0)
             {
                 SingletonManager<Manager>.Instance.GetSegmentData(prevPos.m_segment, out var start, out var end);
@@ -79,7 +80,7 @@ namespace NodeController.Patches
                 var endTwist = end?.VehicleTwist ?? 0f;
                 var twist = Mathf.Lerp(startTwist, -endTwist, t);
 
-                return Quaternion.Euler(0, 0f, prevPos.m_offset == byte.MaxValue ? twist : -twist);
+                return Quaternion.Euler(0, 0f, prevPos.m_offset != byte.MaxValue ^ isReversed ? -twist : twist);
             }
             else
             {
@@ -90,7 +91,7 @@ namespace NodeController.Patches
                 var endTwist = (nextPos.m_offset == byte.MaxValue ? nextStart : nextEnd)?.VehicleTwist ?? 0f;
                 var twist = Mathf.Lerp(-startTwist, endTwist, t);
 
-                return Quaternion.Euler(0, 0f, twist);
+                return Quaternion.Euler(0, 0f, isReversed ? -twist : twist);
             }
         }
     }
