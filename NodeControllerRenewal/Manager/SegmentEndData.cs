@@ -566,7 +566,7 @@ namespace NodeController
             {
                 var offset = RawSegmentBezier.Distance(0f, t);
                 SetOffset(offset);
-                var direction = Vector3.Cross(RawSegmentBezier.Tangent(t), Vector3.up).normalized;
+                var direction = Vector3.Cross(RawSegmentBezier.Tangent(t), Vector3.up);
                 var rotate = GetAngle(line.Direction, direction);
                 SetRotate(rotate, true);
             }
@@ -579,9 +579,13 @@ namespace NodeController
 
         private float GetAngle(Vector3 cornerDir, Vector3 segmentDir)
         {
-            var angle = Vector3.Angle(segmentDir, cornerDir);
-            var sign = Mathf.Sign(Vector3.Cross(segmentDir, cornerDir).y);
-            return sign * angle;
+            var first = NormalizeXZ(cornerDir);
+            var second = NormalizeXZ(segmentDir);
+
+            var sign = Mathf.Sign(first.x * second.z - first.z * second.x);
+            var angle = Mathf.Acos(Mathf.Clamp(first.x * second.x + first.z * second.z, -1f, 1f));
+
+            return sign * angle * Mathf.Rad2Deg;
         }
         private float GetCornerOffset(SegmentSide side)
         {
