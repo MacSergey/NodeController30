@@ -21,7 +21,7 @@ namespace NodeController
         public static float CornerDotRadius => 0.5f;
         public static float MinPossibleRotate => -80f;
         public static float MaxPossibleRotate => 80f;
-        public static float tDelta = 1.0e-4f;
+        public static float tDelta => 1.0e-4f;
         public static string XmlName => "SE";
 
         public static Color32[] OverlayColors { get; } = new Color32[]
@@ -69,7 +69,6 @@ namespace NodeController
         public float VehicleTwist { get; private set; }
 
         private float _offsetValue;
-        private float? _offsetT;
         private float _minOffset = 0f;
         private float _maxOffse = 100f;
         private float _rotateValue;
@@ -85,7 +84,7 @@ namespace NodeController
         }
         public float LeftOffset { set => SetCornerOffset(LeftSide, value); }
         public float RightOffset { set => SetCornerOffset(RightSide, value); }
-        public float OffsetT => _offsetT ?? RawSegmentBezier.Travel(Offset);
+        public float OffsetT => RawSegmentBezier.Trajectory.Travel(_offsetValue, depth: 7);
         public float MinPossibleOffset { get; private set; } = 0f;
         public float MaxPossibleOffset { get; private set; } = 1000f;
         public float MinOffset
@@ -241,23 +240,9 @@ namespace NodeController
                 KeepDefaults = true;
         }
 
-        private void SetOffset(float value, float? t = null, bool changeRotate = false)
+        private void SetOffset(float value, bool changeRotate = false)
         {
-            var oldOffset = _offsetValue;
             _offsetValue = Mathf.Clamp(value, MinOffset, MaxOffset);
-
-            var offsetT = RawSegmentBezier.Trajectory.Travel(_offsetValue, depth: 7);
-            if (_offsetValue == oldOffset)
-            {
-                if (t != null && Mathf.Abs(offsetT - t.Value) < tDelta)
-                    _offsetT = t;
-                if (_offsetT == null || Mathf.Abs(offsetT - _offsetT.Value) > tDelta)
-                    _offsetT = offsetT;
-            }
-            else if (_offsetValue == value && t != null && Mathf.Abs(offsetT - t.Value) < tDelta)
-                _offsetT = t;
-            else
-                _offsetT = offsetT;
 
             if (changeRotate && IsMinBorderT)
                 SetRotate(0f, true);
@@ -556,9 +541,6 @@ namespace NodeController
                 var t = OffsetT;
                 LeftSide.RawT = GetCornerOffset(LeftSide, t);
                 RightSide.RawT = GetCornerOffset(RightSide, t);
-
-                if (Id == (ushort)Settings.SegmentId && NodeId == (ushort)Settings.NodeId)
-                    SingletonMod<Mod>.Logger.Debug($"After: Left={LeftSide.RawT};\tRight={RightSide.RawT};\tt={OffsetT};\tOffset={Offset};\tRotate={RotateAngle}");
             }
         }
         private void SetByCorners()
@@ -570,13 +552,10 @@ namespace NodeController
             if (Intersection.CalculateSingle(RawSegmentBezier, line, out var t, out _))
             {
                 var offset = RawSegmentBezier.Trajectory.Cut(0f, t).Length(1, 7);
-                SetOffset(offset, t);
+                SetOffset(offset);
                 var direction = Vector3.Cross(RawSegmentBezier.Tangent(t).MakeFlatNormalized(), Vector3.up);
                 var rotate = GetAngle(line.Direction, direction);
                 SetRotate(rotate, true);
-
-                if (Id == (ushort)Settings.SegmentId && NodeId == (ushort)Settings.NodeId)
-                    SingletonMod<Mod>.Logger.Debug($"Before: Left={LeftSide.RawT};\tRight={RightSide.RawT};\tt={t};\tOffset={offset};\tRotate={rotate};");
             }
             else
             {
