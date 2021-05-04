@@ -5,12 +5,12 @@
 [/code]
 
 This is renewal version of original [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2085403475]Node Controller[/url] by [url=https://steamcommunity.com/profiles/76561198109315306/myworkshopfiles/]kian.zarrin[/url] with improved UI/UX.
-New UI allows you to make the perfect intersection by few clicks.
+The new UI allows you to make the perfect intersection with just a few clicks.
 
-Node Controller Renewal support import original Node Controller data, but not completely, some intersections may be required manually adjustment. 
+Node Controller Renewal supports importing original Node Controller data, but not completely. Some intersections may require manual adjustment. 
 To start use Node Controller Renewal you should disable original Node Controller and subscribe to [url=https://steamcommunity.com/workshop/filedetails/?id=2040656402]Harmony[/url]
 
-[b]WARNING[/b]: If you import data from original Node Controller and make new save, then you can no longer use original Node Controller on this map.
+[b]WARNING[/b]: If you import data from original Node Controller and make new save, you will no longer be able to use the original Node Controller on this map.
 
 
 [HR][/HR] 
@@ -27,8 +27,17 @@ To start use Node Controller Renewal you should disable original Node Controller
 [*] Translation into languages: Chinese, Dutch, Finnish, French, German, Japanese, Polish, Portuguese, Russian, Spanish
 [/list]
 
+[HR][/HR] 
+[h1]How activate[/h1]
+[olist]
+[*] Press Ctrl+N (You can change binding shortcut in mod settings)
+[*] Open Road panel and press button [img]https://i.imgur.com/Itw4p0H.png[/img]
+
+[*] Use [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2255219025]UnifiedUI[/url] mod
+[/olist]
+
 [HR][/HR]
-[h3]Join to discord for discussion and support[/h3]
+[h1]Join to discord for discussion and support[/h1]
 [url=https://discord.gg/NnwhuBKMqj][img]https://i.imgur.com/bnDNN2x.png[/img][/url]
 
 [HR][/HR] 
