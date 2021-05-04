@@ -333,23 +333,18 @@ namespace NodeController
         }
         public void ResetToDefault()
         {
-            ResetToDefaultImpl(true);
+            SetType(DefaultType, true);
             UpdateNode();
         }
-        private void ResetToDefaultImpl(bool force)
-        {
-            foreach (var segmentEnd in SegmentEndDatas)
-                segmentEnd.ResetToDefault(Style, force);
-        }
-
         private void SetType(NodeStyleType type, bool force)
         {
-            if (type == Style?.Type)
+            if (type == Style?.Type && !force)
                 return;
 
             Style = type.GetStyle(this);
 
-            ResetToDefaultImpl(force);
+            foreach (var segmentEnd in SegmentEndDatas)
+                segmentEnd.ResetToDefault(Style, force);
         }
         public void SetMain(ushort first, ushort second)
         {

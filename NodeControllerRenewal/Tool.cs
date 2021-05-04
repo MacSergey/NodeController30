@@ -56,7 +56,7 @@ namespace NodeController
         public void ResetToDefault()
         {
             Data.ResetToDefault();
-            Panel.UpdatePanel();
+            Panel.RefreshPanel();
         }
         public void MakeStraightEnds()
         {

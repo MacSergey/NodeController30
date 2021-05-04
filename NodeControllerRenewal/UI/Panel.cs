@@ -91,11 +91,11 @@ namespace NodeController.UI
         public void SetData(NodeData data)
         {
             if ((Data = data) != null)
-                SetPanel();
+                RefreshPanel();
             else
                 ResetPanel();
         }
-        private void SetPanel()
+        public void RefreshPanel()
         {
             Content.StopLayout();
 
