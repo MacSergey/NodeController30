@@ -12,7 +12,7 @@ namespace NodeController
 {
     public class Manager : IManager
     {
-        private NodeData[] Buffer { get; } = new NodeData[NetManager.MAX_NODE_COUNT];
+        private NodeData[] Buffer { get; set; } = new NodeData[NetManager.MAX_NODE_COUNT];
 
         public NodeData InsertNode(NetTool.ControlPoint controlPoint, NodeStyleType nodeType = NodeStyleType.Crossing)
         {
@@ -168,8 +168,11 @@ namespace NodeController
 
             return config;
         }
-        public void FromXml(XElement config, ObjectsMap map)
+        public void FromXml(XElement config, ObjectsMap map, bool clear = true)
         {
+            if (clear)
+                Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
+
             foreach (var nodeConfig in config.Elements(NodeData.XmlName))
             {
                 if (NodeData.FromXml(nodeConfig, map, out NodeData data))

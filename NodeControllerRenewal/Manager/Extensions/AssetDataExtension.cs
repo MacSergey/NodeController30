@@ -15,6 +15,6 @@ namespace NodeController
         protected override ObjectsMap CreateMap(bool isSimple) => new ObjectsMap(isSimple);
         protected override XElement GetConfig() => SingletonManager<Manager>.Instance.ToXml();
 
-        protected override void PlaceAsset(XElement config, ObjectsMap map) => SingletonManager<Manager>.Instance.FromXml(config, map);
+        protected override void PlaceAsset(XElement config, ObjectsMap map) => SingletonManager<Manager>.Instance.FromXml(config, map, false);
     }
 }
