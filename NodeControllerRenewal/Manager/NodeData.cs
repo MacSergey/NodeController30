@@ -300,15 +300,27 @@ namespace NodeController
                     segmentEnd.Calculate(false);
             }
 
+            var position = Id.GetNode().m_position;
+
             if (IsEndNode)
-                Position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
+                position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
             else if (!IsMiddleNode)
-                Position = (LeftMainBezier.Position(0.5f) + RightMainBezier.Position(0.5f)) / 2f;
-            else
             {
-                SegmentEndData.FixMiddle(FirstMainSegmentEnd, SecondMainSegmentEnd);
-                Position = Id.GetNode().m_position;
+                if (IsSlopeJunctions)
+                    position = (LeftMainBezier.Position(0.5f) + RightMainBezier.Position(0.5f)) / 2f;
+                else
+                {
+                    foreach (var segmentEnd in SegmentEndDatas)
+                        position += segmentEnd.Position;
+
+                    position /= SegmentCount + 1;
+                }
             }
+            else
+                SegmentEndData.FixMiddle(FirstMainSegmentEnd, SecondMainSegmentEnd);
+
+            position.y += Id.GetNode().m_heightOffset / 64f;
+            Position = position;
         }
 
         public void UpdateNode() => SingletonManager<Manager>.Instance.Update(Id, true);

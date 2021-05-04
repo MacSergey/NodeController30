@@ -13,13 +13,16 @@ namespace NodeController.Patches
     [UsedImplicitly]
     public static class NetSegmentPatches
     {
-        public static bool CalculateCornerPrefix(NetInfo extraInfo1, NetInfo extraInfo2, ushort ignoreSegmentID, ushort startNodeID, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection, ref bool smooth)
+        public static bool CalculateCornerPrefix(NetInfo extraInfo1, NetInfo extraInfo2, ushort ignoreSegmentID, ushort startNodeID, bool heightOffset, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection, ref bool smooth)
         {
             if (extraInfo1 != null || extraInfo2 != null || SingletonManager<Manager>.Instance[startNodeID, ignoreSegmentID] is not SegmentEndData data)
                 return true;
 
             smooth = data.NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Middle);
             data.GetCorner(leftSide, out cornerPos, out cornerDirection);
+
+            if (heightOffset && startNodeID != 0)
+                cornerPos.y += startNodeID.GetNode().m_heightOffset / 64f;
 
             //var segment = ignoreSegmentID.GetSegment();
             //var isStart = segment.IsStartNode(startNodeID);
