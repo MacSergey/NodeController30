@@ -61,7 +61,6 @@ namespace NodeController
         public float RawT { get; set; }
         public float CurrentT => Mathf.Clamp(RawT, MinT + DeltaT, MaxT - DeltaT);
         public float DeltaT => 0.05f / RawBezier.Length;
-        public float Offset => RawBezier.Distance(0f, CurrentT);
 
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }

@@ -43,6 +43,9 @@ namespace NodeController
 #endif
         }
 #if DEBUG
+
+        public static SavedFloat SegmentId { get; } = new SavedFloat(nameof(SegmentId), SettingsFile, 0f, false);
+        public static SavedFloat NodeId { get; } = new SavedFloat(nameof(NodeId), SettingsFile, 0f, false);
         private void AddDebug(UIHelperBase helper)
         {
             var group = helper.AddGroup("Debug") as UIHelper;
@@ -51,6 +54,8 @@ namespace NodeController
             AddCheckBox(group, "Render overlay center", Selection.RenderOverlayCentre);
             AddCheckBox(group, "Render overlay borders", Selection.RenderOverlayBorders);
             AddFloatField(group, "Overlay width", Selection.OverlayWidth, 3f, 1f);
+            AddFloatField(group, "SegmentId", SegmentId, 0f);
+            AddFloatField(group, "NodeId", NodeId, 0f);
         }
 #endif
     }

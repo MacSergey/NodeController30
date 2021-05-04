@@ -52,8 +52,10 @@ namespace NodeController
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
         {
-            text = $"{SegmentEnd[Corner].Offset:0.0}";
-            color = SegmentEnd[Corner].IsMinBorderT || SegmentEnd[Corner].IsMaxBorderT ? Colors.Red : Colors.Yellow;
+            var side = SegmentEnd[Corner];
+
+            text = $"{side.RawBezier.Trajectory.Cut(0f, side.CurrentT).Length(1f, 7):0.0}";
+            color = side.IsMinBorderT || side.IsMaxBorderT ? Colors.Red : Colors.Yellow;
             size = 2f;
             position = SegmentEnd.Position + SegmentEnd.Direction * SegmentEndData.CircleRadius;
             direction = SegmentEnd.Direction;
