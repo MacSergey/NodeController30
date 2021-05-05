@@ -251,16 +251,16 @@ Uruchom ponownie grę.</value>
     <value>Wszystkie</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
-    <value>Reset offset</value>
+    <value>Zresetuj przesunięcie</value>
   </data>
   <data name="Option_MainRoad" xml:space="preserve">
-    <value>Main road</value>
+    <value>Main slope direction</value>
   </data>
   <data name="Option_MainRoadAuto" xml:space="preserve">
-    <value>Auto</value>
+    <value>Automatycznie</value>
   </data>
   <data name="Option_MainRoadManually" xml:space="preserve">
-    <value>Manually</value>
+    <value>Ręcznie</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Zrób końce proste</value>
@@ -356,7 +356,7 @@ Uruchom ponownie grę.</value>
     <value>Kliknij aby wyrównać do tego rogu</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Przytrzymaj Alt aby zmienić główną drogę</value>
+    <value>Hold Alt to change main slope direction</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Skrzyżowanie #{0}
@@ -375,10 +375,10 @@ Kliknij aby edytować</value>
     <value>Przeciągnij aby zmienić przesunięcie rogu</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>Przeciągnij ten koniec aby zmienić główną drogę</value>
+    <value>Drag this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>Upuść ten koniec aby zmienić główną drogę</value>
+    <value>Drop this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Kliknij aby wstawić węzeł skrzyżowania</value>
@@ -390,10 +390,10 @@ Kliknij aby edytować</value>
     <value>Wybierz róg do którego chcesz wrównać</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>Zmień na oczekiwaną główną drogę</value>
+    <value>Change to desired main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>Wybierz końcową pozycję głównej drogi</value>
+    <value>Select end position of main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Wybierz węzeł</value>

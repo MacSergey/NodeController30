@@ -254,13 +254,13 @@ Starte das Spiel neu.</value>
     <value>Versatz zurücksetzen</value>
   </data>
   <data name="Option_MainRoad" xml:space="preserve">
-    <value>Main road</value>
+    <value>Main slope direction</value>
   </data>
   <data name="Option_MainRoadAuto" xml:space="preserve">
-    <value>Auto</value>
+    <value>Automatisch</value>
   </data>
   <data name="Option_MainRoadManually" xml:space="preserve">
-    <value>Manually</value>
+    <value>Manuell</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Enden begradigen</value>
@@ -356,7 +356,7 @@ Starte das Spiel neu.</value>
     <value>Klicken zum Ausrichten an dieser Ecke</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Alt gedrückt halten um die Hauptstraße zu ändern</value>
+    <value>Hold Alt to change main slope direction</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Netzwerk-Knoten #{0}
@@ -375,10 +375,10 @@ Klicken zum Bearbeiten</value>
     <value>Ziehen, um den Versatz der Ecke zu ändern</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>Ziehe dieses Ende um die Hauptstraße zu ändern</value>
+    <value>Drag this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>Loslassen dieses Endes um die Hauptstraße zu ändern</value>
+    <value>Drop this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Klicken, um einen Überweg einzufügen</value>
@@ -390,10 +390,10 @@ Klicken zum Bearbeiten</value>
     <value>Wähle die Ecke, an der du ausrichten möchtest</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>Zur gewünschten Hauptstraße wechseln</value>
+    <value>Change to desired main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>Wähle das Ende der Hauptstraße</value>
+    <value>Select end position of main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Netzwerk-Knoten auswählen</value>

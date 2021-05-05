@@ -250,16 +250,16 @@ Herstart het spel.</value>
     <value>Alle</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
-    <value>Reset offset</value>
+    <value>Parallele verschuiving herstellen</value>
   </data>
   <data name="Option_MainRoad" xml:space="preserve">
-    <value>Main road</value>
+    <value>Main slope direction</value>
   </data>
   <data name="Option_MainRoadAuto" xml:space="preserve">
-    <value>Auto</value>
+    <value>Automatisch</value>
   </data>
   <data name="Option_MainRoadManually" xml:space="preserve">
-    <value>Manually</value>
+    <value>Handmatig</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Maak rechte uiteindes</value>
@@ -355,7 +355,7 @@ Herstart het spel.</value>
     <value>Klik om met deze hoek uit te lijnen</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Houd Alt ingedrukt om de hoofdweg te veranderen</value>
+    <value>Hold Alt to change main slope direction</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Punt #{0}
@@ -374,10 +374,10 @@ Klik om te wijzigen</value>
     <value>Sleep om de hoekverschuiving te veranderen</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>Sleep dit uiteinde om de hoofdweg te veranderen</value>
+    <value>Drag this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>Laat dit uiteinde vallen om de hoofdweg te veranderen</value>
+    <value>Drop this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Klik om oversteekknoop toe te voegen</value>
@@ -389,10 +389,10 @@ Klik om te wijzigen</value>
     <value>Selecteer de hoek waarmee u wilt uitlijnen</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>Verander naar de gewenste hoofdweg</value>
+    <value>Change to desired main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>Selecteer eindpositie van de hoofdweg</value>
+    <value>Select end position of main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Selecteer knoop</value>
