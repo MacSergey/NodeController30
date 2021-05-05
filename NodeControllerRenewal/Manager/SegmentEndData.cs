@@ -338,11 +338,11 @@ namespace NodeController
             var endDatas = data.SegmentEndDatas.OrderBy(s => s.AbsoluteAngle).ToArray();
             var count = endDatas.Length;
 
-            var leftMainMitT = Empty(count);
-            var rightMainMinT = Empty(count);
+            var leftMainMitT = new float[count];
+            var rightMainMinT = new float[count];
 
-            var leftDefaultT = Empty(count);
-            var rightDefaultT = Empty(count);
+            var leftDefaultT = new float[count];
+            var rightDefaultT = new float[count];
 
             if (count != 1 && !data.IsMiddleNode)
             {
@@ -350,7 +350,7 @@ namespace NodeController
                 {
                     var j = i.NextIndex(count);
 
-                    GetMainMinLimit(endDatas[i].LeftSide.RawBezier, endDatas[j].RightSide.RawBezier, out leftMainMitT[i], out rightMainMinT[j]);
+                    GetMainMinLimit(endDatas[i], endDatas[j], ref leftMainMitT[i], ref rightMainMinT[j]);
                     leftDefaultT[i] = leftMainMitT[i];
                     rightDefaultT[j] = rightMainMinT[j];
 
@@ -388,29 +388,39 @@ namespace NodeController
                 endData.LeftSide.DefaultT = Mathf.Clamp01(leftDefaultT[i]);
                 endData.RightSide.DefaultT = Mathf.Clamp01(rightDefaultT[i]);
             }
-
-
-            static void CorrectDefaultOffset(BezierTrajectory bezier, ref float defaultT, float defaultOffset, float minCornerOffset, float additionalOffset)
-            {
-                if (defaultT < 0f)
-                    defaultT = bezier.Travel(defaultOffset);
-
-                var distance = bezier.Distance(0f, defaultT);
-                defaultT = bezier.Travel(defaultT, Mathf.Max(minCornerOffset - distance, additionalOffset));
-            }
-            static float[] Empty(int count) => Enumerable.Range(0, count).Select(_ => -1f).ToArray();
         }
-        private static void GetMainMinLimit(BezierTrajectory iBezier, BezierTrajectory jBezier, out float iMinT, out float jMint)
+        private static void GetMainMinLimit(SegmentEndData iData, SegmentEndData jData, ref float iMinT, ref float jMint)
         {
+            var iBezier = iData.LeftSide.RawBezier;
+            var jBezier = jData.RightSide.RawBezier;
+
             if (!Intersection.CalculateSingle(iBezier, jBezier, out iMinT, out jMint))
             {
-                var jLine = new StraightTrajectory(jBezier.StartPosition, jBezier.StartPosition - jBezier.StartDirection * 16f);
-                iMinT = Intersection.CalculateSingle(iBezier, jLine, out var iT, out _) ? iT : -1;
-
-                var iLine = new StraightTrajectory(iBezier.StartPosition, iBezier.StartPosition - iBezier.StartDirection * 16f);
-                jMint = Intersection.CalculateSingle(iLine, jBezier, out _, out var jT) ? jT : -1;
+                GetMainMinLimit(iBezier, jBezier, jData.LeftSide.RawBezier, ref iMinT);
+                GetMainMinLimit(jBezier, iBezier, iData.RightSide.RawBezier, ref jMint);
             }
         }
+        private static void GetMainMinLimit(BezierTrajectory first, BezierTrajectory secondMain, BezierTrajectory secondSub, ref float minT)
+        {
+            var line = new StraightTrajectory(secondMain.StartPosition, secondMain.StartPosition - secondMain.StartDirection, false);
+            if (Intersection.CalculateSingle(first, line, out minT, out _))
+                return;
+
+            var endLine = new StraightTrajectory(secondMain.EndPosition, secondSub.EndPosition);
+            if (Intersection.CalculateSingle(first, endLine, out minT, out _))
+                return;
+
+            minT = -1;
+        }
+        private static void CorrectDefaultOffset(BezierTrajectory bezier, ref float defaultT, float defaultOffset, float minCornerOffset, float additionalOffset)
+        {
+            if (defaultT < 0f)
+                defaultT = bezier.Travel(defaultOffset);
+
+            var distance = bezier.Distance(0f, defaultT);
+            defaultT = bezier.Travel(defaultT, Mathf.Max(minCornerOffset - distance, additionalOffset));
+        }
+
         private static void GetSubMinLimit(BezierTrajectory main, BezierTrajectory sub, SideType side, ref float defaultT)
         {
             var dot = DotXZ(NormalizeXZ(main.StartDirection), NormalizeXZ(sub.StartDirection));

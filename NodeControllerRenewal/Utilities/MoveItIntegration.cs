@@ -15,7 +15,7 @@ namespace NodeController.Utilities
     }
     public class MoveItIntegration : MoveItIntegrationBase
     {
-        public override string ID => "CS.NodeControllerRenewal";
+        public override string ID => "CS.macsergey.NodeControllerRenewal";
 
         public override Version DataVersion => new Version(3, 0);
 
