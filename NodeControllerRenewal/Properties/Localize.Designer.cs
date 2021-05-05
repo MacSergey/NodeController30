@@ -452,6 +452,33 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Main road.
+        /// </summary>
+        internal static string Option_MainRoad {
+            get {
+                return ResourceManager.GetString("Option_MainRoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Auto.
+        /// </summary>
+        internal static string Option_MainRoadAuto {
+            get {
+                return ResourceManager.GetString("Option_MainRoadAuto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Manually.
+        /// </summary>
+        internal static string Option_MainRoadManually {
+            get {
+                return ResourceManager.GetString("Option_MainRoadManually", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Make ends straight.
         /// </summary>
         internal static string Option_MakeStraightEnds {

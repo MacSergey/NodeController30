@@ -68,7 +68,10 @@ namespace NodeController
         public override void OnMouseUp(Event e)
         {
             if (IsHoverSegmentEnd)
+            {
                 Tool.Data.SetMain(SelectedSegmentEnd.Id, HoverSegmentEnd.Id);
+                Tool.Panel.RefreshPanel();
+            }
 
             Tool.SetDefaultMode();
         }

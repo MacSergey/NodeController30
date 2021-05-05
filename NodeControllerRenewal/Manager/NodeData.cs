@@ -58,7 +58,7 @@ namespace NodeController
         public BezierTrajectory LeftMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
         public BezierTrajectory RightMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
 
-        private MainRoad MainRoad { get; set;} = new MainRoad();
+        public MainRoad MainRoad { get; private set;} = new MainRoad();
 
         public NetNode.Flags DefaultFlags { get; private set; }
         public NodeStyleType DefaultType { get; private set; }

@@ -211,6 +211,16 @@ namespace NodeController
                 components.Add(junctionStyle);
             }
 
+            if (Data.IsJunction)
+            {
+                var mainRoad = GetMainRoadButtons(parent);
+                SetVisible(Data.IsSlopeJunctions);
+                junctionStyle.OnSelectObjectChanged += SetVisible;
+                components.Add(mainRoad);
+
+                void SetVisible(bool isSlope) => mainRoad.isVisible = isSlope;
+            }
+
             var totalSupport = TotalSupport;
 
             if (totalSupport == SupportOption.All)
@@ -319,7 +329,7 @@ namespace NodeController
             return components;
         }
 
-        protected BoolListPropertyPanel GetJunctionButtons(UIComponent parent)
+        private BoolListPropertyPanel GetJunctionButtons(UIComponent parent)
         {
             var flatJunctionProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
             flatJunctionProperty.Text = Localize.Option_Style;
@@ -332,6 +342,20 @@ namespace NodeController
                 };
 
             return flatJunctionProperty;
+        }
+        private BoolListPropertyPanel GetMainRoadButtons(UIComponent parent)
+        {
+            var mainRoadProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
+            mainRoadProperty.Text = Localize.Option_MainRoad;
+            mainRoadProperty.Init(Localize.Option_MainRoadManually, Localize.Option_MainRoadAuto);
+            mainRoadProperty.SelectedObject = Data.MainRoad.Auto;
+            mainRoadProperty.OnSelectObjectChanged += (value) =>
+            {
+                Data.MainRoad.Auto = value;
+                Data.UpdateNode();
+            };
+
+            return mainRoadProperty;
         }
 
         private void MinMaxOffset(INetworkData data, out float min, out float max)
