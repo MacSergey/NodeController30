@@ -250,6 +250,18 @@ Shift X10, Ctrl X0.1</value>
   <data name="Options_All" xml:space="preserve">
     <value>Все</value>
   </data>
+  <data name="Option_KeepDefault" xml:space="preserve">
+    <value>Отступ по умолчанию</value>
+  </data>
+  <data name="Option_MainRoad" xml:space="preserve">
+    <value>Главная дорога</value>
+  </data>
+  <data name="Option_MainRoadAuto" xml:space="preserve">
+    <value>Авто</value>
+  </data>
+  <data name="Option_MainRoadManually" xml:space="preserve">
+    <value>Вручную</value>
+  </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Сделать концы прямыми</value>
   </data>
@@ -263,7 +275,7 @@ Shift X10, Ctrl X0.1</value>
     <value>{0}м</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
-    <value>Сбросить к поумолчанию</value>
+    <value>Сбросить к по умолчанию</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Поворот</value>

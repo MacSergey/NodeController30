@@ -250,6 +250,18 @@ Starte das Spiel neu.</value>
   <data name="Options_All" xml:space="preserve">
     <value>Alle</value>
   </data>
+  <data name="Option_KeepDefault" xml:space="preserve">
+    <value>Versatz zurücksetzen</value>
+  </data>
+  <data name="Option_MainRoad" xml:space="preserve">
+    <value>Main road</value>
+  </data>
+  <data name="Option_MainRoadAuto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="Option_MainRoadManually" xml:space="preserve">
+    <value>Manually</value>
+  </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Enden begradigen</value>
   </data>
