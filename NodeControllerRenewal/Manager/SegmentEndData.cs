@@ -58,6 +58,7 @@ namespace NodeController
         private SegmentSide LeftSide { get; }
         private SegmentSide RightSide { get; }
         public float AbsoluteAngle => RawSegmentBezier.StartDirection.AbsoluteAngle();
+        public float Weight { get; }
 
 
         public bool DefaultIsSlope => !Id.GetSegment().Info.m_flatJunctions && !NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
@@ -171,6 +172,9 @@ namespace NodeController
             var info = Id.GetSegment().Info;
             IsNodeLess = !info.m_nodes.Any();
             PedestrianLaneCount = info.PedestrianLanes();
+            Weight = info.m_halfWidth * 2;
+            if ((info.m_netAI as RoadBaseAI)?.m_highwayRules == true)
+                Weight *= 1.5f;
 
             CalculateSegmentBeziers(Id, out var bezier, out var leftBezier, out var rightBezier);
             if (IsStartNode)
@@ -412,7 +416,8 @@ namespace NodeController
                 var jEndLine = new StraightTrajectory(jBezier.EndPosition, jData.LeftSide.RawBezier.EndPosition);
                 GetMainMinLimit(iBezier, jLine, jEndLine, SideType.Left, ref iMinT);
             }
-            else if (jT < 0f)
+
+            if (jT < 0f)
             {
                 var iEndLine = new StraightTrajectory(iBezier.EndPosition, iData.RightSide.RawBezier.EndPosition);
                 GetMainMinLimit(jBezier, iLine, iEndLine, SideType.Right, ref jMinT);
@@ -422,9 +427,10 @@ namespace NodeController
         {
             if (Intersection.CalculateSingle(bezier, line, out minT, out _))
             {
-                var direction = bezier.Tangent(minT);
-                var cross = CrossXZ(direction, line.StartDirection);
-                if (cross >= 0f == (side == SideType.Left))
+                var dir = bezier.Tangent(minT);
+                var dot = NormalizeDotXZ(dir, line.StartDirection);
+                var cross = NormalizeCrossXZ(dir, line.StartDirection);
+                if (Mathf.Abs(dot) < 0.995f && (cross >= 0f ^ dot >= 0f ^ side == SideType.Left))
                     return;
             }
 

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 using static ColossalFramework.Math.VectorUtils;
+using static ModsCommon.Utilities.VectorUtilsExtensions;
 
 namespace NodeController
 {
@@ -57,7 +58,7 @@ namespace NodeController
         public BezierTrajectory LeftMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
         public BezierTrajectory RightMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
 
-        private MainRoad MainRoad { get; set; } = new MainRoad();
+        private MainRoad MainRoad { get; set;} = new MainRoad();
 
         public NetNode.Flags DefaultFlags { get; private set; }
         public NodeStyleType DefaultType { get; private set; }
@@ -75,9 +76,9 @@ namespace NodeController
 
         public bool HasPedestrianLanes => SegmentEnds.Keys.Any(s => s.GetSegment().Info.m_hasPedestrianLanes);
         private int PedestrianLaneCount => SegmentEnds.Keys.Max(s => s.GetSegment().Info.PedestrianLanes());
-        private float MainDot => DotXZ(FirstSegment.GetDirection(Id), SecondSegment.GetDirection(Id));
-        public bool IsStraight => IsTwoRoads && MainDot < -0.99f;
-        public bool Is180 => IsTwoRoads && MainDot > 0.99f;
+        private float MainDot => NormalizeDotXZ(FirstSegment.GetDirection(Id), SecondSegment.GetDirection(Id));
+        public bool IsStraight => IsTwoRoads && MainDot < -0.995f;
+        public bool Is180 => IsTwoRoads && MainDot > 0.995f;
         public bool IsEqualWidth => IsTwoRoads && Math.Abs(FirstSegment.Info.m_halfWidth - SecondSegment.Info.m_halfWidth) < 0.001f;
         public bool HasNodeLess => SegmentEndDatas.Any(s => s.IsNodeLess);
 
@@ -334,6 +335,7 @@ namespace NodeController
         public void ResetToDefault()
         {
             SetType(DefaultType, true);
+            MainRoad.Auto = true;
             UpdateNode();
         }
         private void SetType(NodeStyleType type, bool force)
@@ -367,6 +369,7 @@ namespace NodeController
         #region UTILITIES
 
         public bool ContainsSegment(ushort segmentId) => SegmentEnds.ContainsKey(segmentId);
+        public bool TryGetSegment(ushort segmentId, out SegmentEndData segmentEnd) => SegmentEnds.TryGetValue(segmentId, out segmentEnd);
         public bool IsPossibleType(NodeStyleType type) => type == Type || IsPossibleTypeImpl(type);
         private bool IsPossibleTypeImpl(NodeStyleType newNodeType)
         {
@@ -467,99 +470,6 @@ namespace NodeController
         }
 
         #endregion
-    }
-    public class MainRoad : IToXml
-    {
-        public static string XmlName => "MR";
-        public string XmlSection => XmlName;
-
-        public ushort First { get; set; }
-        public ushort Second { get; set; }
-
-        public bool IsComplite => First != 0 && Second != 0;
-        public IEnumerable<ushort> Segments
-        {
-            get
-            {
-                if (First != 0)
-                    yield return First;
-                if (Second != 0)
-                    yield return Second;
-            }
-        }
-        public MainRoad() { }
-        public MainRoad(ushort first, ushort second)
-        {
-            First = first;
-            Second = second;
-        }
-        public bool IsMain(ushort segmentId) => segmentId != 0 && (segmentId == First || segmentId == Second);
-        public void Replace(ushort from, ushort to)
-        {
-            if (First == from)
-                First = to;
-            else if (Second == from)
-                Second = to;
-        }
-
-        public void Update(NodeData data)
-        {
-            if (!data.ContainsSegment(First))
-                First = FindMain(data, Second);
-            if (!data.ContainsSegment(Second))
-                Second = FindMain(data, First);
-        }
-        private ushort FindMain(NodeData data, ushort ignore)
-        {
-            var main = data.SegmentEndDatas.Aggregate(default(SegmentEndData), (i, j) => CompareSegmentEnds(i, j, ignore));
-            return main?.Id ?? 0;
-        }
-        private SegmentEndData CompareSegmentEnds(SegmentEndData first, SegmentEndData second, ushort ignore)
-        {
-            if (!IsValid(first))
-                return IsValid(second) ? second : null;
-            else if (!IsValid(second))
-                return first;
-
-            var firstInfo = first.Id.GetSegment().Info;
-            var secondInfo = second.Id.GetSegment().Info;
-
-            int result;
-
-            if ((result = firstInfo.m_flatJunctions.CompareTo(secondInfo.m_flatJunctions)) == 0)
-                if ((result = firstInfo.m_forwardVehicleLaneCount.CompareTo(secondInfo.m_forwardVehicleLaneCount)) == 0)
-                    if ((result = firstInfo.m_halfWidth.CompareTo(secondInfo.m_halfWidth)) == 0)
-                        result = ((firstInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false).CompareTo((secondInfo.m_netAI as RoadBaseAI)?.m_highwayRules ?? false);
-
-            return result >= 0 ? first : second;
-
-            bool IsValid(SegmentEndData end) => end != null && end.Id != ignore;
-        }
-
-        public XElement ToXml()
-        {
-            var config = new XElement(XmlSection);
-
-            config.AddAttr("F", First);
-            config.AddAttr("S", Second);
-
-            return config;
-        }
-
-        public void FromXml(XElement config, ObjectsMap map)
-        {
-            First = Get("F", config, map);
-            Second = Get("S", config, map);
-
-            static ushort Get(string name, XElement config, ObjectsMap map)
-            {
-                var id = config.GetAttrValue<ushort>(name, 0);
-                return map.TryGetSegment(id, out var targetId) ? targetId : id;
-
-            }
-        }
-
-        public override string ToString() => $"{First}-{Second}";
     }
 
     public class NodeTypePropertyPanel : EnumOncePropertyPanel<NodeStyleType, NodeTypePropertyPanel.NodeTypeDropDown>
