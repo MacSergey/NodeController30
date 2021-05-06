@@ -364,7 +364,6 @@ namespace NodeController
                     var cross = CrossXZ(iDir, jDir);
                     var dot = DotXZ(iDir, jDir);
 
-                    //if (cross > 0.001f || (-0.999f < dot && dot < -0.75f))
                     if ((cross > 0f || dot < -0.75f) && (count > 2 || (dot > -0.999f && cross > 0.001f)))
                     {
                         GetSubMinLimit(endDatas[i].RightSide.RawBezier, endDatas[i.PrevIndex(count)].LeftSide.RawBezier, SideType.Left, ref leftDefaultT[i]);
@@ -402,27 +401,24 @@ namespace NodeController
             var iBezier = iData.LeftSide.RawBezier;
             var jBezier = jData.RightSide.RawBezier;
 
-            if (Intersection.CalculateSingle(iBezier, jBezier, out iMinT, out jMinT))
-                return;
-            else
+            if (!Intersection.CalculateSingle(iBezier, jBezier, out iMinT, out jMinT))
+            {
+                GetMainMinLimit(iData, jData, SideType.Left, ref iMinT);
+                GetMainMinLimit(jData, iData, SideType.Right, ref jMinT);
+            }
+            else if(iMinT == 0f && jMinT == 0f)
             {
                 iMinT = -1f;
                 jMinT = -1f;
             }
-
-            var iLine = new StraightTrajectory(iBezier.StartPosition, iBezier.StartPosition - iBezier.StartDirection, false);
-            var jLine = new StraightTrajectory(jBezier.StartPosition, jBezier.StartPosition - jBezier.StartDirection, false);
-            Intersection.CalculateSingle(iLine, jLine, out var iT, out var jT);
-
-            if (iT < 0f)
-                GetMainMinLimit(iBezier, jLine, jData, SideType.Left, ref iMinT);
-
-            if (jT < 0f)
-                GetMainMinLimit(jBezier, iLine, iData, SideType.Right, ref jMinT);
         }
-        private static void GetMainMinLimit(BezierTrajectory bezier, StraightTrajectory line, SegmentEndData otherData, SideType side, ref float minT)
+        private static void GetMainMinLimit(SegmentEndData data, SegmentEndData otherData, SideType side, ref float minT)
         {
-            if (Intersection.CalculateSingle(bezier, line, out minT, out var lineT))
+            var bezier = data[side].RawBezier;
+            var otherBezier = otherData[side.Invert()].RawBezier;
+            var line = new StraightTrajectory(otherBezier.StartPosition, otherBezier.StartPosition - otherBezier.StartDirection, false);
+
+            if (Intersection.CalculateSingle(bezier, line, out minT, out var lineT) && lineT >= 0f)
             {
                 var dir = bezier.Tangent(minT);
                 var dot = NormalizeDotXZ(dir, line.StartDirection);
@@ -432,12 +428,8 @@ namespace NodeController
                     return;
             }
 
-            var endLine = new StraightTrajectory(otherData.LeftSide.RawBezier.EndPosition, otherData.RightSide.RawBezier.EndPosition);
+            var endLine = new StraightTrajectory(otherData.LeftSide.RawBezier.EndPosition, otherData.RightSide.RawBezier.EndPosition).Cut(0.01f, 0.99f);
             if (Intersection.CalculateSingle(bezier, endLine, out minT, out _))
-                return;
-
-            var startLine = new StraightTrajectory(otherData.LeftSide.RawBezier.StartPosition, otherData.RightSide.RawBezier.StartPosition);
-            if (Intersection.CalculateSingle(bezier, startLine, out minT, out _))
                 return;
 
             minT = -1;
