@@ -28,15 +28,18 @@ namespace NodeController
         {
             if (serializableDataManager.LoadData(DATA_ID) is byte[] data)
             {
+                SingletonMod<Mod>.Logger.Debug($"Import NC2 data");
+
                 WasImported = true;
                 var state = Backward—ompatibility.Loader.Load<Backward—ompatibility.NCState>(data);
                 var config = state.ToXml();
                 SetLoadData(config);
             }
             else
+            {
                 WasImported = false;
-
-            base.OnLoadData();
+                base.OnLoadData();
+            }
         }
         public override void OnSaveData()
         {

@@ -12,8 +12,18 @@ namespace NodeController
 {
     public class Manager : IManager
     {
-        private NodeData[] Buffer { get; set; } = new NodeData[NetManager.MAX_NODE_COUNT];
+        private NodeData[] Buffer { get; set; }
 
+        public Manager()
+        {
+            SingletonMod<Mod>.Logger.Debug("Create manager");
+            Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
+        }
+        private void Clear()
+        {
+            SingletonMod<Mod>.Logger.Debug("Clear manager");
+            Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
+        }
         public NodeData InsertNode(NetTool.ControlPoint controlPoint, NodeStyleType nodeType = NodeStyleType.Crossing)
         {
             if (NetTool.CreateNode(controlPoint.m_segment.GetSegment().Info, controlPoint, controlPoint, controlPoint, NetTool.m_nodePositionsSimulation, 0, false, false, true, false, false, false, 0, out var nodeId, out _, out _, out _) != ToolBase.ToolErrors.None)
@@ -75,7 +85,6 @@ namespace NodeController
             ref var segment = ref segmentId.GetSegment();
             return Buffer[segment.GetNode(isStart)]?[segmentId];
         }
-
 
         public void Update(ushort nodeId, bool now = false)
         {
@@ -168,11 +177,8 @@ namespace NodeController
 
             return config;
         }
-        public void FromXml(XElement config, ObjectsMap map, bool clear = true)
+        public void FromXml(XElement config, ObjectsMap map)
         {
-            if (clear)
-                Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
-
             foreach (var nodeConfig in config.Elements(NodeData.XmlName))
             {
                 if (NodeData.FromXml(nodeConfig, map, out NodeData data))

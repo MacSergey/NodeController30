@@ -14,5 +14,10 @@ namespace NodeController
             SingletonMod<Mod>.Instance.ShowLoadWarning();
             base.OnLoad();
         }
+        protected override void OnUnload()
+        {
+            base.OnUnload();
+            SingletonManager<Manager>.Destroy();
+        }
     }
 }
