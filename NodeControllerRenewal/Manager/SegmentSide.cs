@@ -3,6 +3,7 @@ using ModsCommon.Utilities;
 using System;
 using UnityEngine;
 using static ColossalFramework.Math.VectorUtils;
+using static ModsCommon.Utilities.VectorUtilsExtensions;
 
 namespace NodeController
 {
@@ -97,7 +98,9 @@ namespace NodeController
                 var line = new StraightTrajectory(position, position - direction, false);
                 var intersect = Intersection.CalculateSingle(closestLine, line);
                 var intersectPos = closestPos + intersect.FirstT * closestDir;
-                direction = (position - intersectPos).normalized;
+                var newDirection = (position - intersectPos).normalized;
+
+                direction = NormalizeDotXZ(direction, newDirection) >= 0f ? newDirection : -newDirection;
             }
             else
             {
