@@ -15,9 +15,9 @@ namespace NodeController.Patches
         public static IEnumerable<CodeInstruction> NetLanePopulateGroupDataTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original) => NetLaneTranspilerBase(generator, instructions, original, 6);
         public static IEnumerable<CodeInstruction> NetLaneRefreshInstanceTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original) => NetLaneTranspilerBase(generator, instructions, original, 5);
         public static IEnumerable<CodeInstruction> NetLaneRenderInstanceTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original) => NetLaneTranspilerBase(generator, instructions, original, 12);
-        public static IEnumerable<CodeInstruction> NetLaneRenderDestroyedInstanceTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original) => NetLaneTranspilerBase(generator, instructions, original, 6);
+        public static IEnumerable<CodeInstruction> NetLaneRenderDestroyedInstanceTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original) => NetLaneTranspilerBase(generator, instructions, original, 6, 29);
 
-        public static IEnumerable<CodeInstruction> NetLaneTranspilerBase(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original, int propLocal)
+        public static IEnumerable<CodeInstruction> NetLaneTranspilerBase(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original, params int[] propLocals)
         {
             var bezierPosition = AccessTools.Method(typeof(Bezier3), nameof(Bezier3.Position), new Type[] { typeof(float) });
             var propPosition = AccessTools.Field(typeof(NetLaneProps.Prop), nameof(NetLaneProps.Prop.m_position));
@@ -25,19 +25,23 @@ namespace NodeController.Patches
             var prevPrev = default(CodeInstruction);
             var prev = default(CodeInstruction);
             var positionLocal = default(LocalBuilder);
+            var index = 0;
+
             foreach (var instruction in instructions)
             {
                 yield return instruction;
                 if (prev != null && prev.opcode == OpCodes.Call && prev.operand == bezierPosition)
                 {
                     positionLocal = generator.DeclareLocal(typeof(Vector3));
-                    yield return new CodeInstruction(OpCodes.Ldloc_S, propLocal);
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, propLocals[index]);
                     yield return new CodeInstruction(OpCodes.Ldflda, propPosition);
                     yield return prevPrev;
                     yield return original.GetLDArg("laneID");
                     yield return original.GetLDArg("laneInfo");
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetLanePatches), nameof(NetLanePatches.FixPropPosition)));
                     yield return new CodeInstruction(OpCodes.Stloc_S, positionLocal);
+
+                    index += 1;
                 }
                 else if (positionLocal != null && instruction.opcode == OpCodes.Ldflda && instruction.operand == propPosition)
                 {
