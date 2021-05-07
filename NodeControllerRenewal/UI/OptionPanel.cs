@@ -90,6 +90,7 @@ namespace NodeController.UI
         public delegate TypeValue Getter(INetworkData data);
         public delegate void Setter(INetworkData data, TypeValue value);
 
+        public event Action<INetworkData, TypeValue> OnChanged;
         private Getter ValueGetter { get; set; }
         private Setter ValueSetter { get; set; }
         public string Format { get; set; }
@@ -127,6 +128,7 @@ namespace NodeController.UI
         private void ValueChanged(INetworkData data, TypeValue value)
         {
             ValueSetter(data, value);
+            OnChanged?.Invoke(data, value);
             Data.UpdateNode();
             Refresh();
         }

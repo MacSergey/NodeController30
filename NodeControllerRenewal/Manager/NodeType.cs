@@ -205,26 +205,10 @@ namespace NodeController
         public List<EditorItem> GetUIComponents(UIComponent parent)
         {
             var components = new List<EditorItem>();
-
-            var junctionStyle = default(BoolListPropertyPanel);
-            if (SupportSlopeJunction != SupportOption.None)
-            {
-                junctionStyle = GetJunctionButtons(parent);
-                components.Add(junctionStyle);
-            }
-
-            if (Data.IsJunction)
-            {
-                var mainRoad = GetMainRoadButtons(parent);
-                SetVisible(Data.IsSlopeJunctions);
-                junctionStyle.OnSelectObjectChanged += SetVisible;
-                components.Add(mainRoad);
-
-                void SetVisible(bool isSlope) => mainRoad.isVisible = isSlope;
-            }
-
             var totalSupport = TotalSupport;
 
+            var junctionStyle = GetJunctionButtons(parent);
+            var mainRoad = GetMainRoadButtons(parent);
             if (totalSupport == SupportOption.All)
             {
                 var space = ComponentPool.Get<SpacePanel>(parent);
@@ -235,56 +219,50 @@ namespace NodeController
                 titles.Init(Data, SupportOption.All, SupportOption.All);
                 components.Add(titles);
             }
+            var offset = GetOffsetOption(parent, totalSupport);
+            var rotate = GetRotateOption(parent, totalSupport);
+            var shift = GetShiftOption(parent, totalSupport);
+            var stretch = GetStretchOption(parent, totalSupport);
+            var slope = GetSlopeOption(parent, totalSupport);
+            var twist = GetTwistOption(parent, totalSupport);
+            var hideMarking = GetNoMarkingsOption(parent, totalSupport);
 
-            if (SupportOffset != SupportOption.None)
+
+            if (junctionStyle != null)
+                components.Add(junctionStyle);
+
+            if (mainRoad != null)
             {
-                var offset = ComponentPool.Get<FloatOptionPanel>(parent);
-                offset.Text = Localize.Option_Offset;
-                offset.Format = Localize.Option_OffsetFormat;
-                offset.NumberFormat = "0.##";
-                offset.Init(Data, SupportOffset, totalSupport, (data) => data.Offset, (data, value) => data.Offset = value, MinMaxOffset);
+                SetVisible(Data.IsSlopeJunctions);
+                junctionStyle.OnSelectObjectChanged += SetVisible;
+                components.Add(mainRoad);
+
+                void SetVisible(bool isSlope) => mainRoad.isVisible = isSlope;
+            }
+
+            if (offset != null)
+            {
                 components.Add(offset);
+                if(shift != null)
+                    shift.OnChanged += (_, _) => offset.Refresh();
             }
 
-            if (SupportShift != SupportOption.None)
+            if (rotate != null)
             {
-                var shift = ComponentPool.Get<FloatOptionPanel>(parent);
-                shift.Text = Localize.Option_Shift;
-                shift.Format = Localize.Option_ShiftFormat;
-                shift.NumberFormat = "0.##";
-                shift.Init(Data, SupportShift, totalSupport, (data) => data.Shift, (data, value) => data.Shift = value, MinMaxShift);
-                components.Add(shift);
-            }
-
-            if (SupportRotate != SupportOption.None)
-            {
-                var rotate = ComponentPool.Get<FloatOptionPanel>(parent);
-                rotate.Text = Localize.Option_Rotate;
-                rotate.Format = Localize.Option_RotateFormat;
-                rotate.NumberFormat = "0.#";
-                rotate.Init(Data, SupportRotate, totalSupport, (data) => data.RotateAngle, (data, value) => data.RotateAngle = value, MinMaxRotate);
                 components.Add(rotate);
+                if(shift != null)
+                    shift.OnChanged += (_, _) => rotate.Refresh();
             }
 
-            if (SupportStretch != SupportOption.None)
-            {
-                var stretch = ComponentPool.Get<FloatOptionPanel>(parent);
-                stretch.Text = Localize.Option_Stretch;
-                stretch.Format = Localize.Option_StretchFormat;
-                stretch.NumberFormat = "0.#";
-                stretch.Init(Data, SupportStretch, totalSupport, (data) => data.StretchPercent, (data, value) => data.StretchPercent = value, MinMaxStretch);
+            if (shift != null)
+                components.Add(shift);
+
+            if (stretch != null)
                 components.Add(stretch);
-            }
 
-            if (SupportSlope != SupportOption.None && OnlyOnSlope)
+            if (slope != null)
             {
-                var slope = ComponentPool.Get<FloatOptionPanel>(parent);
-                slope.Text = Localize.Option_Slope;
-                slope.Format = Localize.Option_SlopeFormat;
-                slope.NumberFormat = "0.#";
-                slope.Init(Data, SupportSlope, totalSupport, (data) => data.SlopeAngle, (data, value) => data.SlopeAngle = value, MinMaxSlope);
                 components.Add(slope);
-
                 if (junctionStyle != null)
                 {
                     SetVisible(Data.IsSlopeJunctions);
@@ -298,15 +276,9 @@ namespace NodeController
                 }
             }
 
-            if (SupportTwist != SupportOption.None && OnlyOnSlope)
+            if (twist != null)
             {
-                var twist = ComponentPool.Get<FloatOptionPanel>(parent);
-                twist.Text = Localize.Option_Twist;
-                twist.Format = Localize.Option_TwistFormat;
-                twist.NumberFormat = "0.#";
-                twist.Init(Data, SupportTwist, totalSupport, (data) => data.TwistAngle, (data, value) => data.TwistAngle = value, MinMaxTwist);
                 components.Add(twist);
-
                 if (junctionStyle != null)
                 {
                     SetVisible(Data.IsSlopeJunctions);
@@ -320,44 +292,152 @@ namespace NodeController
                 }
             }
 
-            if (SupportNoMarking != SupportOption.None && HideCrosswalksEnable)
-            {
-                var hideMarking = ComponentPool.Get<BoolOptionPanel>(parent);
-                hideMarking.Text = Localize.Option_Marking;
-                hideMarking.Init(Data, SupportNoMarking, totalSupport, (data) => !data.NoMarkings, (data, value) => data.NoMarkings = !value);
+            if (hideMarking != null)
                 components.Add(hideMarking);
-            }
 
             return components;
         }
 
         private BoolListPropertyPanel GetJunctionButtons(UIComponent parent)
         {
-            var flatJunctionProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
-            flatJunctionProperty.Text = Localize.Option_Style;
-            flatJunctionProperty.Init(Localize.Option_StyleFlat, Localize.Option_StyleSlope, false);
-            flatJunctionProperty.SelectedObject = Data.IsSlopeJunctions;
-            flatJunctionProperty.OnSelectObjectChanged += (value) =>
-                {
-                    Data.IsSlopeJunctions = value;
-                    Data.UpdateNode();
-                };
+            if (SupportSlopeJunction != SupportOption.None)
+            {
+                var flatJunctionProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
+                flatJunctionProperty.Text = Localize.Option_Style;
+                flatJunctionProperty.Init(Localize.Option_StyleFlat, Localize.Option_StyleSlope, false);
+                flatJunctionProperty.SelectedObject = Data.IsSlopeJunctions;
+                flatJunctionProperty.OnSelectObjectChanged += (value) =>
+                    {
+                        Data.IsSlopeJunctions = value;
+                        Data.UpdateNode();
+                    };
 
-            return flatJunctionProperty;
+                return flatJunctionProperty;
+            }
+            else
+                return null;
         }
         private BoolListPropertyPanel GetMainRoadButtons(UIComponent parent)
         {
-            var mainRoadProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
-            mainRoadProperty.Text = Localize.Option_MainRoad;
-            mainRoadProperty.Init(Localize.Option_MainRoadManually, Localize.Option_MainRoadAuto);
-            mainRoadProperty.SelectedObject = Data.MainRoad.Auto;
-            mainRoadProperty.OnSelectObjectChanged += (value) =>
+            if (Data.IsJunction)
             {
-                Data.MainRoad.Auto = value;
-                Data.UpdateNode();
-            };
+                var mainRoadProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
+                mainRoadProperty.Text = Localize.Option_MainRoad;
+                mainRoadProperty.Init(Localize.Option_MainRoadManually, Localize.Option_MainRoadAuto);
+                mainRoadProperty.SelectedObject = Data.MainRoad.Auto;
+                mainRoadProperty.OnSelectObjectChanged += (value) =>
+                {
+                    Data.MainRoad.Auto = value;
+                    Data.UpdateNode();
+                };
 
-            return mainRoadProperty;
+                return mainRoadProperty;
+            }
+            else
+                return null;
+        }
+        private FloatOptionPanel GetOffsetOption(UIComponent parent, SupportOption totalSupport)
+        {
+            if (SupportOffset != SupportOption.None)
+            {
+                var offset = ComponentPool.Get<FloatOptionPanel>(parent);
+                offset.Text = Localize.Option_Offset;
+                offset.Format = Localize.Option_OffsetFormat;
+                offset.NumberFormat = "0.##";
+                offset.Init(Data, SupportOffset, totalSupport, OffsetGetter, OffsetSetter, MinMaxOffset);
+
+                return offset;
+            }
+            else
+                return null;
+        }
+        private FloatOptionPanel GetShiftOption(UIComponent parent, SupportOption totalSupport)
+        {
+            if (SupportShift != SupportOption.None)
+            {
+                var shift = ComponentPool.Get<FloatOptionPanel>(parent);
+                shift.Text = Localize.Option_Shift;
+                shift.Format = Localize.Option_ShiftFormat;
+                shift.NumberFormat = "0.##";
+                shift.Init(Data, SupportShift, totalSupport, ShiftGetter, ShiftSetter, MinMaxShift);
+
+                return shift;
+            }
+            else
+                return null;
+        }
+        private FloatOptionPanel GetRotateOption(UIComponent parent, SupportOption totalSupport)
+        {
+            if (SupportRotate != SupportOption.None)
+            {
+                var rotate = ComponentPool.Get<FloatOptionPanel>(parent);
+                rotate.Text = Localize.Option_Rotate;
+                rotate.Format = Localize.Option_RotateFormat;
+                rotate.NumberFormat = "0.#";
+                rotate.Init(Data, SupportRotate, totalSupport, RotateGetter, RotateSetter, MinMaxRotate);
+
+                return rotate;
+            }
+            else
+                return null;
+        }
+        private FloatOptionPanel GetStretchOption(UIComponent parent, SupportOption totalSupport)
+        {
+            if (SupportStretch != SupportOption.None)
+            {
+                var stretch = ComponentPool.Get<FloatOptionPanel>(parent);
+                stretch.Text = Localize.Option_Stretch;
+                stretch.Format = Localize.Option_StretchFormat;
+                stretch.NumberFormat = "0.#";
+                stretch.Init(Data, SupportStretch, totalSupport, StretchGetter, StretchSetter, MinMaxStretch);
+
+                return stretch;
+            }
+            else
+                return null;
+        }
+        private FloatOptionPanel GetSlopeOption(UIComponent parent, SupportOption totalSupport)
+        {
+            if (SupportSlope != SupportOption.None && OnlyOnSlope)
+            {
+                var slope = ComponentPool.Get<FloatOptionPanel>(parent);
+                slope.Text = Localize.Option_Slope;
+                slope.Format = Localize.Option_SlopeFormat;
+                slope.NumberFormat = "0.#";
+                slope.Init(Data, SupportSlope, totalSupport, SlopeGetter, SlopeSetter, MinMaxSlope);
+
+                return slope;
+            }
+            else
+                return null;
+        }
+        private FloatOptionPanel GetTwistOption(UIComponent parent, SupportOption totalSupport)
+        {
+            if (SupportTwist != SupportOption.None && OnlyOnSlope)
+            {
+                var twist = ComponentPool.Get<FloatOptionPanel>(parent);
+                twist.Text = Localize.Option_Twist;
+                twist.Format = Localize.Option_TwistFormat;
+                twist.NumberFormat = "0.#";
+                twist.Init(Data, SupportTwist, totalSupport, TwistGetter, TwistSetter, MinMaxTwist);
+
+                return twist;
+            }
+            else
+                return null;
+        }
+        private BoolOptionPanel GetNoMarkingsOption(UIComponent parent, SupportOption totalSupport)
+        {
+            if (SupportNoMarking != SupportOption.None && HideCrosswalksEnable)
+            {
+                var hideMarking = ComponentPool.Get<BoolOptionPanel>(parent);
+                hideMarking.Text = Localize.Option_Marking;
+                hideMarking.Init(Data, SupportNoMarking, totalSupport, NoMarkingsGetter, NoMarkingsSetter);
+
+                return hideMarking;
+            }
+            else
+                return null;
         }
 
         private void MinMaxOffset(INetworkData data, out float min, out float max)
@@ -406,6 +486,22 @@ namespace NodeController
             min = MinTwist;
             max = MaxTwist;
         }
+
+        private static void OffsetSetter(INetworkData data, float value) => data.Offset = value;
+        private static void ShiftSetter(INetworkData data, float value) => data.Shift = value;
+        private static void RotateSetter(INetworkData data, float value) => data.RotateAngle = value;
+        private static void SlopeSetter(INetworkData data, float value) => data.SlopeAngle = value;
+        private static void TwistSetter(INetworkData data, float value) => data.TwistAngle = value;
+        private static void StretchSetter(INetworkData data, float value) => data.StretchPercent = value;
+        private static void NoMarkingsSetter(INetworkData data, bool value) => data.NoMarkings = !value;
+
+        private static float OffsetGetter(INetworkData data) => data.Offset;
+        private static float ShiftGetter(INetworkData data) => data.Shift;
+        private static float RotateGetter(INetworkData data) => data.RotateAngle;
+        private static float SlopeGetter(INetworkData data) => data.SlopeAngle;
+        private static float TwistGetter(INetworkData data) => data.TwistAngle;
+        private static float StretchGetter(INetworkData data) => data.StretchPercent;
+        private static bool NoMarkingsGetter(INetworkData data) => !data.NoMarkings;
 
         #endregion
     }
