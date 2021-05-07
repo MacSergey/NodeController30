@@ -33,7 +33,7 @@ namespace NodeController.Patches
                 if (prev != null && prev.opcode == OpCodes.Call && prev.operand == bezierPosition)
                 {
                     positionLocal = generator.DeclareLocal(typeof(Vector3));
-                    yield return new CodeInstruction(OpCodes.Ldloc_S, propLocals[index]);
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, propLocals[index % propLocals.Length]);
                     yield return new CodeInstruction(OpCodes.Ldflda, propPosition);
                     yield return prevPrev;
                     yield return original.GetLDArg("laneID");
