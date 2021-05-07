@@ -406,9 +406,8 @@ namespace NodeController
 
             if (count == 2)
             {
-                var iLine = new StraightTrajectory(iBezier.StartPosition, iBezier.StartPosition - iBezier.StartDirection, false);
-                var jLine = new StraightTrajectory(jBezier.StartPosition, jBezier.StartPosition - jBezier.StartDirection, false);
-                if (Intersection.CalculateSingle(iLine, jLine, out var iT, out var jT) && iT > 0 && jT > 0)
+                var middleDir = iBezier.StartPosition - jBezier.StartPosition;
+                if(NormalizeDotXZ(iBezier.StartDirection, middleDir) >= 0.999f && NormalizeDotXZ(middleDir, -jBezier.StartDirection) >= 0.999f)
                 {
                     iMinT = 0f;
                     jMinT = 0f;
