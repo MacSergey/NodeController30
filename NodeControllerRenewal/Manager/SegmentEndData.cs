@@ -241,7 +241,7 @@ namespace NodeController
             else
                 SetOffset(Offset);
 
-            if (force)
+            if (force && style.SupportKeepDefault)
                 KeepDefaults = true;
         }
 
@@ -355,7 +355,7 @@ namespace NodeController
                 {
                     var j = i.NextIndex(count);
 
-                    GetMainMinLimit(endDatas[i], endDatas[j], ref leftMainMitT[i], ref rightMainMinT[j]);
+                    GetMainMinLimit(endDatas[i], endDatas[j], count, ref leftMainMitT[i], ref rightMainMinT[j]);
                     leftDefaultT[i] = leftMainMitT[i];
                     rightDefaultT[j] = rightMainMinT[j];
 
@@ -374,7 +374,7 @@ namespace NodeController
                 for (var i = 0; i < count; i += 1)
                 {
                     var minCornerOffset = endDatas[i].GetMinCornerOffset(data.Style.DefaultOffset);
-                    var defaultOffset = endDatas[i].Id.GetSegment().Info.m_halfWidth < 4f ? 0f : 8f;
+                    var defaultOffset = endDatas[i].Id.GetSegment().Info.m_halfWidth < 4f || endDatas[i].IsNodeLess ? 0f : 8f;
                     var additionalOffset = endDatas[i].IsNodeLess ? 0f : data.Style.AdditionalOffset;
 
                     if (leftDefaultT[i] <= 0f && rightDefaultT[i] <= 0f)
@@ -396,21 +396,28 @@ namespace NodeController
                 endData.RightSide.DefaultT = Mathf.Clamp01(rightDefaultT[i]);
             }
         }
-        private static void GetMainMinLimit(SegmentEndData iData, SegmentEndData jData, ref float iMinT, ref float jMinT)
+        private static void GetMainMinLimit(SegmentEndData iData, SegmentEndData jData, int count, ref float iMinT, ref float jMinT)
         {
             var iBezier = iData.LeftSide.RawBezier;
             var jBezier = jData.RightSide.RawBezier;
 
-            if (!Intersection.CalculateSingle(iBezier, jBezier, out iMinT, out jMinT))
+            if (Intersection.CalculateSingle(iBezier, jBezier, out iMinT, out jMinT))
+                return;
+
+            if (count == 2)
             {
-                GetMainMinLimit(iData, jData, SideType.Left, ref iMinT);
-                GetMainMinLimit(jData, iData, SideType.Right, ref jMinT);
+                var iLine = new StraightTrajectory(iBezier.StartPosition, iBezier.StartPosition - iBezier.StartDirection, false);
+                var jLine = new StraightTrajectory(jBezier.StartPosition, jBezier.StartPosition - jBezier.StartDirection, false);
+                if (Intersection.CalculateSingle(iLine, jLine, out var iT, out var jT) && iT > 0 && jT > 0)
+                {
+                    iMinT = 0f;
+                    jMinT = 0f;
+                    return;
+                }
             }
-            else if(iMinT == 0f && jMinT == 0f)
-            {
-                iMinT = -1f;
-                jMinT = -1f;
-            }
+
+            GetMainMinLimit(iData, jData, SideType.Left, ref iMinT);
+            GetMainMinLimit(jData, iData, SideType.Right, ref jMinT);
         }
         private static void GetMainMinLimit(SegmentEndData data, SegmentEndData otherData, SideType side, ref float minT)
         {
@@ -423,8 +430,8 @@ namespace NodeController
                 var dir = bezier.Tangent(minT);
                 var dot = NormalizeDotXZ(dir, line.StartDirection);
                 var cross = NormalizeCrossXZ(dir, line.StartDirection);
-                var minAngle = Mathf.Clamp(1 - lineT / 1600f, 0.98f, 0.999f);
-                if (Mathf.Abs(dot) < minAngle && (cross >= 0f ^ dot >= 0f ^ side == SideType.Left))
+                var minAngle = Mathf.Clamp(1 - lineT / 1600f, 0.99f, 0.999f);
+                if (0.98f <= Mathf.Abs(dot) && Mathf.Abs(dot) < minAngle && (cross >= 0f ^ dot >= 0f ^ side == SideType.Left))
                     return;
             }
 
@@ -812,7 +819,7 @@ namespace NodeController
             if (style.SupportSlopeJunction != SupportOption.None)
                 IsSlope = config.GetAttrValue("IS", style.DefaultSlopeJunction ? 1 : 0) == 1;
 
-            KeepDefaults = config.GetAttrValue("KD", 0) == 1;
+            KeepDefaults = style.SupportKeepDefault && config.GetAttrValue("KD", 0) == 1;
 
             if (style.SupportOffset != SupportOption.None)
                 SetOffset(config.GetAttrValue("O", GetMinCornerOffset(style.DefaultOffset)));

@@ -327,10 +327,13 @@ namespace NodeController
         public void UpdateNode() => SingletonManager<Manager>.Instance.Update(Id, true);
         public void KeepDefaults()
         {
-            foreach (var segmentEnd in SegmentEndDatas)
-                segmentEnd.SetKeepDefaults();
+            if (Style.SupportKeepDefault)
+            {
+                foreach (var segmentEnd in SegmentEndDatas)
+                    segmentEnd.SetKeepDefaults();
 
-            UpdateNode();
+                UpdateNode();
+            }
         }
         public void ResetToDefault()
         {
