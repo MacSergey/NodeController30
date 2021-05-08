@@ -46,6 +46,7 @@ namespace NodeController
 
         public static SavedFloat SegmentId { get; } = new SavedFloat(nameof(SegmentId), SettingsFile, 0f, false);
         public static SavedFloat NodeId { get; } = new SavedFloat(nameof(NodeId), SettingsFile, 0f, false);
+
         private void AddDebug(UIHelperBase helper)
         {
             var group = helper.AddGroup("Debug") as UIHelper;
@@ -56,6 +57,19 @@ namespace NodeController
             AddFloatField(group, "Overlay width", Selection.OverlayWidth, 3f, 1f);
             AddFloatField(group, "SegmentId", SegmentId, 0f);
             AddFloatField(group, "NodeId", NodeId, 0f);
+            AddButton(group, "Add all nodes", AddAllNodes, 200f);
+            AddButton(group, "Clear", SingletonManager<Manager>.Destroy, 200f);
+
+            static void AddAllNodes()
+            {
+                var netManaget = Singleton<NetManager>.instance;
+                for(ushort i = 0; i < NetManager.MAX_NODE_COUNT; i+=1)
+                {
+                    var node = i.GetNode();
+                    if(node.m_flags.IsSet(NetNode.Flags.Created))
+                        _ = SingletonManager<Manager>.Instance[i, true];
+                }
+            }
         }
 #endif
     }
