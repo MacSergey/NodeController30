@@ -220,6 +220,23 @@ Uruchom ponownie grę.</value>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Co nowego w {0}</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
+    <value>- Added auto mode for main slope direction.
+- Added red overlay for short segments (short segments lead wrong vehicle speed).
+- Added the ability reset only offset to default.
+- Added Polish translation.
+- Fix default node shape calculation.
+- Fix wrong corner calculation on too sloped or too curved segments.
+- Fix broken nodes after reload map without close game.
+- Fix vehicle trailers disappear.
+- Fix road disappear after disasters.
+- Fix wrong train twist direction.
+- Fix node height in asset editor.
+- Fix default offset value.
+- Fix compatibility with TMPE.
+- Fix load data from intersection assets.
+- Fix not deletable pilars after place intersection asset.</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
@@ -254,7 +271,7 @@ Uruchom ponownie grę.</value>
     <value>Zresetuj przesunięcie</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
-    <value>Main slope direction</value>
+    <value>Główny kierunek nachylenia</value>
   </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>Automatycznie</value>
@@ -356,7 +373,7 @@ Uruchom ponownie grę.</value>
     <value>Kliknij aby wyrównać do tego rogu</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main slope direction</value>
+    <value>Przytrzymaj Alt aby zmienić główny kierunek nachylenia</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Skrzyżowanie #{0}
@@ -375,10 +392,10 @@ Kliknij aby edytować</value>
     <value>Przeciągnij aby zmienić przesunięcie rogu</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drag this end to change main slope direction</value>
+    <value>Przeciągnij ten koniec aby zmienić główny kierunek nachylnia</value>
   </data>
   <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drop this end to change main slope direction</value>
+    <value>Upuść ten koniec aby zmienić główny kierunek nachylenia</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Kliknij aby wstawić węzeł skrzyżowania</value>
@@ -390,10 +407,10 @@ Kliknij aby edytować</value>
     <value>Wybierz róg do którego chcesz wrównać</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>Change to desired main slope direction</value>
+    <value>Zmień na oczekiwany główny kierunek nachylenia</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Select end position of main slope direction</value>
+    <value>Wybierz punkt końcowy głównego kierunku nachylenia</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Wybierz węzeł</value>

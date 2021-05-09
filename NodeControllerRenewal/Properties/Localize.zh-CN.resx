@@ -220,6 +220,23 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} 版本的新功能</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
+    <value>- 添加自动设置主要斜坡方向模式。
+- 添加红色指示来标记出过短的段落(段落太短会导致车速错误)。
+- 添加仅重置偏移为默认值功能。
+- 添加波兰语翻译。
+- 修复默认节点形状计算。
+- 修复陡峭或急曲段落上的拐角计算错误。
+- 修复没有退出游戏的情况下重新装入地图后会导致节点损坏。
+- 修复车辆拖车消失。
+- 修复道路在灾害后消失。
+- 修复火车扭曲方向错误。
+- 在资产编辑器中修复节点高度。
+- 修复默认偏移值。
+- 修复与 TMPE 的兼容性。
+- 修复交叉路资源的加载数据。
+- 修复放置交叉路资产后不能删除支撑柱的错误。</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
@@ -254,7 +271,7 @@ Shift x10，Ctrl x0.1</value>
     <value>重置偏移</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
-    <value>Main slope direction</value>
+    <value>主斜坡方向</value>
   </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>自动</value>
@@ -356,7 +373,7 @@ Shift x10，Ctrl x0.1</value>
     <value>点击以向此边角对齐</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main slope direction</value>
+    <value>按住Alt 以改变主要斜坡方向</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>节点 #{0}
@@ -375,10 +392,10 @@ Shift x10，Ctrl x0.1</value>
     <value>拖动以改变边角偏移</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drag this end to change main slope direction</value>
+    <value>拖动此端来改变主要斜坡方向</value>
   </data>
   <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drop this end to change main slope direction</value>
+    <value>丢下此端来改变主要斜坡方向</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>点击插入人行路口节点</value>
@@ -390,10 +407,10 @@ Shift x10，Ctrl x0.1</value>
     <value>选择想要对齐的边角</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>Change to desired main slope direction</value>
+    <value>改变到所需的主要斜坡方向</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Select end position of main slope direction</value>
+    <value>选择主要斜坡方向的终点</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>选择节点</value>

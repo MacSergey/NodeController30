@@ -220,6 +220,23 @@ Rechargez le jeu.</value>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Nouveautés dans {0}</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
+    <value>- Added auto mode for main slope direction.
+- Added red overlay for short segments (short segments lead wrong vehicle speed).
+- Added the ability reset only offset to default.
+- Added Polish translation.
+- Fix default node shape calculation.
+- Fix wrong corner calculation on too sloped or too curved segments.
+- Fix broken nodes after reload map without close game.
+- Fix vehicle trailers disappear.
+- Fix road disappear after disasters.
+- Fix wrong train twist direction.
+- Fix node height in asset editor.
+- Fix default offset value.
+- Fix compatibility with TMPE.
+- Fix load data from intersection assets.
+- Fix not deletable pilars after place intersection asset.</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
@@ -254,7 +271,7 @@ Rechargez le jeu.</value>
     <value>Réinitialiser le décalage</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
-    <value>Main slope direction</value>
+    <value>Direction de la pente principale</value>
   </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>Auto</value>
@@ -356,7 +373,7 @@ Rechargez le jeu.</value>
     <value>Cliquez pour aligner avec ce coin</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main slope direction</value>
+    <value>Maintenez Alt pour changer la direction de pente principale</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Noeud #{0}
@@ -375,10 +392,10 @@ Cliquez pour modifier</value>
     <value>Faites glisser pour changer le décalage du coin</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drag this end to change main slope direction</value>
+    <value>Faites glisser cette extrémité pour changer la direction de la pente principale</value>
   </data>
   <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drop this end to change main slope direction</value>
+    <value>Lâchez cette extrémité pour changer la direction de la pente principale</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Cliquez pour insérer un nœud de croisement</value>
@@ -390,10 +407,10 @@ Cliquez pour modifier</value>
     <value>Sélectionnez le coin avec lequel vous voulez aligner</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>Change to desired main slope direction</value>
+    <value>Changer vers la direction de la pente principale désirée</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Select end position of main slope direction</value>
+    <value>Sélectionnez la position finale de la direction de la pente principale</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Sélectionnez un nœud</value>

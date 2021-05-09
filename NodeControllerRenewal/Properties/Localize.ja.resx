@@ -222,6 +222,23 @@
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} の更新内容</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
+    <value>- Added auto mode for main slope direction.
+- Added red overlay for short segments (short segments lead wrong vehicle speed).
+- Added the ability reset only offset to default.
+- Added Polish translation.
+- Fix default node shape calculation.
+- Fix wrong corner calculation on too sloped or too curved segments.
+- Fix broken nodes after reload map without close game.
+- Fix vehicle trailers disappear.
+- Fix road disappear after disasters.
+- Fix wrong train twist direction.
+- Fix node height in asset editor.
+- Fix default offset value.
+- Fix compatibility with TMPE.
+- Fix load data from intersection assets.
+- Fix not deletable pilars after place intersection asset.</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
@@ -256,13 +273,13 @@
     <value>オフセットをリセット</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
-    <value>Main slope direction</value>
+    <value>スロープ化の選択方法</value>
   </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>自動</value>
   </data>
   <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
-    <value>手動</value>
+    <value>任意</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>セグメントの端を直線化</value>
@@ -358,7 +375,7 @@
     <value>クリックしてこのコーナーへ自動整列</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main slope direction</value>
+    <value>Altキー押下でスロープ化する道路を変更</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>ノード #{0}
@@ -377,10 +394,10 @@
     <value>ドラッグしてコーナーオフセットを変更</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drag this end to change main slope direction</value>
+    <value>この終端をドラッグして接続先を変更</value>
   </data>
   <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drop this end to change main slope direction</value>
+    <value>この道路へ終端をD&amp;Dしてスロープ化する</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>クリックして横断歩道（ノード）を追加</value>
@@ -392,10 +409,10 @@
     <value>コーナーの終点を選択して自動整列</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>Change to desired main slope direction</value>
+    <value>スロープ化したい道路の接続先を変更</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Select end position of main slope direction</value>
+    <value>変更したい道路の終端を選択</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>調整したいノード（交差点）を選択してください</value>

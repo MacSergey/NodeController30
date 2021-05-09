@@ -219,6 +219,23 @@ Herstart het spel.</value>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Wat is nieuw in {0}</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
+    <value>- Added auto mode for main slope direction.
+- Added red overlay for short segments (short segments lead wrong vehicle speed).
+- Added the ability reset only offset to default.
+- Added Polish translation.
+- Fix default node shape calculation.
+- Fix wrong corner calculation on too sloped or too curved segments.
+- Fix broken nodes after reload map without close game.
+- Fix vehicle trailers disappear.
+- Fix road disappear after disasters.
+- Fix wrong train twist direction.
+- Fix node height in asset editor.
+- Fix default offset value.
+- Fix compatibility with TMPE.
+- Fix load data from intersection assets.
+- Fix not deletable pilars after place intersection asset.</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
@@ -253,7 +270,7 @@ Herstart het spel.</value>
     <value>Parallele verschuiving herstellen</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
-    <value>Main slope direction</value>
+    <value>Hoofdrichting helling</value>
   </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>Automatisch</value>
@@ -355,7 +372,7 @@ Herstart het spel.</value>
     <value>Klik om met deze hoek uit te lijnen</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main slope direction</value>
+    <value>Houd Alt ingedrukt om hoofdrichting helling aan te passen</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Punt #{0}
@@ -374,10 +391,10 @@ Klik om te wijzigen</value>
     <value>Sleep om de hoekverschuiving te veranderen</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drag this end to change main slope direction</value>
+    <value>Sleep dit uiteinde om de hellingsrichting te veranderen</value>
   </data>
   <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drop this end to change main slope direction</value>
+    <value>Laat dit uiteinde vallen om de hellingsrichting te veranderen</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Klik om oversteekknoop toe te voegen</value>
@@ -389,10 +406,10 @@ Klik om te wijzigen</value>
     <value>Selecteer de hoek waarmee u wilt uitlijnen</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>Change to desired main slope direction</value>
+    <value>Verander naar gewenste hellingsrichting</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Select end position of main slope direction</value>
+    <value>Selecteer eindpositie van hellingsrichting</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Selecteer knoop</value>

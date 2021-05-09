@@ -220,6 +220,23 @@ Starte das Spiel neu.</value>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Was ist neu in {0}</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
+    <value>- Added auto mode for main slope direction.
+- Added red overlay for short segments (short segments lead wrong vehicle speed).
+- Added the ability reset only offset to default.
+- Added Polish translation.
+- Fix default node shape calculation.
+- Fix wrong corner calculation on too sloped or too curved segments.
+- Fix broken nodes after reload map without close game.
+- Fix vehicle trailers disappear.
+- Fix road disappear after disasters.
+- Fix wrong train twist direction.
+- Fix node height in asset editor.
+- Fix default offset value.
+- Fix compatibility with TMPE.
+- Fix load data from intersection assets.
+- Fix not deletable pilars after place intersection asset.</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Aktuelle Informationen zu Änderungen an der Beta Version sind auf Discord zu finden</value>
   </data>
@@ -254,7 +271,7 @@ Starte das Spiel neu.</value>
     <value>Versatz zurücksetzen</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
-    <value>Main slope direction</value>
+    <value>Neigungsrichtung</value>
   </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>Automatisch</value>
@@ -356,7 +373,7 @@ Starte das Spiel neu.</value>
     <value>Klicken zum Ausrichten an dieser Ecke</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main slope direction</value>
+    <value>Halte Alt gedrückt, um die Neigungsrichtung zu ändern</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Netzwerk-Knoten #{0}
@@ -375,10 +392,10 @@ Klicken zum Bearbeiten</value>
     <value>Ziehen, um den Versatz der Ecke zu ändern</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drag this end to change main slope direction</value>
+    <value>Ziehe dieses Ende, um die Neigungsrichtung zu ändern</value>
   </data>
   <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drop this end to change main slope direction</value>
+    <value>Ziehe dieses Ende, um die Neigungsrichtung zu ändern</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Klicken, um einen Überweg einzufügen</value>
@@ -390,10 +407,10 @@ Klicken zum Bearbeiten</value>
     <value>Wähle die Ecke, an der du ausrichten möchtest</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>Change to desired main slope direction</value>
+    <value>In gewünschte Neigungsrichtung ändern</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Select end position of main slope direction</value>
+    <value>Wähle die Endposition der Neigungsrichtung</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Netzwerk-Knoten auswählen</value>

@@ -220,6 +220,23 @@ Reinicia el juego.</value>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Novedades de {0}</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
+    <value>- Added auto mode for main slope direction.
+- Added red overlay for short segments (short segments lead wrong vehicle speed).
+- Added the ability reset only offset to default.
+- Added Polish translation.
+- Fix default node shape calculation.
+- Fix wrong corner calculation on too sloped or too curved segments.
+- Fix broken nodes after reload map without close game.
+- Fix vehicle trailers disappear.
+- Fix road disappear after disasters.
+- Fix wrong train twist direction.
+- Fix node height in asset editor.
+- Fix default offset value.
+- Fix compatibility with TMPE.
+- Fix load data from intersection assets.
+- Fix not deletable pilars after place intersection asset.</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Busque el registro de cambios beta actual en Discord</value>
   </data>
@@ -254,7 +271,7 @@ Reinicia el juego.</value>
     <value>Restablecer desplazamiento</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
-    <value>Main slope direction</value>
+    <value>Dirección de la pendiente principal</value>
   </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>Automático</value>
@@ -356,7 +373,7 @@ Reinicia el juego.</value>
     <value>Clic para alinear con esta esquina</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main slope direction</value>
+    <value>Mantener pulsada la tecla "Alt" para cambiar dirección de la pendiente principal</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Nodo #{0}
@@ -375,10 +392,10 @@ Clic para editar</value>
     <value>Arrastra para cambiar el desplazamiento de la esquina</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drag this end to change main slope direction</value>
+    <value>Arrastra este extremo para cambiar dirección de la pendiente principal</value>
   </data>
   <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drop this end to change main slope direction</value>
+    <value>Suelta este extremo para cambiar dirección de la pendiente principal</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Clic para insertar el nodo de cruce</value>
@@ -390,10 +407,10 @@ Clic para editar</value>
     <value>Selecciona la esquina con la que quieres alinear</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>Change to desired main slope direction</value>
+    <value>Cambiar a la dirección de la pendiente principal deseada</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Select end position of main slope direction</value>
+    <value>Seleccionar la posición final de la dirección para la pendiente principal</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Seleccionar nodo</value>

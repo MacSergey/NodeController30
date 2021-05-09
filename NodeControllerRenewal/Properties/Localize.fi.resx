@@ -220,6 +220,23 @@ Käynnistä peli uudelleen.</value>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Uutta modissa {0}</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
+    <value>- Added auto mode for main slope direction.
+- Added red overlay for short segments (short segments lead wrong vehicle speed).
+- Added the ability reset only offset to default.
+- Added Polish translation.
+- Fix default node shape calculation.
+- Fix wrong corner calculation on too sloped or too curved segments.
+- Fix broken nodes after reload map without close game.
+- Fix vehicle trailers disappear.
+- Fix road disappear after disasters.
+- Fix wrong train twist direction.
+- Fix node height in asset editor.
+- Fix default offset value.
+- Fix compatibility with TMPE.
+- Fix load data from intersection assets.
+- Fix not deletable pilars after place intersection asset.</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
@@ -251,16 +268,16 @@ Käynnistä peli uudelleen.</value>
     <value>Kaikki</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
-    <value>Reset offset</value>
+    <value>Palauta etäisyydet</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
-    <value>Main slope direction</value>
+    <value>Kaltevuuden suunta</value>
   </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
-    <value>Auto</value>
+    <value>Automaattinen</value>
   </data>
   <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
-    <value>Manually</value>
+    <value>Manuaalinen</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Suorista päädyt</value>
@@ -356,7 +373,7 @@ Käynnistä peli uudelleen.</value>
     <value>Napauta tasataksesi tämän kulman suhteen</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main slope direction</value>
+    <value>Pidä Alt-näppäintä pohjassa vaihtaaksesi kaltevuuden suuntaa</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Risteys #{0}
@@ -375,10 +392,10 @@ Napauta muokataksesi</value>
     <value>Vedä muuttaaksesi kulman etäisyyttä</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drag this end to change main slope direction</value>
+    <value>Vedä muuttaaksesi kaltevuuden suuntaa</value>
   </data>
   <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drop this end to change main slope direction</value>
+    <value>Vedä muuttaaksesi kaltevuuden suuntaa</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Napauta lisätäksesi ylityspaikka</value>
@@ -390,10 +407,10 @@ Napauta muokataksesi</value>
     <value>Valitse kulma, jonka suhteen haluat tasata</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>Change to desired main slope direction</value>
+    <value>Vaihda halutuksi kaltevuuden suunnaksi</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Select end position of main slope direction</value>
+    <value>Valitse kaltevuuden suunta</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Valitse risteys</value>
