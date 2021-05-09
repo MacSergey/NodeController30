@@ -254,13 +254,13 @@ Reinicia el juego.</value>
     <value>Restablecer desplazamiento</value>
   </data>
   <data name="Option_MainRoad" xml:space="preserve">
-    <value>Main road</value>
+    <value>Main slope direction</value>
   </data>
   <data name="Option_MainRoadAuto" xml:space="preserve">
-    <value>Auto</value>
+    <value>Automático</value>
   </data>
   <data name="Option_MainRoadManually" xml:space="preserve">
-    <value>Manually</value>
+    <value>Manual</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Haga las puntas rectas</value>
@@ -356,7 +356,7 @@ Reinicia el juego.</value>
     <value>Clic para alinear con esta esquina</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Mantener tecla "Alt" para cambiar la carretera principal</value>
+    <value>Hold Alt to change main slope direction</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Nodo #{0}
@@ -375,10 +375,10 @@ Clic para editar</value>
     <value>Arrastra para cambiar el desplazamiento de la esquina</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>Arrastra este extremo para cambiar la carretera principal</value>
+    <value>Drag this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>Suelta este extremo para cambiar la carretera principal</value>
+    <value>Drop this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Clic para insertar el nodo de cruce</value>
@@ -390,10 +390,10 @@ Clic para editar</value>
     <value>Selecciona la esquina con la que quieres alinear</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>Cambiar a la carretera principal</value>
+    <value>Change to desired main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>Selecciona la posición final de la carretera principal</value>
+    <value>Select end position of main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Seleccionar nodo</value>

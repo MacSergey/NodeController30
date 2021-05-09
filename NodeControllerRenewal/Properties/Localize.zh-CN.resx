@@ -254,13 +254,13 @@ Shift x10，Ctrl x0.1</value>
     <value>重置偏移</value>
   </data>
   <data name="Option_MainRoad" xml:space="preserve">
-    <value>Main road</value>
+    <value>Main slope direction</value>
   </data>
   <data name="Option_MainRoadAuto" xml:space="preserve">
-    <value>Auto</value>
+    <value>自动</value>
   </data>
   <data name="Option_MainRoadManually" xml:space="preserve">
-    <value>Manually</value>
+    <value>手动</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>把终点变直</value>
@@ -356,7 +356,7 @@ Shift x10，Ctrl x0.1</value>
     <value>点击以向此边角对齐</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>按住Alt更改主要道路</value>
+    <value>Hold Alt to change main slope direction</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>节点 #{0}
@@ -375,10 +375,10 @@ Shift x10，Ctrl x0.1</value>
     <value>拖动以改变边角偏移</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>拖动此端来改变主要道路</value>
+    <value>Drag this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>丢下此端来改变主要道路</value>
+    <value>Drop this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>点击插入人行路口节点</value>
@@ -390,10 +390,10 @@ Shift x10，Ctrl x0.1</value>
     <value>选择想要对齐的边角</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>切换到新主要道路</value>
+    <value>Change to desired main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>选择主要道路终点</value>
+    <value>Select end position of main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>选择节点</value>

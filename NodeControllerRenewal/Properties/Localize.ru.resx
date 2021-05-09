@@ -254,7 +254,7 @@ Shift X10, Ctrl X0.1</value>
     <value>Отступ по умолчанию</value>
   </data>
   <data name="Option_MainRoad" xml:space="preserve">
-    <value>Главная дорога</value>
+    <value>Основное направление наклона</value>
   </data>
   <data name="Option_MainRoadAuto" xml:space="preserve">
     <value>Авто</value>
@@ -356,7 +356,7 @@ Shift X10, Ctrl X0.1</value>
     <value>Нажмите чтобы выровнять с этим углом</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Удерживайте Alt чтобы изменить главную дорогу</value>
+    <value>Удерживайте Alt чтобы изменить основное направление наклона</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Узел #{0}
@@ -375,10 +375,10 @@ Shift X10, Ctrl X0.1</value>
     <value>Перетащите для изменения отступа угла</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>Перетащите конец для изменения главной дороги</value>
+    <value>Перетащите конец для изменения основного направления наклона</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>Отпустите конец для изменения главной дороги</value>
+    <value>Отпустите конец для изменения основного направления наклона</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Нажмите для вставки узла перехода</value>
@@ -390,10 +390,11 @@ Shift X10, Ctrl X0.1</value>
     <value>Выберите угол с которым хотите выровнять</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>Выберите главную дорогу</value>
+    <value>Выберите основное направление наклона</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>Выберите позицию конца главной дороги</value>
+    <value>Выберите позицию окончания
+основного направления наклона</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Выберите узел</value>

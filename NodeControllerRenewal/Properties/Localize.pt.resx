@@ -253,7 +253,7 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
     <value>Reset offset</value>
   </data>
   <data name="Option_MainRoad" xml:space="preserve">
-    <value>Main road</value>
+    <value>Main slope direction</value>
   </data>
   <data name="Option_MainRoadAuto" xml:space="preserve">
     <value>Auto</value>
@@ -355,7 +355,7 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
     <value>Clique para alinhar com este canto</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Segure Alt para mudar a estrada principal</value>
+    <value>Hold Alt to change main slope direction</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Nó #{0}
@@ -374,10 +374,10 @@ Clique para editar</value>
     <value>Arraste para alterar deslocamento do canto</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>Arraste esta extremidade para mudar a estrada principal</value>
+    <value>Drag this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>Largue esta extremidade para mudar a estrada principal</value>
+    <value>Drop this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Clique para inserir passadeira</value>
@@ -389,10 +389,10 @@ Clique para editar</value>
     <value>Selecione o canto com o qual quer alinhar</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>Mudar para a estrada principal desejada</value>
+    <value>Change to desired main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>Selecione a posição final da estrada principal</value>
+    <value>Select end position of main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Selecionar Nó</value>

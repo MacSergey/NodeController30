@@ -254,7 +254,7 @@ Käynnistä peli uudelleen.</value>
     <value>Reset offset</value>
   </data>
   <data name="Option_MainRoad" xml:space="preserve">
-    <value>Main road</value>
+    <value>Main slope direction</value>
   </data>
   <data name="Option_MainRoadAuto" xml:space="preserve">
     <value>Auto</value>
@@ -356,7 +356,7 @@ Käynnistä peli uudelleen.</value>
     <value>Napauta tasataksesi tämän kulman suhteen</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Pidä Alt-näppäintä pohjassa vaihtaaksesi päätie</value>
+    <value>Hold Alt to change main slope direction</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Risteys #{0}
@@ -375,10 +375,10 @@ Napauta muokataksesi</value>
     <value>Vedä muuttaaksesi kulman etäisyyttä</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>Vedä vaihtaaksesi päätie</value>
+    <value>Drag this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>Pudota vaihtaaksesi päätie</value>
+    <value>Drop this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Napauta lisätäksesi ylityspaikka</value>
@@ -390,10 +390,10 @@ Napauta muokataksesi</value>
     <value>Valitse kulma, jonka suhteen haluat tasata</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>Vaihda halutuksi päätieksi</value>
+    <value>Change to desired main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>Valitse päätie</value>
+    <value>Select end position of main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Valitse risteys</value>

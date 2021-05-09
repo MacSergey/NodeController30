@@ -134,11 +134,11 @@
     <value>Yes</value>
   </data>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
-    <value>オリジナルのノードコントローラから、設定がインポートされました。
+    <value>オリジナルのNode Controllerから、設定がインポートされました。
 部分的に設定の互換性がありません、手動で調整や再適用が必要な場合があります。</value>
   </data>
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
-    <value>警告: インポート後にマップの保存を行うと、オリジナルのノードコントローラは使用できなくなります。</value>
+    <value>警告: インポート後にマップの保存を行うと、オリジナルのNode Controllerは使用できなくなります。</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
     <value>同意します</value>
@@ -155,7 +155,7 @@
 間違ってサブスクライブした場合は、安定版に切り替えてください。</value>
   </data>
   <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} は、オリジナルのノードコントローラと同時に動作しません。MODを無効化してください。</value>
+    <value>{0} は、オリジナルのNode Controllerと同時に動作しません。MODを無効化してください。</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>交差点やノードの種類・形状を、調整や変更ができます。</value>
@@ -164,7 +164,7 @@
     <value>これはβ版で、エラーが発生する可能性があります。安定性は保証されていません！</value>
   </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>オリジナルのノードコントローラーを無効化</value>
+    <value>オリジナルのNode Controllerを無効化</value>
   </data>
   <data name="Mod_LoaledWithErrors" xml:space="preserve">
     <value>MODのロード中に、エラーが発生しました。
@@ -256,16 +256,16 @@
     <value>オフセットをリセット</value>
   </data>
   <data name="Option_MainRoad" xml:space="preserve">
-    <value>Main road</value>
+    <value>Main slope direction</value>
   </data>
   <data name="Option_MainRoadAuto" xml:space="preserve">
-    <value>Auto</value>
+    <value>自動</value>
   </data>
   <data name="Option_MainRoadManually" xml:space="preserve">
-    <value>Manually</value>
+    <value>手動</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>全ての端を直線化</value>
+    <value>セグメントの端を直線化</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>横断歩道の表示</value>
@@ -322,7 +322,7 @@
     <value>ノードの設定</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
-    <value>ノード #{0} を編集中</value>
+    <value>ノード #{0} を調整中</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
     <value>基本設定</value>
@@ -352,20 +352,20 @@
     <value>新着情報を表示する</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Shiftキー押下で道路の整列</value>
+    <value>Shiftキー押下でシフトして自動的に整列</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
-    <value>クリックしてこのコーナーで整列</value>
+    <value>クリックしてこのコーナーへ自動整列</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Altキー押下で主要道路の変更</value>
+    <value>Hold Alt to change main slope direction</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>ノード #{0}
-クリックして編集</value>
+クリックして形状を調整</value>
   </data>
   <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
-    <value>クリックして整列させたいコーナーを選択</value>
+    <value>クリックしてこのコーナーを始点に選択</value>
   </data>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>ドラッグしてオフセットを変更</value>
@@ -377,10 +377,10 @@
     <value>ドラッグしてコーナーオフセットを変更</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>この終端をドラッグして主要道路を変更</value>
+    <value>Drag this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>この道路へD&amp;Dして主要道路を変更</value>
+    <value>Drop this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>クリックして横断歩道（ノード）を追加</value>
@@ -389,19 +389,19 @@
     <value>クリックしてノードを追加</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
-    <value>コーナーの終点を選択して整列する</value>
+    <value>コーナーの終点を選択して自動整列</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>接続する主要道路を変更</value>
+    <value>Change to desired main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>変更したい主要道路を選択</value>
+    <value>Select end position of main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
-    <value>ノードを選択してください</value>
+    <value>調整したいノード（交差点）を選択してください</value>
   </data>
   <data name="Tool_InfoSelectToAlign" xml:space="preserve">
-    <value>整列したいコーナーの始点を選択</value>
+    <value>自動整列したいコーナーの始点を選択</value>
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
     <value>ノードが追加できません

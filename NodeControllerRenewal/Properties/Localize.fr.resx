@@ -251,16 +251,16 @@ Rechargez le jeu.</value>
     <value>Tout</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
-    <value>Reset offset</value>
+    <value>Réinitialiser le décalage</value>
   </data>
   <data name="Option_MainRoad" xml:space="preserve">
-    <value>Main road</value>
+    <value>Main slope direction</value>
   </data>
   <data name="Option_MainRoadAuto" xml:space="preserve">
     <value>Auto</value>
   </data>
   <data name="Option_MainRoadManually" xml:space="preserve">
-    <value>Manually</value>
+    <value>Manuellement</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Rendre droit les extrémités</value>
@@ -356,7 +356,7 @@ Rechargez le jeu.</value>
     <value>Cliquez pour aligner avec ce coin</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Maintenez Alt pour changer de route principale</value>
+    <value>Hold Alt to change main slope direction</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Noeud #{0}
@@ -375,10 +375,10 @@ Cliquez pour modifier</value>
     <value>Faites glisser pour changer le décalage du coin</value>
   </data>
   <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
-    <value>Faites glisser cette extrémité pour changer de route principale</value>
+    <value>Drag this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
-    <value>Lâchez cette extrémité pour changer de route principale</value>
+    <value>Drop this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Cliquez pour insérer un nœud de croisement</value>
@@ -390,10 +390,10 @@ Cliquez pour modifier</value>
     <value>Sélectionnez le coin avec lequel vous voulez aligner</value>
   </data>
   <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
-    <value>Changer pour la route principale désirée</value>
+    <value>Change to desired main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
-    <value>Sélectionnez la position de fin de la route principale</value>
+    <value>Select end position of main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Sélectionnez un nœud</value>
