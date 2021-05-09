@@ -110,8 +110,8 @@ namespace NodeController
             {
                 if (Tool.Data.Style.SupportShift.IsSet(SupportOption.Individually))
                 {
-                    var data = SingletonManager<Manager>.Instance.GetSegmentData(SelectedSide.Data.Id, !SelectedSide.Data.IsStartNode);
-                    Targets.Add(data[SelectedSide.Type.Invert()]);
+                    if (SingletonManager<Manager>.Instance.GetSegmentData(SelectedSide.Data.Id, !SelectedSide.Data.IsStartNode) is SegmentEndData data)
+                        Targets.Add(data[SelectedSide.Type.Invert()]);
                 }
                 else if (!Tool.Data.IsJunction)
                 {
