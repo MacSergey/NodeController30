@@ -530,9 +530,9 @@ namespace NodeController
         private static float StretchGetter(INetworkData data) => data.StretchPercent;
         private static bool NoMarkingsGetter(INetworkData data) => !data.NoMarkings;
 
-        private static bool TouchablePredicate(SegmentEndData data) => !data.IsUntouchable;
-        private static bool MainRoadPredicate(SegmentEndData data) => TouchablePredicate(data) && data.IsMainRoad;
-        private static bool NoMarkingsPredicate(SegmentEndData data) => TouchablePredicate(data) && data.IsRoad;
+        protected static bool TouchablePredicate(SegmentEndData data) => !data.IsUntouchable;
+        protected static bool MainRoadPredicate(SegmentEndData data) => TouchablePredicate(data) && data.IsMainRoad;
+        protected static bool NoMarkingsPredicate(SegmentEndData data) => TouchablePredicate(data) && data.IsRoad;
 
         #endregion
     }
@@ -540,10 +540,10 @@ namespace NodeController
     public class MiddleNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Middle;
-        public override SupportOption SupportSlope => SupportOption.Group;
-        public override SupportOption SupportTwist => SupportOption.Group;
-        public override SupportOption SupportShift => SupportOption.Group;
-        public override SupportOption SupportStretch => SupportOption.Group;
+        public override SupportOption SupportSlope => Data.SegmentEndDatas.Any(s => s.IsUntouchable) ? SupportOption.None : SupportOption.Group;
+        public override SupportOption SupportTwist => Data.SegmentEndDatas.Any(s => s.IsUntouchable) ? SupportOption.None : SupportOption.Group;
+        public override SupportOption SupportShift => Data.SegmentEndDatas.Any(s => s.IsUntouchable) ? SupportOption.None : SupportOption.Group;
+        public override SupportOption SupportStretch => Data.SegmentEndDatas.Any(s => s.IsUntouchable) ? SupportOption.None : SupportOption.Group;
 
         public override bool DefaultSlopeJunction => true;
 
