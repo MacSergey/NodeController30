@@ -110,8 +110,8 @@ namespace NodeController
             {
                 Tool.Data.MainBezier.Render(new OverlayData(cameraInfo) { Width = width, Color = Colors.Yellow });
 
-                foreach (var segmentEnd in Tool.Data.SegmentEndDatas)
-                    segmentEnd.RenderOutterCircle(new OverlayData(cameraInfo) { Color = Colors.Green });
+                foreach (var segmentData in Tool.Data.SegmentEndDatas)
+                    segmentData.RenderOutterCircle(new OverlayData(cameraInfo) { Color = segmentData.OverlayColor });
 
                 foreach (var segmentData in Tool.Data.MainSegmentEndDatas)
                     segmentData.Position.RenderCircle(new OverlayData(cameraInfo) { Color = segmentData == HoverSegmentEnd ? Color.white : Colors.Yellow }, width, 0f);
@@ -135,10 +135,10 @@ namespace NodeController
                     bezier.Render(new OverlayData(cameraInfo) { Width = width, Color = Colors.Yellow });
                 }
 
-                foreach (var segmentEnd in Tool.Data.SegmentEndDatas)
+                foreach (var segmentData in Tool.Data.SegmentEndDatas)
                 {
-                    if (segmentEnd != SelectedSegmentEnd)
-                        segmentEnd.RenderOutterCircle(new OverlayData(cameraInfo) { Color = segmentEnd == HoverSegmentEnd ? Color.white : Colors.Green });
+                    if (segmentData != SelectedSegmentEnd)
+                        segmentData.RenderOutterCircle(new OverlayData(cameraInfo) { Color = segmentData == HoverSegmentEnd ? Color.white : segmentData.OverlayColor });
                 }
 
                 SelectedSegmentEnd.Position.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow }, width, 0f);

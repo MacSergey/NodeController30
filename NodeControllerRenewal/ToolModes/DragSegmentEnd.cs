@@ -34,9 +34,9 @@ namespace NodeController
             SegmentEnd.RenderSides(new OverlayData(cameraInfo), new OverlayData(cameraInfo) { Color = Colors.Red });
             SegmentEnd.SegmentBezier.Render(new OverlayData(cameraInfo) { Width = SegmentEndData.CenterDotRadius * 2 + 1 });
 
-            var green = new OverlayData(cameraInfo) { Color = Colors.Green };
+            var defaultColor = new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor };
             var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow };
-            SegmentEnd.Render(green, green, yellow);
+            SegmentEnd.Render(defaultColor, defaultColor, yellow);
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
         {

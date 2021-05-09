@@ -69,6 +69,7 @@ namespace NodeController
         public bool IsMinBorderT => RawT - 0.001f <= MinT;
         public bool IsMaxBorderT => RawT + 0.001f >= MaxT;
         public bool IsDefaultT => Mathf.Abs(RawT - DefaultT) < 0.001f;
+        public bool IsShort => (MaxT - CurrentT) <= (1f / RawBezier.Length);
 
         public SegmentSide(SegmentEndData data, SideType type)
         {

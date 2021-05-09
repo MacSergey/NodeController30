@@ -139,6 +139,7 @@ namespace NodeController
         public bool IsBorderRotate => RotateAngle == MinRotate || RotateAngle == MaxRotate;
         public bool IsMinBorderT => RotateAngle >= 0 ? LeftSide.IsMinBorderT : RightSide.IsMinBorderT;
         public bool IsMaxBorderT => RotateAngle >= 0 ? LeftSide.IsMaxBorderT : RightSide.IsMaxBorderT;
+        public bool IsShort => LeftSide.IsShort || RightSide.IsShort;
         public bool IsDefaultT => LeftSide.IsDefaultT && RightSide.IsDefaultT;
 
         public bool? ShouldHideCrossingTexture
@@ -745,6 +746,8 @@ namespace NodeController
         #endregion
 
         #region RENDER
+
+        public Color32 OverlayColor => IsShort ? Colors.Red : Colors.Green;
 
         public void Render(OverlayData data) => Render(data, data, data, data, data);
         public void Render(OverlayData contourData, OverlayData outterData, OverlayData innerData, OverlayData? leftData = null, OverlayData? rightData = null)

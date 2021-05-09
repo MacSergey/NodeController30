@@ -160,10 +160,11 @@ namespace NodeController
         {
             var width = SegmentEndData.CenterDotRadius * 2;
 
-            foreach (var segmentEnd in Tool.Data.SegmentEndDatas)
+            foreach (var segmentData in Tool.Data.SegmentEndDatas)
             {
-                segmentEnd.RenderСontour(new OverlayData(cameraInfo) { Color = Colors.Green });
-                segmentEnd.RenderEnd(new OverlayData(cameraInfo) { Color = Colors.Green });
+                var defaultColor = new OverlayData(cameraInfo) { Color = segmentData.OverlayColor };
+                segmentData.RenderСontour(defaultColor);
+                segmentData.RenderEnd(defaultColor);
             }
 
             foreach (var target in Targets)

@@ -109,15 +109,15 @@ namespace NodeController
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             var hover = new OverlayData(cameraInfo);
-            var green = new OverlayData(cameraInfo) { Color = Colors.Green };
             var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow };
             foreach (var segmentData in Tool.Data.SegmentEndDatas)
             {
+                var defaultColor = new OverlayData(cameraInfo) { Color = segmentData.OverlayColor };
                 var outter = segmentData == HoverSegmentEndCircle ? hover : yellow;
                 var inner = segmentData == HoverSegmentEndCenter ? hover : new OverlayData(cameraInfo) { Color = segmentData.Color };
                 var left = segmentData == HoverSegmentEndCorner && HoverCorner == SideType.Left ? hover : yellow;
                 var right = segmentData == HoverSegmentEndCorner && HoverCorner == SideType.Right ? hover : yellow;
-                segmentData.Render(green, outter, inner, left, right);
+                segmentData.Render(defaultColor, outter, inner, left, right);
             }
         }
     }
