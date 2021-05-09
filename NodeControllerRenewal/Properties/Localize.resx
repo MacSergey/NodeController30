@@ -235,9 +235,7 @@ Restart the game.</value>
 - Fix default offset value.
 - Fix compatibility with TMPE.
 - Fix load data from intersection assets.
-- Fix not deletable pilars after place intersection asset.
-
-</value>
+- Fix not deletable pilars after place intersection asset.</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
