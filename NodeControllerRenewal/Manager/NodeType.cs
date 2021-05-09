@@ -144,7 +144,17 @@ namespace NodeController
         public virtual float GetShift()
         {
             if (Data.IsTwoRoads)
-                return (Data.FirstMainSegmentEnd.Shift - Data.SecondMainSegmentEnd.Shift) / 2f;
+            {
+                var first = Data.FirstMainSegmentEnd;
+                var second = Data.SecondMainSegmentEnd;
+
+                if (first.IsUntouchable)
+                    return second.IsUntouchable ? 0f : second.Shift;
+                else if (second.IsUntouchable)
+                    return first.IsUntouchable ? 0f : first.Shift;
+                else
+                    return (first.Shift - second.Shift) / 2;
+            }
             else
                 return TouchableDatas.Average(s => s.Shift);
         }
@@ -152,12 +162,25 @@ namespace NodeController
         {
             if (Data.IsTwoRoads)
             {
-                Data.FirstMainSegmentEnd.Shift = value;
-                Data.SecondMainSegmentEnd.Shift = -value;
+                var first = Data.FirstMainSegmentEnd;
+                var second = Data.SecondMainSegmentEnd;
+
+                if (!first.IsUntouchable && !second.IsUntouchable)
+                {
+                    first.Shift = value;
+                    second.Shift = -value;
+                }
+                else
+                {
+                    if (!first.IsUntouchable)
+                        first.Shift = value;
+                    if (!second.IsUntouchable)
+                        second.Shift = value;
+                }
             }
             else
             {
-                foreach (var segmentData in Data.SegmentEndDatas)
+                foreach (var segmentData in TouchableDatas)
                     segmentData.Shift = value;
             }
         }
@@ -669,11 +692,36 @@ namespace NodeController
 
         public CustomNode(NodeData data) : base(data) { }
 
-        public override float GetTwist() => (Data.FirstMainSegmentEnd.TwistAngle - Data.SecondMainSegmentEnd.TwistAngle) / 2;
+        public override float GetTwist()
+        {
+            var first = Data.FirstMainSegmentEnd;
+            var second = Data.SecondMainSegmentEnd;
+
+            if (first.IsUntouchable)
+                return second.IsUntouchable ? 0f : second.TwistAngle;
+            else if(second.IsUntouchable)
+                return first.IsUntouchable ? 0f : first.TwistAngle;
+            else
+                return (first.TwistAngle - second.TwistAngle) / 2;
+        }
         public override void SetTwist(float value)
         {
-            Data.FirstMainSegmentEnd.TwistAngle = value;
-            Data.SecondMainSegmentEnd.TwistAngle = -value;
+            var first = Data.FirstMainSegmentEnd;
+            var second = Data.SecondMainSegmentEnd;
+
+            if(!first.IsUntouchable && !second.IsUntouchable)
+            {
+                first.TwistAngle = value;
+                second.TwistAngle = -value;
+            }
+            else
+            {
+                if(!first.IsUntouchable)
+                    first.TwistAngle = value;
+                if(!second.IsUntouchable)
+                    second.TwistAngle = value;
+            }
+
         }
     }
 

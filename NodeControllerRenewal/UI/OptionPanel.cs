@@ -44,6 +44,7 @@ namespace NodeController.UI
             base.DeInit();
 
             Data = null;
+            IsEnableGetter = null;
             Items.Clear();
 
             foreach (var component in Content.components.ToArray())
@@ -61,6 +62,7 @@ namespace NodeController.UI
             }
 
             Content.Refresh();
+            Refresh();
         }
 
         protected virtual TypeItem AddItem(INetworkData data)
@@ -84,8 +86,6 @@ namespace NodeController.UI
                             segmentEndItem.isVisible = false;
                         else
                             segmentEndItem.isEnabled = IsEnableGetter?.Invoke(segmentData) != false;
-                        //else if (Option.IsSet(SupportOption.MainRoad))
-                        //    segmentEndItem.isEnabled = segmentData.IsMainRoad;
                     }
                 }
             }

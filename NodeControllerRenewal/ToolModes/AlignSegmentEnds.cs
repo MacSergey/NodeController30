@@ -94,6 +94,9 @@ namespace NodeController
 
             foreach (var segmentData in Tool.Data.SegmentEndDatas)
             {
+                if (segmentData.IsUntouchable)
+                    continue;
+
                 if (!IsSelectedSide)
                 {
                     Targets.Add(segmentData[SideType.Left]);
