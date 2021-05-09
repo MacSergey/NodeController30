@@ -253,13 +253,13 @@ Starte das Spiel neu.</value>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Versatz zurücksetzen</value>
   </data>
-  <data name="Option_MainRoad" xml:space="preserve">
+  <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Main slope direction</value>
   </data>
-  <data name="Option_MainRoadAuto" xml:space="preserve">
+  <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>Automatisch</value>
   </data>
-  <data name="Option_MainRoadManually" xml:space="preserve">
+  <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
     <value>Manuell</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
@@ -374,10 +374,10 @@ Klicken zum Bearbeiten</value>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Ziehen, um den Versatz der Ecke zu ändern</value>
   </data>
-  <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
+  <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Drag this end to change main slope direction</value>
   </data>
-  <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
+  <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
     <value>Drop this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
@@ -389,10 +389,10 @@ Klicken zum Bearbeiten</value>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Wähle die Ecke, an der du ausrichten möchtest</value>
   </data>
-  <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
+  <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
     <value>Change to desired main slope direction</value>
   </data>
-  <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
+  <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
     <value>Select end position of main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">

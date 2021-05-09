@@ -253,13 +253,13 @@ Shift X10, Ctrl X0.1</value>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Отступ по умолчанию</value>
   </data>
-  <data name="Option_MainRoad" xml:space="preserve">
+  <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Основное направление наклона</value>
   </data>
-  <data name="Option_MainRoadAuto" xml:space="preserve">
+  <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>Авто</value>
   </data>
-  <data name="Option_MainRoadManually" xml:space="preserve">
+  <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
     <value>Вручную</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
@@ -374,10 +374,10 @@ Shift X10, Ctrl X0.1</value>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Перетащите для изменения отступа угла</value>
   </data>
-  <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
+  <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Перетащите конец для изменения основного направления наклона</value>
   </data>
-  <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
+  <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
     <value>Отпустите конец для изменения основного направления наклона</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
@@ -389,10 +389,10 @@ Shift X10, Ctrl X0.1</value>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Выберите угол с которым хотите выровнять</value>
   </data>
-  <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
+  <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
     <value>Выберите основное направление наклона</value>
   </data>
-  <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
+  <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
     <value>Выберите позицию окончания
 основного направления наклона</value>
   </data>
