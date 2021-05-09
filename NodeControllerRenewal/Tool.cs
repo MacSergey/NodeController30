@@ -26,7 +26,7 @@ namespace NodeController
             yield return CreateToolMode<DragSegmentEndToolMode>();
             yield return CreateToolMode<DragCornerToolMode>();
             yield return CreateToolMode<RotateSegmentEndToolMode>();
-            yield return CreateToolMode<ChangeMainRoadToolMode>();
+            yield return CreateToolMode<ChangeMainSlopeDirectionToolMode>();
             yield return CreateToolMode<AlignSegmentEndsToolMode>();
         }
 

@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"></xsd:element>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"></xsd:attribute>
-              <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
-              <xsd:attribute name="mimetype" type="xsd:string"></xsd:attribute>
-              <xsd:attribute ref="xml:space"></xsd:attribute>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"></xsd:attribute>
-              <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"></xsd:attribute>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
-              <xsd:attribute ref="xml:space"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -253,13 +253,13 @@ Restart the game.</value>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Reset offset</value>
   </data>
-  <data name="Option_MainRoad" xml:space="preserve">
+  <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Main slope direction</value>
   </data>
-  <data name="Option_MainRoadAuto" xml:space="preserve">
+  <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>Auto</value>
   </data>
-  <data name="Option_MainRoadManually" xml:space="preserve">
+  <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
     <value>Manually</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
@@ -374,10 +374,10 @@ Click to edit</value>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Drag to change corner offset</value>
   </data>
-  <data name="Tool_InfoDragMainRoadEnd" xml:space="preserve">
+  <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Drag this end to change main slope direction</value>
   </data>
-  <data name="Tool_InfoDropMainRoadEnd" xml:space="preserve">
+  <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
     <value>Drop this end to change main slope direction</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
@@ -389,10 +389,10 @@ Click to edit</value>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Select corner you want to align with</value>
   </data>
-  <data name="Tool_InfoSelectMainRoad" xml:space="preserve">
+  <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
     <value>Change to desired main slope direction</value>
   </data>
-  <data name="Tool_InfoSelectNewMainRoadEnd" xml:space="preserve">
+  <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
     <value>Select end position of main slope direction</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">

@@ -349,8 +349,8 @@ namespace NodeController
             if (Data.IsJunction)
             {
                 var mainRoadProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
-                mainRoadProperty.Text = Localize.Option_MainRoad;
-                mainRoadProperty.Init(Localize.Option_MainRoadManually, Localize.Option_MainRoadAuto);
+                mainRoadProperty.Text = Localize.Option_MainSlopeDirection;
+                mainRoadProperty.Init(Localize.Option_MainSlopeDirectionManually, Localize.Option_MainSlopeDirectionAuto);
                 mainRoadProperty.SelectedObject = Data.MainRoad.Auto;
                 mainRoadProperty.OnSelectObjectChanged += (value) =>
                 {

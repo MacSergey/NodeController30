@@ -128,7 +128,7 @@
       <DependentUpon>Localize.resx</DependentUpon>
     </Compile>
     <Compile Include="ToolModes\AlignSegmentEnds.cs" />
-    <Compile Include="ToolModes\ChangeMainRoad.cs" />
+    <Compile Include="ToolModes\ChangeMainSlopeDirection.cs" />
     <Compile Include="ToolModes\DragCorner.cs" />
     <Compile Include="ToolModes\DragSegmentEnd.cs" />
     <Compile Include="ToolModes\EditNode.cs" />
@@ -190,7 +190,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_ConfigurationName="Beta Debug" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="Both" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Beta Debug" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">

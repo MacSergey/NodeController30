@@ -452,29 +452,29 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Main road.
+        ///   Ищет локализованную строку, похожую на Main slope direction.
         /// </summary>
-        internal static string Option_MainRoad {
+        internal static string Option_MainSlopeDirection {
             get {
-                return ResourceManager.GetString("Option_MainRoad", resourceCulture);
+                return ResourceManager.GetString("Option_MainSlopeDirection", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Auto.
         /// </summary>
-        internal static string Option_MainRoadAuto {
+        internal static string Option_MainSlopeDirectionAuto {
             get {
-                return ResourceManager.GetString("Option_MainRoadAuto", resourceCulture);
+                return ResourceManager.GetString("Option_MainSlopeDirectionAuto", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Manually.
         /// </summary>
-        internal static string Option_MainRoadManually {
+        internal static string Option_MainSlopeDirectionManually {
             get {
-                return ResourceManager.GetString("Option_MainRoadManually", resourceCulture);
+                return ResourceManager.GetString("Option_MainSlopeDirectionManually", resourceCulture);
             }
         }
         
@@ -767,7 +767,7 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hold Alt to change main road.
+        ///   Ищет локализованную строку, похожую на Hold Alt to change main slope direction.
         /// </summary>
         internal static string Tool_InfoChangeMainMode {
             get {
@@ -822,20 +822,20 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Drag this end to change main road.
+        ///   Ищет локализованную строку, похожую на Drag this end to change main slope direction.
         /// </summary>
-        internal static string Tool_InfoDragMainRoadEnd {
+        internal static string Tool_InfoDragMainSlopeDirectionEnd {
             get {
-                return ResourceManager.GetString("Tool_InfoDragMainRoadEnd", resourceCulture);
+                return ResourceManager.GetString("Tool_InfoDragMainSlopeDirectionEnd", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Drop this end to change main road.
+        ///   Ищет локализованную строку, похожую на Drop this end to change main slope direction.
         /// </summary>
-        internal static string Tool_InfoDropMainRoadEnd {
+        internal static string Tool_InfoDropMainSlopeDirectionEnd {
             get {
-                return ResourceManager.GetString("Tool_InfoDropMainRoadEnd", resourceCulture);
+                return ResourceManager.GetString("Tool_InfoDropMainSlopeDirectionEnd", resourceCulture);
             }
         }
         
@@ -867,20 +867,20 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Change to desired main road.
+        ///   Ищет локализованную строку, похожую на Change to desired main slope direction.
         /// </summary>
-        internal static string Tool_InfoSelectMainRoad {
+        internal static string Tool_InfoSelectMainSlopeDirection {
             get {
-                return ResourceManager.GetString("Tool_InfoSelectMainRoad", resourceCulture);
+                return ResourceManager.GetString("Tool_InfoSelectMainSlopeDirection", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Select main road end position.
+        ///   Ищет локализованную строку, похожую на Select end position of main slope direction.
         /// </summary>
-        internal static string Tool_InfoSelectNewMainRoadEnd {
+        internal static string Tool_InfoSelectNewMainSlopeDirectionEnd {
             get {
-                return ResourceManager.GetString("Tool_InfoSelectNewMainRoadEnd", resourceCulture);
+                return ResourceManager.GetString("Tool_InfoSelectNewMainSlopeDirectionEnd", resourceCulture);
             }
         }
         

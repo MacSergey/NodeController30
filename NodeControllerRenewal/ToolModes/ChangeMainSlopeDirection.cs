@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace NodeController
 {
-    public class ChangeMainRoadToolMode : NodeControllerToolMode
+    public class ChangeMainSlopeDirectionToolMode : NodeControllerToolMode
     {
         public override ToolModeType Type => ToolModeType.ChangeMain;
         public override bool ShowPanel => false;
@@ -90,16 +90,16 @@ namespace NodeController
             if (!IsSelectedSegmentEnd)
             {
                 if (!IsHoverSegmentEnd)
-                    return Localize.Tool_InfoSelectMainRoad;
+                    return Localize.Tool_InfoSelectMainSlopeDirection;
                 else
-                    return Localize.Tool_InfoDragMainRoadEnd;
+                    return Localize.Tool_InfoDragMainSlopeDirectionEnd;
             }
             else
             {
                 if (!IsHoverSegmentEnd)
-                    return Localize.Tool_InfoSelectNewMainRoadEnd;
+                    return Localize.Tool_InfoSelectNewMainSlopeDirectionEnd;
                 else
-                    return Localize.Tool_InfoDropMainRoadEnd;
+                    return Localize.Tool_InfoDropMainSlopeDirectionEnd;
             }
         }
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
