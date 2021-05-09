@@ -362,6 +362,25 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на - Added auto mode for main slope direction.
+        ///- Added red overlay for short segments (short segments lead wrong vehicle speed).
+        ///- Added the ability reset only offset to default.
+        ///- Added Polish translation.
+        ///- Fix default node shape calculation.
+        ///- Fix wrong corner calculation on too sloped or too curved segments.
+        ///- Fix broken nodes after reload map without close game.
+        ///- Fix vehicle trailers disappear.
+        ///- Fix road disappear after disasters.
+        ///- Fix wrong train twist direction.
+        ///- Fix node height in asset e [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string Mod_WhatsNewMessage3_0_1 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_0_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Look for actual beta change log on Discord.
         /// </summary>
         internal static string Mod_WhatsNewMessageBeta {
