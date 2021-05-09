@@ -17,18 +17,23 @@ namespace NodeController.UI
     public abstract class OptionPanel<TypeItem> : EditorPropertyPanel, IReusable, IOptionPanel
         where TypeItem : UIComponent
     {
+        public delegate bool EnableGetter(SegmentEndData data);
+
         bool IReusable.InCache { get; set; }
         protected NodeData Data { get; set; }
         protected SupportOption Option { get; set; }
         protected SupportOption TotalOption { get; set; }
+        protected EnableGetter IsEnableGetter { get; set; }
+
         protected Dictionary<INetworkData, TypeItem> Items { get; } = new Dictionary<INetworkData, TypeItem>();
         protected float ItemWidth => TotalOption == SupportOption.Group ? 100f : 50f;
 
-        public void Init(NodeData data, SupportOption option, SupportOption totalOption)
+        public void Init(NodeData data, SupportOption option, SupportOption totalOption, EnableGetter enableGetter = null)
         {
             Data = data;
             Option = option;
             TotalOption = totalOption;
+            IsEnableGetter = enableGetter;
 
             PlaceItems();
 
@@ -77,8 +82,10 @@ namespace NodeController.UI
                     {
                         if (!Option.IsSet(SupportOption.Individually))
                             segmentEndItem.isVisible = false;
-                        else if (Option.IsSet(SupportOption.MainRoad))
-                            segmentEndItem.isEnabled = segmentData.IsMainRoad;
+                        else
+                            segmentEndItem.isEnabled = IsEnableGetter?.Invoke(segmentData) != false;
+                        //else if (Option.IsSet(SupportOption.MainRoad))
+                        //    segmentEndItem.isEnabled = segmentData.IsMainRoad;
                     }
                 }
             }
@@ -95,12 +102,12 @@ namespace NodeController.UI
         private Setter ValueSetter { get; set; }
         public string Format { get; set; }
 
-        public void Init(NodeData data, SupportOption option, SupportOption totalOption, Getter getter, Setter setter)
+        public void Init(NodeData data, SupportOption option, SupportOption totalOption, Getter getter, Setter setter, EnableGetter enableGetter)
         {
             ValueGetter = getter;
             ValueSetter = setter;
 
-            Init(data, option, totalOption);
+            Init(data, option, totalOption, enableGetter);
         }
         public override void DeInit()
         {
@@ -147,10 +154,10 @@ namespace NodeController.UI
         private MinMaxGetter MinMax { get; set; }
         public string NumberFormat { get; set; }
 
-        public void Init(NodeData data, SupportOption option, SupportOption totalOption, Getter getter, Setter setter, MinMaxGetter minMax)
+        public void Init(NodeData data, SupportOption option, SupportOption totalOption, Getter getter, Setter setter, MinMaxGetter minMax, EnableGetter enableGetter)
         {
             MinMax = minMax;
-            Init(data, option, totalOption, getter, setter);
+            Init(data, option, totalOption, getter, setter, enableGetter);
         }
         public override void DeInit()
         {

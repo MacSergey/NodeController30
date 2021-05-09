@@ -20,9 +20,7 @@ namespace NodeController
         public static float CircleRadius => 2.5f;
         public static float CenterDotRadius => 1f;
         public static float CornerDotRadius => 0.5f;
-        public static float MinPossibleRotate => -80f;
-        public static float MaxPossibleRotate => 80f;
-        public static float tDelta => 1.0e-4f;
+
         public static string XmlName => "SE";
 
         public static Color32[] OverlayColors { get; } = new Color32[]
@@ -63,10 +61,14 @@ namespace NodeController
 
         public bool DefaultIsSlope => !Id.GetSegment().Info.m_flatJunctions && !NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public bool DefaultIsTwist => !DefaultIsSlope && !NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
-        public bool IsMoveable => !IsNodeLess;
+        public bool IsMoveable => !IsNodeLess && !IsUntouchable;
         public bool IsMainRoad { get; set; }
 
+        public bool IsRoad { get; set; }
+        public bool IsTunnel { get; set; }
         public bool IsNodeLess { get; }
+        public bool IsUntouchable { get; set; }
+
         public int PedestrianLaneCount { get; }
         public float VehicleTwist { get; private set; }
 
@@ -74,6 +76,7 @@ namespace NodeController
         private float _minOffset = 0f;
         private float _maxOffse = 100f;
         private float _rotateValue;
+        private bool _keepDefault;
 
         public float Offset
         {
@@ -121,7 +124,11 @@ namespace NodeController
         }
         public bool NoMarkings { get; set; }
         public bool IsSlope { get; set; }
-        private bool KeepDefaults { get; set; }
+        private bool KeepDefaults
+        {
+            get => _keepDefault || IsUntouchable;
+            set => _keepDefault = value;
+        }
 
 
         public float WidthRatio => Stretch * (IsSlope ? Mathf.Cos(TwistAngle * Mathf.Deg2Rad) : 1f);
@@ -195,24 +202,23 @@ namespace NodeController
         public void SetKeepDefaults() => KeepDefaults = true;
         public void ResetToDefault(NodeStyle style, bool force)
         {
-            if (style.SupportSlope == SupportOption.None || force)
+            if (style.SupportSlope == SupportOption.None || force || IsUntouchable)
                 SlopeAngle = style.DefaultSlope;
 
-            if (style.SupportTwist == SupportOption.None || force)
+            if (style.SupportTwist == SupportOption.None || force || IsUntouchable)
                 TwistAngle = style.DefaultTwist;
 
-            if (style.SupportShift == SupportOption.None || force)
+            if (style.SupportShift == SupportOption.None || force || IsUntouchable)
                 Shift = style.DefaultShift;
 
-            if (style.SupportStretch == SupportOption.None || force)
+            if (style.SupportStretch == SupportOption.None || force || IsUntouchable)
                 Stretch = style.DefaultStretch;
 
-            if (style.SupportNoMarking == SupportOption.None || force)
+            if (style.SupportNoMarking == SupportOption.None || force || IsUntouchable)
                 NoMarkings = style.DefaultNoMarking;
 
-            if (style.SupportSlopeJunction == SupportOption.None || force)
+            if (style.SupportSlopeJunction == SupportOption.None || force || IsUntouchable)
                 IsSlope = style.DefaultSlopeJunction;
-
 
             if (IsNodeLess)
             {
@@ -231,12 +237,12 @@ namespace NodeController
             }
 
 
-            if (style.SupportRotate == SupportOption.None || force)
+            if (style.SupportRotate == SupportOption.None || force || IsUntouchable)
                 SetRotate(style.DefaultRotate);
 
             if (style.SupportOffset == SupportOption.None)
                 SetOffset(style.DefaultOffset);
-            else if (force)
+            else if (force || IsUntouchable)
                 SetOffset(GetMinCornerOffset(style.DefaultOffset));
             else
                 SetOffset(Offset);
@@ -586,8 +592,8 @@ namespace NodeController
             var startRight = GetAngle(position - RightSide.Bezier.StartPosition, direction);
             var endRight = GetAngle(position - RightSide.Bezier.EndPosition, direction);
 
-            MinRotate = Mathf.Clamp(Mathf.Max(startLeft, endRight), MinPossibleRotate, MaxPossibleRotate);
-            MaxRotate = Mathf.Clamp(Mathf.Min(endLeft, startRight), MinPossibleRotate, MaxPossibleRotate);
+            MinRotate = Mathf.Clamp(Mathf.Max(startLeft, endRight), NodeStyle.MinRotate, NodeStyle.MaxRotate);
+            MaxRotate = Mathf.Clamp(Mathf.Min(endLeft, startRight), NodeStyle.MinRotate, NodeStyle.MaxRotate);
         }
         private void CalculateOffset()
         {
@@ -828,19 +834,19 @@ namespace NodeController
 
         public void FromXml(XElement config, NodeStyle style)
         {
-            if (style.SupportSlope != SupportOption.None)
+            if (style.SupportSlope != SupportOption.None && !IsUntouchable)
                 SlopeAngle = config.GetAttrValue("SA", style.DefaultSlope);
 
-            if (style.SupportTwist != SupportOption.None)
+            if (style.SupportTwist != SupportOption.None && !IsUntouchable)
                 TwistAngle = config.GetAttrValue("TA", style.DefaultTwist);
 
-            if (style.SupportShift != SupportOption.None)
+            if (style.SupportShift != SupportOption.None && !IsUntouchable)
                 Shift = config.GetAttrValue("S", style.DefaultShift);
 
-            if (style.SupportStretch != SupportOption.None)
+            if (style.SupportStretch != SupportOption.None && !IsUntouchable)
                 Stretch = config.GetAttrValue("ST", style.DefaultStretch);
 
-            if (style.SupportNoMarking != SupportOption.None)
+            if (style.SupportNoMarking != SupportOption.None && !IsUntouchable)
                 NoMarkings = config.GetAttrValue("NM", style.DefaultNoMarking ? 1 : 0) == 1;
 
             if (style.SupportSlopeJunction != SupportOption.None)
@@ -853,7 +859,7 @@ namespace NodeController
             else
                 SetOffset(config.GetAttrValue("O", style.DefaultOffset));
 
-            if (style.SupportRotate != SupportOption.None)
+            if (style.SupportRotate != SupportOption.None && !IsUntouchable)
                 SetRotate(config.GetAttrValue("RA", style.DefaultRotate), true);
         }
 

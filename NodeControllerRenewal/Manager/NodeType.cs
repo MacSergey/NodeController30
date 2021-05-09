@@ -124,17 +124,21 @@ namespace NodeController
         }
 
         public NodeData Data { get; }
+        public IEnumerable<SegmentEndData> TouchableDatas => GetDatas(TouchablePredicate);
+        public IEnumerable<SegmentEndData> NoMarkingsDatas => GetDatas(NoMarkingsPredicate);
 
         public NodeStyle(NodeData data)
         {
             Data = data;
         }
 
-        public virtual float GetOffset() => Data.SegmentEndDatas.Average(s => s.Offset);
+        private IEnumerable<SegmentEndData> GetDatas(Func<SegmentEndData, bool> predicate) => Data.SegmentEndDatas.Where(predicate);
+
+        public virtual float GetOffset() => TouchableDatas.Average(s => s.Offset);
         public virtual void SetOffset(float value)
         {
-            foreach (var segmentData in Data.SegmentEndDatas)
-                segmentData.Offset = value;
+            foreach (var segmentData in TouchableDatas)
+                    segmentData.Offset = value;
         }
 
         public virtual float GetShift()
@@ -142,7 +146,7 @@ namespace NodeController
             if (Data.IsTwoRoads)
                 return (Data.FirstMainSegmentEnd.Shift - Data.SecondMainSegmentEnd.Shift) / 2f;
             else
-                return Data.SegmentEndDatas.Average(s => s.Shift);
+                return TouchableDatas.Average(s => s.Shift);
         }
         public virtual void SetShift(float value)
         {
@@ -158,45 +162,45 @@ namespace NodeController
             }
         }
 
-        public virtual float GetRotate() => Data.SegmentEndDatas.Average(s => s.RotateAngle);
+        public virtual float GetRotate() => TouchableDatas.Average(s => s.RotateAngle);
         public virtual void SetRotate(float value)
         {
-            foreach (var segmentData in Data.SegmentEndDatas)
+            foreach (var segmentData in TouchableDatas)
                 segmentData.RotateAngle = value;
         }
 
-        public virtual float GetSlope() => Data.SegmentEndDatas.Average(s => s.SlopeAngle);
+        public virtual float GetSlope() => TouchableDatas.Average(s => s.SlopeAngle);
         public virtual void SetSlope(float value)
         {
-            foreach (var segmentData in Data.SegmentEndDatas)
+            foreach (var segmentData in TouchableDatas)
                 segmentData.SlopeAngle = value;
         }
 
-        public virtual float GetTwist() => Data.SegmentEndDatas.Average(s => s.TwistAngle);
+        public virtual float GetTwist() => TouchableDatas.Average(s => s.TwistAngle);
         public virtual void SetTwist(float value)
         {
-            foreach (var segmentData in Data.SegmentEndDatas)
+            foreach (var segmentData in TouchableDatas)
                 segmentData.TwistAngle = value;
         }
 
-        public virtual float GetStretch() => Data.SegmentEndDatas.Average(s => s.Stretch);
+        public virtual float GetStretch() => TouchableDatas.Average(s => s.Stretch);
         public virtual void SetStretch(float value)
         {
-            foreach (var segmentData in Data.SegmentEndDatas)
+            foreach (var segmentData in TouchableDatas)
                 segmentData.Stretch = value;
         }
 
-        public virtual bool GetNoMarkings() => Data.SegmentEndDatas.All(s => s.NoMarkings);
+        public virtual bool GetNoMarkings() => NoMarkingsDatas.All(s => s.NoMarkings);
         public virtual void SetNoMarkings(bool value)
         {
-            foreach (var segmentData in Data.SegmentEndDatas)
+            foreach (var segmentData in NoMarkingsDatas)
                 segmentData.NoMarkings = value;
         }
 
-        public virtual bool GetIsSlopeJunctions() => Data.SegmentEndDatas.Any(s => s.IsSlope);
+        public virtual bool GetIsSlopeJunctions() => TouchableDatas.Any(s => s.IsSlope);
         public virtual void SetIsSlopeJunctions(bool value)
         {
-            foreach (var segmentData in Data.SegmentEndDatas)
+            foreach (var segmentData in TouchableDatas)
                 segmentData.IsSlope = value;
         }
 
@@ -243,14 +247,14 @@ namespace NodeController
             if (offset != null)
             {
                 components.Add(offset);
-                if(shift != null)
+                if (shift != null)
                     shift.OnChanged += (_, _) => offset.Refresh();
             }
 
             if (rotate != null)
             {
                 components.Add(rotate);
-                if(shift != null)
+                if (shift != null)
                     shift.OnChanged += (_, _) => rotate.Refresh();
             }
 
@@ -344,7 +348,7 @@ namespace NodeController
                 offset.Text = Localize.Option_Offset;
                 offset.Format = Localize.Option_OffsetFormat;
                 offset.NumberFormat = "0.##";
-                offset.Init(Data, SupportOffset, totalSupport, OffsetGetter, OffsetSetter, MinMaxOffset);
+                offset.Init(Data, SupportOffset, totalSupport, OffsetGetter, OffsetSetter, MinMaxOffset, TouchablePredicate);
 
                 return offset;
             }
@@ -359,7 +363,7 @@ namespace NodeController
                 shift.Text = Localize.Option_Shift;
                 shift.Format = Localize.Option_ShiftFormat;
                 shift.NumberFormat = "0.##";
-                shift.Init(Data, SupportShift, totalSupport, ShiftGetter, ShiftSetter, MinMaxShift);
+                shift.Init(Data, SupportShift, totalSupport, ShiftGetter, ShiftSetter, MinMaxShift, TouchablePredicate);
 
                 return shift;
             }
@@ -374,7 +378,7 @@ namespace NodeController
                 rotate.Text = Localize.Option_Rotate;
                 rotate.Format = Localize.Option_RotateFormat;
                 rotate.NumberFormat = "0.#";
-                rotate.Init(Data, SupportRotate, totalSupport, RotateGetter, RotateSetter, MinMaxRotate);
+                rotate.Init(Data, SupportRotate, totalSupport, RotateGetter, RotateSetter, MinMaxRotate, TouchablePredicate);
 
                 return rotate;
             }
@@ -389,7 +393,7 @@ namespace NodeController
                 stretch.Text = Localize.Option_Stretch;
                 stretch.Format = Localize.Option_StretchFormat;
                 stretch.NumberFormat = "0.#";
-                stretch.Init(Data, SupportStretch, totalSupport, StretchGetter, StretchSetter, MinMaxStretch);
+                stretch.Init(Data, SupportStretch, totalSupport, StretchGetter, StretchSetter, MinMaxStretch, TouchablePredicate);
 
                 return stretch;
             }
@@ -404,7 +408,7 @@ namespace NodeController
                 slope.Text = Localize.Option_Slope;
                 slope.Format = Localize.Option_SlopeFormat;
                 slope.NumberFormat = "0.#";
-                slope.Init(Data, SupportSlope, totalSupport, SlopeGetter, SlopeSetter, MinMaxSlope);
+                slope.Init(Data, SupportSlope, totalSupport, SlopeGetter, SlopeSetter, MinMaxSlope, MainRoadPredicate);
 
                 return slope;
             }
@@ -419,7 +423,7 @@ namespace NodeController
                 twist.Text = Localize.Option_Twist;
                 twist.Format = Localize.Option_TwistFormat;
                 twist.NumberFormat = "0.#";
-                twist.Init(Data, SupportTwist, totalSupport, TwistGetter, TwistSetter, MinMaxTwist);
+                twist.Init(Data, SupportTwist, totalSupport, TwistGetter, TwistSetter, MinMaxTwist, TouchablePredicate);
 
                 return twist;
             }
@@ -428,11 +432,11 @@ namespace NodeController
         }
         private BoolOptionPanel GetNoMarkingsOption(UIComponent parent, SupportOption totalSupport)
         {
-            if (SupportNoMarking != SupportOption.None && HideCrosswalksEnable)
+            if (SupportNoMarking != SupportOption.None && Data.SegmentEndDatas.Any(s => s.IsRoad) && HideCrosswalksEnable)
             {
                 var hideMarking = ComponentPool.Get<BoolOptionPanel>(parent);
                 hideMarking.Text = Localize.Option_Marking;
-                hideMarking.Init(Data, SupportNoMarking, totalSupport, NoMarkingsGetter, NoMarkingsSetter);
+                hideMarking.Init(Data, SupportNoMarking, totalSupport, NoMarkingsGetter, NoMarkingsSetter, NoMarkingsPredicate);
 
                 return hideMarking;
             }
@@ -502,6 +506,10 @@ namespace NodeController
         private static float TwistGetter(INetworkData data) => data.TwistAngle;
         private static float StretchGetter(INetworkData data) => data.StretchPercent;
         private static bool NoMarkingsGetter(INetworkData data) => !data.NoMarkings;
+
+        private static bool TouchablePredicate(SegmentEndData data) => !data.IsUntouchable;
+        private static bool MainRoadPredicate(SegmentEndData data) => TouchablePredicate(data) && data.IsMainRoad;
+        private static bool NoMarkingsPredicate(SegmentEndData data) => TouchablePredicate(data) && data.IsRoad;
 
         #endregion
     }
@@ -652,7 +660,7 @@ namespace NodeController
         public override SupportOption SupportOffset => SupportOption.All;
         public override SupportOption SupportShift => SupportOption.All;
         public override SupportOption SupportRotate => SupportOption.All;
-        public override SupportOption SupportTwist => SupportOption.All | SupportOption.MainRoad;
+        public override SupportOption SupportTwist => SupportOption.All;
         public override SupportOption SupportStretch => SupportOption.All;
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
@@ -674,8 +682,7 @@ namespace NodeController
     {
         None = 0,
         Individually = 1,
-        MainRoad = 2,
-        Group = 4,
+        Group = 2,
         All = Individually | Group,
     }
 }

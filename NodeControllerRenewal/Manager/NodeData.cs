@@ -128,8 +128,8 @@ namespace NodeController
             set => Style.SetIsSlopeJunctions(value);
         }
 
-        public bool IsRoad => Id.GetNode().Segments().All(s => s.Info.m_netAI is RoadBaseAI);
-        public bool IsTunnel => Id.GetNode().Segments().Any(s => s.Info.m_netAI is RoadTunnelAI);
+        public bool IsRoad => SegmentEndDatas.All(s => s.IsRoad);
+        public bool IsTunnel => SegmentEndDatas.Any(s => s.IsTunnel);
 
         public bool IsEndNode => Type == NodeStyleType.End;
         public bool IsMiddleNode => Type == NodeStyleType.Middle;
@@ -194,11 +194,16 @@ namespace NodeController
             }
 
             var segmentEnds = new Dictionary<ushort, SegmentEndData>();
-            foreach (var newSegmentEnd in newSegmentsEnd.OrderByDescending(s => s.AbsoluteAngle))
+            foreach (var segmentEnd in newSegmentsEnd.OrderByDescending(s => s.AbsoluteAngle))
             {
-                newSegmentEnd.Index = segmentEnds.Count;
-                newSegmentEnd.IsMainRoad = false;
-                segmentEnds[newSegmentEnd.Id] = newSegmentEnd;
+                var segment = segmentEnd.Id.GetSegment();
+
+                segmentEnd.Index = segmentEnds.Count;
+                segmentEnd.IsRoad = segment.Info.m_netAI is RoadBaseAI;
+                segmentEnd.IsTunnel = segment.Info.m_netAI is RoadTunnelAI;
+                segmentEnd.IsMainRoad = false;
+                segmentEnd.IsUntouchable = segment.m_flags.IsSet(NetSegment.Flags.Untouchable);
+                segmentEnds[segmentEnd.Id] = segmentEnd;
             }
 
             SegmentEnds = segmentEnds;
