@@ -97,25 +97,25 @@ namespace NodeController
         {
             get
             {
-                if (Mathf.Abs(Data.Shift - DefaultShift) > 0.001f)
+                if (Mathf.Abs(GetShift() - DefaultShift) > 0.001f)
                     return false;
 
-                else if (Mathf.Abs(Data.RotateAngle - DefaultRotate) > 0.1f)
+                else if (Mathf.Abs(GetRotate() - DefaultRotate) > 0.1f)
                     return false;
 
-                else if (Mathf.Abs(Data.SlopeAngle - DefaultSlope) > 0.1f)
+                else if (Mathf.Abs(GetSlope() - DefaultSlope) > 0.1f)
                     return false;
 
-                else if (Mathf.Abs(Data.TwistAngle - DefaultTwist) > 0.1f)
+                else if (Mathf.Abs(GetTwist() - DefaultTwist) > 0.1f)
                     return false;
 
-                else if (Mathf.Abs(Data.Stretch - DefaultStretch) > 0.1f)
+                else if (Mathf.Abs(GetStretch() - DefaultStretch) > 0.1f)
                     return false;
 
-                else if (Data.NoMarkings != DefaultNoMarking)
+                else if (GetNoMarkings() != DefaultNoMarking)
                     return false;
 
-                else if (Data.IsSlopeJunctions != DefaultSlopeJunction)
+                else if (GetIsSlopeJunctions() != DefaultSlopeJunction)
                     return false;
 
                 else
@@ -134,7 +134,7 @@ namespace NodeController
 
         private IEnumerable<SegmentEndData> GetDatas(Func<SegmentEndData, bool> predicate) => Data.SegmentEndDatas.Where(predicate);
 
-        public virtual float GetOffset() => TouchableDatas.Average(s => s.Offset);
+        public virtual float GetOffset() => TouchableDatas.AverageOrDefault(s => s.Offset, DefaultOffset);
         public virtual void SetOffset(float value)
         {
             foreach (var segmentData in TouchableDatas)
@@ -156,7 +156,7 @@ namespace NodeController
                     return (first.Shift - second.Shift) / 2;
             }
             else
-                return TouchableDatas.Average(s => s.Shift);
+                return TouchableDatas.AverageOrDefault(s => s.Shift, DefaultShift);
         }
         public virtual void SetShift(float value)
         {
@@ -185,28 +185,28 @@ namespace NodeController
             }
         }
 
-        public virtual float GetRotate() => TouchableDatas.Average(s => s.RotateAngle);
+        public virtual float GetRotate() => TouchableDatas.AverageOrDefault(s => s.RotateAngle, DefaultRotate);
         public virtual void SetRotate(float value)
         {
             foreach (var segmentData in TouchableDatas)
                 segmentData.RotateAngle = value;
         }
 
-        public virtual float GetSlope() => TouchableDatas.Average(s => s.SlopeAngle);
+        public virtual float GetSlope() => TouchableDatas.AverageOrDefault(s => s.SlopeAngle, DefaultSlope);
         public virtual void SetSlope(float value)
         {
             foreach (var segmentData in TouchableDatas)
                 segmentData.SlopeAngle = value;
         }
 
-        public virtual float GetTwist() => TouchableDatas.Average(s => s.TwistAngle);
+        public virtual float GetTwist() => TouchableDatas.AverageOrDefault(s => s.TwistAngle, DefaultTwist);
         public virtual void SetTwist(float value)
         {
             foreach (var segmentData in TouchableDatas)
                 segmentData.TwistAngle = value;
         }
 
-        public virtual float GetStretch() => TouchableDatas.Average(s => s.Stretch);
+        public virtual float GetStretch() => TouchableDatas.AverageOrDefault(s => s.Stretch, DefaultStretch);
         public virtual void SetStretch(float value)
         {
             foreach (var segmentData in TouchableDatas)
