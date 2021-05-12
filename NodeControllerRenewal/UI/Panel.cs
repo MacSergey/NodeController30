@@ -156,6 +156,8 @@ namespace NodeController.UI
         }
         public void UpdatePanel()
         {
+            Header.Refresh();
+
             foreach (var property in Properties.OfType<IOptionPanel>())
                 property.Refresh();
         }
@@ -163,6 +165,8 @@ namespace NodeController.UI
     public class PanelHeader : HeaderMoveablePanel<PanelHeaderContent>
     {
         protected override float DefaultHeight => 40f;
+
+        public void Refresh() => Content.Refresh();
     }
     public class PanelHeaderContent : BasePanelHeaderContent<PanelHeaderButton, AdditionallyHeaderButton>
     {
@@ -174,12 +178,18 @@ namespace NodeController.UI
             AddButton(NodeControllerTextures.ResetToDefault, NodeController.Localize.Option_ResetToDefault, OnResetToDefault);
             MakeStraight = AddButton(NodeControllerTextures.MakeStraight, NodeController.Localize.Option_MakeStraightEnds, OnMakeStraightClick);
 
-            SetMakeStraightEnabled();
+            Refresh();
         }
 
         private void OnKeepDefault(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.KeepDefaults();
         private void OnResetToDefault(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.ResetToDefault();
         private void OnMakeStraightClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds();
+
+        public void Refresh()
+        {
+            SetMakeStraightEnabled();
+            PlaceChildren();
+        }
 
         private void SetMakeStraightEnabled()
         {
