@@ -22,7 +22,7 @@ namespace NodeController.Patches
             yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.GetNodePosition)));
             yield return new CodeInstruction(OpCodes.Stloc_S, positionLocal);
 
-            foreach(var instruction in instructions)
+            foreach (var instruction in instructions)
             {
                 if (instruction.opcode == OpCodes.Ldfld && instruction.operand == positionField)
                 {
@@ -33,12 +33,12 @@ namespace NodeController.Patches
                     yield return instruction;
             }
         }
-        private static Vector3 GetNodePosition(ushort nodeId, Vector3 defaultPosition) => SingletonManager<Manager>.Instance[nodeId] is NodeData data ? data.Position : defaultPosition;
+        private static Vector3 GetNodePosition(ushort nodeId, Vector3 defaultPosition) => SingletonManager<Manager>.Instance[nodeId] is NodeData data ? data.GetPosition() : defaultPosition;
 
         public static void RefreshJunctionDataPrefix(ushort nodeID, ref Vector3 centerPos)
         {
             if (SingletonManager<Manager>.Instance[nodeID] is NodeData data)
-                centerPos = data.Position;
+                centerPos = data.GetPosition();
         }
 
         public static void RefreshJunctionDataPostfix(ushort nodeID, ref RenderManager.Instance data)
@@ -65,7 +65,7 @@ namespace NodeController.Patches
 
                 if (prev != null && prev.opcode == OpCodes.Call && prev.operand == getSegmentMethod)
                     segmentLocal = instruction.operand as LocalBuilder;
-                else if(instruction != null && instruction.opcode == OpCodes.Callvirt && instruction.operand == checkRenderDistanceMethod)
+                else if (instruction != null && instruction.opcode == OpCodes.Callvirt && instruction.operand == checkRenderDistanceMethod)
                 {
                     renderCount += 1;
 

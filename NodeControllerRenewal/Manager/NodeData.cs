@@ -52,13 +52,13 @@ namespace NodeController
             }
         }
         public SegmentEndData this[ushort segmentId] => SegmentEnds.TryGetValue(segmentId, out var data) ? data : null;
-        public Vector3 Position { get; private set; }
+        private Vector3 Position { get; set; }
 
         public BezierTrajectory MainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
         public BezierTrajectory LeftMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
         public BezierTrajectory RightMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
 
-        public MainRoad MainRoad { get; private set;} = new MainRoad();
+        public MainRoad MainRoad { get; private set; } = new MainRoad();
 
         public NetNode.Flags DefaultFlags { get; private set; }
         public NodeStyleType DefaultType { get; private set; }
@@ -325,7 +325,6 @@ namespace NodeController
             else
                 SegmentEndData.FixMiddle(FirstMainSegmentEnd, SecondMainSegmentEnd);
 
-            position.y += Id.GetNode().m_heightOffset / 64f;
             Position = position;
         }
 
@@ -376,6 +375,7 @@ namespace NodeController
 
         #region UTILITIES
 
+        public Vector3 GetPosition() => Position + Vector3.up * (Id.GetNode().m_heightOffset / 64f);
         public bool ContainsSegment(ushort segmentId) => SegmentEnds.ContainsKey(segmentId);
         public bool TryGetSegment(ushort segmentId, out SegmentEndData segmentEnd) => SegmentEnds.TryGetValue(segmentId, out segmentEnd);
         public bool IsPossibleType(NodeStyleType type) => type == Type || IsPossibleTypeImpl(type);
