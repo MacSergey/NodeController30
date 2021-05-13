@@ -371,7 +371,6 @@ namespace NodeController
                     var cross = CrossXZ(iDir, jDir);
                     var dot = DotXZ(iDir, jDir);
 
-                    //if ((cross > 0f || dot < -0.75f) && count > 2)
                     if ((cross > 0f || dot < -0.75f) && (count > 2 || (dot > -0.999f && cross > 0.001f)))
                     {
                         GetSubMinLimit(endDatas[i].RightSide.RawBezier, endDatas[i.PrevIndex(count)].LeftSide.RawBezier, SideType.Left, ref leftDefaultT[i]);
@@ -379,7 +378,7 @@ namespace NodeController
                     }
                 }
 
-                if(count >= 3)
+                if (count >= 3)
                 {
                     for (var j = 0; j < count; j += 1)
                     {
@@ -506,7 +505,7 @@ namespace NodeController
         private static void CorrectDefaultOffset(BezierTrajectory bezier, ref float defaultT, bool alwaysDefault, float defaultOffset, float minCornerOffset, float additionalOffset)
         {
             if (defaultT < 0f || alwaysDefault)
-                defaultT = Mathf.Max(defaultT, bezier.Travel(defaultOffset));
+                defaultT = Mathf.Max(defaultT, bezier.Travel(Mathf.Min(defaultOffset, minCornerOffset)));
 
             var distance = bezier.Distance(0f, defaultT);
             defaultT = bezier.Travel(defaultT, Mathf.Max(minCornerOffset - distance, additionalOffset));

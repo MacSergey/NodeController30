@@ -116,6 +116,7 @@ namespace NodeController.UI
             ValueGetter = null;
             ValueSetter = null;
             Format = null;
+            OnChanged = null;
         }
 
         protected override TypeItem AddItem(INetworkData data)

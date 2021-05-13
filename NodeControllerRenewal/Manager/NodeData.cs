@@ -315,12 +315,7 @@ namespace NodeController
                 if (IsSlopeJunctions)
                     position = (LeftMainBezier.Position(0.5f) + RightMainBezier.Position(0.5f)) / 2f;
                 else
-                {
-                    foreach (var segmentEnd in SegmentEndDatas)
-                        position += segmentEnd.Position;
-
-                    position /= SegmentCount + 1;
-                }
+                    position = SegmentEndDatas.AverageOrDefault(s => s.Position, position);
             }
             else
                 SegmentEndData.FixMiddle(FirstMainSegmentEnd, SecondMainSegmentEnd);

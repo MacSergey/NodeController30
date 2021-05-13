@@ -574,6 +574,7 @@ namespace NodeController
     {
         public override NodeStyleType Type => NodeStyleType.Bend;
 
+        public override float DefaultOffset => 8f;
         public override float AdditionalOffset => 2f;
 
         public override SupportOption SupportOffset => SupportOption.All;
@@ -597,6 +598,7 @@ namespace NodeController
     {
         public override NodeStyleType Type => NodeStyleType.Stretch;
 
+        public override float DefaultOffset => 8f;
         public override float AdditionalOffset => 2f;
 
         public override SupportOption SupportOffset => SupportOption.All;
@@ -678,6 +680,7 @@ namespace NodeController
     {
         public override NodeStyleType Type => NodeStyleType.Custom;
 
+        public override float DefaultOffset => 8f;
         public override float AdditionalOffset => 2f;
 
         public override SupportOption SupportOffset => SupportOption.All;
