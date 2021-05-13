@@ -38,7 +38,7 @@ namespace NodeController
                 SegmentEnd.RightOffset = offset;
 
             SegmentEnd.UpdateNode();
-            Tool.Panel.UpdatePanel();
+            Tool.Panel.RefreshPanel();
         }
         public override void OnPrimaryMouseClicked(Event e) => OnMouseUp(e);
         public override void OnMouseUp(Event e) => Tool.SetDefaultMode();

@@ -50,12 +50,23 @@ namespace NodeController.UI
 
         public NodeControllerPanel()
         {
+            AddContent();
+            AddHeader();
+        }
+        private void AddContent()
+        {
             Content = ComponentPool.Get<PropertyGroupPanel>(this);
             Content.minimumSize = new Vector2(300f, 0f);
             Content.color = new Color32(72, 80, 80, 255);
             Content.autoLayoutDirection = LayoutDirection.Vertical;
             Content.autoFitChildrenVertically = true;
             Content.eventSizeChanged += (UIComponent component, Vector2 value) => size = value;
+        }
+        private void AddHeader()
+        {
+            Header = ComponentPool.Get<PanelHeader>(Content);
+            Header.Target = this;
+            Header.Init();
         }
 
         public override void Awake()
@@ -80,7 +91,7 @@ namespace NodeController.UI
             base.OnVisibilityChanged();
 
             if (isVisible)
-                UpdatePanel();
+                RefreshPanel();
         }
         private void SetDefaultPosition()
         {
@@ -91,18 +102,19 @@ namespace NodeController.UI
         public void SetData(NodeData data)
         {
             if ((Data = data) != null)
-                RefreshPanel();
+                SetPanel();
             else
                 ResetPanel();
         }
-        public void RefreshPanel()
+        public void SetPanel()
         {
             Content.StopLayout();
 
             ResetPanel();
 
             Content.width = Data.Style.TotalSupport == SupportOption.All ? Mathf.Max((Data.SegmentCount + 1) * 55f + 120f, 300f) : 300f;
-            AddHeader();
+            Header.Text = Data.Title;
+            RefreshHeader();
             AddNodeTypeProperty();
 
             FillProperties();
@@ -113,7 +125,6 @@ namespace NodeController.UI
         {
             Content.StopLayout();
 
-            ComponentPool.Free(Header);
             ComponentPool.Free(TypeProperty);
             ClearProperties();
 
@@ -129,13 +140,6 @@ namespace NodeController.UI
             Properties.Clear();
         }
 
-        private void AddHeader()
-        {
-            Header = ComponentPool.Get<PanelHeader>(Content);
-            Header.Text = Data.Title;
-            Header.Target = this;
-            Header.Init();
-        }
         private void AddNodeTypeProperty()
         {
             TypeProperty = ComponentPool.Get<NodeTypePropertyPanel>(Content);
@@ -150,13 +154,15 @@ namespace NodeController.UI
 
                 ClearProperties();
                 FillProperties();
+                RefreshHeader();
 
                 Content.StartLayout();
             };
         }
-        public void UpdatePanel()
+        public void RefreshHeader() => Header.Refresh();
+        public void RefreshPanel()
         {
-            Header.Refresh();
+            RefreshHeader();
 
             foreach (var property in Properties.OfType<IOptionPanel>())
                 property.Refresh();
@@ -165,8 +171,6 @@ namespace NodeController.UI
     public class PanelHeader : HeaderMoveablePanel<PanelHeaderContent>
     {
         protected override float DefaultHeight => 40f;
-
-        public void Refresh() => Content.Refresh();
     }
     public class PanelHeaderContent : BasePanelHeaderContent<PanelHeaderButton, AdditionallyHeaderButton>
     {
@@ -185,10 +189,10 @@ namespace NodeController.UI
         private void OnResetToDefault(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.ResetToDefault();
         private void OnMakeStraightClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds();
 
-        public void Refresh()
+        public override void Refresh()
         {
             SetMakeStraightEnabled();
-            PlaceChildren();
+            base.Refresh();
         }
 
         private void SetMakeStraightEnabled()

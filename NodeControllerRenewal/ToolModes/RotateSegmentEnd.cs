@@ -46,7 +46,7 @@ namespace NodeController
             SegmentEnd.RotateAngle = angle > 180f ? angle - 360f : angle;
             SegmentEnd.UpdateNode();
 
-            Tool.Panel.UpdatePanel();
+            Tool.Panel.RefreshPanel();
         }
 
         public override void OnPrimaryMouseClicked(Event e) => OnMouseUp(e);

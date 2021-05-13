@@ -70,7 +70,7 @@ namespace NodeController
             if (IsHoverSegmentEnd)
             {
                 Tool.Data.SetMain(SelectedSegmentEnd.Id, HoverSegmentEnd.Id);
-                Tool.Panel.RefreshPanel();
+                Tool.Panel.SetPanel();
             }
 
             Tool.SetDefaultMode();

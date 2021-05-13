@@ -138,7 +138,7 @@ namespace NodeController
         public virtual void SetOffset(float value)
         {
             foreach (var segmentData in TouchableDatas)
-                    segmentData.Offset = value;
+                segmentData.Offset = value;
         }
 
         public virtual float GetShift()
@@ -151,7 +151,7 @@ namespace NodeController
                 if (first.IsUntouchable)
                     return second.IsUntouchable ? 0f : second.Shift;
                 else if (second.IsUntouchable)
-                    return first.IsUntouchable ? 0f : first.Shift;
+                    return first.IsUntouchable ? 0f : -first.Shift;
                 else
                     return (first.Shift - second.Shift) / 2;
             }
@@ -175,7 +175,7 @@ namespace NodeController
                     if (!first.IsUntouchable)
                         first.Shift = value;
                     if (!second.IsUntouchable)
-                        second.Shift = value;
+                        second.Shift = -value;
                 }
             }
             else
@@ -699,7 +699,7 @@ namespace NodeController
 
             if (first.IsUntouchable)
                 return second.IsUntouchable ? 0f : second.TwistAngle;
-            else if(second.IsUntouchable)
+            else if (second.IsUntouchable)
                 return first.IsUntouchable ? 0f : first.TwistAngle;
             else
                 return (first.TwistAngle - second.TwistAngle) / 2;
@@ -709,16 +709,16 @@ namespace NodeController
             var first = Data.FirstMainSegmentEnd;
             var second = Data.SecondMainSegmentEnd;
 
-            if(!first.IsUntouchable && !second.IsUntouchable)
+            if (!first.IsUntouchable && !second.IsUntouchable)
             {
                 first.TwistAngle = value;
                 second.TwistAngle = -value;
             }
             else
             {
-                if(!first.IsUntouchable)
+                if (!first.IsUntouchable)
                     first.TwistAngle = value;
-                if(!second.IsUntouchable)
+                if (!second.IsUntouchable)
                     second.TwistAngle = value;
             }
 

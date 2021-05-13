@@ -51,17 +51,17 @@ namespace NodeController
         public void KeepDefaults()
         {
             Data.KeepDefaults();
-            Panel.UpdatePanel();
+            Panel.RefreshPanel();
         }
         public void ResetToDefault()
         {
             Data.ResetToDefault();
-            Panel.RefreshPanel();
+            Panel.SetPanel();
         }
         public void MakeStraightEnds()
         {
             Data.MakeStraightEnds();
-            Panel.UpdatePanel();
+            Panel.RefreshPanel();
         }
     }
     public abstract class NodeControllerToolMode : BaseToolMode<Mod, NodeControllerTool>, IToolMode<ToolModeType>, IToolModePanel

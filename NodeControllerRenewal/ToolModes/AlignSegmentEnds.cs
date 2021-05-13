@@ -86,7 +86,7 @@ namespace NodeController
                 Tool.Data.Shift = Tool.Data.FirstMainSegmentEnd == SelectedSide.Data ? newShift : -newShift;
 
             Tool.Data.UpdateNode();
-            Tool.Panel.UpdatePanel();
+            Tool.Panel.RefreshPanel();
         }
         private void SelectTargets()
         {
