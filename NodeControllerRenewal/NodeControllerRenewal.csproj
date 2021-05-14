@@ -186,7 +186,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Button.png" />
   </ItemGroup>
-  <Import Project="..\ModsCommon\ModsCommonShared\ModsCommonShared.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\ModShared\ModsCommonShared.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\ToolShared\ModsToolShared.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\UIShared\ModsUIShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
