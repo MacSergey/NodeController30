@@ -22,7 +22,7 @@ namespace NodeController
         }
         public override void OnToolUpdate()
         {
-            if (!IsSelectedSegmentEnd && !InputExtension.AltIsPressed)
+            if (!IsSelectedSegmentEnd && !Utilites.AltIsPressed)
                 Tool.SetDefaultMode();
 
             else if (Tool.MouseRayValid)

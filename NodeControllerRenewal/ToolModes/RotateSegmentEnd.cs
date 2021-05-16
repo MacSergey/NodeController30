@@ -15,9 +15,9 @@ namespace NodeController
         {
             get
             {
-                if (InputExtension.OnlyShiftIsPressed)
+                if (Utilites.OnlyShiftIsPressed)
                     return 10f;
-                else if (InputExtension.OnlyCtrlIsPressed)
+                else if (Utilites.OnlyCtrlIsPressed)
                     return 0.1f;
                 else
                     return 1f;
