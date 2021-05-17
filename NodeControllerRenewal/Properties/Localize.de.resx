@@ -221,21 +221,28 @@ Starte das Spiel neu.</value>
     <value>Was ist neu in {0}</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
-    <value>- Added auto mode for main slope direction.
-- Added red overlay for short segments (short segments lead wrong vehicle speed).
-- Added the ability reset only offset to default.
-- Added Polish translation.
-- Fix default node shape calculation.
-- Fix wrong corner calculation on too sloped or too curved segments.
-- Fix broken nodes after reload map without close game.
-- Fix vehicle trailers disappear.
-- Fix road disappear after disasters.
-- Fix wrong train twist direction.
-- Fix node height in asset editor.
-- Fix default offset value.
-- Fix compatibility with TMPE.
-- Fix load data from intersection assets.
-- Fix not deletable pilars after place intersection asset.</value>
+    <value>- Automatischer Modus für die Neigungsrichtung hinzugefügt.
+- Rotes Overlay für kurze Segmente (kurze Segmente führen zur falscher Fahrzeuggeschwindigkeit).
+- Nur Versatz zurücksetzen hinzugefügt.
+- Polnische Übersetzung hinzugefügt.
+- Standard Netz-Knoten Formberechnung korregiert.
+- Fehlerbehebung der falschen Eckberechnung bei zu schrägen oder zu gebogenen Segmenten.
+- Fehlerbehebung für kaputte Netzwerk-Knoten nach dem Neuladen der Karte ohne Neustart.
+- Fehlerbehebung für Kraftfahrzeuganhänger verschwinden.
+- Fehlerbehebung für Straße verschwinden nach Katastrophen.
+- Fehlerbehebung für die falsche Zug-Neigungs-Richtung.
+- Fehlerbehebung für Netzwerk-Knoten-Höhe im Asset-Editor.
+- Fehlerbehebung für standard Versatz-Werte.
+- Fehlerbehebung für die Kompabilität mit TM:PE.
+- Fehlerbehebung für das Laden von Daten von Kreuzungs-Assets.
+- Fehlerbehebung für nicht-löschbare Pfeiler nach dem Setzen von Kreuzungs-Assets.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_0_2" xml:space="preserve">
+    <value>- Fix node height outside available tiles (5x5).
+- Fix node center position.
+- Fix crosswalk texture.
+- Fix creating button duplicates
+- Fix despaired "Make end straight" button.</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Aktuelle Informationen zu Änderungen an der Beta Version sind auf Discord zu finden</value>

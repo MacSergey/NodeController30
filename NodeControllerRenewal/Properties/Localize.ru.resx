@@ -237,6 +237,13 @@ Shift X10, Ctrl X0.1</value>
 - Исправлена загрузка данных из дорожных развязок.
 - Исправлены неудаляемые опоры дорог после размещения дорожных развязок.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_2" xml:space="preserve">
+    <value>- Исправлена высота узлов за пределами доступных клеток (5x5).
+- Исправлено положение центра узла.
+- Исправлена текстура перехода.
+- Исправлено создание дубликатов кнопки.
+- Исправлена пропажа кнопки "Сделать концы прямыми".</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>

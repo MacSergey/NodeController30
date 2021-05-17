@@ -237,6 +237,13 @@ Käynnistä peli uudelleen.</value>
 - Fix load data from intersection assets.
 - Fix not deletable pilars after place intersection asset.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_2" xml:space="preserve">
+    <value>- Fix node height outside available tiles (5x5).
+- Fix node center position.
+- Fix crosswalk texture.
+- Fix creating button duplicates
+- Fix despaired "Make end straight" button.</value>
+  </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
