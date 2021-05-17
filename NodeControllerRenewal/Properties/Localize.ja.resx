@@ -369,13 +369,13 @@
     <value>新着情報を表示する</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Shiftキー押下でシフトして自動的に整列</value>
+    <value>Shiftキー押下で、シフトして自動的に整列</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>クリックしてこのコーナーへ自動整列</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Altキー押下でスロープ化する道路を変更</value>
+    <value>Altキー押下で、スロープ化する接続方向を変更</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>ノード #{0}
@@ -394,10 +394,10 @@
     <value>ドラッグしてコーナーオフセットを変更</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>この終端をドラッグして接続先を変更</value>
+    <value>終端をドラッグして、スロープ化したい接続先を変更</value>
   </data>
   <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
-    <value>この道路へ終端をD&amp;Dしてスロープ化する</value>
+    <value>終端をドロップして、この接続方向でスロープ化する</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>クリックして横断歩道（ノード）を追加</value>
@@ -409,10 +409,10 @@
     <value>コーナーの終点を選択して自動整列</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>スロープ化したい道路の接続先を変更</value>
+    <value>スロープを変更したい、セグメントの終端を選択</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>変更したい道路の終端を選択</value>
+    <value>終端をD&amp;Dして、他のセグメントへ接続先を変更</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>調整したいノード（交差点）を選択してください</value>
