@@ -381,6 +381,19 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на - Fix node height outside available tiles (5x5).
+        ///- Fix node center position.
+        ///- Fix crosswalk texture.
+        ///- Fix creating button duplicates
+        ///- Fix despaired &quot;Make end straight&quot; button.
+        /// </summary>
+        internal static string Mod_WhatsNewMessage3_0_2 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_0_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Look for actual beta change log on Discord.
         /// </summary>
         internal static string Mod_WhatsNewMessageBeta {
