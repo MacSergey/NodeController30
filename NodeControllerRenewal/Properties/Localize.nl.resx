@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,39 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Scroll het wiel om te veranderen
-Shift X10, Ctrl X0.1</value>
-  </data>
-  <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Annuleren</value>
-  </data>
-  <data name="MessageBox_No" xml:space="preserve">
-    <value>Nee</value>
-  </data>
-  <data name="MessageBox_OK" xml:space="preserve">
-    <value>Oké</value>
-  </data>
-  <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Ja</value>
-  </data>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
     <value>Originele Node Controllerdata is geïmporteerd. Achterwaartse compatibiliteit biedt geen overdracht van alle gegevens, handmatige aanpassingen zijn mogelijk nodig.</value>
   </data>
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
     <value>WAARSCHUWING: Als u een nieuwe save maakt is het niet langer mogelijk de originele Node Controller te gebruiken op deze kaart.</value>
-  </data>
-  <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>Ik ga akkoord</value>
-  </data>
-  <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>Bèta versie waarschuwing</value>
-  </data>
-  <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Overstappen naar stabiele versie</value>
-  </data>
-  <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Je gebruikt de bèta versie van {0}. Deze wordt gebruikt voor het testen van nieuwe functies en kan fouten bevatten. Als je per ongeluk geabonneerd op de bèta, kan je naar de stabiele versie overstappen.</value>
   </data>
   <data name="Mod_ConflictMessage" xml:space="preserve">
     <value>{0} werkt niet tegelijk met de originele Node Controller, u moet deze uitschakelen.</value>
@@ -157,67 +129,8 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Description" xml:space="preserve">
     <value>Beheer knooppunttype en vorm</value>
   </data>
-  <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>Dit is een bèta-versie, er kunnen fouten optreden en stabiliteit is niet gegarandeerd!</value>
-  </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
     <value>Originele Node Controller uitschakelen</value>
-  </data>
-  <data name="Mod_LoaledWithErrors" xml:space="preserve">
-    <value>Mod is geladen met errors.
-Het is niet aanbevolen om de mod te gebruiken in de huidige staat omdat het tot onvoorspelbaar gedrag kan leiden.
-Herstart het spel.</value>
-  </data>
-  <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Dezelfde taal als spel</value>
-  </data>
-  <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Tsjechisch</value>
-  </data>
-  <data name="Mod_Locale_de" xml:space="preserve">
-    <value>Duits</value>
-  </data>
-  <data name="Mod_Locale_en" xml:space="preserve">
-    <value>Engels VS</value>
-  </data>
-  <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>Engels VK</value>
-  </data>
-  <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Spaans</value>
-  </data>
-  <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Fins</value>
-  </data>
-  <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>Frans</value>
-  </data>
-  <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Italiaans</value>
-  </data>
-  <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Japans</value>
-  </data>
-  <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Nederlands</value>
-  </data>
-  <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Pools</value>
-  </data>
-  <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Portugees</value>
-  </data>
-  <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Russisch</value>
-  </data>
-  <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Chinees vereenvoudigd</value>
-  </data>
-  <data name="Mod_Support" xml:space="preserve">
-    <value>Ondersteuning</value>
-  </data>
-  <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>Wat is nieuw in {0}</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Added auto mode for main slope direction.
@@ -235,19 +148,6 @@ Herstart het spel.</value>
 - Fix compatibility with TMPE.
 - Fix load data from intersection assets.
 - Fix not deletable pilars after place intersection asset.</value>
-  </data>
-  <data name="Mod_WhatsNewMessage3_0_2" xml:space="preserve">
-    <value>- Fix node height outside available tiles (5x5).
-- Fix node center position.
-- Fix crosswalk texture.
-- Fix creating button duplicates
-- Fix despaired "Make end straight" button.</value>
-  </data>
-  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Look for actual beta change log on Discord</value>
-  </data>
-  <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Versie {0}</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bocht</value>
@@ -348,12 +248,6 @@ Herstart het spel.</value>
   <data name="Settings_General" xml:space="preserve">
     <value>Algemeen</value>
   </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Taal</value>
-  </data>
-  <data name="Settings_Notifications" xml:space="preserve">
-    <value>Meldingen</value>
-  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Selecteer middenknopen</value>
   </data>
@@ -362,15 +256,6 @@ Herstart het spel.</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Tool activeren</value>
-  </data>
-  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Alleen meldingen over grote updates</value>
-  </data>
-  <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Tooltips weergeven</value>
-  </data>
-  <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Toon wat nieuw is</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Houd Shift ingedrukt om wegen uit te lijnen</value>

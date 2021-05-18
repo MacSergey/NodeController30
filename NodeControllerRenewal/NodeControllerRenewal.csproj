@@ -113,6 +113,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\ModsCommon\LocalizeShared\CommonLocalize.Designer.cs">
+      <Link>Properties\CommonLocalize.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CommonLocalize.resx</DependentUpon>
+    </Compile>
     <Compile Include="Manager\Extensions\AssetDataExtension.cs" />
     <Compile Include="Manager\MainRoad.cs" />
     <Compile Include="UI\OptionPanel.cs" />
@@ -163,22 +169,69 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Localize.de.resx" />
-    <EmbeddedResource Include="Properties\Localize.es.resx" />
-    <EmbeddedResource Include="Properties\Localize.fi.resx" />
-    <EmbeddedResource Include="Properties\Localize.fr.resx" />
-    <EmbeddedResource Include="Properties\Localize.ja.resx" />
-    <EmbeddedResource Include="Properties\Localize.nl.resx" />
-    <EmbeddedResource Include="Properties\Localize.pl.resx" />
+    <EmbeddedResource Include="Properties\Localize.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Localize.es.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Localize.fi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Localize.fr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Localize.ja.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Localize.nl.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Localize.pl.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Localize.ru.resx" />
+    <EmbeddedResource Include="Properties\Localize.zh-CN.resx" />
     <EmbeddedResource Include="Properties\Localize.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Localize.Designer.cs</LastGenOutput>
       <CustomToolNamespace>NodeController</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Localize.ru.resx">
-      <CustomToolNamespace>NodeController</CustomToolNamespace>
+    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.de.resx">
+      <Link>Properties\CommonLocalize.de.resx</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Localize.zh-CN.resx" />
+    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.es.resx">
+      <Link>Properties\CommonLocalize.es.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.fi.resx">
+      <Link>Properties\CommonLocalize.fi.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.fr.resx">
+      <Link>Properties\CommonLocalize.fr.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.ja.resx">
+      <Link>Properties\CommonLocalize.ja.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.nl.resx">
+      <Link>Properties\CommonLocalize.nl.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.pl.resx">
+      <Link>Properties\CommonLocalize.pl.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.ru.resx">
+      <Link>Properties\CommonLocalize.ru.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.zh-CN.resx">
+      <Link>Properties\CommonLocalize.zh-CN.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.resx">
+      <CustomToolNamespace>ModsCommon</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Link>Properties\CommonLocalize.resx</Link>
+      <LastGenOutput>CommonLocalize.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\HeaderButtons.png" />

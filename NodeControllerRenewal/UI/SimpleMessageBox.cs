@@ -8,22 +8,6 @@ using UnityEngine;
 
 namespace NodeController.UI
 {
-    public class OkMessageBox : OneButtonMessageBox
-    {
-        public OkMessageBox()
-        {
-            ButtonText = ModLocalize<Mod>.Ok;
-        }
-    }
-    public class YesNoMessageBox : TwoButtonMessageBox
-    {
-        public YesNoMessageBox()
-        {
-            Button1Text = ModLocalize<Mod>.Yes;
-            Button2Text = ModLocalize<Mod>.No;
-        }
-    }
-
     public class BackwardСompatibilityMessageBox : OkMessageBox
     {
         public BackwardСompatibilityMessageBox()

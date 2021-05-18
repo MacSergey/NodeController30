@@ -174,7 +174,7 @@ namespace NodeController.UI
             item.CheckMax = true;
             item.UseWheel = true;
             item.WheelStep = 1f;
-            item.WheelTip = Settings.ShowToolTip ? NodeController.Localize.FieldPanel_ScrollWheel : string.Empty;
+            item.WheelTip = Settings.ShowToolTip;
 
             if (MinMax != null)
             {
@@ -208,8 +208,8 @@ namespace NodeController.UI
             item.ButtonWidth = ItemWidth / 2f;
             if (TotalOption == SupportOption.Group)
             {
-                item.AddItem(true, ModLocalize<Mod>.Yes);
-                item.AddItem(false, ModLocalize<Mod>.No);
+                item.AddItem(true, CommonLocalize.MessageBox_Yes);
+                item.AddItem(false, CommonLocalize.MessageBox_No);
             }
             else
             {
