@@ -18,8 +18,7 @@ namespace NodeController
 
         protected override void OnSettingsUI()
         {
-            var languageGroup = GeneralTab.AddGroup(Localize.Settings_Language) as UIHelper;
-            AddLanguageList(languageGroup);
+            AddLanguage(GeneralTab);
 
 
             var generalGroup = GeneralTab.AddGroup(Localize.Settings_General) as UIHelper;
@@ -29,13 +28,9 @@ namespace NodeController
 
             AddCheckBox(generalGroup, Localize.Settings_SelectMiddleNodes, SelectMiddleNodes);
             AddLabel(generalGroup, Localize.Settings_SelectMiddleNodesDiscription, 0.8f, padding: 25);
-            AddCheckBox(generalGroup, Localize.Settings_ShowTooltips, ShowToolTip);
+            AddCheckBox(generalGroup, CommonLocalize.Settings_ShowTooltips, ShowToolTip);
 
-
-            var notificationsGroup = GeneralTab.AddGroup(Localize.Settings_Notifications) as UIHelper;
-
-            AddCheckBox(notificationsGroup, Localize.Settings_ShowWhatsNew, ShowWhatsNew);
-            AddCheckBox(notificationsGroup, Localize.Settings_ShowOnlyMajor, ShowOnlyMajor);
+            AddNotifications(GeneralTab);
 
 #if DEBUG
             var debugTab = CreateTab("Debug");
