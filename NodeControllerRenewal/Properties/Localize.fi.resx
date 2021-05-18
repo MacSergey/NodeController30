@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,22 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Vieritä hiiren rullalla vaihtaaksesi
-Shift X10, Ctrl X0,1</value>
-  </data>
-  <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Peruuta</value>
-  </data>
-  <data name="MessageBox_No" xml:space="preserve">
-    <value>Ei</value>
-  </data>
-  <data name="MessageBox_OK" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Kyllä</value>
-  </data>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
     <value>Alkuperäisen Node Controllerin tiedot tuotiin.
 Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyksistä voi vaatia hienosäätöä.</value>
@@ -140,85 +124,14 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
     <value>VAROITUS: Jos teet uuden tallennuksen, et voi enää käyttää alkuperäistä Node Controlleria tässä kaupungissa.</value>
   </data>
-  <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>Ymmärrän</value>
-  </data>
-  <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>Varoitus BETA-versiosta</value>
-  </data>
-  <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Hanki vakaa versio</value>
-  </data>
-  <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Käytät beta-versiota {0}:sta. Se on tarkoitettu uusien ominaisuuksien testaamiseen ja siinä voi olla virheitä. Jos tilasit sen vahingossa, vaihda vakaaseen versioon.</value>
-  </data>
   <data name="Mod_ConflictMessage" xml:space="preserve">
     <value>{0} ei voi toimia alkuperäisen Node Controllerin kanssa. Poista se käytöstä.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Säädä risteysten tyyppiä ja muotoa</value>
   </data>
-  <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>Tämä on BETA-versio. Virheitä voi esiintyä, eikä vakautta ole taattu!</value>
-  </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
     <value>Poista alkuperäinen Node Controller käytöstä</value>
-  </data>
-  <data name="Mod_LoaledWithErrors" xml:space="preserve">
-    <value>Modi latautui virheellisesti.
-Ei ole suositeltavaa käyttää modia tässä tilassa, koska se voi johtaa ennalta-arvaamattomaan käyttäytymiseen.
-Käynnistä peli uudelleen.</value>
-  </data>
-  <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Pelin kieli</value>
-  </data>
-  <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Tsekki</value>
-  </data>
-  <data name="Mod_Locale_de" xml:space="preserve">
-    <value>Saksa</value>
-  </data>
-  <data name="Mod_Locale_en" xml:space="preserve">
-    <value>Englanti US</value>
-  </data>
-  <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>Englanti UK</value>
-  </data>
-  <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Espanja</value>
-  </data>
-  <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Suomi</value>
-  </data>
-  <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>Ranska</value>
-  </data>
-  <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Italia</value>
-  </data>
-  <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Japani</value>
-  </data>
-  <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Hollanti</value>
-  </data>
-  <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Puola</value>
-  </data>
-  <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Portugali</value>
-  </data>
-  <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Venäjä</value>
-  </data>
-  <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Yksinkertaistettu kiina</value>
-  </data>
-  <data name="Mod_Support" xml:space="preserve">
-    <value>Tuki</value>
-  </data>
-  <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>Uutta modissa {0}</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Added auto mode for main slope direction.
@@ -236,12 +149,6 @@ Käynnistä peli uudelleen.</value>
 - Fix compatibility with TMPE.
 - Fix load data from intersection assets.
 - Fix not deletable pilars after place intersection asset.</value>
-  </data>
-  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Look for actual beta change log on Discord</value>
-  </data>
-  <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Versio {0}</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Mutka</value>
@@ -342,12 +249,6 @@ Käynnistä peli uudelleen.</value>
   <data name="Settings_General" xml:space="preserve">
     <value>Yleiset</value>
   </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Kieli</value>
-  </data>
-  <data name="Settings_Notifications" xml:space="preserve">
-    <value>Ilmoitukset</value>
-  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Valitse kahden tien risteyksettömät välit</value>
   </data>
@@ -356,15 +257,6 @@ Käynnistä peli uudelleen.</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Käynnistä työkalu</value>
-  </data>
-  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Ilmoita vain merkittävistä päivityksistä</value>
-  </data>
-  <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Näytä työkaluvihjeet</value>
-  </data>
-  <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Näytä, mikä on uutta</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Pidä Shift-näppäintä pohjassa tasateksesi tiet</value>

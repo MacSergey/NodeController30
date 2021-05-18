@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,22 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Крутите колесико для изменения
-Shift X10, Ctrl X0.1</value>
-  </data>
-  <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Отмена</value>
-  </data>
-  <data name="MessageBox_No" xml:space="preserve">
-    <value>Нет</value>
-  </data>
-  <data name="MessageBox_OK" xml:space="preserve">
-    <value>ОК</value>
-  </data>
-  <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Да</value>
-  </data>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
     <value>Данные оригинального Node Controller импортированы.
 Обратная совместимость не обеспечивает перенос всех данных, может потребоваться ручная корректировка.</value>
@@ -140,85 +124,14 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
     <value>ПРЕДУПРЕЖДЕНИЕ: Если вы сделаете новое сохранение, то больше не сможете использовать оригинальный Node Controller на этой карте.</value>
   </data>
-  <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>Я согласен</value>
-  </data>
-  <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>Предупреждение о BETA версии</value>
-  </data>
-  <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Получить стабильную</value>
-  </data>
-  <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Вы используете BETA версию {0}. Она предназначена для тестирования новых функций и может содержать ошибки. Если вы подписались по ошибки, то перейдите на стабильную версию.</value>
-  </data>
   <data name="Mod_ConflictMessage" xml:space="preserve">
     <value>{0} не может работать с оригинальным Node Controller, нужно отключить его.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Контролируйте тип и форму узлов</value>
   </data>
-  <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>Это BETA версия, стабильная работа и отсутствие ошибок не гарантировано!</value>
-  </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
     <value>Отключить оригинальный Node Controller</value>
-  </data>
-  <data name="Mod_LoaledWithErrors" xml:space="preserve">
-    <value>Мод загрузился с ошибками.
-Не рекомендуется использовать мод в таком состояние, это может привести к непредсказуемым результатам.
-Перезагрузите игру.</value>
-  </data>
-  <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Язык игры</value>
-  </data>
-  <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Чешский</value>
-  </data>
-  <data name="Mod_Locale_de" xml:space="preserve">
-    <value>Немецкий</value>
-  </data>
-  <data name="Mod_Locale_en" xml:space="preserve">
-    <value>Английский США</value>
-  </data>
-  <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>Английский Великобритания</value>
-  </data>
-  <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Испанский</value>
-  </data>
-  <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Финский</value>
-  </data>
-  <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>Французский</value>
-  </data>
-  <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Итальянский</value>
-  </data>
-  <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Японский</value>
-  </data>
-  <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Голландский</value>
-  </data>
-  <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Польский</value>
-  </data>
-  <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Португальский</value>
-  </data>
-  <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Русский</value>
-  </data>
-  <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Китайский упрощенный</value>
-  </data>
-  <data name="Mod_Support" xml:space="preserve">
-    <value>Поддержка</value>
-  </data>
-  <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>Что нового в {0}</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Добавлен автоматический режим для выбора основного направления наклона.
@@ -236,12 +149,6 @@ Shift X10, Ctrl X0.1</value>
 - Исправлена совместимость с TMPE.
 - Исправлена загрузка данных из дорожных развязок.
 - Исправлены неудаляемые опоры дорог после размещения дорожных развязок.</value>
-  </data>
-  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Look for actual beta change log on Discord</value>
-  </data>
-  <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Версия {0}</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Изгиб</value>
@@ -342,12 +249,6 @@ Shift X10, Ctrl X0.1</value>
   <data name="Settings_General" xml:space="preserve">
     <value>Основные</value>
   </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Язык</value>
-  </data>
-  <data name="Settings_Notifications" xml:space="preserve">
-    <value>Уведомления</value>
-  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Выбирать средние узлы</value>
   </data>
@@ -356,15 +257,6 @@ Shift X10, Ctrl X0.1</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Активация инструмента</value>
-  </data>
-  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Уведомления только о важных обновлениях</value>
-  </data>
-  <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Показывать подсказки</value>
-  </data>
-  <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Показывать что нового</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Удерживайте Shift чтобы выровнять дороги</value>

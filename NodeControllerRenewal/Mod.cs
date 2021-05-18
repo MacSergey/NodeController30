@@ -29,6 +29,7 @@ namespace NodeController
         public override string Description => !IsBeta ? Localize.Mod_Description : Localize.Mod_DescriptionBeta;
         public override List<Version> Versions => new List<Version>()
         {
+            new Version("3.0.2"),
             new Version("3.0.1"),
             new Version("3.0")
         };
@@ -91,9 +92,9 @@ namespace NodeController
             {
                 var messageBox = MessageBoxBase.ShowModal<TwoButtonMessageBox>();
                 messageBox.CaptionText = NameRaw;
-                messageBox.MessageText = Localize.Mod_LoaledWithErrors;
-                messageBox.Button1Text = ModLocalize<Mod>.Ok;
-                messageBox.Button2Text = Localize.Mod_Support;
+                messageBox.MessageText = CommonLocalize.Mod_LoadedWithErrors;
+                messageBox.Button1Text = CommonLocalize.MessageBox_OK;
+                messageBox.Button2Text = CommonLocalize.Mod_Support;
                 messageBox.OnButton2Click = OpenWorkshop;
             }
             else if (ConflictError)
@@ -104,7 +105,7 @@ namespace NodeController
             var messageBox = MessageBoxBase.ShowModal<TwoButtonMessageBox>();
             messageBox.CaptionText = NameRaw;
             messageBox.MessageText = string.Format(Localize.Mod_ConflictMessage, NameRaw);
-            messageBox.Button1Text = ModLocalize<Mod>.Ok;
+            messageBox.Button1Text = CommonLocalize.MessageBox_OK;
             messageBox.Button2Text = Localize.Mod_DisableOriginal;
             messageBox.OnButton2Click = Disable;
 

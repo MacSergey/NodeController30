@@ -117,22 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Scroll the wheel to change
-Shift X10, Ctrl X0.1</value>
-  </data>
-  <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="MessageBox_No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="MessageBox_OK" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Yes</value>
-  </data>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
     <value>Original Node Controller data was imported.
 Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
@@ -140,85 +124,14 @@ Backward compatibility does not provide the transfer of all data, may be require
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
     <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
   </data>
-  <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>I agree</value>
-  </data>
-  <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>BETA version warning</value>
-  </data>
-  <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Get stable version</value>
-  </data>
-  <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
-  </data>
   <data name="Mod_ConflictMessage" xml:space="preserve">
     <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Control node type and shape</value>
   </data>
-  <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
-  </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
     <value>Disable original Node Controller</value>
-  </data>
-  <data name="Mod_LoaledWithErrors" xml:space="preserve">
-    <value>Mod loaded with errors.
-It is not recommended to use the mod in this state as it can lead to unpredictable behavior.
-Restart the game.</value>
-  </data>
-  <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Game Language</value>
-  </data>
-  <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Czech</value>
-  </data>
-  <data name="Mod_Locale_de" xml:space="preserve">
-    <value>German</value>
-  </data>
-  <data name="Mod_Locale_en" xml:space="preserve">
-    <value>English US</value>
-  </data>
-  <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>English UK</value>
-  </data>
-  <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Spanish</value>
-  </data>
-  <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Finnish</value>
-  </data>
-  <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>French</value>
-  </data>
-  <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Italian</value>
-  </data>
-  <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Japanese</value>
-  </data>
-  <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Dutch</value>
-  </data>
-  <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Polish</value>
-  </data>
-  <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Portuguese</value>
-  </data>
-  <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Russian</value>
-  </data>
-  <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Chinese Simplified</value>
-  </data>
-  <data name="Mod_Support" xml:space="preserve">
-    <value>Support</value>
-  </data>
-  <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>What's new in {0}</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Added auto mode for main slope direction.
@@ -243,12 +156,6 @@ Restart the game.</value>
 - Fix crosswalk texture.
 - Fix creating button duplicates
 - Fix despaired "Make end straight" button</value>
-  </data>
-  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Look for actual beta change log on Discord</value>
-  </data>
-  <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Version {0}</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bend</value>
@@ -349,12 +256,6 @@ Restart the game.</value>
   <data name="Settings_General" xml:space="preserve">
     <value>General</value>
   </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="Settings_Notifications" xml:space="preserve">
-    <value>Notifications</value>
-  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Select middle nodes</value>
   </data>
@@ -363,15 +264,6 @@ Restart the game.</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Activate tool</value>
-  </data>
-  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Notification only about major updates</value>
-  </data>
-  <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Show tooltips</value>
-  </data>
-  <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Show what's new</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Hold Shift to alignment roads</value>
