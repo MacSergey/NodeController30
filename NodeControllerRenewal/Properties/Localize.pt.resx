@@ -118,20 +118,20 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
-    <value>Original Node Controller data was imported.
-Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
+    <value>Os dados originais do Node Controller foram importados.
+A compatível com versões anteriores não fornece a transferência de todos os dados, talvez sejam necessários ajustamentos manuais.</value>
   </data>
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
-    <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
+    <value>AVISO: Se guardar, deixara de poder usar o Node Controller original neste mapa.</value>
   </data>
   <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} can't work with original Node Controller at the same time, you need to disable it.</value>
+    <value>{0} não funciona com o Node Controller original ao mesmo tempo, tem de o desativar.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Control node type and shape</value>
+    <value>Controle o tipo do nó e sua forma</value>
   </data>
   <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Disable original Node Controller</value>
+    <value>Desativar o Node Controller original</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Added auto mode for main slope direction.
@@ -179,25 +179,25 @@ Backward compatibility does not provide the transfer of all data, may be require
     <value>Inversão de marcha</value>
   </data>
   <data name="Options_All" xml:space="preserve">
-    <value>All</value>
+    <value>Todos</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
-    <value>Reset offset</value>
+    <value>Repor deslocamento</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
-    <value>Main slope direction</value>
+    <value>Direção da inclinação principal</value>
   </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
-    <value>Auto</value>
+    <value>Automático</value>
   </data>
   <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
-    <value>Manually</value>
+    <value>Manualmente</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Make ends straight</value>
+    <value>Tornar as extremidades retas</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
-    <value>Marking</value>
+    <value>Marcação</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Deslocamento</value>
@@ -260,7 +260,7 @@ Backward compatibility does not provide the transfer of all data, may be require
     <value>Selecione os nós do meio</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>If this option is disabled, the middle nodes will move to clicked position</value>
+    <value>Se esta opção estiver desativada, os nós do meio vão mover-se para a posição clicada</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Ativar ferramenta</value>
@@ -272,7 +272,7 @@ Backward compatibility does not provide the transfer of all data, may be require
     <value>Clique para alinhar com este canto</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main slope direction</value>
+    <value>Mantem Alt premido para mudar a direção da inclinação principal</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Nó #{0}
@@ -291,10 +291,10 @@ Clique para editar</value>
     <value>Arraste para alterar deslocamento do canto</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drag this end to change main slope direction</value>
+    <value>Arraste esta extremidade para mudar a direção da inclinação principal</value>
   </data>
   <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drop this end to change main slope direction</value>
+    <value>Larga esta extremidade para mudar a direção da inclinação principal</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Clique para inserir passadeira</value>
@@ -306,10 +306,10 @@ Clique para editar</value>
     <value>Selecione o canto com o qual quer alinhar</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>Change to desired main slope direction</value>
+    <value>Mudar para a direção da inclinação principal desejada</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Select end position of main slope direction</value>
+    <value>Selecione a posição final da direção da inclinação principal</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Selecionar Nó</value>
