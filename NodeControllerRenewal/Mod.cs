@@ -116,19 +116,7 @@ namespace NodeController
 
             static bool Disable()
             {
-                DependencyUtilities.NC2.isEnabled = false;
-
-                if (UIView.library.Get<ContentManagerPanel>("ContentManagerPanel") is ContentManagerPanel managerPanel)
-                {
-                    var categoriesContainer = AccessTools.Field(typeof(ContentManagerPanel), "m_CategoriesContainer").GetValue(managerPanel) as UITabContainer;
-                    var modCategory = categoriesContainer.Find("Mods");
-                    if (categoriesContainer.components[categoriesContainer.selectedIndex] == modCategory)
-                    {
-                        var categoryContentPanel = modCategory.Find("Content").GetComponent<CategoryContentPanel>();
-                        AccessTools.Method(typeof(CategoryContentPanel), "RefreshEntries").Invoke(categoryContentPanel, new object[0]);
-                    }
-                }
-
+                DependencyUtilities.NC2.SetState(false);
                 return true;
             }
         }
