@@ -21,7 +21,7 @@ namespace NodeController
             AddLanguage(GeneralTab);
 
 
-            var generalGroup = GeneralTab.AddGroup(Localize.Settings_General) as UIHelper;
+            var generalGroup = GeneralTab.AddGroup(Localize.Settings_General);
 
             var keymappings = AddKeyMappingPanel(generalGroup);
             keymappings.AddKeymapping(NodeControllerTool.ActivationShortcut);
@@ -42,9 +42,9 @@ namespace NodeController
         public static SavedFloat SegmentId { get; } = new SavedFloat(nameof(SegmentId), SettingsFile, 0f, false);
         public static SavedFloat NodeId { get; } = new SavedFloat(nameof(NodeId), SettingsFile, 0f, false);
 
-        private void AddDebug(UIHelperBase helper)
+        private void AddDebug(UIAdvancedHelper helper)
         {
-            var group = helper.AddGroup("Debug") as UIHelper;
+            var group = helper.AddGroup("Debug");
 
             AddCheckBox(group, "Alpha blend overlay", Selection.AlphaBlendOverlay);
             AddCheckBox(group, "Render overlay center", Selection.RenderOverlayCentre);
