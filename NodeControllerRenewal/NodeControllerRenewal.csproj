@@ -113,12 +113,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\ModsCommon\LocalizeShared\CommonLocalize.Designer.cs">
-      <Link>Properties\CommonLocalize.Designer.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CommonLocalize.resx</DependentUpon>
-    </Compile>
     <Compile Include="Manager\Extensions\AssetDataExtension.cs" />
     <Compile Include="Manager\MainRoad.cs" />
     <Compile Include="UI\OptionPanel.cs" />
@@ -169,27 +163,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Localize.de.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Localize.es.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Localize.fi.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Localize.fr.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Localize.ja.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Localize.nl.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Localize.pl.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Localize.de.resx" />
+    <EmbeddedResource Include="Properties\Localize.es.resx" />
+    <EmbeddedResource Include="Properties\Localize.fi.resx" />
+    <EmbeddedResource Include="Properties\Localize.fr.resx" />
+    <EmbeddedResource Include="Properties\Localize.ja.resx" />
+    <EmbeddedResource Include="Properties\Localize.nl.resx" />
+    <EmbeddedResource Include="Properties\Localize.pl.resx" />
     <EmbeddedResource Include="Properties\Localize.ru.resx" />
     <EmbeddedResource Include="Properties\Localize.zh-CN.resx" />
     <EmbeddedResource Include="Properties\Localize.resx">
@@ -197,40 +177,6 @@
       <LastGenOutput>Localize.Designer.cs</LastGenOutput>
       <CustomToolNamespace>NodeController</CustomToolNamespace>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.de.resx">
-      <Link>Properties\CommonLocalize.de.resx</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.es.resx">
-      <Link>Properties\CommonLocalize.es.resx</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.fi.resx">
-      <Link>Properties\CommonLocalize.fi.resx</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.fr.resx">
-      <Link>Properties\CommonLocalize.fr.resx</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.ja.resx">
-      <Link>Properties\CommonLocalize.ja.resx</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.nl.resx">
-      <Link>Properties\CommonLocalize.nl.resx</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.pl.resx">
-      <Link>Properties\CommonLocalize.pl.resx</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.ru.resx">
-      <Link>Properties\CommonLocalize.ru.resx</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.zh-CN.resx">
-      <Link>Properties\CommonLocalize.zh-CN.resx</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ModsCommon\LocalizeShared\CommonLocalize.resx">
-      <CustomToolNamespace>ModsCommon</CustomToolNamespace>
-      <SubType>Designer</SubType>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <Link>Properties\CommonLocalize.resx</Link>
-      <LastGenOutput>CommonLocalize.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -253,10 +199,20 @@
   <Import Project="..\ModsCommon\TrajectoryShared\TrajectoryShared.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\PluginsShared\PluginsShared.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\XmlExtension\XmlExtension.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.de.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.es.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.fi.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.fr.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.ja.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.nl.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.pl.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.ru.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.zh-CN.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Beta Debug" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_ConfigurationName="Beta Debug" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="Both" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">
