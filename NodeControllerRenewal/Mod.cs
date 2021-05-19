@@ -99,6 +99,12 @@ namespace NodeController
             }
             else if (ConflictError)
                 OnModsConflict();
+
+            static bool OpenWorkshop()
+            {
+                SingletonMod<Mod>.Instance.OpenWorkshop();
+                return true;
+            }
         }
         public void OnModsConflict()
         {

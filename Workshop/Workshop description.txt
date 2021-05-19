@@ -50,6 +50,11 @@ To start use Node Controller Renewal you should disable original Node Controller
 [url=https://github.com/MacSergey/NodeController30][img]https://i.imgur.com/DczUXYq.png[/img][/url]
 
 [HR][/HR]
+[h1]Translations[/h1]
+If you want to help improve existing translations or you want to translate into your own language (ask to add it to the translation project).
+[url=https://crowdin.com/project/node-controller-renewal][img]https://i.imgur.com/uG2NKvG.png[/img][/url]
+
+[HR][/HR]
 [h1]Thank you for your help in development, testing and translation:[/h1]
 [list]
 [*] [url=https://steamcommunity.com/profiles/76561198109315306/myworkshopfiles/]kian.zarrin[/url] (Author of original Node Controller)
