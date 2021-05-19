@@ -130,11 +130,20 @@ namespace NodeController {
         ///- Fix node center position.
         ///- Fix crosswalk texture.
         ///- Fix creating button duplicates
-        ///- Fix despaired &quot;Make end straight&quot; button.
+        ///- Fix despaired &quot;Make end straight&quot; button..
         /// </summary>
         internal static string Mod_WhatsNewMessage3_0_2 {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessage3_0_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на - Added Portuguese translation.
+        /// </summary>
+        internal static string Mod_WhatsNewMessage3_0_3 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_0_3", resourceCulture);
             }
         }
         
