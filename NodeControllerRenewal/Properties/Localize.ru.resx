@@ -157,6 +157,9 @@
 - Исправлено создание дубликатов кнопки.
 - Исправлена пропажа кнопки "Сделать концы прямыми".</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_3" xml:space="preserve">
+    <value>- Добавлен португальский перевод.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Изгиб</value>
   </data>

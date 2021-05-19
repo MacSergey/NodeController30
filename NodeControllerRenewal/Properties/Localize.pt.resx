@@ -157,6 +157,9 @@ A compatível com versões anteriores não fornece a transferência de todos os 
 - Fix creating button duplicates
 - Fix despaired "Make end straight" button.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_3" xml:space="preserve">
+    <value>- Added Portuguese translation.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curva</value>
   </data>
