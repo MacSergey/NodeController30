@@ -87,7 +87,7 @@ namespace NodeController
                 OnModsConflict();
         }
 
-        public override void OnLoadedError()
+        protected override void OnLoadedError()
         {
             if (base.LoadError)
             {
@@ -443,5 +443,7 @@ namespace NodeController
         #endregion
 
         #endregion
+
+        class ErrorLoadedMessageBox : ErrorLoadedMessageBox<Mod> { }
     }
 }
