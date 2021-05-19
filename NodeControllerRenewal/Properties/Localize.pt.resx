@@ -191,10 +191,10 @@ A compatível com versões anteriores não fornece a transferência de todos os 
     <value>Direção da inclinação principal</value>
   </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
-    <value>Automático</value>
+    <value>Auto</value>
   </data>
   <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
-    <value>Manualmente</value>
+    <value>Manual</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
     <value>Tornar as extremidades retas</value>
