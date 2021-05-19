@@ -59,6 +59,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LocalizeShared.zh-CN", "Mod
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{0A4B6CF6-295B-4BCC-9DE3-475C05D51929}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localize", "ModsCommon\LocalizeShared\Localize.csproj", "{965F863B-1394-41ED-85EC-B35DC09003EB}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ModsCommon\LocalizeShared\LocalizeShared.pl.projitems*{0814bfcf-bb66-493c-8dd9-ca17ee904afa}*SharedItemsImports = 13
@@ -113,6 +115,8 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta Debug|Any CPU = Beta Debug|Any CPU
 		Beta Release|Any CPU = Beta Release|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 		Stable Debug|Any CPU = Stable Debug|Any CPU
 		Stable Release|Any CPU = Stable Release|Any CPU
 	EndGlobalSection
@@ -121,10 +125,26 @@ Global
 		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Beta Debug|Any CPU.Build.0 = Beta Debug|Any CPU
 		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Beta Release|Any CPU.ActiveCfg = Beta Release|Any CPU
 		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Beta Release|Any CPU.Build.0 = Beta Release|Any CPU
+		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Debug|Any CPU.ActiveCfg = Stable Debug|Any CPU
+		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Debug|Any CPU.Build.0 = Stable Debug|Any CPU
+		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Release|Any CPU.ActiveCfg = Stable Release|Any CPU
+		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Release|Any CPU.Build.0 = Stable Release|Any CPU
 		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Stable Debug|Any CPU.ActiveCfg = Stable Debug|Any CPU
 		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Stable Debug|Any CPU.Build.0 = Stable Debug|Any CPU
 		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Stable Release|Any CPU.ActiveCfg = Stable Release|Any CPU
 		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Stable Release|Any CPU.Build.0 = Stable Release|Any CPU
+		{965F863B-1394-41ED-85EC-B35DC09003EB}.Beta Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{965F863B-1394-41ED-85EC-B35DC09003EB}.Beta Debug|Any CPU.Build.0 = Debug|Any CPU
+		{965F863B-1394-41ED-85EC-B35DC09003EB}.Beta Release|Any CPU.ActiveCfg = Release|Any CPU
+		{965F863B-1394-41ED-85EC-B35DC09003EB}.Beta Release|Any CPU.Build.0 = Release|Any CPU
+		{965F863B-1394-41ED-85EC-B35DC09003EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{965F863B-1394-41ED-85EC-B35DC09003EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{965F863B-1394-41ED-85EC-B35DC09003EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{965F863B-1394-41ED-85EC-B35DC09003EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{965F863B-1394-41ED-85EC-B35DC09003EB}.Stable Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{965F863B-1394-41ED-85EC-B35DC09003EB}.Stable Debug|Any CPU.Build.0 = Debug|Any CPU
+		{965F863B-1394-41ED-85EC-B35DC09003EB}.Stable Release|Any CPU.ActiveCfg = Release|Any CPU
+		{965F863B-1394-41ED-85EC-B35DC09003EB}.Stable Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -156,6 +176,7 @@ Global
 		{4093656F-54A7-4EB8-B021-4C18B5E16407} = {941BED44-F547-465A-8FC6-C0A0B98EB121}
 		{6D76CE46-51A4-4596-8E5B-03261089BEDD} = {941BED44-F547-465A-8FC6-C0A0B98EB121}
 		{0A4B6CF6-295B-4BCC-9DE3-475C05D51929} = {A1421751-FAB0-4699-A202-205D653CD98D}
+		{965F863B-1394-41ED-85EC-B35DC09003EB} = {941BED44-F547-465A-8FC6-C0A0B98EB121}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		BuildVersion_StartDate = 2000/1/1
