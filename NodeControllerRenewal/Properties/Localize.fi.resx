@@ -266,7 +266,7 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
     <value>Käynnistä työkalu</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Pidä Shift-näppäintä pohjassa tasateksesi tiet</value>
+    <value>Pidä Shift-näppäintä pohjassa kohdistaaksesi tiet</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Napauta tasataksesi tämän kulman suhteen</value>
