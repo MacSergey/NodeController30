@@ -91,12 +91,8 @@ namespace NodeController
         {
             if (base.LoadError)
             {
-                var messageBox = MessageBoxBase.ShowModal<TwoButtonMessageBox>();
-                messageBox.CaptionText = NameRaw;
-                messageBox.MessageText = CommonLocalize.Mod_LoadedWithErrors;
-                messageBox.Button1Text = CommonLocalize.MessageBox_OK;
-                messageBox.Button2Text = CommonLocalize.Mod_Support;
-                messageBox.OnButton2Click = OpenWorkshop;
+                var messageBox = MessageBoxBase.ShowModal<ErrorLoadedMessageBox>();
+                messageBox.OnSupportClick = OpenWorkshop;
             }
             else if (ConflictError)
                 OnModsConflict();
