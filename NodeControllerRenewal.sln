@@ -119,8 +119,6 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta Debug|Any CPU = Beta Debug|Any CPU
 		Beta Release|Any CPU = Beta Release|Any CPU
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
 		Stable Debug|Any CPU = Stable Debug|Any CPU
 		Stable Release|Any CPU = Stable Release|Any CPU
 	EndGlobalSection
@@ -129,10 +127,6 @@ Global
 		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Beta Debug|Any CPU.Build.0 = Beta Debug|Any CPU
 		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Beta Release|Any CPU.ActiveCfg = Beta Release|Any CPU
 		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Beta Release|Any CPU.Build.0 = Beta Release|Any CPU
-		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Debug|Any CPU.ActiveCfg = Stable Debug|Any CPU
-		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Debug|Any CPU.Build.0 = Stable Debug|Any CPU
-		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Release|Any CPU.ActiveCfg = Stable Release|Any CPU
-		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Release|Any CPU.Build.0 = Stable Release|Any CPU
 		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Stable Debug|Any CPU.ActiveCfg = Stable Debug|Any CPU
 		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Stable Debug|Any CPU.Build.0 = Stable Debug|Any CPU
 		{C7DD6E8A-E402-47F7-8B2A-52F37A7C21EF}.Stable Release|Any CPU.ActiveCfg = Stable Release|Any CPU
@@ -141,10 +135,6 @@ Global
 		{965F863B-1394-41ED-85EC-B35DC09003EB}.Beta Debug|Any CPU.Build.0 = Debug|Any CPU
 		{965F863B-1394-41ED-85EC-B35DC09003EB}.Beta Release|Any CPU.ActiveCfg = Release|Any CPU
 		{965F863B-1394-41ED-85EC-B35DC09003EB}.Beta Release|Any CPU.Build.0 = Release|Any CPU
-		{965F863B-1394-41ED-85EC-B35DC09003EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{965F863B-1394-41ED-85EC-B35DC09003EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{965F863B-1394-41ED-85EC-B35DC09003EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{965F863B-1394-41ED-85EC-B35DC09003EB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{965F863B-1394-41ED-85EC-B35DC09003EB}.Stable Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{965F863B-1394-41ED-85EC-B35DC09003EB}.Stable Debug|Any CPU.Build.0 = Debug|Any CPU
 		{965F863B-1394-41ED-85EC-B35DC09003EB}.Stable Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -184,7 +174,7 @@ Global
 		{7BB4ECD0-3AA5-4DFB-9C2A-37204213C1C5} = {941BED44-F547-465A-8FC6-C0A0B98EB121}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {81553A2A-DCA5-449A-A08F-0BC55141DD0D}
 		BuildVersion_StartDate = 2000/1/1
+		SolutionGuid = {81553A2A-DCA5-449A-A08F-0BC55141DD0D}
 	EndGlobalSection
 EndGlobal
