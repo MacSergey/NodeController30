@@ -23,8 +23,8 @@ namespace NodeController
     {
         #region PROPERTIES
 
-        public override string WorkshopUrl => "https://steamcommunity.com/sharedfiles/filedetails/?id=2472062376";
-        public override string BetaWorkshopUrl => "https://steamcommunity.com/sharedfiles/filedetails/?id=2462845270";
+        protected override string StableWorkshopUrl => "https://steamcommunity.com/sharedfiles/filedetails/?id=2472062376";
+        protected override string BetaWorkshopUrl => "https://steamcommunity.com/sharedfiles/filedetails/?id=2462845270";
         public override string NameRaw => "Node Controller Renewal";
         public override string Description => !IsBeta ? Localize.Mod_Description : CommonLocalize.Mod_DescriptionBeta;
         public override List<Version> Versions => new List<Version>()
@@ -87,25 +87,20 @@ namespace NodeController
                 OnModsConflict();
         }
 
-        protected override void OnLoadedError()
+        protected override void OnLoadError(out bool shown)
         {
-            if (base.LoadError)
-            {
-                var messageBox = MessageBoxBase.ShowModal<ErrorLoadedMessageBox>();
-                messageBox.OnSupportClick = OpenWorkshop;
-            }
-            else if (ConflictError)
-                OnModsConflict();
+            base.OnLoadError(out shown);
 
-            static bool OpenWorkshop()
+            if(!shown && ConflictError)
             {
-                SingletonMod<Mod>.Instance.OpenWorkshop();
-                return true;
+                OnModsConflict();
+                shown = true;
             }
         }
+
         public void OnModsConflict()
         {
-            var messageBox = MessageBoxBase.ShowModal<TwoButtonMessageBox>();
+            var messageBox = MessageBox.Show<TwoButtonMessageBox>();
             messageBox.CaptionText = NameRaw;
             messageBox.MessageText = string.Format(Localize.Mod_ConflictMessage, NameRaw);
             messageBox.Button1Text = CommonLocalize.MessageBox_OK;
@@ -127,11 +122,6 @@ namespace NodeController
             settings.OnSettingsUI(helper);
         }
         public override string GetLocalizeString(string str, CultureInfo culture = null) => Localize.ResourceManager.GetString(str, culture ?? Culture);
-        public void ShowLoadWarning()
-        {
-            if (SingletonItem<SerializableDataExtension>.Instance.WasImported)
-                MessageBoxBase.ShowModal<BackwardСompatibilityMessageBox>();
-        }
 
         #endregion
 
@@ -433,8 +423,6 @@ namespace NodeController
         #endregion
 
         #endregion
-
-        class ErrorLoadedMessageBox : ErrorLoadedMessageBox<Mod> { }
     }
 
     public static class Patcher
