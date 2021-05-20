@@ -62,16 +62,19 @@ namespace NodeController
         {
             base.Enable();
 
-            if (DependencyUtilities.NC2 is PluginInfo plugin)
-                NC2StateWatcher = new PlaginStateWatcher(plugin);
-
-            if (NC2StateWatcher != null)
+            if (!base.LoadError)
             {
-                ConflictError = NC2StateWatcher.IsEnabled;
-                NC2StateWatcher.StateChanged += NS2StateChanged;
+                if (DependencyUtilities.NC2 is PluginInfo plugin)
+                    NC2StateWatcher = new PlaginStateWatcher(plugin);
+
+                if (NC2StateWatcher != null)
+                {
+                    ConflictError = NC2StateWatcher.IsEnabled;
+                    NC2StateWatcher.StateChanged += NS2StateChanged;
+                }
+                else
+                    ConflictError = false;
             }
-            else
-                ConflictError = false;
         }
         protected override void Disable()
         {
@@ -91,7 +94,7 @@ namespace NodeController
         {
             base.OnLoadError(out shown);
 
-            if(!shown && ConflictError)
+            if (!shown && ConflictError)
             {
                 OnModsConflict();
                 shown = true;
