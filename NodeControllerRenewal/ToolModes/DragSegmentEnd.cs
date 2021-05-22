@@ -10,7 +10,7 @@ namespace NodeController
         public override ToolModeType Type => ToolModeType.DragEnd;
         public SegmentEndData SegmentEnd { get; private set; } = null;
         private float CachedRotate { get; set; }
-        private float RoundTo => Utilites.OnlyShiftIsPressed ? 1f : 0.1f;
+        private float RoundTo => Utility.OnlyShiftIsPressed ? 1f : 0.1f;
 
         protected override void Reset(IToolMode prevMode)
         {

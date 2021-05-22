@@ -16,7 +16,7 @@ namespace NodeController
         public SegmentEndData SegmentEnd { get; private set; } = null;
         public SideType Corner { get; private set; }
 
-        private float RoundTo => Utilites.OnlyShiftIsPressed ? 1f : 0.1f;
+        private float RoundTo => Utility.OnlyShiftIsPressed ? 1f : 0.1f;
 
         protected override void Reset(IToolMode prevMode)
         {

@@ -23,8 +23,9 @@ namespace NodeController
     {
         #region PROPERTIES
 
-        protected override string StableWorkshopUrl => "https://steamcommunity.com/sharedfiles/filedetails/?id=2472062376";
-        protected override string BetaWorkshopUrl => "https://steamcommunity.com/sharedfiles/filedetails/?id=2462845270";
+        protected override ulong StableWorkshopId => 2472062376ul;
+        protected override ulong BetaWorkshopId => 2462845270ul;
+
         public override string NameRaw => "Node Controller Renewal";
         public override string Description => !IsBeta ? Localize.Mod_Description : CommonLocalize.Mod_DescriptionBeta;
         public override List<Version> Versions => new List<Version>()
@@ -41,13 +42,18 @@ namespace NodeController
             get => Localize.Culture;
             protected set => Localize.Culture = value;
         }
-        protected override bool LoadError
+        protected override List<BaseDependencyInfo> DependencyInfos
         {
-            get => base.LoadError || ConflictError;
-            set => base.LoadError = value;
+            get
+            {
+                var infos = base.DependencyInfos;
+
+                var info = new ConflictDependencyInfo(DependencyState.Disable, DependencyUtilities.NC2Searcher);
+                infos.Add(info);
+
+                return infos;
+            }
         }
-        private bool ConflictError { get; set; }
-        public static PlaginStateWatcher NC2StateWatcher { get; set; }
 
 #if BETA
         public override bool IsBeta => true;
@@ -57,67 +63,6 @@ namespace NodeController
         #endregion
 
         #region BASIC
-
-        protected override void Enable()
-        {
-            base.Enable();
-
-            if (!base.LoadError)
-            {
-                if (DependencyUtilities.NC2 is PluginInfo plugin)
-                    NC2StateWatcher = new PlaginStateWatcher(plugin);
-
-                if (NC2StateWatcher != null)
-                {
-                    ConflictError = NC2StateWatcher.IsEnabled;
-                    NC2StateWatcher.StateChanged += NS2StateChanged;
-                }
-                else
-                    ConflictError = false;
-            }
-        }
-        protected override void Disable()
-        {
-            base.Disable();
-
-            if (NC2StateWatcher != null)
-                NC2StateWatcher.StateChanged -= NS2StateChanged;
-        }
-
-        private void NS2StateChanged(PluginInfo plugin, bool state)
-        {
-            if (state)
-                OnModsConflict();
-        }
-
-        protected override void OnLoadError(out bool shown)
-        {
-            base.OnLoadError(out shown);
-
-            if (!shown && ConflictError)
-            {
-                OnModsConflict();
-                shown = true;
-            }
-        }
-
-        public void OnModsConflict()
-        {
-            var messageBox = MessageBox.Show<TwoButtonMessageBox>();
-            messageBox.CaptionText = NameRaw;
-            messageBox.MessageText = string.Format(Localize.Mod_ConflictMessage, NameRaw);
-            messageBox.Button1Text = CommonLocalize.MessageBox_OK;
-            messageBox.Button2Text = Localize.Mod_DisableOriginal;
-            messageBox.OnButton2Click = Disable;
-
-            messageBox.SetButtonsRatio(2, 5);
-
-            static bool Disable()
-            {
-                DependencyUtilities.NC2.SetState(false);
-                return true;
-            }
-        }
 
         protected override void GetSettings(UIHelperBase helper)
         {

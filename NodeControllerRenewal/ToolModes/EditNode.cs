@@ -20,9 +20,9 @@ namespace NodeController
 
         public override void OnToolUpdate()
         {
-            if (Tool.Data.IsJunction && Tool.Data.IsSlopeJunctions && !Tool.Panel.IsHover && Utilites.OnlyAltIsPressed)
+            if (Tool.Data.IsJunction && Tool.Data.IsSlopeJunctions && !Tool.Panel.IsHover && Utility.OnlyAltIsPressed)
                 Tool.SetMode(ToolModeType.ChangeMain);
-            else if (!Tool.Panel.IsHover && Utilites.OnlyShiftIsPressed)
+            else if (!Tool.Panel.IsHover && Utility.OnlyShiftIsPressed)
                 Tool.SetMode(ToolModeType.Aling);
             else if (Tool.MouseRayValid && Tool.Data.IsMoveableEnds)
             {
