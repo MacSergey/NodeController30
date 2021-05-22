@@ -472,15 +472,6 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Test string, not need translate.
-        /// </summary>
-        internal static string Test {
-            get {
-                return ResourceManager.GetString("Test", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Hold Shift to alignment roads.
         /// </summary>
         internal static string Tool_InfoAlignMode {
