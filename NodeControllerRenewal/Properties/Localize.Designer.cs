@@ -139,7 +139,7 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на - Added Portuguese translation.
+        ///   Ищет локализованную строку, похожую на - Added Portuguese translation..
         /// </summary>
         internal static string Mod_WhatsNewMessage3_0_3 {
             get {
@@ -468,6 +468,15 @@ namespace NodeController {
         internal static string Settings_ShortcutActivateTool {
             get {
                 return ResourceManager.GetString("Settings_ShortcutActivateTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Test string, not need translate.
+        /// </summary>
+        internal static string Test {
+            get {
+                return ResourceManager.GetString("Test", resourceCulture);
             }
         }
         
