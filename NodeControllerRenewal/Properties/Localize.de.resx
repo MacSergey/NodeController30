@@ -124,14 +124,8 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
     <value>WARNUNG: Wenn neu gespeichert wird, kann der ursprüngliche Node Controller nicht mehr auf dieser Karte verwendet werden.</value>
   </data>
-  <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} kann nicht zusammen mit dem ursprünglichen Node Controller aktiv sein. Dieser muss daher deaktiviert werden.</value>
-  </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Netzwerk-Knoten-Typ und Form steuern</value>
-  </data>
-  <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Original Node Controller deaktivieren</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Automatischer Modus für die Neigungsrichtung hinzugefügt.

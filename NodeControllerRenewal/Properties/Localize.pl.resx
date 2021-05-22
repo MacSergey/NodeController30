@@ -124,14 +124,8 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
     <value>OSTRZEŻENIE: Jeżeli stworzysz nowy zapis nie będziesz już mógł korzystać z oryginalnego Node Controller'a na tej mapie.</value>
   </data>
-  <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} nie może działać jednocześnie z oryginalnym Node Controller'em, musisz go wyłączyć.</value>
-  </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Kontroluj typ i kształt węzła</value>
-  </data>
-  <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Wyłączy oryginalny Node Controller</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Added auto mode for main slope direction.
