@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace NodeController
 {
-    public class SelectNodeToolMode : BaseSelectToolMode<Mod, NodeControllerTool>, IToolModePanel, IToolMode<ToolModeType>
+    public class SelectNodeToolMode : BaseSelectToolMode<NodeControllerTool>, IToolModePanel, IToolMode<ToolModeType>
     {
         public bool ShowPanel => false;
         public ToolModeType Type => ToolModeType.Select;
@@ -55,7 +55,7 @@ namespace NodeController
             if (IsHoverSegment)
             {
                 SegmentEndData.CalculateSegmentBeziers(HoverSegment.Id, out var bezier, out _, out _);
-                bezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out var position);
+                bezier.Trajectory.GetHitPosition(Tool.Ray, out _, out _, out var position);
                 IsPossibleInsertNode = PossibleInsertNode(position);
                 InsertPosition = position;
             }

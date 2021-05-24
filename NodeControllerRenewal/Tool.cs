@@ -64,7 +64,7 @@ namespace NodeController
             Panel.RefreshPanel();
         }
     }
-    public abstract class NodeControllerToolMode : BaseToolMode<Mod, NodeControllerTool>, IToolMode<ToolModeType>, IToolModePanel
+    public abstract class NodeControllerToolMode : BaseToolMode<NodeControllerTool>, IToolMode<ToolModeType>, IToolModePanel
     {
         public abstract ToolModeType Type { get; }
         public virtual bool ShowPanel => true;
@@ -80,6 +80,6 @@ namespace NodeController
         ChangeMain = 32,
         Aling = 64,
     }
-    public class NodeControllerToolThreadingExtension : BaseThreadingExtension<Mod, NodeControllerTool> { }
-    public class NodeControllerToolLoadingExtension : BaseToolLoadingExtension<Mod, NodeControllerTool> { }
+    public class NodeControllerToolThreadingExtension : BaseThreadingExtension<NodeControllerTool> { }
+    public class NodeControllerToolLoadingExtension : BaseToolLoadingExtension<NodeControllerTool> { }
 }

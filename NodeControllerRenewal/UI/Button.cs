@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace NodeController.UI
 {
-    public class NodeControllerButton : NetToolButton<Mod, NodeControllerTool>
+    public class NodeControllerButton : NetToolButton<NodeControllerTool>
     {
         protected override Vector2 ButtonPosition => new Vector3(94, 38);
         protected override UITextureAtlas Atlas => NodeControllerTextures.Atlas;
