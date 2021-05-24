@@ -75,6 +75,10 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoLayoutPanelShared", "Mo
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CustomUIShared", "ModsCommon\CustomUIShared\CustomUIShared.shproj", "{4A794B1D-48BE-4352-92D0-9D897393587C}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SimpleMessageBoxShared", "ModsCommon\SimpleMessageBoxShared\SimpleMessageBoxShared.shproj", "{A3055CAA-4807-4C49-973C-7B92610C25C8}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "WhatsNewMessageBoxShared", "ModsCommon\WhatsNewMessageBoxShared\WhatsNewMessageBoxShared.shproj", "{8431FA6D-34A1-4700-8D4F-09C9E65346E3}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ModsCommon\LocalizeShared\LocalizeShared.pl.projitems*{0814bfcf-bb66-493c-8dd9-ca17ee904afa}*SharedItemsImports = 13
@@ -91,7 +95,9 @@ Global
 		ModsCommon\NetExtension\NetExtension.projitems*{69f65522-1ccc-4c9f-8989-8155708c1832}*SharedItemsImports = 13
 		ModsCommon\LocalizeShared\LocalizeShared.zh-CN.projitems*{6d76ce46-51a4-4596-8e5b-03261089bedd}*SharedItemsImports = 13
 		ModsCommon\LocalizeShared\LocalizeShared.pt.projitems*{7bb4ecd0-3aa5-4dfb-9c2a-37204213c1c5}*SharedItemsImports = 13
+		ModsCommon\WhatsNewMessageBoxShared\WhatsNewMessageBoxShared.projitems*{8431fa6d-34a1-4700-8d4f-09c9e65346e3}*SharedItemsImports = 13
 		ModsCommon\LocalizeShared\LocalizeShared.fr.projitems*{9cb86de4-4cd4-4265-ac8b-b041707112d9}*SharedItemsImports = 13
+		ModsCommon\SimpleMessageBoxShared\SimpleMessageBoxShared.projitems*{a3055caa-4807-4c49-973c-7b92610c25c8}*SharedItemsImports = 13
 		ModsCommon\PropertyPanelShared\PropertyPanelShared.projitems*{abe0f508-441b-4871-a17f-3f345f5dc42b}*SharedItemsImports = 13
 		ModsCommon\LocalizeShared\LocalizeShared.ja.projitems*{b0c05991-7f01-40c4-8efb-9d765cc72534}*SharedItemsImports = 13
 		ModsCommon\LoadExtensionShared\LoadExtensionShared.projitems*{b0dea36d-46fd-4d66-9285-57e85ab0bcdf}*SharedItemsImports = 13
@@ -122,10 +128,12 @@ Global
 		ModsCommon\PluginsShared\PluginsShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\PropertyPanelShared\PropertyPanelShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\RenderExtension\RenderExtension.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
+		ModsCommon\SimpleMessageBoxShared\SimpleMessageBoxShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\SingletonShared\SingletonShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\ToolShared\ModsToolShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\TrajectoryShared\TrajectoryShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\UIShared\ModsUIShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
+		ModsCommon\WhatsNewMessageBoxShared\WhatsNewMessageBoxShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\XmlExtension\XmlExtension.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\MessageBoxShared\MessageBoxShared.projitems*{d5b649ec-0fec-48f3-8316-6e266169cdcc}*SharedItemsImports = 13
 		ModsCommon\LocalizeShared\LocalizeShared.de.projitems*{de7b8af4-65b6-421f-b439-27132becc459}*SharedItemsImports = 13
@@ -200,9 +208,11 @@ Global
 		{FE0AF823-F63F-4441-B28D-C0890BC0BF6A} = {14A85DBC-F678-4F11-832E-9D2299FFE768}
 		{FC5E6F74-8408-4FD8-A46A-A7F549E30454} = {0A4B6CF6-295B-4BCC-9DE3-475C05D51929}
 		{4A794B1D-48BE-4352-92D0-9D897393587C} = {0A4B6CF6-295B-4BCC-9DE3-475C05D51929}
+		{A3055CAA-4807-4C49-973C-7B92610C25C8} = {0A4B6CF6-295B-4BCC-9DE3-475C05D51929}
+		{8431FA6D-34A1-4700-8D4F-09C9E65346E3} = {0A4B6CF6-295B-4BCC-9DE3-475C05D51929}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {81553A2A-DCA5-449A-A08F-0BC55141DD0D}
 		BuildVersion_StartDate = 2000/1/1
+		SolutionGuid = {81553A2A-DCA5-449A-A08F-0BC55141DD0D}
 	EndGlobalSection
 EndGlobal
