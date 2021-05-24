@@ -124,14 +124,8 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
     <value>AVERTISSEMENT : Si vous faites une nouvelle sauvegarde, vous ne pourrez plus utiliser le Node Controller originel sur cette carte.</value>
   </data>
-  <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} ne peut pas fonctionner avec le Node Controller originel en même temps, vous devez le désactiver.</value>
-  </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Changer le type de nœud et la forme</value>
-  </data>
-  <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Désactiver le Node Controller originel</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Added auto mode for main slope direction.

@@ -124,14 +124,8 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
     <value>AVISO: Se guardar, deixara de poder usar o Node Controller original neste mapa.</value>
   </data>
-  <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} não funciona com o Node Controller original ao mesmo tempo, tem de o desativar.</value>
-  </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Controle o tipo do nó e sua forma</value>
-  </data>
-  <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Desativar o Node Controller original</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Added auto mode for main slope direction.

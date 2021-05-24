@@ -123,14 +123,8 @@
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
     <value>WAARSCHUWING: Als u een nieuwe save maakt is het niet langer mogelijk de originele Node Controller te gebruiken op deze kaart.</value>
   </data>
-  <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} werkt niet tegelijk met de originele Node Controller, u moet deze uitschakelen.</value>
-  </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Beheer knooppunttype en vorm</value>
-  </data>
-  <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Originele Node Controller uitschakelen</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Added auto mode for main slope direction.

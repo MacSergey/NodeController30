@@ -124,14 +124,8 @@
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
     <value>警告: インポート後にマップの保存を行うと、オリジナルのNode Controllerは使用できなくなります。</value>
   </data>
-  <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} は、オリジナルのNode Controllerと同時に動作しません。MODを無効化してください。</value>
-  </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>交差点やノードの種類・形状を、調整や変更ができます。</value>
-  </data>
-  <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>オリジナルのNode Controllerを無効化</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Added auto mode for main slope direction.

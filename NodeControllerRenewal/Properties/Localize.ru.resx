@@ -124,14 +124,8 @@
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
     <value>ПРЕДУПРЕЖДЕНИЕ: Если вы сделаете новое сохранение, то больше не сможете использовать оригинальный Node Controller на этой карте.</value>
   </data>
-  <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} не может работать с оригинальным Node Controller, нужно отключить его.</value>
-  </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Контролируйте тип и форму узлов</value>
-  </data>
-  <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Отключить оригинальный Node Controller</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Добавлен автоматический режим для выбора основного направления наклона.

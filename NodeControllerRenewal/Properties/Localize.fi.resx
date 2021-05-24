@@ -124,14 +124,8 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
     <value>VAROITUS: Jos teet uuden tallennuksen, et voi enää käyttää alkuperäistä Node Controlleria tässä kaupungissa.</value>
   </data>
-  <data name="Mod_ConflictMessage" xml:space="preserve">
-    <value>{0} ei voi toimia alkuperäisen Node Controllerin kanssa. Poista se käytöstä.</value>
-  </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Säädä risteysten tyyppiä ja muotoa</value>
-  </data>
-  <data name="Mod_DisableOriginal" xml:space="preserve">
-    <value>Poista alkuperäinen Node Controller käytöstä</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Added auto mode for main slope direction.
