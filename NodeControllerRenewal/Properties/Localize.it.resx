@@ -266,7 +266,7 @@ Backward compatibility does not provide the transfer of all data, may be require
     <value>Hold Shift to alignment roads</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
-    <value>Click to align with this corner</value>
+    <value>Clicca per allineare con questo angolo</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
     <value>Hold Alt to change main slope direction</value>
@@ -276,7 +276,7 @@ Backward compatibility does not provide the transfer of all data, may be require
 Click to edit</value>
   </data>
   <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
-    <value>Click to select corner you want to align</value>
+    <value>Clicca per selezionare l'angolo che vuoi allineare</value>
   </data>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Drag to change offset</value>
