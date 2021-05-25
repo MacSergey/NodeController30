@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
-    <value>原版节点控制器(Node Controller) mod数据已导入。
-向后兼容无法包括所有数据，可能需要手动调整。</value>
+    <value>已导入原版节点控制器模组数据。
+逆向兼容无法包括所有数据，可能需要手动调整。</value>
   </data>
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
-    <value>警告：如果您保存为新存档，您将无法在此地图上使用原版节点控制器(Node Controller)。</value>
+    <value>警告：保存后，您将无法在此地图上继续使用原版节点控制器模组。</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>控制节点类型和形状</value>
@@ -158,10 +158,10 @@
     <value>弯曲</value>
   </data>
   <data name="NodeStyle_Crossing" xml:space="preserve">
-    <value>人行路口</value>
+    <value>斑马线</value>
   </data>
   <data name="NodeStyle_Custom" xml:space="preserve">
-    <value>定制</value>
+    <value>自定义</value>
   </data>
   <data name="NodeStyle_End" xml:space="preserve">
     <value>终点</value>
@@ -191,7 +191,7 @@
     <value>手动</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>把终点变直</value>
+    <value>裁直路段终点</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>标线</value>
@@ -257,7 +257,7 @@
     <value>选择中间节点</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>如果禁用此选项，中间点将移动到单击位置</value>
+    <value>禁用后，中间点将移动到单击位置</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>启用工具</value>
@@ -273,7 +273,7 @@
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>节点 #{0}
-点击以编辑</value>
+点击编辑此节点</value>
   </data>
   <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
     <value>选择想要对齐的边角</value>
@@ -294,7 +294,7 @@
     <value>丢下此端来改变主要斜坡方向</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
-    <value>点击插入人行路口节点</value>
+    <value>点击插入斑马线节点</value>
   </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>点击以插入节点</value>
@@ -303,7 +303,7 @@
     <value>选择想要对齐的边角</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>改变到所需的主要斜坡方向</value>
+    <value>改变至选择的主要斜坡方向</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
     <value>选择主要斜坡方向的终点</value>
@@ -316,6 +316,6 @@
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
     <value>无法插入节点
-太靠近附近节点</value>
+节点间距过短</value>
   </data>
 </root>

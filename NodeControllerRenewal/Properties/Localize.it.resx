@@ -118,14 +118,14 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
-    <value>Original Node Controller data was imported.
-Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
+    <value>Sono stati importati i dati del Node Controller originale.
+La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibili correzioni manuali necessarie.</value>
   </data>
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
-    <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
+    <value>ATTENZIONE: Effettuando un nuovo salvataggio non si potrà più utilizzare il Node Controller originale in questa mappa.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Control node type and shape</value>
+    <value>Cambia tipologia e forma del nodo</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Added auto mode for main slope direction.
@@ -155,167 +155,167 @@ Backward compatibility does not provide the transfer of all data, may be require
     <value>- Added Portuguese translation.</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
-    <value>Bend</value>
+    <value>Piega</value>
   </data>
   <data name="NodeStyle_Crossing" xml:space="preserve">
-    <value>Crossing</value>
+    <value>Incrocio</value>
   </data>
   <data name="NodeStyle_Custom" xml:space="preserve">
-    <value>Custom</value>
+    <value>Personalizza</value>
   </data>
   <data name="NodeStyle_End" xml:space="preserve">
-    <value>End</value>
+    <value>Fine</value>
   </data>
   <data name="NodeStyle_Middle" xml:space="preserve">
-    <value>Middle</value>
+    <value>Centrale</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
-    <value>Stretched</value>
+    <value>Allungato</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
-    <value>UTurn</value>
+    <value>Curva ad U</value>
   </data>
   <data name="Options_All" xml:space="preserve">
-    <value>All</value>
+    <value>Tutto</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
-    <value>Reset offset</value>
+    <value>Ripristina la deviazione</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
-    <value>Main slope direction</value>
+    <value>Direzione principale della pendenza</value>
   </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
-    <value>Auto</value>
+    <value>Automatico</value>
   </data>
   <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
-    <value>Manually</value>
+    <value>Manuale</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Make ends straight</value>
+    <value>Rendi le estremità dritte</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
-    <value>Marking</value>
+    <value>Marcatura</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
-    <value>Offset</value>
+    <value>Spostamento</value>
   </data>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
-    <value>Reset to default</value>
+    <value>Ripristina impostazioni predefinite</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>Rotate</value>
+    <value>Rotazione</value>
   </data>
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
-    <value>Shift</value>
+    <value>Spostamento</value>
   </data>
   <data name="Option_ShiftFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
-    <value>Slope</value>
+    <value>Pendenza</value>
   </data>
   <data name="Option_SlopeFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Stretch" xml:space="preserve">
-    <value>Stretch</value>
+    <value>Estensione</value>
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
-    <value>Style</value>
+    <value>Stile</value>
   </data>
   <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Flat</value>
+    <value>Pianura</value>
   </data>
   <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Slope</value>
+    <value>Pendio</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>Twist</value>
+    <value>Torsione</value>
   </data>
   <data name="Option_TwistFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
-    <value>Node type</value>
+    <value>Tipologia di nodo</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
-    <value>Node #{0}</value>
+    <value>Nodo #{0}</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
-    <value>General</value>
+    <value>Generale</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
-    <value>Select middle nodes</value>
+    <value>Seleziona nodi centrali</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>If this option is disabled, the middle nodes will move to clicked position</value>
+    <value>Se questa opzione è disabilitata, i nodi centrali si sposteranno alla posizione cliccata</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Activate tool</value>
+    <value>Attiva il tool</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Hold Shift to alignment roads</value>
+    <value>Tieni premuto Shift per allineare le strade</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Clicca per allineare con questo angolo</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Hold Alt to change main slope direction</value>
+    <value>Tieni premuto Alt per cambiare la direzione della pendenza</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
-    <value>Node #{0}
-Click to edit</value>
+    <value>Nodo #{0}
+Clicca per modificare</value>
   </data>
   <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
     <value>Clicca per selezionare l'angolo che vuoi allineare</value>
   </data>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
-    <value>Drag to change offset</value>
+    <value>Trascina per cambiare lo spostamento</value>
   </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
-    <value>Drag to change rotate</value>
+    <value>Trascina per cambiare la rotazione</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
-    <value>Drag to change corner offset</value>
+    <value>Trascina per cambiare lo spostamento dell'angolo</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drag this end to change main slope direction</value>
+    <value>Trascina questa estremità per cambiare la direzione della pendenza principale</value>
   </data>
   <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Drop this end to change main slope direction</value>
+    <value>Rilascia questa estremità per cambiare la direzione della pendenza principale</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
-    <value>Click to insert crossing node</value>
+    <value>Clicca per inserire un nodo di incrocio</value>
   </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
-    <value>Click to insert node</value>
+    <value>Clicca per inserire il nodo</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
-    <value>Select corner you want to align with</value>
+    <value>Seleziona l'angolo con cui vuoi allinearti</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>Change to desired main slope direction</value>
+    <value>Passa alla direzione della pendenza principale desiderata</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Select end position of main slope direction</value>
+    <value>Seleziona la posizione finale della direzione della pendenza principale</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
-    <value>Select node</value>
+    <value>Seleziona un nodo</value>
   </data>
   <data name="Tool_InfoSelectToAlign" xml:space="preserve">
-    <value>Select corners you want to align</value>
+    <value>Seleziona gli angoli da allineare</value>
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
-    <value>Can't insert node
-Too close to nearby node</value>
+    <value>Impossibile inserire il nodo
+Troppo vicino ad un altro nodo</value>
   </data>
 </root>
