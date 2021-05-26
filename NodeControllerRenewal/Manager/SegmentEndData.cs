@@ -66,6 +66,7 @@ namespace NodeController
 
         public bool IsRoad { get; set; }
         public bool IsTunnel { get; set; }
+        public bool IsTrain { get; set; }
         public bool IsNodeLess { get; }
         public bool IsUntouchable { get; set; }
 
@@ -362,6 +363,9 @@ namespace NodeController
                 {
                     var j = i.NextIndex(count);
 
+                    if (endDatas[i].IsTrain && endDatas[j].IsTrain)
+                        continue;
+
                     GetMainMinLimit(endDatas[i], endDatas[j], count, ref leftMainMitT[i], ref rightMainMinT[j]);
                     leftDefaultT[i] = leftMainMitT[i];
                     rightDefaultT[j] = rightMainMinT[j];
@@ -468,9 +472,9 @@ namespace NodeController
                     return;
             }
 
-            //var endLine = new StraightTrajectory(otherData.LeftSide.RawBezier.EndPosition, otherData.RightSide.RawBezier.EndPosition).Cut(0.01f, 0.99f);
-            //if (Intersection.CalculateSingle(bezier, endLine, out minT, out _))
-            //    return;
+            var endLine = new StraightTrajectory(otherData.LeftSide.RawBezier.EndPosition, otherData.RightSide.RawBezier.EndPosition).Cut(0.01f, 0.99f);
+            if (Intersection.CalculateSingle(bezier, endLine, out minT, out _))
+                return;
 
             minT = -1;
         }

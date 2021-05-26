@@ -201,6 +201,7 @@ namespace NodeController
                 segmentEnd.Index = segmentEnds.Count;
                 segmentEnd.IsRoad = segment.Info.m_netAI is RoadBaseAI;
                 segmentEnd.IsTunnel = segment.Info.m_netAI is RoadTunnelAI;
+                segmentEnd.IsTrain = segment.Info.m_netAI is TrainTrackBaseAI || segment.Info.m_netAI is MetroTrackBaseAI;
                 segmentEnd.IsMainRoad = false;
                 segmentEnd.IsUntouchable = segment.m_flags.IsSet(NetSegment.Flags.Untouchable);
                 segmentEnds[segmentEnd.Id] = segmentEnd;
