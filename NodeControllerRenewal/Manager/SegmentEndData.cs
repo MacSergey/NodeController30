@@ -73,8 +73,8 @@ namespace NodeController
         public float VehicleTwist { get; private set; }
 
         private float _offsetValue;
-        private float _minOffset = 0f;
-        private float _maxOffse = 100f;
+        private float _minOffset = NodeStyle.MinOffset;
+        private float _maxOffse = NodeStyle.MaxOffset;
         private float _rotateValue;
         private bool _keepDefault;
 
@@ -90,8 +90,8 @@ namespace NodeController
         public float LeftOffset { set => SetCornerOffset(LeftSide, value); }
         public float RightOffset { set => SetCornerOffset(RightSide, value); }
         public float OffsetT => RawSegmentBezier.Trajectory.Travel(_offsetValue, depth: 7);
-        public float MinPossibleOffset { get; private set; } = 0f;
-        public float MaxPossibleOffset { get; private set; } = 1000f;
+        public float MinPossibleOffset { get; private set; } = NodeStyle.MinOffset;
+        public float MaxPossibleOffset { get; private set; } = NodeStyle.MaxOffset;
         public float MinOffset
         {
             get => Mathf.Max(_minOffset, MinPossibleOffset);
@@ -468,9 +468,9 @@ namespace NodeController
                     return;
             }
 
-            var endLine = new StraightTrajectory(otherData.LeftSide.RawBezier.EndPosition, otherData.RightSide.RawBezier.EndPosition).Cut(0.01f, 0.99f);
-            if (Intersection.CalculateSingle(bezier, endLine, out minT, out _))
-                return;
+            //var endLine = new StraightTrajectory(otherData.LeftSide.RawBezier.EndPosition, otherData.RightSide.RawBezier.EndPosition).Cut(0.01f, 0.99f);
+            //if (Intersection.CalculateSingle(bezier, endLine, out minT, out _))
+            //    return;
 
             minT = -1;
         }

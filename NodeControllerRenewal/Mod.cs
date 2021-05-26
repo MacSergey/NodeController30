@@ -92,15 +92,17 @@ namespace NodeController
             PatchRoadBaseAI(ref success);
             PatchSimulationStep(ref success);
 
-            if (DependencyUtilities.HideCrossings is null)
-                Logger.Debug("Hide Crosswalks not exist, skip patches");
-            else
-                PatchHideCrosswalk(ref success);
-
             if (DependencyUtilities.TrafficManager is null)
                 Logger.Debug("TMPE not exist, skip patches");
             else
+            {
                 PatchTMPE(ref success);
+
+                if (DependencyUtilities.HideCrossings is null)
+                    Logger.Debug("Hide Crosswalks not exist, skip patches");
+                else
+                    PatchHideCrosswalk(ref success);
+            }
 
             return success;
         }
