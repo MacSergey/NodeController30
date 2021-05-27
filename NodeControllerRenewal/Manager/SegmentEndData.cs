@@ -66,6 +66,7 @@ namespace NodeController
 
         public bool IsRoad { get; set; }
         public bool IsTunnel { get; set; }
+        public bool IsTrain { get; set; }
         public bool IsNodeLess { get; }
         public bool IsUntouchable { get; set; }
 
@@ -73,8 +74,8 @@ namespace NodeController
         public float VehicleTwist { get; private set; }
 
         private float _offsetValue;
-        private float _minOffset = 0f;
-        private float _maxOffse = 100f;
+        private float _minOffset = NodeStyle.MinOffset;
+        private float _maxOffse = NodeStyle.MaxOffset;
         private float _rotateValue;
         private bool _keepDefault;
 
@@ -90,8 +91,8 @@ namespace NodeController
         public float LeftOffset { set => SetCornerOffset(LeftSide, value); }
         public float RightOffset { set => SetCornerOffset(RightSide, value); }
         public float OffsetT => RawSegmentBezier.Trajectory.Travel(_offsetValue, depth: 7);
-        public float MinPossibleOffset { get; private set; } = 0f;
-        public float MaxPossibleOffset { get; private set; } = 1000f;
+        public float MinPossibleOffset { get; private set; } = NodeStyle.MinOffset;
+        public float MaxPossibleOffset { get; private set; } = NodeStyle.MaxOffset;
         public float MinOffset
         {
             get => Mathf.Max(_minOffset, MinPossibleOffset);
@@ -361,6 +362,9 @@ namespace NodeController
                 for (var i = 0; i < count; i += 1)
                 {
                     var j = i.NextIndex(count);
+
+                    if (endDatas[i].IsTrain && endDatas[j].IsTrain)
+                        continue;
 
                     GetMainMinLimit(endDatas[i], endDatas[j], count, ref leftMainMitT[i], ref rightMainMinT[j]);
                     leftDefaultT[i] = leftMainMitT[i];
