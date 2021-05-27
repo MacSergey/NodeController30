@@ -393,20 +393,22 @@ namespace NodeController
             };
         }
         public bool IsMainRoad(ushort segmentId) => MainRoad.IsMain(segmentId);
-        public void GetClosest(Vector3 position, out Vector3 closestPos, out Vector3 closestDir)
+        public void GetClosest(Vector3 position, out Vector3 closestPos, out Vector3 closestDir, out float t)
         {
-            LeftMainBezier.Trajectory.ClosestPositionAndDirection(position, out var leftClosestPos, out var leftClosestDir, out _);
-            RightMainBezier.Trajectory.ClosestPositionAndDirection(position, out var rightClosestPos, out var rightClosestDir, out _);
+            LeftMainBezier.Trajectory.ClosestPositionAndDirection(position, out var leftClosestPos, out var leftClosestDir, out var leftT);
+            RightMainBezier.Trajectory.ClosestPositionAndDirection(position, out var rightClosestPos, out var rightClosestDir, out var rightT);
 
             if ((leftClosestPos - position).sqrMagnitude < (rightClosestPos - position).sqrMagnitude)
             {
                 closestPos = leftClosestPos;
                 closestDir = leftClosestDir;
+                t = leftT;
             }
             else
             {
                 closestPos = rightClosestPos;
                 closestDir = rightClosestDir;
+                t = rightT;
             }
         }
 

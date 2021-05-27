@@ -92,9 +92,12 @@ namespace NodeController
             }
             else if (!isMain)
             {
-                nodeData.GetClosest(position, out var closestPos, out var closestDir);
+                nodeData.GetClosest(position, out var closestPos, out var closestDir, out var closestT);
 
                 var normal = closestDir.MakeFlat().Turn90(true);
+                var twist = Mathf.Lerp(-nodeData.FirstMainSegmentEnd.TwistAngle, nodeData.SecondMainSegmentEnd.TwistAngle, closestT);
+                normal.y = normal.magnitude * Mathf.Sin(twist * Mathf.Deg2Rad);
+
                 var plane = new Plane();
                 plane.Set3Points(closestPos, closestPos + closestDir, closestPos + normal);
                 plane.Raycast(new Ray(position, Vector3.up), out var rayT);
