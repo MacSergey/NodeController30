@@ -446,7 +446,7 @@ namespace NodeController
                 twist.Text = Localize.Option_Twist;
                 twist.Format = Localize.Option_TwistFormat;
                 twist.NumberFormat = "0.#";
-                twist.Init(Data, SupportTwist, totalSupport, TwistGetter, TwistSetter, MinMaxTwist, TouchablePredicate);
+                twist.Init(Data, SupportTwist, totalSupport, TwistGetter, TwistSetter, MinMaxTwist, MainRoadPredicate);
 
                 return twist;
             }
