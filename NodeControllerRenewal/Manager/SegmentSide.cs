@@ -93,15 +93,17 @@ namespace NodeController
             else if (!isMain)
             {
                 nodeData.GetClosest(position, out var closestPos, out var closestDir);
-                position.y = closestPos.y;
 
-                var closestLine = new StraightTrajectory(closestPos, closestPos + closestDir, false);
-                var line = new StraightTrajectory(position, position - direction, false);
-                var intersect = Intersection.CalculateSingle(closestLine, line);
-                var intersectPos = closestPos + intersect.FirstT * closestDir;
-                var newDirection = (position - intersectPos).normalized;
+                var normal = closestDir.MakeFlat().Turn90(true);
+                var plane = new Plane();
+                plane.Set3Points(closestPos, closestPos + closestDir, closestPos + normal);
+                plane.Raycast(new Ray(position, Vector3.up), out var rayT);
+                position += Vector3.up * rayT;
 
-                direction = NormalizeDotXZ(direction, newDirection) >= 0f ? newDirection : -newDirection;
+                var point = position + direction;
+                plane.Raycast(new Ray(point, Vector3.up), out rayT);
+                point += Vector3.up * rayT;
+                direction = point - position;
             }
             else
             {
