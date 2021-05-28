@@ -48,9 +48,9 @@ namespace NodeController
             Data?.UpdateNode();
             Panel.SetData(Data);
         }
-        public void KeepDefaults()
+        public void SetKeepDefaults()
         {
-            Data.KeepDefaults();
+            Data.SetKeepDefaults();
             Panel.RefreshPanel();
         }
         public void ResetToDefault()
