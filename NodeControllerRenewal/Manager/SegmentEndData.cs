@@ -465,6 +465,10 @@ namespace NodeController
             if (Intersection.CalculateSingle(bezier, endLine, out minT, out _))
                 return;
 
+            var startLine = new StraightTrajectory(otherData.LeftSide.RawBezier.StartPosition, otherData.RightSide.RawBezier.StartPosition).Cut(0.01f, 0.99f);
+            if (Intersection.CalculateSingle(bezier, startLine, out minT, out _))
+                return;
+
             minT = -1;
         }
         private static void GetSubMinLimit(BezierTrajectory main, BezierTrajectory sub, SideType side, ref float defaultT)
