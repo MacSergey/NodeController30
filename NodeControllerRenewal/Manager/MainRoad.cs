@@ -147,7 +147,7 @@ namespace NodeController
 
         public static RoadPair Get(SegmentEndData first, SegmentEndData second)
         {
-            var cos = NormalizeDotXZ(first.RawSegmentBezier.StartDirection, second.RawSegmentBezier.StartDirection);
+            var cos = Mathf.Clamp(NormalizeDotXZ(first.RawSegmentBezier.StartDirection, second.RawSegmentBezier.StartDirection), -1f, 1f);
             var pow = Mathf.Acos(cos) / Mathf.PI * 2 - 1;
             return new RoadPair()
             {
@@ -156,5 +156,7 @@ namespace NodeController
                 Weight = Mathf.Pow(first.Weight * second.Weight, pow),
             };
         }
+
+        public override string ToString() => $"{First}-{Second}:{Weight}";
     }
 }
