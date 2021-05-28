@@ -77,7 +77,8 @@ namespace NodeController
         public virtual SupportOption SupportSlopeJunction => SupportOption.None;
         public virtual SupportOption SupportStretch => SupportOption.None;
         public virtual bool SupportTrafficLights => false;
-        public virtual bool SupportKeepDefault => true;
+        public virtual bool OnlyKeepDefault => false;
+        public virtual bool NeedFixDirection => true;
 
         public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch) & SupportOption.All;
         private bool OnlyOnSlope => SupportSlopeJunction != SupportOption.None || DefaultSlopeJunction;
@@ -628,8 +629,9 @@ namespace NodeController
         public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
-        public override bool SupportKeepDefault => false;
+        public override bool OnlyKeepDefault => true;
         public override bool SupportTrafficLights => true;
+        public override bool NeedFixDirection => false;
 
         public CrossingNode(NodeData data) : base(data) { }
 
@@ -652,7 +654,8 @@ namespace NodeController
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool SupportTrafficLights => true;
-        public override bool SupportKeepDefault => false;
+        public override bool OnlyKeepDefault => true;
+        public override bool NeedFixDirection => false;
 
         public UTurnNode(NodeData data) : base(data) { }
 

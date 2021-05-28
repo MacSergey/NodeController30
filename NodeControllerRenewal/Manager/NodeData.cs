@@ -136,11 +136,10 @@ namespace NodeController
         public bool IsBendNode => Type == NodeStyleType.Bend;
         public bool IsJunctionNode => !IsMiddleNode && !IsBendNode && !IsEndNode;
         public bool IsMoveableEnds => Style.IsMoveable;
-        public bool IsIndividuallyShift => Style.SupportShift.IsSet(SupportOption.Individually);
 
 
         public bool NeedsTransitionFlag => IsTwoRoads && (Type == NodeStyleType.Custom || Type == NodeStyleType.Crossing || Type == NodeStyleType.UTurn);
-        public bool ShouldRenderCenteralCrossingTexture => Type == NodeStyleType.Crossing && CrossingIsRemoved(MainRoad.First) && CrossingIsRemoved(MainRoad.Second);
+        public bool ShouldRenderCenteralCrossingTexture => Type == NodeStyleType.Crossing && NoMarkings;
 
         #endregion
 
@@ -327,7 +326,7 @@ namespace NodeController
         public void UpdateNode() => SingletonManager<Manager>.Instance.Update(Id, true);
         public void KeepDefaults()
         {
-            if (Style.SupportKeepDefault)
+            if (Style.OnlyKeepDefault)
             {
                 foreach (var segmentEnd in SegmentEndDatas)
                     segmentEnd.SetKeepDefaults();
@@ -411,8 +410,6 @@ namespace NodeController
                 t = rightT;
             }
         }
-
-        private bool CrossingIsRemoved(ushort segmentId) => HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing(Id, segmentId);
 
         public override string ToString() => $"NodeData(id:{Id} type:{Type})";
 

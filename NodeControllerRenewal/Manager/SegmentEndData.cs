@@ -74,8 +74,6 @@ namespace NodeController
         public float VehicleTwist { get; private set; }
 
         private float _offsetValue;
-        private float _minOffset = NodeStyle.MinOffset;
-        private float _maxOffse = NodeStyle.MaxOffset;
         private float _rotateValue;
         private bool _keepDefault;
 
@@ -91,18 +89,12 @@ namespace NodeController
         public float LeftOffset { set => SetCornerOffset(LeftSide, value); }
         public float RightOffset { set => SetCornerOffset(RightSide, value); }
         public float OffsetT => RawSegmentBezier.Trajectory.Travel(_offsetValue, depth: 7);
+
         public float MinPossibleOffset { get; private set; } = NodeStyle.MinOffset;
         public float MaxPossibleOffset { get; private set; } = NodeStyle.MaxOffset;
-        public float MinOffset
-        {
-            get => Mathf.Max(_minOffset, MinPossibleOffset);
-            private set => _minOffset = value;
-        }
-        public float MaxOffset
-        {
-            get => Mathf.Min(_maxOffse, MaxPossibleOffset);
-            private set => _maxOffse = value;
-        }
+
+        public float MinOffset { get; private set; } = NodeStyle.MinOffset;
+        public float MaxOffset { get; private set; } = NodeStyle.MaxOffset;
         public float RotateAngle
         {
             get => _rotateValue;
@@ -238,7 +230,6 @@ namespace NodeController
                 MaxPossibleOffset = NodeStyle.MaxOffset;
             }
 
-
             if (style.SupportRotate == SupportOption.None || force || IsUntouchable)
                 SetRotate(style.DefaultRotate);
 
@@ -249,7 +240,7 @@ namespace NodeController
             else
                 SetOffset(Offset);
 
-            if (force && style.SupportKeepDefault)
+            if (force || style.OnlyKeepDefault)
                 KeepDefaults = true;
         }
 
@@ -327,18 +318,16 @@ namespace NodeController
             if (startShift == 0f && endShift == 0f)
                 return;
 
-            var shift = (startShift + endShift) / 2;
+            startPos += startDir.Turn90(false).MakeFlatNormalized() * startShift;
+            endPos += endDir.Turn90(false).MakeFlatNormalized() * endShift;
+
             var dir = (endPos - startPos).MakeFlat();
-            var deltaAngle = Mathf.Asin(shift / dir.magnitude);
-            var normal = dir.Turn90(true).normalized;
+            var deltaAngle = Mathf.Asin((startShift + endShift) / dir.magnitude);
 
-            startPos -= normal * startShift;
-            endPos += normal * endShift;
-
-            if (start?.IsIndividuallyShift != false)
+            if (start?.Style.NeedFixDirection != false)
                 startDir = startDir.TurnRad(deltaAngle, true);
 
-            if (end?.IsIndividuallyShift != false)
+            if (end?.Style.NeedFixDirection != false)
                 endDir = endDir.TurnRad(deltaAngle, true);
         }
 
@@ -580,8 +569,8 @@ namespace NodeController
             var segmentMinT = Intersection.CalculateSingle(RawSegmentBezier, startLimitLine, out var minFirstT, out _) ? minFirstT : 0f;
             var segmentMaxT = Intersection.CalculateSingle(RawSegmentBezier, endLimitLine, out var maxFirstT, out _) ? maxFirstT : 1f;
 
-            MinOffset = RawSegmentBezier.Distance(0f, segmentMinT);
-            MaxOffset = RawSegmentBezier.Distance(0f, segmentMaxT);
+            MinOffset = Mathf.Max(RawSegmentBezier.Distance(0f, segmentMinT), MinPossibleOffset);
+            MaxOffset = Mathf.Min(RawSegmentBezier.Distance(0f, segmentMaxT), MaxPossibleOffset);
 
             SegmentBezier = RawSegmentBezier.Cut(segmentMinT, segmentMaxT);
         }
@@ -858,7 +847,7 @@ namespace NodeController
             if (style.SupportSlopeJunction != SupportOption.None)
                 IsSlope = config.GetAttrValue("IS", style.DefaultSlopeJunction ? 1 : 0) == 1;
 
-            KeepDefaults = style.SupportKeepDefault && config.GetAttrValue("KD", 0) == 1;
+            KeepDefaults = style.OnlyKeepDefault && config.GetAttrValue("KD", 0) == 1;
 
             if (style.SupportOffset != SupportOption.None)
                 SetOffset(config.GetAttrValue("O", GetMinCornerOffset(style.DefaultOffset)));
