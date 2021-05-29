@@ -130,6 +130,21 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на - Added missing dependencies and mod conflict checker.
+        ///- Removed segments collision between train/metro tracks.
+        ///- Fix loading offset if value more then 100m.
+        ///- Fix segment direction correction on shifted segment.
+        ///- Fix not main segment calculation on sloped node.
+        ///- Fix crossing and uturn node type.
+        ///- Added Italian translation..
+        /// </summary>
+        internal static string Mod_WhatsNewMessage3_0_4 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_0_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Bend.
         /// </summary>
         internal static string NodeStyle_Bend {
