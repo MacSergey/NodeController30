@@ -3,6 +3,7 @@ using ModsCommon;
 using ModsCommon.Utilities;
 using NodeController.UI;
 using NodeController.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -79,6 +80,10 @@ namespace NodeController
         Rotate = 16,
         ChangeMain = 32,
         Aling = 64,
+    }
+    public class NodeControllerShortcut : ModShortcut<Mod>
+    {
+        public NodeControllerShortcut(string name, string labelKey, InputKey key, Action action = null) : base(name, labelKey, key, action) { }
     }
     public class NodeControllerToolThreadingExtension : BaseThreadingExtension<NodeControllerTool> { }
     public class NodeControllerToolLoadingExtension : BaseToolLoadingExtension<NodeControllerTool> { }
