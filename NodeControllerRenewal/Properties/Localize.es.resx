@@ -154,6 +154,15 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Mod_WhatsNewMessage3_0_3" xml:space="preserve">
     <value>- Added Portuguese translation.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_4" xml:space="preserve">
+    <value>- Added missing dependencies and mod conflict checker.
+- Removed segments collision between train/metro tracks.
+- Fix loading offset if value more then 100m.
+- Fix segment direction correction on shifted segment.
+- Fix not main segment calculation on sloped node.
+- Fix crossing and uturn node type.
+- Added Italian translation.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Doblado</value>
   </data>
