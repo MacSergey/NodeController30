@@ -13,9 +13,9 @@ using System.Runtime.InteropServices;
 [assembly: Guid("c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef")]
 
 #if BETA
-[assembly: AssemblyVersion("3.0.0.1261")]
-[assembly: AssemblyFileVersion("3.0.0.1261")]
+[assembly: AssemblyVersion("3.0.0.1267")]
+[assembly: AssemblyFileVersion("3.0.0.1267")]
 #else
-[assembly: AssemblyVersion("3.0.4")]
-[assembly: AssemblyFileVersion("3.0.4")]
+[assembly: AssemblyVersion("3.0.4.1")]
+[assembly: AssemblyFileVersion("3.0.4.1")]
 #endif
