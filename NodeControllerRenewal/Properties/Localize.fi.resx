@@ -268,9 +268,6 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Jos tämä asetus ei ole käytössä, kahden tien risteyksettömät välit siirtyvät napautettuun kohtaan</value>
   </data>
-  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Käynnistä työkalu</value>
-  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Pidä Shift-näppäintä pohjassa kohdistaaksesi tiet</value>
   </data>

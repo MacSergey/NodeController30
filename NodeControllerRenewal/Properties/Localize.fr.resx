@@ -191,7 +191,7 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>Réinitialiser le décalage</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
-    <value>Direction de la pente principale</value>
+    <value>Direction de la pente</value>
   </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>Auto</value>
@@ -268,9 +268,6 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Si cette option est désactivée, les nœuds du milieu se déplaceront vers l'emplacement cliqué</value>
   </data>
-  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Activer l'outil</value>
-  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Maintenez la touche Maj pour aligner les routes</value>
   </data>
@@ -278,7 +275,7 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>Cliquez pour aligner avec ce coin</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Maintenez Alt pour changer la direction de pente principale</value>
+    <value>Maintenez Alt pour changer la direction de la pente</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Noeud #{0}
@@ -297,7 +294,7 @@ Cliquez pour modifier</value>
     <value>Faites glisser pour changer le décalage du coin</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Faites glisser cette extrémité pour changer la direction de la pente principale</value>
+    <value>Faites glisser cette extrémité pour changer la direction de la pente</value>
   </data>
   <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
     <value>Lâchez cette extrémité pour changer la direction de la pente principale</value>
@@ -312,10 +309,10 @@ Cliquez pour modifier</value>
     <value>Sélectionnez le coin avec lequel vous voulez aligner</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>Changer vers la direction de la pente principale désirée</value>
+    <value>Changer vers la direction de la pente désirée</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Sélectionnez la position finale de la direction de la pente principale</value>
+    <value>Sélectionnez la position finale de la direction de la pente</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Sélectionnez un nœud</value>

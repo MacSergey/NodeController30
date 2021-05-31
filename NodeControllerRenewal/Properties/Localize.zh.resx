@@ -118,14 +118,14 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
-    <value>Dane z oryginalnego Node Controller'a zostały zaimportowane.
-Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być konieczne ręczne korekty.</value>
+    <value>已匯入原版 Node Controller 的資料。
+向下相容無法轉移所有資料，可能需要手動調整。</value>
   </data>
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
-    <value>OSTRZEŻENIE: Jeżeli stworzysz nowy zapis nie będziesz już mógł korzystać z oryginalnego Node Controller'a na tej mapie.</value>
+    <value>警告：存檔後，您將無法在此地圖上繼續使用原版 Node Controller。</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Kontroluj typ i kształt węzła</value>
+    <value>控制節點類型和形狀</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Added auto mode for main slope direction.
@@ -164,164 +164,164 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
 - Added Italian translation.</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
-    <value>Zegnij</value>
+    <value>彎曲</value>
   </data>
   <data name="NodeStyle_Crossing" xml:space="preserve">
-    <value>Skrzyżowanie</value>
+    <value>斑馬線</value>
   </data>
   <data name="NodeStyle_Custom" xml:space="preserve">
-    <value>Niestandardowy</value>
+    <value>自訂</value>
   </data>
   <data name="NodeStyle_End" xml:space="preserve">
-    <value>Koniec</value>
+    <value>終點</value>
   </data>
   <data name="NodeStyle_Middle" xml:space="preserve">
-    <value>Środek</value>
+    <value>中間</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
-    <value>Rozciągnij</value>
+    <value>拉伸</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
-    <value>Zawracanie</value>
+    <value>迴轉道</value>
   </data>
   <data name="Options_All" xml:space="preserve">
-    <value>Wszystkie</value>
+    <value>全部</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
-    <value>Zresetuj przesunięcie</value>
+    <value>重設偏移</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
-    <value>Główny kierunek nachylenia</value>
+    <value>主斜坡方向</value>
   </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
-    <value>Automatycznie</value>
+    <value>自動</value>
   </data>
   <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
-    <value>Ręcznie</value>
+    <value>手動</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Zrób końce proste</value>
+    <value>裁直路段終點</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
-    <value>Oznakowanie</value>
+    <value>標線</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
-    <value>Przesunięcie</value>
+    <value>偏移</value>
   </data>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
-    <value>Resetuj do domyślnych</value>
+    <value>重設為預設值</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>Obróć</value>
+    <value>旋轉</value>
   </data>
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
-    <value>Przesuń</value>
+    <value>左右位移</value>
   </data>
   <data name="Option_ShiftFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
-    <value>Nachylenie</value>
+    <value>斜坡</value>
   </data>
   <data name="Option_SlopeFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Stretch" xml:space="preserve">
-    <value>Rozciągnij</value>
+    <value>拉伸</value>
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
-    <value>Styl</value>
+    <value>樣式</value>
   </data>
   <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Płaski</value>
+    <value>平坦</value>
   </data>
   <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Nachylenie</value>
+    <value>斜坡</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>Skręć</value>
+    <value>扭轉</value>
   </data>
   <data name="Option_TwistFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
-    <value>Typ węzła</value>
+    <value>節點類型</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
-    <value>Węzeł #{0}</value>
+    <value>節點 #{0}</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
-    <value>Ogólne</value>
+    <value>一般</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
-    <value>Wybierz węzły środkowe</value>
+    <value>選擇中間節點</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>Jeśli ta opcja jest wyłączona, węzły środkowe przeniosą się do klikniętego miejsca</value>
+    <value>停用後，中間節點將移動到剛點擊的位置</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Przytrzymaj Shift aby wyrównać drogi</value>
+    <value>按住 Shift 對齊道路</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
-    <value>Kliknij aby wyrównać do tego rogu</value>
+    <value>點擊以對齊此角落</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Przytrzymaj Alt aby zmienić główny kierunek nachylenia</value>
+    <value>按住 Alt 調整主斜坡方向</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
-    <value>Skrzyżowanie #{0}
-Kliknij aby edytować</value>
+    <value>節點 #{0}
+點擊以編輯</value>
   </data>
   <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
-    <value>Kliknij aby wybrać róg do którego chcesz wyrównać</value>
+    <value>點擊以選擇想對齊的角落</value>
   </data>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
-    <value>Przeciągnij aby zmienić przesunięcie</value>
+    <value>拖曳以調整偏移</value>
   </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
-    <value>Przeciągnij aby zmienić obrót</value>
+    <value>拖曳以調整旋轉角度</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
-    <value>Przeciągnij aby zmienić przesunięcie rogu</value>
+    <value>拖曳以調整角落偏移</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Przeciągnij ten koniec aby zmienić główny kierunek nachylnia</value>
+    <value>拖曳這端來調整主斜坡方向</value>
   </data>
   <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Upuść ten koniec aby zmienić główny kierunek nachylenia</value>
+    <value>放開這端來調整主斜坡方向</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
-    <value>Kliknij aby wstawić węzeł skrzyżowania</value>
+    <value>點擊以插入斑馬線節點</value>
   </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
-    <value>Kliknij aby wstawić węzeł</value>
+    <value>點擊以插入節點</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
-    <value>Wybierz róg do którego chcesz wrównać</value>
+    <value>選擇想對齊的角落</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>Zmień na oczekiwany główny kierunek nachylenia</value>
+    <value>調整到想要的主斜坡方向</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Wybierz punkt końcowy głównego kierunku nachylenia</value>
+    <value>選擇主斜坡方向的終點</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
-    <value>Wybierz węzeł</value>
+    <value>選擇節點</value>
   </data>
   <data name="Tool_InfoSelectToAlign" xml:space="preserve">
-    <value>Wybierz rogi które chcesz wyrównać</value>
+    <value>選擇想要對齊的角落選擇想對齊的角落</value>
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
-    <value>Nie można wstawić węzła
-Za blisko do sąsiedniego węzła</value>
+    <value>無法插入節點
+太靠近臨近節點</value>
   </data>
 </root>

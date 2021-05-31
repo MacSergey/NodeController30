@@ -268,9 +268,6 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Si esta opción está desactivada, los nodos medios se moverán a la posición pulsada</value>
   </data>
-  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Activar herramienta</value>
-  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Mantener pulsada la tecla "Mayús" para alinear carreteras</value>
   </data>

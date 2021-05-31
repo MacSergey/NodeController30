@@ -268,9 +268,6 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Wenn diese Option deaktiviert ist, werden die mittigen Netzwerk-Knoten an die angeklickte Position verschoben</value>
   </data>
-  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Tool aktivieren</value>
-  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Shift gedrückt halten um Straßen auszurichten</value>
   </data>

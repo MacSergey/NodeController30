@@ -268,9 +268,6 @@
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>禁用后，中间点将移动到单击位置</value>
   </data>
-  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>启用工具</value>
-  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>按住Shift对齐道路</value>
   </data>

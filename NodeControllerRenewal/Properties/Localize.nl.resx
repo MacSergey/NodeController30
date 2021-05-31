@@ -267,9 +267,6 @@
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Als deze optie is uitgeschakeld worden de middenknooppunten naar de klikpositie verplaatst</value>
   </data>
-  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Tool activeren</value>
-  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Houd Shift ingedrukt om wegen uit te lijnen</value>
   </data>
