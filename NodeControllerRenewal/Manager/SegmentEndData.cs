@@ -55,7 +55,7 @@ namespace NodeController
         public BezierTrajectory SegmentBezier { get; private set; }
         private SegmentSide LeftSide { get; }
         private SegmentSide RightSide { get; }
-        public float AbsoluteAngle => RawSegmentBezier.StartDirection.AbsoluteAngle();
+        public float AbsoluteAngle { get; private set; }
         public float Weight { get; }
 
 
@@ -170,7 +170,8 @@ namespace NodeController
             LeftSide = new SegmentSide(this, SideType.Left);
             RightSide = new SegmentSide(this, SideType.Right);
 
-            var info = Id.GetSegment().Info;
+            var segment = Id.GetSegment();
+            var info = segment.Info;
             IsNodeLess = !info.m_nodes.Any();
             PedestrianLaneCount = info.PedestrianLanes();
             Weight = info.m_halfWidth * 2;
@@ -180,12 +181,14 @@ namespace NodeController
             CalculateSegmentBeziers(Id, out var bezier, out var leftBezier, out var rightBezier);
             if (IsStartNode)
             {
+                AbsoluteAngle = segment.m_startDirection.AbsoluteAngle();
                 RawSegmentBezier = bezier;
                 LeftSide.RawBezier = leftBezier;
                 RightSide.RawBezier = rightBezier;
             }
             else
             {
+                AbsoluteAngle = segment.m_endDirection.AbsoluteAngle();
                 RawSegmentBezier = bezier.Invert();
                 LeftSide.RawBezier = rightBezier.Invert();
                 RightSide.RawBezier = leftBezier.Invert();
@@ -273,15 +276,18 @@ namespace NodeController
         {
             CalculateSegmentBeziers(segmentId, out var bezier, out var leftBezier, out var rightBezier);
             SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
+            var segment = segmentId.GetSegment();
 
             if (start != null)
             {
+                start.AbsoluteAngle = segment.m_startDirection.AbsoluteAngle();
                 start.RawSegmentBezier = bezier;
                 start.LeftSide.RawBezier = leftBezier;
                 start.RightSide.RawBezier = rightBezier;
             }
             if (end != null)
             {
+                end.AbsoluteAngle = segment.m_startDirection.AbsoluteAngle();
                 end.RawSegmentBezier = bezier.Invert();
                 end.LeftSide.RawBezier = rightBezier.Invert();
                 end.RightSide.RawBezier = leftBezier.Invert();
