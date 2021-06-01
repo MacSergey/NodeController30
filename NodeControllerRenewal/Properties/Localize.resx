@@ -268,9 +268,6 @@ Backward compatibility does not provide the transfer of all data, may be require
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>If this option is disabled, the middle nodes will move to clicked position</value>
   </data>
-  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Activate tool</value>
-  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Hold Shift to alignment roads</value>
   </data>

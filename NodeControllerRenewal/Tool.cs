@@ -11,7 +11,7 @@ namespace NodeController
 {
     public class NodeControllerTool : BaseTool<Mod, NodeControllerTool, ToolModeType>
     {
-        public static NodeControllerShortcut ActivationShortcut { get; } = new NodeControllerShortcut(nameof(ActivationShortcut), nameof(Localize.Settings_ShortcutActivateTool), SavedInputKey.Encode(KeyCode.N, true, false, false));
+        public static NodeControllerShortcut ActivationShortcut { get; } = new NodeControllerShortcut(nameof(ActivationShortcut), nameof(CommonLocalize.Settings_ShortcutActivateTool), SavedInputKey.Encode(KeyCode.N, true, false, false));
 
         protected override bool ShowToolTip => (Settings.ShowToolTip || Mode.Type == ToolModeType.Select) && !Panel.IsHover;
         protected override IToolMode DefaultMode => ToolModes[ToolModeType.Select];

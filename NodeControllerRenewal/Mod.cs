@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection.Emit;
+using System.Resources;
 using TrafficManager.Manager.Impl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -38,11 +39,6 @@ namespace NodeController
         };
 
         protected override string IdRaw => nameof(NodeController);
-        public override CultureInfo Culture
-        {
-            get => Localize.Culture;
-            protected set => Localize.Culture = value;
-        }
         protected override List<BaseDependencyInfo> DependencyInfos
         {
             get
@@ -62,6 +58,7 @@ namespace NodeController
         public override bool IsBeta => false;
 #endif
         #endregion
+        protected override ResourceManager LocalizeManager => Localize.ResourceManager;
 
         #region BASIC
 
@@ -70,7 +67,7 @@ namespace NodeController
             var settings = new Settings();
             settings.OnSettingsUI(helper);
         }
-        public override string GetLocalizeString(string str, CultureInfo culture = null) => Localize.ResourceManager.GetString(str, culture ?? Culture);
+        protected override void SetCulture(CultureInfo culture) => Localize.Culture = culture;
 
         #endregion
 

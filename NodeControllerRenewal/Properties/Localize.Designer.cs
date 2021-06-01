@@ -460,15 +460,6 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Activate tool.
-        /// </summary>
-        internal static string Settings_ShortcutActivateTool {
-            get {
-                return ResourceManager.GetString("Settings_ShortcutActivateTool", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Hold Shift to alignment roads.
         /// </summary>
         internal static string Tool_InfoAlignMode {
