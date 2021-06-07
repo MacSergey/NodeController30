@@ -9,9 +9,9 @@ The new UI allows you to make the perfect intersection with just a few clicks.
 
 Node Controller Renewal supports importing original Node Controller data, but not completely. Some intersections may require manual adjustment. 
 To start use Node Controller Renewal you should disable original Node Controller and subscribe to [url=https://steamcommunity.com/workshop/filedetails/?id=2040656402]Harmony[/url]
-
-[b]WARNING[/b]: If you import data from original Node Controller and make new save, you will no longer be able to use the original Node Controller on this map.
-
+[code]
+[h3][b]WARNING[/b]: If you import data from original Node Controller and make new save, you will no longer be able to use the original Node Controller on this map.[/h3]
+[/code]
 
 [HR][/HR] 
 [h1]What’s Included[/h1]
