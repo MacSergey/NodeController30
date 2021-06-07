@@ -222,6 +222,7 @@
   <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.it.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.zh-TW.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\NetObjectMapShared\NetObjectMapShared.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\NetAssetDataExtension\NetAssetDataExtension.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

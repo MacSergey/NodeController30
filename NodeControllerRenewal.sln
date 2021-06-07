@@ -85,6 +85,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LocalizeShared.zh-TW", "Mod
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NetObjectMapShared", "ModsCommon\NetObjectMapShared\NetObjectMapShared.shproj", "{3E737FA1-6D80-4536-BFC6-2383B5462D65}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NetAssetDataExtension", "ModsCommon\NetAssetDataExtension\NetAssetDataExtension.shproj", "{CA795710-6304-4F19-8F23-A55032A7176A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ModsCommon\LocalizeShared\LocalizeShared.pl.projitems*{0814bfcf-bb66-493c-8dd9-ca17ee904afa}*SharedItemsImports = 13
@@ -133,6 +135,7 @@ Global
 		ModsCommon\MathExtension\MathExtension.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\MessageBoxShared\MessageBoxShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\ModShared\ModsCommonShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
+		ModsCommon\NetAssetDataExtension\NetAssetDataExtension.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\NetExtension\NetExtension.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\NetObjectMapShared\NetObjectMapShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\ObjectMapShared\ObjectMapShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
@@ -146,6 +149,7 @@ Global
 		ModsCommon\UIShared\ModsUIShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\WhatsNewMessageBoxShared\WhatsNewMessageBoxShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\XmlExtension\XmlExtension.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
+		ModsCommon\NetAssetDataExtension\NetAssetDataExtension.projitems*{ca795710-6304-4f19-8f23-a55032a7176a}*SharedItemsImports = 13
 		ModsCommon\MessageBoxShared\MessageBoxShared.projitems*{d5b649ec-0fec-48f3-8316-6e266169cdcc}*SharedItemsImports = 13
 		ModsCommon\LocalizeShared\LocalizeShared.de.projitems*{de7b8af4-65b6-421f-b439-27132becc459}*SharedItemsImports = 13
 		ModsCommon\RenderExtension\RenderExtension.projitems*{e1394815-5550-4ba4-af65-cad097d335a6}*SharedItemsImports = 13
@@ -225,6 +229,7 @@ Global
 		{584B2B88-0679-4B6D-BD78-BA9719671229} = {941BED44-F547-465A-8FC6-C0A0B98EB121}
 		{FC982331-0698-47F0-BD83-C711BC8DB98A} = {941BED44-F547-465A-8FC6-C0A0B98EB121}
 		{3E737FA1-6D80-4536-BFC6-2383B5462D65} = {14A85DBC-F678-4F11-832E-9D2299FFE768}
+		{CA795710-6304-4F19-8F23-A55032A7176A} = {14A85DBC-F678-4F11-832E-9D2299FFE768}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81553A2A-DCA5-449A-A08F-0BC55141DD0D}
