@@ -163,6 +163,10 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
 - Fix crossing and uturn node type.
 - Added Italian translation.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_5" xml:space="preserve">
+    <value>- Fix segments collision calculation.
+- Added Chinese Traditional translation.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Zegnij</value>
   </data>
