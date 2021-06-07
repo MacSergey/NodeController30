@@ -163,6 +163,10 @@
 - Исправлены узлы типа переход и разворот.
 - Добавлен итальянский перевод.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0_5" xml:space="preserve">
+    <value>- Исправлен расчет пересечений сегментов.
+- Добавлен перевод на Китайский традиционный.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Изгиб</value>
   </data>
