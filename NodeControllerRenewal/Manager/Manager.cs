@@ -177,7 +177,7 @@ namespace NodeController
 
             return config;
         }
-        public void FromXml(XElement config, ObjectsMap map)
+        public void FromXml(XElement config, NetObjectsMap map)
         {
             foreach (var nodeConfig in config.Elements(NodeData.XmlName))
             {

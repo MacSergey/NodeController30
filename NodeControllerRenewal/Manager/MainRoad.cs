@@ -124,13 +124,13 @@ namespace NodeController
             return config;
         }
 
-        public void FromXml(XElement config, ObjectsMap map)
+        public void FromXml(XElement config, NetObjectsMap map)
         {
             First = Get("F", config, map);
             Second = Get("S", config, map);
             Auto = config.GetAttrValue("A", 0) == 1;
 
-            static ushort Get(string name, XElement config, ObjectsMap map)
+            static ushort Get(string name, XElement config, NetObjectsMap map)
             {
                 var id = config.GetAttrValue<ushort>(name, 0);
                 return map.TryGetSegment(id, out var targetId) ? targetId : id;

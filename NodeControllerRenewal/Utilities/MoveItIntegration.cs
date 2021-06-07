@@ -33,7 +33,7 @@ namespace NodeController.Utilities
 
             if (SingletonManager<Manager>.Instance[targetInstanceID.NetNode, true] is NodeData data)
             {
-                var map = new ObjectsMap();
+                var map = new NetObjectsMap();
                 map.FromDictionary(sourceMap);
                 data.FromXml(config, map);
             }

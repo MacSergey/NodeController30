@@ -22,7 +22,7 @@ namespace NodeController
         public bool WasImported { get; private set; }
 
         protected override XElement GetSaveData() => SingletonManager<Manager>.Instance.ToXml();
-        protected override void SetLoadData(XElement config) => SingletonManager<Manager>.Instance.FromXml(config, new ObjectsMap());
+        protected override void SetLoadData(XElement config) => SingletonManager<Manager>.Instance.FromXml(config, new NetObjectsMap());
 
         public override void OnLoadData()
         {

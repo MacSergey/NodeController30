@@ -428,7 +428,7 @@ namespace NodeController
 
             return config;
         }
-        public void FromXml(XElement config, ObjectsMap map)
+        public void FromXml(XElement config, NetObjectsMap map)
         {
             if (config.Element(MainRoad.XmlName) is XElement mainRoadConfig)
                 MainRoad.FromXml(mainRoadConfig, map);
@@ -445,9 +445,9 @@ namespace NodeController
             }
         }
 
-        public static bool FromXml(XElement config, ObjectsMap map, out NodeData data)
+        public static bool FromXml(XElement config, NetObjectsMap map, out NodeData data)
         {
-            var id = config.GetAttrValue("Id", (ushort)0);
+            var id = config.GetAttrValue(nameof(Id), (ushort)0);
 
             if (map.TryGetNode(id, out var targetId))
                 id = targetId;
