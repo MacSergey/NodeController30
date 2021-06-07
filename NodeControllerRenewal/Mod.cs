@@ -288,7 +288,7 @@ namespace NodeController
         }
         private bool Patch_TMPE_CustomTrainAI_CustomSimulationStep(Type[] parameters)
         {
-            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TrafficManager.Custom.AI.CustomTrainAI), nameof(TrafficManager.Custom.AI.CustomTrainAI.CustomSimulationStep), parameters);
+            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), Type.GetType("TrafficManager.Custom.AI.CustomTrainAI"), "CustomSimulationStep", parameters);
         }
         private bool Patch_TramBaseAI_SimulationStep(Type[] parameters)
         {
@@ -296,7 +296,7 @@ namespace NodeController
         }
         private bool Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(Type[] parameters)
         {
-            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TrafficManager.Custom.AI.CustomTramBaseAI), nameof(TrafficManager.Custom.AI.CustomTramBaseAI.CustomSimulationStep), parameters);
+            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), Type.GetType("TrafficManager.Custom.AI.CustomTramBaseAI"), "CustomSimulationStep", parameters);
         }
         private bool Patch_TMPE_TrainAI_SimulationStep2Patch()
         {

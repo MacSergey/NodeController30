@@ -5,4 +5,5 @@ files:
     languages_mapping:
       two_letters_code:
         "zh-CN": "zh-CN"
+        "zh-TW": "zh-TW"
         "en-GB": "en-GB"
