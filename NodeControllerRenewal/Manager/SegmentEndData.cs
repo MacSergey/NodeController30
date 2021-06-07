@@ -287,7 +287,7 @@ namespace NodeController
             }
             if (end != null)
             {
-                end.AbsoluteAngle = segment.m_startDirection.AbsoluteAngle();
+                end.AbsoluteAngle = segment.m_endDirection.AbsoluteAngle();
                 end.RawSegmentBezier = bezier.Invert();
                 end.LeftSide.RawBezier = rightBezier.Invert();
                 end.RightSide.RawBezier = leftBezier.Invert();
