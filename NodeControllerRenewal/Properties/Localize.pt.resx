@@ -268,9 +268,6 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Se esta opção estiver desativada, os nós do meio vão mover-se para a posição clicada</value>
   </data>
-  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Ativar ferramenta</value>
-  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Segure Shift para alinhar as estradas</value>
   </data>

@@ -268,9 +268,6 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Se questa opzione è disabilitata, i nodi centrali si sposteranno alla posizione cliccata</value>
   </data>
-  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Attiva il tool</value>
-  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Tieni premuto Shift per allineare le strade</value>
   </data>

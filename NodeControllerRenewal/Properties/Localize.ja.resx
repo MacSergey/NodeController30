@@ -268,9 +268,6 @@
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>このオプションを無効にすると、中間部分にあるノードは選択されません</value>
   </data>
-  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>ノードコントローラーの有効化</value>
-  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Shiftキー押下で、シフトして自動的に整列</value>
   </data>
