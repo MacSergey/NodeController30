@@ -145,6 +145,16 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на - Fix segments collision calculation
+        ///- Added Chinese Traditional translation.
+        /// </summary>
+        internal static string Mod_WhatsNewMessage3_0_5 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_0_5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Bend.
         /// </summary>
         internal static string NodeStyle_Bend {
