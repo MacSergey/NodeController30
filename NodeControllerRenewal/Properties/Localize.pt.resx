@@ -263,9 +263,6 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nó #{0}</value>
   </data>
-  <data name="Settings_General" xml:space="preserve">
-    <value>Geral</value>
-  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Selecione os nós do meio</value>
   </data>

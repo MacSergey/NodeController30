@@ -263,9 +263,6 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>節點 #{0}</value>
   </data>
-  <data name="Settings_General" xml:space="preserve">
-    <value>一般</value>
-  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>選擇中間節點</value>
   </data>

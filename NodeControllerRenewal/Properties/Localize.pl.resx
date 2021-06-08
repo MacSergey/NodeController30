@@ -263,9 +263,6 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Węzeł #{0}</value>
   </data>
-  <data name="Settings_General" xml:space="preserve">
-    <value>Ogólne</value>
-  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Wybierz węzły środkowe</value>
   </data>
