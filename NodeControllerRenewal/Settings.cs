@@ -55,6 +55,8 @@ namespace NodeController
             AddButton(group, "Add all nodes", AddAllNodes, 200f);
             AddButton(group, "Clear", SingletonManager<Manager>.Destroy, 200f);
 
+            AddHarmonyReport(group);
+
             static void AddAllNodes()
             {
                 var netManaget = Singleton<NetManager>.instance;
