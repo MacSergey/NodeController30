@@ -21,7 +21,7 @@ namespace NodeController
             AddLanguage(GeneralTab);
 
 
-            var generalGroup = GeneralTab.AddGroup(Localize.Settings_General);
+            var generalGroup = GeneralTab.AddGroup(CommonLocalize.Settings_General);
 
             var keymappings = AddKeyMappingPanel(generalGroup);
             keymappings.AddKeymapping(NodeControllerTool.ActivationShortcut);

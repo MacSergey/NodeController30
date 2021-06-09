@@ -145,8 +145,8 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на - Fix segments collision calculation
-        ///- Added Chinese Traditional translation.
+        ///   Ищет локализованную строку, похожую на - Fix segments collision calculation.
+        ///- Added Chinese Traditional translation..
         /// </summary>
         internal static string Mod_WhatsNewMessage3_0_5 {
             get {
@@ -439,15 +439,6 @@ namespace NodeController {
         internal static string Panel_NodeId {
             get {
                 return ResourceManager.GetString("Panel_NodeId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на General.
-        /// </summary>
-        internal static string Settings_General {
-            get {
-                return ResourceManager.GetString("Settings_General", resourceCulture);
             }
         }
         
