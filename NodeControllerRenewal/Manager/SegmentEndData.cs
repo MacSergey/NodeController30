@@ -64,11 +64,11 @@ namespace NodeController
         public bool IsMoveable => !IsNodeLess && !IsUntouchable;
         public bool IsMainRoad { get; set; }
 
-        public bool IsRoad { get; set; }
-        public bool IsTunnel { get; set; }
-        public bool IsTrain { get; set; }
-        public bool IsNodeLess { get; }
-        public bool IsUntouchable { get; set; }
+        public bool IsRoad { get; private set; }
+        public bool IsTunnel { get; private set; }
+        public bool IsTrain { get; private set; }
+        public bool IsNodeLess { get; private set; }
+        public bool IsUntouchable { get; private set; }
 
         public int PedestrianLaneCount { get; }
         public float VehicleTwist { get; private set; }
@@ -172,7 +172,7 @@ namespace NodeController
 
             var segment = Id.GetSegment();
             var info = segment.Info;
-            IsNodeLess = !info.m_nodes.Any();
+
             PedestrianLaneCount = info.PedestrianLanes();
             Weight = info.m_halfWidth * 2;
             if ((info.m_netAI as RoadBaseAI)?.m_highwayRules == true)
@@ -181,18 +181,28 @@ namespace NodeController
             CalculateSegmentBeziers(Id, out var bezier, out var leftBezier, out var rightBezier);
             if (IsStartNode)
             {
-                AbsoluteAngle = segment.m_startDirection.AbsoluteAngle();
                 RawSegmentBezier = bezier;
                 LeftSide.RawBezier = leftBezier;
                 RightSide.RawBezier = rightBezier;
             }
             else
             {
-                AbsoluteAngle = segment.m_endDirection.AbsoluteAngle();
                 RawSegmentBezier = bezier.Invert();
                 LeftSide.RawBezier = rightBezier.Invert();
                 RightSide.RawBezier = leftBezier.Invert();
             }
+        }
+        public void Update()
+        {
+            var segment = Id.GetSegment();
+
+            AbsoluteAngle = (segment.IsStartNode(NodeId) ? segment.m_startDirection : segment.m_endDirection).AbsoluteAngle();
+            IsRoad = segment.Info.m_netAI is RoadBaseAI;
+            IsTunnel = segment.Info.m_netAI is RoadTunnelAI;
+            IsTrain = segment.Info.m_netAI is TrainTrackBaseAI || segment.Info.m_netAI is MetroTrackBaseAI;
+            IsMainRoad = false;
+            IsNodeLess = !segment.Info.m_nodes.Any();
+            IsUntouchable = segment.m_flags.IsSet(NetSegment.Flags.Untouchable);
         }
         public void UpdateNode() => SingletonManager<Manager>.Instance.Update(NodeId, true);
 
@@ -276,18 +286,15 @@ namespace NodeController
         {
             CalculateSegmentBeziers(segmentId, out var bezier, out var leftBezier, out var rightBezier);
             SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
-            var segment = segmentId.GetSegment();
 
             if (start != null)
             {
-                start.AbsoluteAngle = segment.m_startDirection.AbsoluteAngle();
                 start.RawSegmentBezier = bezier;
                 start.LeftSide.RawBezier = leftBezier;
                 start.RightSide.RawBezier = rightBezier;
             }
             if (end != null)
             {
-                end.AbsoluteAngle = segment.m_endDirection.AbsoluteAngle();
                 end.RawSegmentBezier = bezier.Invert();
                 end.LeftSide.RawBezier = rightBezier.Invert();
                 end.RightSide.RawBezier = leftBezier.Invert();

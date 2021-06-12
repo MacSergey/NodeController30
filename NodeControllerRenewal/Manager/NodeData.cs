@@ -37,6 +37,7 @@ namespace NodeController
                 UpdateNode();
             }
         }
+        //private List<SegmentEndData> RawSegmentEnds { get; set; } = new List<SegmentEndData>();
         private Dictionary<ushort, SegmentEndData> SegmentEnds { get; set; } = new Dictionary<ushort, SegmentEndData>();
         public IEnumerable<SegmentEndData> SegmentEndDatas => SegmentEnds.Values;
 
@@ -150,19 +151,20 @@ namespace NodeController
             Id = nodeId;
 
             UpdateSegmentEnds();
+            UpdateSegmentEndsImpl();
             MainRoad.Update(this);
             UpdateStyle(true, nodeType);
             UpdateMainRoadSegments();
         }
-        public void Update(bool flags = true)
+        public void Update(bool updateFlags)
         {
-            UpdateSegmentEnds();
+            UpdateSegmentEndsImpl();
             MainRoad.Update(this);
-            if (flags)
+            if (updateFlags)
                 UpdateFlags();
             UpdateMainRoadSegments();
         }
-        private void UpdateSegmentEnds()
+        public void UpdateSegmentEnds()
         {
             var before = SegmentEnds.Values.Select(v => v.Id).ToList();
             var after = Id.GetNode().SegmentIds().ToList();
@@ -171,13 +173,13 @@ namespace NodeController
             var delete = before.Except(still).ToArray();
             var add = after.Except(still).ToArray();
 
-            var newSegmentsEnd = still.Select(i => SegmentEnds[i]).ToList();
+            var newSegmentEnds = still.Select(i => SegmentEnds[i]).ToDictionary(s => s.Id, s => s);
 
             if (delete.Length == 1 && add.Length == 1)
             {
                 var changed = SegmentEnds[delete[0]];
                 changed.Id = add[0];
-                newSegmentsEnd.Add(changed);
+                newSegmentEnds[changed.Id] = changed;
                 MainRoad.Replace(delete[0], add[0]);
             }
             else
@@ -185,28 +187,26 @@ namespace NodeController
                 foreach (var segmentId in add)
                 {
                     var newSegmentEnd = new SegmentEndData(segmentId, Id);
-                    newSegmentsEnd.Add(newSegmentEnd);
+                    newSegmentEnds[newSegmentEnd.Id] = newSegmentEnd;
 
                     if (Style is NodeStyle style)
                         newSegmentEnd.ResetToDefault(style, true);
                 }
             }
 
-            var segmentEnds = new Dictionary<ushort, SegmentEndData>();
-            foreach (var segmentEnd in newSegmentsEnd.OrderByDescending(s => s.AbsoluteAngle))
+            SegmentEnds = newSegmentEnds;
+        }
+        private void UpdateSegmentEndsImpl()
+        {
+            foreach (var segmentEnd in SegmentEnds.Values)
+                segmentEnd.Update();
+
+            var i = 0;
+            foreach (var segmentEnd in SegmentEnds.Values.OrderByDescending(s => s.AbsoluteAngle))
             {
-                var segment = segmentEnd.Id.GetSegment();
-
-                segmentEnd.Index = segmentEnds.Count;
-                segmentEnd.IsRoad = segment.Info.m_netAI is RoadBaseAI;
-                segmentEnd.IsTunnel = segment.Info.m_netAI is RoadTunnelAI;
-                segmentEnd.IsTrain = segment.Info.m_netAI is TrainTrackBaseAI || segment.Info.m_netAI is MetroTrackBaseAI;
-                segmentEnd.IsMainRoad = false;
-                segmentEnd.IsUntouchable = segment.m_flags.IsSet(NetSegment.Flags.Untouchable);
-                segmentEnds[segmentEnd.Id] = segmentEnd;
+                segmentEnd.Index = i;
+                i += 1;
             }
-
-            SegmentEnds = segmentEnds;
         }
         private void UpdateFlags()
         {

@@ -174,6 +174,7 @@ namespace NodeController
 
             success &= Patch_NetNode_RefreshJunctionData_Prefix(junctionParams3);
             success &= Patch_NetNode_RefreshJunctionData_Postfix(junctionParams3);
+            success &= Patch_NetNode_CalculateNode();
             success &= Patch_NetNode_RenderInstance();
         }
         private bool Patch_NetNode_Position_Transpiler(string methodName, Type[] parameters = null)
@@ -188,7 +189,10 @@ namespace NodeController
         {
             return AddPostfix(typeof(NetNodePatches), nameof(NetNodePatches.RefreshJunctionDataPostfix), typeof(NetNode), "RefreshJunctionData", parameters);
         }
-
+        private bool Patch_NetNode_CalculateNode()
+        {
+            return AddPostfix(typeof(NetNodePatches), nameof(NetNodePatches.CalculateNodePostfix), typeof(NetNode), nameof(NetNode.CalculateNode));
+        }
         private bool Patch_NetNode_RenderInstance()
         {
             var parameters = new Type[] { typeof(RenderManager.CameraInfo), typeof(ushort), typeof(NetInfo), typeof(int), typeof(NetNode.Flags), typeof(uint).MakeByRefType(), typeof(RenderManager.Instance).MakeByRefType() };

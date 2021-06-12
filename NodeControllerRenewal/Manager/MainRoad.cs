@@ -147,7 +147,7 @@ namespace NodeController
 
         public static RoadPair Get(SegmentEndData first, SegmentEndData second)
         {
-            var cos = Mathf.Clamp(NormalizeDotXZ(first.RawSegmentBezier.StartDirection, second.RawSegmentBezier.StartDirection), -1f, 1f);
+            var cos = Mathf.Clamp(NormalizeDotXZ(first.AbsoluteAngle.Direction(), second.AbsoluteAngle.Direction()), -1f, 1f);
             var pow = Mathf.Acos(cos) / Mathf.PI * 2 - 1;
             return new RoadPair()
             {

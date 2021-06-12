@@ -1,3 +1,4 @@
+using ColossalFramework;
 using HarmonyLib;
 using ModsCommon;
 using ModsCommon.Utilities;
@@ -86,6 +87,14 @@ namespace NodeController
             return Buffer[segment.GetNode(isStart)]?[segmentId];
         }
 
+        public void UpdateAll()
+        {
+            foreach (var data in Buffer)
+            {
+                if (data != null)
+                    Update(data.Id);
+            }
+        }
         public void Update(ushort nodeId, bool now = false)
         {
             var option = Options.UpdateLater | (now ? Options.UpdateNow : Options.None);
@@ -100,7 +109,7 @@ namespace NodeController
                     GetUpdateList(nodeId, options & ~Options.UpdateLater, out var nodeIds, out var segmentIds);
                     UpdateNow(nodeIds.ToArray(), segmentIds.ToArray(), false);
                 }
-                if(options.IsSet(Options.UpdateThisLater))
+                if (options.IsSet(Options.UpdateThisLater))
                 {
                     GetUpdateList(nodeId, options & ~Options.UpdateNow, out var nodeIds, out _);
                     AddToUpdate(nodeIds);
@@ -143,10 +152,10 @@ namespace NodeController
 
             UpdateNow(nodeIds, segmentIds, true);
         }
-        private static void UpdateNow(ushort[] nodeIds, ushort[] segmentIds, bool flags)
+        private static void UpdateNow(ushort[] nodeIds, ushort[] segmentIds, bool updateFlags)
         {
             foreach (var nodeId in nodeIds)
-                SingletonManager<Manager>.Instance.Buffer[nodeId].Update(flags);
+                SingletonManager<Manager>.Instance.Buffer[nodeId].Update(updateFlags);
 
             foreach (var segmentId in segmentIds)
                 SegmentEndData.UpdateBeziers(segmentId);
@@ -177,17 +186,12 @@ namespace NodeController
 
             return config;
         }
-        public void FromXml(XElement config, NetObjectsMap map)
+        public void FromXml(XElement config, NetObjectsMap map, bool update = false)
         {
             foreach (var nodeConfig in config.Elements(NodeData.XmlName))
             {
                 if (NodeData.FromXml(nodeConfig, map, out NodeData data))
                     Buffer[data.Id] = data;
-            }
-            foreach (var data in Buffer)
-            {
-                if (data != null)
-                    Update(data.Id);
             }
         }
 

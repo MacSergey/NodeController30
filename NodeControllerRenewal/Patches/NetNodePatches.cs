@@ -11,6 +11,11 @@ namespace NodeController.Patches
 {
     public static class NetNodePatches
     {
+        public static void CalculateNodePostfix(ushort nodeID)
+        {
+            if (SingletonManager<Manager>.Instance[nodeID] is NodeData data)
+                data.UpdateSegmentEnds();
+        }
         public static IEnumerable<CodeInstruction> ReplaceNodePositionTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
         {
             var positionField = AccessTools.Field(typeof(NetNode), nameof(NetNode.m_position));
