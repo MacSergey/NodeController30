@@ -16,10 +16,11 @@ namespace NodeController
         public static SavedBool SelectMiddleNodes { get; } = new SavedBool(nameof(SelectMiddleNodes), SettingsFile, true, true);
         public static SavedBool ShowToolTip { get; } = new SavedBool(nameof(ShowToolTip), SettingsFile, true, true);
 
-        protected override void OnSettingsUI()
+        protected override void FillSettings()
         {
-            AddLanguage(GeneralTab);
+            base.FillSettings();
 
+            AddLanguage(GeneralTab);
 
             var generalGroup = GeneralTab.AddGroup(CommonLocalize.Settings_General);
 
@@ -31,31 +32,31 @@ namespace NodeController
             AddCheckBox(generalGroup, CommonLocalize.Settings_ShowTooltips, ShowToolTip);
 
             AddNotifications(GeneralTab);
-
 #if DEBUG
-            var debugTab = CreateTab("Debug");
-            AddDebug(debugTab);
+            AddDebug(DebugTab);
 #endif
         }
-#if DEBUG
 
+#if DEBUG
         public static SavedFloat SegmentId { get; } = new SavedFloat(nameof(SegmentId), SettingsFile, 0f, false);
         public static SavedFloat NodeId { get; } = new SavedFloat(nameof(NodeId), SettingsFile, 0f, false);
 
         private void AddDebug(UIAdvancedHelper helper)
         {
-            var group = helper.AddGroup("Debug");
+            var overlayGroup = helper.AddGroup("Selection overlay");
 
-            AddCheckBox(group, "Alpha blend overlay", Selection.AlphaBlendOverlay);
-            AddCheckBox(group, "Render overlay center", Selection.RenderOverlayCentre);
-            AddCheckBox(group, "Render overlay borders", Selection.RenderOverlayBorders);
-            AddFloatField(group, "Overlay width", Selection.OverlayWidth, 3f, 1f);
-            AddFloatField(group, "SegmentId", SegmentId, 0f);
-            AddFloatField(group, "NodeId", NodeId, 0f);
-            AddButton(group, "Add all nodes", AddAllNodes, 200f);
-            AddButton(group, "Clear", SingletonManager<Manager>.Destroy, 200f);
+            AddCheckBox(overlayGroup, "Alpha blend overlay", Selection.AlphaBlendOverlay);
+            AddCheckBox(overlayGroup, "Render overlay center", Selection.RenderOverlayCentre);
+            AddCheckBox(overlayGroup, "Render overlay borders", Selection.RenderOverlayBorders);
+            AddFloatField(overlayGroup, "Overlay width", Selection.OverlayWidth, 3f, 1f);
 
-            AddHarmonyReport(group);
+
+            var groupOther = helper.AddGroup("Other");
+
+            AddFloatField(groupOther, "SegmentId", SegmentId, 0f);
+            AddFloatField(groupOther, "NodeId", NodeId, 0f);
+            AddButton(groupOther, "Add all nodes", AddAllNodes, 200f);
+            AddButton(groupOther, "Clear", SingletonManager<Manager>.Destroy, 200f);
 
             static void AddAllNodes()
             {
