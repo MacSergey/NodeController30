@@ -22,7 +22,7 @@ namespace NodeController.BackwardСompatibility
 
             var formatter = new BinaryFormatter()
             {
-                Binder = new BackwardСompatibilityBinder(),
+                Binder = new BackwardCompatibilityBinder(),
                 SurrogateSelector = surrogateSelector,
             };
 
@@ -31,7 +31,7 @@ namespace NodeController.BackwardСompatibility
         }
     }
 
-    public class BackwardСompatibilityBinder : SerializationBinder
+    public class BackwardCompatibilityBinder : SerializationBinder
     {
         public override Type BindToType(string assemblyName, string typeName)
         {
