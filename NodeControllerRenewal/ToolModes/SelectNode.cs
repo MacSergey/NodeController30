@@ -1,4 +1,5 @@
-﻿using ColossalFramework.Math;
+﻿using ColossalFramework;
+using ColossalFramework.Math;
 using ModsCommon;
 using ModsCommon.Utilities;
 using UnityEngine;
@@ -32,14 +33,17 @@ namespace NodeController
 
         protected override bool IsValidNode(ushort nodeId)
         {
+            if (!base.IsValidNode(nodeId))
+                return false;
+
             if (Settings.SelectMiddleNodes)
                 return true;
 
-            ref var node = ref nodeId.GetNode();
+            var node = nodeId.GetNode();
             return node.m_flags.CheckFlags(0, NetNode.Flags.Middle | NetNode.Flags.Outside) || node.m_flags.CheckFlags(0, NetNode.Flags.Moveable | NetNode.Flags.Outside);
         }
         protected override bool CheckSegment(ushort segmentId) => segmentId.GetSegment().m_flags.CheckFlags(0, NetSegment.Flags.Untouchable) && base.CheckSegment(segmentId);
-        protected override bool CheckItemClass(ItemClass itemClass) => itemClass switch
+        protected override bool CheckItemClass(ItemClass itemClass) => base.CheckItemClass(itemClass) && itemClass switch
         {
             { m_service: ItemClass.Service.Road } => true,
             { m_service: ItemClass.Service.PublicTransport } => true,
@@ -51,6 +55,11 @@ namespace NodeController
         public override void OnToolUpdate()
         {
             base.OnToolUpdate();
+
+            if (!Underground && Utility.OnlyShiftIsPressed)
+                Underground = true;
+            else if (Underground && !Utility.OnlyShiftIsPressed)
+                Underground = false;
 
             if (IsHoverSegment)
             {
@@ -67,7 +76,7 @@ namespace NodeController
                 Set(SingletonManager<Manager>.Instance[HoverNode.Id, true]);
             else if (IsHoverSegment && IsPossibleInsertNode)
             {
-                var controlPoint = new NetTool.ControlPoint() { m_segment = HoverSegment.Id, m_position = InsertPosition};
+                var controlPoint = new NetTool.ControlPoint() { m_segment = HoverSegment.Id, m_position = InsertPosition };
                 var newNode = SingletonManager<Manager>.Instance.InsertNode(controlPoint);
                 Set(newNode);
             }
@@ -108,7 +117,7 @@ namespace NodeController
                 var direction = bezier.Tangent(t).MakeFlatNormalized();
                 var halfWidth = SegmentEndData.GetSegmentWidth(HoverSegment.Id, t);
 
-                var overlayData = new OverlayData(cameraInfo) { Width = halfWidth * 2, Color = PossibleInsertNode(position) ? Colors.Green : Colors.Red, AlphaBlend = false, Cut = true };
+                var overlayData = new OverlayData(cameraInfo) { Width = halfWidth * 2, Color = PossibleInsertNode(position) ? Colors.Green : Colors.Red, AlphaBlend = false, Cut = true, RenderLimit = Underground };
 
                 var middle = new Bezier3()
                 {

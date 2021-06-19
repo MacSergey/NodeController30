@@ -105,16 +105,17 @@ namespace NodeController
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             var width = Radius * 2;
+            var underground = IsUnderground;
 
             if (!IsSelectedSegmentEnd)
             {
-                Tool.Data.MainBezier.Render(new OverlayData(cameraInfo) { Width = width, Color = Colors.Yellow });
+                Tool.Data.MainBezier.Render(new OverlayData(cameraInfo) { Width = width, Color = Colors.Yellow, RenderLimit = underground });
 
                 foreach (var segmentData in Tool.Data.SegmentEndDatas)
-                    segmentData.RenderOutterCircle(new OverlayData(cameraInfo) { Color = segmentData.OverlayColor });
+                    segmentData.RenderOutterCircle(new OverlayData(cameraInfo) { Color = segmentData.OverlayColor, RenderLimit = underground });
 
                 foreach (var segmentData in Tool.Data.MainSegmentEndDatas)
-                    segmentData.Position.RenderCircle(new OverlayData(cameraInfo) { Color = segmentData == HoverSegmentEnd ? Color.white : Colors.Yellow }, width, 0f);
+                    segmentData.Position.RenderCircle(new OverlayData(cameraInfo) { Color = segmentData == HoverSegmentEnd ? Color.white : Colors.Yellow, RenderLimit = underground }, width, 0f);
             }
             else
             {
@@ -127,26 +128,26 @@ namespace NodeController
                 if (IsHoverSegmentEnd)
                 {
                     var bezier = new BezierTrajectory(SelectedSegmentEnd.Position, -SelectedSegmentEnd.Direction, HoverSegmentEnd.Position, -HoverSegmentEnd.Direction);
-                    bezier.Render(new OverlayData(cameraInfo) { Width = width, Color = Colors.Yellow });
+                    bezier.Render(new OverlayData(cameraInfo) { Width = width, Color = Colors.Yellow, RenderLimit = underground });
                 }
                 else
                 {
                     var bezier = new BezierTrajectory(SelectedSegmentEnd.Position, -SelectedSegmentEnd.Direction, endPosition);
-                    bezier.Render(new OverlayData(cameraInfo) { Width = width, Color = Colors.Yellow });
+                    bezier.Render(new OverlayData(cameraInfo) { Width = width, Color = Colors.Yellow, RenderLimit = underground });
                 }
 
                 foreach (var segmentData in Tool.Data.SegmentEndDatas)
                 {
                     if (segmentData != SelectedSegmentEnd)
-                        segmentData.RenderOutterCircle(new OverlayData(cameraInfo) { Color = segmentData == HoverSegmentEnd ? Color.white : segmentData.OverlayColor });
+                        segmentData.RenderOutterCircle(new OverlayData(cameraInfo) { Color = segmentData == HoverSegmentEnd ? Color.white : segmentData.OverlayColor, RenderLimit = underground });
                 }
 
-                SelectedSegmentEnd.Position.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow }, width, 0f);
+                SelectedSegmentEnd.Position.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground }, width, 0f);
 
                 if (IsHoverSegmentEnd)
-                    HoverSegmentEnd.Position.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow }, width, 0f);
+                    HoverSegmentEnd.Position.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground }, width, 0f);
                 else
-                    endPosition.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow }, width, 0f);
+                    endPosition.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground }, width, 0f);
             }
         }
     }

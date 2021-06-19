@@ -38,7 +38,7 @@ namespace NodeController
             return data;
         }
         public NodeData this[ushort nodeId, bool create = false] => this[nodeId, create ? Options.Default : Options.None];
-        private NodeData this[ushort nodeId, Options options]
+        public NodeData this[ushort nodeId, Options options]
         {
             get
             {
@@ -147,27 +147,33 @@ namespace NodeController
 
         public static void SimulationStep()
         {
-            var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => SingletonManager<Manager>.Instance.ContainsNode(s)).ToArray();
-            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => SingletonManager<Manager>.Instance.ContainsSegment(s)).ToArray();
+            var manager = SingletonManager<Manager>.Instance;
+            var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)).ToArray();
+            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)).ToArray();
 
             UpdateNow(nodeIds, segmentIds, true);
         }
         private static void UpdateNow(ushort[] nodeIds, ushort[] segmentIds, bool updateFlags)
         {
+#if DEBUG
+            SingletonMod<Mod>.Logger.Debug($"Update now\nNodes:{string.Join(", ", nodeIds.Select(i => i.ToString()).ToArray())}\nSegments:{string.Join(", ", segmentIds.Select(i => i.ToString()).ToArray())}");
+#endif
+            var manager = SingletonManager<Manager>.Instance;
+
             foreach (var nodeId in nodeIds)
-                SingletonManager<Manager>.Instance.Buffer[nodeId].Update(updateFlags);
+                manager.Buffer[nodeId].Update(updateFlags);
 
             foreach (var segmentId in segmentIds)
                 SegmentEndData.UpdateBeziers(segmentId);
 
             foreach (var nodeId in nodeIds)
-                SegmentEndData.UpdateMinLimits(SingletonManager<Manager>.Instance.Buffer[nodeId]);
+                SegmentEndData.UpdateMinLimits(manager.Buffer[nodeId]);
 
             foreach (var segmentId in segmentIds)
                 SegmentEndData.UpdateMaxLimits(segmentId);
 
             foreach (var nodeId in nodeIds)
-                SingletonManager<Manager>.Instance.Buffer[nodeId].LateUpdate();
+                manager.Buffer[nodeId].LateUpdate();
         }
 
         public static void ReleaseNodeImplementationPrefix(ushort node) => SingletonManager<Manager>.Instance.Buffer[node] = null;
@@ -196,7 +202,7 @@ namespace NodeController
         }
 
         [Flags]
-        private enum Options
+        public enum Options
         {
             None = 0,
 

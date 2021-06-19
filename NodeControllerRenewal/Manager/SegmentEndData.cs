@@ -789,10 +789,10 @@ namespace NodeController
                 RightSide.RenderCircle(rightData.Value);
         }
 
-        public void RenderSides(OverlayData dataAllow, OverlayData dataForbidden)
+        public void RenderSides(OverlayData dataAllow, OverlayData dataForbidden, OverlayData dataLimit)
         {
-            LeftSide.Render(dataAllow, dataForbidden);
-            RightSide.Render(dataAllow, dataForbidden);
+            LeftSide.Render(dataAllow, dataForbidden, dataLimit);
+            RightSide.Render(dataAllow, dataForbidden, dataLimit);
         }
         public void RenderEnd(OverlayData data, float? leftCut = null, float? rightCut = null)
         {

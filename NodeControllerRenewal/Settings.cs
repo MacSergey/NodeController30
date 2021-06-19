@@ -5,6 +5,7 @@ using ModsCommon;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static ModsCommon.SettingsHelper;
@@ -61,12 +62,20 @@ namespace NodeController
             static void AddAllNodes()
             {
                 var netManaget = Singleton<NetManager>.instance;
-                for(ushort i = 0; i < NetManager.MAX_NODE_COUNT; i+=1)
+                var manager = SingletonManager<Manager>.Instance;
+
+                for (ushort i = 0; i < NetManager.MAX_NODE_COUNT; i+=1)
                 {
                     var node = i.GetNode();
-                    if(node.m_flags.IsSet(NetNode.Flags.Created))
-                        _ = SingletonManager<Manager>.Instance[i, true];
+                    var created = node.m_flags.IsSet(NetNode.Flags.Created);
+                    var isRoad = node.Segments().Any(s => s.Info.m_netAI is RoadBaseAI);
+                    if (created && isRoad)
+                    {
+                        _ = manager[i, Manager.Options.Create];
+                        SingletonMod<Mod>.Logger.Debug($"Added node #{i}");
+                    }
                 }
+                manager.UpdateAll();
             }
         }
 #endif

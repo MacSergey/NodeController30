@@ -82,6 +82,7 @@ namespace NodeController
         public bool Is180 => IsTwoRoads && MainDot > 0.995f;
         public bool IsEqualWidth => IsTwoRoads && Math.Abs(FirstSegment.Info.m_halfWidth - SecondSegment.Info.m_halfWidth) < 0.001f;
         public bool HasNodeLess => SegmentEndDatas.Any(s => s.IsNodeLess);
+        public bool IsUnderground => Id.GetNode().m_flags.IsSet(NetNode.Flags.Underground);
 
         public float Offset
         {

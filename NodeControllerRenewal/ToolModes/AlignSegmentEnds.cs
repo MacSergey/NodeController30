@@ -162,10 +162,11 @@ namespace NodeController
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             var width = SegmentEndData.CenterDotRadius * 2;
+            var underground = IsUnderground;
 
             foreach (var segmentData in Tool.Data.SegmentEndDatas)
             {
-                var defaultColor = new OverlayData(cameraInfo) { Color = segmentData.OverlayColor };
+                var defaultColor = new OverlayData(cameraInfo) { Color = segmentData.OverlayColor, RenderLimit = underground };
                 segmentData.RenderСontour(defaultColor);
                 segmentData.RenderEnd(defaultColor);
             }
@@ -173,14 +174,14 @@ namespace NodeController
             foreach (var target in Targets)
             {
                 if (target != HoverSide)
-                    target.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow, Width = width });
+                    target.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow, Width = width, RenderLimit = underground });
             }
 
             if (IsHoverSide)
-                HoverSide.RenderCircle(new OverlayData(cameraInfo) { Width = width });
+                HoverSide.RenderCircle(new OverlayData(cameraInfo) { Width = width, RenderLimit = underground });
 
             if (IsSelectedSide)
-                SelectedSide.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Purple, Width = width });
+                SelectedSide.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Purple, Width = width, RenderLimit = underground });
         }
     }
 }

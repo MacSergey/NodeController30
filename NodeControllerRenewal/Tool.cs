@@ -19,6 +19,7 @@ namespace NodeController
         public NodeControllerPanel Panel => SingletonItem<NodeControllerPanel>.Instance;
 
         public NodeData Data { get; private set; }
+        public bool IsUnderground => Data?.IsUnderground ?? false;
 
         protected override IEnumerable<IToolMode<ToolModeType>> GetModes()
         {
@@ -36,6 +37,17 @@ namespace NodeController
             base.InitProcess();
             NodeControllerPanel.CreatePanel();
         }
+        protected override void OnToolUpdate()
+        {
+            if(Data is NodeData data)
+            {
+                Singleton<InfoManager>.instance.SetCurrentMode(data.IsUnderground ? InfoManager.InfoMode.Underground : InfoManager.InfoMode.None, InfoManager.SubInfoMode.Default);
+            }
+
+            base.OnToolUpdate();
+        }
+
+        protected override bool CheckInfoMode(InfoManager.InfoMode mode, InfoManager.SubInfoMode subInfo) => (mode == InfoManager.InfoMode.None || mode == InfoManager.InfoMode.Underground) && subInfo == InfoManager.SubInfoMode.Default;
 
         public void SetDefaultMode() => SetMode(ToolModeType.Edit);
         protected override void SetModeNow(IToolMode mode)
@@ -69,6 +81,7 @@ namespace NodeController
     {
         public abstract ToolModeType Type { get; }
         public virtual bool ShowPanel => true;
+        protected bool IsUnderground => Tool.IsUnderground;
     }
     public enum ToolModeType
     {
