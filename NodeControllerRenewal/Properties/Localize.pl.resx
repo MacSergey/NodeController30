@@ -191,6 +191,12 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Options_All" xml:space="preserve">
     <value>Wszystkie</value>
   </data>
+  <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
+    <value>Calculate shift by intersections</value>
+  </data>
+  <data name="Option_CalculateShiftByNearby" xml:space="preserve">
+    <value>Calculate shift by nearby nodes</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Zresetuj przesunięcie</value>
   </data>
@@ -223,6 +229,9 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   </data>
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>
+  </data>
+  <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
+    <value>Set shift between intersections</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Przesuń</value>
@@ -263,11 +272,38 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Węzeł #{0}</value>
   </data>
+  <data name="Settings_RenderNearNode" xml:space="preserve">
+    <value>Show nearby nodes overlay</value>
+  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Wybierz węzły środkowe</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Jeśli ta opcja jest wyłączona, węzły środkowe przeniosą się do klikniętego miejsca</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
+    <value>Calculate shift by intersections</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
+    <value>Calculate shift by nearby nodes</value>
+  </data>
+  <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
+    <value>Change main slope direction mode</value>
+  </data>
+  <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
+    <value>Change node style</value>
+  </data>
+  <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
+    <value>Zresetuj przesunięcie</value>
+  </data>
+  <data name="Setting_ShortcutMakeStraightEnds" xml:space="preserve">
+    <value>Zrób końce proste</value>
+  </data>
+  <data name="Setting_ShortcutResetToDefault" xml:space="preserve">
+    <value>Resetuj do domyślnych</value>
+  </data>
+  <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
+    <value>Set shift between intersections</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Przytrzymaj Shift aby wyrównać drogi</value>
@@ -324,5 +360,8 @@ Kliknij aby edytować</value>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
     <value>Nie można wstawić węzła
 Za blisko do sąsiedniego węzła</value>
+  </data>
+  <data name="Tool_InfoUnderground" xml:space="preserve">
+    <value>Hold Shift to underground mode</value>
   </data>
 </root>

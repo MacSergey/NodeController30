@@ -191,6 +191,12 @@
   <data name="Options_All" xml:space="preserve">
     <value>全部</value>
   </data>
+  <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
+    <value>Calculate shift by intersections</value>
+  </data>
+  <data name="Option_CalculateShiftByNearby" xml:space="preserve">
+    <value>Calculate shift by nearby nodes</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>重置偏移</value>
   </data>
@@ -223,6 +229,9 @@
   </data>
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>
+  </data>
+  <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
+    <value>Set shift between intersections</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>移位</value>
@@ -263,11 +272,38 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>节点 #{0}</value>
   </data>
+  <data name="Settings_RenderNearNode" xml:space="preserve">
+    <value>显示光标附近节点</value>
+  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>选择中间节点</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>禁用后，中间点将移动到单击位置</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
+    <value>Calculate shift by intersections</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
+    <value>Calculate shift by nearby nodes</value>
+  </data>
+  <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
+    <value>Change main slope direction mode</value>
+  </data>
+  <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
+    <value>Change node style</value>
+  </data>
+  <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
+    <value>重置偏移</value>
+  </data>
+  <data name="Setting_ShortcutMakeStraightEnds" xml:space="preserve">
+    <value>裁直路段终点</value>
+  </data>
+  <data name="Setting_ShortcutResetToDefault" xml:space="preserve">
+    <value>重置为默认值</value>
+  </data>
+  <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
+    <value>Set shift between intersections</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>按住Shift对齐道路</value>
@@ -324,5 +360,8 @@
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
     <value>无法插入节点
 节点间距过短</value>
+  </data>
+  <data name="Tool_InfoUnderground" xml:space="preserve">
+    <value>按住 Shift 进入地下模式</value>
   </data>
 </root>

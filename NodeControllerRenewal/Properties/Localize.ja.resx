@@ -191,6 +191,12 @@
   <data name="Options_All" xml:space="preserve">
     <value>すべて</value>
   </data>
+  <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
+    <value>交差点間にあるノードからシフトを計算して、まとめてスムージング</value>
+  </data>
+  <data name="Option_CalculateShiftByNearby" xml:space="preserve">
+    <value>隣接するノードから、シフトを計算してスムージング</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>オフセットをリセット</value>
   </data>
@@ -224,6 +230,9 @@
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
+  <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
+    <value>交差点間にあるノードに、シフトの値を一括して適用</value>
+  </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>シフト（左右の移動）</value>
   </data>
@@ -252,7 +261,7 @@
     <value>スロープ</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>ツイスト（バンク・カント）</value>
+    <value>ツイスト（バンク）</value>
   </data>
   <data name="Option_TwistFormat" xml:space="preserve">
     <value>{0}°</value>
@@ -263,11 +272,38 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>ノード #{0} を調整中</value>
   </data>
+  <data name="Settings_RenderNearNode" xml:space="preserve">
+    <value>選択中は近くにあるノードをハイライトする</value>
+  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>中間部分にあるノードも選択</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>このオプションを無効にすると、中間部分にあるノードは選択されません</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
+    <value>交差点間にあるノードからシフトを計算して、まとめてスムージング</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
+    <value>隣接するノードから、シフトを計算してスムージング</value>
+  </data>
+  <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
+    <value>スロープ化の選択方法</value>
+  </data>
+  <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
+    <value>スタイルの変更</value>
+  </data>
+  <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
+    <value>オフセットをリセット</value>
+  </data>
+  <data name="Setting_ShortcutMakeStraightEnds" xml:space="preserve">
+    <value>セグメントの端を直線化</value>
+  </data>
+  <data name="Setting_ShortcutResetToDefault" xml:space="preserve">
+    <value>デフォルトに戻す</value>
+  </data>
+  <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
+    <value>交差点間にあるノードに、シフトの値を一括して適用</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Shiftキー押下で、シフトして自動的に整列</value>
@@ -324,5 +360,8 @@
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
     <value>ノードが追加できません
 他のノードと近すぎます</value>
+  </data>
+  <data name="Tool_InfoUnderground" xml:space="preserve">
+    <value>Shiftキー押下で、地下表示に切り替え</value>
   </data>
 </root>

@@ -191,6 +191,12 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Options_All" xml:space="preserve">
     <value>Todos</value>
   </data>
+  <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
+    <value>Calcular desplazamiento usando intersecciones</value>
+  </data>
+  <data name="Option_CalculateShiftByNearby" xml:space="preserve">
+    <value>Calcular desplazamiento usando nodos cercanos</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Restablecer desplazamiento</value>
   </data>
@@ -223,6 +229,9 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   </data>
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>
+  </data>
+  <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
+    <value>Establecer desplazamiento entre intersecciones</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Desplazar</value>
@@ -263,11 +272,38 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nodo #{0}</value>
   </data>
+  <data name="Settings_RenderNearNode" xml:space="preserve">
+    <value>Mostrar superposición de nodos cercanos</value>
+  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Seleccionar nodos del medio</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Si esta opción está desactivada, los nodos medios se moverán a la posición pulsada</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
+    <value>Calcular desplazamiento usando intersecciones</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
+    <value>Calcular desplazamiento usando nodos cercanos</value>
+  </data>
+  <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
+    <value>Cambiar el modo de dirección de la inclinación principal</value>
+  </data>
+  <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
+    <value>Cambiar estilo del nodo</value>
+  </data>
+  <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
+    <value>Restablecer desplazamiento</value>
+  </data>
+  <data name="Setting_ShortcutMakeStraightEnds" xml:space="preserve">
+    <value>Haga las puntas rectas</value>
+  </data>
+  <data name="Setting_ShortcutResetToDefault" xml:space="preserve">
+    <value>Restablecer la configuración predeterminada</value>
+  </data>
+  <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
+    <value>Establecer desplazamiento entre intersecciones</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Mantener pulsada la tecla "Mayús" para alinear carreteras</value>
@@ -324,5 +360,8 @@ Clic para editar</value>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
     <value>No se puede insertar el nodo
 Muy cerca del nodo más cercano</value>
+  </data>
+  <data name="Tool_InfoUnderground" xml:space="preserve">
+    <value>Mantenga Mayús para entrar al modo subterráneo</value>
   </data>
 </root>

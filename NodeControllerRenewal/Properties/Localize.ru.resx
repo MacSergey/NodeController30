@@ -191,6 +191,12 @@
   <data name="Options_All" xml:space="preserve">
     <value>Все</value>
   </data>
+  <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
+    <value>Рассчитать сдвиг между перекрестками</value>
+  </data>
+  <data name="Option_CalculateShiftByNearby" xml:space="preserve">
+    <value>Рассчитать сдвиг по соседним узлам</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Отступ по умолчанию</value>
   </data>
@@ -223,6 +229,9 @@
   </data>
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>
+  </data>
+  <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
+    <value>Задать сдвиг между перекрестками</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Сдвиг</value>
@@ -263,11 +272,38 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Узел #{0}</value>
   </data>
+  <data name="Settings_RenderNearNode" xml:space="preserve">
+    <value>Подсвечивать ближайшие узлы</value>
+  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Выбирать средние узлы</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Если эта опция отключена, средние узлы будет сдвинуты к месту нажатия</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
+    <value>Рассчитать сдвиг между перекрестками</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
+    <value>Рассчитать сдвиг по соседним узлам</value>
+  </data>
+  <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
+    <value>Изменить режим основного направления наклона</value>
+  </data>
+  <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
+    <value>Изменить стиль узла</value>
+  </data>
+  <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
+    <value>Отступ по умолчанию</value>
+  </data>
+  <data name="Setting_ShortcutMakeStraightEnds" xml:space="preserve">
+    <value>Сделать концы прямыми</value>
+  </data>
+  <data name="Setting_ShortcutResetToDefault" xml:space="preserve">
+    <value>Сбросить к по умолчанию</value>
+  </data>
+  <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
+    <value>Задать сдвиг между перекрестками</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Удерживайте Shift чтобы выровнять дороги</value>
@@ -325,5 +361,8 @@
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
     <value>Невозможно вставить узел
 Слишком близко к соседнему углу</value>
+  </data>
+  <data name="Tool_InfoUnderground" xml:space="preserve">
+    <value>Удерживайте Shift для подземного режима</value>
   </data>
 </root>
