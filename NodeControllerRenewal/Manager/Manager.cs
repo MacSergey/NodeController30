@@ -155,6 +155,8 @@ namespace NodeController
         }
         private static void UpdateNow(ushort[] nodeIds, ushort[] segmentIds, bool updateFlags)
         {
+            if (nodeIds.Length == 0)
+                return;
 //#if DEBUG
 //            SingletonMod<Mod>.Logger.Debug($"Update now\nNodes:{string.Join(", ", nodeIds.Select(i => i.ToString()).ToArray())}\nSegments:{string.Join(", ", segmentIds.Select(i => i.ToString()).ToArray())}");
 //#endif

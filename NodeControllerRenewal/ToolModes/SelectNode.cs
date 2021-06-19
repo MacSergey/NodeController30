@@ -43,7 +43,7 @@ namespace NodeController
             return node.m_flags.CheckFlags(0, NetNode.Flags.Middle | NetNode.Flags.Outside) || node.m_flags.CheckFlags(0, NetNode.Flags.Moveable | NetNode.Flags.Outside);
         }
         protected override bool CheckSegment(ushort segmentId) => segmentId.GetSegment().m_flags.CheckFlags(0, NetSegment.Flags.Untouchable) && base.CheckSegment(segmentId);
-        protected override bool CheckItemClass(ItemClass itemClass) => base.CheckItemClass(itemClass) && itemClass switch
+        protected override bool CheckItemClass(ItemClass itemClass) => (itemClass.m_layer == ItemClass.Layer.Default || itemClass.m_layer == ItemClass.Layer.MetroTunnels) && itemClass switch
         {
             { m_service: ItemClass.Service.Road } => true,
             { m_service: ItemClass.Service.PublicTransport } => true,
