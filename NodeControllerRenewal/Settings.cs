@@ -15,6 +15,7 @@ namespace NodeController
     public class Settings : BaseSettings<Mod>
     {
         public static SavedBool SelectMiddleNodes { get; } = new SavedBool(nameof(SelectMiddleNodes), SettingsFile, true, true);
+        public static SavedBool RenderNearNode { get; } = new SavedBool(nameof(RenderNearNode), SettingsFile, true, true);
         public static SavedBool ShowToolTip { get; } = new SavedBool(nameof(ShowToolTip), SettingsFile, true, true);
 
         protected override void FillSettings()
@@ -30,6 +31,7 @@ namespace NodeController
 
             AddCheckBox(generalGroup, Localize.Settings_SelectMiddleNodes, SelectMiddleNodes);
             AddLabel(generalGroup, Localize.Settings_SelectMiddleNodesDiscription, 0.8f, padding: 25);
+            AddCheckBox(generalGroup, Localize.Settings_RenderNearNode, RenderNearNode);
             AddCheckBox(generalGroup, CommonLocalize.Settings_ShowTooltips, ShowToolTip);
 
             AddNotifications(GeneralTab);

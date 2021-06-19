@@ -37,14 +37,10 @@ namespace NodeController
             base.InitProcess();
             NodeControllerPanel.CreatePanel();
         }
-        protected override void OnToolUpdate()
+        protected override void OnReset()
         {
-            if(Data is NodeData data)
-            {
-                Singleton<InfoManager>.instance.SetCurrentMode(data.IsUnderground ? InfoManager.InfoMode.Underground : InfoManager.InfoMode.None, InfoManager.SubInfoMode.Default);
-            }
-
-            base.OnToolUpdate();
+            Data = null;
+            SetInfoMode();
         }
 
         protected override bool CheckInfoMode(InfoManager.InfoMode mode, InfoManager.SubInfoMode subInfo) => (mode == InfoManager.InfoMode.None || mode == InfoManager.InfoMode.Underground) && subInfo == InfoManager.SubInfoMode.Default;
@@ -60,7 +56,10 @@ namespace NodeController
             Data = data;
             Data?.UpdateNode();
             Panel.SetData(Data);
+            SetInfoMode();
         }
+        private void SetInfoMode() => Singleton<InfoManager>.instance.SetCurrentMode(Data?.IsUnderground == true ? InfoManager.InfoMode.Underground : InfoManager.InfoMode.None, InfoManager.SubInfoMode.Default);
+
         public void SetKeepDefaults()
         {
             Data.SetKeepDefaults();

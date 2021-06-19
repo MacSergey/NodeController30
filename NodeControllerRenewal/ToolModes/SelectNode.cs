@@ -28,7 +28,7 @@ namespace NodeController
                     return Localize.Tool_InfoInsertNode;
             }
             else
-                return Localize.Tool_InfoSelectNode;
+                return $"{Localize.Tool_InfoSelectNode}\n{Localize.Tool_InfoUnderground}";
         }
 
         protected override bool IsValidNode(ushort nodeId)
@@ -110,8 +110,20 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
+            var otherOverlay = new OverlayData(cameraInfo) { Color = new Color(1f, 1f, 1f, 0.3f), RenderLimit = Underground };
             if (IsHoverSegment)
             {
+                if (Settings.RenderNearNode)
+                {
+                    var segment = HoverSegment.Id.GetSegment();
+
+                    if (!Underground ^ segment.m_startNode.GetNode().m_flags.IsSet(NetNode.Flags.Underground))
+                        new NodeSelection(segment.m_startNode).Render(otherOverlay);
+
+                    if (!Underground ^ segment.m_endNode.GetNode().m_flags.IsSet(NetNode.Flags.Underground))
+                        new NodeSelection(segment.m_endNode).Render(otherOverlay);
+                }
+
                 SegmentEndData.CalculateSegmentBeziers(HoverSegment.Id, out var bezier, out _, out _);
                 bezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out var position);
                 var direction = bezier.Tangent(t).MakeFlatNormalized();

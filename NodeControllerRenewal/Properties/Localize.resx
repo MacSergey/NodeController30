@@ -263,6 +263,9 @@ Backward compatibility does not provide the transfer of all data, may be require
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Node #{0}</value>
   </data>
+  <data name="Settings_RenderNearNode" xml:space="preserve">
+    <value>Show nearby nodes overlay</value>
+  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Select middle nodes</value>
   </data>
@@ -324,5 +327,8 @@ Click to edit</value>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
     <value>Can't insert node
 Too close to nearby node</value>
+  </data>
+  <data name="Tool_InfoUnderground" xml:space="preserve">
+    <value>Hold Shift to underground mode</value>
   </data>
 </root>

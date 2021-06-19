@@ -443,6 +443,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Show nearby nodes overlay.
+        /// </summary>
+        internal static string Settings_RenderNearNode {
+            get {
+                return ResourceManager.GetString("Settings_RenderNearNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Select middle nodes.
         /// </summary>
         internal static string Settings_SelectMiddleNodes {
@@ -621,6 +630,15 @@ namespace NodeController {
         internal static string Tool_InfoTooCloseNode {
             get {
                 return ResourceManager.GetString("Tool_InfoTooCloseNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hold Shift to underground mode.
+        /// </summary>
+        internal static string Tool_InfoUnderground {
+            get {
+                return ResourceManager.GetString("Tool_InfoUnderground", resourceCulture);
             }
         }
     }
