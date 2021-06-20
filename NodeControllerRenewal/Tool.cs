@@ -5,6 +5,7 @@ using NodeController.UI;
 using NodeController.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace NodeController
@@ -74,6 +75,100 @@ namespace NodeController
         {
             Data.MakeStraightEnds();
             Panel.RefreshPanel();
+        }
+        public void CalculateShiftByNearby()
+        {
+            CalculateShift(1);
+            Panel.RefreshPanel();
+        }
+        public void CalculateShiftByIntersections()
+        {
+            CalculateShift();
+            Panel.RefreshPanel();
+        }
+        public void SetShiftBetweenIntersections()
+        {
+            if (!Data.IsTwoRoads)
+                return;
+
+            if (GetDatas(ushort.MaxValue, out var datas, out var segments))
+            {
+                var shift = -Data.Shift;
+                SetShift(datas, segments, shift, shift, true);
+            }
+
+            Panel.RefreshPanel();
+        }
+
+        private void CalculateShift(ushort maxCount = ushort.MaxValue)
+        {
+            if (!Data.IsTwoRoads)
+                return;
+
+            if (GetDatas(maxCount, out var datas, out var segments))
+            {
+                var startShift = datas.First()[segments.First()].Shift;
+                var endShift = -datas.Last()[segments.Last()].Shift;
+                SetShift(datas, segments, startShift, endShift, false);
+            }
+        }
+        private bool GetDatas(ushort maxCount, out NodeData[] datas, out ushort[] segments)
+        {
+            var nodeIds = new List<ushort>();
+
+            nodeIds.AddRange(Data.Id.NextNodes(Data.MainRoad.First, true, maxCount).Reverse());
+            nodeIds.Add(Data.Id);
+            nodeIds.AddRange(Data.Id.NextNodes(Data.MainRoad.Second, true, maxCount));
+
+            var manager = SingletonManager<Manager>.Instance;
+            datas = nodeIds.Select(i => manager[i, true]).ToArray();
+            segments = new ushort[nodeIds.Count - 1];
+
+            if (datas.Any(d => d == null))
+                return false;
+
+            for (var i = 0; i < datas.Length - 1; i += 1)
+            {
+                var dataA = datas[i];
+                var dataB = datas[i + 1];
+
+                if (dataA.MainRoad.First == dataB.MainRoad.First || dataA.MainRoad.First == dataB.MainRoad.Second)
+                    segments[i] = dataA.MainRoad.First;
+                else if (dataA.MainRoad.Second == dataB.MainRoad.First || dataA.MainRoad.Second == dataB.MainRoad.Second)
+                    segments[i] = dataA.MainRoad.Second;
+                else
+                    return false;
+            }
+
+            return true;
+        }
+        private void SetShift(NodeData[] datas, ushort[] segments, float startShift, float endShift, bool includeEnds)
+        {
+            var lengths = segments.Select(i => new BezierTrajectory(ref i.GetSegment()).Length).ToArray();
+            var fullLength = lengths.Sum();
+            var currentLength = 0f;
+
+            for (var i = 0; i < datas.Length; i += 1)
+            {
+                if (i == 0)
+                {
+                    if (includeEnds)
+                        datas[i][segments[i]].Shift = startShift;
+                }
+                else if (i == datas.Length - 1)
+                {
+                    if (includeEnds)
+                        datas[i][segments[i - 1]].Shift = -endShift;
+                }
+                else
+                {
+                    currentLength += lengths[i - 1];
+                    var shift = Mathf.Lerp(startShift, endShift, currentLength / fullLength);
+                    datas[i][segments[i - 1]].Shift = -shift;
+                    datas[i][segments[i]].Shift = shift;
+                    datas[i].UpdateNode(false);
+                }
+            }
         }
     }
     public abstract class NodeControllerToolMode : BaseToolMode<NodeControllerTool>, IToolMode<ToolModeType>, IToolModePanel

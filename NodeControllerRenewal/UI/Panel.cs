@@ -175,12 +175,17 @@ namespace NodeController.UI
     public class PanelHeaderContent : BasePanelHeaderContent<PanelHeaderButton, AdditionallyHeaderButton>
     {
         private PanelHeaderButton MakeStraight { get; set; }
+        private PanelHeaderButton SetShiftNearby { get; set; }
+        private PanelHeaderButton SetShiftIntersections { get; set; }
 
         protected override void AddButtons()
         {
             AddButton(NodeControllerTextures.KeepDefault, NodeController.Localize.Option_KeepDefault, OnKeepDefault);
             AddButton(NodeControllerTextures.ResetToDefault, NodeController.Localize.Option_ResetToDefault, OnResetToDefault);
             MakeStraight = AddButton(NodeControllerTextures.MakeStraight, NodeController.Localize.Option_MakeStraightEnds, OnMakeStraightClick);
+            SetShiftNearby = AddButton(NodeControllerTextures.SetShiftNearby, "Set shift by nearby", OnCalculateShiftByNearbyClick);
+            SetShiftIntersections = AddButton(NodeControllerTextures.SetShiftIntersections, "Set shift by intersection", OnCalculateShiftByIntersectionsClick);
+            AddButton(string.Empty, "", OnSetShiftBetweenIntersectionsClick);
 
             Refresh();
         }
@@ -188,6 +193,9 @@ namespace NodeController.UI
         private void OnKeepDefault(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.SetKeepDefaults();
         private void OnResetToDefault(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.ResetToDefault();
         private void OnMakeStraightClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds();
+        private void OnCalculateShiftByNearbyClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByNearby();
+        private void OnCalculateShiftByIntersectionsClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByIntersections();
+        private void OnSetShiftBetweenIntersectionsClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.SetShiftBetweenIntersections();
 
         public override void Refresh()
         {
@@ -198,9 +206,18 @@ namespace NodeController.UI
         private void SetMakeStraightEnabled()
         {
             if (SingletonTool<NodeControllerTool>.Instance.Data is NodeData data)
+            {
                 MakeStraight.isVisible = data.Style.SupportOffset.IsSet(SupportOption.Individually);
+                var shiftVisible = data.IsTwoRoads && data.IsSameRoad;
+                SetShiftNearby.isVisible = shiftVisible;
+                SetShiftIntersections.isVisible = shiftVisible;
+            }
             else
+            {
                 MakeStraight.isVisible = false;
+                SetShiftNearby.isVisible = false;
+                SetShiftIntersections.isVisible = false;
+            }
         }
     }
     public class PanelHeaderButton : BasePanelHeaderButton

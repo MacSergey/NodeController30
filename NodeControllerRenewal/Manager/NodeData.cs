@@ -83,6 +83,14 @@ namespace NodeController
         public bool IsEqualWidth => IsTwoRoads && Math.Abs(FirstSegment.Info.m_halfWidth - SecondSegment.Info.m_halfWidth) < 0.001f;
         public bool HasNodeLess => SegmentEndDatas.Any(s => s.IsNodeLess);
         public bool IsUnderground => Id.GetNode().m_flags.IsSet(NetNode.Flags.Underground);
+        public bool IsSameRoad
+        {
+            get
+            {
+                var info = Id.GetNode().Info;
+                return SegmentEndDatas.All(s => s.Id.GetSegment().Info == info);
+            }
+        }
 
         public float Offset
         {
@@ -327,7 +335,7 @@ namespace NodeController
             Position = position;
         }
 
-        public void UpdateNode() => SingletonManager<Manager>.Instance.Update(Id, true);
+        public void UpdateNode(bool now = true) => SingletonManager<Manager>.Instance.Update(Id, now);
         public void SetKeepDefaults()
         {
             foreach (var segmentEnd in SegmentEndDatas)
