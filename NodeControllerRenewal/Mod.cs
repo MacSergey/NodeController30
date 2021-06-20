@@ -108,6 +108,11 @@ namespace NodeController
 
             return success;
         }
+        private static bool MVPatch(ref bool __result)
+        {
+            __result = true;
+            return false;
+        }
 
         private bool AddTool()
         {

@@ -149,6 +149,9 @@ namespace NodeController
 
         public NodeData(ushort nodeId, NodeStyleType? nodeType = null)
         {
+            if (!nodeId.GetNode().m_flags.IsSet(NetNode.Flags.Created))
+                throw new NodeNotCreatedException(nodeId);
+
             Id = nodeId;
 
             UpdateSegmentEnds();
@@ -211,7 +214,7 @@ namespace NodeController
         }
         private void UpdateFlags()
         {
-            ref var node = ref Id.GetNode();
+            var node = Id.GetNode();
 
             if (node.m_flags == NetNode.Flags.None || node.m_flags.IsFlagSet(NetNode.Flags.Outside))
                 return;
@@ -247,7 +250,7 @@ namespace NodeController
         }
         private void UpdateStyle(bool force, NodeStyleType? nodeType = null)
         {
-            ref var node = ref Id.GetNode();
+            var node = Id.GetNode();
             if (node.m_flags.IsSet(NetNode.Flags.Created) && !node.m_flags.IsSet(NetNode.Flags.Deleted) && (node.m_flags & SupportFlags) == 0)
                 node.CalculateNode(Id);
 
@@ -444,30 +447,6 @@ namespace NodeController
                 if (SegmentEnds.TryGetValue(id, out var segmentEnd))
                     segmentEnd.FromXml(segmentEndConfig, Style);
             }
-        }
-
-        public static bool FromXml(XElement config, NetObjectsMap map, out NodeData data)
-        {
-            var id = config.GetAttrValue(nameof(Id), (ushort)0);
-
-            if (map.TryGetNode(id, out var targetId))
-                id = targetId;
-
-            var type = (NodeStyleType)config.GetAttrValue("T", (int)NodeStyleType.Custom);
-
-            if (id != 0 && id <= NetManager.MAX_NODE_COUNT)
-            {
-                try
-                {
-                    data = new NodeData(id, type);
-                    data.FromXml(config, map);
-                    return true;
-                }
-                catch { }
-            }
-
-            data = null;
-            return false;
         }
 
         #endregion

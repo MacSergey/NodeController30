@@ -58,13 +58,17 @@ namespace NodeController
                 Update(nodeId, options);
                 return data;
             }
-            catch (NotImplementedException)
+            catch (NodeNotCreatedException)
+            {
+                return null;
+            }
+            catch (NodeStyleNotImplementedException)
             {
                 return null;
             }
             catch (Exception error)
             {
-                SingletonMod<Mod>.Logger.Error(error);
+                SingletonMod<Mod>.Logger.Error($"Cant create Node data #{nodeId}", error);
                 return null;
             }
         }
@@ -157,9 +161,9 @@ namespace NodeController
         {
             if (nodeIds.Length == 0)
                 return;
-//#if DEBUG
-//            SingletonMod<Mod>.Logger.Debug($"Update now\nNodes:{string.Join(", ", nodeIds.Select(i => i.ToString()).ToArray())}\nSegments:{string.Join(", ", segmentIds.Select(i => i.ToString()).ToArray())}");
-//#endif
+#if DEBUG
+            SingletonMod<Mod>.Logger.Debug($"Update now\nNodes:{string.Join(", ", nodeIds.Select(i => i.ToString()).ToArray())}\nSegments:{string.Join(", ", segmentIds.Select(i => i.ToString()).ToArray())}");
+#endif
             var manager = SingletonManager<Manager>.Instance;
 
             foreach (var nodeId in nodeIds)
@@ -198,8 +202,33 @@ namespace NodeController
         {
             foreach (var nodeConfig in config.Elements(NodeData.XmlName))
             {
-                if (NodeData.FromXml(nodeConfig, map, out NodeData data))
-                    Buffer[data.Id] = data;
+                var id = nodeConfig.GetAttrValue(nameof(NodeData.Id), (ushort)0);
+
+                if (map.TryGetNode(id, out var targetId))
+                    id = targetId;
+
+                if (id != 0 && id <= NetManager.MAX_NODE_COUNT)
+                {
+                    try
+                    {
+                        var type = (NodeStyleType)nodeConfig.GetAttrValue("T", (int)NodeStyleType.Custom);
+                        var data = new NodeData(id, type);
+                        data.FromXml(nodeConfig, map);
+                        Buffer[data.Id] = data;
+                    }
+                    catch (NodeNotCreatedException error)
+                    {
+                        SingletonMod<Mod>.Logger.Error($"Can't load Node data #{id}: {error.Message}");
+                    }
+                    catch (NodeStyleNotImplementedException error)
+                    {
+                        SingletonMod<Mod>.Logger.Error($"Can't load Node data #{id}: {error.Message}");
+                    }
+                    catch (Exception error)
+                    {
+                        SingletonMod<Mod>.Logger.Error($"Can't load Node data #{id}", error);
+                    }
+                }
             }
         }
 
@@ -229,6 +258,27 @@ namespace NodeController
             UpdateAll = UpdateNow | UpdateLater,
 
             Default = CreateThis | CreateNearby | UpdateThis | UpdateNearbyLater,
+        }
+    }
+
+    public class NodeNotCreatedException : Exception
+    {
+        public ushort Id { get; }
+
+        public NodeNotCreatedException(ushort id) : base($"Node #{id} not created")
+        {
+            Id = id;
+        }
+    }
+    public class NodeStyleNotImplementedException : NotImplementedException
+    {
+        public ushort Id { get; }
+        public NetNode.Flags Flags { get; }
+
+        public NodeStyleNotImplementedException(ushort id, NetNode.Flags flags) : base($"Node #{id} style {flags} not implemented")
+        {
+            Id = id;
+            Flags = flags;
         }
     }
 }

@@ -16,9 +16,10 @@ namespace NodeController.Patches
         {
             if (SingletonManager<Manager>.Instance[nodeID] is NodeData data)
             {
-//#if DEBUG
-//                SingletonMod<Mod>.Logger.Debug($"Update node #{nodeID}, position {nodeID.GetNode().m_position}");
-//#endif
+#if DEBUG
+                var node = nodeID.GetNode();
+                SingletonMod<Mod>.Logger.Debug($"Update node #{nodeID}, position {node.m_position}, flags {node.m_flags}");
+#endif
                 data.UpdateSegmentEnds();
             }
         }
