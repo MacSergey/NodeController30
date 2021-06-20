@@ -214,7 +214,7 @@ namespace NodeController
         }
         private void UpdateFlags()
         {
-            var node = Id.GetNode();
+            ref var node = ref Id.GetNode();
 
             if (node.m_flags == NetNode.Flags.None || node.m_flags.IsFlagSet(NetNode.Flags.Outside))
                 return;
@@ -250,7 +250,7 @@ namespace NodeController
         }
         private void UpdateStyle(bool force, NodeStyleType? nodeType = null)
         {
-            var node = Id.GetNode();
+            ref var node = ref Id.GetNode();
             if (node.m_flags.IsSet(NetNode.Flags.Created) && !node.m_flags.IsSet(NetNode.Flags.Deleted) && (node.m_flags & SupportFlags) == 0)
                 node.CalculateNode(Id);
 
