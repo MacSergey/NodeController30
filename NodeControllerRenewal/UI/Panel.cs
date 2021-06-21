@@ -168,30 +168,30 @@ namespace NodeController.UI
                 property.Refresh();
         }
     }
-    public class PanelHeader : HeaderMoveablePanel<BaseHeaderContent>
+    public class PanelHeader : HeaderMoveablePanel<PanelHeaderContent>
     {
         protected override float DefaultHeight => 40f;
 
-        private HeaderButtonInfo<BasePanelHeaderButton> MakeStraight { get; set; }
-        private HeaderButtonInfo<BasePanelHeaderButton> CalculateShiftNearby { get; set; }
-        private HeaderButtonInfo<BasePanelHeaderButton> CalculateShiftIntersections { get; set; }
-        private HeaderButtonInfo<BasePanelHeaderButton> SetShiftIntersections { get; set; }
+        private HeaderButtonInfo<HeaderButton> MakeStraight { get; set; }
+        private HeaderButtonInfo<HeaderButton> CalculateShiftNearby { get; set; }
+        private HeaderButtonInfo<HeaderButton> CalculateShiftIntersections { get; set; }
+        private HeaderButtonInfo<HeaderButton> SetShiftIntersections { get; set; }
 
         public PanelHeader()
         {
-            Content.AddButton(new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.KeepDefault, NodeController.Localize.Option_KeepDefault, OnKeepDefault));
-            Content.AddButton(new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.ResetToDefault, NodeController.Localize.Option_ResetToDefault, OnResetToDefault));
+            Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.KeepDefault, NodeController.Localize.Option_KeepDefault, OnKeepDefault));
+            Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.ResetToDefault, NodeController.Localize.Option_ResetToDefault, OnResetToDefault));
 
-            MakeStraight = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.MakeStraight, NodeController.Localize.Option_MakeStraightEnds, OnMakeStraightClick);
+            MakeStraight = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.MakeStraight, NodeController.Localize.Option_MakeStraightEnds, OnMakeStraightClick);
             Content.AddButton(MakeStraight);
 
-            CalculateShiftNearby = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftNearby, NodeController.Localize.Option_CalculateShiftByNearby, OnCalculateShiftByNearbyClick);
+            CalculateShiftNearby = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftNearby, NodeController.Localize.Option_CalculateShiftByNearby, OnCalculateShiftByNearbyClick);
             Content.AddButton(CalculateShiftNearby);
 
-            CalculateShiftIntersections = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftIntersections, NodeController.Localize.Option_CalculateShiftByIntersections, OnCalculateShiftByIntersectionsClick);
+            CalculateShiftIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftIntersections, NodeController.Localize.Option_CalculateShiftByIntersections, OnCalculateShiftByIntersectionsClick);
             Content.AddButton(CalculateShiftIntersections);
 
-            SetShiftIntersections = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.SetShiftBetweenIntersections, NodeController.Localize.SetShiftBetweenIntersections, OnSetShiftBetweenIntersectionsClick);
+            SetShiftIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.SetShiftBetweenIntersections, NodeController.Localize.SetShiftBetweenIntersections, OnSetShiftBetweenIntersectionsClick);
             Content.AddButton(SetShiftIntersections);
         }
 
