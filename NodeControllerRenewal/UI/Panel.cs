@@ -172,30 +172,37 @@ namespace NodeController.UI
     {
         protected override float DefaultHeight => 40f;
     }
-    public class PanelHeaderContent : BasePanelHeaderContent<PanelHeaderButton, AdditionallyHeaderButton>
+    public class PanelHeaderContent : BaseHeaderContent
     {
-        private PanelHeaderButton MakeStraight { get; set; }
-        private PanelHeaderButton SetShiftNearby { get; set; }
-        private PanelHeaderButton SetShiftIntersections { get; set; }
+        private HeaderButtonInfo<BasePanelHeaderButton> MakeStraight { get; set; }
+        private HeaderButtonInfo<BasePanelHeaderButton> CalculateShiftNearby { get; set; }
+        private HeaderButtonInfo<BasePanelHeaderButton> CalculateShiftIntersections { get; set; }
+        private HeaderButtonInfo<BasePanelHeaderButton> SetShiftIntersections { get; set; }
 
-        protected override void AddButtons()
+        protected override IEnumerable<IHeaderButtonInfo> GetInfos()
         {
-            AddButton(NodeControllerTextures.KeepDefault, NodeController.Localize.Option_KeepDefault, OnKeepDefault);
-            AddButton(NodeControllerTextures.ResetToDefault, NodeController.Localize.Option_ResetToDefault, OnResetToDefault);
-            MakeStraight = AddButton(NodeControllerTextures.MakeStraight, NodeController.Localize.Option_MakeStraightEnds, OnMakeStraightClick);
-            SetShiftNearby = AddButton(NodeControllerTextures.SetShiftNearby, "Set shift by nearby", OnCalculateShiftByNearbyClick);
-            SetShiftIntersections = AddButton(NodeControllerTextures.SetShiftIntersections, "Set shift by intersection", OnCalculateShiftByIntersectionsClick);
-            AddButton(string.Empty, "", OnSetShiftBetweenIntersectionsClick);
+            yield return new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.KeepDefault, NodeController.Localize.Option_KeepDefault, OnKeepDefault);
+            yield return new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.ResetToDefault, NodeController.Localize.Option_ResetToDefault, OnResetToDefault);
 
-            Refresh();
+            MakeStraight = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.MakeStraight, NodeController.Localize.Option_MakeStraightEnds, OnMakeStraightClick);
+            yield return MakeStraight;
+
+            CalculateShiftNearby = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftNearby, "Calculate shift by nearby", OnCalculateShiftByNearbyClick);
+            yield return CalculateShiftNearby;
+
+            CalculateShiftIntersections = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftIntersections, "Calculate shift by intersections", OnCalculateShiftByIntersectionsClick);
+            yield return CalculateShiftIntersections;
+
+            SetShiftIntersections = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, string.Empty, "Set shift between intersections", OnSetShiftBetweenIntersectionsClick);
+            yield return SetShiftIntersections;
         }
 
-        private void OnKeepDefault(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.SetKeepDefaults();
-        private void OnResetToDefault(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.ResetToDefault();
-        private void OnMakeStraightClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds();
-        private void OnCalculateShiftByNearbyClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByNearby();
-        private void OnCalculateShiftByIntersectionsClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByIntersections();
-        private void OnSetShiftBetweenIntersectionsClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.SetShiftBetweenIntersections();
+        private void OnKeepDefault() => SingletonTool<NodeControllerTool>.Instance.SetKeepDefaults();
+        private void OnResetToDefault() => SingletonTool<NodeControllerTool>.Instance.ResetToDefault();
+        private void OnMakeStraightClick() => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds();
+        private void OnCalculateShiftByNearbyClick() => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByNearby();
+        private void OnCalculateShiftByIntersectionsClick() => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByIntersections();
+        private void OnSetShiftBetweenIntersectionsClick() => SingletonTool<NodeControllerTool>.Instance.SetShiftBetweenIntersections();
 
         public override void Refresh()
         {
@@ -207,25 +214,19 @@ namespace NodeController.UI
         {
             if (SingletonTool<NodeControllerTool>.Instance.Data is NodeData data)
             {
-                MakeStraight.isVisible = data.Style.SupportOffset.IsSet(SupportOption.Individually);
+                MakeStraight.Visible = data.Style.SupportOffset.IsSet(SupportOption.Individually);
                 var shiftVisible = data.IsTwoRoads && data.IsSameRoad;
-                SetShiftNearby.isVisible = shiftVisible;
-                SetShiftIntersections.isVisible = shiftVisible;
+                CalculateShiftNearby.Visible = shiftVisible;
+                CalculateShiftIntersections.Visible = shiftVisible;
+                SetShiftIntersections.Visible = shiftVisible;
             }
             else
             {
-                MakeStraight.isVisible = false;
-                SetShiftNearby.isVisible = false;
-                SetShiftIntersections.isVisible = false;
+                MakeStraight.Visible = false;
+                CalculateShiftNearby.Visible = false;
+                CalculateShiftIntersections.Visible = false;
+                SetShiftIntersections.Visible = false;
             }
         }
-    }
-    public class PanelHeaderButton : BasePanelHeaderButton
-    {
-        protected override UITextureAtlas IconAtlas => NodeControllerTextures.Atlas;
-    }
-    public class AdditionallyHeaderButton : BaseAdditionallyHeaderButton
-    {
-        protected override UITextureAtlas IconAtlas => NodeControllerTextures.Atlas;
     }
 }
