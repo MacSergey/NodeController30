@@ -23,6 +23,7 @@ namespace NodeController.Utilities
         public static string MakeStraight => nameof(MakeStraight);
         public static string CalculateShiftNearby => nameof(CalculateShiftNearby);
         public static string CalculateShiftIntersections => nameof(CalculateShiftIntersections);
+        public static string SetShiftBetweenIntersections => nameof(SetShiftBetweenIntersections);
 
         private static Dictionary<string, TextureHelper.SpriteParamsGetter> Files { get; } = new Dictionary<string, TextureHelper.SpriteParamsGetter>
         {
@@ -37,6 +38,6 @@ namespace NodeController.Utilities
 
         private static UITextureAtlas.SpriteInfo[] Button(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 31, 31, ButtonNormal, ButtonActive, ButtonHover, Icon, IconActive, IconHover).ToArray();
 
-        private static UITextureAtlas.SpriteInfo[] HeaderButtons(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 25, 25, new RectOffset(4, 4, 4, 4), 2, KeepDefault, MakeStraight, ResetToDefault, CalculateShiftNearby, CalculateShiftIntersections).ToArray();
+        private static UITextureAtlas.SpriteInfo[] HeaderButtons(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 25, 25, new RectOffset(4, 4, 4, 4), 2, KeepDefault, MakeStraight, ResetToDefault, CalculateShiftNearby, CalculateShiftIntersections, SetShiftBetweenIntersections).ToArray();
     }
 }

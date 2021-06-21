@@ -168,49 +168,34 @@ namespace NodeController.UI
                 property.Refresh();
         }
     }
-    public class PanelHeader : HeaderMoveablePanel<PanelHeaderContent>
+    public class PanelHeader : HeaderMoveablePanel<BaseHeaderContent>
     {
         protected override float DefaultHeight => 40f;
-    }
-    public class PanelHeaderContent : BaseHeaderContent
-    {
+
         private HeaderButtonInfo<BasePanelHeaderButton> MakeStraight { get; set; }
         private HeaderButtonInfo<BasePanelHeaderButton> CalculateShiftNearby { get; set; }
         private HeaderButtonInfo<BasePanelHeaderButton> CalculateShiftIntersections { get; set; }
         private HeaderButtonInfo<BasePanelHeaderButton> SetShiftIntersections { get; set; }
 
-        protected override IEnumerable<IHeaderButtonInfo> GetInfos()
+        public PanelHeader()
         {
-            yield return new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.KeepDefault, NodeController.Localize.Option_KeepDefault, OnKeepDefault);
-            yield return new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.ResetToDefault, NodeController.Localize.Option_ResetToDefault, OnResetToDefault);
+            Content.AddButton(new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.KeepDefault, NodeController.Localize.Option_KeepDefault, OnKeepDefault));
+            Content.AddButton(new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.ResetToDefault, NodeController.Localize.Option_ResetToDefault, OnResetToDefault));
 
             MakeStraight = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.MakeStraight, NodeController.Localize.Option_MakeStraightEnds, OnMakeStraightClick);
-            yield return MakeStraight;
+            Content.AddButton(MakeStraight);
 
-            CalculateShiftNearby = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftNearby, "Calculate shift by nearby", OnCalculateShiftByNearbyClick);
-            yield return CalculateShiftNearby;
+            CalculateShiftNearby = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftNearby, NodeController.Localize.Option_CalculateShiftByNearby, OnCalculateShiftByNearbyClick);
+            Content.AddButton(CalculateShiftNearby);
 
-            CalculateShiftIntersections = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftIntersections, "Calculate shift by intersections", OnCalculateShiftByIntersectionsClick);
-            yield return CalculateShiftIntersections;
+            CalculateShiftIntersections = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftIntersections, NodeController.Localize.Option_CalculateShiftByIntersections, OnCalculateShiftByIntersectionsClick);
+            Content.AddButton(CalculateShiftIntersections);
 
-            SetShiftIntersections = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, string.Empty, "Set shift between intersections", OnSetShiftBetweenIntersectionsClick);
-            yield return SetShiftIntersections;
+            SetShiftIntersections = new HeaderButtonInfo<BasePanelHeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.SetShiftBetweenIntersections, NodeController.Localize.SetShiftBetweenIntersections, OnSetShiftBetweenIntersectionsClick);
+            Content.AddButton(SetShiftIntersections);
         }
-
-        private void OnKeepDefault() => SingletonTool<NodeControllerTool>.Instance.SetKeepDefaults();
-        private void OnResetToDefault() => SingletonTool<NodeControllerTool>.Instance.ResetToDefault();
-        private void OnMakeStraightClick() => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds();
-        private void OnCalculateShiftByNearbyClick() => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByNearby();
-        private void OnCalculateShiftByIntersectionsClick() => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByIntersections();
-        private void OnSetShiftBetweenIntersectionsClick() => SingletonTool<NodeControllerTool>.Instance.SetShiftBetweenIntersections();
 
         public override void Refresh()
-        {
-            SetMakeStraightEnabled();
-            base.Refresh();
-        }
-
-        private void SetMakeStraightEnabled()
         {
             if (SingletonTool<NodeControllerTool>.Instance.Data is NodeData data)
             {
@@ -227,6 +212,15 @@ namespace NodeController.UI
                 CalculateShiftIntersections.Visible = false;
                 SetShiftIntersections.Visible = false;
             }
+
+            base.Refresh();
         }
+
+        private void OnKeepDefault() => SingletonTool<NodeControllerTool>.Instance.SetKeepDefaults();
+        private void OnResetToDefault() => SingletonTool<NodeControllerTool>.Instance.ResetToDefault();
+        private void OnMakeStraightClick() => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds();
+        private void OnCalculateShiftByNearbyClick() => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByNearby();
+        private void OnCalculateShiftByIntersectionsClick() => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByIntersections();
+        private void OnSetShiftBetweenIntersectionsClick() => SingletonTool<NodeControllerTool>.Instance.SetShiftBetweenIntersections();
     }
 }

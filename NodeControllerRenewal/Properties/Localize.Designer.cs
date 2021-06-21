@@ -218,6 +218,24 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Calculate shift by intersections.
+        /// </summary>
+        internal static string Option_CalculateShiftByIntersections {
+            get {
+                return ResourceManager.GetString("Option_CalculateShiftByIntersections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Calculate shift by nearby nodes.
+        /// </summary>
+        internal static string Option_CalculateShiftByNearby {
+            get {
+                return ResourceManager.GetString("Option_CalculateShiftByNearby", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Reset offset.
         /// </summary>
         internal static string Option_KeepDefault {
@@ -439,6 +457,15 @@ namespace NodeController {
         internal static string Panel_NodeId {
             get {
                 return ResourceManager.GetString("Panel_NodeId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Set shift between intersections.
+        /// </summary>
+        internal static string SetShiftBetweenIntersections {
+            get {
+                return ResourceManager.GetString("SetShiftBetweenIntersections", resourceCulture);
             }
         }
         
