@@ -179,19 +179,19 @@ namespace NodeController.UI
 
         public PanelHeader()
         {
-            Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.KeepDefault, NodeController.Localize.Option_KeepDefault, OnKeepDefault));
-            Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.ResetToDefault, NodeController.Localize.Option_ResetToDefault, OnResetToDefault));
+            Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.KeepDefault, NodeController.Localize.Option_KeepDefault, NodeControllerTool.ResetOffsetShortcut));
+            Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.ResetToDefault, NodeController.Localize.Option_ResetToDefault, NodeControllerTool.ResetToDefaultShortcut));
 
-            MakeStraight = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.MakeStraight, NodeController.Localize.Option_MakeStraightEnds, OnMakeStraightClick);
+            MakeStraight = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.MakeStraight, NodeController.Localize.Option_MakeStraightEnds, NodeControllerTool.MakeStraightEndsShortcut);
             Content.AddButton(MakeStraight);
 
-            CalculateShiftNearby = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftNearby, NodeController.Localize.Option_CalculateShiftByNearby, OnCalculateShiftByNearbyClick);
+            CalculateShiftNearby = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftNearby, NodeController.Localize.Option_CalculateShiftByNearby, NodeControllerTool.CalculateShiftByNearbyShortcut);
             Content.AddButton(CalculateShiftNearby);
 
-            CalculateShiftIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftIntersections, NodeController.Localize.Option_CalculateShiftByIntersections, OnCalculateShiftByIntersectionsClick);
+            CalculateShiftIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftIntersections, NodeController.Localize.Option_CalculateShiftByIntersections, NodeControllerTool.CalculateShiftByIntersectionsShortcut);
             Content.AddButton(CalculateShiftIntersections);
 
-            SetShiftIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.SetShiftBetweenIntersections, NodeController.Localize.SetShiftBetweenIntersections, OnSetShiftBetweenIntersectionsClick);
+            SetShiftIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.SetShiftBetweenIntersections, NodeController.Localize.Option_SetShiftBetweenIntersections, NodeControllerTool.SetShiftBetweenIntersectionsShortcut);
             Content.AddButton(SetShiftIntersections);
         }
 
@@ -215,12 +215,5 @@ namespace NodeController.UI
 
             base.Refresh();
         }
-
-        private void OnKeepDefault() => SingletonTool<NodeControllerTool>.Instance.SetKeepDefaults();
-        private void OnResetToDefault() => SingletonTool<NodeControllerTool>.Instance.ResetToDefault();
-        private void OnMakeStraightClick() => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds();
-        private void OnCalculateShiftByNearbyClick() => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByNearby();
-        private void OnCalculateShiftByIntersectionsClick() => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByIntersections();
-        private void OnSetShiftBetweenIntersectionsClick() => SingletonTool<NodeControllerTool>.Instance.SetShiftBetweenIntersections();
     }
 }

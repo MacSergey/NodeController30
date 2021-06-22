@@ -198,7 +198,7 @@ namespace NodeController
 
             return config;
         }
-        public void FromXml(XElement config, NetObjectsMap map)
+        public void FromXml(XElement config, NetObjectsMap map, bool update = false)
         {
             foreach (var nodeConfig in config.Elements(NodeData.XmlName))
             {
@@ -215,6 +215,9 @@ namespace NodeController
                         var data = new NodeData(id, type);
                         data.FromXml(nodeConfig, map);
                         Buffer[data.Id] = data;
+
+                        if (update)
+                            NetManager.instance.UpdateNode(data.Id);
                     }
                     catch (NodeNotCreatedException error)
                     {

@@ -24,11 +24,15 @@ namespace NodeController
 
             AddLanguage(GeneralTab);
 
-            var generalGroup = GeneralTab.AddGroup(CommonLocalize.Settings_General);
 
-            var keymappings = AddKeyMappingPanel(generalGroup);
+            var keymappingsGroup = GeneralTab.AddGroup(CommonLocalize.Settings_Shortcuts);
+            var keymappings = AddKeyMappingPanel(keymappingsGroup);
             keymappings.AddKeymapping(NodeControllerTool.ActivationShortcut);
+            foreach (var shortcut in NodeControllerTool.ToolShortcuts)
+                keymappings.AddKeymapping(shortcut);
 
+
+            var generalGroup = GeneralTab.AddGroup(CommonLocalize.Settings_General);
             AddCheckBox(generalGroup, Localize.Settings_SelectMiddleNodes, SelectMiddleNodes);
             AddLabel(generalGroup, Localize.Settings_SelectMiddleNodesDiscription, 0.8f, padding: 25);
             AddCheckBox(generalGroup, Localize.Settings_RenderNearNode, RenderNearNode);

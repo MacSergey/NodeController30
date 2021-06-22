@@ -14,6 +14,31 @@ namespace NodeController
     {
         public static NodeControllerShortcut ActivationShortcut { get; } = new NodeControllerShortcut(nameof(ActivationShortcut), nameof(CommonLocalize.Settings_ShortcutActivateTool), SavedInputKey.Encode(KeyCode.N, true, false, false));
 
+        public static NodeControllerShortcut ResetOffsetShortcut { get; } = new NodeControllerShortcut(nameof(ResetOffsetShortcut), nameof(Localize.Setting_ShortcutResetToDefault), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.SetKeepDefaults());
+        public static NodeControllerShortcut ResetToDefaultShortcut { get; } = new NodeControllerShortcut(nameof(ResetToDefaultShortcut), nameof(Localize.Setting_ShortcutKeepDefault), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ResetToDefault());
+        public static NodeControllerShortcut MakeStraightEndsShortcut { get; } = new NodeControllerShortcut(nameof(MakeStraightEndsShortcut), nameof(Localize.Setting_ShortcutMakeStraightEnds), SavedInputKey.Encode(KeyCode.S, true, true, false), () => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds());
+        public static NodeControllerShortcut CalculateShiftByNearbyShortcut { get; } = new NodeControllerShortcut(nameof(CalculateShiftByNearbyShortcut), nameof(Localize.Setting_ShortcutCalculateShiftByNearby), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByNearby());
+        public static NodeControllerShortcut CalculateShiftByIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(CalculateShiftByIntersectionsShortcut), nameof(Localize.Setting_ShortcutCalculateShiftByIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByIntersections());
+        public static NodeControllerShortcut SetShiftBetweenIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(SetShiftBetweenIntersectionsShortcut), nameof(Localize.Setting_ShortcutSetShiftBetweenIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.SetShiftBetweenIntersections());
+        public static NodeControllerShortcut ChangeNodeStyleShortcut { get; } = new NodeControllerShortcut(nameof(ChangeNodeStyleShortcut), nameof(Localize.Setting_ShortcutChangeNodeStyle), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeNodeStyle());
+        public static NodeControllerShortcut ChangeMainRoadModeShortcut { get; } = new NodeControllerShortcut(nameof(ChangeMainRoadModeShortcut), nameof(Localize.Setting_ShortcutChangeMainRoadMode), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeMainRoadMode());
+
+        public static IEnumerable<Shortcut> ToolShortcuts
+        {
+            get
+            {
+                yield return ResetOffsetShortcut;
+                yield return ResetToDefaultShortcut;
+                yield return MakeStraightEndsShortcut;
+                yield return CalculateShiftByNearbyShortcut;
+                yield return CalculateShiftByIntersectionsShortcut;
+                yield return SetShiftBetweenIntersectionsShortcut;
+                yield return ChangeNodeStyleShortcut;
+                yield return ChangeMainRoadModeShortcut;
+            }
+        }
+        public override IEnumerable<Shortcut> Shortcuts => ToolShortcuts;
+
         protected override bool ShowToolTip => (Settings.ShowToolTip || Mode.Type == ToolModeType.Select) && !Panel.IsHover;
         protected override IToolMode DefaultMode => ToolModes[ToolModeType.Select];
         public override Shortcut Activation => ActivationShortcut;
@@ -98,6 +123,24 @@ namespace NodeController
             }
 
             Panel.RefreshPanel();
+        }
+        public void ChangeNodeStyle()
+        {
+            if(Data.Style.SupportSlopeJunction != SupportOption.None)
+            {
+                Data.IsSlopeJunctions = !Data.IsSlopeJunctions;
+                Data.UpdateNode(false);
+                Panel.SetPanel();
+            }
+        }
+        public void ChangeMainRoadMode()
+        {
+            if (Data.IsJunction && Data.Style.SupportSlopeJunction != SupportOption.None)
+            {
+                Data.MainRoad.Auto = !Data.MainRoad.Auto;
+                Data.UpdateNode(false);
+                Panel.SetPanel();
+            }
         }
 
         private void CalculateShift(ushort maxCount = ushort.MaxValue)
@@ -188,9 +231,9 @@ namespace NodeController
         ChangeMain = 32,
         Aling = 64,
     }
-    public class NodeControllerShortcut : ModShortcut<Mod>
+    public class NodeControllerShortcut : ToolShortcut<Mod, NodeControllerTool, ToolModeType>
     {
-        public NodeControllerShortcut(string name, string labelKey, InputKey key, Action action = null) : base(name, labelKey, key, action) { }
+        public NodeControllerShortcut(string name, string labelKey, InputKey key, Action action = null, ToolModeType modeType = ToolModeType.Edit) : base(name, labelKey, key, action, modeType) { }
     }
     public class NodeControllerToolThreadingExtension : BaseThreadingExtension<NodeControllerTool> { }
     public class NodeControllerToolLoadingExtension : BaseToolLoadingExtension<NodeControllerTool> { }
