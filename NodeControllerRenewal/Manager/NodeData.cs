@@ -82,6 +82,15 @@ namespace NodeController
         public bool Is180 => IsTwoRoads && MainDot > 0.995f;
         public bool IsEqualWidth => IsTwoRoads && Math.Abs(FirstSegment.Info.m_halfWidth - SecondSegment.Info.m_halfWidth) < 0.001f;
         public bool HasNodeLess => SegmentEndDatas.Any(s => s.IsNodeLess);
+        public bool IsUnderground => Id.GetNode().m_flags.IsSet(NetNode.Flags.Underground);
+        public bool IsSameRoad
+        {
+            get
+            {
+                var info = Id.GetNode().Info;
+                return SegmentEndDatas.All(s => s.Id.GetSegment().Info == info);
+            }
+        }
 
         public float Offset
         {
@@ -148,6 +157,9 @@ namespace NodeController
 
         public NodeData(ushort nodeId, NodeStyleType? nodeType = null)
         {
+            if (!nodeId.GetNode().m_flags.IsSet(NetNode.Flags.Created))
+                throw new NodeNotCreatedException(nodeId);
+
             Id = nodeId;
 
             UpdateSegmentEnds();
@@ -323,7 +335,7 @@ namespace NodeController
             Position = position;
         }
 
-        public void UpdateNode() => SingletonManager<Manager>.Instance.Update(Id, true);
+        public void UpdateNode(bool now = true) => SingletonManager<Manager>.Instance.Update(Id, now);
         public void SetKeepDefaults()
         {
             foreach (var segmentEnd in SegmentEndDatas)
@@ -443,30 +455,6 @@ namespace NodeController
                 if (SegmentEnds.TryGetValue(id, out var segmentEnd))
                     segmentEnd.FromXml(segmentEndConfig, Style);
             }
-        }
-
-        public static bool FromXml(XElement config, NetObjectsMap map, out NodeData data)
-        {
-            var id = config.GetAttrValue(nameof(Id), (ushort)0);
-
-            if (map.TryGetNode(id, out var targetId))
-                id = targetId;
-
-            var type = (NodeStyleType)config.GetAttrValue("T", (int)NodeStyleType.Custom);
-
-            if (id != 0 && id <= NetManager.MAX_NODE_COUNT)
-            {
-                try
-                {
-                    data = new NodeData(id, type);
-                    data.FromXml(config, map);
-                    return true;
-                }
-                catch { }
-            }
-
-            data = null;
-            return false;
         }
 
         #endregion

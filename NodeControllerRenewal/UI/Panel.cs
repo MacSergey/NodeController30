@@ -171,44 +171,49 @@ namespace NodeController.UI
     public class PanelHeader : HeaderMoveablePanel<PanelHeaderContent>
     {
         protected override float DefaultHeight => 40f;
-    }
-    public class PanelHeaderContent : BasePanelHeaderContent<PanelHeaderButton, AdditionallyHeaderButton>
-    {
-        private PanelHeaderButton MakeStraight { get; set; }
 
-        protected override void AddButtons()
+        private HeaderButtonInfo<HeaderButton> MakeStraight { get; set; }
+        private HeaderButtonInfo<HeaderButton> CalculateShiftNearby { get; set; }
+        private HeaderButtonInfo<HeaderButton> CalculateShiftIntersections { get; set; }
+        private HeaderButtonInfo<HeaderButton> SetShiftIntersections { get; set; }
+
+        public PanelHeader()
         {
-            AddButton(NodeControllerTextures.KeepDefault, NodeController.Localize.Option_KeepDefault, OnKeepDefault);
-            AddButton(NodeControllerTextures.ResetToDefault, NodeController.Localize.Option_ResetToDefault, OnResetToDefault);
-            MakeStraight = AddButton(NodeControllerTextures.MakeStraight, NodeController.Localize.Option_MakeStraightEnds, OnMakeStraightClick);
+            Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.KeepDefault, NodeController.Localize.Option_KeepDefault, NodeControllerTool.ResetOffsetShortcut));
+            Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.ResetToDefault, NodeController.Localize.Option_ResetToDefault, NodeControllerTool.ResetToDefaultShortcut));
 
-            Refresh();
+            MakeStraight = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.MakeStraight, NodeController.Localize.Option_MakeStraightEnds, NodeControllerTool.MakeStraightEndsShortcut);
+            Content.AddButton(MakeStraight);
+
+            CalculateShiftNearby = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftNearby, NodeController.Localize.Option_CalculateShiftByNearby, NodeControllerTool.CalculateShiftByNearbyShortcut);
+            Content.AddButton(CalculateShiftNearby);
+
+            CalculateShiftIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftIntersections, NodeController.Localize.Option_CalculateShiftByIntersections, NodeControllerTool.CalculateShiftByIntersectionsShortcut);
+            Content.AddButton(CalculateShiftIntersections);
+
+            SetShiftIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.SetShiftBetweenIntersections, NodeController.Localize.Option_SetShiftBetweenIntersections, NodeControllerTool.SetShiftBetweenIntersectionsShortcut);
+            Content.AddButton(SetShiftIntersections);
         }
-
-        private void OnKeepDefault(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.SetKeepDefaults();
-        private void OnResetToDefault(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.ResetToDefault();
-        private void OnMakeStraightClick(UIComponent component, UIMouseEventParameter eventParam) => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds();
 
         public override void Refresh()
         {
-            SetMakeStraightEnabled();
+            if (SingletonTool<NodeControllerTool>.Instance.Data is NodeData data)
+            {
+                MakeStraight.Visible = data.Style.SupportOffset.IsSet(SupportOption.Individually);
+                var shiftVisible = data.IsTwoRoads && data.IsSameRoad;
+                CalculateShiftNearby.Visible = shiftVisible;
+                CalculateShiftIntersections.Visible = shiftVisible;
+                SetShiftIntersections.Visible = shiftVisible;
+            }
+            else
+            {
+                MakeStraight.Visible = false;
+                CalculateShiftNearby.Visible = false;
+                CalculateShiftIntersections.Visible = false;
+                SetShiftIntersections.Visible = false;
+            }
+
             base.Refresh();
         }
-
-        private void SetMakeStraightEnabled()
-        {
-            if (SingletonTool<NodeControllerTool>.Instance.Data is NodeData data)
-                MakeStraight.isVisible = data.Style.SupportOffset.IsSet(SupportOption.Individually);
-            else
-                MakeStraight.isVisible = false;
-        }
-    }
-    public class PanelHeaderButton : BasePanelHeaderButton
-    {
-        protected override UITextureAtlas IconAtlas => NodeControllerTextures.Atlas;
-    }
-    public class AdditionallyHeaderButton : BaseAdditionallyHeaderButton
-    {
-        protected override UITextureAtlas IconAtlas => NodeControllerTextures.Atlas;
     }
 }

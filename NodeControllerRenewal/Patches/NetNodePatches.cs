@@ -2,6 +2,7 @@ using HarmonyLib;
 using ModsCommon;
 using ModsCommon.Utilities;
 using NodeController.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -14,7 +15,13 @@ namespace NodeController.Patches
         public static void CalculateNodePostfix(ushort nodeID)
         {
             if (SingletonManager<Manager>.Instance[nodeID] is NodeData data)
+            {
+#if DEBUG
+                var node = nodeID.GetNode();
+                SingletonMod<Mod>.Logger.Debug($"Update node #{nodeID}, position {node.m_position}, flags {node.m_flags}");
+#endif
                 data.UpdateSegmentEnds();
+            }
         }
         public static IEnumerable<CodeInstruction> ReplaceNodePositionTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
         {

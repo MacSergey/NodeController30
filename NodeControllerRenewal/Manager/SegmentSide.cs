@@ -147,7 +147,7 @@ namespace NodeController
             second.Direction = secondFixDirection;
         }
 
-        public void Render(OverlayData dataAllow, OverlayData dataForbidden)
+        public void Render(OverlayData dataAllow, OverlayData dataForbidden, OverlayData dataLimit)
         {
             if (MinT == 0f)
                 RawBezier.Cut(0f, RawT).Render(dataAllow);
@@ -159,8 +159,8 @@ namespace NodeController
                 if (RawT - MinT >= 0.2f / RawBezier.Length)
                     RawBezier.Cut(MinT, RawT).Render(dataAllow);
             }
-
-            RawBezier.Position(DefaultT).RenderCircle(new OverlayData(dataAllow.CameraInfo) { Color = Colors.Purple });
+            dataLimit.Color ??= Colors.Purple;
+            RawBezier.Position(DefaultT).RenderCircle(dataLimit);
         }
         public void RenderCircle(OverlayData data) => Position.RenderCircle(data, data.Width ?? SegmentEndData.CornerDotRadius * 2, 0f);
 

@@ -218,6 +218,24 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Calculate shift by intersections.
+        /// </summary>
+        internal static string Option_CalculateShiftByIntersections {
+            get {
+                return ResourceManager.GetString("Option_CalculateShiftByIntersections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Calculate shift by nearby nodes.
+        /// </summary>
+        internal static string Option_CalculateShiftByNearby {
+            get {
+                return ResourceManager.GetString("Option_CalculateShiftByNearby", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Reset offset.
         /// </summary>
         internal static string Option_KeepDefault {
@@ -313,6 +331,15 @@ namespace NodeController {
         internal static string Option_RotateFormat {
             get {
                 return ResourceManager.GetString("Option_RotateFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Set shift between intersections.
+        /// </summary>
+        internal static string Option_SetShiftBetweenIntersections {
+            get {
+                return ResourceManager.GetString("Option_SetShiftBetweenIntersections", resourceCulture);
             }
         }
         
@@ -439,6 +466,87 @@ namespace NodeController {
         internal static string Panel_NodeId {
             get {
                 return ResourceManager.GetString("Panel_NodeId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Calculate shift by intersections.
+        /// </summary>
+        internal static string Setting_ShortcutCalculateShiftByIntersections {
+            get {
+                return ResourceManager.GetString("Setting_ShortcutCalculateShiftByIntersections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Calculate shift by nearby nodes.
+        /// </summary>
+        internal static string Setting_ShortcutCalculateShiftByNearby {
+            get {
+                return ResourceManager.GetString("Setting_ShortcutCalculateShiftByNearby", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Change main slope direction mode.
+        /// </summary>
+        internal static string Setting_ShortcutChangeMainRoadMode {
+            get {
+                return ResourceManager.GetString("Setting_ShortcutChangeMainRoadMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Change node style.
+        /// </summary>
+        internal static string Setting_ShortcutChangeNodeStyle {
+            get {
+                return ResourceManager.GetString("Setting_ShortcutChangeNodeStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Reset offset.
+        /// </summary>
+        internal static string Setting_ShortcutKeepDefault {
+            get {
+                return ResourceManager.GetString("Setting_ShortcutKeepDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Make ends straight.
+        /// </summary>
+        internal static string Setting_ShortcutMakeStraightEnds {
+            get {
+                return ResourceManager.GetString("Setting_ShortcutMakeStraightEnds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Reset to default.
+        /// </summary>
+        internal static string Setting_ShortcutResetToDefault {
+            get {
+                return ResourceManager.GetString("Setting_ShortcutResetToDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Set shift between intersections.
+        /// </summary>
+        internal static string Setting_ShortcutSetShiftBetweenIntersections {
+            get {
+                return ResourceManager.GetString("Setting_ShortcutSetShiftBetweenIntersections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show nearby nodes overlay.
+        /// </summary>
+        internal static string Settings_RenderNearNode {
+            get {
+                return ResourceManager.GetString("Settings_RenderNearNode", resourceCulture);
             }
         }
         
@@ -621,6 +729,15 @@ namespace NodeController {
         internal static string Tool_InfoTooCloseNode {
             get {
                 return ResourceManager.GetString("Tool_InfoTooCloseNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hold Shift to underground mode.
+        /// </summary>
+        internal static string Tool_InfoUnderground {
+            get {
+                return ResourceManager.GetString("Tool_InfoUnderground", resourceCulture);
             }
         }
     }

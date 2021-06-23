@@ -5,6 +5,7 @@ using ModsCommon;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static ModsCommon.SettingsHelper;
@@ -14,6 +15,7 @@ namespace NodeController
     public class Settings : BaseSettings<Mod>
     {
         public static SavedBool SelectMiddleNodes { get; } = new SavedBool(nameof(SelectMiddleNodes), SettingsFile, true, true);
+        public static SavedBool RenderNearNode { get; } = new SavedBool(nameof(RenderNearNode), SettingsFile, true, true);
         public static SavedBool ShowToolTip { get; } = new SavedBool(nameof(ShowToolTip), SettingsFile, true, true);
 
         protected override void FillSettings()
@@ -22,13 +24,18 @@ namespace NodeController
 
             AddLanguage(GeneralTab);
 
-            var generalGroup = GeneralTab.AddGroup(CommonLocalize.Settings_General);
 
-            var keymappings = AddKeyMappingPanel(generalGroup);
+            var keymappingsGroup = GeneralTab.AddGroup(CommonLocalize.Settings_Shortcuts);
+            var keymappings = AddKeyMappingPanel(keymappingsGroup);
             keymappings.AddKeymapping(NodeControllerTool.ActivationShortcut);
+            foreach (var shortcut in NodeControllerTool.ToolShortcuts)
+                keymappings.AddKeymapping(shortcut);
 
+
+            var generalGroup = GeneralTab.AddGroup(CommonLocalize.Settings_General);
             AddCheckBox(generalGroup, Localize.Settings_SelectMiddleNodes, SelectMiddleNodes);
             AddLabel(generalGroup, Localize.Settings_SelectMiddleNodesDiscription, 0.8f, padding: 25);
+            AddCheckBox(generalGroup, Localize.Settings_RenderNearNode, RenderNearNode);
             AddCheckBox(generalGroup, CommonLocalize.Settings_ShowTooltips, ShowToolTip);
 
             AddNotifications(GeneralTab);
@@ -61,12 +68,20 @@ namespace NodeController
             static void AddAllNodes()
             {
                 var netManaget = Singleton<NetManager>.instance;
-                for(ushort i = 0; i < NetManager.MAX_NODE_COUNT; i+=1)
+                var manager = SingletonManager<Manager>.Instance;
+
+                for (ushort i = 0; i < NetManager.MAX_NODE_COUNT; i+=1)
                 {
                     var node = i.GetNode();
-                    if(node.m_flags.IsSet(NetNode.Flags.Created))
-                        _ = SingletonManager<Manager>.Instance[i, true];
+                    var created = node.m_flags.IsSet(NetNode.Flags.Created);
+                    var isRoad = node.Segments().Any(s => s.Info.m_netAI is RoadBaseAI);
+                    if (created && isRoad)
+                    {
+                        _ = manager[i, Manager.Options.Create];
+                        SingletonMod<Mod>.Logger.Debug($"Added node #{i}");
+                    }
                 }
+                manager.UpdateAll();
             }
         }
 #endif

@@ -49,6 +49,9 @@ namespace NodeController
                 var info = new ConflictDependencyInfo(DependencyState.Disable, DependencyUtilities.NC2Searcher);
                 infos.Add(info);
 
+                var crossingInfo = new ConflictDependencyInfo(DependencyState.Unsubscribe, PluginUtilities.GetSearcher("Pedestrian Crossings", 427258853ul));
+                infos.Add(crossingInfo);
+
                 return infos;
             }
         }
@@ -104,6 +107,11 @@ namespace NodeController
             }
 
             return success;
+        }
+        private static bool MVPatch(ref bool __result)
+        {
+            __result = true;
+            return false;
         }
 
         private bool AddTool()

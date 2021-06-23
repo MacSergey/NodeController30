@@ -38,7 +38,7 @@ namespace NodeController
             return data;
         }
         public NodeData this[ushort nodeId, bool create = false] => this[nodeId, create ? Options.Default : Options.None];
-        private NodeData this[ushort nodeId, Options options]
+        public NodeData this[ushort nodeId, Options options]
         {
             get
             {
@@ -58,13 +58,17 @@ namespace NodeController
                 Update(nodeId, options);
                 return data;
             }
-            catch (NotImplementedException)
+            catch (NodeNotCreatedException)
+            {
+                return null;
+            }
+            catch (NodeStyleNotImplementedException)
             {
                 return null;
             }
             catch (Exception error)
             {
-                SingletonMod<Mod>.Logger.Error(error);
+                SingletonMod<Mod>.Logger.Error($"Cant create Node data #{nodeId}", error);
                 return null;
             }
         }
@@ -147,27 +151,35 @@ namespace NodeController
 
         public static void SimulationStep()
         {
-            var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => SingletonManager<Manager>.Instance.ContainsNode(s)).ToArray();
-            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => SingletonManager<Manager>.Instance.ContainsSegment(s)).ToArray();
+            var manager = SingletonManager<Manager>.Instance;
+            var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)).ToArray();
+            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)).ToArray();
 
             UpdateNow(nodeIds, segmentIds, true);
         }
         private static void UpdateNow(ushort[] nodeIds, ushort[] segmentIds, bool updateFlags)
         {
+            if (nodeIds.Length == 0)
+                return;
+#if DEBUG
+            SingletonMod<Mod>.Logger.Debug($"Update now\nNodes:{string.Join(", ", nodeIds.Select(i => i.ToString()).ToArray())}\nSegments:{string.Join(", ", segmentIds.Select(i => i.ToString()).ToArray())}");
+#endif
+            var manager = SingletonManager<Manager>.Instance;
+
             foreach (var nodeId in nodeIds)
-                SingletonManager<Manager>.Instance.Buffer[nodeId].Update(updateFlags);
+                manager.Buffer[nodeId].Update(updateFlags);
 
             foreach (var segmentId in segmentIds)
                 SegmentEndData.UpdateBeziers(segmentId);
 
             foreach (var nodeId in nodeIds)
-                SegmentEndData.UpdateMinLimits(SingletonManager<Manager>.Instance.Buffer[nodeId]);
+                SegmentEndData.UpdateMinLimits(manager.Buffer[nodeId]);
 
             foreach (var segmentId in segmentIds)
                 SegmentEndData.UpdateMaxLimits(segmentId);
 
             foreach (var nodeId in nodeIds)
-                SingletonManager<Manager>.Instance.Buffer[nodeId].LateUpdate();
+                manager.Buffer[nodeId].LateUpdate();
         }
 
         public static void ReleaseNodeImplementationPrefix(ushort node) => SingletonManager<Manager>.Instance.Buffer[node] = null;
@@ -186,17 +198,44 @@ namespace NodeController
 
             return config;
         }
-        public void FromXml(XElement config, NetObjectsMap map, bool update = false)
+        public void FromXml(XElement config, NetObjectsMap map, bool updateNode = false)
         {
             foreach (var nodeConfig in config.Elements(NodeData.XmlName))
             {
-                if (NodeData.FromXml(nodeConfig, map, out NodeData data))
-                    Buffer[data.Id] = data;
+                var id = nodeConfig.GetAttrValue(nameof(NodeData.Id), (ushort)0);
+
+                if (map.TryGetNode(id, out var targetId))
+                    id = targetId;
+
+                if (id != 0 && id <= NetManager.MAX_NODE_COUNT)
+                {
+                    try
+                    {
+                        var type = (NodeStyleType)nodeConfig.GetAttrValue("T", (int)NodeStyleType.Custom);
+                        var data = new NodeData(id, type);
+                        data.FromXml(nodeConfig, map);
+                        Buffer[data.Id] = data;
+
+                        Update(data.Id, Options.UpdateNow | (updateNode ? Options.UpdateLater : Options.None));
+                    }
+                    catch (NodeNotCreatedException error)
+                    {
+                        SingletonMod<Mod>.Logger.Error($"Can't load Node data #{id}: {error.Message}");
+                    }
+                    catch (NodeStyleNotImplementedException error)
+                    {
+                        SingletonMod<Mod>.Logger.Error($"Can't load Node data #{id}: {error.Message}");
+                    }
+                    catch (Exception error)
+                    {
+                        SingletonMod<Mod>.Logger.Error($"Can't load Node data #{id}", error);
+                    }
+                }
             }
         }
 
         [Flags]
-        private enum Options
+        public enum Options
         {
             None = 0,
 
@@ -221,6 +260,27 @@ namespace NodeController
             UpdateAll = UpdateNow | UpdateLater,
 
             Default = CreateThis | CreateNearby | UpdateThis | UpdateNearbyLater,
+        }
+    }
+
+    public class NodeNotCreatedException : Exception
+    {
+        public ushort Id { get; }
+
+        public NodeNotCreatedException(ushort id) : base($"Node #{id} not created")
+        {
+            Id = id;
+        }
+    }
+    public class NodeStyleNotImplementedException : NotImplementedException
+    {
+        public ushort Id { get; }
+        public NetNode.Flags Flags { get; }
+
+        public NodeStyleNotImplementedException(ushort id, NetNode.Flags flags) : base($"Node #{id} style {flags} not implemented")
+        {
+            Id = id;
+            Flags = flags;
         }
     }
 }

@@ -31,11 +31,15 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
-            SegmentEnd.RenderSides(new OverlayData(cameraInfo), new OverlayData(cameraInfo) { Color = Colors.Red });
-            SegmentEnd.SegmentBezier.Render(new OverlayData(cameraInfo) { Width = SegmentEndData.CenterDotRadius * 2 + 1 });
+            var underground = IsUnderground;
+            var allow = new OverlayData(cameraInfo) { RenderLimit = underground };
+            var forbidden = new OverlayData(cameraInfo) { Color = Colors.Red, RenderLimit = underground };
 
-            var defaultColor = new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor };
-            var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow };
+            SegmentEnd.RenderSides(allow, forbidden, allow);
+            SegmentEnd.SegmentBezier.Render(new OverlayData(cameraInfo) { Width = SegmentEndData.CenterDotRadius * 2 + 1, RenderLimit = underground });
+
+            var defaultColor = new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground };
+            var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground };
             SegmentEnd.Render(defaultColor, defaultColor, yellow);
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)

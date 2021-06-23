@@ -40,14 +40,14 @@ namespace NodeController
                         HoverSegmentEndCircle = null;
                         HoverSegmentEndCorner = null;
                         return;
-                    }                   
+                    }
                     else if (magnitude < SegmentEndData.CircleRadius + 1f && magnitude > SegmentEndData.CircleRadius - 0.5f)
                     {
                         HoverSegmentEndCenter = null;
                         HoverSegmentEndCircle = segmentData;
                         HoverSegmentEndCorner = null;
                         return;
-                    }                   
+                    }
                     else if (CheckCorner(segmentData, SideType.Left) || CheckCorner(segmentData, SideType.Right))
                         return;
                 }
@@ -108,13 +108,15 @@ namespace NodeController
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
-            var hover = new OverlayData(cameraInfo);
-            var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow };
+            var underground = IsUnderground;
+            var hover = new OverlayData(cameraInfo) { RenderLimit = underground };
+            var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground };
+
             foreach (var segmentData in Tool.Data.SegmentEndDatas)
             {
-                var defaultColor = new OverlayData(cameraInfo) { Color = segmentData.OverlayColor };
+                var defaultColor = new OverlayData(cameraInfo) { Color = segmentData.OverlayColor, RenderLimit = underground };
                 var outter = segmentData == HoverSegmentEndCircle ? hover : yellow;
-                var inner = segmentData == HoverSegmentEndCenter ? hover : new OverlayData(cameraInfo) { Color = segmentData.Color };
+                var inner = segmentData == HoverSegmentEndCenter ? hover : new OverlayData(cameraInfo) { Color = segmentData.Color, RenderLimit = underground };
                 var left = segmentData == HoverSegmentEndCorner && HoverCorner == SideType.Left ? hover : yellow;
                 var right = segmentData == HoverSegmentEndCorner && HoverCorner == SideType.Right ? hover : yellow;
                 segmentData.Render(defaultColor, outter, inner, left, right);
