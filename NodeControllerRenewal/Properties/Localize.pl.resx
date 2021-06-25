@@ -192,10 +192,10 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
     <value>Wszystkie</value>
   </data>
   <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
-    <value>Calculate shift by intersections</value>
+    <value>Oblicz przesunięcie na podstawie skrzyżowań</value>
   </data>
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
-    <value>Calculate shift by nearby nodes</value>
+    <value>Oblicz przesunięcie na podstawie pobliskich węzłów</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Zresetuj przesunięcie</value>
@@ -231,7 +231,7 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
     <value>{0}°</value>
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
-    <value>Set shift between intersections</value>
+    <value>Ustaw przesunięcie pomiędzy skrzyżowaniami</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Przesuń</value>
@@ -273,7 +273,7 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
     <value>Węzeł #{0}</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
-    <value>Show nearby nodes overlay</value>
+    <value>Pokaż nakładkę pobliskich węzłów</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Wybierz węzły środkowe</value>
@@ -282,16 +282,16 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
     <value>Jeśli ta opcja jest wyłączona, węzły środkowe przeniosą się do klikniętego miejsca</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
-    <value>Calculate shift by intersections</value>
+    <value>Oblicz przesunięcie na podstawie skrzyżowań</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
-    <value>Calculate shift by nearby nodes</value>
+    <value>Oblicz przesunięcie na podstawie pobliskich węzłów</value>
   </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
-    <value>Change main slope direction mode</value>
+    <value>Zmień tryb kierunku głównego pochylenia</value>
   </data>
   <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
-    <value>Change node style</value>
+    <value>Zmień styl węzła</value>
   </data>
   <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
     <value>Zresetuj przesunięcie</value>
@@ -303,7 +303,7 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
     <value>Resetuj do domyślnych</value>
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
-    <value>Set shift between intersections</value>
+    <value>Ustaw przesunięcie między skrzyżowaniami</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Przytrzymaj Shift aby wyrównać drogi</value>
@@ -362,6 +362,6 @@ Kliknij aby edytować</value>
 Za blisko do sąsiedniego węzła</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Hold Shift to underground mode</value>
+    <value>Przytrzymaj Shift by przejść w tryb podziemny</value>
   </data>
 </root>

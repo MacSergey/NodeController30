@@ -192,10 +192,10 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
     <value>Kaikki</value>
   </data>
   <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
-    <value>Calculate shift by intersections</value>
+    <value>Laske siirtymä risteysten välille</value>
   </data>
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
-    <value>Calculate shift by nearby nodes</value>
+    <value>Laske siirtymä viereisten risteysten perusteella</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Palauta etäisyydet</value>
@@ -231,7 +231,7 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
     <value>{0}°</value>
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
-    <value>Set shift between intersections</value>
+    <value>Aseta siirtymä risteysten välille</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Siirtymä</value>
@@ -282,16 +282,16 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
     <value>Jos tämä asetus ei ole käytössä, kahden tien risteyksettömät välit siirtyvät napautettuun kohtaan</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
-    <value>Calculate shift by intersections</value>
+    <value>Laske siirtymä risteysten välille</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
-    <value>Calculate shift by nearby nodes</value>
+    <value>Laske siirtymä viereisten risteysten perusteella</value>
   </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
-    <value>Change main slope direction mode</value>
+    <value>Vaihda kaltevuuden suunnan asetus</value>
   </data>
   <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
-    <value>Change node style</value>
+    <value>Muuta risteyksen tyyliä</value>
   </data>
   <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
     <value>Palauta etäisyydet</value>
@@ -303,7 +303,7 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
     <value>Palauta oletukseksi</value>
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
-    <value>Set shift between intersections</value>
+    <value>Aseta siirtymä risteysten välille</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Pidä Shift-näppäintä pohjassa kohdistaaksesi tiet</value>

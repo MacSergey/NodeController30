@@ -118,31 +118,31 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
-    <value>已导入原版节点控制器模组数据。
-逆向兼容无法包括所有数据，可能需要手动调整。</value>
+    <value>Data Node Controller asli telah diimpor.
+Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyesuaian manual mungkin diperlukan.</value>
   </data>
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
-    <value>警告：保存后，您将无法在此地图上继续使用原版节点控制器模组。</value>
+    <value>AWAS: Jika Anda membuat penyimpanan baru, Anda tidak akan bisa menggunakan Node Controller original untuk map ini.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>控制节点类型和形状</value>
+    <value>Mengontrol tipe dan bentuk persimpangan</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
-    <value>- 添加自动设置主要斜坡方向模式。
-- 添加红色指示来标记出过短的段落(段落太短会导致车速错误)。
-- 添加仅重置偏移为默认值功能。
-- 添加波兰语翻译。
-- 修复默认节点形状计算。
-- 修复陡峭或急曲段落上的拐角计算错误。
-- 修复没有退出游戏的情况下重新装入地图后会导致节点损坏。
-- 修复车辆拖车消失。
-- 修复道路在灾害后消失。
-- 修复火车扭曲方向错误。
-- 在资产编辑器中修复节点高度。
-- 修复默认偏移值。
-- 修复与 TMPE 的兼容性。
-- 修复交叉路资源的加载数据。
-- 修复放置交叉路资产后不能删除支撑柱的错误。</value>
+    <value>- Added auto mode for main slope direction.
+- Added red overlay for short segments (short segments lead wrong vehicle speed).
+- Added the ability reset only offset to default.
+- Added Polish translation.
+- Fix default node shape calculation.
+- Fix wrong corner calculation on too sloped or too curved segments.
+- Fix broken nodes after reload map without close game.
+- Fix vehicle trailers disappear.
+- Fix road disappear after disasters.
+- Fix wrong train twist direction.
+- Fix node height in asset editor.
+- Fix default offset value.
+- Fix compatibility with TMPE.
+- Fix load data from intersection assets.
+- Fix not deletable pilars after place intersection asset.</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_2" xml:space="preserve">
     <value>- Fix node height outside available tiles (5x5).
@@ -168,200 +168,200 @@
 - Added Chinese Traditional translation.</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
-    <value>弯曲</value>
+    <value>Tikungan</value>
   </data>
   <data name="NodeStyle_Crossing" xml:space="preserve">
-    <value>斑马线</value>
+    <value>Penyeberangan</value>
   </data>
   <data name="NodeStyle_Custom" xml:space="preserve">
-    <value>自定义</value>
+    <value>Khusus</value>
   </data>
   <data name="NodeStyle_End" xml:space="preserve">
-    <value>终点</value>
+    <value>Akhir</value>
   </data>
   <data name="NodeStyle_Middle" xml:space="preserve">
-    <value>中间</value>
+    <value>Tengah</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
-    <value>拉伸</value>
+    <value>Regang</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
-    <value>掉头</value>
+    <value>Putar balik</value>
   </data>
   <data name="Options_All" xml:space="preserve">
-    <value>全部</value>
+    <value>Semua</value>
   </data>
   <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
-    <value>按交叉点计算偏移</value>
+    <value>Calculate shift by intersections</value>
   </data>
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
-    <value>按附近节点计算偏移</value>
+    <value>Calculate shift by nearby nodes</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
-    <value>重置偏移</value>
+    <value>Setel ulang pergeseran</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
-    <value>主斜坡方向</value>
+    <value>Arah lereng utama</value>
   </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
-    <value>自动</value>
+    <value>Otomatis</value>
   </data>
   <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
-    <value>手动</value>
+    <value>Manual</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>裁直路段终点</value>
+    <value>Buatkan ujung-ujung menjadi lurus</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
-    <value>标线</value>
+    <value>Markah</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
-    <value>偏移</value>
+    <value>Pergeseran</value>
   </data>
   <data name="Option_OffsetFormat" xml:space="preserve">
-    <value>{0}米</value>
+    <value>{0}m</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
-    <value>重置为默认值</value>
+    <value>Setel ulang ke standar</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>旋转</value>
+    <value>Putar</value>
   </data>
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
-    <value>设置交叉点间的偏移</value>
+    <value>Set shift between intersections</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
-    <value>移位</value>
+    <value>Shift</value>
   </data>
   <data name="Option_ShiftFormat" xml:space="preserve">
-    <value>{0}米</value>
+    <value>{0}m</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
-    <value>斜坡</value>
+    <value>Lereng</value>
   </data>
   <data name="Option_SlopeFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Stretch" xml:space="preserve">
-    <value>拉伸</value>
+    <value>Regang</value>
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
-    <value>样式</value>
+    <value>Gaya</value>
   </data>
   <data name="Option_StyleFlat" xml:space="preserve">
-    <value>平坦</value>
+    <value>Datar</value>
   </data>
   <data name="Option_StyleSlope" xml:space="preserve">
-    <value>斜坡</value>
+    <value>Lereng</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>扭曲</value>
+    <value>Gulung</value>
   </data>
   <data name="Option_TwistFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
-    <value>节点类型</value>
+    <value>Jenis persimpangan</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
-    <value>节点 #{0}</value>
+    <value>Simpang #{0}</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
-    <value>显示光标附近节点</value>
+    <value>Perlihatkan hamparan simpangan berdekatan</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
-    <value>选择中间节点</value>
+    <value>Pilih persimpangan tengah</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>禁用后，中间点将移动到单击位置</value>
+    <value>If this option is disabled, the middle nodes will move to clicked position</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
-    <value>按交叉点计算偏移</value>
+    <value>Calculate shift by intersections</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
-    <value>按附近节点计算偏移</value>
+    <value>Calculate shift by nearby nodes</value>
   </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
-    <value>更改主要斜坡方向模式</value>
+    <value>Ubahkan mode arah lereng utama</value>
   </data>
   <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
-    <value>更改节点样式</value>
+    <value>Ubah gaya simpang</value>
   </data>
   <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
-    <value>重置偏移</value>
+    <value>Setel ulang pergeseran</value>
   </data>
   <data name="Setting_ShortcutMakeStraightEnds" xml:space="preserve">
-    <value>裁直路段终点</value>
+    <value>Buatkan ujung-ujung menjadi lurus</value>
   </data>
   <data name="Setting_ShortcutResetToDefault" xml:space="preserve">
-    <value>重置为默认值</value>
+    <value>Setel ulang ke standar</value>
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
-    <value>设置交叉点间的偏移</value>
+    <value>Set shift between intersections</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>按住Shift对齐道路</value>
+    <value>Tekan dan tahan Shift untuk meluruskan jalan</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
-    <value>点击以向此边角对齐</value>
+    <value>Klik untuk meluruskan dengan pojok ini</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>按住Alt 以改变主要斜坡方向</value>
+    <value>Tekan dan tahan Alt untuk mengubah arah lereng utama</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
-    <value>节点 #{0}
-点击编辑此节点</value>
+    <value>Persimpangan #{0}
+Klik untuk edit</value>
   </data>
   <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
-    <value>选择想要对齐的边角</value>
+    <value>Klik untuk memilih pojok yang Anda ingin luruskan</value>
   </data>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
-    <value>拖动以改变偏移</value>
+    <value>Seret untuk mengubah pergeseran</value>
   </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
-    <value>拖动以改变旋转</value>
+    <value>Seret untuk mengubah putaran</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
-    <value>拖动以改变边角偏移</value>
+    <value>Seret untuk mengubah pergeseran pojok</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>拖动此端来改变主要斜坡方向</value>
+    <value>Seretkan ujung ini untuk mengubah arah lereng utama</value>
   </data>
   <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
-    <value>丢下此端来改变主要斜坡方向</value>
+    <value>Taruhkan ujung ini untuk mengubah arah lereng utama</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
-    <value>点击插入斑马线节点</value>
+    <value>Klik untuk menambah persimpangan penyeberangan</value>
   </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
-    <value>点击以插入节点</value>
+    <value>Klik untuk memasukkan persimpangan</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
-    <value>选择想要对齐的边角</value>
+    <value>Pilih pojok yang Anda ingin luruskan dengannya</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>改变至选择的主要斜坡方向</value>
+    <value>Ubah menjadi arah lereng utama yang diingkan</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>选择主要斜坡方向的终点</value>
+    <value>Pilih posisi akhir dari arah lereng utama</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
-    <value>选择节点</value>
+    <value>Pilih persimpangan</value>
   </data>
   <data name="Tool_InfoSelectToAlign" xml:space="preserve">
-    <value>选择想要对齐的边角</value>
+    <value>Pilih pojok yang Anda ingin luruskan</value>
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
-    <value>无法插入节点
-节点间距过短</value>
+    <value>Tidak dapat memasukkan persimpangan
+Terlalu dekat dengan simpang lainnya</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>按住 Shift 进入地下模式</value>
+    <value>Tekan dan tahan Shift untuk mode bawah tanah</value>
   </data>
 </root>

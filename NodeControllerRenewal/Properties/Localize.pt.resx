@@ -192,10 +192,10 @@ A compatível com versões anteriores não fornece a transferência de todos os 
     <value>Todos</value>
   </data>
   <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
-    <value>Calculate shift by intersections</value>
+    <value>Calcular deslocamento pelas interseções</value>
   </data>
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
-    <value>Calculate shift by nearby nodes</value>
+    <value>Calcular deslocamento nas proximidades</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Repor deslocamento</value>
@@ -231,7 +231,7 @@ A compatível com versões anteriores não fornece a transferência de todos os 
     <value>{0}°</value>
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
-    <value>Set shift between intersections</value>
+    <value>Aplicar entre intercessões</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Mudar</value>
@@ -273,7 +273,7 @@ A compatível com versões anteriores não fornece a transferência de todos os 
     <value>Nó #{0}</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
-    <value>Show nearby nodes overlay</value>
+    <value>Mostrar sobreposição de nódulos próximos</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Selecione os nós do meio</value>
@@ -282,16 +282,16 @@ A compatível com versões anteriores não fornece a transferência de todos os 
     <value>Se esta opção estiver desativada, os nós do meio vão mover-se para a posição clicada</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
-    <value>Calculate shift by intersections</value>
+    <value>Calcular deslocamento pelas interseções</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
-    <value>Calculate shift by nearby nodes</value>
+    <value>Calcular deslocamento nas proximidades</value>
   </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
-    <value>Change main slope direction mode</value>
+    <value>Alterar o modo de direção da inclinação principal</value>
   </data>
   <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
-    <value>Change node style</value>
+    <value>Alterar o estilo da barra</value>
   </data>
   <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
     <value>Repor deslocamento</value>
@@ -303,7 +303,7 @@ A compatível com versões anteriores não fornece a transferência de todos os 
     <value>Repor predefinição</value>
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
-    <value>Set shift between intersections</value>
+    <value>Aplicar entre intercessões</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Segure Shift para alinhar as estradas</value>
@@ -362,6 +362,6 @@ Clique para editar</value>
 Está demasiado perto de outro nó</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Hold Shift to underground mode</value>
+    <value>Segurar Shift para o modo subterrâneo</value>
   </data>
 </root>

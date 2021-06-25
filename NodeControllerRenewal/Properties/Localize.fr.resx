@@ -192,10 +192,10 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>Tout</value>
   </data>
   <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
-    <value>Calculate shift by intersections</value>
+    <value>Calculer le décalage par intersections</value>
   </data>
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
-    <value>Calculate shift by nearby nodes</value>
+    <value>Calculer le décalage avec les nœuds à proximité</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Réinitialiser le décalage</value>
@@ -231,7 +231,7 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>{0}°</value>
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
-    <value>Set shift between intersections</value>
+    <value>Définir le décalage entre les intersections</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Décalé</value>
@@ -282,16 +282,16 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>Si cette option est désactivée, les nœuds du milieu se déplaceront vers l'emplacement cliqué</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
-    <value>Calculate shift by intersections</value>
+    <value>Calculer le décalage par intersections</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
-    <value>Calculate shift by nearby nodes</value>
+    <value>Calculer le décalage avec les nœuds à proximité</value>
   </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
-    <value>Change main slope direction mode</value>
+    <value>Changer le mode de direction de la pente</value>
   </data>
   <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
-    <value>Change node style</value>
+    <value>Changer le style de nœud</value>
   </data>
   <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
     <value>Réinitialiser le décalage</value>
@@ -303,7 +303,7 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>Rétablir les paramètres par défaut</value>
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
-    <value>Set shift between intersections</value>
+    <value>Définir le décalage entre les intersections</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Maintenez la touche Maj pour aligner les routes</value>
@@ -362,6 +362,6 @@ Cliquez pour modifier</value>
 Trop proche d'un noeud à proximité</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Maintenez la touche Maj pour utiliser le mode sous terrain</value>
+    <value>Maintenez la touche Maj pour utiliser le mode souterrain</value>
   </data>
 </root>

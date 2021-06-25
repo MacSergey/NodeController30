@@ -192,10 +192,10 @@
     <value>すべて</value>
   </data>
   <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
-    <value>交差点間にあるノードからシフトを計算して、まとめてスムージング</value>
+    <value>交差点間のノードは、まとめてスムージング</value>
   </data>
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
-    <value>隣接するノードから、シフトを計算してスムージング</value>
+    <value>隣接するノードで、スムージング</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>オフセットをリセット</value>
@@ -231,7 +231,7 @@
     <value>{0}°</value>
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
-    <value>交差点間にあるノードに、シフトの値を一括して適用</value>
+    <value>交差点間のノードは、シフトの値を一括適用</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>シフト（左右の移動）</value>
@@ -273,7 +273,7 @@
     <value>ノード #{0} を調整中</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
-    <value>選択中は近くにあるノードをハイライトする</value>
+    <value>選択中は近くにあるノードをハイライト</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>中間部分にあるノードも選択</value>
@@ -282,10 +282,10 @@
     <value>このオプションを無効にすると、中間部分にあるノードは選択されません</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
-    <value>交差点間にあるノードからシフトを計算して、まとめてスムージング</value>
+    <value>交差点間のノードは、まとめてスムージング</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
-    <value>隣接するノードから、シフトを計算してスムージング</value>
+    <value>隣接するノードで、スムージング</value>
   </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>スロープ化の選択方法</value>
@@ -303,7 +303,7 @@
     <value>デフォルトに戻す</value>
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
-    <value>交差点間にあるノードに、シフトの値を一括して適用</value>
+    <value>交差点間のノードは、シフトの値を一括適用</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Shiftキー押下で、シフトして自動的に整列</value>
