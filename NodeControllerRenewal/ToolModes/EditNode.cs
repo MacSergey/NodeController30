@@ -28,27 +28,25 @@ namespace NodeController
             {
                 foreach (var segmentData in Tool.Data.SegmentEndDatas)
                 {
-                    if (!segmentData.IsMoveable)
-                        continue;
-
                     var hitPos = Tool.Ray.GetRayPosition(segmentData.Position.y, out _);
 
                     var magnitude = (segmentData.Position - hitPos).magnitude;
-                    if (magnitude < SegmentEndData.CenterDotRadius)
+
+                    if (segmentData.IsOffsetChangeable && magnitude < SegmentEndData.CenterDotRadius)
                     {
                         HoverSegmentEndCenter = segmentData;
                         HoverSegmentEndCircle = null;
                         HoverSegmentEndCorner = null;
                         return;
                     }
-                    else if (magnitude < SegmentEndData.CircleRadius + 1f && magnitude > SegmentEndData.CircleRadius - 0.5f)
+                    else if (segmentData.IsRotateChangeable && magnitude < SegmentEndData.CircleRadius + 1f && magnitude > SegmentEndData.CircleRadius - 0.5f)
                     {
                         HoverSegmentEndCenter = null;
                         HoverSegmentEndCircle = segmentData;
                         HoverSegmentEndCorner = null;
                         return;
                     }
-                    else if (CheckCorner(segmentData, SideType.Left) || CheckCorner(segmentData, SideType.Right))
+                    else if (segmentData.IsOffsetChangeable && CheckCorner(segmentData, SideType.Left) || CheckCorner(segmentData, SideType.Right))
                         return;
                 }
             }
