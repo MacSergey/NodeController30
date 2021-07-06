@@ -155,6 +155,21 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на - Added underground mode (hold Shift to select underground node).
+        ///- Added nearby nodes overlay.
+        ///- Added calculate shift by nearby nodes - set average shift value to node.
+        ///- Added calculate shift by intersections - set shift value for all nodes between intersection for smooth transition (like -2,-1,0,+1,+2).
+        ///- Added set shift between intersections - set this shift value for all nodes between intersection.
+        ///- Added shortcuts, you can bind keys in mod&apos;s options.
+        ///- Added the ability to hide marking and cha [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string Mod_WhatsNewMessage3_1 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Bend.
         /// </summary>
         internal static string NodeStyle_Bend {
