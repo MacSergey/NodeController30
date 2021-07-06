@@ -126,7 +126,7 @@ namespace NodeController
 
         public NodeData Data { get; }
         public IEnumerable<SegmentEndData> TouchableDatas => GetDatas(TouchablePredicate);
-        public IEnumerable<SegmentEndData> NoMarkingsDatas => GetDatas(NoMarkingsPredicate);
+        public IEnumerable<SegmentEndData> IsRoadDatas => GetDatas(IsRoadPredicate);
 
         public NodeStyle(NodeData data)
         {
@@ -186,10 +186,10 @@ namespace NodeController
             }
         }
 
-        public virtual float GetRotate() => TouchableDatas.AverageOrDefault(s => s.RotateAngle, DefaultRotate);
+        public virtual float GetRotate() => IsRoadDatas.AverageOrDefault(s => s.RotateAngle, DefaultRotate);
         public virtual void SetRotate(float value)
         {
-            foreach (var segmentData in TouchableDatas)
+            foreach (var segmentData in IsRoadDatas)
                 segmentData.RotateAngle = value;
         }
 
@@ -214,10 +214,10 @@ namespace NodeController
                 segmentData.Stretch = value;
         }
 
-        public virtual bool GetNoMarkings() => NoMarkingsDatas.All(s => s.NoMarkings);
+        public virtual bool GetNoMarkings() => IsRoadDatas.All(s => s.NoMarkings);
         public virtual void SetNoMarkings(bool value)
         {
-            foreach (var segmentData in NoMarkingsDatas)
+            foreach (var segmentData in IsRoadDatas)
                 segmentData.NoMarkings = value;
         }
 
@@ -402,7 +402,7 @@ namespace NodeController
                 rotate.Text = Localize.Option_Rotate;
                 rotate.Format = Localize.Option_RotateFormat;
                 rotate.NumberFormat = "0.#";
-                rotate.Init(Data, SupportRotate, totalSupport, RotateGetter, RotateSetter, MinMaxRotate, TouchablePredicate);
+                rotate.Init(Data, SupportRotate, totalSupport, RotateGetter, RotateSetter, MinMaxRotate, AnyPredicate);
 
                 return rotate;
             }
@@ -460,7 +460,7 @@ namespace NodeController
             {
                 var hideMarking = ComponentPool.Get<BoolOptionPanel>(parent);
                 hideMarking.Text = Localize.Option_Marking;
-                hideMarking.Init(Data, SupportNoMarking, totalSupport, NoMarkingsGetter, NoMarkingsSetter, NoMarkingsPredicate);
+                hideMarking.Init(Data, SupportNoMarking, totalSupport, NoMarkingsGetter, NoMarkingsSetter, IsRoadPredicate);
 
                 return hideMarking;
             }
@@ -531,9 +531,10 @@ namespace NodeController
         private static float StretchGetter(INetworkData data) => data.StretchPercent;
         private static bool NoMarkingsGetter(INetworkData data) => !data.NoMarkings;
 
+        protected static bool AnyPredicate(SegmentEndData data) => true;
         protected static bool TouchablePredicate(SegmentEndData data) => !data.IsUntouchable;
         protected static bool MainRoadPredicate(SegmentEndData data) => TouchablePredicate(data) && data.IsMainRoad;
-        protected static bool NoMarkingsPredicate(SegmentEndData data) => TouchablePredicate(data) && data.IsRoad;
+        protected static bool IsRoadPredicate(SegmentEndData data) => data.IsRoad;
 
         #endregion
     }

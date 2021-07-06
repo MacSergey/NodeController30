@@ -61,7 +61,10 @@ namespace NodeController
 
         public bool DefaultIsSlope => !Id.GetSegment().Info.m_flatJunctions && !NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         public bool DefaultIsTwist => !DefaultIsSlope && !NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
-        public bool IsMoveable => !IsNodeLess && !IsUntouchable;
+
+        public bool IsChangeable => !IsNodeLess;
+        public bool IsOffsetChangeable => IsChangeable && !IsUntouchable;
+        public bool IsRotateChangeable => IsChangeable;
         public bool IsMainRoad { get; set; }
 
         public bool IsRoad { get; private set; }
@@ -119,7 +122,7 @@ namespace NodeController
         public bool IsSlope { get; set; }
         private bool KeepDefaults
         {
-            get => _keepDefault || IsUntouchable;
+            get => _keepDefault /*|| IsUntouchable*/;
             set => _keepDefault = value;
         }
 
@@ -243,7 +246,7 @@ namespace NodeController
                 MaxPossibleOffset = NodeStyle.MaxOffset;
             }
 
-            if (style.SupportRotate == SupportOption.None || force || IsUntouchable)
+            if (style.SupportRotate == SupportOption.None || force || !IsRotateChangeable)
                 SetRotate(style.DefaultRotate);
 
             if (style.SupportOffset == SupportOption.None)
@@ -764,16 +767,22 @@ namespace NodeController
             var data = SingletonManager<Manager>.Instance[NodeId];
 
             Render—ontour(contourData);
-            if (data.IsMoveableEnds && IsMoveable)
+            if (data.IsMoveableEnds && IsChangeable)
             {
                 RenderEnd(contourData, LengthXZ(LeftSide.Position - Position) + CircleRadius, 0f);
                 RenderEnd(contourData, 0f, LengthXZ(RightSide.Position - Position) + CircleRadius);
                 RenderOutterCircle(outterData);
-                RenderInnerCircle(innerData);
-                if (leftData != null)
-                    LeftSide.RenderCircle(leftData.Value);
-                if (rightData != null)
-                    RightSide.RenderCircle(rightData.Value);
+
+                if (IsOffsetChangeable)
+                {
+                    RenderInnerCircle(innerData);
+                    if (leftData != null)
+                        LeftSide.RenderCircle(leftData.Value);
+                    if (rightData != null)
+                        RightSide.RenderCircle(rightData.Value);
+                }
+                else if (IsRotateChangeable)
+                    Position.RenderCircle(innerData, CenterDotRadius * 2, CenterDotRadius * 1.2f);
             }
             else
                 RenderEnd(contourData);
