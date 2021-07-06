@@ -167,6 +167,18 @@
     <value>- Fix segments collision calculation.
 - Added Chinese Traditional translation.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_1" xml:space="preserve">
+    <value>- Added underground mode (hold Shift to select underground node).
+- Added nearby nodes overlay.
+- Added calculate shift by nearby nodes - set average shift value to node.
+- Added calculate shift by intersections - set shift value for all nodes between intersection for smooth transition (like -2,-1,0,+1,+2).
+- Added set shift between intersections - set this shift value for all nodes between intersection.
+- Added shortcuts, you can bind keys in mod's options.
+- Added the ability to hide marking and change rotation on untouchable (like harbor or cargo station) segments.
+- Fixed resetting node style middle nodes after load map.
+- Fixed resetting node style when replace segment.
+- Fixed auto main slope direction calculation.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>弯曲</value>
   </data>
