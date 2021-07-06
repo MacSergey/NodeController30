@@ -375,6 +375,7 @@
 Слишком близко к соседнему углу</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Удерживайте Shift для подземного режима</value>
+    <value>Удерживайте Shift
+для подземного режима</value>
   </data>
 </root>

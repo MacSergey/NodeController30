@@ -373,6 +373,7 @@ Klik om te wijzigen</value>
 Te dichtbij andere knoop</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Hold Shift to underground mode</value>
+    <value>Hold Shift to
+underground mode</value>
   </data>
 </root>

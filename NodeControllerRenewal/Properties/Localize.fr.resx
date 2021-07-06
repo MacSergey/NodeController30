@@ -207,7 +207,7 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>Calculer le décalage par intersections</value>
   </data>
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
-    <value>Calculer le décalage avec les nœuds à proximité</value>
+    <value>Calculer le décalage par les nœuds à proximité</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Réinitialiser le décalage</value>
@@ -297,10 +297,10 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>Calculer le décalage par intersections</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
-    <value>Calculer le décalage avec les nœuds à proximité</value>
+    <value>Calculer le décalage par les nœuds à proximité</value>
   </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
-    <value>Changer le mode de direction de la pente</value>
+    <value>Changer le mode principal de direction de la pente</value>
   </data>
   <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
     <value>Changer le style de nœud</value>
