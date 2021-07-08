@@ -16,7 +16,6 @@ using System.Resources;
 using TrafficManager.Manager.Impl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static ColossalFramework.Plugins.PluginManager;
 
 namespace NodeController
 {
@@ -64,6 +63,7 @@ namespace NodeController
 #endif
         #endregion
         protected override ResourceManager LocalizeManager => Localize.ResourceManager;
+        protected override bool NeedMonoDevelopImpl => true;
 
         #region BASIC
 
