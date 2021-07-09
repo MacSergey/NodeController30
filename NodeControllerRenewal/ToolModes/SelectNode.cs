@@ -17,19 +17,20 @@ namespace NodeController
         public override string GetToolInfo()
         {
             if (IsHoverNode)
-                return string.Format(Localize.Tool_InfoClickNode, HoverNode.Id);
+                return string.Format(Localize.Tool_InfoClickNode, HoverNode.Id) + GetStepOverInfo();
             else if (IsHoverSegment)
             {
                 if (!IsPossibleInsertNode)
-                    return Localize.Tool_InfoTooCloseNode;
+                    return Localize.Tool_InfoTooCloseNode + GetStepOverInfo();
                 else if (HoverSegment.Id.GetSegment().Info.PedestrianLanes() >= 2)
-                    return Localize.Tool_InfoInsertCrossingNode;
+                    return Localize.Tool_InfoInsertCrossingNode + GetStepOverInfo();
                 else
-                    return Localize.Tool_InfoInsertNode;
+                    return Localize.Tool_InfoInsertNode + GetStepOverInfo();
             }
             else
-                return $"{Localize.Tool_InfoSelectNode}\n{Localize.Tool_InfoUnderground}";
+                return $"{Localize.Tool_InfoSelectNode}\n\n{Localize.Tool_InfoUnderground}";
         }
+        private string GetStepOverInfo() => NodeControllerTool.SelectionStepOverShortcut.NotSet ? string.Empty : "\n\n" + string.Format(CommonLocalize.Tool_InfoSelectionStepOver, NodeControllerTool.SelectionStepOverShortcut.InputKey);
 
         protected override bool IsValidNode(ushort nodeId)
         {
@@ -47,7 +48,7 @@ namespace NodeController
         {
             { m_service: ItemClass.Service.Road } => true,
             { m_service: ItemClass.Service.PublicTransport } => true,
-            { m_service: ItemClass.Service.Beautification, m_level: >= (ItemClass.Level)3 } => true,
+            { m_service: ItemClass.Service.Beautification, m_level: >= ItemClass.Level.Level3 } => true,
             { m_service: ItemClass.Service.Beautification, m_subService: ItemClass.SubService.BeautificationParks } => true,
             _ => false,
         };

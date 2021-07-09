@@ -251,6 +251,8 @@ namespace NodeController.UI
     {
         bool IReusable.InCache { get; set; }
         public override bool SupportEven => true;
+
+        public void Init(float height) => base.Init(height);
     }
     public class IOSegmented : UIOnceSegmented<bool> { }
 }

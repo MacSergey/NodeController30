@@ -145,6 +145,8 @@ namespace NodeController.UI
             TypeProperty = ComponentPool.Get<NodeTypePropertyPanel>(Content);
             TypeProperty.Text = NodeController.Localize.Option_Type;
             TypeProperty.Init(Data.IsPossibleType);
+            TypeProperty.UseWheel = true;
+            TypeProperty.WheelTip = true;
             TypeProperty.SelectedObject = Data.Type;
             TypeProperty.OnSelectObjectChanged += (value) =>
             {

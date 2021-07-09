@@ -70,7 +70,7 @@ namespace NodeController
                 var netManaget = Singleton<NetManager>.instance;
                 var manager = SingletonManager<Manager>.Instance;
 
-                for (ushort i = 0; i < NetManager.MAX_NODE_COUNT; i+=1)
+                for (ushort i = 0; i < NetManager.MAX_NODE_COUNT; i += 1)
                 {
                     var node = i.GetNode();
                     var created = node.m_flags.IsSet(NetNode.Flags.Created);
