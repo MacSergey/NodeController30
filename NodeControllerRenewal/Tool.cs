@@ -22,11 +22,13 @@ namespace NodeController
         public static NodeControllerShortcut SetShiftBetweenIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(SetShiftBetweenIntersectionsShortcut), nameof(Localize.Setting_ShortcutSetShiftBetweenIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.SetShiftBetweenIntersections());
         public static NodeControllerShortcut ChangeNodeStyleShortcut { get; } = new NodeControllerShortcut(nameof(ChangeNodeStyleShortcut), nameof(Localize.Setting_ShortcutChangeNodeStyle), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeNodeStyle());
         public static NodeControllerShortcut ChangeMainRoadModeShortcut { get; } = new NodeControllerShortcut(nameof(ChangeMainRoadModeShortcut), nameof(Localize.Setting_ShortcutChangeMainRoadMode), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeMainRoadMode());
+        public static NodeControllerShortcut SelectionStepOverShortcut { get; } = new NodeControllerShortcut(nameof(SelectionStepOverShortcut), nameof(CommonLocalize.Settings_ShortcutSelectionStepOver), SavedInputKey.Encode(KeyCode.Space, true, false, false), () => SingletonTool<NodeControllerTool>.Instance.SelectionStepOver(), ToolModeType.Select);
 
         public static IEnumerable<Shortcut> ToolShortcuts
         {
             get
             {
+                yield return SelectionStepOverShortcut;
                 yield return ResetOffsetShortcut;
                 yield return ResetToDefaultShortcut;
                 yield return MakeStraightEndsShortcut;
@@ -86,6 +88,11 @@ namespace NodeController
         }
         private void SetInfoMode() => Singleton<InfoManager>.instance.SetCurrentMode(Data?.IsUnderground == true ? InfoManager.InfoMode.Underground : InfoManager.InfoMode.None, InfoManager.SubInfoMode.Default);
 
+        private void SelectionStepOver()
+        {
+            if (Mode is SelectNodeToolMode selectMode)
+                selectMode.IgnoreSelected();
+        }
         public void SetKeepDefaults()
         {
             Data.SetKeepDefaults();

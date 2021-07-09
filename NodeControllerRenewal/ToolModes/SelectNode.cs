@@ -16,16 +16,18 @@ namespace NodeController
 
         public override string GetToolInfo()
         {
+            var stepOver = NodeControllerTool.SelectionStepOverShortcut.NotSet ? string.Empty : "\n\n" + string.Format(CommonLocalize.Tool_InfoSelectionStepOver, NodeControllerTool.SelectionStepOverShortcut.InputKey);
+
             if (IsHoverNode)
-                return string.Format(Localize.Tool_InfoClickNode, HoverNode.Id);
+                return string.Format(Localize.Tool_InfoClickNode, HoverNode.Id) + stepOver;
             else if (IsHoverSegment)
             {
                 if (!IsPossibleInsertNode)
-                    return Localize.Tool_InfoTooCloseNode;
+                    return Localize.Tool_InfoTooCloseNode + stepOver;
                 else if (HoverSegment.Id.GetSegment().Info.PedestrianLanes() >= 2)
-                    return Localize.Tool_InfoInsertCrossingNode;
+                    return Localize.Tool_InfoInsertCrossingNode + stepOver;
                 else
-                    return Localize.Tool_InfoInsertNode;
+                    return Localize.Tool_InfoInsertNode + stepOver;
             }
             else
                 return $"{Localize.Tool_InfoSelectNode}\n{Localize.Tool_InfoUnderground}";
