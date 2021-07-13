@@ -93,6 +93,7 @@ namespace NodeController
 
         public void UpdateAll()
         {
+            SingletonMod<Mod>.Logger.Debug("Update all nodes");
             foreach (var data in Buffer)
             {
                 if (data != null)
