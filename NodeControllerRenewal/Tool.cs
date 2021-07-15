@@ -1,4 +1,5 @@
 ﻿using ColossalFramework;
+using ColossalFramework.UI;
 using ModsCommon;
 using ModsCommon.Utilities;
 using NodeController.UI;
@@ -46,6 +47,12 @@ namespace NodeController
         public override Shortcut Activation => ActivationShortcut;
         public NodeControllerPanel Panel => SingletonItem<NodeControllerPanel>.Instance;
 
+        protected override UITextureAtlas UUIAtlas => NodeControllerTextures.Atlas;
+        protected override string UUINormalSprite => NodeControllerTextures.ButtonNormal;
+        protected override string UUIHoveredSprite => NodeControllerTextures.ButtonHover;
+        protected override string UUIPressedSprite => NodeControllerTextures.ButtonActive;
+        protected override string UUIDisabledSprite => string.Empty;
+
         public NodeData Data { get; private set; }
         public bool IsUnderground => Data?.IsUnderground ?? false;
 
@@ -64,6 +71,7 @@ namespace NodeController
         {
             base.InitProcess();
             NodeControllerPanel.CreatePanel();
+            RegisterUUI();
         }
         protected override void OnReset()
         {
