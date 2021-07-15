@@ -48,10 +48,10 @@ namespace NodeController
         public NodeControllerPanel Panel => SingletonItem<NodeControllerPanel>.Instance;
 
         protected override UITextureAtlas UUIAtlas => NodeControllerTextures.Atlas;
-        protected override string UUINormalSprite => NodeControllerTextures.ButtonNormal;
-        protected override string UUIHoveredSprite => NodeControllerTextures.ButtonHover;
-        protected override string UUIPressedSprite => NodeControllerTextures.ButtonActive;
-        protected override string UUIDisabledSprite => string.Empty;
+        protected override string UUINormalSprite => NodeControllerTextures.UUINormal;
+        protected override string UUIHoveredSprite => NodeControllerTextures.UUIHovered;
+        protected override string UUIPressedSprite => NodeControllerTextures.UUIPressed;
+        protected override string UUIDisabledSprite => /*NodeControllerTextures.UUIDisabled;*/string.Empty;
 
         public NodeData Data { get; private set; }
         public bool IsUnderground => Data?.IsUnderground ?? false;
