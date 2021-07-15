@@ -9,38 +9,8 @@ using UnityEngine;
 
 namespace NodeController.UI
 {
-    public class NodeControllerPanel : CustomUIPanel
+    public class NodeControllerPanel : ToolPanel<Mod, NodeControllerTool, NodeControllerPanel>
     {
-        public static void CreatePanel()
-        {
-            SingletonMod<Mod>.Logger.Debug($"Create panel");
-            SingletonItem<NodeControllerPanel>.Instance = UIView.GetAView().AddUIComponent(typeof(NodeControllerPanel)) as NodeControllerPanel;
-            SingletonMod<Mod>.Logger.Debug($"Panel created");
-        }
-        public static void RemovePanel()
-        {
-            SingletonMod<Mod>.Logger.Debug($"Remove panel");
-            if (SingletonItem<NodeControllerPanel>.Instance is NodeControllerPanel panel)
-            {
-                panel.Hide();
-                Destroy(panel);
-                SingletonItem<NodeControllerPanel>.Instance = null;
-                SingletonMod<Mod>.Logger.Debug($"Panel removed");
-            }
-        }
-        private static Vector2 DefaultPosition { get; } = new Vector2(100f, 100f);
-
-        public bool Active
-        {
-            get => enabled && isVisible;
-            set
-            {
-                enabled = value;
-                isVisible = value;
-            }
-        }
-        public bool IsHover => (isVisible && this.IsHover(SingletonTool<NodeControllerTool>.Instance.MousePosition)) || components.Any(c => c.isVisible && c.IsHover(SingletonTool<NodeControllerTool>.Instance.MousePosition));
-
         private PropertyGroupPanel Content { get; set; }
         private PanelHeader Header { get; set; }
         private NodeTypePropertyPanel TypeProperty { get; set; }
@@ -67,36 +37,6 @@ namespace NodeController.UI
             Header = ComponentPool.Get<PanelHeader>(Content);
             Header.Target = this;
             Header.Init();
-        }
-
-        public override void Awake()
-        {
-            base.Awake();
-            Active = false;
-        }
-        public override void Start()
-        {
-            base.Start();
-            SetDefaultPosition();
-        }
-        public override void OnEnable()
-        {
-            base.OnEnable();
-
-            if (absolutePosition.x < 0 || absolutePosition.y < 0)
-                SetDefaultPosition();
-        }
-        protected override void OnVisibilityChanged()
-        {
-            base.OnVisibilityChanged();
-
-            if (isVisible)
-                RefreshPanel();
-        }
-        private void SetDefaultPosition()
-        {
-            SingletonMod<Mod>.Logger.Debug($"Set default panel position");
-            absolutePosition = DefaultPosition;
         }
 
         public void SetData(NodeData data)
@@ -162,7 +102,7 @@ namespace NodeController.UI
             };
         }
         public void RefreshHeader() => Header.Refresh();
-        public void RefreshPanel()
+        public override void RefreshPanel()
         {
             RefreshHeader();
 
