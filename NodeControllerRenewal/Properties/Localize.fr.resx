@@ -195,7 +195,7 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>Milieu</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
-    <value>Étirer</value>
+    <value>Étiré</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
     <value>Demi-tour</value>
@@ -207,7 +207,7 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>Calculer le décalage par intersections</value>
   </data>
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
-    <value>Calculer le décalage par les nœuds à proximité</value>
+    <value>Calculer le décalage avec les nœuds à proximité</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Réinitialiser le décalage</value>
@@ -222,7 +222,7 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>Manuellement</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Rendre droit les extrémités</value>
+    <value>Rendre les extrémités droites</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marquage</value>
@@ -246,7 +246,7 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>Définir le décalage entre les intersections</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
-    <value>Décalé</value>
+    <value>Décalage</value>
   </data>
   <data name="Option_ShiftFormat" xml:space="preserve">
     <value>{0}m</value>
@@ -284,11 +284,14 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nœud #{0}</value>
   </data>
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>Les nœuds sont inclinés par défaut</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Afficher les nœuds à proximité</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
-    <value>Sélectionnez les nœuds du milieu</value>
+    <value>Sélectionner les nœuds du milieu</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Si cette option est désactivée, les nœuds du milieu se déplaceront vers l'emplacement cliqué</value>
@@ -297,7 +300,7 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>Calculer le décalage par intersections</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
-    <value>Calculer le décalage par les nœuds à proximité</value>
+    <value>Calculer le décalage avec les nœuds à proximité</value>
   </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>Changer le mode principal de direction de la pente</value>
@@ -309,7 +312,7 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>Réinitialiser le décalage</value>
   </data>
   <data name="Setting_ShortcutMakeStraightEnds" xml:space="preserve">
-    <value>Rendre droit les extrémités</value>
+    <value>Rendre les extrémités droites</value>
   </data>
   <data name="Setting_ShortcutResetToDefault" xml:space="preserve">
     <value>Rétablir les paramètres par défaut</value>

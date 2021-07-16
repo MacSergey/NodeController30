@@ -284,6 +284,9 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Node #{0}</value>
   </data>
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>Node is sloped by default</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Show nearby nodes overlay</value>
   </data>

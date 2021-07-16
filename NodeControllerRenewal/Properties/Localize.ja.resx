@@ -284,6 +284,9 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>ノード #{0} を調整中</value>
   </data>
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>全てのノードで、デフォルトをスロープに変更</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>選択中は近くにあるノードをハイライト</value>
   </data>

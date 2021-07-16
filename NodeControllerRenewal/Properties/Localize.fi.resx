@@ -284,6 +284,9 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Risteys #{0}</value>
   </data>
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>Kaltevat risteykset oletuksena</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Näytä läheisten risteysten peittokuva</value>
   </data>

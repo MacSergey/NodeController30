@@ -284,6 +284,9 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nodo #{0}</value>
   </data>
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>Inclinar el nodo de forma predeterminada</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostrar superposición de nodos cercanos</value>
   </data>

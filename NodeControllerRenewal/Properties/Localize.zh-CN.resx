@@ -284,6 +284,9 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>节点 #{0}</value>
   </data>
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>节点默认为斜坡</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>显示光标附近节点</value>
   </data>

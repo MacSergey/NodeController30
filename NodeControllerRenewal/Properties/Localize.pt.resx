@@ -284,6 +284,9 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nó #{0}</value>
   </data>
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>Node is sloped by default</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostrar sobreposição de nódulos próximos</value>
   </data>

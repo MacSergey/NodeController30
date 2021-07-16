@@ -284,6 +284,9 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Узел #{0}</value>
   </data>
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>Node is sloped by default</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Подсвечивать ближайшие узлы</value>
   </data>

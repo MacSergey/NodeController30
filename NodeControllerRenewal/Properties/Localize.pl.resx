@@ -284,6 +284,9 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Węzeł #{0}</value>
   </data>
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>Węzeł jest domyślnie pochyły</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Pokaż nakładkę pobliskich węzłów</value>
   </data>

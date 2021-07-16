@@ -125,7 +125,7 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
     <value>AWAS: Jika Anda membuat penyimpanan baru, Anda tidak akan bisa menggunakan Node Controller original untuk map ini.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Mengontrol tipe dan bentuk persimpangan</value>
+    <value>Mengontrol tipe dan bentuk titik hubung</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>- Added auto mode for main slope direction.
@@ -204,10 +204,10 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
     <value>Semua</value>
   </data>
   <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
-    <value>Calculate shift by intersections</value>
+    <value>Hitungkan pergeseran menurut persimpangan</value>
   </data>
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
-    <value>Calculate shift by nearby nodes</value>
+    <value>Hitungkan pergeseran menurut titik hubung yang berdekatan</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Setel ulang pergeseran</value>
@@ -228,7 +228,7 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
     <value>Markah</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
-    <value>Pergeseran</value>
+    <value>Mundur</value>
   </data>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
@@ -243,10 +243,10 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
     <value>{0}°</value>
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
-    <value>Set shift between intersections</value>
+    <value>Terapkan pergeseran di antara persimpangan</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
-    <value>Shift</value>
+    <value>Pergeseran</value>
   </data>
   <data name="Option_ShiftFormat" xml:space="preserve">
     <value>{0}m</value>
@@ -273,37 +273,40 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
     <value>Lereng</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>Gulung</value>
+    <value>Twist</value>
   </data>
   <data name="Option_TwistFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
-    <value>Jenis persimpangan</value>
+    <value>Jenis titik hubung</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
-    <value>Simpang #{0}</value>
+    <value>Titik hubung #{0}</value>
+  </data>
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>Titik hubung dimiringkan sesuai dengan standar</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
-    <value>Perlihatkan hamparan simpangan berdekatan</value>
+    <value>Perlihatkan hamparan titik hubung yang berdekatan</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
-    <value>Pilih persimpangan tengah</value>
+    <value>Pilih titik hubung tengah</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>If this option is disabled, the middle nodes will move to clicked position</value>
+    <value>Jika opsi ini dinonaktifkan, titik hubung di tengah akan berpindah ke posisi yang diklik</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
-    <value>Calculate shift by intersections</value>
+    <value>Hitungkan pergeseran menurut persimpangan</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
-    <value>Calculate shift by nearby nodes</value>
+    <value>Hitungkan pergeseran menurut titik hubung yang berdekatan</value>
   </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
-    <value>Ubahkan mode arah lereng utama</value>
+    <value>Ubah mode arah lereng utama</value>
   </data>
   <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
-    <value>Ubah gaya simpang</value>
+    <value>Ubah gaya titik hubung</value>
   </data>
   <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
     <value>Setel ulang pergeseran</value>
@@ -315,7 +318,7 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
     <value>Setel ulang ke standar</value>
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
-    <value>Set shift between intersections</value>
+    <value>Terapkan pergeseran di antara persimpangan</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Tekan dan tahan Shift untuk meluruskan jalan</value>
@@ -327,20 +330,20 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
     <value>Tekan dan tahan Alt untuk mengubah arah lereng utama</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
-    <value>Persimpangan #{0}
-Klik untuk edit</value>
+    <value>Titik hubung #{0}
+Klik untuk mengedit</value>
   </data>
   <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
-    <value>Klik untuk memilih pojok yang Anda ingin luruskan</value>
+    <value>Klik untuk memilih pojok yang ingin Anda luruskan</value>
   </data>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
-    <value>Seret untuk mengubah pergeseran</value>
+    <value>Seretkan untuk mengubah pergeseran</value>
   </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
-    <value>Seret untuk mengubah putaran</value>
+    <value>Seretkan untuk mengubah putaran</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
-    <value>Seret untuk mengubah pergeseran pojok</value>
+    <value>Seretkan untuk mengubah pergeseran pojok</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Seretkan ujung ini untuk mengubah arah lereng utama</value>
@@ -349,29 +352,29 @@ Klik untuk edit</value>
     <value>Taruhkan ujung ini untuk mengubah arah lereng utama</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
-    <value>Klik untuk menambah persimpangan penyeberangan</value>
+    <value>Klik untuk menambah titik hubung penyeberangan</value>
   </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
-    <value>Klik untuk memasukkan persimpangan</value>
+    <value>Klik untuk memasukkan titik hubung</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Pilih pojok yang Anda ingin luruskan dengannya</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>Ubah menjadi arah lereng utama yang diingkan</value>
+    <value>Ubah menjadi arah lereng utama yang diinginkan</value>
   </data>
   <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
     <value>Pilih posisi akhir dari arah lereng utama</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
-    <value>Pilih persimpangan</value>
+    <value>Pilih titik hubung</value>
   </data>
   <data name="Tool_InfoSelectToAlign" xml:space="preserve">
     <value>Pilih pojok yang Anda ingin luruskan</value>
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
-    <value>Tidak dapat memasukkan persimpangan
-Terlalu dekat dengan simpang lainnya</value>
+    <value>Tidak dapat memasukkan titik hubung
+Terlalu dekat dengan titik hubung lainnya</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
     <value>Tekan dan tahan Shift untuk mode bawah tanah</value>
