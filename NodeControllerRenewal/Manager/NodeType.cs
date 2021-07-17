@@ -89,7 +89,7 @@ namespace NodeController
         public virtual float DefaultSlope => 0f;
         public virtual float DefaultTwist => 0f;
         public virtual bool DefaultNoMarking => false;
-        public virtual bool DefaultSlopeJunction => false;
+        public virtual bool DefaultSlopeJunction => Settings.NodeIsSlopedByDefault;
         public virtual float DefaultStretch => 1f;
 
         public virtual bool IsMoveable => false;
