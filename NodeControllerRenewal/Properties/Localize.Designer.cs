@@ -557,6 +557,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Node is sloped by default.
+        /// </summary>
+        internal static string Settings_NodeIsSlopedByDefault {
+            get {
+                return ResourceManager.GetString("Settings_NodeIsSlopedByDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Show nearby nodes overlay.
         /// </summary>
         internal static string Settings_RenderNearNode {
@@ -748,7 +757,8 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hold Shift to underground mode.
+        ///   Ищет локализованную строку, похожую на Hold Shift to
+        ///underground mode.
         /// </summary>
         internal static string Tool_InfoUnderground {
             get {
