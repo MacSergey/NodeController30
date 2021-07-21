@@ -179,6 +179,14 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
 - Fixed resetting node style when replace segment.
 - Fixed auto main slope direction calculation.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_1_1" xml:space="preserve">
+    <value>- Fixed not updating nodes after loading map.
+- Added selection step over like in MoveIt. Press Ctrl+Space to step over (you can rebind in mod options).
+- Added setting "Node is sloped by default". By default this option disabled.
+- Added the ability to change node type by scroll wheel.
+- Added new icon for UUI button.
+- Added warning for Linux users about missing libraries.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Tikungan</value>
   </data>
