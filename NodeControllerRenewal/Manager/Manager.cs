@@ -55,7 +55,7 @@ namespace NodeController
             {
                 var data = new NodeData(nodeId, nodeType);
                 Buffer[nodeId] = data;
-                Update(nodeId, options);
+                Update(options, nodeId);
                 return data;
             }
             catch (NodeNotCreatedException)
@@ -94,18 +94,21 @@ namespace NodeController
         public void UpdateAll()
         {
             SingletonMod<Mod>.Logger.Debug("Update all nodes");
-            foreach (var data in Buffer)
-            {
-                if (data != null)
-                    Update(data.Id);
-            }
+
+            var toUpdate = Buffer.Where(d => d != null).Select(d => d.Id).ToArray();
+            Update(toUpdate);
         }
         public void Update(ushort nodeId, bool now = false)
         {
             var option = Options.UpdateLater | (now ? Options.UpdateNow : Options.None);
-            Update(nodeId, option);
+            Update(option, nodeId);
         }
-        private void Update(ushort nodeId, Options options)
+        public void Update(ushort[] nodeIds, bool now = false)
+        {
+            var option = Options.UpdateLater | (now ? Options.UpdateNow : Options.None);
+            Update(option, nodeIds);
+        }
+        private void Update(Options options, params ushort[] nodeId)
         {
             if ((options & Options.UpdateAll) != 0)
             {
@@ -127,25 +130,28 @@ namespace NodeController
                 NetManager.instance.UpdateNode(nodeId);
         }
 
-        private void GetUpdateList(ushort nodeId, Options nearbyOptions, out HashSet<ushort> nodeIds, out HashSet<ushort> segmentIds)
+        private void GetUpdateList(ushort[] toUpdateIds, Options nearbyOptions, out HashSet<ushort> nodeIds, out HashSet<ushort> segmentIds)
         {
             nodeIds = new HashSet<ushort>();
             segmentIds = new HashSet<ushort>();
 
-            if (Buffer[nodeId] == null)
-                return;
-
-            nodeIds.Add(nodeId);
-            var nodeSegmentIds = nodeId.GetNode().SegmentIds().ToArray();
-            segmentIds.AddRange(nodeSegmentIds);
-
-            if ((nearbyOptions & Options.UpdateNearby) != 0)
+            foreach (var nodeId in toUpdateIds)
             {
-                foreach (var segmentIs in nodeSegmentIds)
+                if (Buffer[nodeId] == null)
+                    continue;
+
+                nodeIds.Add(nodeId);
+                var nodeSegmentIds = nodeId.GetNode().SegmentIds().ToArray();
+                segmentIds.AddRange(nodeSegmentIds);
+
+                if ((nearbyOptions & Options.UpdateNearby) != 0)
                 {
-                    var otherNodeId = segmentIs.GetSegment().GetOtherNode(nodeId);
-                    if (this[otherNodeId, nearbyOptions & Options.CreateAll & ~Options.Nearby | Options.This] != null)
-                        nodeIds.Add(otherNodeId);
+                    foreach (var segmentIs in nodeSegmentIds)
+                    {
+                        var otherNodeId = segmentIs.GetSegment().GetOtherNode(nodeId);
+                        if (this[otherNodeId, nearbyOptions & Options.CreateAll & ~Options.Nearby | Options.This] != null)
+                            nodeIds.Add(otherNodeId);
+                    }
                 }
             }
         }
@@ -201,6 +207,8 @@ namespace NodeController
         }
         public void FromXml(XElement config, NetObjectsMap map, bool updateNode = false)
         {
+            var toUpdate = new List<ushort>();
+
             foreach (var nodeConfig in config.Elements(NodeData.XmlName))
             {
                 var id = nodeConfig.GetAttrValue(nameof(NodeData.Id), (ushort)0);
@@ -216,8 +224,6 @@ namespace NodeController
                         var data = new NodeData(id, type);
                         data.FromXml(nodeConfig, map);
                         Buffer[data.Id] = data;
-
-                        Update(data.Id, Options.UpdateNow | (updateNode ? Options.UpdateLater : Options.None));
                     }
                     catch (NodeNotCreatedException error)
                     {
@@ -233,6 +239,8 @@ namespace NodeController
                     }
                 }
             }
+
+            Update(Options.UpdateNow | (updateNode ? Options.UpdateLater : Options.None), toUpdate.ToArray());
         }
 
         [Flags]

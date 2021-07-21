@@ -356,7 +356,7 @@ namespace NodeController
             var endDatas = data.SegmentEndDatas.OrderBy(s => s.AbsoluteAngle).ToArray();
             var count = endDatas.Length;
 
-            var leftMainMitT = new float[count];
+            var leftMainMinT = new float[count];
             var rightMainMinT = new float[count];
 
             var leftDefaultT = new float[count];
@@ -371,8 +371,8 @@ namespace NodeController
                     if (endDatas[i].IsTrain && endDatas[j].IsTrain)
                         continue;
 
-                    GetMainMinLimit(endDatas[i], endDatas[j], count, ref leftMainMitT[i], ref rightMainMinT[j]);
-                    leftDefaultT[i] = leftMainMitT[i];
+                    GetMainMinLimit(endDatas[i], endDatas[j], count, ref leftMainMinT[i], ref rightMainMinT[j]);
+                    leftDefaultT[i] = leftMainMinT[i];
                     rightDefaultT[j] = rightMainMinT[j];
 
                     var iDir = NormalizeXZ(endDatas[i].RawSegmentBezier.StartDirection);
@@ -393,7 +393,7 @@ namespace NodeController
                     {
                         var i = j.PrevIndex(count);
                         var k = j.NextIndex(count);
-                        var iMin = Mathf.Clamp01(leftMainMitT[i]);
+                        var iMin = Mathf.Clamp01(leftMainMinT[i]);
                         var kMin = Mathf.Clamp01(rightMainMinT[k]);
                         var iBezier = endDatas[i].LeftSide.RawBezier;
                         var kBezier = endDatas[k].RightSide.RawBezier;
@@ -402,7 +402,7 @@ namespace NodeController
 
                         if (Intersection.CalculateSingle(endDatas[j].LeftSide.RawBezier, limitBezier, out var leftT, out _))
                         {
-                            leftMainMitT[j] = Mathf.Max(leftMainMitT[j], leftT);
+                            leftMainMinT[j] = Mathf.Max(leftMainMinT[j], leftT);
                             leftDefaultT[j] = Mathf.Max(leftDefaultT[j], leftT);
                         }
 
@@ -432,7 +432,7 @@ namespace NodeController
             {
                 var endData = endDatas[i];
 
-                endData.LeftSide.MinT = Mathf.Clamp01(leftMainMitT[i]);
+                endData.LeftSide.MinT = Mathf.Clamp01(leftMainMinT[i]);
                 endData.RightSide.MinT = Mathf.Clamp01(rightMainMinT[i]);
 
                 endData.LeftSide.DefaultT = Mathf.Clamp01(leftDefaultT[i]);
