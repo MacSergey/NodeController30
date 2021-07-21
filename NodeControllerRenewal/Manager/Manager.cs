@@ -224,6 +224,8 @@ namespace NodeController
                         var data = new NodeData(id, type);
                         data.FromXml(nodeConfig, map);
                         Buffer[data.Id] = data;
+
+                        toUpdate.Add(data.Id);
                     }
                     catch (NodeNotCreatedException error)
                     {
