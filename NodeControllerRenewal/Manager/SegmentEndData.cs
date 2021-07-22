@@ -42,14 +42,13 @@ namespace NodeController
         public string Title => $"Segment #{Id}";
         public string XmlSection => XmlName;
 
-        public ushort NodeId { get; set; }
+        public NodeData NodeData { get; }
+        public ushort NodeId => NodeData.Id;
         public ushort Id { get; set; }
         public int Index { get; set; }
         public Color32 Color => OverlayColors[Index];
 
-        public NodeData NodeData => SingletonManager<Manager>.Instance[NodeId];
         public bool IsStartNode => Id.GetSegment().IsStartNode(NodeId);
-        public SegmentEndData Other => SingletonManager<Manager>.Instance[Id.GetSegment().GetOtherNode(NodeId), Id, true];
 
         public BezierTrajectory RawSegmentBezier { get; private set; }
         public BezierTrajectory SegmentBezier { get; private set; }
@@ -142,7 +141,7 @@ namespace NodeController
         {
             get
             {
-                if (NodeData != null && NodeData.Type == NodeStyleType.Stretch)
+                if (NodeData?.Type == NodeStyleType.Stretch)
                     return false; // always ignore.
                 else if (NoMarkings)
                     return true; // always hide
@@ -165,10 +164,10 @@ namespace NodeController
 
         #region BASIC
 
-        public SegmentEndData(ushort segmentId, ushort nodeId)
+        public SegmentEndData(NodeData nodeData, ushort segmentId)
         {
+            NodeData = nodeData;
             Id = segmentId;
-            NodeId = nodeId;
 
             LeftSide = new SegmentSide(this, SideType.Left);
             RightSide = new SegmentSide(this, SideType.Right);

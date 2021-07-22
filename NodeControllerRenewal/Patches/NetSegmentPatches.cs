@@ -15,7 +15,7 @@ namespace NodeController.Patches
     {
         public static bool CalculateCornerPrefix(NetInfo extraInfo1, NetInfo extraInfo2, ushort ignoreSegmentID, ushort startNodeID, bool heightOffset, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection, ref bool smooth)
         {
-            if (extraInfo1 != null || extraInfo2 != null || SingletonManager<Manager>.Instance[startNodeID, ignoreSegmentID] is not SegmentEndData data)
+            if (extraInfo1 != null || extraInfo2 != null || !SingletonManager<Manager>.Instance.GetSegmentData(startNodeID, ignoreSegmentID, out var data))
             {
                 //SingletonMod<Mod>.Logger.Debug($"Not exist : node {startNodeID}, segment {ignoreSegmentID}, {(leftSide ? "left" : "right")}\n{System.Environment.StackTrace}");
                 return true;
@@ -60,7 +60,7 @@ namespace NodeController.Patches
 
         public static bool GetFlatJunctions(bool flatJunctions, ushort segmentId, ushort nodeId)
         {
-            if (SingletonManager<Manager>.Instance[nodeId, segmentId] is SegmentEndData data)
+            if (SingletonManager<Manager>.Instance.GetSegmentData(nodeId, segmentId, out var data))
                 return !data.IsSlope;
             else
                 return flatJunctions;

@@ -15,28 +15,24 @@ namespace NodeController
     {
         private NodeData[] Buffer { get; set; }
 
+        private InitState _state;
+        private InitState State
+        {
+            get => _state;
+            set
+            {
+                _state = value;
+                Inited = _state == InitState.Inited;
+            }
+        }
+        public bool Inited { get; private set; }
+
         public Manager()
         {
             SingletonMod<Mod>.Logger.Debug("Create manager");
             Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
         }
-        private void Clear()
-        {
-            SingletonMod<Mod>.Logger.Debug("Clear manager");
-            Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
-        }
-        public NodeData InsertNode(NetTool.ControlPoint controlPoint, NodeStyleType nodeType = NodeStyleType.Crossing)
-        {
-            if (NetTool.CreateNode(controlPoint.m_segment.GetSegment().Info, controlPoint, controlPoint, controlPoint, NetTool.m_nodePositionsSimulation, 0, false, false, true, false, false, false, 0, out var nodeId, out _, out _, out _) != ToolBase.ToolErrors.None)
-                return null;
-            else
-                nodeId.GetNode().m_flags |= NetNode.Flags.Middle | NetNode.Flags.Moveable;
 
-            var info = controlPoint.m_segment.GetSegment().Info;
-            var newNodeType = nodeType == NodeStyleType.Crossing && (info.m_netAI is not RoadBaseAI || info.PedestrianLanes() < 2) ? null : (NodeStyleType?)nodeType;
-            var data = Create(nodeId, Options.Default, newNodeType);
-            return data;
-        }
         public NodeData this[ushort nodeId, bool create = false] => this[nodeId, create ? Options.Default : Options.None];
         public NodeData this[ushort nodeId, Options options]
         {
@@ -49,6 +45,17 @@ namespace NodeController
             }
         }
         public SegmentEndData this[ushort nodeId, ushort segmentId, bool create = false] => this[nodeId, create] is NodeData data ? data[segmentId] : null;
+
+        public void Init()
+        {
+            State = InitState.InProcess;
+            UpdateAll();
+        }
+        private void Clear()
+        {
+            SingletonMod<Mod>.Logger.Debug("Clear manager");
+            Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
+        }
         private NodeData Create(ushort nodeId, Options options, NodeStyleType? nodeType = null)
         {
             try
@@ -72,6 +79,22 @@ namespace NodeController
                 return null;
             }
         }
+
+        public bool GetNodeData(ushort nodeId, out NodeData data)
+        {
+            data = Inited ? Buffer[nodeId] : null;
+            return data != null;
+        }
+        public bool GetSegmentData(ushort segmentId, bool isStart, out SegmentEndData data)
+        {
+            data = Inited ? Buffer[segmentId.GetSegment().GetNode(isStart)]?[segmentId] : null;
+            return data != null;
+        }
+        public bool GetSegmentData(ushort nodeId, ushort segmentId, out SegmentEndData data)
+        {
+            data = Inited ? Buffer[nodeId]?[segmentId] : null;
+            return data != null;
+        }
         public void GetSegmentData(ushort segmentId, out SegmentEndData start, out SegmentEndData end)
         {
             ref var segment = ref segmentId.GetSegment();
@@ -85,19 +108,29 @@ namespace NodeController
             ref var segment = ref segmentId.GetSegment();
             return Buffer[segment.m_startNode] != null || Buffer[segment.m_endNode] != null;
         }
-        public SegmentEndData GetSegmentData(ushort segmentId, bool isStart)
+
+        public NodeData InsertNode(NetTool.ControlPoint controlPoint, NodeStyleType nodeType = NodeStyleType.Crossing)
         {
-            ref var segment = ref segmentId.GetSegment();
-            return Buffer[segment.GetNode(isStart)]?[segmentId];
+            if (NetTool.CreateNode(controlPoint.m_segment.GetSegment().Info, controlPoint, controlPoint, controlPoint, NetTool.m_nodePositionsSimulation, 0, false, false, true, false, false, false, 0, out var nodeId, out _, out _, out _) != ToolBase.ToolErrors.None)
+                return null;
+            else
+                nodeId.GetNode().m_flags |= NetNode.Flags.Middle | NetNode.Flags.Moveable;
+
+            var info = controlPoint.m_segment.GetSegment().Info;
+            var newNodeType = nodeType == NodeStyleType.Crossing && (info.m_netAI is not RoadBaseAI || info.PedestrianLanes() < 2) ? null : (NodeStyleType?)nodeType;
+            var data = Create(nodeId, Options.Default, newNodeType);
+            return data;
         }
 
-        public void UpdateAll()
+        public void UpdateAll() => SimulationManager.instance.AddAction(UpdateAllImpl);
+        private void UpdateAllImpl()
         {
             SingletonMod<Mod>.Logger.Debug("Update all nodes");
 
             var toUpdate = Buffer.Where(d => d != null).Select(d => d.Id).ToArray();
             Update(toUpdate);
         }
+
         public void Update(ushort nodeId, bool now = false)
         {
             var option = Options.UpdateLater | (now ? Options.UpdateNow : Options.None);
@@ -108,28 +141,22 @@ namespace NodeController
             var option = Options.UpdateLater | (now ? Options.UpdateNow : Options.None);
             Update(option, nodeIds);
         }
-        private void Update(Options options, params ushort[] nodeId)
+        private void Update(Options options, params ushort[] toUpdateIds)
         {
             if ((options & Options.UpdateAll) != 0)
             {
                 if (options.IsSet(Options.UpdateThisNow))
                 {
-                    GetUpdateList(nodeId, options & ~Options.UpdateLater, out var nodeIds, out var segmentIds);
+                    GetUpdateList(toUpdateIds, options & ~Options.UpdateLater, out var nodeIds, out var segmentIds);
                     UpdateNow(nodeIds.ToArray(), segmentIds.ToArray(), false);
                 }
                 if (options.IsSet(Options.UpdateThisLater))
                 {
-                    GetUpdateList(nodeId, options & ~Options.UpdateNow, out var nodeIds, out _);
-                    AddToUpdate(nodeIds);
+                    GetUpdateList(toUpdateIds, options & ~Options.UpdateNow, out var nodeIds, out _);
+                    UpdateLater(nodeIds);
                 }
             }
         }
-        private void AddToUpdate(HashSet<ushort> nodeIds)
-        {
-            foreach (var nodeId in nodeIds)
-                NetManager.instance.UpdateNode(nodeId);
-        }
-
         private void GetUpdateList(ushort[] toUpdateIds, Options nearbyOptions, out HashSet<ushort> nodeIds, out HashSet<ushort> segmentIds)
         {
             nodeIds = new HashSet<ushort>();
@@ -156,14 +183,6 @@ namespace NodeController
             }
         }
 
-        public static void SimulationStep()
-        {
-            var manager = SingletonManager<Manager>.Instance;
-            var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)).ToArray();
-            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)).ToArray();
-
-            UpdateNow(nodeIds, segmentIds, true);
-        }
         private static void UpdateNow(ushort[] nodeIds, ushort[] segmentIds, bool updateFlags)
         {
             if (nodeIds.Length == 0)
@@ -188,7 +207,35 @@ namespace NodeController
             foreach (var nodeId in nodeIds)
                 manager.Buffer[nodeId].LateUpdate();
         }
+        private static void UpdateLater(IEnumerable<ushort> nodeIds)
+        {
+            foreach (var nodeId in nodeIds)
+                NetManager.instance.UpdateNode(nodeId);
+        }
 
+        public static void CalculateNodePostfix(ushort nodeID)
+        {
+            var manager = SingletonManager<Manager>.Instance;
+            if (manager.State != InitState.NotInit && manager.Buffer[nodeID] is NodeData data)
+            {
+#if DEBUG
+                var node = nodeID.GetNode();
+                SingletonMod<Mod>.Logger.Debug($"Update node #{nodeID}, position {node.m_position}, flags {node.m_flags}");
+#endif
+                data.UpdateSegmentEnds();
+            }
+        }
+        public static void SimulationStep()
+        {
+            var manager = SingletonManager<Manager>.Instance;
+            var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)).ToArray();
+            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)).ToArray();
+
+            UpdateNow(nodeIds, segmentIds, true);
+
+            if (manager.State == InitState.InProcess)
+                manager.State = InitState.Inited;
+        }
         public static void ReleaseNodeImplementationPrefix(ushort node) => SingletonManager<Manager>.Instance.Buffer[node] = null;
 
         public XElement ToXml()
@@ -205,7 +252,7 @@ namespace NodeController
 
             return config;
         }
-        public void FromXml(XElement config, NetObjectsMap map, bool updateNode = false)
+        public void FromXml(XElement config, NetObjectsMap map, bool updateNodes = false)
         {
             var toUpdate = new List<ushort>();
 
@@ -242,7 +289,9 @@ namespace NodeController
                 }
             }
 
-            Update(Options.UpdateNow | (updateNode ? Options.UpdateLater : Options.None), toUpdate.ToArray());
+            if (updateNodes)
+                Update(Options.UpdateLater, toUpdate.ToArray());
+            //Update(Options.UpdateNow | (updateNodes ? Options.UpdateLater : Options.None), toUpdate.ToArray());
         }
 
         [Flags]
@@ -271,6 +320,12 @@ namespace NodeController
             UpdateAll = UpdateNow | UpdateLater,
 
             Default = CreateThis | CreateNearby | UpdateThis | UpdateNearbyLater,
+        }
+        private enum InitState
+        {
+            NotInit,
+            InProcess,
+            Inited
         }
     }
 

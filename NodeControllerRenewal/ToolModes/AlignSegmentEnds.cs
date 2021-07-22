@@ -75,15 +75,15 @@ namespace NodeController
         }
         private void SetAlign()
         {
-            var segmentSide = GetSideLane(SelectedSide.Data, SelectedSide.Type);
-            var alignSide = GetSideLane(HoverSide.Data, HoverSide.Type);
-            var newShift = (SelectedSide.Type != HoverSide.Type ? -1 : 1) * (HoverSide.Data.Shift + segmentSide) - alignSide;
+            var segmentSide = GetSideLane(SelectedSide.SegmentData, SelectedSide.Type);
+            var alignSide = GetSideLane(HoverSide.SegmentData, HoverSide.Type);
+            var newShift = (SelectedSide.Type != HoverSide.Type ? -1 : 1) * (HoverSide.SegmentData.Shift + segmentSide) - alignSide;
             newShift = Mathf.Clamp(newShift, NodeStyle.MinShift, NodeStyle.MaxShift);
 
             if (Tool.Data.Style.SupportShift.IsSet(SupportOption.Individually))
-                SelectedSide.Data.Shift = newShift;
+                SelectedSide.SegmentData.Shift = newShift;
             else
-                Tool.Data.Shift = Tool.Data.FirstMainSegmentEnd == SelectedSide.Data ? newShift : -newShift;
+                Tool.Data.Shift = Tool.Data.FirstMainSegmentEnd == SelectedSide.SegmentData ? newShift : -newShift;
 
             Tool.Data.UpdateNode();
             Tool.Panel.RefreshPanel();
@@ -102,7 +102,7 @@ namespace NodeController
                     Targets.Add(segmentData[SideType.Left]);
                     Targets.Add(segmentData[SideType.Right]);
                 }
-                else if (segmentData != SelectedSide.Data && Tool.Data.Style.SupportShift.IsSet(SupportOption.Individually))
+                else if (segmentData != SelectedSide.SegmentData && Tool.Data.Style.SupportShift.IsSet(SupportOption.Individually))
                     Targets.Add(segmentData[SelectedSide.Type.Invert()]);
             }
 
@@ -110,15 +110,15 @@ namespace NodeController
             {
                 if (Tool.Data.Style.SupportShift.IsSet(SupportOption.Individually))
                 {
-                    if (SingletonManager<Manager>.Instance.GetSegmentData(SelectedSide.Data.Id, !SelectedSide.Data.IsStartNode) is SegmentEndData data)
+                    if (SingletonManager<Manager>.Instance.GetSegmentData(SelectedSide.SegmentData.Id, !SelectedSide.SegmentData.IsStartNode, out var data))
                         Targets.Add(data[SelectedSide.Type.Invert()]);
                 }
                 else if (!Tool.Data.IsJunction)
                 {
                     foreach (var segmentEnd in Tool.Data.SegmentEndDatas)
                     {
-                        if (SingletonManager<Manager>.Instance.GetSegmentData(segmentEnd.Id, !segmentEnd.IsStartNode) is SegmentEndData otherData)
-                            Targets.Add(otherData[segmentEnd == SelectedSide.Data ? SelectedSide.Type.Invert() : SelectedSide.Type]);
+                        if (SingletonManager<Manager>.Instance.GetSegmentData(segmentEnd.Id, !segmentEnd.IsStartNode, out var otherData))
+                            Targets.Add(otherData[segmentEnd == SelectedSide.SegmentData ? SelectedSide.Type.Invert() : SelectedSide.Type]);
                     }
                 }
             }
