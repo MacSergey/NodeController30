@@ -13,8 +13,6 @@ namespace NodeController
     {
         protected override void OnLoad()
         {
-            SingletonManager<Manager>.Instance.Init();
-
             if (SingletonItem<SerializableDataExtension>.Instance.WasImported)
                 MessageBox.Show<BackwardСompatibilityMessageBox>();
 

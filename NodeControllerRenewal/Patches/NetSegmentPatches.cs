@@ -16,10 +16,7 @@ namespace NodeController.Patches
         public static bool CalculateCornerPrefix(NetInfo extraInfo1, NetInfo extraInfo2, ushort ignoreSegmentID, ushort startNodeID, bool heightOffset, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection, ref bool smooth)
         {
             if (extraInfo1 != null || extraInfo2 != null || !SingletonManager<Manager>.Instance.GetSegmentData(startNodeID, ignoreSegmentID, out var data))
-            {
-                //SingletonMod<Mod>.Logger.Debug($"Not exist : node {startNodeID}, segment {ignoreSegmentID}, {(leftSide ? "left" : "right")}\n{System.Environment.StackTrace}");
                 return true;
-            }
             else
             {
                 smooth = data.NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Middle);
@@ -37,7 +34,6 @@ namespace NodeController.Patches
                 //CornerSource.CalculateCorner(segment.Info, startPos, endPos, startDir, endDir, ignoreSegmentID, startNodeID, true, leftSide, out var cp, out var cd, out _);
                 //cornerPos = cp;
                 //cornerDirection = cd;
-                //SingletonMod<Mod>.Logger.Debug($"Exist : node {startNodeID}, segment {ignoreSegmentID}, {(leftSide ? "left" : "right")}\n{System.Environment.StackTrace}");
                 return false;
             }
         }
@@ -45,14 +41,24 @@ namespace NodeController.Patches
         public static IEnumerable<CodeInstruction> FindDirectionTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
         {
             var flatJunctionsField = AccessTools.Field(typeof(NetInfo), nameof(NetInfo.m_flatJunctions));
+            var followTerrainField = AccessTools.Field(typeof(NetInfo), nameof(NetInfo.m_followTerrain));
+
             foreach (var instruction in instructions)
             {
-                yield return instruction;
-                if (instruction.opcode == OpCodes.Ldfld && instruction.operand == flatJunctionsField)
+                if (instruction.opcode == OpCodes.Ldfld && instruction.operand == followTerrainField)
                 {
-                    yield return original.GetLDArg("segmentID");
-                    yield return original.GetLDArg("nodeID");
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(GetFlatJunctions)));
+                    yield return new CodeInstruction(OpCodes.Pop);
+                    yield return new CodeInstruction(OpCodes.Ldc_I4_0);
+                }
+                else
+                {
+                    yield return instruction;
+                    if (instruction.opcode == OpCodes.Ldfld && instruction.operand == flatJunctionsField)
+                    {
+                        yield return original.GetLDArg("segmentID");
+                        yield return original.GetLDArg("nodeID");
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetSegmentPatches), nameof(GetFlatJunctions)));
+                    }
                 }
             }
             yield break;
