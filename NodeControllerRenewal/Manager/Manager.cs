@@ -4,6 +4,7 @@ using ModsCommon;
 using ModsCommon.Utilities;
 using NodeController.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -14,18 +15,6 @@ namespace NodeController
     public class Manager : IManager
     {
         private NodeData[] Buffer { get; set; }
-
-        private InitState _state;
-        private InitState State
-        {
-            get => _state;
-            set
-            {
-                _state = value;
-                Inited = _state == InitState.Inited;
-            }
-        }
-        public bool Inited { get; private set; }
 
         public Manager()
         {
@@ -46,11 +35,6 @@ namespace NodeController
         }
         public SegmentEndData this[ushort nodeId, ushort segmentId, bool create = false] => this[nodeId, create] is NodeData data ? data[segmentId] : null;
 
-        public void Init()
-        {
-            State = InitState.InProcess;
-            UpdateAll();
-        }
         private void Clear()
         {
             SingletonMod<Mod>.Logger.Debug("Clear manager");
@@ -82,17 +66,17 @@ namespace NodeController
 
         public bool GetNodeData(ushort nodeId, out NodeData data)
         {
-            data = Inited ? Buffer[nodeId] : null;
+            data = Buffer[nodeId];
             return data != null;
         }
         public bool GetSegmentData(ushort segmentId, bool isStart, out SegmentEndData data)
         {
-            data = Inited ? Buffer[segmentId.GetSegment().GetNode(isStart)]?[segmentId] : null;
+            data = Buffer[segmentId.GetSegment().GetNode(isStart)]?[segmentId];
             return data != null;
         }
         public bool GetSegmentData(ushort nodeId, ushort segmentId, out SegmentEndData data)
         {
-            data = Inited ? Buffer[nodeId]?[segmentId] : null;
+            data = Buffer[nodeId]?[segmentId];
             return data != null;
         }
         public void GetSegmentData(ushort segmentId, out SegmentEndData start, out SegmentEndData end)
@@ -212,19 +196,6 @@ namespace NodeController
             foreach (var nodeId in nodeIds)
                 NetManager.instance.UpdateNode(nodeId);
         }
-
-        public static void CalculateNodePostfix(ushort nodeID)
-        {
-            var manager = SingletonManager<Manager>.Instance;
-            if (manager.State != InitState.NotInit && manager.Buffer[nodeID] is NodeData data)
-            {
-#if DEBUG
-                var node = nodeID.GetNode();
-                SingletonMod<Mod>.Logger.Debug($"Update node #{nodeID}, position {node.m_position}, flags {node.m_flags}");
-#endif
-                data.UpdateSegmentEnds();
-            }
-        }
         public static void SimulationStep()
         {
             var manager = SingletonManager<Manager>.Instance;
@@ -232,9 +203,6 @@ namespace NodeController
             var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)).ToArray();
 
             UpdateNow(nodeIds, segmentIds, true);
-
-            if (manager.State == InitState.InProcess)
-                manager.State = InitState.Inited;
         }
         public static void ReleaseNodeImplementationPrefix(ushort node) => SingletonManager<Manager>.Instance.Buffer[node] = null;
 
@@ -252,7 +220,7 @@ namespace NodeController
 
             return config;
         }
-        public void FromXml(XElement config, NetObjectsMap map, bool updateNodes = false)
+        public void FromXml(XElement config, NetObjectsMap map)
         {
             var toUpdate = new List<ushort>();
 
@@ -289,8 +257,7 @@ namespace NodeController
                 }
             }
 
-            if (updateNodes)
-                Update(Options.UpdateLater, toUpdate.ToArray());
+            Update(Options.UpdateAll, toUpdate.ToArray());
         }
 
         [Flags]
@@ -319,12 +286,6 @@ namespace NodeController
             UpdateAll = UpdateNow | UpdateLater,
 
             Default = CreateThis | CreateNearby | UpdateThis | UpdateNearbyLater,
-        }
-        private enum InitState
-        {
-            NotInit,
-            InProcess,
-            Inited
         }
     }
 
