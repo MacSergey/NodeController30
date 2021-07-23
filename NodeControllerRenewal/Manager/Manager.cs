@@ -291,7 +291,6 @@ namespace NodeController
 
             if (updateNodes)
                 Update(Options.UpdateLater, toUpdate.ToArray());
-            //Update(Options.UpdateNow | (updateNodes ? Options.UpdateLater : Options.None), toUpdate.ToArray());
         }
 
         [Flags]
