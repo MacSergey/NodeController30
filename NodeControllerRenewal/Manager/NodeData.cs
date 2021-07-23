@@ -37,7 +37,6 @@ namespace NodeController
                 UpdateNode();
             }
         }
-        //private List<SegmentEndData> RawSegmentEnds { get; set; } = new List<SegmentEndData>();
         private Dictionary<ushort, SegmentEndData> SegmentEnds { get; set; } = new Dictionary<ushort, SegmentEndData>();
         public IEnumerable<SegmentEndData> SegmentEndDatas => SegmentEnds.Values;
 
@@ -198,7 +197,7 @@ namespace NodeController
             {
                 foreach (var segmentId in add)
                 {
-                    var newSegmentEnd = new SegmentEndData(segmentId, Id);
+                    var newSegmentEnd = new SegmentEndData(this, segmentId);
                     newSegmentEnds[newSegmentEnd.Id] = newSegmentEnd;
 
                     if (Style is NodeStyle style)

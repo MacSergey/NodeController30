@@ -15,26 +15,31 @@ namespace NodeController.Patches
     {
         public static bool CalculateCornerPrefix(NetInfo extraInfo1, NetInfo extraInfo2, ushort ignoreSegmentID, ushort startNodeID, bool heightOffset, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection, ref bool smooth)
         {
-            if (extraInfo1 != null || extraInfo2 != null || SingletonManager<Manager>.Instance[startNodeID, ignoreSegmentID] is not SegmentEndData data)
+            if (extraInfo1 != null || extraInfo2 != null || !SingletonManager<Manager>.Instance.GetSegmentData(startNodeID, ignoreSegmentID, out var data))
+            {
+                //SingletonMod<Mod>.Logger.Debug($"Not exist : node {startNodeID}, segment {ignoreSegmentID}, {(leftSide ? "left" : "right")}\n{System.Environment.StackTrace}");
                 return true;
+            }
+            else
+            {
+                smooth = data.NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Middle);
+                data.GetCorner(leftSide, out cornerPos, out cornerDirection);
 
-            smooth = data.NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Middle);
-            data.GetCorner(leftSide, out cornerPos, out cornerDirection);
+                if (heightOffset && startNodeID != 0)
+                    cornerPos.y += startNodeID.GetNode().m_heightOffset / 64f;
 
-            if (heightOffset && startNodeID != 0)
-                cornerPos.y += startNodeID.GetNode().m_heightOffset / 64f;
-
-            //var segment = ignoreSegmentID.GetSegment();
-            //var isStart = segment.IsStartNode(startNodeID);
-            //var startPos = (isStart ? segment.m_startNode : segment.m_endNode).GetNode().m_position;
-            //var startDir = isStart ? segment.m_startDirection : segment.m_endDirection;
-            //var endPos = (isStart ? segment.m_endNode : segment.m_startNode).GetNode().m_position;
-            //var endDir = isStart ? segment.m_endDirection : segment.m_startDirection;
-            //CornerSource.CalculateCorner(segment.Info, startPos, endPos, startDir, endDir, ignoreSegmentID, startNodeID, true, leftSide, out var cp, out var cd, out _);
-            //cornerPos = cp;
-            //cornerDirection = cd;
-
-            return false;
+                //var segment = ignoreSegmentID.GetSegment();
+                //var isStart = segment.IsStartNode(startNodeID);
+                //var startPos = (isStart ? segment.m_startNode : segment.m_endNode).GetNode().m_position;
+                //var startDir = isStart ? segment.m_startDirection : segment.m_endDirection;
+                //var endPos = (isStart ? segment.m_endNode : segment.m_startNode).GetNode().m_position;
+                //var endDir = isStart ? segment.m_endDirection : segment.m_startDirection;
+                //CornerSource.CalculateCorner(segment.Info, startPos, endPos, startDir, endDir, ignoreSegmentID, startNodeID, true, leftSide, out var cp, out var cd, out _);
+                //cornerPos = cp;
+                //cornerDirection = cd;
+                //SingletonMod<Mod>.Logger.Debug($"Exist : node {startNodeID}, segment {ignoreSegmentID}, {(leftSide ? "left" : "right")}\n{System.Environment.StackTrace}");
+                return false;
+            }
         }
 
         public static IEnumerable<CodeInstruction> FindDirectionTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
@@ -55,7 +60,7 @@ namespace NodeController.Patches
 
         public static bool GetFlatJunctions(bool flatJunctions, ushort segmentId, ushort nodeId)
         {
-            if (SingletonManager<Manager>.Instance[nodeId, segmentId] is SegmentEndData data)
+            if (SingletonManager<Manager>.Instance.GetSegmentData(nodeId, segmentId, out var data))
                 return !data.IsSlope;
             else
                 return flatJunctions;

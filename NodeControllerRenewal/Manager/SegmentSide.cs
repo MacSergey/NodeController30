@@ -14,7 +14,7 @@ namespace NodeController
         private float _maxT = 1f;
 
         public SideType Type { get; }
-        public SegmentEndData Data { get; }
+        public SegmentEndData SegmentData { get; }
 
         public BezierTrajectory RawBezier
         {
@@ -71,23 +71,23 @@ namespace NodeController
         public bool IsDefaultT => Mathf.Abs(RawT - DefaultT) < 0.001f;
         public bool IsShort => (MaxT - CurrentT) <= (1f / RawBezier.Length);
 
-        public SegmentSide(SegmentEndData data, SideType type)
+        public SegmentSide(SegmentEndData segmentData, SideType type)
         {
             Type = type;
-            Data = data;
+            SegmentData = segmentData;
         }
         private void Update() => Bezier = RawBezier.Cut(MinT, MaxT);
         public void Calculate(bool isMain)
         {
-            var nodeData = Data.NodeData;
+            var nodeData = SegmentData.NodeData;
 
-            var t = Mathf.Clamp(RawT, MinT + (nodeData.IsMiddleNode || Data.IsNodeLess ? 0f : DeltaT), MaxT - DeltaT);
+            var t = Mathf.Clamp(RawT, MinT + (nodeData.IsMiddleNode || SegmentData.IsNodeLess ? 0f : DeltaT), MaxT - DeltaT);
             var position = RawBezier.Position(t);
             var direction = RawBezier.Tangent(t).normalized;
 
-            if (!Data.IsSlope)
+            if (!SegmentData.IsSlope)
             {
-                position.y = Data.NodeId.GetNode().m_position.y;
+                position.y = SegmentData.NodeId.GetNode().m_position.y;
                 direction = direction.MakeFlatNormalized();
             }
             else if (!isMain)
@@ -112,23 +112,23 @@ namespace NodeController
             {
                 if (nodeData.Style.SupportSlope != SupportOption.None)
                 {
-                    var quaternion = Quaternion.AngleAxis(Data.SlopeAngle, direction.MakeFlat().Turn90(true));
+                    var quaternion = Quaternion.AngleAxis(SegmentData.SlopeAngle, direction.MakeFlat().Turn90(true));
                     direction = quaternion * direction;
                 }
                 if (nodeData.Style.SupportTwist != SupportOption.None)
                 {
-                    var ratio = Mathf.Sin(Data.TwistAngle * Mathf.Deg2Rad);
+                    var ratio = Mathf.Sin(SegmentData.TwistAngle * Mathf.Deg2Rad);
                     if (nodeData.Style.SupportStretch != SupportOption.None)
-                        ratio *= Data.Stretch;
+                        ratio *= SegmentData.Stretch;
 
-                    position.y += (Type == SideType.Left ? -1 : 1) * Data.Id.GetSegment().Info.m_halfWidth * ratio;
+                    position.y += (Type == SideType.Left ? -1 : 1) * SegmentData.Id.GetSegment().Info.m_halfWidth * ratio;
                 }
             }
 
             Position = position;
             Direction = NormalizeXZ(direction);
             if (nodeData.IsEndNode)
-                Direction *= Data.Stretch;
+                Direction *= SegmentData.Stretch;
         }
         public static void FixMiddle(SegmentSide first, SegmentSide second)
         {

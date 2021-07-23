@@ -45,17 +45,17 @@ namespace NodeController.Patches
                     yield return instruction;
             }
         }
-        private static Vector3 GetNodePosition(ushort nodeId, Vector3 defaultPosition) => SingletonManager<Manager>.Instance[nodeId] is NodeData data ? data.GetPosition() : defaultPosition;
+        private static Vector3 GetNodePosition(ushort nodeId, Vector3 defaultPosition) => SingletonManager<Manager>.Instance.GetNodeData(nodeId, out var data) ? data.GetPosition() : defaultPosition;
 
         public static void RefreshJunctionDataPrefix(ushort nodeID, ref Vector3 centerPos)
         {
-            if (SingletonManager<Manager>.Instance[nodeID] is NodeData data)
+            if (SingletonManager<Manager>.Instance.GetNodeData(nodeID, out var data))
                 centerPos = data.GetPosition();
         }
 
         public static void RefreshJunctionDataPostfix(ushort nodeID, ref RenderManager.Instance data)
         {
-            if (SingletonManager<Manager>.Instance[nodeID] is NodeData blendData && blendData.ShouldRenderCenteralCrossingTexture)
+            if (SingletonManager<Manager>.Instance.GetNodeData(nodeID, out var blendData) && blendData.ShouldRenderCenteralCrossingTexture)
                 data.m_dataVector1.w = 0.01f;
         }
 
@@ -108,7 +108,7 @@ namespace NodeController.Patches
             }
         }
 
-        private static bool ShouldContinueMedian(ushort nodeID) => SingletonManager<Manager>.Instance[nodeID] is NodeData data && data.Type == NodeStyleType.Stretch;
+        private static bool ShouldContinueMedian(ushort nodeID) => SingletonManager<Manager>.Instance.GetNodeData(nodeID, out var data) && data.Type == NodeStyleType.Stretch;
         private static Material CalculateMaterial(Material material, ushort nodeId, ushort segmentId) => ShouldContinueMedian(nodeId) ? MaterialUtilities.ContinuesMedian(material, segmentId.GetSegment().Info, false) : material;
         private static Mesh CalculateMesh(Mesh mesh, ushort nodeId, ushort segmentId) => ShouldContinueMedian(nodeId) ? MaterialUtilities.ContinuesMedian(mesh, segmentId.GetSegment().Info) : mesh;
     }

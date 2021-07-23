@@ -32,7 +32,7 @@ namespace NodeController.Patches
         }
         public static void UpdateNodeFlagsPostfix(ushort nodeID, ref NetNode data)
         {
-            if (data.CountSegments() == 2 && SingletonManager<Manager>.Instance[nodeID] is NodeData nodeData && !nodeData.Style.SupportTrafficLights)
+            if (data.CountSegments() == 2 && SingletonManager<Manager>.Instance.GetNodeData(nodeID, out var nodeData) && !nodeData.Style.SupportTrafficLights)
                 data.m_flags &= ~NetNode.Flags.TrafficLights;
         }
     }

@@ -170,6 +170,20 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на - Fixed not updating nodes after loading map.
+        ///- Added selection step over like in MoveIt. Press Ctrl+Space to step over (you can rebind in mod options).
+        ///- Added setting &quot;Node is sloped by default&quot;. By default this option disabled.
+        ///- Added the ability to change node type by scroll wheel.
+        ///- Added new icon for UUI button.
+        ///- Added warning for Linux users about missing libraries..
+        /// </summary>
+        internal static string Mod_WhatsNewMessage3_1_1 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_1_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Bend.
         /// </summary>
         internal static string NodeStyle_Bend {
