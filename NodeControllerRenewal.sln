@@ -247,7 +247,7 @@ Global
 		{26556E31-5639-4425-9BAD-B0079296BCE2} = {0A4B6CF6-295B-4BCC-9DE3-475C05D51929}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_StartDate = 2000/1/1
 		SolutionGuid = {81553A2A-DCA5-449A-A08F-0BC55141DD0D}
+		BuildVersion_StartDate = 2000/1/1
 	EndGlobalSection
 EndGlobal
