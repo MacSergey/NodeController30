@@ -244,6 +244,7 @@
   <Import Project="..\ModsCommon\HeaderShared\HeaderShared.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\UUIRegisterShared\UUIRegisterShared.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\ToolPanelShared\ToolPanelShared.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.mr.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
