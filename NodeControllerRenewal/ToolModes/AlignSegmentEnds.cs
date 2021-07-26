@@ -28,7 +28,7 @@ namespace NodeController
         }
         public override void OnToolUpdate()
         {
-            if (!IsSelectedSide && !Utility.ShiftIsPressed)
+            if (!IsSelectedSide && !Utility.OnlyShiftIsPressed)
                 Tool.SetDefaultMode();
 
             else if (Tool.MouseRayValid)

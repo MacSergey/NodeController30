@@ -54,10 +54,10 @@ namespace NodeController
         {
             var overlayGroup = helper.AddGroup("Selection overlay");
 
-            AddCheckBox(overlayGroup, "Alpha blend overlay", Selection.AlphaBlendOverlay);
-            AddCheckBox(overlayGroup, "Render overlay center", Selection.RenderOverlayCentre);
-            AddCheckBox(overlayGroup, "Render overlay borders", Selection.RenderOverlayBorders);
-            AddFloatField(overlayGroup, "Overlay width", Selection.OverlayWidth, 3f, 1f);
+            Selection.AddAlphaBlendOverlay(overlayGroup);
+            Selection.AddRenderOverlayCentre(overlayGroup);
+            Selection.AddRenderOverlayBorders(overlayGroup);
+            Selection.AddBorderOverlayWidth(overlayGroup);
 
 
             var groupOther = helper.AddGroup("Other");
