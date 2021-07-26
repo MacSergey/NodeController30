@@ -71,7 +71,6 @@ namespace NodeController
         {
             base.InitProcess();
             NodeControllerPanel.CreatePanel();
-            RegisterUUI();
         }
         protected override void OnReset()
         {
