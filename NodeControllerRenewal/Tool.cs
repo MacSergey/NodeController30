@@ -42,7 +42,7 @@ namespace NodeController
         }
         public override IEnumerable<Shortcut> Shortcuts => ToolShortcuts;
 
-        protected override bool ShowToolTip => (Settings.ShowToolTip || Mode.Type == ToolModeType.Select) && !Panel.IsHover;
+        protected override bool ShowToolTip => base.ShowToolTip && (Settings.ShowToolTip || Mode.Type == ToolModeType.Select);
         protected override IToolMode DefaultMode => ToolModes[ToolModeType.Select];
         public override Shortcut Activation => ActivationShortcut;
         public NodeControllerPanel Panel => SingletonItem<NodeControllerPanel>.Instance;
@@ -71,7 +71,6 @@ namespace NodeController
         {
             base.InitProcess();
             NodeControllerPanel.CreatePanel();
-            RegisterUUI();
         }
         protected override void OnReset()
         {
