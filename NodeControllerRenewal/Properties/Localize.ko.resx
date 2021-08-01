@@ -1,0 +1,391 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
+    <value>기존 Node Controller의 데이터를 불러왔습니다.
+모든 정보가 호환되지 않을 수 있으며, 몇몇 노드는 직접 다시 수정해야 할 수 있습니다.</value>
+  </data>
+  <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
+    <value>경고: 이 맵을 새로 저장하면, 이 맵에서는 더 이상 기존 Node Controller를 사용할 수 없게 됩니다.</value>
+  </data>
+  <data name="Mod_Description" xml:space="preserve">
+    <value>노드의 유형 및 모양을 바꿉니다</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
+    <value>- Added auto mode for main slope direction.
+- Added red overlay for short segments (short segments lead wrong vehicle speed).
+- Added the ability reset only offset to default.
+- Added Polish translation.
+- Fix default node shape calculation.
+- Fix wrong corner calculation on too sloped or too curved segments.
+- Fix broken nodes after reload map without close game.
+- Fix vehicle trailers disappear.
+- Fix road disappear after disasters.
+- Fix wrong train twist direction.
+- Fix node height in asset editor.
+- Fix default offset value.
+- Fix compatibility with TMPE.
+- Fix load data from intersection assets.
+- Fix not deletable pilars after place intersection asset.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_0_2" xml:space="preserve">
+    <value>- Fix node height outside available tiles (5x5).
+- Fix node center position.
+- Fix crosswalk texture.
+- Fix creating button duplicates
+- Fix despaired "Make end straight" button.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_0_3" xml:space="preserve">
+    <value>- Added Portuguese translation.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_0_4" xml:space="preserve">
+    <value>- Added missing dependencies and mod conflict checker.
+- Removed segments collision between train/metro tracks.
+- Fix loading offset if value more then 100m.
+- Fix segment direction correction on shifted segment.
+- Fix not main segment calculation on sloped node.
+- Fix crossing and uturn node type.
+- Added Italian translation.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_0_5" xml:space="preserve">
+    <value>- Fix segments collision calculation.
+- Added Chinese Traditional translation.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_1" xml:space="preserve">
+    <value>- Added underground mode (hold Shift to select underground node).
+- Added nearby nodes overlay.
+- Added calculate shift by nearby nodes - set average shift value to node.
+- Added calculate shift by intersections - set shift value for all nodes between intersection for smooth transition (like -2,-1,0,+1,+2).
+- Added set shift between intersections - set this shift value for all nodes between intersection.
+- Added shortcuts, you can bind keys in mod's options.
+- Added the ability to hide marking and change rotation on untouchable (like harbor or cargo station) segments.
+- Fixed resetting node style middle nodes after load map.
+- Fixed resetting node style when replace segment.
+- Fixed auto main slope direction calculation.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_1_1" xml:space="preserve">
+    <value>- Fixed not updating nodes after loading map.
+- Added selection step over like in MoveIt. Press Ctrl+Space to step over (you can rebind in mod options).
+- Added setting "Node is sloped by default". By default this option disabled.
+- Added the ability to change node type by scroll wheel.
+- Added new icon for UUI button.
+- Added warning for Linux users about missing libraries.</value>
+  </data>
+  <data name="NodeStyle_Bend" xml:space="preserve">
+    <value>커브</value>
+  </data>
+  <data name="NodeStyle_Crossing" xml:space="preserve">
+    <value>횡단</value>
+  </data>
+  <data name="NodeStyle_Custom" xml:space="preserve">
+    <value>사용자 지정</value>
+  </data>
+  <data name="NodeStyle_End" xml:space="preserve">
+    <value>끝</value>
+  </data>
+  <data name="NodeStyle_Middle" xml:space="preserve">
+    <value>중간</value>
+  </data>
+  <data name="NodeStyle_Stretch" xml:space="preserve">
+    <value>늘임</value>
+  </data>
+  <data name="NodeStyle_UTurn" xml:space="preserve">
+    <value>유턴</value>
+  </data>
+  <data name="Options_All" xml:space="preserve">
+    <value>전체</value>
+  </data>
+  <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
+    <value>교차로에 의한 밀려짐 계산</value>
+  </data>
+  <data name="Option_CalculateShiftByNearby" xml:space="preserve">
+    <value>근처 노드에 의한 밀려짐 계산</value>
+  </data>
+  <data name="Option_KeepDefault" xml:space="preserve">
+    <value>오프셋 초기화</value>
+  </data>
+  <data name="Option_MainSlopeDirection" xml:space="preserve">
+    <value>주 경사 방향</value>
+  </data>
+  <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
+    <value>자동</value>
+  </data>
+  <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
+    <value>수동</value>
+  </data>
+  <data name="Option_MakeStraightEnds" xml:space="preserve">
+    <value>끝을 직선으로</value>
+  </data>
+  <data name="Option_Marking" xml:space="preserve">
+    <value>표지</value>
+  </data>
+  <data name="Option_Offset" xml:space="preserve">
+    <value>오프셋</value>
+  </data>
+  <data name="Option_OffsetFormat" xml:space="preserve">
+    <value>{0}m</value>
+  </data>
+  <data name="Option_ResetToDefault" xml:space="preserve">
+    <value>기본값으로 초기화</value>
+  </data>
+  <data name="Option_Rotate" xml:space="preserve">
+    <value>회전</value>
+  </data>
+  <data name="Option_RotateFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
+  <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
+    <value>두 교차로 사이에 이동 설정</value>
+  </data>
+  <data name="Option_Shift" xml:space="preserve">
+    <value>이동</value>
+  </data>
+  <data name="Option_ShiftFormat" xml:space="preserve">
+    <value>{0}m</value>
+  </data>
+  <data name="Option_Slope" xml:space="preserve">
+    <value>경사</value>
+  </data>
+  <data name="Option_SlopeFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
+  <data name="Option_Stretch" xml:space="preserve">
+    <value>폭</value>
+  </data>
+  <data name="Option_StretchFormat" xml:space="preserve">
+    <value>{0}%</value>
+  </data>
+  <data name="Option_Style" xml:space="preserve">
+    <value>스타일</value>
+  </data>
+  <data name="Option_StyleFlat" xml:space="preserve">
+    <value>평탄</value>
+  </data>
+  <data name="Option_StyleSlope" xml:space="preserve">
+    <value>경사</value>
+  </data>
+  <data name="Option_Twist" xml:space="preserve">
+    <value>비틀기</value>
+  </data>
+  <data name="Option_TwistFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
+  <data name="Option_Type" xml:space="preserve">
+    <value>노드 유형</value>
+  </data>
+  <data name="Panel_NodeId" xml:space="preserve">
+    <value>노드 #{0}</value>
+  </data>
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>노드가 기본적으로 경사졌습니다</value>
+  </data>
+  <data name="Settings_RenderNearNode" xml:space="preserve">
+    <value>근처 노드 오버레이 표시</value>
+  </data>
+  <data name="Settings_SelectMiddleNodes" xml:space="preserve">
+    <value>중간 노드 선택</value>
+  </data>
+  <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
+    <value>설정을 끄면 중간 노드들이 클릭한 위치로 이동하게 됩니다</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
+    <value>교차로에 의한 밀려짐 계산</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
+    <value>근처 노드에 의한 밀려짐 계산</value>
+  </data>
+  <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
+    <value>주 경사 방향 모드 바꾸기</value>
+  </data>
+  <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
+    <value>노드 스타일 선택</value>
+  </data>
+  <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
+    <value>오프셋 초기화</value>
+  </data>
+  <data name="Setting_ShortcutMakeStraightEnds" xml:space="preserve">
+    <value>끝을 직선으로</value>
+  </data>
+  <data name="Setting_ShortcutResetToDefault" xml:space="preserve">
+    <value>기본값으로 초기화</value>
+  </data>
+  <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
+    <value>두 교차로 사이에 이동 설정</value>
+  </data>
+  <data name="Tool_InfoAlignMode" xml:space="preserve">
+    <value>Shift를 꾹 눌러 도로 정렬</value>
+  </data>
+  <data name="Tool_InfoApplyAlign" xml:space="preserve">
+    <value>클릭해 이 코너에 정렬</value>
+  </data>
+  <data name="Tool_InfoChangeMainMode" xml:space="preserve">
+    <value>Alt를 꾹 눌러 주 경사 방향 변경</value>
+  </data>
+  <data name="Tool_InfoClickNode" xml:space="preserve">
+    <value>노드 #{0}
+클릭하여 수정</value>
+  </data>
+  <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
+    <value>클릭하여 정렬할 코너 선택</value>
+  </data>
+  <data name="Tool_InfoDragCenter" xml:space="preserve">
+    <value>드래그해 오프셋 변경</value>
+  </data>
+  <data name="Tool_InfoDragCircle" xml:space="preserve">
+    <value>드래그해 회전</value>
+  </data>
+  <data name="Tool_InfoDragCorner" xml:space="preserve">
+    <value>드래그해 코너 오프셋 수정</value>
+  </data>
+  <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
+    <value>이쪽 끝을 드래그해 주 경사 방향 변경</value>
+  </data>
+  <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
+    <value>이쪽 끝을 드롭해 주 경사 방향 변경</value>
+  </data>
+  <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
+    <value>클릭하여 횡단 노드 추가</value>
+  </data>
+  <data name="Tool_InfoInsertNode" xml:space="preserve">
+    <value>클릭하여 노드 추가</value>
+  </data>
+  <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
+    <value>같이 정렬할 코너 선택</value>
+  </data>
+  <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
+    <value>원하는 주 경사 방향에 변경</value>
+  </data>
+  <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
+    <value>주 경사 방향의 끝 지점 선택</value>
+  </data>
+  <data name="Tool_InfoSelectNode" xml:space="preserve">
+    <value>노드 선택</value>
+  </data>
+  <data name="Tool_InfoSelectToAlign" xml:space="preserve">
+    <value>정렬할 코너 선택</value>
+  </data>
+  <data name="Tool_InfoTooCloseNode" xml:space="preserve">
+    <value>노드 추가 불가
+근처 노드와 너무 가까움</value>
+  </data>
+  <data name="Tool_InfoUnderground" xml:space="preserve">
+    <value>Shift를 계속 눌러
+지하 모드</value>
+  </data>
+</root>
