@@ -127,66 +127,13 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
   <data name="Mod_Description" xml:space="preserve">
     <value>Säädä risteysten tyyppiä ja muotoa</value>
   </data>
-  <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
-    <value>- Added auto mode for main slope direction.
-- Added red overlay for short segments (short segments lead wrong vehicle speed).
-- Added the ability reset only offset to default.
-- Added Polish translation.
-- Fix default node shape calculation.
-- Fix wrong corner calculation on too sloped or too curved segments.
-- Fix broken nodes after reload map without close game.
-- Fix vehicle trailers disappear.
-- Fix road disappear after disasters.
-- Fix wrong train twist direction.
-- Fix node height in asset editor.
-- Fix default offset value.
-- Fix compatibility with TMPE.
-- Fix load data from intersection assets.
-- Fix not deletable pilars after place intersection asset.</value>
-  </data>
-  <data name="Mod_WhatsNewMessage3_0_2" xml:space="preserve">
-    <value>- Fix node height outside available tiles (5x5).
-- Fix node center position.
-- Fix crosswalk texture.
-- Fix creating button duplicates
-- Fix despaired "Make end straight" button.</value>
-  </data>
-  <data name="Mod_WhatsNewMessage3_0_3" xml:space="preserve">
-    <value>- Added Portuguese translation.</value>
-  </data>
-  <data name="Mod_WhatsNewMessage3_0_4" xml:space="preserve">
-    <value>- Added missing dependencies and mod conflict checker.
-- Removed segments collision between train/metro tracks.
-- Fix loading offset if value more then 100m.
-- Fix segment direction correction on shifted segment.
-- Fix not main segment calculation on sloped node.
-- Fix crossing and uturn node type.
-- Added Italian translation.</value>
-  </data>
-  <data name="Mod_WhatsNewMessage3_0_5" xml:space="preserve">
-    <value>- Fix segments collision calculation.
-- Added Chinese Traditional translation.</value>
-  </data>
-  <data name="Mod_WhatsNewMessage3_1" xml:space="preserve">
-    <value>- Added underground mode (hold Shift to select underground node).
-- Added nearby nodes overlay.
-- Added calculate shift by nearby nodes - set average shift value to node.
-- Added calculate shift by intersections - set shift value for all nodes between intersection for smooth transition (like -2,-1,0,+1,+2).
-- Added set shift between intersections - set this shift value for all nodes between intersection.
-- Added shortcuts, you can bind keys in mod's options.
-- Added the ability to hide marking and change rotation on untouchable (like harbor or cargo station) segments.
-- Fixed resetting node style middle nodes after load map.
-- Fixed resetting node style when replace segment.
-- Fixed auto main slope direction calculation.</value>
-  </data>
-  <data name="Mod_WhatsNewMessage3_1_1" xml:space="preserve">
-    <value>- Fixed not updating nodes after loading map.
-- Added selection step over like in MoveIt. Press Ctrl+Space to step over (you can rebind in mod options).
-- Added setting "Node is sloped by default". By default this option disabled.
-- Added the ability to change node type by scroll wheel.
-- Added new icon for UUI button.
-- Added warning for Linux users about missing libraries.</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Mutka</value>
   </data>
