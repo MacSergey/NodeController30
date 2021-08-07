@@ -188,7 +188,7 @@ Backward compatibility does not provide the transfer of all data, may be require
 - Added warning for Linux users about missing libraries.</value>
   </data>
   <data name="Mod_WhatsNewMessage3_1_2" xml:space="preserve">
-    <value>- Added Korean translation.</value>
+    <value>- Added Korean and Malay translations.</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bend</value>
