@@ -150,6 +150,9 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
   
   
   
+  <data name="Mod_WhatsNewMessage3_1_2" xml:space="preserve">
+    <value>- Koreanische und malaiische Übersetzungen hinzugefügt.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Kurve</value>
   </data>

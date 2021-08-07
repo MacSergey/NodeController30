@@ -134,6 +134,7 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Tikungan</value>
   </data>
@@ -183,7 +184,7 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
     <value>Markah</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
-    <value>Mundur</value>
+    <value>Pemunduran</value>
   </data>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
@@ -192,7 +193,7 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
     <value>Setel ulang ke standar</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>Putar</value>
+    <value>Perputaran</value>
   </data>
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>
@@ -213,7 +214,7 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
     <value>{0}°</value>
   </data>
   <data name="Option_Stretch" xml:space="preserve">
-    <value>Regang</value>
+    <value>Peregangan</value>
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
