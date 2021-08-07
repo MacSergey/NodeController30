@@ -184,6 +184,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на - Added Korean translation..
+        /// </summary>
+        internal static string Mod_WhatsNewMessage3_1_2 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_1_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Bend.
         /// </summary>
         internal static string NodeStyle_Bend {
