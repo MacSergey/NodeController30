@@ -250,5 +250,5 @@ namespace NodeController
         public NodeControllerShortcut(string name, string labelKey, InputKey key, Action action = null, ToolModeType modeType = ToolModeType.Edit) : base(name, labelKey, key, action, modeType) { }
     }
     public class NodeControllerToolThreadingExtension : BaseUUIThreadingExtension<NodeControllerTool> { }
-    public class NodeControllerToolLoadingExtension : BaseToolLoadingExtension<NodeControllerTool> { }
+    public class NodeControllerToolLoadingExtension : BaseUUIToolLoadingExtension<NodeControllerTool> { }
 }
