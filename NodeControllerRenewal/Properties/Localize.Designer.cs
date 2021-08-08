@@ -184,7 +184,7 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на - Added Korean and Malay translations..
+        ///   Ищет локализованную строку, похожую на - Added Indonesian, Korean and Malay translations..
         /// </summary>
         internal static string Mod_WhatsNewMessage3_1_2 {
             get {
