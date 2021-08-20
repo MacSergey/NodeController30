@@ -277,13 +277,13 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
     <value>Terapkan pergeseran di antara persimpangan</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Tekan dan tahan Shift untuk meluruskan jalan</value>
+    <value>Tekan dan tahan {0} untuk meluruskan jalan</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Klik untuk meluruskan dengan pojok ini</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Tekan dan tahan Alt untuk mengubah arah lereng utama</value>
+    <value>Tekan dan tahan {0} untuk mengubah arah lereng utama</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Titik hubung #{0}
@@ -333,6 +333,6 @@ Klik untuk mengedit</value>
 Terlalu dekat dengan titik hubung lainnya</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Tekan dan tahan Shift untuk mode bawah tanah</value>
+    <value>Tekan dan tahan {0} untuk mode bawah tanah</value>
   </data>
 </root>

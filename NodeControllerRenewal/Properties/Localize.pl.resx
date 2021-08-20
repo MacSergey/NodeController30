@@ -277,13 +277,13 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
     <value>Ustaw przesunięcie między skrzyżowaniami</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Przytrzymaj Shift aby wyrównać drogi</value>
+    <value>Przytrzymaj {0} aby wyrównać drogi</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Kliknij aby wyrównać do tego rogu</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Przytrzymaj Alt aby zmienić główny kierunek nachylenia</value>
+    <value>Przytrzymaj {0} aby zmienić główny kierunek nachylenia</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Skrzyżowanie #{0}
@@ -333,6 +333,6 @@ Kliknij aby edytować</value>
 Za blisko do sąsiedniego węzła</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Przytrzymaj Shift by przejść w tryb podziemny</value>
+    <value>Przytrzymaj {0} by przejść w tryb podziemny</value>
   </data>
 </root>

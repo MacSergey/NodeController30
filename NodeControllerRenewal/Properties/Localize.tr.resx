@@ -124,79 +124,215 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
     <value>UYARI: Yeni bir kayıt yaparsanız, artık bu haritada orijinal Node Controller'ı kullanamazsınız.</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Mod_Description" xml:space="preserve">
+    <value>Düğüm tipi ve şeklini kontrol edin</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="NodeStyle_Bend" xml:space="preserve">
+    <value>Eğim</value>
+  </data>
+  <data name="NodeStyle_Crossing" xml:space="preserve">
+    <value>Kavşak</value>
+  </data>
+  <data name="NodeStyle_Custom" xml:space="preserve">
+    <value>Özel</value>
+  </data>
+  <data name="NodeStyle_End" xml:space="preserve">
+    <value>Uç</value>
+  </data>
+  <data name="NodeStyle_Middle" xml:space="preserve">
+    <value>Orta</value>
+  </data>
+  <data name="NodeStyle_Stretch" xml:space="preserve">
+    <value>Esnetilmiş</value>
+  </data>
+  <data name="NodeStyle_UTurn" xml:space="preserve">
+    <value>U dönüşü</value>
+  </data>
+  <data name="Options_All" xml:space="preserve">
+    <value>Tamamı</value>
+  </data>
+  <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
+    <value>Kesişimlerdeki değişimi hesapla</value>
+  </data>
+  <data name="Option_CalculateShiftByNearby" xml:space="preserve">
+    <value>Düğümlerin arasındaki değişimi hesapla</value>
+  </data>
+  <data name="Option_KeepDefault" xml:space="preserve">
+    <value>Merkezi sıfırla</value>
+  </data>
+  <data name="Option_MainSlopeDirection" xml:space="preserve">
+    <value>Ana eğim yönü</value>
+  </data>
+  <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
+    <value>Otomatik</value>
+  </data>
+  <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
+    <value>Elle</value>
+  </data>
+  <data name="Option_MakeStraightEnds" xml:space="preserve">
+    <value>Uçları düz yap</value>
+  </data>
+  <data name="Option_Marking" xml:space="preserve">
+    <value>İşaretleniyor</value>
+  </data>
+  <data name="Option_Offset" xml:space="preserve">
+    <value>Dengele</value>
+  </data>
+  <data name="Option_OffsetFormat" xml:space="preserve">
+    <value>{0}m</value>
+  </data>
+  <data name="Option_ResetToDefault" xml:space="preserve">
+    <value>Varsayılanlara sıfırla</value>
+  </data>
+  <data name="Option_Rotate" xml:space="preserve">
+    <value>Döndür</value>
+  </data>
+  <data name="Option_RotateFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
+  <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
+    <value>Kesişimler arasındaki değişimi hesapla</value>
+  </data>
+  <data name="Option_Shift" xml:space="preserve">
+    <value>Değişim</value>
+  </data>
+  <data name="Option_ShiftFormat" xml:space="preserve">
+    <value>{0}m</value>
+  </data>
+  <data name="Option_Slope" xml:space="preserve">
+    <value>Eğim</value>
+  </data>
+  <data name="Option_SlopeFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
+  <data name="Option_Stretch" xml:space="preserve">
+    <value>Genişlet</value>
+  </data>
+  <data name="Option_StretchFormat" xml:space="preserve">
+    <value>{0}%</value>
+  </data>
+  <data name="Option_Style" xml:space="preserve">
+    <value>Stil</value>
+  </data>
+  <data name="Option_StyleFlat" xml:space="preserve">
+    <value>Düz</value>
+  </data>
+  <data name="Option_StyleSlope" xml:space="preserve">
+    <value>Yokuş</value>
+  </data>
+  <data name="Option_Twist" xml:space="preserve">
+    <value>Bükük</value>
+  </data>
+  <data name="Option_TwistFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
+  <data name="Option_Type" xml:space="preserve">
+    <value>Düğüm tipi</value>
+  </data>
+  <data name="Panel_NodeId" xml:space="preserve">
+    <value>#{0} nolu düğüm</value>
+  </data>
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>Düğüm varsayılan olarak eğim verildi</value>
+  </data>
+  <data name="Settings_RenderNearNode" xml:space="preserve">
+    <value>Yakındaki kesişen düğümleri göster</value>
+  </data>
+  <data name="Settings_SelectMiddleNodes" xml:space="preserve">
+    <value>Orta düğümü seç</value>
+  </data>
+  <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
+    <value>Eğer bu özellik kapalıysa, orta düğümler tıklanılan konuma taşınır</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
+    <value>Kesişimlerdeki değişimi hesapla</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
+    <value>Düğümlerin arasındaki değişimi hesapla</value>
+  </data>
+  <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
+    <value>Ana eğim yönünü değiştir</value>
+  </data>
+  <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
+    <value>Düğüm biçimini değiştir</value>
+  </data>
+  <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
+    <value>Merkezi sıfırla</value>
+  </data>
+  <data name="Setting_ShortcutMakeStraightEnds" xml:space="preserve">
+    <value>Uçları düz hale getir</value>
+  </data>
+  <data name="Setting_ShortcutResetToDefault" xml:space="preserve">
+    <value>Varsayılanlara sıfırla</value>
+  </data>
+  <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
+    <value>Kesişimler arasındaki değişimi hesapla</value>
+  </data>
+  <data name="Tool_InfoAlignMode" xml:space="preserve">
+    <value>{0}'e basılı tutarak yolları ayarlayın</value>
+  </data>
+  <data name="Tool_InfoApplyAlign" xml:space="preserve">
+    <value>Köşeyle doğrultmak için tıklayın</value>
+  </data>
+  <data name="Tool_InfoChangeMainMode" xml:space="preserve">
+    <value>Eğim yönünü değiştirmek için {0} tuşuna basılı tutun</value>
+  </data>
+  <data name="Tool_InfoClickNode" xml:space="preserve">
+    <value>#{0} Birleşimi
+Ayarlamak için tıklayın</value>
+  </data>
+  <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
+    <value>Ayarlamak istediğiniz köşeyi seçmek için tıklayın</value>
+  </data>
+  <data name="Tool_InfoDragCenter" xml:space="preserve">
+    <value>Merkez noktayı ayarlamak için tutup çekin</value>
+  </data>
+  <data name="Tool_InfoDragCircle" xml:space="preserve">
+    <value>Açıyı ayarlamak için tutup çekin</value>
+  </data>
+  <data name="Tool_InfoDragCorner" xml:space="preserve">
+    <value>Köşelerin çıkıntısını ayarlamak için tutup çekin</value>
+  </data>
+  <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
+    <value>Ana eğim yönünü değiştirmek için bu uçtan tutup çekin</value>
+  </data>
+  <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
+    <value>Ana eğim yönünü ayarlamak için ucu bırakın</value>
+  </data>
+  <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
+    <value>Kesişimlere düğüm bölgesi eklemek için tıklayın</value>
+  </data>
+  <data name="Tool_InfoInsertNode" xml:space="preserve">
+    <value>Düğüm bölgesi eklemek için tıklayın</value>
+  </data>
+  <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
+    <value>Ayarlamak istediğiniz köşeyi seçin</value>
+  </data>
+  <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
+    <value>Seçilen eğim yönüne doğru değiştir</value>
+  </data>
+  <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
+    <value>Ana eğim yönünün bitme konumunu seçiniz</value>
+  </data>
+  <data name="Tool_InfoSelectNode" xml:space="preserve">
+    <value>Düğüm seçin</value>
+  </data>
+  <data name="Tool_InfoSelectToAlign" xml:space="preserve">
+    <value>Hizalanacak köşeleri seçin</value>
+  </data>
+  <data name="Tool_InfoTooCloseNode" xml:space="preserve">
+    <value>Düğüm konulamadı
+Yakındaki düğüme çok yakın</value>
+  </data>
+  <data name="Tool_InfoUnderground" xml:space="preserve">
+    <value>Yeraltı modu için {0}'e basılı tutun</value>
+  </data>
 </root>

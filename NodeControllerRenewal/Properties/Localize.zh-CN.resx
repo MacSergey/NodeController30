@@ -295,13 +295,13 @@
     <value>设置交叉点间的偏移</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>按住Shift对齐道路</value>
+    <value>按住{0}对齐道路</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>点击以向此边角对齐</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>按住Alt 以改变主要斜坡方向</value>
+    <value>按住{0}以改变主要斜坡方向</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>节点 #{0}
@@ -351,6 +351,6 @@
 节点间距过短</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>按住 Shift 进入地下模式</value>
+    <value>按住{0}进入地下模式</value>
   </data>
 </root>

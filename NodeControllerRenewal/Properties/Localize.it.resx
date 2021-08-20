@@ -277,13 +277,13 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
     <value>Imposta spostamento tra le intersezioni</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Tieni premuto Shift per allineare le strade</value>
+    <value>Tieni premuto {0} per allineare le strade</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Clicca per allineare con questo angolo</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Tieni premuto Alt per cambiare la direzione della pendenza</value>
+    <value>Tieni premuto {0} per cambiare la direzione della pendenza</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Nodo #{0}
@@ -333,7 +333,7 @@ Clicca per modificare</value>
 Troppo vicino ad un altro nodo</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Tieni premuto Shift per
+    <value>Tieni premuto {0} per
 modalità sotterranea</value>
   </data>
 </root>

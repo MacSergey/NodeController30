@@ -178,7 +178,7 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
     <value>Manual</value>
   </data>
   <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Haga las puntas rectas</value>
+    <value>Alinear esquinas</value>
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcado</value>
@@ -277,13 +277,13 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
     <value>Establecer desplazamiento entre intersecciones</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Mantener pulsada la tecla "Mayús" para alinear carreteras</value>
+    <value>Mantener pulsada la tecla {0} para alinear carreteras</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Clic para alinear con esta esquina</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Mantener pulsada la tecla "Alt" para cambiar dirección de la pendiente principal</value>
+    <value>Mantener pulsada la tecla {0} para cambiar dirección de la pendiente principal</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Nodo #{0}
@@ -333,6 +333,7 @@ Clic para editar</value>
 Muy cerca del nodo más cercano</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Mantenga Mayús para entrar al modo subterráneo</value>
+    <value>Mantener pulsada la tecla {0}
+para modo subterráneo</value>
   </data>
 </root>

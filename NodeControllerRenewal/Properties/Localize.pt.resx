@@ -275,13 +275,13 @@ A compatível com versões anteriores não fornece a transferência de todos os 
     <value>Aplicar entre intercessões</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Segure Shift para alinhar as estradas</value>
+    <value>Segure {0} para alinhar as estradas</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Clique para alinhar com este canto</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Mantem Alt premido para mudar a direção da inclinação principal</value>
+    <value>Mantem {0} premido para mudar a direção da inclinação principal</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Nó #{0}
@@ -331,6 +331,6 @@ Clique para editar</value>
 Está demasiado perto de outro nó</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Segurar Shift para o modo subterrâneo</value>
+    <value>Segurar {0} para o modo subterrâneo</value>
   </data>
 </root>

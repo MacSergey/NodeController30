@@ -332,13 +332,13 @@
     <value>Задать сдвиг между перекрестками</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Удерживайте Shift чтобы выровнять дороги</value>
+    <value>Удерживайте {0} чтобы выровнять дороги</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Нажмите чтобы выровнять с этим углом</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Удерживайте Alt чтобы изменить основное направление наклона</value>
+    <value>Удерживайте {0} чтобы изменить основное направление наклона</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Узел #{0}
@@ -389,7 +389,7 @@
 Слишком близко к соседнему углу</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Удерживайте Shift
+    <value>Удерживайте {0}
 для подземного режима</value>
   </data>
 </root>

@@ -240,7 +240,9 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>節點 #{0}</value>
   </data>
-  
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>節點預設為斜坡</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>凸顯臨近節點</value>
   </data>
@@ -275,13 +277,13 @@
     <value>設定交叉路口間的偏移</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>按住 Shift 對齊道路</value>
+    <value>按住 {0} 對齊道路</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>點擊以對齊此角落</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>按住 Alt 調整主斜坡方向</value>
+    <value>按住 {0} 調整主斜坡方向</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>節點 #{0}
@@ -331,6 +333,6 @@
 太靠近臨近節點</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>按住 Shift 進入地下模式</value>
+    <value>按住 {0} 進入地下模式</value>
   </data>
 </root>

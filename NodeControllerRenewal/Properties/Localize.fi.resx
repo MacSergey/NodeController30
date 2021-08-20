@@ -277,13 +277,13 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
     <value>Aseta siirtymä risteysten välille</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Pidä Shift-näppäintä pohjassa kohdistaaksesi tiet</value>
+    <value>Pidä {0}-näppäintä pohjassa kohdistaaksesi tiet</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Napauta tasataksesi tämän kulman suhteen</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Pidä Alt-näppäintä pohjassa vaihtaaksesi kaltevuuden suuntaa</value>
+    <value>Pidä {0}-näppäintä pohjassa vaihtaaksesi kaltevuuden suuntaa</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Risteys #{0}
@@ -333,6 +333,6 @@ Napauta muokataksesi</value>
 Se on liian lähellä toista risteystä</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Pidä Shift-näppäintä pohjassa nähdäksesi maanalaiset tiet</value>
+    <value>Pidä {0}-näppäintä pohjassa nähdäksesi maanalaiset tiet</value>
   </data>
 </root>

@@ -277,13 +277,13 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
     <value>Définir le décalage entre les intersections</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Maintenez la touche Maj pour aligner les routes</value>
+    <value>Maintenez la touche {0} pour aligner les routes</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Cliquez pour aligner avec ce coin</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Maintenez Alt pour changer la direction de la pente</value>
+    <value>Maintenez {0} pour changer la direction de la pente</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Noeud #{0}
@@ -333,6 +333,6 @@ Cliquez pour modifier</value>
 Trop proche d'un noeud à proximité</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Maintenez la touche Maj pour utiliser le mode souterrain</value>
+    <value>Maintenez la touche {0} pour utiliser le mode souterrain</value>
   </data>
 </root>

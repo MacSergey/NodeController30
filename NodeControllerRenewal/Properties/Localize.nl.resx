@@ -256,13 +256,13 @@
   </data>
   
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Houd Shift ingedrukt om wegen uit te lijnen</value>
+    <value>Houd {0} ingedrukt om wegen uit te lijnen</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Klik om met deze hoek uit te lijnen</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Houd Alt ingedrukt om hoofdrichting helling aan te passen</value>
+    <value>Houd {0} ingedrukt om hoofdrichting helling aan te passen</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Punt #{0}
@@ -311,5 +311,7 @@ Klik om te wijzigen</value>
     <value>Knoop toevoegen niet mogelijk
 Te dichtbij andere knoop</value>
   </data>
-  
+  <data name="Tool_InfoUnderground" xml:space="preserve">
+    <value>Houd {0} om in ondergrondse modus te gaan</value>
+  </data>
 </root>

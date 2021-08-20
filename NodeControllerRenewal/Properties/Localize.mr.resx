@@ -277,13 +277,13 @@ Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manu
     <value>Tetapkan anjakan di antara persimpangan</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Tahan kekunci Shift untuk menjajar jalan</value>
+    <value>Tahan kekunci {0} untuk menjajar jalan</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Klik untuk menjajar dengan bucu ini</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Tahan kekunci Alt untuk ubah arah lereng utama</value>
+    <value>Tahan kekunci {0} untuk ubah arah lereng utama</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Nod #{0}
@@ -333,7 +333,7 @@ Klik untuk sunting</value>
 Terlalu dekat dengan nod berhampiran</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Tahan kekunci Shift
+    <value>Tahan kekunci {0}
 untuk mod bawah tanah</value>
   </data>
 </root>

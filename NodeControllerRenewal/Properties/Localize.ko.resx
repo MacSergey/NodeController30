@@ -277,13 +277,13 @@
     <value>두 교차로 사이에 이동 설정</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Shift를 꾹 눌러 도로 정렬</value>
+    <value>{0}를 꾹 눌러 도로 정렬</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>클릭해 이 코너에 정렬</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Alt를 꾹 눌러 주 경사 방향 변경</value>
+    <value>{0}를 꾹 눌러 주 경사 방향 변경</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>노드 #{0}
@@ -333,7 +333,7 @@
 근처 노드와 너무 가까움</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Shift를 계속 눌러
+    <value>{0}를 계속 눌러
 지하 모드</value>
   </data>
 </root>

@@ -295,13 +295,13 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
     <value>Verschiebung zwischen Kreuzungen anwenden</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Shift gedrückt halten um Straßen auszurichten</value>
+    <value>{0} gedrückt halten um Straßen auszurichten</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Klicken zum Ausrichten an dieser Ecke</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Halte Alt gedrückt, um die Neigungsrichtung zu ändern</value>
+    <value>Halte {0} gedrückt, um die Neigungsrichtung zu ändern</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Netzwerk-Knoten #{0}
@@ -351,6 +351,6 @@ Klicken zum Bearbeiten</value>
 Zu nah an einem anderen Netzwerk-Knoten</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Halte Shift gedrückt für den unterirdischen Modus</value>
+    <value>Halte {0} gedrückt für den unterirdischen Modus</value>
   </data>
 </root>
