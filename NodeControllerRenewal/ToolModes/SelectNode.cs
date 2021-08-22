@@ -21,16 +21,16 @@ namespace NodeController
             else if (IsHoverSegment)
             {
                 if (!IsPossibleInsertNode)
-                    return Localize.Tool_InfoTooCloseNode + GetStepOverInfo();
+                    return Localize.Tool_InfoTooCloseNode.AddErrorColor() + GetStepOverInfo();
                 else if (HoverSegment.Id.GetSegment().Info.PedestrianLanes() >= 2)
                     return Localize.Tool_InfoInsertCrossingNode + GetStepOverInfo();
                 else
                     return Localize.Tool_InfoInsertNode + GetStepOverInfo();
             }
             else
-                return $"{Localize.Tool_InfoSelectNode}\n\n{Localize.Tool_InfoUnderground}";
+                return $"{Localize.Tool_InfoSelectNode}\n\n{string.Format(Localize.Tool_InfoUnderground, LocalizeExtension.Shift.AddInfoColor())}";
         }
-        private string GetStepOverInfo() => NodeControllerTool.SelectionStepOverShortcut.NotSet ? string.Empty : "\n\n" + string.Format(CommonLocalize.Tool_InfoSelectionStepOver, NodeControllerTool.SelectionStepOverShortcut.InputKey);
+        private string GetStepOverInfo() => NodeControllerTool.SelectionStepOverShortcut.NotSet ? string.Empty : "\n\n" + string.Format(CommonLocalize.Tool_InfoSelectionStepOver, NodeControllerTool.SelectionStepOverShortcut.AddInfoColor());
 
         protected override bool IsValidNode(ushort nodeId)
         {
