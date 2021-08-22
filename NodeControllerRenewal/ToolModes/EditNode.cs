@@ -1,4 +1,5 @@
-﻿using ModsCommon.Utilities;
+﻿using ModsCommon;
+using ModsCommon.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -96,9 +97,9 @@ namespace NodeController
             else
             {
                 var info = new List<string>();
-                info.Add(Localize.Tool_InfoAlignMode);
+                info.Add(string.Format(Localize.Tool_InfoAlignMode, LocalizeExtension.Shift.AddInfoColor()));
                 if (Tool.Data.IsJunction && Tool.Data.IsSlopeJunctions)
-                    info.Add(Localize.Tool_InfoChangeMainMode);
+                    info.Add(string.Format(Localize.Tool_InfoChangeMainMode, LocalizeExtension.Alt.AddInfoColor()));
 
                 return string.Join("\n", info.ToArray());
             }
