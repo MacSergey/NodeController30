@@ -135,6 +135,7 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Tikungan</value>
   </data>
@@ -333,6 +334,7 @@ Klik untuk mengedit</value>
 Terlalu dekat dengan titik hubung lainnya</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Tekan dan tahan {0} untuk mode bawah tanah</value>
+    <value>Tekan dan tahan {0} untuk
+mode bawah tanah</value>
   </data>
 </root>

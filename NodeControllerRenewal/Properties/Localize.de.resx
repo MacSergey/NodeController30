@@ -153,6 +153,7 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
   <data name="Mod_WhatsNewMessage3_1_2" xml:space="preserve">
     <value>- Koreanische und malaiische Übersetzungen hinzugefügt.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Kurve</value>
   </data>
@@ -295,7 +296,7 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
     <value>Verschiebung zwischen Kreuzungen anwenden</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>{0} gedrückt halten um Straßen auszurichten</value>
+    <value>{0} gedrückt halten, um Straßen auszurichten</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Klicken zum Ausrichten an dieser Ecke</value>

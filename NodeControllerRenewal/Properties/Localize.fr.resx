@@ -135,6 +135,7 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Courbe</value>
   </data>

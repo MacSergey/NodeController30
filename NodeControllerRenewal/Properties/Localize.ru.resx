@@ -190,6 +190,11 @@
   <data name="Mod_WhatsNewMessage3_1_2" xml:space="preserve">
     <value>- Добавлены переводы на индонезийский, корейский и малайский.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_1_3" xml:space="preserve">
+    <value>- Добавлен цветной текст в подсказки инструмента.
+- Добавлена возможность скрыть оригинальную кнопку мода если вы используете мод UUI
+- Добавлен перевод на турецкий.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Изгиб</value>
   </data>

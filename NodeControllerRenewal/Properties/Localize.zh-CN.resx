@@ -153,6 +153,7 @@
   <data name="Mod_WhatsNewMessage3_1_2" xml:space="preserve">
     <value>- 添加韩语和马来语翻译。</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>弯曲</value>
   </data>
