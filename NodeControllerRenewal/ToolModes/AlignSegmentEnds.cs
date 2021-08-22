@@ -149,14 +149,14 @@ namespace NodeController
                 if (!IsHoverSide)
                     return Localize.Tool_InfoSelectToAlign;
                 else
-                    return Localize.Tool_InfoClickToSelectFirstAlign;
+                    return Localize.Tool_InfoClickToSelectFirstAlign.AddActionColor();
             }
             else
             {
                 if (!IsHoverSide)
                     return Localize.Tool_InfoSelectAlignRelative;
                 else
-                    return Localize.Tool_InfoApplyAlign;
+                    return Localize.Tool_InfoApplyAlign.AddActionColor();
             }
         }
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)

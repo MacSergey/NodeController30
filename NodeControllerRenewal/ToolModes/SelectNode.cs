@@ -23,9 +23,9 @@ namespace NodeController
                 if (!IsPossibleInsertNode)
                     return Localize.Tool_InfoTooCloseNode.AddErrorColor() + GetStepOverInfo();
                 else if (HoverSegment.Id.GetSegment().Info.PedestrianLanes() >= 2)
-                    return Localize.Tool_InfoInsertCrossingNode + GetStepOverInfo();
+                    return Localize.Tool_InfoInsertCrossingNode.AddActionColor() + GetStepOverInfo();
                 else
-                    return Localize.Tool_InfoInsertNode + GetStepOverInfo();
+                    return Localize.Tool_InfoInsertNode.AddActionColor() + GetStepOverInfo();
             }
             else
                 return $"{Localize.Tool_InfoSelectNode}\n\n{string.Format(Localize.Tool_InfoUnderground, LocalizeExtension.Shift.AddInfoColor())}";
