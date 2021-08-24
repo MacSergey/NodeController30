@@ -4,6 +4,7 @@ using ICities;
 using ModsCommon;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
+using NodeController.UI;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -39,6 +40,7 @@ namespace NodeController
             AddCheckBox(generalGroup, Localize.Settings_RenderNearNode, RenderNearNode);
             AddCheckBox(generalGroup, Localize.Settings_NodeIsSlopedByDefault, NodeIsSlopedByDefault);
             AddCheckBox(generalGroup, CommonLocalize.Settings_ShowTooltips, ShowToolTip);
+            AddToolButton<NodeControllerTool, NodeControllerButton>(generalGroup);
 
             AddNotifications(GeneralTab);
 #if DEBUG
