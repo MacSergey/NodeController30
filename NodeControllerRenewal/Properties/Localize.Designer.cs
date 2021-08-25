@@ -193,6 +193,17 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на - Added colored text to tooltips.
+        ///- Added the ability to hide original mod button in toolbar If you use UUI mod.
+        ///- Added Turkish translation..
+        /// </summary>
+        internal static string Mod_WhatsNewMessage3_1_3 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_1_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Bend.
         /// </summary>
         internal static string NodeStyle_Bend {
@@ -616,7 +627,7 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hold Shift to alignment roads.
+        ///   Ищет локализованную строку, похожую на Hold {0} to alignment roads.
         /// </summary>
         internal static string Tool_InfoAlignMode {
             get {
@@ -634,7 +645,7 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hold Alt to change main slope direction.
+        ///   Ищет локализованную строку, похожую на Hold {0} to change main slope direction.
         /// </summary>
         internal static string Tool_InfoChangeMainMode {
             get {
@@ -780,7 +791,7 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hold Shift to
+        ///   Ищет локализованную строку, похожую на Hold {0} to
         ///underground mode.
         /// </summary>
         internal static string Tool_InfoUnderground {
