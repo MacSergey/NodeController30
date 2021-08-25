@@ -24,7 +24,7 @@ To start use Node Controller Renewal you should disable original Node Controller
 [*] Hide crosswalk markings (required [url=https://steamcommunity.com/workshop/filedetails/?id=1934023593]Hide Crosswalk mod[/url])
 [*] Move It integration.
 [*] Save data in intersection assets.
-[*] Translation into languages: Chinese, Dutch, Finnish, French, German, Japanese, Polish, Portuguese, Russian, Spanish
+[*] Translation into languages: Chinese, Dutch, Finnish, French, German, Indonesian, Italian, Japanese, Korean, Malay, Polish, Portuguese, Russian, Spanish, Turkish
 [/list]
 
 [HR][/HR] 
@@ -71,6 +71,7 @@ If you want to help improve existing translations or you want to translate into 
 [*] [url=https://github.com/kevinlin18]kevinlin18[/url] (Chinese translation)
 [*] [url=https://steamcommunity.com/profiles/76561198141193559]krzychu124[/url]
 [*] [url=https://steamcommunity.com/id/mrlojnat/]MrLojnat[/url] (French translation)
+[*] [url=https://steamcommunity.com/profiles/76561198153118551/]PELLQ[/url] (Turkish translation)
 [*] raistlin46 (Italian translation)
 [*] [url=https://steamcommunity.com/profiles/76561198087011973/]ristrettoridder[/url] (Dutch translation)
 [*] [url=https://steamcommunity.com/id/shg166yh/]shg166[/url] (Japanese translation)
