@@ -153,7 +153,11 @@
   <data name="Mod_WhatsNewMessage3_1_2" xml:space="preserve">
     <value>- 添加韩语和马来语翻译。</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_1_3" xml:space="preserve">
+    <value>- 工具提示中加入了彩色文字。
+- 如果您使用UUI模组的话，可以在工具栏中隐藏原模组按钮。
+- 添加了土耳其语翻译。</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>弯曲</value>
   </data>
@@ -183,6 +187,12 @@
   </data>
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
     <value>按附近节点计算偏移</value>
+  </data>
+  <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
+    <value>按交叉点计算倾斜</value>
+  </data>
+  <data name="Option_CalculateTwistByNearby" xml:space="preserve">
+    <value>按附近节点计算倾斜</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>重置偏移</value>
@@ -219,6 +229,9 @@
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
     <value>设置交叉点间的偏移</value>
+  </data>
+  <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
+    <value>设置两个路口间的所有倾斜</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>移位</value>
@@ -277,6 +290,12 @@
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>按附近节点计算偏移</value>
   </data>
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>按交叉点计算倾斜</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>按附近节点计算倾斜</value>
+  </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>更改主要斜坡方向模式</value>
   </data>
@@ -294,6 +313,9 @@
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>设置交叉点间的偏移</value>
+  </data>
+  <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
+    <value>设置两个交叉点间的倾斜</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>按住{0}对齐道路</value>

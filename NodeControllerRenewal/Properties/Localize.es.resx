@@ -166,6 +166,8 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
     <value>Calcular desplazamiento usando nodos cercanos</value>
   </data>
+  
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Restablecer desplazamiento</value>
   </data>
@@ -202,6 +204,7 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
     <value>Establecer desplazamiento entre intersecciones</value>
   </data>
+  
   <data name="Option_Shift" xml:space="preserve">
     <value>Desplazar</value>
   </data>
@@ -259,6 +262,8 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>Calcular desplazamiento usando nodos cercanos</value>
   </data>
+  
+  
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>Cambiar el modo de dirección de la inclinación principal</value>
   </data>
@@ -277,6 +282,7 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Establecer desplazamiento entre intersecciones</value>
   </data>
+  
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Mantener presionada la tecla {0} para alinear carreteras</value>
   </data>

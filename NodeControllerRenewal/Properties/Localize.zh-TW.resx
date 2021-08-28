@@ -166,6 +166,12 @@
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
     <value>以臨近節點計算偏移</value>
   </data>
+  <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
+    <value>以交岔路口計算扭轉</value>
+  </data>
+  <data name="Option_CalculateTwistByNearby" xml:space="preserve">
+    <value>以臨近節點計算扭轉</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>重設偏移</value>
   </data>
@@ -201,6 +207,9 @@
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
     <value>設定交叉路口間的偏移</value>
+  </data>
+  <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
+    <value>設定交叉路口間的扭轉</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>左右位移</value>
@@ -259,6 +268,12 @@
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>以臨近節點計算偏移</value>
   </data>
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>以交岔路口計算扭轉</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>以臨近節點計算扭轉</value>
+  </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>修改主斜坡方向模式</value>
   </data>
@@ -276,6 +291,9 @@
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>設定交叉路口間的偏移</value>
+  </data>
+  <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
+    <value>設定交叉路口間的扭轉</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>按住 {0} 對齊道路</value>

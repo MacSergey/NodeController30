@@ -166,6 +166,8 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
     <value>Oblicz przesunięcie na podstawie pobliskich węzłów</value>
   </data>
+  
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Zresetuj przesunięcie</value>
   </data>
@@ -202,6 +204,7 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
     <value>Ustaw przesunięcie pomiędzy skrzyżowaniami</value>
   </data>
+  
   <data name="Option_Shift" xml:space="preserve">
     <value>Przesuń</value>
   </data>
@@ -259,6 +262,8 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>Oblicz przesunięcie na podstawie pobliskich węzłów</value>
   </data>
+  
+  
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>Zmień tryb kierunku głównego pochylenia</value>
   </data>
@@ -277,6 +282,7 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Ustaw przesunięcie między skrzyżowaniami</value>
   </data>
+  
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Przytrzymaj {0} aby wyrównać drogi</value>
   </data>

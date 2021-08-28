@@ -166,6 +166,12 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
     <value>Calcola lo spostamento dai nodi vicini</value>
   </data>
+  <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
+    <value>Calcola la torsione per intersezioni</value>
+  </data>
+  <data name="Option_CalculateTwistByNearby" xml:space="preserve">
+    <value>Calcola torsione per nodi vicini</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Ripristina la deviazione</value>
   </data>
@@ -201,6 +207,9 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
     <value>Imposta spostamento tra le intersezioni</value>
+  </data>
+  <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
+    <value>Imposta torsione tra intersezioni</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Spostamento</value>
@@ -259,6 +268,12 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>Calcola lo spostamento dai nodi vicini</value>
   </data>
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>Calcola la torsione per intersezioni</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>Calcola torsione per nodi vicini</value>
+  </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>Cambia la modalità principale di direzione della pendenza</value>
   </data>
@@ -276,6 +291,9 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Imposta spostamento tra le intersezioni</value>
+  </data>
+  <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
+    <value>Imposta torsione tra intersezioni</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Tieni premuto {0} per allineare le strade</value>

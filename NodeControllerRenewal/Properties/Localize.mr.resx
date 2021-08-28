@@ -166,6 +166,12 @@ Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manu
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
     <value>Kira anjakan mengikut nod berhampiran</value>
   </data>
+  <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
+    <value>Kira pulas mengikut persimpangan</value>
+  </data>
+  <data name="Option_CalculateTwistByNearby" xml:space="preserve">
+    <value>Kira pulas mengikut nod berhampiran</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Tetap semula ofset</value>
   </data>
@@ -201,6 +207,9 @@ Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manu
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
     <value>Tetapkan anjakan di antara persimpangan</value>
+  </data>
+  <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
+    <value>Tetapkan pulas di antara persimpangan</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Anjak</value>
@@ -259,6 +268,12 @@ Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manu
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>Kira anjakan mengikut nod berhampiran</value>
   </data>
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>Kira pulas mengikut persimpangan</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>Kira pulas mengikut nod berhampiran</value>
+  </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>Ubah mod arah lereng utama</value>
   </data>
@@ -276,6 +291,9 @@ Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manu
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Tetapkan anjakan di antara persimpangan</value>
+  </data>
+  <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
+    <value>Tetapkan pulas di antara persimpangan</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Tahan kekunci {0} untuk menjajar jalan</value>

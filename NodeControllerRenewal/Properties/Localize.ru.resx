@@ -225,6 +225,12 @@
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
     <value>Рассчитать сдвиг по соседним узлам</value>
   </data>
+  <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
+    <value>Рассчитать скручивание между перекрестками</value>
+  </data>
+  <data name="Option_CalculateTwistByNearby" xml:space="preserve">
+    <value>Рассчитать скручивание по соседним узлам</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Отступ по умолчанию</value>
   </data>
@@ -260,6 +266,9 @@
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
     <value>Задать сдвиг между перекрестками</value>
+  </data>
+  <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
+    <value>Задать скручивание между перекрестками</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Сдвиг</value>
@@ -318,6 +327,12 @@
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>Рассчитать сдвиг по соседним узлам</value>
   </data>
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>Рассчитать скручивание между перекрестками</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>Рассчитать скручивание по соседним узлам</value>
+  </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>Изменить режим основного направления наклона</value>
   </data>
@@ -335,6 +350,9 @@
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Задать сдвиг между перекрестками</value>
+  </data>
+  <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
+    <value>Задать скручивание между перекрестками</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Удерживайте {0} чтобы выровнять дороги</value>

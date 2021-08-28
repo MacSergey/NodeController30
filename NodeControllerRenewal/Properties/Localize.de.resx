@@ -184,6 +184,12 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
     <value>Verschiebung durch Netzwerk-Knoten in der Nähe berechnen</value>
   </data>
+  <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
+    <value>Drehung durch Kreuzungen berechnen</value>
+  </data>
+  <data name="Option_CalculateTwistByNearby" xml:space="preserve">
+    <value>Drehung durch benachbarte Netzwerk-Knoten berechnen</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Versatz zurücksetzen</value>
   </data>
@@ -219,6 +225,9 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
     <value>Verschiebung zwischen Kreuzungen anwenden</value>
+  </data>
+  <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
+    <value>Drehung zwischen Kreuzungen festlegen</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Verschiebung</value>
@@ -277,6 +286,12 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>Verschiebung durch Netzwerk-Knoten in der Nähe berechnen</value>
   </data>
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>Drehung durch Kreuzungen berechnen</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>Drehung durch benachbarte Netzwerk-Knoten berechnen</value>
+  </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>Modus der Haupt-Neigungsrichtung ändern</value>
   </data>
@@ -294,6 +309,9 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Verschiebung zwischen Kreuzungen anwenden</value>
+  </data>
+  <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
+    <value>Drehung zwischen Kreuzungen festlegen</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>{0} gedrückt halten, um Straßen auszurichten</value>

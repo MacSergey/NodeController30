@@ -166,6 +166,8 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
     <value>Laske siirtymä viereisten risteysten perusteella</value>
   </data>
+  
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Palauta etäisyydet</value>
   </data>
@@ -202,6 +204,7 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
     <value>Aseta siirtymä risteysten välille</value>
   </data>
+  
   <data name="Option_Shift" xml:space="preserve">
     <value>Siirtymä</value>
   </data>
@@ -259,6 +262,8 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>Laske siirtymä viereisten risteysten perusteella</value>
   </data>
+  
+  
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>Vaihda kaltevuuden suunnan asetus</value>
   </data>
@@ -277,6 +282,7 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa risteyk
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Aseta siirtymä risteysten välille</value>
   </data>
+  
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Pidä {0}-näppäintä pohjassa kohdistaaksesi tiet</value>
   </data>

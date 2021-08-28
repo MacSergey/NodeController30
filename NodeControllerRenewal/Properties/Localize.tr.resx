@@ -166,6 +166,8 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
     <value>Düğümlerin arasındaki değişimi hesapla</value>
   </data>
+  
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Merkezi sıfırla</value>
   </data>
@@ -202,6 +204,7 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
     <value>Kesişimler arasındaki değişimi hesapla</value>
   </data>
+  
   <data name="Option_Shift" xml:space="preserve">
     <value>Değişim</value>
   </data>
@@ -259,6 +262,8 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>Düğümlerin arasındaki değişimi hesapla</value>
   </data>
+  
+  
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>Ana eğim yönünü değiştir</value>
   </data>
@@ -277,6 +282,7 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Kesişimler arasındaki değişimi hesapla</value>
   </data>
+  
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>{0}'e basılı tutarak yolları ayarlayın</value>
   </data>

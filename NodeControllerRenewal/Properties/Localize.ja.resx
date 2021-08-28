@@ -161,10 +161,16 @@
     <value>すべて</value>
   </data>
   <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
-    <value>交差点間のノードは、まとめてスムージング</value>
+    <value>交差点間でシフト値を、まとめてスムージング</value>
   </data>
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
-    <value>隣接するノードで、スムージング</value>
+    <value>隣接するノードで、シフトをスムージング</value>
+  </data>
+  <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
+    <value>交差点間でツイスト値を、まとめてスムージング</value>
+  </data>
+  <data name="Option_CalculateTwistByNearby" xml:space="preserve">
+    <value>隣接するノードで、ツイストのスムージング</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>オフセットをリセット</value>
@@ -185,7 +191,7 @@
     <value>横断歩道の表示</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
-    <value>オフセット（長さ）</value>
+    <value>オフセット(長さ)</value>
   </data>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
@@ -194,28 +200,31 @@
     <value>デフォルトに戻す</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>回転（角度）</value>
+    <value>回転(角度)</value>
   </data>
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
-    <value>交差点間のノードは、シフトの値を一括適用</value>
+    <value>交差点間では、シフト値を一括適用</value>
+  </data>
+  <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
+    <value>交差点間では、ツイスト値を一括適用</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
-    <value>シフト（左右の移動）</value>
+    <value>シフト(左右の移動)</value>
   </data>
   <data name="Option_ShiftFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
-    <value>スロープ（勾配）</value>
+    <value>スロープ(勾配)</value>
   </data>
   <data name="Option_SlopeFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Stretch" xml:space="preserve">
-    <value>ストレッチ（太さ）</value>
+    <value>ストレッチ(太さ)</value>
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
@@ -230,7 +239,7 @@
     <value>スロープ</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>ツイスト（バンク）</value>
+    <value>ツイスト(バンク)</value>
   </data>
   <data name="Option_TwistFormat" xml:space="preserve">
     <value>{0}°</value>
@@ -242,7 +251,7 @@
     <value>ノード #{0} を調整中</value>
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
-    <value>ノードのデフォルトを、スロープに全て変更</value>
+    <value>デフォルトでノードを全てスロープ化</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>選択中は近くにあるノードをハイライト</value>
@@ -254,10 +263,16 @@
     <value>このオプションを無効にすると、中間部分にあるノードは選択されません</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
-    <value>交差点間のノードは、まとめてスムージング</value>
+    <value>交差点間でシフト値を、まとめてスムージング</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
-    <value>隣接するノードで、スムージング</value>
+    <value>隣接するノードで、シフトをスムージング</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>交差点間でツイスト値を、まとめてスムージング</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>隣接するノードで、ツイストのスムージング</value>
   </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>スロープ化の選択方法</value>
@@ -275,16 +290,19 @@
     <value>デフォルトに戻す</value>
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
-    <value>交差点間のノードは、シフトの値を一括適用</value>
+    <value>交差点間では、シフト値を一括適用</value>
+  </data>
+  <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
+    <value>交差点間では、ツイスト値を一括適用</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>{0}キー押下で、シフトして自動的に整列</value>
+    <value>{0} で、シフトして自動的に整列</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>クリックしてこのコーナーへ自動整列</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>{0}キー押下で、スロープ化する接続方向を変更</value>
+    <value>{0} で、スロープ化する接続方向を変更</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>ノード #{0}
@@ -297,7 +315,7 @@
     <value>ドラッグしてオフセットを変更</value>
   </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
-    <value>ドラッグして回転（角度）を変更</value>
+    <value>ドラッグして回転(角度)を変更</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>ドラッグしてコーナーオフセットを変更</value>
@@ -309,7 +327,7 @@
     <value>終端をドロップして、この接続方向でスロープ化する</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
-    <value>クリックして横断歩道（ノード）を追加</value>
+    <value>クリックして横断歩道を追加</value>
   </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>クリックしてノードを追加</value>
@@ -324,7 +342,7 @@
     <value>終端をD&amp;Dして、他のセグメントへ接続先を変更</value>
   </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
-    <value>調整したいノード（交差点）を選択してください</value>
+    <value>調整したいノード(交差点)を選択してください</value>
   </data>
   <data name="Tool_InfoSelectToAlign" xml:space="preserve">
     <value>自動整列したいコーナーの始点を選択</value>
@@ -334,6 +352,6 @@
 他のノードと近すぎます</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>{0}キー押下で、地下表示に切り替え</value>
+    <value>{0} で、地下表示に切り替え</value>
   </data>
 </root>

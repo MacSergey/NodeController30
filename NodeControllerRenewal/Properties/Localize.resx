@@ -225,6 +225,12 @@ Backward compatibility does not provide the transfer of all data, may be require
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
     <value>Calculate shift by nearby nodes</value>
   </data>
+  <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
+    <value>Calculate twist by intersections</value>
+  </data>
+  <data name="Option_CalculateTwistByNearby" xml:space="preserve">
+    <value>Calculate twist by nearby nodes</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Reset offset</value>
   </data>
@@ -260,6 +266,9 @@ Backward compatibility does not provide the transfer of all data, may be require
   </data>
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
     <value>Set shift between intersections</value>
+  </data>
+  <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
+    <value>Set twist between intersections</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Shift</value>
@@ -318,6 +327,12 @@ Backward compatibility does not provide the transfer of all data, may be require
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>Calculate shift by nearby nodes</value>
   </data>
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>Calculate twist by intersections</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>Calculate twist by nearby nodes</value>
+  </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>Change main slope direction mode</value>
   </data>
@@ -335,6 +350,9 @@ Backward compatibility does not provide the transfer of all data, may be require
   </data>
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Set shift between intersections</value>
+  </data>
+  <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
+    <value>Set twist between intersections</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Hold {0} to alignment roads</value>
