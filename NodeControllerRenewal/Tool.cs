@@ -18,9 +18,15 @@ namespace NodeController
         public static NodeControllerShortcut ResetOffsetShortcut { get; } = new NodeControllerShortcut(nameof(ResetOffsetShortcut), nameof(Localize.Setting_ShortcutResetToDefault), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.SetKeepDefaults());
         public static NodeControllerShortcut ResetToDefaultShortcut { get; } = new NodeControllerShortcut(nameof(ResetToDefaultShortcut), nameof(Localize.Setting_ShortcutKeepDefault), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ResetToDefault());
         public static NodeControllerShortcut MakeStraightEndsShortcut { get; } = new NodeControllerShortcut(nameof(MakeStraightEndsShortcut), nameof(Localize.Setting_ShortcutMakeStraightEnds), SavedInputKey.Encode(KeyCode.S, true, true, false), () => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds());
+
         public static NodeControllerShortcut CalculateShiftByNearbyShortcut { get; } = new NodeControllerShortcut(nameof(CalculateShiftByNearbyShortcut), nameof(Localize.Setting_ShortcutCalculateShiftByNearby), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByNearby());
         public static NodeControllerShortcut CalculateShiftByIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(CalculateShiftByIntersectionsShortcut), nameof(Localize.Setting_ShortcutCalculateShiftByIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByIntersections());
         public static NodeControllerShortcut SetShiftBetweenIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(SetShiftBetweenIntersectionsShortcut), nameof(Localize.Setting_ShortcutSetShiftBetweenIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.SetShiftBetweenIntersections());
+
+        public static NodeControllerShortcut CalculateTwistByNearbyShortcut { get; } = new NodeControllerShortcut(nameof(CalculateTwistByNearbyShortcut), nameof(Localize.Setting_ShortcutCalculateTwistByNearby), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateTwistByNearby());
+        public static NodeControllerShortcut CalculateTwistByIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(CalculateTwistByIntersectionsShortcut), nameof(Localize.Setting_ShortcutCalculateTwistByIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateTwistByIntersections());
+        public static NodeControllerShortcut SetTwistBetweenIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(SetTwistBetweenIntersectionsShortcut), nameof(Localize.Setting_ShortcutSetTwistBetweenIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.SetTwistBetweenIntersections());
+
         public static NodeControllerShortcut ChangeNodeStyleShortcut { get; } = new NodeControllerShortcut(nameof(ChangeNodeStyleShortcut), nameof(Localize.Setting_ShortcutChangeNodeStyle), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeNodeStyle());
         public static NodeControllerShortcut ChangeMainRoadModeShortcut { get; } = new NodeControllerShortcut(nameof(ChangeMainRoadModeShortcut), nameof(Localize.Setting_ShortcutChangeMainRoadMode), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeMainRoadMode());
         public static NodeControllerShortcut SelectionStepOverShortcut { get; } = new NodeControllerShortcut(nameof(SelectionStepOverShortcut), nameof(CommonLocalize.Settings_ShortcutSelectionStepOver), SavedInputKey.Encode(KeyCode.Space, true, false, false), () => SingletonTool<NodeControllerTool>.Instance.SelectionStepOver(), ToolModeType.Select);
@@ -33,9 +39,15 @@ namespace NodeController
                 yield return ResetOffsetShortcut;
                 yield return ResetToDefaultShortcut;
                 yield return MakeStraightEndsShortcut;
+
                 yield return CalculateShiftByNearbyShortcut;
                 yield return CalculateShiftByIntersectionsShortcut;
                 yield return SetShiftBetweenIntersectionsShortcut;
+
+                yield return CalculateTwistByNearbyShortcut;
+                yield return CalculateTwistByIntersectionsShortcut;
+                yield return SetTwistBetweenIntersectionsShortcut;
+
                 yield return ChangeNodeStyleShortcut;
                 yield return ChangeMainRoadModeShortcut;
             }
@@ -117,30 +129,45 @@ namespace NodeController
         }
         public void CalculateShiftByNearby()
         {
-            CalculateShift(1);
+            CalculateValue(s => s.Shift, (s, v) => s.Shift = v, 1);
             Panel.RefreshPanel();
         }
         public void CalculateShiftByIntersections()
         {
-            CalculateShift();
+            CalculateValue(s => s.Shift, (s, v) => s.Shift = v);
             Panel.RefreshPanel();
         }
-        public void SetShiftBetweenIntersections()
+        public void SetShiftBetweenIntersections() => SetBetweenIntersections(n => n.Shift, (s, v) => s.Shift = v);
+
+        public void CalculateTwistByNearby()
+        {
+            CalculateValue(s => s.TwistAngle, (s, v) => s.TwistAngle = v, 1);
+            Panel.RefreshPanel();
+        }
+        public void CalculateTwistByIntersections()
+        {
+            CalculateValue(s => s.TwistAngle, (s, v) => s.TwistAngle = v);
+            Panel.RefreshPanel();
+        }
+        public void SetTwistBetweenIntersections() => SetBetweenIntersections(n => n.TwistAngle, (s, v) => s.TwistAngle = v);
+
+        public void SetBetweenIntersections(Func<NodeData, float> dataGetter, Action<SegmentEndData, float> dataSetter)
         {
             if (!Data.IsTwoRoads)
                 return;
 
             if (GetDatas(ushort.MaxValue, out var datas, out var segments))
             {
-                var shift = -Data.Shift;
-                SetShift(datas, segments, shift, shift, true);
+                var value = -dataGetter(Data);
+                SetValue(datas, segments, value, value, true, dataSetter);
             }
 
             Panel.RefreshPanel();
         }
+
         public void ChangeNodeStyle()
         {
-            if(Data.Style.SupportSlopeJunction != SupportOption.None)
+            if (Data.Style.SupportSlopeJunction != SupportOption.None)
             {
                 Data.IsSlopeJunctions = !Data.IsSlopeJunctions;
                 Data.UpdateNode(false);
@@ -157,16 +184,16 @@ namespace NodeController
             }
         }
 
-        private void CalculateShift(ushort maxCount = ushort.MaxValue)
+        private void CalculateValue(Func<SegmentEndData, float> dataGetter, Action<SegmentEndData, float> dataSetter, ushort maxCount = ushort.MaxValue)
         {
             if (!Data.IsTwoRoads)
                 return;
 
             if (GetDatas(maxCount, out var datas, out var segments))
             {
-                var startShift = datas.First()[segments.First()].Shift;
-                var endShift = -datas.Last()[segments.Last()].Shift;
-                SetShift(datas, segments, startShift, endShift, false);
+                var startValue = dataGetter(datas.First()[segments.First()]);
+                var endValue = -dataGetter(datas.Last()[segments.Last()]);
+                SetValue(datas, segments, startValue, endValue, false, dataSetter);
             }
         }
         private bool GetDatas(ushort maxCount, out NodeData[] datas, out ushort[] segments)
@@ -199,7 +226,7 @@ namespace NodeController
 
             return true;
         }
-        private void SetShift(NodeData[] datas, ushort[] segments, float startShift, float endShift, bool includeEnds)
+        private void SetValue(NodeData[] datas, ushort[] segments, float startValue, float endValue, bool includeEnds, Action<SegmentEndData, float> dataSetter)
         {
             var lengths = segments.Select(i => new BezierTrajectory(ref i.GetSegment()).Length).ToArray();
             var fullLength = lengths.Sum();
@@ -210,19 +237,19 @@ namespace NodeController
                 if (i == 0)
                 {
                     if (includeEnds)
-                        datas[i][segments[i]].Shift = startShift;
+                        dataSetter(datas[i][segments[i]], startValue);
                 }
                 else if (i == datas.Length - 1)
                 {
                     if (includeEnds)
-                        datas[i][segments[i - 1]].Shift = -endShift;
+                        dataSetter(datas[i][segments[i - 1]], -endValue);
                 }
                 else
                 {
                     currentLength += lengths[i - 1];
-                    var shift = Mathf.Lerp(startShift, endShift, currentLength / fullLength);
-                    datas[i][segments[i - 1]].Shift = -shift;
-                    datas[i][segments[i]].Shift = shift;
+                    var value = Mathf.Lerp(startValue, endValue, currentLength / fullLength);
+                    dataSetter(datas[i][segments[i - 1]], -value);
+                    dataSetter(datas[i][segments[i]], value);
                     datas[i].UpdateNode(false);
                 }
             }

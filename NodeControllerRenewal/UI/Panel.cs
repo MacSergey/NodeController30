@@ -115,9 +115,14 @@ namespace NodeController.UI
         protected override float DefaultHeight => 40f;
 
         private HeaderButtonInfo<HeaderButton> MakeStraight { get; set; }
+
         private HeaderButtonInfo<HeaderButton> CalculateShiftNearby { get; set; }
         private HeaderButtonInfo<HeaderButton> CalculateShiftIntersections { get; set; }
         private HeaderButtonInfo<HeaderButton> SetShiftIntersections { get; set; }
+
+        private HeaderButtonInfo<HeaderButton> CalculateTwistNearby { get; set; }
+        private HeaderButtonInfo<HeaderButton> CalculateTwistIntersections { get; set; }
+        private HeaderButtonInfo<HeaderButton> SetTwistIntersections { get; set; }
 
         public PanelHeader()
         {
@@ -135,6 +140,15 @@ namespace NodeController.UI
 
             SetShiftIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.SetShiftBetweenIntersections, NodeController.Localize.Option_SetShiftBetweenIntersections, NodeControllerTool.SetShiftBetweenIntersectionsShortcut);
             Content.AddButton(SetShiftIntersections);
+
+            CalculateTwistNearby = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateTwistNearby, NodeController.Localize.Option_CalculateTwistByNearby, NodeControllerTool.CalculateTwistByNearbyShortcut);
+            Content.AddButton(CalculateTwistNearby);
+
+            CalculateTwistIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateTwistIntersections, NodeController.Localize.Option_CalculateTwistByIntersections, NodeControllerTool.CalculateTwistByIntersectionsShortcut);
+            Content.AddButton(CalculateTwistIntersections);
+
+            SetTwistIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.SetTwistBetweenIntersections, NodeController.Localize.Option_SetTwistBetweenIntersections, NodeControllerTool.SetTwistBetweenIntersectionsShortcut);
+            Content.AddButton(SetTwistIntersections);
         }
 
         public override void Refresh()
@@ -142,17 +156,27 @@ namespace NodeController.UI
             if (SingletonTool<NodeControllerTool>.Instance.Data is NodeData data)
             {
                 MakeStraight.Visible = data.Style.SupportOffset.IsSet(SupportOption.Individually);
-                var shiftVisible = data.IsTwoRoads && data.IsSameRoad;
-                CalculateShiftNearby.Visible = shiftVisible;
-                CalculateShiftIntersections.Visible = shiftVisible;
-                SetShiftIntersections.Visible = shiftVisible;
+                var valueVisible = data.IsTwoRoads && data.IsSameRoad;
+
+                CalculateShiftNearby.Visible = valueVisible;
+                CalculateShiftIntersections.Visible = valueVisible;
+                SetShiftIntersections.Visible = valueVisible;
+
+                CalculateTwistNearby.Visible = valueVisible;
+                CalculateTwistIntersections.Visible = valueVisible;
+                SetTwistIntersections.Visible = valueVisible;
             }
             else
             {
                 MakeStraight.Visible = false;
+
                 CalculateShiftNearby.Visible = false;
                 CalculateShiftIntersections.Visible = false;
                 SetShiftIntersections.Visible = false;
+
+                CalculateTwistNearby.Visible = false;
+                CalculateTwistIntersections.Visible = false;
+                SetTwistIntersections.Visible = false;
             }
 
             base.Refresh();
