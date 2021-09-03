@@ -145,6 +145,8 @@ namespace NodeController
         public bool IsBendNode => Type == NodeStyleType.Bend;
         public bool IsJunctionNode => !IsMiddleNode && !IsBendNode && !IsEndNode;
         public bool IsMoveableEnds => Style.IsMoveable;
+        public bool AllowSetMainRoad => IsJunction && IsSlopeJunctions && !IsDecoration;
+        public bool IsDecoration => SegmentEndDatas.Any(s => s.IsDecoration);
 
 
         public bool NeedsTransitionFlag => IsTwoRoads && (Type == NodeStyleType.Custom || Type == NodeStyleType.Crossing || Type == NodeStyleType.UTurn);
@@ -281,7 +283,7 @@ namespace NodeController
             foreach (var segmentEnd in SegmentEndDatas)
             {
                 segmentEnd.IsMainRoad = IsMainRoad(segmentEnd.Id);
-                if (!segmentEnd.IsMainRoad)
+                if (!segmentEnd.IsMainRoad && !segmentEnd.IsDecoration)
                 {
                     segmentEnd.TwistAngle = Style.DefaultTwist;
                     segmentEnd.SlopeAngle = Style.DefaultSlope;

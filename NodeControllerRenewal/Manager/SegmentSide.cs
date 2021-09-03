@@ -65,6 +65,17 @@ namespace NodeController
 
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
+        public Vector3 MarkerPosition
+        {
+            get
+            {
+                var width = SegmentData.Width;
+                if (width >= SegmentEndData.MinNarrowWidth)
+                    return Position;
+                else
+                    return Position + Direction.Turn90(Type == SideType.Right).MakeFlatNormalized() * (SegmentEndData.MinNarrowWidth - width) / 2f;
+            }
+        }
 
         public bool IsMinBorderT => RawT - 0.001f <= MinT;
         public bool IsMaxBorderT => RawT + 0.001f >= MaxT;
@@ -149,20 +160,36 @@ namespace NodeController
 
         public void Render(OverlayData dataAllow, OverlayData dataForbidden, OverlayData dataLimit)
         {
+            var deltaT = 0.2f / RawBezier.Length;
             if (MinT == 0f)
-                RawBezier.Cut(0f, RawT).Render(dataAllow);
+            {
+                if (RawT >= deltaT)
+                    RawBezier.Cut(0f, RawT).Render(dataAllow);
+            }
             else
             {
                 dataForbidden.CutEnd = true;
                 dataAllow.CutStart = true;
-                RawBezier.Cut(0f, Math.Min(RawT, MinT)).Render(dataForbidden);
+
+                var t = Math.Min(RawT, MinT);
+                if (t >= DeltaT)
+                    RawBezier.Cut(0f, t).Render(dataForbidden);
+
                 if (RawT - MinT >= 0.2f / RawBezier.Length)
                     RawBezier.Cut(MinT, RawT).Render(dataAllow);
             }
             dataLimit.Color ??= Colors.Purple;
             RawBezier.Position(DefaultT).RenderCircle(dataLimit);
         }
-        public void RenderCircle(OverlayData data) => Position.RenderCircle(data, data.Width ?? SegmentEndData.CornerDotRadius * 2, 0f);
+        public void RenderCircle(OverlayData data)
+        {
+            if ((MarkerPosition - Position).sqrMagnitude > 0.25f)
+            {
+                var color = data.Color.HasValue ? ((Color32)data.Color.Value).SetAlpha(128) : Colors.White128;
+                new StraightTrajectory(MarkerPosition, Position).Render(new OverlayData(data.CameraInfo) { Color = color });
+            }
+            MarkerPosition.RenderCircle(data, data.Width ?? SegmentEndData.CornerDotRadius * 2, 0f);
+        }
 
         public override string ToString() => $"{Type}: {nameof(RawT)}={RawT}; {nameof(MinT)}={MinT}; {nameof(MaxT)}={MaxT}; {nameof(Position)}={Position};";
     }

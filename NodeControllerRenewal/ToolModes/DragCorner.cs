@@ -1,4 +1,5 @@
-﻿using ColossalFramework.UI;
+﻿using ColossalFramework.Math;
+using ColossalFramework.UI;
 using ModsCommon;
 using ModsCommon.Utilities;
 using System;
@@ -30,7 +31,10 @@ namespace NodeController
         }
         public override void OnMouseDrag(Event e)
         {
-            SegmentEnd[Corner].RawBezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out _);
+            var delta = SegmentEnd[Corner].Position - SegmentEnd[Corner].MarkerPosition;
+            var ray = new Segment3(Tool.Ray.a + delta, Tool.Ray.b + delta);
+
+            SegmentEnd[Corner].RawBezier.Trajectory.GetHitPosition(ray, out _, out var t, out _);
             var offset = SegmentEnd[Corner].RawBezier.Distance(0f, t).RoundToNearest(RoundTo);
             if (Corner == SideType.Left)
                 SegmentEnd.LeftOffset = offset;

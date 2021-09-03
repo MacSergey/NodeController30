@@ -54,13 +54,18 @@ namespace NodeController
 
         public static float MaxShift => 32f;
         public static float MinShift => -32f;
-        public static float MaxSlope => 30f;
-        public static float MinSlope => -30f;
+        public static float MaxRoadSlope => 30f;
+        public static float MinRoadSlope => -30f;
+        public static float MaxSlope => 85f;
+        public static float MinSlope => -85f;
         public static float MaxRotate => 89f;
         public static float MinRotate => -89f;
-        public static float MaxTwist => 30f;
-        public static float MinTwist => -30f;
-        public static float MaxStretch => 500f;
+        public static float MaxRoadTwist => 30f;
+        public static float MinRoadTwist => -30f;
+        public static float MaxTwist => 85f;
+        public static float MinTwist => -85f;
+        public static float MaxRoadStretch => 500f;
+        public static float MaxStretch => 1000f;
         public static float MinStretch => 1f;
         public static float MaxOffset => 1000f;
         public static float MinOffset => 0f;
@@ -139,7 +144,10 @@ namespace NodeController
         public virtual void SetOffset(float value)
         {
             foreach (var segmentData in TouchableDatas)
-                segmentData.Offset = value;
+            {
+                if (AllowOffsetPredicate(segmentData))
+                    segmentData.Offset = value;
+            }
         }
 
         public virtual float GetShift()
@@ -165,24 +173,26 @@ namespace NodeController
             {
                 var first = Data.FirstMainSegmentEnd;
                 var second = Data.SecondMainSegmentEnd;
+                var firstAllow = AllowShiftPredicate(first);
+                var secondAllow = AllowShiftPredicate(second);
 
-                if (!first.IsUntouchable && !second.IsUntouchable)
+                if (firstAllow && secondAllow)
                 {
                     first.Shift = value;
                     second.Shift = -value;
                 }
-                else
-                {
-                    if (!first.IsUntouchable)
-                        first.Shift = value;
-                    if (!second.IsUntouchable)
-                        second.Shift = -value;
-                }
+                else if (firstAllow)
+                    first.Shift = value;
+                else if (secondAllow)
+                    second.Shift = -value;
             }
             else
             {
                 foreach (var segmentData in TouchableDatas)
-                    segmentData.Shift = value;
+                {
+                    if (AllowShiftPredicate(segmentData))
+                        segmentData.Shift = value;
+                }
             }
         }
 
@@ -347,7 +357,7 @@ namespace NodeController
         }
         private BoolListPropertyPanel GetMainRoadButtons(UIComponent parent)
         {
-            if (Data.IsJunction)
+            if (Data.IsJunction && !Data.IsDecoration)
             {
                 var mainRoadProperty = ComponentPool.Get<BoolListPropertyPanel>(parent);
                 mainRoadProperty.Text = Localize.Option_MainSlopeDirection;
@@ -366,13 +376,13 @@ namespace NodeController
         }
         private FloatOptionPanel GetOffsetOption(UIComponent parent, SupportOption totalSupport)
         {
-            if (SupportOffset != SupportOption.None)
+            if (SupportOffset != SupportOption.None && Data.SegmentEndDatas.Any(s => AllowOffsetPredicate(s)))
             {
                 var offset = ComponentPool.Get<FloatOptionPanel>(parent);
                 offset.Text = Localize.Option_Offset;
                 offset.Format = Localize.Option_OffsetFormat;
                 offset.NumberFormat = "0.##";
-                offset.Init(Data, SupportOffset, totalSupport, OffsetGetter, OffsetSetter, MinMaxOffset, TouchablePredicate);
+                offset.Init(Data, SupportOffset, totalSupport, OffsetGetter, OffsetSetter, MinMaxOffset, AllowOffsetPredicate);
 
                 return offset;
             }
@@ -381,13 +391,13 @@ namespace NodeController
         }
         private FloatOptionPanel GetShiftOption(UIComponent parent, SupportOption totalSupport)
         {
-            if (SupportShift != SupportOption.None)
+            if (SupportShift != SupportOption.None && Data.SegmentEndDatas.Any(s => AllowShiftPredicate(s)))
             {
                 var shift = ComponentPool.Get<FloatOptionPanel>(parent);
                 shift.Text = Localize.Option_Shift;
                 shift.Format = Localize.Option_ShiftFormat;
                 shift.NumberFormat = "0.##";
-                shift.Init(Data, SupportShift, totalSupport, ShiftGetter, ShiftSetter, MinMaxShift, TouchablePredicate);
+                shift.Init(Data, SupportShift, totalSupport, ShiftGetter, ShiftSetter, MinMaxShift, AllowShiftPredicate);
 
                 return shift;
             }
@@ -396,13 +406,13 @@ namespace NodeController
         }
         private FloatOptionPanel GetRotateOption(UIComponent parent, SupportOption totalSupport)
         {
-            if (SupportRotate != SupportOption.None)
+            if (SupportRotate != SupportOption.None && Data.SegmentEndDatas.Any(s => HasNodePredicate(s)))
             {
                 var rotate = ComponentPool.Get<FloatOptionPanel>(parent);
                 rotate.Text = Localize.Option_Rotate;
                 rotate.Format = Localize.Option_RotateFormat;
                 rotate.NumberFormat = "0.#";
-                rotate.Init(Data, SupportRotate, totalSupport, RotateGetter, RotateSetter, MinMaxRotate, AnyPredicate);
+                rotate.Init(Data, SupportRotate, totalSupport, RotateGetter, RotateSetter, MinMaxRotate, HasNodePredicate);
 
                 return rotate;
             }
@@ -411,7 +421,7 @@ namespace NodeController
         }
         private FloatOptionPanel GetStretchOption(UIComponent parent, SupportOption totalSupport)
         {
-            if (SupportStretch != SupportOption.None)
+            if (SupportStretch != SupportOption.None && Data.SegmentEndDatas.Any(s => TouchablePredicate(s)))
             {
                 var stretch = ComponentPool.Get<FloatOptionPanel>(parent);
                 stretch.Text = Localize.Option_Stretch;
@@ -456,7 +466,7 @@ namespace NodeController
         }
         private BoolOptionPanel GetNoMarkingsOption(UIComponent parent, SupportOption totalSupport)
         {
-            if (SupportNoMarking != SupportOption.None && Data.SegmentEndDatas.Any(s => s.IsRoad) && HideCrosswalksEnable)
+            if (SupportNoMarking != SupportOption.None && Data.SegmentEndDatas.Any(s => IsRoadPredicate(s)) && HideCrosswalksEnable)
             {
                 var hideMarking = ComponentPool.Get<BoolOptionPanel>(parent);
                 hideMarking.Text = Localize.Option_Marking;
@@ -499,20 +509,37 @@ namespace NodeController
                 max = MaxRotate;
             }
         }
+        private bool IsNotDecoration(INetworkData data) => (data is SegmentEndData endData && !IsDecorationPredicate(endData)) || (data is NodeData nodeData && !nodeData.SegmentEndDatas.Any(IsDecorationPredicate));
         private void MinMaxStretch(INetworkData data, out float min, out float max)
         {
             min = MinStretch;
-            max = MaxStretch;
+            max = IsNotDecoration(data) ? MaxRoadStretch : MaxStretch;
         }
         private void MinMaxSlope(INetworkData data, out float min, out float max)
         {
-            min = MinSlope;
-            max = MaxSlope;
+            if (IsNotDecoration(data))
+            {
+                min = MinRoadSlope;
+                max = MaxRoadSlope;
+            }
+            else
+            {
+                min = MinSlope;
+                max = MaxSlope;
+            }
         }
         private void MinMaxTwist(INetworkData data, out float min, out float max)
         {
-            min = MinTwist;
-            max = MaxTwist;
+            if (IsNotDecoration(data))
+            {
+                min = MinRoadTwist;
+                max = MaxRoadTwist;
+            }
+            else
+            {
+                min = MinTwist;
+                max = MaxTwist;
+            }
         }
 
         private static void OffsetSetter(INetworkData data, float value) => data.Offset = value;
@@ -531,10 +558,16 @@ namespace NodeController
         private static float StretchGetter(INetworkData data) => data.StretchPercent;
         private static bool NoMarkingsGetter(INetworkData data) => !data.NoMarkings;
 
-        protected static bool AnyPredicate(SegmentEndData data) => true;
+        protected static bool HasNodePredicate(SegmentEndData data) => !data.IsNodeLess;
         protected static bool TouchablePredicate(SegmentEndData data) => !data.IsUntouchable;
-        protected static bool MainRoadPredicate(SegmentEndData data) => TouchablePredicate(data) && data.IsMainRoad;
         protected static bool IsRoadPredicate(SegmentEndData data) => data.IsRoad;
+        protected static bool IsTrackPredicate(SegmentEndData data) => data.IsTrack;
+        protected static bool IsPathPredicate(SegmentEndData data) => data.IsPath;
+        protected static bool IsDecorationPredicate(SegmentEndData data) => data.IsDecoration;
+
+        protected static bool AllowOffsetPredicate(SegmentEndData data) => TouchablePredicate(data) && HasNodePredicate(data);
+        protected static bool AllowShiftPredicate(SegmentEndData data) => TouchablePredicate(data) && !IsDecorationPredicate(data);
+        protected static bool MainRoadPredicate(SegmentEndData data) => TouchablePredicate(data) && (data.IsMainRoad || data.IsDecoration);
 
         #endregion
     }
@@ -542,10 +575,22 @@ namespace NodeController
     public class MiddleNode : NodeStyle
     {
         public override NodeStyleType Type => NodeStyleType.Middle;
-        public override SupportOption SupportSlope => Data.SegmentEndDatas.Any(s => s.IsUntouchable) ? SupportOption.None : SupportOption.Group;
-        public override SupportOption SupportTwist => Data.SegmentEndDatas.Any(s => s.IsUntouchable) ? SupportOption.None : SupportOption.Group;
-        public override SupportOption SupportShift => Data.SegmentEndDatas.Any(s => s.IsUntouchable) ? SupportOption.None : SupportOption.Group;
-        public override SupportOption SupportStretch => Data.SegmentEndDatas.Any(s => s.IsUntouchable) ? SupportOption.None : SupportOption.Group;
+        public override SupportOption SupportSlope => Data.SegmentEndDatas.All(TouchablePredicate) ? SupportOption.All : SupportOption.None;
+        private SupportOption Support
+        {
+            get
+            {
+                if (!Data.SegmentEndDatas.All(TouchablePredicate))
+                    return SupportOption.None;
+                else if (Data.SegmentEndDatas.Any(IsDecorationPredicate))
+                    return SupportOption.All;
+                else
+                    return SupportOption.Group;
+            }
+        }
+        public override SupportOption SupportTwist => Support;
+        public override SupportOption SupportShift => Support;
+        public override SupportOption SupportStretch => Support;
 
         public override bool DefaultSlopeJunction => true;
 
@@ -690,6 +735,7 @@ namespace NodeController
         public override SupportOption SupportOffset => SupportOption.All;
         public override SupportOption SupportShift => SupportOption.All;
         public override SupportOption SupportRotate => SupportOption.All;
+        public override SupportOption SupportSlope => SupportOption.All;
         public override SupportOption SupportTwist => SupportOption.All;
         public override SupportOption SupportStretch => SupportOption.All;
         public override SupportOption SupportNoMarking => SupportOption.All;
@@ -701,34 +747,43 @@ namespace NodeController
 
         public override float GetTwist()
         {
-            var first = Data.FirstMainSegmentEnd;
-            var second = Data.SecondMainSegmentEnd;
-
-            if (first.IsUntouchable)
-                return second.IsUntouchable ? 0f : second.TwistAngle;
-            else if (second.IsUntouchable)
-                return first.IsUntouchable ? 0f : first.TwistAngle;
+            if (Data.IsDecoration)
+                return base.GetTwist();
             else
-                return (first.TwistAngle - second.TwistAngle) / 2;
+            {
+                var first = Data.FirstMainSegmentEnd;
+                var second = Data.SecondMainSegmentEnd;
+
+                if (first.IsUntouchable)
+                    return second.IsUntouchable ? 0f : second.TwistAngle;
+                else if (second.IsUntouchable)
+                    return first.IsUntouchable ? 0f : first.TwistAngle;
+                else
+                    return (first.TwistAngle - second.TwistAngle) / 2;
+            }
         }
         public override void SetTwist(float value)
         {
-            var first = Data.FirstMainSegmentEnd;
-            var second = Data.SecondMainSegmentEnd;
-
-            if (!first.IsUntouchable && !second.IsUntouchable)
-            {
-                first.TwistAngle = value;
-                second.TwistAngle = -value;
-            }
+            if (Data.IsDecoration)
+                base.SetTwist(value);
             else
             {
-                if (!first.IsUntouchable)
-                    first.TwistAngle = value;
-                if (!second.IsUntouchable)
-                    second.TwistAngle = value;
-            }
+                var first = Data.FirstMainSegmentEnd;
+                var second = Data.SecondMainSegmentEnd;
 
+                if (!first.IsUntouchable && !second.IsUntouchable)
+                {
+                    first.TwistAngle = value;
+                    second.TwistAngle = -value;
+                }
+                else
+                {
+                    if (!first.IsUntouchable)
+                        first.TwistAngle = value;
+                    if (!second.IsUntouchable)
+                        second.TwistAngle = value;
+                }
+            }
         }
     }
 

@@ -21,7 +21,7 @@ namespace NodeController
 
         public override void OnToolUpdate()
         {
-            if (Tool.Data.IsJunction && Tool.Data.IsSlopeJunctions && !Tool.Panel.IsHover && Utility.OnlyAltIsPressed)
+            if (Tool.Data.AllowSetMainRoad && !Tool.Panel.IsHover && Utility.OnlyAltIsPressed)
                 Tool.SetMode(ToolModeType.ChangeMain);
             else if (!Tool.Panel.IsHover && Utility.OnlyShiftIsPressed)
                 Tool.SetMode(ToolModeType.Aling);
@@ -40,7 +40,7 @@ namespace NodeController
                         HoverSegmentEndCorner = null;
                         return;
                     }
-                    else if (segmentData.IsRotateChangeable && magnitude < SegmentEndData.CircleRadius + 1f && magnitude > SegmentEndData.CircleRadius - 0.5f)
+                    else if (!segmentData.IsNarrow && segmentData.IsRotateChangeable && magnitude < SegmentEndData.CircleRadius + 1f && magnitude > SegmentEndData.CircleRadius - 0.5f)
                     {
                         HoverSegmentEndCenter = null;
                         HoverSegmentEndCircle = segmentData;
@@ -58,9 +58,9 @@ namespace NodeController
         }
         private bool CheckCorner(SegmentEndData segmentData, SideType side)
         {
-            var hitPos = Tool.Ray.GetRayPosition(segmentData[side].Position.y, out _);
+            var hitPos = Tool.Ray.GetRayPosition(segmentData[side].MarkerPosition.y, out _);
 
-            if ((segmentData[side].Position - hitPos).magnitude < SegmentEndData.CornerDotRadius)
+            if ((segmentData[side].MarkerPosition - hitPos).magnitude < SegmentEndData.CornerDotRadius)
             {
                 HoverSegmentEndCenter = null;
                 HoverSegmentEndCircle = null;
@@ -98,7 +98,7 @@ namespace NodeController
             {
                 var info = new List<string>();
                 info.Add(string.Format(Localize.Tool_InfoAlignMode, LocalizeExtension.Shift.AddInfoColor()));
-                if (Tool.Data.IsJunction && Tool.Data.IsSlopeJunctions)
+                if (Tool.Data.AllowSetMainRoad)
                     info.Add(string.Format(Localize.Tool_InfoChangeMainMode, LocalizeExtension.Alt.AddInfoColor()));
 
                 return string.Join("\n", info.ToArray());

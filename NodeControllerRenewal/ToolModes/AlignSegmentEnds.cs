@@ -35,8 +35,8 @@ namespace NodeController
             {
                 foreach (var target in Targets)
                 {
-                    var hitPos = Tool.Ray.GetRayPosition(target.Position.y, out _);
-                    if ((target.Position - hitPos).sqrMagnitude < SegmentEndData.CenterDotRadius * SegmentEndData.CenterDotRadius)
+                    var hitPos = Tool.Ray.GetRayPosition(target.MarkerPosition.y, out _);
+                    if ((target.MarkerPosition - hitPos).sqrMagnitude < SegmentEndData.CenterDotRadius * SegmentEndData.CenterDotRadius)
                     {
                         HoverSide = target;
                         return;
