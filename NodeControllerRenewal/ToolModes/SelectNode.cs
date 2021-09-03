@@ -46,11 +46,14 @@ namespace NodeController
         protected override bool CheckSegment(ushort segmentId) => segmentId.GetSegment().m_flags.CheckFlags(0, NetSegment.Flags.Untouchable) && base.CheckSegment(segmentId);
         protected override bool CheckItemClass(ItemClass itemClass) => (itemClass.m_layer == ItemClass.Layer.Default || itemClass.m_layer == ItemClass.Layer.MetroTunnels) && itemClass switch
         {
-            { m_service: ItemClass.Service.Road } => true,
-            { m_service: ItemClass.Service.PublicTransport } => true,
-            { m_service: ItemClass.Service.Beautification, m_level: >= ItemClass.Level.Level3 } => true,
-            { m_service: ItemClass.Service.Beautification, m_subService: ItemClass.SubService.BeautificationParks } => true,
-            _ => false,
+            //{ m_service: ItemClass.Service.Road } => true,
+            //{ m_service: ItemClass.Service.PublicTransport } => true,
+            //{ m_service: ItemClass.Service.Beautification, m_level: >= ItemClass.Level.Level3 } => true,
+            //{ m_service: ItemClass.Service.Beautification, m_subService: ItemClass.SubService.BeautificationParks } => true,
+            //_ => false,
+            { m_service: ItemClass.Service.Electricity} => false,
+            { m_service: ItemClass.Service.Water } => false,
+            _ => true,
         };
 
         public override void OnToolUpdate()
@@ -64,9 +67,7 @@ namespace NodeController
 
             if (IsHoverSegment)
             {
-                SegmentEndData.CalculateSegmentBeziers(HoverSegment.Id, out var bezier, out _, out _);
-                bezier.Trajectory.GetHitPosition(Tool.Ray, out _, out _, out var position);
-                IsPossibleInsertNode = PossibleInsertNode(position);
+                IsPossibleInsertNode = PossibleInsertNode(out var position, out _, out _);
                 InsertPosition = position;
             }
         }
@@ -90,20 +91,37 @@ namespace NodeController
                 Tool.SetDefaultMode();
             }
         }
-        public bool PossibleInsertNode(Vector3 position)
+        public bool PossibleInsertNode(out Vector3 position, out Vector3 direction, out float halfWidth)
         {
+            position = Vector3.zero;
+            direction = Vector3.zero;
+            halfWidth = 0f;
+
             if (!IsHoverSegment)
                 return false;
 
-            foreach (var data in HoverSegment.Datas)
+            SegmentEndData.CalculateSegmentBeziers(HoverSegment.Id, out var bezier, out _, out _);
+            bezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out position);
+            direction = bezier.Tangent(t).MakeFlatNormalized();
+            halfWidth = SegmentEndData.GetSegmentWidth(HoverSegment.Id, t);
+            var line = new StraightTrajectory(position, position + direction.Turn90(true), false);
+
+            ref var segment = ref HoverSegment.Id.GetSegment();
+            foreach (var nodeId in segment.NodeIds())
             {
-                ref var node = ref data.Id.GetNode();
+                ref var node = ref nodeId.GetNode();
                 if (!Settings.SelectMiddleNodes && node.m_flags.CheckFlags(NetNode.Flags.Moveable, NetNode.Flags.End))
                     continue;
 
-                var gap = 8f + data.halfWidth * 2f * Mathf.Sqrt(1 - data.DeltaAngleCos * data.DeltaAngleCos);
-                if ((data.Position - position).sqrMagnitude < gap * gap)
+                var isStart = segment.IsStartNode(nodeId);
+                segment.CalculateCorner(HoverSegment.Id, true, isStart, true, out var leftPos, out var leftDir, out _);
+                segment.CalculateCorner(HoverSegment.Id, true, isStart, false, out var rightPos, out var rightDir, out _);
+
+                if (Check(line, leftPos, leftDir) || Check(line, rightPos, rightDir))
                     return false;
+
+                static bool Check(StraightTrajectory line, Vector3 pos, Vector3 dir)
+                    => Intersection.CalculateSingle(line, new StraightTrajectory(pos, pos + dir, false), out _, out var leftT) && leftT < 8f;
             }
 
             return true;
@@ -125,12 +143,8 @@ namespace NodeController
                         new NodeSelection(segment.m_endNode).Render(otherOverlay);
                 }
 
-                SegmentEndData.CalculateSegmentBeziers(HoverSegment.Id, out var bezier, out _, out _);
-                bezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out var position);
-                var direction = bezier.Tangent(t).MakeFlatNormalized();
-                var halfWidth = SegmentEndData.GetSegmentWidth(HoverSegment.Id, t);
-
-                var overlayData = new OverlayData(cameraInfo) { Width = halfWidth * 2, Color = PossibleInsertNode(position) ? Colors.Green : Colors.Red, AlphaBlend = false, Cut = true, RenderLimit = Underground };
+                var isPossibleInsert = PossibleInsertNode(out var position, out var direction, out var halfWidth);
+                var overlayData = new OverlayData(cameraInfo) { Width = halfWidth * 2, Color = isPossibleInsert ? Colors.Green : Colors.Red, AlphaBlend = false, Cut = true, RenderLimit = Underground };
 
                 var middle = new Bezier3()
                 {

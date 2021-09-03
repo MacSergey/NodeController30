@@ -20,6 +20,7 @@ namespace NodeController
         public static float CircleRadius => 2.5f;
         public static float CenterDotRadius => 1f;
         public static float CornerDotRadius => 0.5f;
+        public static float MinNarrowWidth => 8f;
 
         public static string XmlName => "SE";
 
@@ -68,7 +69,9 @@ namespace NodeController
 
         public bool IsRoad { get; private set; }
         public bool IsTunnel { get; private set; }
-        public bool IsTrain { get; private set; }
+        public bool IsTrack { get; private set; }
+        public bool IsPath { get; private set; }
+        public bool IsDecoration { get; private set; }
         public bool IsNodeLess { get; private set; }
         public bool IsUntouchable { get; private set; }
 
@@ -159,6 +162,9 @@ namespace NodeController
 
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
+        public float Width => Id.GetSegment().Info.m_halfWidth * 2f * WidthRatio;
+        public float Length => (LeftSide.Position - RightSide.Position).magnitude;
+        public bool IsNarrow => Width < MinNarrowWidth;
 
         #endregion
 
@@ -196,14 +202,17 @@ namespace NodeController
         }
         public void Update()
         {
-            var segment = Id.GetSegment();
+            ref var segment = ref Id.GetSegment();
 
             AbsoluteAngle = (segment.IsStartNode(NodeId) ? segment.m_startDirection : segment.m_endDirection).AbsoluteAngle();
-            IsRoad = segment.Info.m_netAI is RoadBaseAI;
-            IsTunnel = segment.Info.m_netAI is RoadTunnelAI;
-            IsTrain = segment.Info.m_netAI is TrainTrackBaseAI || segment.Info.m_netAI is MetroTrackBaseAI;
+            var ai = segment.Info.m_netAI;
+            IsRoad = ai is RoadBaseAI;
+            IsTunnel = ai is RoadTunnelAI;
+            IsTrack = ai is TrainTrackBaseAI || ai is MetroTrackBaseAI;
+            IsPath = ai is PedestrianPathAI || ai is PedestrianBridgeAI || ai is PedestrianTunnelAI;
+            IsDecoration = ai is DecorationWallAI;
             IsMainRoad = false;
-            IsNodeLess = !segment.Info.m_nodes.Any();
+            IsNodeLess = !segment.Info.m_clipSegmentEnds || segment.Info.m_twistSegmentEnds || !segment.Info.m_nodes.Any();
             IsUntouchable = segment.m_flags.IsSet(NetSegment.Flags.Untouchable);
         }
         public void UpdateNode() => SingletonManager<Manager>.Instance.Update(NodeId, true);
@@ -310,6 +319,13 @@ namespace NodeController
 
             var startNormal = Vector3.Cross(startDir, Vector3.up).normalized;
             var endNormal = Vector3.Cross(endDir, Vector3.up).normalized;
+            ref var segment = ref segmentId.GetSegment();
+
+            if (segment.Info.m_twistSegmentEnds)
+            {
+                GetBuildingAngle(segment.m_startNode, ref startNormal);
+                GetBuildingAngle(segment.m_endNode, ref endNormal);
+            }
 
             GetSegmentWidth(segmentId, out var startHalfWidth, out var endHalfWidth);
 
@@ -345,6 +361,16 @@ namespace NodeController
             if (end?.Style.NeedFixDirection != false)
                 endDir = endDir.TurnRad(deltaAngle, true);
         }
+        private static void GetBuildingAngle(ushort nodeId, ref Vector3 normal)
+        {
+            var buildingId = nodeId.GetNode().m_building;
+            if(buildingId != 0)
+            {
+                var buildingAngle = Singleton<BuildingManager>.instance.m_buildings.m_buffer[buildingId].m_angle;
+                var buildingNormal = new Vector3(Mathf.Cos(buildingAngle), 0f, Mathf.Sin(buildingAngle));
+                normal = Vector3.Dot(normal, buildingNormal) < 0f ? -buildingNormal : buildingNormal;
+            }
+        }
 
         #endregion
 
@@ -367,7 +393,7 @@ namespace NodeController
                 {
                     var j = i.NextIndex(count);
 
-                    if (endDatas[i].IsTrain && endDatas[j].IsTrain)
+                    if (endDatas[i].IsTrack && endDatas[j].IsTrack)
                         continue;
 
                     GetMainMinLimit(endDatas[i], endDatas[j], count, ref leftMainMinT[i], ref rightMainMinT[j]);
@@ -416,8 +442,8 @@ namespace NodeController
                 for (var i = 0; i < count; i += 1)
                 {
                     var minCornerOffset = endDatas[i].GetMinCornerOffset(data.Style.DefaultOffset);
-                    var defaultOffset = endDatas[i].Id.GetSegment().Info.m_halfWidth < 4f || endDatas[i].IsNodeLess ? 0f : 8f;
-                    var additionalOffset = endDatas[i].IsNodeLess ? 0f : data.Style.AdditionalOffset;
+                    var defaultOffset = endDatas[i].Id.GetSegment().Info.m_halfWidth < 4f ? 0f : 8f;
+                    var additionalOffset = data.Style.AdditionalOffset;
 
                     if (leftDefaultT[i] <= 0f && rightDefaultT[i] <= 0f)
                         leftDefaultT[i] = rightDefaultT[i] = Mathf.Max(leftDefaultT[i], rightDefaultT[i]);
@@ -430,12 +456,20 @@ namespace NodeController
             for (var i = 0; i < count; i += 1)
             {
                 var endData = endDatas[i];
-
-                endData.LeftSide.MinT = Mathf.Clamp01(leftMainMinT[i]);
-                endData.RightSide.MinT = Mathf.Clamp01(rightMainMinT[i]);
-
-                endData.LeftSide.DefaultT = Mathf.Clamp01(leftDefaultT[i]);
-                endData.RightSide.DefaultT = Mathf.Clamp01(rightDefaultT[i]);
+                if (!endData.IsNodeLess)
+                {
+                    endData.LeftSide.MinT = Mathf.Clamp01(leftMainMinT[i]);
+                    endData.RightSide.MinT = Mathf.Clamp01(rightMainMinT[i]);
+                    endData.LeftSide.DefaultT = Mathf.Clamp01(leftDefaultT[i]);
+                    endData.RightSide.DefaultT = Mathf.Clamp01(rightDefaultT[i]);
+                }
+                else
+                {
+                    endData.LeftSide.MinT = 0f;
+                    endData.RightSide.MinT = 0f;
+                    endData.LeftSide.DefaultT = 0f;
+                    endData.RightSide.DefaultT = 0f;
+                }
             }
         }
         private static void GetMainMinLimit(SegmentEndData iData, SegmentEndData jData, int count, ref float iMinT, ref float jMinT)
@@ -573,8 +607,8 @@ namespace NodeController
             CalculateSegmentLimit();
             CalculateOffset();
 
-            LeftSide.Calculate(isMain);
-            RightSide.Calculate(isMain);
+            LeftSide.Calculate(isMain || IsDecoration);
+            RightSide.Calculate(isMain || IsDecoration);
 
             CalculatePositionAndDirection();
             UpdateVehicleTwist();
@@ -768,9 +802,14 @@ namespace NodeController
             RenderÑontour(contourData);
             if (data.IsMoveableEnds && IsChangeable)
             {
-                RenderEnd(contourData, LengthXZ(LeftSide.Position - Position) + CircleRadius, 0f);
-                RenderEnd(contourData, 0f, LengthXZ(RightSide.Position - Position) + CircleRadius);
-                RenderOutterCircle(outterData);
+                if (!IsNarrow)
+                {
+                    RenderEnd(contourData, LengthXZ(LeftSide.Position - Position) + CircleRadius, 0f);
+                    RenderEnd(contourData, 0f, LengthXZ(RightSide.Position - Position) + CircleRadius);
+                    RenderOutterCircle(outterData);
+                }
+                else
+                    RenderEnd(contourData);
 
                 if (IsOffsetChangeable)
                 {

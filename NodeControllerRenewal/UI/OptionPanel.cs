@@ -73,20 +73,17 @@ namespace NodeController.UI
 
         public virtual void Refresh()
         {
-            if (TotalOption.IsSet(SupportOption.Group) && !Option.IsSet(SupportOption.Group) && Items.TryGetValue(Data, out var nodeItem))
-                nodeItem.isVisible = false;
+            if (!Option.IsSet(SupportOption.Group) && Items.TryGetValue(Data, out var nodeItem))
+                nodeItem.isEnabled = false;
 
-            if (TotalOption.IsSet(SupportOption.Individually))
+            foreach (var segmentData in Data.SegmentEndDatas)
             {
-                foreach (var segmentData in Data.SegmentEndDatas)
+                if (Items.TryGetValue(segmentData, out var segmentEndItem))
                 {
-                    if (Items.TryGetValue(segmentData, out var segmentEndItem))
-                    {
-                        if (!Option.IsSet(SupportOption.Individually))
-                            segmentEndItem.isVisible = false;
-                        else
-                            segmentEndItem.isEnabled = IsEnableGetter?.Invoke(segmentData) != false;
-                    }
+                    if (!Option.IsSet(SupportOption.Individually))
+                        segmentEndItem.isEnabled = false;
+                    else
+                        segmentEndItem.isEnabled = IsEnableGetter?.Invoke(segmentData) != false;
                 }
             }
         }

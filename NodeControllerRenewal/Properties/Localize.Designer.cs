@@ -285,6 +285,24 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Calculate twist by intersections.
+        /// </summary>
+        internal static string Option_CalculateTwistByIntersections {
+            get {
+                return ResourceManager.GetString("Option_CalculateTwistByIntersections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Calculate twist by nearby nodes.
+        /// </summary>
+        internal static string Option_CalculateTwistByNearby {
+            get {
+                return ResourceManager.GetString("Option_CalculateTwistByNearby", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Reset offset.
         /// </summary>
         internal static string Option_KeepDefault {
@@ -389,6 +407,15 @@ namespace NodeController {
         internal static string Option_SetShiftBetweenIntersections {
             get {
                 return ResourceManager.GetString("Option_SetShiftBetweenIntersections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Set twist between intersections.
+        /// </summary>
+        internal static string Option_SetTwistBetweenIntersections {
+            get {
+                return ResourceManager.GetString("Option_SetTwistBetweenIntersections", resourceCulture);
             }
         }
         
@@ -537,6 +564,24 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Calculate twist by intersections.
+        /// </summary>
+        internal static string Setting_ShortcutCalculateTwistByIntersections {
+            get {
+                return ResourceManager.GetString("Setting_ShortcutCalculateTwistByIntersections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Calculate twist by nearby nodes.
+        /// </summary>
+        internal static string Setting_ShortcutCalculateTwistByNearby {
+            get {
+                return ResourceManager.GetString("Setting_ShortcutCalculateTwistByNearby", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Change main slope direction mode.
         /// </summary>
         internal static string Setting_ShortcutChangeMainRoadMode {
@@ -587,6 +632,15 @@ namespace NodeController {
         internal static string Setting_ShortcutSetShiftBetweenIntersections {
             get {
                 return ResourceManager.GetString("Setting_ShortcutSetShiftBetweenIntersections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Set twist between intersections.
+        /// </summary>
+        internal static string Setting_ShortcutSetTwistBetweenIntersections {
+            get {
+                return ResourceManager.GetString("Setting_ShortcutSetTwistBetweenIntersections", resourceCulture);
             }
         }
         
