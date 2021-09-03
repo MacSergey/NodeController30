@@ -98,6 +98,8 @@ namespace NodeController
             PatchRoadBaseAI(ref success);
             PatchSimulationStep(ref success);
 
+            success &= Patch_CitizenAI_GetPathTargetPosition();
+
             if (DependencyUtilities.TrafficManager is null)
                 Logger.Debug("TMPE not exist, skip patches");
             else
@@ -321,6 +323,11 @@ namespace NodeController
         }
 
         #endregion
+
+        private bool Patch_CitizenAI_GetPathTargetPosition()
+        {
+            return AddTranspiler(typeof(CitizenAIPatches), nameof(CitizenAIPatches.GetPathTargetPositionTranspilar), typeof(CitizenAI), "GetPathTargetPosition");
+        }
 
         #region HIDECROSSWALK
 
