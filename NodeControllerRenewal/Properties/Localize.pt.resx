@@ -136,6 +136,7 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curva</value>
   </data>
@@ -244,6 +245,10 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nó #{0}</value>
   </data>
+  
+  
+  
+  
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>O nó é inclinado por padrão</value>
   </data>
@@ -317,9 +322,11 @@ Clique para editar</value>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Clique para inserir passadeira</value>
   </data>
+  
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>Clique para inserir nó</value>
   </data>
+  
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Selecione o canto com o qual quer alinhar</value>
   </data>

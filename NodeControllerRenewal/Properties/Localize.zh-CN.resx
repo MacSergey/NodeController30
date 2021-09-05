@@ -158,6 +158,7 @@
 - 如果您使用UUI模组的话，可以在工具栏中隐藏原模组按钮。
 - 添加了土耳其语翻译。</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>弯曲</value>
   </data>
@@ -272,6 +273,18 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>节点 #{0}</value>
   </data>
+  <data name="Settings_InsertNode" xml:space="preserve">
+    <value>插入节点</value>
+  </data>
+  <data name="Settings_InsertNodeDisabled" xml:space="preserve">
+    <value>停用</value>
+  </data>
+  <data name="Settings_InsertNodeEnabled" xml:space="preserve">
+    <value>单击线段</value>
+  </data>
+  <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
+    <value>在线段上按 {0} 并单击</value>
+  </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>节点默认为斜坡</value>
   </data>
@@ -351,8 +364,14 @@
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>点击插入斑马线节点</value>
   </data>
+  <data name="Tool_InfoInsertCrossingNodeWithModifier" xml:space="preserve">
+    <value>按住 {0} 时点击以插入斑马线</value>
+  </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>点击以插入节点</value>
+  </data>
+  <data name="Tool_InfoInsertNodeWithModifier" xml:space="preserve">
+    <value>按住 {0} 时点击以插入节点</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>选择想要对齐的边角</value>

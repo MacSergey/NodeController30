@@ -136,6 +136,7 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Eğim</value>
   </data>
@@ -166,8 +167,12 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
     <value>Düğümlerin arasındaki değişimi hesapla</value>
   </data>
-  
-  
+  <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
+    <value>Kesişimlerdeki değişimi hesapla</value>
+  </data>
+  <data name="Option_CalculateTwistByNearby" xml:space="preserve">
+    <value>Düğümlerin arasındaki değişimi hesapla</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Merkezi sıfırla</value>
   </data>
@@ -204,7 +209,9 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
     <value>Kesişimler arasındaki değişimi hesapla</value>
   </data>
-  
+  <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
+    <value>Kesişimler arasında değişimi uygula</value>
+  </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Değişim</value>
   </data>
@@ -244,6 +251,10 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Panel_NodeId" xml:space="preserve">
     <value>#{0} nolu düğüm</value>
   </data>
+  
+  
+  
+  
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Düğüm varsayılan olarak eğim verildi</value>
   </data>
@@ -262,8 +273,12 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>Düğümlerin arasındaki değişimi hesapla</value>
   </data>
-  
-  
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>Kesişimlerdeki değişimi hesapla</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>Düğümlerin arasındaki değişimi hesapla</value>
+  </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>Ana eğim yönünü değiştir</value>
   </data>
@@ -282,7 +297,9 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Kesişimler arasındaki değişimi hesapla</value>
   </data>
-  
+  <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
+    <value>Kesişimler arasındaki değişimi uygula</value>
+  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>{0}'e basılı tutarak yolları ayarlayın</value>
   </data>
@@ -317,9 +334,11 @@ Ayarlamak için tıklayın</value>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Kesişimlere düğüm bölgesi eklemek için tıklayın</value>
   </data>
+  
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>Düğüm bölgesi eklemek için tıklayın</value>
   </data>
+  
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Ayarlamak istediğiniz köşeyi seçin</value>
   </data>

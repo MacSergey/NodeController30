@@ -136,6 +136,7 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Zegnij</value>
   </data>
@@ -166,8 +167,12 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
     <value>Oblicz przesunięcie na podstawie pobliskich węzłów</value>
   </data>
-  
-  
+  <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
+    <value>Oblicz skręt na podstawie skrzyżowań</value>
+  </data>
+  <data name="Option_CalculateTwistByNearby" xml:space="preserve">
+    <value>Oblicz skręt na podstawie pobliskich węzłów</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Zresetuj przesunięcie</value>
   </data>
@@ -204,7 +209,9 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
     <value>Ustaw przesunięcie pomiędzy skrzyżowaniami</value>
   </data>
-  
+  <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
+    <value>Ustaw skręt pomiędzy skrzyżowaniami</value>
+  </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Przesuń</value>
   </data>
@@ -244,6 +251,18 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Węzeł #{0}</value>
   </data>
+  <data name="Settings_InsertNode" xml:space="preserve">
+    <value>Wstawianie węzła</value>
+  </data>
+  <data name="Settings_InsertNodeDisabled" xml:space="preserve">
+    <value>Wyłączone</value>
+  </data>
+  <data name="Settings_InsertNodeEnabled" xml:space="preserve">
+    <value>Klikając na segment</value>
+  </data>
+  <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
+    <value>Klikając na segmencie trzymając {0}</value>
+  </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Węzeł jest domyślnie pochyły</value>
   </data>
@@ -262,8 +281,12 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>Oblicz przesunięcie na podstawie pobliskich węzłów</value>
   </data>
-  
-  
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>Oblicz skręt na podstawie skrzyżowań</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>Oblicz skręt na podstawie pobliskich węzłów</value>
+  </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>Zmień tryb kierunku głównego pochylenia</value>
   </data>
@@ -282,7 +305,9 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Ustaw przesunięcie między skrzyżowaniami</value>
   </data>
-  
+  <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
+    <value>Ustaw skręt pomiędzy skrzyżowaniami</value>
+  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Przytrzymaj {0} aby wyrównać drogi</value>
   </data>
@@ -317,8 +342,14 @@ Kliknij aby edytować</value>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Kliknij aby wstawić węzeł skrzyżowania</value>
   </data>
+  <data name="Tool_InfoInsertCrossingNodeWithModifier" xml:space="preserve">
+    <value>Kliknij trzymając {0} aby wstawić węzeł skrzyżowania</value>
+  </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>Kliknij aby wstawić węzeł</value>
+  </data>
+  <data name="Tool_InfoInsertNodeWithModifier" xml:space="preserve">
+    <value>Kliknij trzymając {0} aby wstawić węzeł</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Wybierz róg do którego chcesz wrównać</value>

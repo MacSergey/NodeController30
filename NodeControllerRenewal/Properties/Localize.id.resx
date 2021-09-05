@@ -136,6 +136,7 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Tikungan</value>
   </data>
@@ -250,6 +251,10 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Titik hubung #{0}</value>
   </data>
+  
+  
+  
+  
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Titik hubung dimiringkan sesuai dengan standar</value>
   </data>
@@ -329,9 +334,11 @@ Klik untuk mengedit</value>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Klik untuk menambah titik hubung penyeberangan</value>
   </data>
+  
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>Klik untuk memasukkan titik hubung</value>
   </data>
+  
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Pilih pojok yang Anda ingin luruskan dengannya</value>
   </data>

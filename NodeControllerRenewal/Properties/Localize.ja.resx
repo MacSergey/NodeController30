@@ -136,6 +136,7 @@
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>ベンド</value>
   </data>
@@ -250,6 +251,18 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>ノード #{0} を調整中</value>
   </data>
+  <data name="Settings_InsertNode" xml:space="preserve">
+    <value>ノードの追加方法</value>
+  </data>
+  <data name="Settings_InsertNodeDisabled" xml:space="preserve">
+    <value>無効化</value>
+  </data>
+  <data name="Settings_InsertNodeEnabled" xml:space="preserve">
+    <value>セグメント上のクリックで即追加</value>
+  </data>
+  <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
+    <value>セグメント上で {0} をクリック</value>
+  </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>デフォルトでノードを全てスロープ化</value>
   </data>
@@ -329,8 +342,14 @@
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>クリックして横断歩道を追加</value>
   </data>
+  <data name="Tool_InfoInsertCrossingNodeWithModifier" xml:space="preserve">
+    <value>{0} をクリックして横断歩道を追加</value>
+  </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>クリックしてノードを追加</value>
+  </data>
+  <data name="Tool_InfoInsertNodeWithModifier" xml:space="preserve">
+    <value>{0} をクリックしてノードを追加</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>コーナーの終点を選択して自動整列</value>

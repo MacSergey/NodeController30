@@ -135,6 +135,7 @@
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bocht</value>
   </data>
@@ -249,6 +250,10 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Knoop #{0}</value>
   </data>
+  
+  
+  
+  
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Knooppunt heeft een helling als standaard</value>
   </data>
@@ -328,9 +333,11 @@ Klik om te wijzigen</value>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Klik om oversteekknoop toe te voegen</value>
   </data>
+  
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>Klik om knoop toe te voegen</value>
   </data>
+  
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Selecteer de hoek waarmee u wilt uitlijnen</value>
   </data>

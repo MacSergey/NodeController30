@@ -136,6 +136,7 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Doblado</value>
   </data>
@@ -166,8 +167,12 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
     <value>Calcular desplazamiento usando nodos cercanos</value>
   </data>
-  
-  
+  <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
+    <value>Calcular giro usando intersecciones</value>
+  </data>
+  <data name="Option_CalculateTwistByNearby" xml:space="preserve">
+    <value>Calcular giro usando nodos cercanos</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Restablecer desplazamiento</value>
   </data>
@@ -204,7 +209,9 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
     <value>Establecer desplazamiento entre intersecciones</value>
   </data>
-  
+  <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
+    <value>Establecer giro entre intersecciones</value>
+  </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Desplazar</value>
   </data>
@@ -244,6 +251,18 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nodo #{0}</value>
   </data>
+  <data name="Settings_InsertNode" xml:space="preserve">
+    <value>Insertar nodo</value>
+  </data>
+  <data name="Settings_InsertNodeDisabled" xml:space="preserve">
+    <value>Desactivado</value>
+  </data>
+  <data name="Settings_InsertNodeEnabled" xml:space="preserve">
+    <value>Al hacer clic en el segmento</value>
+  </data>
+  <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
+    <value>Al hacer clic pulsando la tecla {0} en el segmento</value>
+  </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Inclinar el nodo de forma predeterminada</value>
   </data>
@@ -262,8 +281,12 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>Calcular desplazamiento usando nodos cercanos</value>
   </data>
-  
-  
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>Calcular giro usando intersecciones</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>Calcular giro usando nodos cercanos</value>
+  </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>Cambiar el modo de dirección de la inclinación principal</value>
   </data>
@@ -282,7 +305,9 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Establecer desplazamiento entre intersecciones</value>
   </data>
-  
+  <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
+    <value>Establecer giro entre intersecciones</value>
+  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Mantener presionada la tecla {0} para alinear carreteras</value>
   </data>
@@ -315,10 +340,16 @@ Clic para editar</value>
     <value>Suelta este extremo para cambiar dirección de la pendiente principal</value>
   </data>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
-    <value>Clic para insertar el nodo de cruce</value>
+    <value>Clic para insertar nodo de paso de peatones</value>
+  </data>
+  <data name="Tool_InfoInsertCrossingNodeWithModifier" xml:space="preserve">
+    <value>Haga clic pulsando la tecla {0} para insertar nodo de paso de peatones</value>
   </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>Clic para insertar nodo</value>
+  </data>
+  <data name="Tool_InfoInsertNodeWithModifier" xml:space="preserve">
+    <value>Haga clic pulsando la tecla {0} para insertar nodo</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Selecciona la esquina con la que quieres alinear</value>

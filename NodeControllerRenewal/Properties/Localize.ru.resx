@@ -195,6 +195,20 @@
 - Добавлена возможность скрыть оригинальную кнопку мода если вы используете мод UUI
 - Добавлен перевод на турецкий.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_2" xml:space="preserve">
+    <value>- Добавлена возможность редактировать декаративные сети. Максимальный уклон и скручивание для декаративных сетей - 85 градусов.
+- Изменен игровой лимит рассчета пути для пешеходов на перекрестках: пешеходы больше не будут засревать на широких перекрестках.
+- Добавлены настройки вставки узла: нажать на сегмент (стандартное поведение до этого), нажать на сегмент с зажатым Ctrl, отслючено.
+- Добавлены опции для скручивания:
+--- Рассчитать скручивание по соседним узлам - задает среднее значение.
+--- Рассчитать скручивание между перекрестками - задает значение скручивания для узлов между перекрестками для достижения плавного перехода (например -4°,-2°,0°,+2°,+4°).
+--- Задать значение скручивания между перекресками - задает значение скручивания из текущего узла для всех узлов между перекресками.
+- Добавлена возможность изменять значение наклона для каждого сегмента в среднем узле.
+- Добавлнаа возможность изменять отступ и повород для конечного узла.
+- Подсветка сегментов была оптимизирована для очень узких сетей.
+- Исправлен рассчет сетей без узлов.
+- Исправлен рассчет вставки узла.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Изгиб</value>
   </data>
@@ -309,6 +323,18 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Узел #{0}</value>
   </data>
+  <data name="Settings_InsertNode" xml:space="preserve">
+    <value>Добавление узла</value>
+  </data>
+  <data name="Settings_InsertNodeDisabled" xml:space="preserve">
+    <value>Отключено</value>
+  </data>
+  <data name="Settings_InsertNodeEnabled" xml:space="preserve">
+    <value>При нажатие на сегмент</value>
+  </data>
+  <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
+    <value>При нажатии на сегмент с удержанием {0}</value>
+  </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Узел наклонный по умолчанию</value>
   </data>
@@ -388,8 +414,14 @@
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Нажмите для вставки узла перехода</value>
   </data>
+  <data name="Tool_InfoInsertCrossingNodeWithModifier" xml:space="preserve">
+    <value>Нажмите с {0} для вставки узла перехода</value>
+  </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>Нажмите для вставки узла</value>
+  </data>
+  <data name="Tool_InfoInsertNodeWithModifier" xml:space="preserve">
+    <value>Нажмите с {0} чтобы добавить узел</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Выберите угол с которым хотите выровнять</value>

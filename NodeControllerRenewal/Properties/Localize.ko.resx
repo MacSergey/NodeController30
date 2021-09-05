@@ -136,6 +136,7 @@
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>커브</value>
   </data>
@@ -250,6 +251,18 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>노드 #{0}</value>
   </data>
+  <data name="Settings_InsertNode" xml:space="preserve">
+    <value>노드 삽입</value>
+  </data>
+  <data name="Settings_InsertNodeDisabled" xml:space="preserve">
+    <value>꺼짐</value>
+  </data>
+  <data name="Settings_InsertNodeEnabled" xml:space="preserve">
+    <value>구간 클릭하기</value>
+  </data>
+  <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
+    <value>{0} 키를 누른 채 구간 클릭하기</value>
+  </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>노드가 기본적으로 경사졌습니다</value>
   </data>
@@ -329,8 +342,14 @@
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>클릭하여 횡단 노드 추가</value>
   </data>
+  <data name="Tool_InfoInsertCrossingNodeWithModifier" xml:space="preserve">
+    <value>{0} 키를 누른 채 클릭하여 횡단 노드 추가</value>
+  </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>클릭하여 노드 추가</value>
+  </data>
+  <data name="Tool_InfoInsertNodeWithModifier" xml:space="preserve">
+    <value>{0} 키를 누른 채 클릭하여 노드 추가</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>같이 정렬할 코너 선택</value>
