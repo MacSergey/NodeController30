@@ -716,12 +716,15 @@ namespace NodeController
     {
         public override NodeStyleType Type => NodeStyleType.End;
 
+        public override SupportOption SupportOffset => SupportOption.Group;
+        public override SupportOption SupportRotate => SupportOption.Group;
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportSlope => SupportOption.Group;
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool SupportTrafficLights => true;
+        public override bool IsMoveable => true;
 
         public EndNode(NodeData data) : base(data) { }
     }
