@@ -24,7 +24,7 @@ namespace NodeController
         public static NodeControllerShortcut ChangeNodeStyleShortcut { get; } = new NodeControllerShortcut(nameof(ChangeNodeStyleShortcut), nameof(Localize.Setting_ShortcutChangeNodeStyle), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeNodeStyle());
         public static NodeControllerShortcut ChangeMainRoadModeShortcut { get; } = new NodeControllerShortcut(nameof(ChangeMainRoadModeShortcut), nameof(Localize.Setting_ShortcutChangeMainRoadMode), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeMainRoadMode());
         public static NodeControllerShortcut SelectionStepOverShortcut { get; } = new NodeControllerShortcut(nameof(SelectionStepOverShortcut), nameof(CommonLocalize.Settings_ShortcutSelectionStepOver), SavedInputKey.Encode(KeyCode.Space, true, false, false), () => SingletonTool<NodeControllerTool>.Instance.SelectionStepOver(), ToolModeType.Select);
-
+        
         public static IEnumerable<Shortcut> ToolShortcuts
         {
             get
@@ -65,6 +65,7 @@ namespace NodeController
             yield return CreateToolMode<RotateSegmentEndToolMode>();
             yield return CreateToolMode<ChangeMainSlopeDirectionToolMode>();
             yield return CreateToolMode<AlignSegmentEndsToolMode>();
+            yield return CreateToolMode<LaneEditMode>();
         }
 
         protected override void InitProcess()
@@ -244,6 +245,7 @@ namespace NodeController
         Rotate = 16,
         ChangeMain = 32,
         Aling = 64,
+        LaneEdit = 128
     }
     public class NodeControllerShortcut : ToolShortcut<Mod, NodeControllerTool, ToolModeType>
     {

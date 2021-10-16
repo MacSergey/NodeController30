@@ -25,6 +25,8 @@ namespace NodeController
                 Tool.SetMode(ToolModeType.ChangeMain);
             else if (!Tool.Panel.IsHover && Utility.OnlyShiftIsPressed)
                 Tool.SetMode(ToolModeType.Aling);
+            else if (!Tool.Panel.IsHover && Utility.OnlyCtrlIsPressed)
+                Tool.SetMode(ToolModeType.LaneEdit);
             else if (Tool.MouseRayValid && Tool.Data.IsMoveableEnds)
             {
                 foreach (var segmentData in Tool.Data.SegmentEndDatas)
@@ -100,6 +102,8 @@ namespace NodeController
                 info.Add(string.Format(Localize.Tool_InfoAlignMode, LocalizeExtension.Shift.AddInfoColor()));
                 if (Tool.Data.IsJunction && Tool.Data.IsSlopeJunctions)
                     info.Add(string.Format(Localize.Tool_InfoChangeMainMode, LocalizeExtension.Alt.AddInfoColor()));
+                if (Tool.Data.IsJunction)
+                    info.Add(string.Format(Localize.Tool_InfoLaneEdit, LocalizeExtension.Ctrl.AddInfoColor()));
 
                 return string.Join("\n", info.ToArray());
             }
