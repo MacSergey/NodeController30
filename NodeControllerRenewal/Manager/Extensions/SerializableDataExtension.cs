@@ -1,4 +1,4 @@
-using ModsCommon;
+Ôªøusing ModsCommon;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
@@ -31,7 +31,7 @@ namespace NodeController
                 SingletonMod<Mod>.Logger.Debug($"Import NC2 data");
 
                 WasImported = true;
-                var state = Backward—ompatibility.Loader.Load<Backward—ompatibility.NCState>(data);
+                var state = Backward–°ompatibility.Loader.Load<Backward–°ompatibility.NCState>(data);
                 var config = state.ToXml();
                 SetLoadData(config);
             }

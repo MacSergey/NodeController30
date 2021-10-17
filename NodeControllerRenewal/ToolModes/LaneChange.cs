@@ -1,5 +1,7 @@
-﻿using ModsCommon;
+﻿using ColossalFramework.Plugins;
+using ModsCommon;
 using ModsCommon.Utilities;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace NodeController
@@ -13,10 +15,13 @@ namespace NodeController
         private bool IsHoverSegmentEnd => HoverLaneEnd != null;
         private float Radius => SegmentEndData.CenterDotRadius + 0.5f;
 
+        public bool IsValid { get; private set; }
+
         private class SelectionInfo
         {
             public ushort SegmentId;
             public uint LaneId;
+            public int LaneIndex;
         }
 
         protected override void Reset(IToolMode prevMode)
@@ -30,28 +35,37 @@ namespace NodeController
 
             else if (Tool.MouseRayValid)
             {
-                foreach (var segmentData in Tool.Data.MainSegmentEndDatas)
+                var nodePosition = Tool.Data.GetPosition();
+
+                foreach (var segmentId in Tool.Data.SegmentIds)
                 {
-                    var segment = segmentData.Id.GetSegment();
-                    var isStart = segmentData.IsStartNode;
+                    var segment = segmentId.GetSegment();
                     var lanes = segment.GetLanes();
 
+                    var i = 0;
                     foreach (var laneId in segment.GetLaneIds())
                     {
                         var lane = laneId.GetLane();
-                        lane.GetClosestPosition(segmentData.Position, out var position, out _);
+                        var direction = segment.Info.m_lanes[i].m_direction;
 
-                        var hitPos = Tool.Ray.GetRayPosition(segmentData.Position.y, out _);
-
-                        if ((position - hitPos).sqrMagnitude < Radius * Radius)
+                        if (direction == NetInfo.Direction.Forward || direction == NetInfo.Direction.Backward)
                         {
-                            HoverLaneEnd = new()
+                            lane.GetClosestPosition(nodePosition, out var position, out _);
+
+                            var hitPos = Tool.Ray.GetRayPosition(nodePosition.y, out _);
+
+                            if ((position - hitPos).sqrMagnitude < Radius * Radius)
                             {
-                                SegmentId = segmentData.Id,
-                                LaneId = laneId
-                            };
-                            return;
+                                HoverLaneEnd = new()
+                                {
+                                    SegmentId = segmentId,
+                                    LaneId = laneId,
+                                    LaneIndex = i
+                                };
+                                return;
+                            }
                         }
+                        i++;
                     }
                 }
             }
@@ -70,16 +84,17 @@ namespace NodeController
         {
             if (IsHoverSegmentEnd)
             {
-                var lane = HoverLaneEnd.LaneId.GetLane();
-                var oldflags = lane.m_flags;
-                var inversion = (ushort)NetLane.Flags.Inverted;
+                ref var segment = ref HoverLaneEnd.SegmentId.GetSegment();
+                ref var lane = ref HoverLaneEnd.LaneId.GetLane();
+                ref var flags = ref lane.m_flags;
 
-                if ((oldflags & inversion) == inversion)
-                    lane.m_flags = (ushort)~(~oldflags & inversion);
+                flags = (ushort)(flags & ~(ushort)NetLane.Flags.Forward);
+                if ((flags & (int)NetLane.Flags.Forward) != 0)
+                    flags = (ushort)(flags & ~(ushort)NetLane.Flags.Forward);
                 else
-                    lane.m_flags = (ushort)(oldflags | inversion);
+                    flags = (ushort)(flags | (ushort)NetLane.Flags.Forward);
 
-                NetManager.instance.UpdateSegment(HoverLaneEnd.SegmentId);
+                segment.UpdateLanes(HoverLaneEnd.SegmentId, true);
             }
         }
 
@@ -95,23 +110,34 @@ namespace NodeController
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             var underground = IsUnderground;
+            var nodePosition = Tool.Data.GetPosition();
+            var i = 0; // cycling index of lane colors
+            var iMax = SegmentEndData.OverlayColors.Length;
 
-            foreach (var segmentData in Tool.Data.SegmentEndDatas)
+            foreach (var segmentId in Tool.Data.SegmentIds)
             {
-                var segment = segmentData.Id.GetSegment();
+                var segment = segmentId.GetSegment();
+                var laneIdx = 0;
                 foreach (var laneId in segment.GetLaneIds())
                 {
                     var lane = laneId.GetLane();
-                    lane.GetClosestPosition(segmentData.Position, out var position, out _);
+                    var direction = segment.Info.m_lanes[laneIdx].m_direction;
+                    var outgoing = direction == NetInfo.Direction.Forward || (direction == NetInfo.Direction.Backward && segment.IsInvert());
+                    var both = direction == NetInfo.Direction.Both || direction == NetInfo.Direction.None;
+                    lane.GetClosestPosition(nodePosition, out var position, out _);
 
-                    position.RenderCircle(
-                        new OverlayData(cameraInfo) { Color = segmentData.OverlayColor, RenderLimit = underground },
-                        2.5f, segmentData.IsStartNode ? 0.0f : 2.0f);
+                    if (!both)
+                        position.RenderCircle(
+                            new OverlayData(cameraInfo) { Color = SegmentEndData.OverlayColors[i++], RenderLimit = underground },
+                            1.5f, outgoing ? 0.0f : 1.0f);
 
-                    if (HoverLaneEnd.LaneId == laneId)
+                    if (!both && HoverLaneEnd?.LaneId == laneId)
                         position.RenderCircle(
                             new OverlayData(cameraInfo) { Color = Color.white, RenderLimit = underground },
-                            3.5f, 3.0f);
+                            2.5f, 2.0f);
+
+                    if (iMax == i) i = 0;
+                    laneIdx++;
                 }
             }
         }
