@@ -645,6 +645,42 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Inserting node.
+        /// </summary>
+        internal static string Settings_InsertNode {
+            get {
+                return ResourceManager.GetString("Settings_InsertNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disabled.
+        /// </summary>
+        internal static string Settings_InsertNodeDisabled {
+            get {
+                return ResourceManager.GetString("Settings_InsertNodeDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на By click on segment.
+        /// </summary>
+        internal static string Settings_InsertNodeEnabled {
+            get {
+                return ResourceManager.GetString("Settings_InsertNodeEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на By click with {0} on segment.
+        /// </summary>
+        internal static string Settings_InsertNodeWithModifier {
+            get {
+                return ResourceManager.GetString("Settings_InsertNodeWithModifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Node is sloped by default.
         /// </summary>
         internal static string Settings_NodeIsSlopedByDefault {
@@ -781,11 +817,29 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Click with {0} to insert crossing node.
+        /// </summary>
+        internal static string Tool_InfoInsertCrossingNodeWithModifier {
+            get {
+                return ResourceManager.GetString("Tool_InfoInsertCrossingNodeWithModifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Click to insert node.
         /// </summary>
         internal static string Tool_InfoInsertNode {
             get {
                 return ResourceManager.GetString("Tool_InfoInsertNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Click with {0} to insert node.
+        /// </summary>
+        internal static string Tool_InfoInsertNodeWithModifier {
+            get {
+                return ResourceManager.GetString("Tool_InfoInsertNodeWithModifier", resourceCulture);
             }
         }
         
