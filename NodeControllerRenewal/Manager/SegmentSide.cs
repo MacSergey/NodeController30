@@ -9,10 +9,14 @@ namespace NodeController
 {
     public class SegmentSide
     {
-        private ITrajectory _rawTrajectory;
+        public static float Additional => 32f;
+        private ITrajectory _mainTrajectory;
+        private CombinedTrajectory _rawTrajectory;
 
         private float _minT = 0f;
         private float _maxT = 1f;
+        private float _mainT = 0f;
+        private float _rawT = 0f;
 
         public SideType Type { get; }
         public SegmentEndData SegmentData { get; }
@@ -24,15 +28,20 @@ namespace NodeController
             {
                 if (value != _rawTrajectory)
                 {
-                    _rawTrajectory = value;
+                    var additional = new StraightTrajectory(value.StartPosition - value.StartDirection * Additional, value.StartPosition);
+                    _rawTrajectory = new CombinedTrajectory(additional, value);
+                    _mainTrajectory = value;
                     _minT = 0f;
                     _maxT = 1f;
+                    _mainT = _rawTrajectory.Parts[1];
                     Position = _rawTrajectory.StartPosition;
                     Direction = _rawTrajectory.StartDirection;
                     Update();
                 }
             }
         }
+        public ITrajectory MainTrajectory => _mainTrajectory;
+
         public float MinT
         {
             get => _minT;
@@ -57,10 +66,15 @@ namespace NodeController
                 }
             }
         }
+        public float MainT => _mainT;
         public float DefaultT { get; set; }
 
         public ITrajectory Trajectory { get; private set; }
-        public float RawT { get; set; }
+        public float RawT
+        {
+            get => _rawT;
+            set => _rawT = value;
+        }
         public float CurrentT => Mathf.Clamp(RawT, MinT + DeltaT, MaxT - DeltaT);
         public float DeltaT => 0.05f / RawTrajectory.Length;
 

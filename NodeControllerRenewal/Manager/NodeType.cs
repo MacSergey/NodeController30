@@ -488,6 +488,11 @@ namespace NodeController
                 min = segmentEnd.MinOffset;
                 max = segmentEnd.MaxOffset;
             }
+            else if(data is NodeData nodeData)
+            {
+                min = nodeData.SegmentEndDatas.Min(s => s.MinOffset);
+                max = nodeData.SegmentEndDatas.Max(s => s.MaxOffset);
+            }
             else
             {
                 min = MinOffset;
@@ -505,6 +510,11 @@ namespace NodeController
             {
                 min = segmentEnd.MinRotate;
                 max = segmentEnd.MaxRotate;
+            }
+            else if (data is NodeData nodeData)
+            {
+                min = nodeData.SegmentEndDatas.Min(s => s.MinRotate);
+                max = nodeData.SegmentEndDatas.Max(s => s.MaxRotate);
             }
             else
             {
@@ -720,7 +730,7 @@ namespace NodeController
     {
         public override NodeStyleType Type => NodeStyleType.End;
 
-        public override SupportOption SupportOffset => SupportOption.Group;
+        public override SupportOption SupportOffset => SupportOption.None;
         public override SupportOption SupportRotate => SupportOption.Group;
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportSlope => SupportOption.Group;

@@ -63,8 +63,8 @@ namespace NodeController
         public bool DefaultIsTwist => !DefaultIsSlope && !NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
 
         public bool IsChangeable => !IsNodeLess;
-        public bool IsOffsetChangeable => IsChangeable && !IsUntouchable;
-        public bool IsRotateChangeable => IsChangeable;
+        public bool IsOffsetChangeable => IsChangeable && !IsUntouchable && NodeData.Style.SupportOffset != SupportOption.None;
+        public bool IsRotateChangeable => IsChangeable && NodeData.Style.SupportRotate != SupportOption.None;
         public bool IsMainRoad { get; set; }
 
         public bool IsRoad { get; private set; }
@@ -91,8 +91,8 @@ namespace NodeController
                 KeepDefaults = false;
             }
         }
-        public float LeftOffset { set => SetCornerOffset(LeftSide, value); }
-        public float RightOffset { set => SetCornerOffset(RightSide, value); }
+        public float LeftOffset { set => SetCornerOffset(LeftSide, RightSide, value); }
+        public float RightOffset { set => SetCornerOffset(RightSide, LeftSide, value); }
         public float OffsetT => RawSegmentBezier.Trajectory.Travel(_offsetValue, depth: 7);
 
         public float MinPossibleOffset { get; private set; } = NodeStyle.MinOffset;
@@ -282,10 +282,17 @@ namespace NodeController
 
             _rotateValue = Mathf.Clamp(value, MinRotate, MaxRotate);
         }
-        private void SetCornerOffset(SegmentSide side, float value)
+        private void SetCornerOffset(SegmentSide side, SegmentSide another, float value)
         {
             KeepDefaults = false;
-            side.RawT = side.RawTrajectory.Travel(value);
+
+            var t = side.RawTrajectory.Travel(value);
+
+            var line = new StraightTrajectory(another.RawTrajectory.Position(another.CurrentT), RawSegmentBezier.StartPosition, false);
+            if (Intersection.CalculateSingle(side.RawTrajectory, line, out var minT, out _))
+                t = Mathf.Max(t, minT);
+
+            side.RawT = t;
             SetByCorners();
         }
 
@@ -383,7 +390,6 @@ namespace NodeController
 
             var leftMainMinT = new float[count];
             var rightMainMinT = new float[count];
-
             var leftDefaultT = new float[count];
             var rightDefaultT = new float[count];
 
@@ -407,8 +413,8 @@ namespace NodeController
 
                     if ((cross > 0f || dot < -0.75f) && (count > 2 || (dot > -0.999f && cross > 0.001f)))
                     {
-                        GetSubMinLimit(endDatas[i].RightSide.RawTrajectory, endDatas[i.PrevIndex(count)].LeftSide.RawTrajectory, SideType.Left, ref leftDefaultT[i]);
-                        GetSubMinLimit(endDatas[j].LeftSide.RawTrajectory, endDatas[j.NextIndex(count)].RightSide.RawTrajectory, SideType.Right, ref rightDefaultT[j]);
+                        GetSubMinLimit(endDatas[i].RightSide.MainTrajectory, endDatas[i.PrevIndex(count)].LeftSide.MainTrajectory, SideType.Left, ref leftDefaultT[i]);
+                        GetSubMinLimit(endDatas[j].LeftSide.MainTrajectory, endDatas[j.NextIndex(count)].RightSide.MainTrajectory, SideType.Right, ref rightDefaultT[j]);
                     }
                 }
 
@@ -420,18 +426,18 @@ namespace NodeController
                         var k = j.NextIndex(count);
                         var iMin = Mathf.Clamp01(leftMainMinT[i]);
                         var kMin = Mathf.Clamp01(rightMainMinT[k]);
-                        var iBezier = endDatas[i].LeftSide.RawTrajectory;
-                        var kBezier = endDatas[k].RightSide.RawTrajectory;
+                        var iBezier = endDatas[i].LeftSide.MainTrajectory;
+                        var kBezier = endDatas[k].RightSide.MainTrajectory;
 
                         var limitBezier = new BezierTrajectory(iBezier.Position(iMin), -iBezier.Tangent(iMin), kBezier.Position(kMin), -kBezier.Tangent(kMin));
 
-                        if (Intersection.CalculateSingle(endDatas[j].LeftSide.RawTrajectory, limitBezier, out var leftT, out _))
+                        if (Intersection.CalculateSingle(endDatas[j].LeftSide.MainTrajectory, limitBezier, out var leftT, out _))
                         {
                             leftMainMinT[j] = Mathf.Max(leftMainMinT[j], leftT);
                             leftDefaultT[j] = Mathf.Max(leftDefaultT[j], leftT);
                         }
 
-                        if (Intersection.CalculateSingle(endDatas[j].RightSide.RawTrajectory, limitBezier, out var rightT, out _))
+                        if (Intersection.CalculateSingle(endDatas[j].RightSide.MainTrajectory, limitBezier, out var rightT, out _))
                         {
                             rightMainMinT[j] = Mathf.Max(rightMainMinT[j], rightT);
                             rightDefaultT[j] = Mathf.Max(rightDefaultT[j], rightT);
@@ -448,8 +454,8 @@ namespace NodeController
                     if (leftDefaultT[i] <= 0f && rightDefaultT[i] <= 0f)
                         leftDefaultT[i] = rightDefaultT[i] = Mathf.Max(leftDefaultT[i], rightDefaultT[i]);
 
-                    CorrectDefaultOffset(endDatas[i].LeftSide.RawTrajectory, ref leftDefaultT[i], count == 2, defaultOffset, minCornerOffset, additionalOffset);
-                    CorrectDefaultOffset(endDatas[i].RightSide.RawTrajectory, ref rightDefaultT[i], count == 2, defaultOffset, minCornerOffset, additionalOffset);
+                    CorrectDefaultOffset(endDatas[i].LeftSide.MainTrajectory, ref leftDefaultT[i], count == 2, defaultOffset, minCornerOffset, additionalOffset);
+                    CorrectDefaultOffset(endDatas[i].RightSide.MainTrajectory, ref rightDefaultT[i], count == 2, defaultOffset, minCornerOffset, additionalOffset);
                 }
             }
 
@@ -458,24 +464,26 @@ namespace NodeController
                 var endData = endDatas[i];
                 if (!endData.IsNodeLess)
                 {
-                    endData.LeftSide.MinT = Mathf.Clamp01(leftMainMinT[i]);
-                    endData.RightSide.MinT = Mathf.Clamp01(rightMainMinT[i]);
-                    endData.LeftSide.DefaultT = Mathf.Clamp01(leftDefaultT[i]);
-                    endData.RightSide.DefaultT = Mathf.Clamp01(rightDefaultT[i]);
+                    endData.LeftSide.MinT = leftMainMinT[i] == 0 ? leftMainMinT[i] : Mathf.Clamp01(leftMainMinT[i] * (1f - endData.LeftSide.MainT) + endData.LeftSide.MainT);
+                    endData.RightSide.MinT = rightMainMinT[i] == 0 ? rightMainMinT[i] : Mathf.Clamp01(rightMainMinT[i] * (1f - endData.RightSide.MainT) + endData.RightSide.MainT);
+
+                    endData.LeftSide.DefaultT = Mathf.Clamp01(leftDefaultT[i] * (1f - endData.LeftSide.MainT) + endData.LeftSide.MainT);
+                    endData.RightSide.DefaultT = Mathf.Clamp01(rightDefaultT[i] * (1f - endData.RightSide.MainT) + endData.RightSide.MainT);
                 }
                 else
                 {
-                    endData.LeftSide.MinT = 0f;
-                    endData.RightSide.MinT = 0f;
-                    endData.LeftSide.DefaultT = 0f;
-                    endData.RightSide.DefaultT = 0f;
+                    endData.LeftSide.MinT = endData.LeftSide.MainT;
+                    endData.RightSide.MinT = endData.RightSide.MainT;
+
+                    endData.LeftSide.DefaultT = endData.LeftSide.MainT;
+                    endData.RightSide.DefaultT = endData.RightSide.MainT;
                 }
             }
         }
         private static void GetMainMinLimit(SegmentEndData iData, SegmentEndData jData, int count, ref float iMinT, ref float jMinT)
         {
-            var iBezier = iData.LeftSide.RawTrajectory;
-            var jBezier = jData.RightSide.RawTrajectory;
+            var iBezier = iData.LeftSide.MainTrajectory;
+            var jBezier = jData.RightSide.MainTrajectory;
 
             if (Intersection.CalculateSingle(iBezier, jBezier, out iMinT, out jMinT))
                 return;
@@ -496,8 +504,8 @@ namespace NodeController
         }
         private static void GetMainMinLimit(SegmentEndData data, SegmentEndData otherData, SideType side, ref float minT)
         {
-            var bezier = data[side].RawTrajectory;
-            var otherBezier = otherData[side.Invert()].RawTrajectory;
+            var bezier = data[side].MainTrajectory;
+            var otherBezier = otherData[side.Invert()].MainTrajectory;
             var line = new StraightTrajectory(otherBezier.StartPosition, otherBezier.StartPosition - otherBezier.StartDirection, false);
 
             if (Intersection.CalculateSingle(bezier, line, out minT, out var lineT) && lineT >= 0f && lineT <= 16f)
@@ -510,11 +518,11 @@ namespace NodeController
                     return;
             }
 
-            var endLine = new StraightTrajectory(otherData.LeftSide.RawTrajectory.EndPosition, otherData.RightSide.RawTrajectory.EndPosition).Cut(0.01f, 0.99f);
+            var endLine = new StraightTrajectory(otherData.LeftSide.MainTrajectory.EndPosition, otherData.RightSide.MainTrajectory.EndPosition).Cut(0.01f, 0.99f);
             if (Intersection.CalculateSingle(bezier, endLine, out minT, out _))
                 return;
 
-            var startLine = new StraightTrajectory(otherData.LeftSide.RawTrajectory.StartPosition, otherData.RightSide.RawTrajectory.StartPosition).Cut(0.01f, 0.99f);
+            var startLine = new StraightTrajectory(otherData.LeftSide.MainTrajectory.StartPosition, otherData.RightSide.MainTrajectory.StartPosition).Cut(0.01f, 0.99f);
             if (Intersection.CalculateSingle(bezier, startLine, out minT, out _))
                 return;
 
@@ -548,13 +556,13 @@ namespace NodeController
             else if (Intersection.CalculateSingle(main, new StraightTrajectory(sub.StartPosition, sub.StartPosition - sub.StartDirection * 16f), out t, out _))
                 defaultT = Mathf.Max(defaultT, t);
         }
-        private static void CorrectDefaultOffset(ITrajectory bezier, ref float defaultT, bool alwaysDefault, float defaultOffset, float minCornerOffset, float additionalOffset)
+        private static void CorrectDefaultOffset(ITrajectory trajectory, ref float defaultT, bool alwaysDefault, float defaultOffset, float minCornerOffset, float additionalOffset)
         {
             if (defaultT < 0f || alwaysDefault)
-                defaultT = Mathf.Max(defaultT, bezier.Travel(Mathf.Min(defaultOffset, minCornerOffset)));
+                defaultT = Mathf.Max(defaultT, trajectory.Travel(Mathf.Min(defaultOffset, minCornerOffset)));
 
-            var distance = bezier.Distance(0f, defaultT);
-            defaultT = bezier.Travel(defaultT, Mathf.Max(minCornerOffset - distance, additionalOffset));
+            var distance = trajectory.Distance(0f, defaultT);
+            defaultT = trajectory.Travel(defaultT, Mathf.Max(minCornerOffset - distance, additionalOffset));
         }
 
         public static void UpdateMaxLimits(ushort segmentId)
@@ -584,16 +592,18 @@ namespace NodeController
                 var startSide = start[side];
                 var endSide = end[side.Invert()];
 
-                var startT = start.GetCornerOffset(startSide, start.OffsetT);
-                var endT = end.GetCornerOffset(endSide, end.OffsetT);
+                var startT = (start.GetCornerOffset(startSide, start.OffsetT) - startSide.MainT) / (1f - startSide.MainT);
+                var endT = (end.GetCornerOffset(endSide, end.OffsetT) - endSide.MainT) / (1f - endSide.MainT);
                 if (startT + endT > 1f)
                 {
                     var delta = (startT + endT - 1f) / 2;
                     startT -= delta;
                     endT -= delta;
                 }
-                startSide.MaxT = Mathf.Clamp01(1f - endT - startSide.DeltaT);
-                endSide.MaxT = Mathf.Clamp01(1f - startT - endSide.DeltaT);
+                endT = (1f - endT) * (1f - startSide.MainT) + startSide.MainT - startSide.DeltaT;
+                startT = (1f - startT) * (1f - endSide.MainT) + endSide.MainT - endSide.DeltaT;
+                startSide.MaxT = Mathf.Clamp01(endT);
+                endSide.MaxT = Mathf.Clamp01(startT);
             }
         }
 
@@ -677,7 +687,12 @@ namespace NodeController
             else
             {
                 SetOffset(0f);
-                SetRotate(0f, true);
+
+                var additional = new StraightTrajectory(RawSegmentBezier.StartPosition, RawSegmentBezier.StartPosition - RawSegmentBezier.StartDirection, false);
+                if (Intersection.CalculateSingle(additional, line, out t, out _) && Math.Abs(t) <= 0.05f)
+                    SetRotate(RotateAngle, true);
+                else
+                    SetRotate(0f, true);
             }
         }
 

@@ -62,7 +62,7 @@ namespace NodeController
         {
             var side = SegmentEnd[Corner];
 
-            text = $"{side.RawTrajectory.Cut(0f, side.CurrentT).GetLength(1f, 7):0.0}";
+            text = $"{side.RawTrajectory.Cut(0f, side.CurrentT).GetLength(1f, 7) - SegmentSide.Additional:0.0}";
             color = side.IsMinBorderT || side.IsMaxBorderT ? Colors.Red : Colors.Yellow;
             size = 2f;
             position = SegmentEnd.Position + SegmentEnd.Direction * SegmentEndData.CircleRadius;
