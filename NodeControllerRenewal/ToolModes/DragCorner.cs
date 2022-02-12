@@ -34,8 +34,8 @@ namespace NodeController
             var delta = SegmentEnd[Corner].Position - SegmentEnd[Corner].MarkerPosition;
             var ray = new Segment3(Tool.Ray.a + delta, Tool.Ray.b + delta);
 
-            SegmentEnd[Corner].RawBezier.Trajectory.GetHitPosition(ray, out _, out var t, out _);
-            var offset = SegmentEnd[Corner].RawBezier.Distance(0f, t).RoundToNearest(RoundTo);
+            SegmentEnd[Corner].RawTrajectory.GetHitPosition(ray, out _, out var t, out _);
+            var offset = SegmentEnd[Corner].RawTrajectory.Distance(0f, t).RoundToNearest(RoundTo);
             if (Corner == SideType.Left)
                 SegmentEnd.LeftOffset = offset;
             else
@@ -62,7 +62,7 @@ namespace NodeController
         {
             var side = SegmentEnd[Corner];
 
-            text = $"{side.RawBezier.Trajectory.Cut(0f, side.CurrentT).Length(1f, 7):0.0}";
+            text = $"{side.RawTrajectory.Cut(0f, side.CurrentT).GetLength(1f, 7):0.0}";
             color = side.IsMinBorderT || side.IsMaxBorderT ? Colors.Red : Colors.Yellow;
             size = 2f;
             position = SegmentEnd.Position + SegmentEnd.Direction * SegmentEndData.CircleRadius;

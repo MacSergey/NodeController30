@@ -195,6 +195,20 @@ Backward compatibility does not provide the transfer of all data, may be require
 - Added the ability to hide original mod button in toolbar If you use UUI mod.
 - Added Turkish translation.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_2" xml:space="preserve">
+    <value>- Added the ability to edit decorative networks. Max slope and twist value for decoration networks is 85 degrees.
+- Changed game limit for calculation path for pedestrion on intersection: pedestrian no more stuck on wide intersections.
+- Added option for insertion nodes: click on segnemt (default behavior like before), click with Ctrl on segment, disabled.
+- Added twist options:
+--- Calculate twist by nearby nodes - set average twist value to node.
+--- Calculate twist by intersections - set twist value for all nodes between intersection for smooth transition (like -4°,-2°,0°,+2°,+4°).
+--- Set twist between intersections - set this twist value for all nodes between intersection.
+- Added ability to change slope value for each segment on middle node.
+- Added the ability to change offset and rotation for end nodes.
+- Overlay was adapted for too narrow networks.
+- Fixed calculation for nodeless networks.
+- Fixed calculation of node insertion.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bend</value>
   </data>

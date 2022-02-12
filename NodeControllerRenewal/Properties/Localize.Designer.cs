@@ -204,6 +204,20 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на - Added the ability to edit decorative networks. Max slope and twist value for decoration networks is 85 degrees.
+        ///- Changed game limit for calculation path for pedestrion on intersection: pedestrian no more stuck on wide intersections.
+        ///- Added option for insertion nodes: click on segnemt (default behavior like before), click with Ctrl on segment, disabled.
+        ///- Added twist options:
+        ///--- Calculate twist by nearby nodes - set average twist value to node.
+        ///--- Calculate twist by intersections - set twist value [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string Mod_WhatsNewMessage3_2 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Bend.
         /// </summary>
         internal static string NodeStyle_Bend {
