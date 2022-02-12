@@ -40,11 +40,6 @@ To start use Node Controller Renewal you should disable original Node Controller
 [h1]Join to discord for discussion and support[/h1]
 [url=https://discord.gg/NnwhuBKMqj][img]https://i.imgur.com/bnDNN2x.png[/img][/url]
 
-[HR][/HR] 
-[h1]If you like Node Controller Renewal, you can support me[/h1]
-
-[url=https://www.paypal.me/macsergey][img]https://i.imgur.com/vtwKnVr.png[/img][/url][url=https://www.patreon.com/MacSergey][img]https://i.imgur.com/aMLNy32.png[/img][/url]
-
 [HR][/HR]
 [h1]Source code[/h1]
 [url=https://github.com/MacSergey/NodeController30][img]https://i.imgur.com/DczUXYq.png[/img][/url]

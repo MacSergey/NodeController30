@@ -204,6 +204,20 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на - Added the ability to edit decorative networks. Max slope and twist value for decoration networks is 85 degrees.
+        ///- Changed game limit for calculation path for pedestrion on intersection: pedestrian no more stuck on wide intersections.
+        ///- Added option for insertion nodes: click on segnemt (default behavior like before), click with Ctrl on segment, disabled.
+        ///- Added twist options:
+        ///--- Calculate twist by nearby nodes - set average twist value to node.
+        ///--- Calculate twist by intersections - set twist value [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string Mod_WhatsNewMessage3_2 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Bend.
         /// </summary>
         internal static string NodeStyle_Bend {
@@ -645,6 +659,42 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Inserting node.
+        /// </summary>
+        internal static string Settings_InsertNode {
+            get {
+                return ResourceManager.GetString("Settings_InsertNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disabled.
+        /// </summary>
+        internal static string Settings_InsertNodeDisabled {
+            get {
+                return ResourceManager.GetString("Settings_InsertNodeDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на By click on segment.
+        /// </summary>
+        internal static string Settings_InsertNodeEnabled {
+            get {
+                return ResourceManager.GetString("Settings_InsertNodeEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на By click with {0} on segment.
+        /// </summary>
+        internal static string Settings_InsertNodeWithModifier {
+            get {
+                return ResourceManager.GetString("Settings_InsertNodeWithModifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Node is sloped by default.
         /// </summary>
         internal static string Settings_NodeIsSlopedByDefault {
@@ -781,11 +831,29 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Click with {0} to insert crossing node.
+        /// </summary>
+        internal static string Tool_InfoInsertCrossingNodeWithModifier {
+            get {
+                return ResourceManager.GetString("Tool_InfoInsertCrossingNodeWithModifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Click to insert node.
         /// </summary>
         internal static string Tool_InfoInsertNode {
             get {
                 return ResourceManager.GetString("Tool_InfoInsertNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Click with {0} to insert node.
+        /// </summary>
+        internal static string Tool_InfoInsertNodeWithModifier {
+            get {
+                return ResourceManager.GetString("Tool_InfoInsertNodeWithModifier", resourceCulture);
             }
         }
         

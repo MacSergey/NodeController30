@@ -30,6 +30,7 @@ namespace NodeController
         public override string Description => !IsBeta ? Localize.Mod_Description : CommonLocalize.Mod_DescriptionBeta;
         public override List<Version> Versions => new List<Version>()
         {
+            new Version("3.2"),
             new Version("3.1.3"),
             new Version("3.1.2"),
             new Version("3.1.1"),
@@ -97,6 +98,8 @@ namespace NodeController
             PatchNetLane(ref success);
             PatchRoadBaseAI(ref success);
             PatchSimulationStep(ref success);
+
+            success &= Patch_CitizenAI_GetPathTargetPosition();
 
             if (DependencyUtilities.TrafficManager is null)
                 Logger.Debug("TMPE not exist, skip patches");
@@ -321,6 +324,11 @@ namespace NodeController
         }
 
         #endregion
+
+        private bool Patch_CitizenAI_GetPathTargetPosition()
+        {
+            return AddTranspiler(typeof(CitizenAIPatches), nameof(CitizenAIPatches.GetPathTargetPositionTranspilar), typeof(CitizenAI), "GetPathTargetPosition");
+        }
 
         #region HIDECROSSWALK
 

@@ -53,6 +53,7 @@ namespace NodeController
         }
         public SegmentEndData this[ushort segmentId] => SegmentEnds.TryGetValue(segmentId, out var data) ? data : null;
         private Vector3 Position { get; set; }
+        public float Gap { get; private set; }
 
         public BezierTrajectory MainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
         public BezierTrajectory LeftMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
@@ -334,6 +335,27 @@ namespace NodeController
                 SegmentEndData.FixMiddle(FirstMainSegmentEnd, SecondMainSegmentEnd);
 
             Position = position;
+
+            var maxGap = 0f;
+            foreach(var firstData in SegmentEndDatas)
+            {
+                foreach (var secondData in SegmentEndDatas)
+                {
+                    CalculateGap(ref maxGap, firstData, secondData, true, true);
+                    CalculateGap(ref maxGap, firstData, secondData, true, false);
+                    CalculateGap(ref maxGap, firstData, secondData, false, true);
+                    CalculateGap(ref maxGap, firstData, secondData, false, false);
+                }
+            }
+            Gap = Mathf.Sqrt(maxGap) + 2f;
+        }
+        private void CalculateGap(ref float gap, SegmentEndData firstData, SegmentEndData secondData, bool isFirstLeft, bool isSecondLeft)
+        {
+            firstData.GetCorner(isFirstLeft, out var firstPos, out _);
+            secondData.GetCorner(isSecondLeft, out var secondPos, out _);
+            var delta = (firstPos - secondPos).sqrMagnitude;
+            if (delta > gap)
+                gap = delta;
         }
 
         public void UpdateNode(bool now = true) => SingletonManager<Manager>.Instance.Update(Id, now);

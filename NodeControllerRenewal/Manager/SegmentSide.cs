@@ -9,25 +9,26 @@ namespace NodeController
 {
     public class SegmentSide
     {
-        private BezierTrajectory _rawBezier;
+        private ITrajectory _rawTrajectory;
+
         private float _minT = 0f;
         private float _maxT = 1f;
 
         public SideType Type { get; }
         public SegmentEndData SegmentData { get; }
 
-        public BezierTrajectory RawBezier
+        public ITrajectory RawTrajectory
         {
-            get => _rawBezier;
+            get => _rawTrajectory;
             set
             {
-                if (value != _rawBezier)
+                if (value != _rawTrajectory)
                 {
-                    _rawBezier = value;
+                    _rawTrajectory = value;
                     _minT = 0f;
                     _maxT = 1f;
-                    Position = _rawBezier.StartPosition;
-                    Direction = _rawBezier.StartDirection;
+                    Position = _rawTrajectory.StartPosition;
+                    Direction = _rawTrajectory.StartDirection;
                     Update();
                 }
             }
@@ -58,10 +59,10 @@ namespace NodeController
         }
         public float DefaultT { get; set; }
 
-        public BezierTrajectory Bezier { get; private set; }
+        public ITrajectory Trajectory { get; private set; }
         public float RawT { get; set; }
         public float CurrentT => Mathf.Clamp(RawT, MinT + DeltaT, MaxT - DeltaT);
-        public float DeltaT => 0.05f / RawBezier.Length;
+        public float DeltaT => 0.05f / RawTrajectory.Length;
 
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
@@ -80,21 +81,21 @@ namespace NodeController
         public bool IsMinBorderT => RawT - 0.001f <= MinT;
         public bool IsMaxBorderT => RawT + 0.001f >= MaxT;
         public bool IsDefaultT => Mathf.Abs(RawT - DefaultT) < 0.001f;
-        public bool IsShort => (MaxT - CurrentT) <= (1f / RawBezier.Length);
+        public bool IsShort => (MaxT - CurrentT) <= (1f / RawTrajectory.Length);
 
         public SegmentSide(SegmentEndData segmentData, SideType type)
         {
             Type = type;
             SegmentData = segmentData;
         }
-        private void Update() => Bezier = RawBezier.Cut(MinT, MaxT);
+        private void Update() => Trajectory = RawTrajectory.Cut(MinT, MaxT);
         public void Calculate(bool isMain)
         {
             var nodeData = SegmentData.NodeData;
 
             var t = Mathf.Clamp(RawT, MinT + (nodeData.IsMiddleNode || SegmentData.IsNodeLess ? 0f : DeltaT), MaxT - DeltaT);
-            var position = RawBezier.Position(t);
-            var direction = RawBezier.Tangent(t).normalized;
+            var position = RawTrajectory.Position(t);
+            var direction = RawTrajectory.Tangent(t).normalized;
 
             if (!SegmentData.IsSlope)
             {
@@ -160,11 +161,11 @@ namespace NodeController
 
         public void Render(OverlayData dataAllow, OverlayData dataForbidden, OverlayData dataLimit)
         {
-            var deltaT = 0.2f / RawBezier.Length;
+            var deltaT = 0.2f / RawTrajectory.Length;
             if (MinT == 0f)
             {
                 if (RawT >= deltaT)
-                    RawBezier.Cut(0f, RawT).Render(dataAllow);
+                    RawTrajectory.Cut(0f, RawT).Render(dataAllow);
             }
             else
             {
@@ -173,13 +174,13 @@ namespace NodeController
 
                 var t = Math.Min(RawT, MinT);
                 if (t >= DeltaT)
-                    RawBezier.Cut(0f, t).Render(dataForbidden);
+                    RawTrajectory.Cut(0f, t).Render(dataForbidden);
 
-                if (RawT - MinT >= 0.2f / RawBezier.Length)
-                    RawBezier.Cut(MinT, RawT).Render(dataAllow);
+                if (RawT - MinT >= 0.2f / RawTrajectory.Length)
+                    RawTrajectory.Cut(MinT, RawT).Render(dataAllow);
             }
             dataLimit.Color ??= Colors.Purple;
-            RawBezier.Position(DefaultT).RenderCircle(dataLimit);
+            RawTrajectory.Position(DefaultT).RenderCircle(dataLimit);
         }
         public void RenderCircle(OverlayData data)
         {

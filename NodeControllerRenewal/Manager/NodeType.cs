@@ -196,11 +196,14 @@ namespace NodeController
             }
         }
 
-        public virtual float GetRotate() => IsRoadDatas.AverageOrDefault(s => s.RotateAngle, DefaultRotate);
+        public virtual float GetRotate() => TouchableDatas.AverageOrDefault(s => s.RotateAngle, DefaultRotate);
         public virtual void SetRotate(float value)
         {
-            foreach (var segmentData in IsRoadDatas)
-                segmentData.RotateAngle = value;
+            foreach (var segmentData in TouchableDatas)
+            {
+                if (AllowRotatePredicate(segmentData))
+                    segmentData.RotateAngle = value;
+            }
         }
 
         public virtual float GetSlope() => TouchableDatas.AverageOrDefault(s => s.SlopeAngle, DefaultSlope);
@@ -567,6 +570,7 @@ namespace NodeController
 
         protected static bool AllowOffsetPredicate(SegmentEndData data) => TouchablePredicate(data) && HasNodePredicate(data);
         protected static bool AllowShiftPredicate(SegmentEndData data) => TouchablePredicate(data) && !IsDecorationPredicate(data);
+        protected static bool AllowRotatePredicate(SegmentEndData data) => TouchablePredicate(data) && HasNodePredicate(data);
         protected static bool MainRoadPredicate(SegmentEndData data) => TouchablePredicate(data) && (data.IsMainRoad || data.IsDecoration);
 
         #endregion
@@ -716,12 +720,15 @@ namespace NodeController
     {
         public override NodeStyleType Type => NodeStyleType.End;
 
+        public override SupportOption SupportOffset => SupportOption.Group;
+        public override SupportOption SupportRotate => SupportOption.Group;
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportSlope => SupportOption.Group;
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool SupportTrafficLights => true;
+        public override bool IsMoveable => true;
 
         public EndNode(NodeData data) : base(data) { }
     }

@@ -20,12 +20,24 @@ namespace NodeController
                 return string.Format(Localize.Tool_InfoClickNode, HoverNode.Id) + GetStepOverInfo();
             else if (IsHoverSegment)
             {
-                if (!IsPossibleInsertNode)
+                if (!Settings.IsInsertEnable)
+                    return Localize.Tool_InfoSelectNode + GetStepOverInfo();
+                else if (!IsPossibleInsertNode)
                     return Localize.Tool_InfoTooCloseNode.AddErrorColor() + GetStepOverInfo();
                 else if (HoverSegment.Id.GetSegment().Info.PedestrianLanes() >= 2)
-                    return Localize.Tool_InfoInsertCrossingNode.AddActionColor() + GetStepOverInfo();
+                {
+                    if (Settings.IsInsertWithModifier)
+                        return string.Format(Localize.Tool_InfoInsertCrossingNodeWithModifier.AddActionColor(), Settings.InsertModifier.AddInfoColor()) + GetStepOverInfo();
+                    else
+                        return Localize.Tool_InfoInsertCrossingNode.AddActionColor() + GetStepOverInfo();
+                }
                 else
-                    return Localize.Tool_InfoInsertNode.AddActionColor() + GetStepOverInfo();
+                {
+                    if (Settings.IsInsertWithModifier)
+                        return string.Format(Localize.Tool_InfoInsertNodeWithModifier.AddActionColor(), Settings.InsertModifier.AddInfoColor()) + GetStepOverInfo();
+                    else
+                        return Localize.Tool_InfoInsertNode.AddActionColor() + GetStepOverInfo();
+                }
             }
             else
                 return $"{Localize.Tool_InfoSelectNode}\n\n{string.Format(Localize.Tool_InfoUnderground, LocalizeExtension.Shift.AddInfoColor())}";
@@ -51,7 +63,7 @@ namespace NodeController
             //{ m_service: ItemClass.Service.Beautification, m_level: >= ItemClass.Level.Level3 } => true,
             //{ m_service: ItemClass.Service.Beautification, m_subService: ItemClass.SubService.BeautificationParks } => true,
             //_ => false,
-            { m_service: ItemClass.Service.Electricity} => false,
+            { m_service: ItemClass.Service.Electricity } => false,
             { m_service: ItemClass.Service.Water } => false,
             _ => true,
         };
@@ -67,8 +79,13 @@ namespace NodeController
 
             if (IsHoverSegment)
             {
-                IsPossibleInsertNode = PossibleInsertNode(out var position, out _, out _);
-                InsertPosition = position;
+                if (Settings.IsInsertEnable)
+                {
+                    IsPossibleInsertNode = PossibleInsertNode(out var position, out _, out _);
+                    InsertPosition = position;
+                }
+                else
+                    IsPossibleInsertNode = false;
             }
         }
 
@@ -76,7 +93,7 @@ namespace NodeController
         {
             if (IsHoverNode)
                 Set(SingletonManager<Manager>.Instance[HoverNode.Id, true]);
-            else if (IsHoverSegment && IsPossibleInsertNode)
+            else if (IsHoverSegment && IsPossibleInsertNode && (!Settings.IsInsertWithModifier || Utility.OnlyCtrlIsPressed))
             {
                 var controlPoint = new NetTool.ControlPoint() { m_segment = HoverSegment.Id, m_position = InsertPosition };
                 var newNode = SingletonManager<Manager>.Instance.InsertNode(controlPoint);
@@ -97,7 +114,7 @@ namespace NodeController
             direction = Vector3.zero;
             halfWidth = 0f;
 
-            if (!IsHoverSegment)
+            if (!IsHoverSegment || !Settings.IsInsertEnable)
                 return false;
 
             SegmentEndData.CalculateSegmentBeziers(HoverSegment.Id, out var bezier, out _, out _);
@@ -143,24 +160,27 @@ namespace NodeController
                         new NodeSelection(segment.m_endNode).Render(otherOverlay);
                 }
 
-                var isPossibleInsert = PossibleInsertNode(out var position, out var direction, out var halfWidth);
-                var overlayData = new OverlayData(cameraInfo) { Width = halfWidth * 2, Color = isPossibleInsert ? Colors.Green : Colors.Red, AlphaBlend = false, Cut = true, RenderLimit = Underground };
-
-                var middle = new Bezier3()
+                if (Settings.IsInsertEnable)
                 {
-                    a = position + direction,
-                    b = position,
-                    c = position,
-                    d = position - direction,
-                };
-                middle.RenderBezier(overlayData);
+                    var isPossibleInsert = PossibleInsertNode(out var position, out var direction, out var halfWidth);
+                    var overlayData = new OverlayData(cameraInfo) { Width = halfWidth * 2, Color = isPossibleInsert ? Colors.Green : Colors.Red, AlphaBlend = false, Cut = true, RenderLimit = Underground };
 
-                overlayData.Width = Mathf.Min(halfWidth * 2, Selection.BorderOverlayWidth);
-                overlayData.Cut = false;
+                    var middle = new Bezier3()
+                    {
+                        a = position + direction,
+                        b = position,
+                        c = position,
+                        d = position - direction,
+                    };
+                    middle.RenderBezier(overlayData);
 
-                var normal = direction.MakeFlatNormalized().Turn90(true);
-                RenderBorder(overlayData, position + direction, normal, halfWidth);
-                RenderBorder(overlayData, position - direction, normal, halfWidth);
+                    overlayData.Width = Mathf.Min(halfWidth * 2, Selection.BorderOverlayWidth);
+                    overlayData.Cut = false;
+
+                    var normal = direction.MakeFlatNormalized().Turn90(true);
+                    RenderBorder(overlayData, position + direction, normal, halfWidth);
+                    RenderBorder(overlayData, position - direction, normal, halfWidth);
+                }
             }
             else
                 base.RenderOverlay(cameraInfo);
