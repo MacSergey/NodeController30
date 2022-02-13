@@ -267,6 +267,11 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Eğer bu özellik kapalıysa, orta düğümler tıklanılan konuma taşınır</value>
   </data>
+  
+  
+  
+  
+  
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>Kesişimlerdeki değişimi hesapla</value>
   </data>
@@ -300,6 +305,8 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
     <value>Kesişimler arasındaki değişimi uygula</value>
   </data>
+  
+  
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>{0}'e basılı tutarak yolları ayarlayın</value>
   </data>

@@ -275,6 +275,21 @@
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>停用後，中間節點將移動到剛點擊的位置</value>
   </data>
+  <data name="Settings_ShortcutEnterUnderground" xml:space="preserve">
+    <value>進入地下模式</value>
+  </data>
+  <data name="Settings_ShortcutExitUnderground" xml:space="preserve">
+    <value>離開地下模式</value>
+  </data>
+  <data name="Settings_ToggleUnderground" xml:space="preserve">
+    <value>切換地下模式</value>
+  </data>
+  <data name="Settings_ToggleUndergroundButtons" xml:space="preserve">
+    <value>按 {0} 進入、{1} 離開</value>
+  </data>
+  <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
+    <value>按住 {0}</value>
+  </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>以交岔路口計算偏移</value>
   </data>
@@ -307,6 +322,14 @@
   </data>
   <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
     <value>設定交叉路口間的扭轉</value>
+  </data>
+  <data name="Tool_EnterUnderground" xml:space="preserve">
+    <value>按 {0} 進入
+地下模式</value>
+  </data>
+  <data name="Tool_ExitUnderground" xml:space="preserve">
+    <value>按 {0} 離開
+地下模式</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>按住 {0} 對齊道路</value>

@@ -158,7 +158,20 @@
 - 如果您使用UUI模组的话，可以在工具栏中隐藏原模组按钮。
 - 添加了土耳其语翻译。</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_2" xml:space="preserve">
+    <value>- 增加了编辑装饰网络的能力。装饰网络的最大斜坡和扭曲值为85度。
+- 改变游戏计算交叉路口行人路径的限制：行人不会卡在宽的交点上。
+- 添加插入节点选项：单击插入节点 (像以前一样默认行为)，或在节点上单击+Ctrl禁用。
+- 添加了扭曲选项：
+- 由附近节点计算扭曲——设置为两者平均值。
+--- 通过节点计算扭曲—为节点之间的所有节点设置平顺的扭曲值(如-4°,2-°,0°,+2°,+4°)。
+--- 设置交点间的扭曲 - 设置交点之间的所有节点的扭曲值。
+- 增加了改变“中间”节点上每个部分的斜率值的能力。
+- 增加了更改“终点”节点偏移和旋转的能力。
+- UI对过于狭窄的网络进行优化。
+- 修复无节点网络计算方式。
+- 修复节点插入计算方式。</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>弯曲</value>
   </data>
@@ -297,6 +310,21 @@
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>禁用后，中间点将移动到单击位置</value>
   </data>
+  <data name="Settings_ShortcutEnterUnderground" xml:space="preserve">
+    <value>进入地下模式</value>
+  </data>
+  <data name="Settings_ShortcutExitUnderground" xml:space="preserve">
+    <value>退出地下模式</value>
+  </data>
+  <data name="Settings_ToggleUnderground" xml:space="preserve">
+    <value>切换地下</value>
+  </data>
+  <data name="Settings_ToggleUndergroundButtons" xml:space="preserve">
+    <value>按 {0} 进入， {1} 退出</value>
+  </data>
+  <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
+    <value>按住 {0}</value>
+  </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>按交叉点计算偏移</value>
   </data>
@@ -329,6 +357,14 @@
   </data>
   <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
     <value>设置两个交叉点间的倾斜</value>
+  </data>
+  <data name="Tool_EnterUnderground" xml:space="preserve">
+    <value>按 {0} 进入
+地下模式</value>
+  </data>
+  <data name="Tool_ExitUnderground" xml:space="preserve">
+    <value>按 {0} 退出
+地下模式</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>按住{0}对齐道路</value>

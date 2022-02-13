@@ -267,6 +267,11 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Jos tämä asetus ei ole käytössä, keskiliittymät siirtyvät napautettuun kohtaan</value>
   </data>
+  
+  
+  
+  
+  
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>Laske siirtymä risteysten välille</value>
   </data>
@@ -300,6 +305,8 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
     <value>Aseta sivukaltevuus risteysten välille</value>
   </data>
+  
+  
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Pidä {0}-näppäintä pohjassa kohdistaaksesi tiet</value>
   </data>

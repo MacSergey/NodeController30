@@ -275,6 +275,21 @@
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>このオプションを無効にすると、中間部分にあるノードは選択されません</value>
   </data>
+  <data name="Settings_ShortcutEnterUnderground" xml:space="preserve">
+    <value>地下表示に移行</value>
+  </data>
+  <data name="Settings_ShortcutExitUnderground" xml:space="preserve">
+    <value>地下表示を終了</value>
+  </data>
+  <data name="Settings_ToggleUnderground" xml:space="preserve">
+    <value>地下表示の切り替え方法</value>
+  </data>
+  <data name="Settings_ToggleUndergroundButtons" xml:space="preserve">
+    <value>{0} で移行 / {1} は終了</value>
+  </data>
+  <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
+    <value>{0} を保持</value>
+  </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>交差点間でシフト値を、まとめてスムージング</value>
   </data>
@@ -307,6 +322,14 @@
   </data>
   <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
     <value>交差点間では、ツイスト値を一括適用</value>
+  </data>
+  <data name="Tool_EnterUnderground" xml:space="preserve">
+    <value>{0} を押して
+地下表示に移行</value>
+  </data>
+  <data name="Tool_ExitUnderground" xml:space="preserve">
+    <value>{0} を押して
+地下表示を終了</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>{0} で、シフトして自動的に整列</value>

@@ -261,6 +261,11 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Se esta opção estiver desativada, os nós do meio vão mover-se para a posição clicada</value>
   </data>
+  
+  
+  
+  
+  
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>Calcular deslocamento pelas interseções</value>
   </data>
@@ -287,6 +292,8 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Aplicar entre intercessões</value>
   </data>
+  
+  
   
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Segure {0} para alinhar as estradas</value>

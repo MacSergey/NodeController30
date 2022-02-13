@@ -275,6 +275,21 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Si esta opción está desactivada, los nodos medios se moverán a la posición pulsada</value>
   </data>
+  <data name="Settings_ShortcutEnterUnderground" xml:space="preserve">
+    <value>Entrar en modo subterráneo</value>
+  </data>
+  <data name="Settings_ShortcutExitUnderground" xml:space="preserve">
+    <value>Salir del modo subterráneo</value>
+  </data>
+  <data name="Settings_ToggleUnderground" xml:space="preserve">
+    <value>Alternar modo subterráneo</value>
+  </data>
+  <data name="Settings_ToggleUndergroundButtons" xml:space="preserve">
+    <value>Presiona {0} para entrar y {1} para salir</value>
+  </data>
+  <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
+    <value>Mantener presionado {0}</value>
+  </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>Calcular desplazamiento usando intersecciones</value>
   </data>
@@ -307,6 +322,12 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   </data>
   <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
     <value>Establecer giro entre intersecciones</value>
+  </data>
+  <data name="Tool_EnterUnderground" xml:space="preserve">
+    <value>Presiona {0} patra entrar en modo subterráneo</value>
+  </data>
+  <data name="Tool_ExitUnderground" xml:space="preserve">
+    <value>Presiona {0} para salir del modo subterráneo</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Mantener presionada la tecla {0} para alinear carreteras</value>

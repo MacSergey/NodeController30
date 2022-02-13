@@ -347,6 +347,21 @@
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Если эта опция отключена, средние узлы будет сдвинуты к месту нажатия</value>
   </data>
+  <data name="Settings_ShortcutEnterUnderground" xml:space="preserve">
+    <value>Войти в подземный режим</value>
+  </data>
+  <data name="Settings_ShortcutExitUnderground" xml:space="preserve">
+    <value>Выйти из подземного режима</value>
+  </data>
+  <data name="Settings_ToggleUnderground" xml:space="preserve">
+    <value>Переключение подземного режима</value>
+  </data>
+  <data name="Settings_ToggleUndergroundButtons" xml:space="preserve">
+    <value>Нажмите {0} для входа и {1} для выхода</value>
+  </data>
+  <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
+    <value>Удерживайте {0}</value>
+  </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>Рассчитать сдвиг между перекрестками</value>
   </data>
@@ -379,6 +394,14 @@
   </data>
   <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
     <value>Задать скручивание между перекрестками</value>
+  </data>
+  <data name="Tool_EnterUnderground" xml:space="preserve">
+    <value>Нажмите {0} для входа
+в подземный режим</value>
+  </data>
+  <data name="Tool_ExitUnderground" xml:space="preserve">
+    <value>Нажмите {0} для выхода
+из подземного режима</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Удерживайте {0} чтобы выровнять дороги</value>

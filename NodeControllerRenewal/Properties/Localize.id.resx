@@ -251,8 +251,12 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Titik hubung #{0}</value>
   </data>
-  
-  
+  <data name="Settings_InsertNode" xml:space="preserve">
+    <value>Masukan titik hubung</value>
+  </data>
+  <data name="Settings_InsertNodeDisabled" xml:space="preserve">
+    <value>Nonaktif</value>
+  </data>
   
   
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
@@ -266,6 +270,21 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Jika opsi ini dinonaktifkan, titik hubung di tengah akan berpindah ke posisi yang diklik</value>
+  </data>
+  <data name="Settings_ShortcutEnterUnderground" xml:space="preserve">
+    <value>Masuk ke mode bawah tanah</value>
+  </data>
+  <data name="Settings_ShortcutExitUnderground" xml:space="preserve">
+    <value>Keluar dari mode bawah tanah</value>
+  </data>
+  <data name="Settings_ToggleUnderground" xml:space="preserve">
+    <value>Aktif/nonaktifkan mode bawah tanah</value>
+  </data>
+  <data name="Settings_ToggleUndergroundButtons" xml:space="preserve">
+    <value>Tekan {0} untuk masuk dan {1} untuk keluar</value>
+  </data>
+  <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
+    <value>Tekan dan tahan {0}</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>Hitungkan pergeseran menurut persimpangan</value>
@@ -299,6 +318,14 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   </data>
   <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
     <value>Terapkan twist di antara persimpangan</value>
+  </data>
+  <data name="Tool_EnterUnderground" xml:space="preserve">
+    <value>Tekan {0} untuk memasuki
+mode bawah tanah</value>
+  </data>
+  <data name="Tool_ExitUnderground" xml:space="preserve">
+    <value>Tekan {0} untuk keluar
+mode bawah tanah</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Tekan dan tahan {0} untuk meluruskan jalan</value>
@@ -334,11 +361,15 @@ Klik untuk mengedit</value>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Klik untuk menambah titik hubung penyeberangan</value>
   </data>
-  
+  <data name="Tool_InfoInsertCrossingNodeWithModifier" xml:space="preserve">
+    <value>Klik sambil menahan {0} untuk memasuki titik hubung penyeberangan</value>
+  </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>Klik untuk memasukkan titik hubung</value>
   </data>
-  
+  <data name="Tool_InfoInsertNodeWithModifier" xml:space="preserve">
+    <value>Klik sambil menahan {0} untuk memasuki titik hubungun</value>
+  </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Pilih pojok yang Anda ingin luruskan dengannya</value>
   </data>

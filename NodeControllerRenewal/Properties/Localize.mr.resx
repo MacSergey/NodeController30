@@ -275,6 +275,21 @@ Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manu
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Jika pilihan ini dinyahdayakan, nod pertengahan akan pindah ke kedudukan yang diklik</value>
   </data>
+  <data name="Settings_ShortcutEnterUnderground" xml:space="preserve">
+    <value>Masuk mod bawah tanah</value>
+  </data>
+  <data name="Settings_ShortcutExitUnderground" xml:space="preserve">
+    <value>Keluar mod bawah tanah</value>
+  </data>
+  <data name="Settings_ToggleUnderground" xml:space="preserve">
+    <value>Togol mod bawah tanah</value>
+  </data>
+  <data name="Settings_ToggleUndergroundButtons" xml:space="preserve">
+    <value>Tekan {0} untuk masuk dan {1} untuk keluar</value>
+  </data>
+  <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
+    <value>Tahan kekunci {0}</value>
+  </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>Kira anjakan mengikut persimpangan</value>
   </data>
@@ -307,6 +322,14 @@ Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manu
   </data>
   <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
     <value>Tetapkan pulas di antara persimpangan</value>
+  </data>
+  <data name="Tool_EnterUnderground" xml:space="preserve">
+    <value>Tekan {0} untuk masuk
+ke mod bawah tanah</value>
+  </data>
+  <data name="Tool_ExitUnderground" xml:space="preserve">
+    <value>Tekan {0} untuk keluar
+ke mod bawah tanah</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Tahan kekunci {0} untuk menjajar jalan</value>

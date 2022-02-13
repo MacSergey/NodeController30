@@ -275,6 +275,21 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Si cette option est désactivée, les nœuds du milieu se déplaceront vers l'emplacement cliqué</value>
   </data>
+  <data name="Settings_ShortcutEnterUnderground" xml:space="preserve">
+    <value>Passer en mode souterrain</value>
+  </data>
+  <data name="Settings_ShortcutExitUnderground" xml:space="preserve">
+    <value>Quitter le mode souterrain</value>
+  </data>
+  <data name="Settings_ToggleUnderground" xml:space="preserve">
+    <value>Activer le souterrain</value>
+  </data>
+  <data name="Settings_ToggleUndergroundButtons" xml:space="preserve">
+    <value>Appuyez sur {0} pour entrer et {1} pour quitter</value>
+  </data>
+  <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
+    <value>Maintenir {0}</value>
+  </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>Calculer le décalage par intersections</value>
   </data>
@@ -307,6 +322,14 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
   </data>
   <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
     <value>Définir la torsion entre les intersections</value>
+  </data>
+  <data name="Tool_EnterUnderground" xml:space="preserve">
+    <value>Appuyez sur {0} pour entrer
+en mode souterrain</value>
+  </data>
+  <data name="Tool_ExitUnderground" xml:space="preserve">
+    <value>Appuyez sur {0} pour quitter
+le mode souterrain</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Maintenez la touche {0} pour aligner les routes</value>
