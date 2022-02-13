@@ -1,4 +1,5 @@
-﻿using ModsCommon;
+﻿using ColossalFramework;
+using ModsCommon;
 using ModsCommon.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,22 @@ namespace NodeController
 {
     public class EditNodeToolMode : NodeControllerToolMode
     {
+        public static NodeControllerShortcut ResetOffsetShortcut { get; } = new NodeControllerShortcut(nameof(ResetOffsetShortcut), nameof(Localize.Setting_ShortcutResetToDefault), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.SetKeepDefaults());
+        public static NodeControllerShortcut ResetToDefaultShortcut { get; } = new NodeControllerShortcut(nameof(ResetToDefaultShortcut), nameof(Localize.Setting_ShortcutKeepDefault), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ResetToDefault());
+        public static NodeControllerShortcut MakeStraightEndsShortcut { get; } = new NodeControllerShortcut(nameof(MakeStraightEndsShortcut), nameof(Localize.Setting_ShortcutMakeStraightEnds), SavedInputKey.Encode(KeyCode.S, true, true, false), () => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds());
+
+        public static NodeControllerShortcut CalculateShiftByNearbyShortcut { get; } = new NodeControllerShortcut(nameof(CalculateShiftByNearbyShortcut), nameof(Localize.Setting_ShortcutCalculateShiftByNearby), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByNearby());
+        public static NodeControllerShortcut CalculateShiftByIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(CalculateShiftByIntersectionsShortcut), nameof(Localize.Setting_ShortcutCalculateShiftByIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByIntersections());
+        public static NodeControllerShortcut SetShiftBetweenIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(SetShiftBetweenIntersectionsShortcut), nameof(Localize.Setting_ShortcutSetShiftBetweenIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.SetShiftBetweenIntersections());
+
+        public static NodeControllerShortcut CalculateTwistByNearbyShortcut { get; } = new NodeControllerShortcut(nameof(CalculateTwistByNearbyShortcut), nameof(Localize.Setting_ShortcutCalculateTwistByNearby), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateTwistByNearby());
+        public static NodeControllerShortcut CalculateTwistByIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(CalculateTwistByIntersectionsShortcut), nameof(Localize.Setting_ShortcutCalculateTwistByIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateTwistByIntersections());
+        public static NodeControllerShortcut SetTwistBetweenIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(SetTwistBetweenIntersectionsShortcut), nameof(Localize.Setting_ShortcutSetTwistBetweenIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.SetTwistBetweenIntersections());
+
+        public static NodeControllerShortcut ChangeNodeStyleShortcut { get; } = new NodeControllerShortcut(nameof(ChangeNodeStyleShortcut), nameof(Localize.Setting_ShortcutChangeNodeStyle), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeNodeStyle());
+        public static NodeControllerShortcut ChangeMainRoadModeShortcut { get; } = new NodeControllerShortcut(nameof(ChangeMainRoadModeShortcut), nameof(Localize.Setting_ShortcutChangeMainRoadMode), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeMainRoadMode());
+
+
         public override ToolModeType Type => ToolModeType.Edit;
 
         public SegmentEndData HoverSegmentEndCenter { get; private set; }
@@ -18,6 +35,27 @@ namespace NodeController
         public SegmentEndData HoverSegmentEndCorner { get; private set; }
         public SideType HoverCorner { get; private set; }
         private bool IsHoverSegmentEndCorner => HoverSegmentEndCorner != null;
+
+        public override IEnumerable<Shortcut> Shortcuts
+        {
+            get
+            {
+                yield return ResetOffsetShortcut;
+                yield return ResetToDefaultShortcut;
+                yield return MakeStraightEndsShortcut;
+
+                yield return CalculateShiftByNearbyShortcut;
+                yield return CalculateShiftByIntersectionsShortcut;
+                yield return SetShiftBetweenIntersectionsShortcut;
+
+                yield return CalculateTwistByNearbyShortcut;
+                yield return CalculateTwistByIntersectionsShortcut;
+                yield return SetTwistBetweenIntersectionsShortcut;
+
+                yield return ChangeNodeStyleShortcut;
+                yield return ChangeMainRoadModeShortcut;
+            }
+        }
 
         public override void OnToolUpdate()
         {

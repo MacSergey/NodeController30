@@ -15,44 +15,17 @@ namespace NodeController
     {
         public static NodeControllerShortcut ActivationShortcut { get; } = new NodeControllerShortcut(nameof(ActivationShortcut), nameof(CommonLocalize.Settings_ShortcutActivateTool), SavedInputKey.Encode(KeyCode.N, true, false, false));
 
-        public static NodeControllerShortcut ResetOffsetShortcut { get; } = new NodeControllerShortcut(nameof(ResetOffsetShortcut), nameof(Localize.Setting_ShortcutResetToDefault), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.SetKeepDefaults());
-        public static NodeControllerShortcut ResetToDefaultShortcut { get; } = new NodeControllerShortcut(nameof(ResetToDefaultShortcut), nameof(Localize.Setting_ShortcutKeepDefault), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ResetToDefault());
-        public static NodeControllerShortcut MakeStraightEndsShortcut { get; } = new NodeControllerShortcut(nameof(MakeStraightEndsShortcut), nameof(Localize.Setting_ShortcutMakeStraightEnds), SavedInputKey.Encode(KeyCode.S, true, true, false), () => SingletonTool<NodeControllerTool>.Instance.MakeStraightEnds());
-
-        public static NodeControllerShortcut CalculateShiftByNearbyShortcut { get; } = new NodeControllerShortcut(nameof(CalculateShiftByNearbyShortcut), nameof(Localize.Setting_ShortcutCalculateShiftByNearby), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByNearby());
-        public static NodeControllerShortcut CalculateShiftByIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(CalculateShiftByIntersectionsShortcut), nameof(Localize.Setting_ShortcutCalculateShiftByIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateShiftByIntersections());
-        public static NodeControllerShortcut SetShiftBetweenIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(SetShiftBetweenIntersectionsShortcut), nameof(Localize.Setting_ShortcutSetShiftBetweenIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.SetShiftBetweenIntersections());
-
-        public static NodeControllerShortcut CalculateTwistByNearbyShortcut { get; } = new NodeControllerShortcut(nameof(CalculateTwistByNearbyShortcut), nameof(Localize.Setting_ShortcutCalculateTwistByNearby), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateTwistByNearby());
-        public static NodeControllerShortcut CalculateTwistByIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(CalculateTwistByIntersectionsShortcut), nameof(Localize.Setting_ShortcutCalculateTwistByIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateTwistByIntersections());
-        public static NodeControllerShortcut SetTwistBetweenIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(SetTwistBetweenIntersectionsShortcut), nameof(Localize.Setting_ShortcutSetTwistBetweenIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.SetTwistBetweenIntersections());
-
-        public static NodeControllerShortcut ChangeNodeStyleShortcut { get; } = new NodeControllerShortcut(nameof(ChangeNodeStyleShortcut), nameof(Localize.Setting_ShortcutChangeNodeStyle), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeNodeStyle());
-        public static NodeControllerShortcut ChangeMainRoadModeShortcut { get; } = new NodeControllerShortcut(nameof(ChangeMainRoadModeShortcut), nameof(Localize.Setting_ShortcutChangeMainRoadMode), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeMainRoadMode());
-        public static NodeControllerShortcut SelectionStepOverShortcut { get; } = new NodeControllerShortcut(nameof(SelectionStepOverShortcut), nameof(CommonLocalize.Settings_ShortcutSelectionStepOver), SavedInputKey.Encode(KeyCode.Space, true, false, false), () => SingletonTool<NodeControllerTool>.Instance.SelectionStepOver(), ToolModeType.Select);
-
-        public static IEnumerable<Shortcut> ToolShortcuts
+        public override IEnumerable<Shortcut> Shortcuts
         {
             get
             {
-                yield return SelectionStepOverShortcut;
-                yield return ResetOffsetShortcut;
-                yield return ResetToDefaultShortcut;
-                yield return MakeStraightEndsShortcut;
-
-                yield return CalculateShiftByNearbyShortcut;
-                yield return CalculateShiftByIntersectionsShortcut;
-                yield return SetShiftBetweenIntersectionsShortcut;
-
-                yield return CalculateTwistByNearbyShortcut;
-                yield return CalculateTwistByIntersectionsShortcut;
-                yield return SetTwistBetweenIntersectionsShortcut;
-
-                yield return ChangeNodeStyleShortcut;
-                yield return ChangeMainRoadModeShortcut;
+                if (Mode is IShortcutMode mode)
+                {
+                    foreach (var shortcut in mode.Shortcuts)
+                        yield return shortcut;
+                }
             }
         }
-        public override IEnumerable<Shortcut> Shortcuts => ToolShortcuts;
 
         protected override bool ShowToolTip => base.ShowToolTip && (Settings.ShowToolTip || Mode.Type == ToolModeType.Select);
         protected override IToolMode DefaultMode => ToolModes[ToolModeType.Select];
@@ -107,11 +80,6 @@ namespace NodeController
         }
         private void SetInfoMode() => Singleton<InfoManager>.instance.SetCurrentMode(Data?.IsUnderground == true ? InfoManager.InfoMode.Underground : InfoManager.InfoMode.None, InfoManager.SubInfoMode.Default);
 
-        private void SelectionStepOver()
-        {
-            if (Mode is SelectNodeToolMode selectMode)
-                selectMode.IgnoreSelected();
-        }
         public void SetKeepDefaults()
         {
             Data.SetKeepDefaults();
@@ -255,11 +223,17 @@ namespace NodeController
             }
         }
     }
-    public abstract class NodeControllerToolMode : BaseToolMode<NodeControllerTool>, IToolMode<ToolModeType>, IToolModePanel
+    public abstract class NodeControllerToolMode : BaseToolMode<NodeControllerTool>, IToolMode<ToolModeType>, IToolModePanel, IShortcutMode
     {
         public abstract ToolModeType Type { get; }
         public virtual bool ShowPanel => true;
         protected bool IsUnderground => Tool.IsUnderground;
+
+        public virtual IEnumerable<Shortcut> Shortcuts { get { yield break; } }
+    }
+    public interface IShortcutMode
+    {
+        public IEnumerable<Shortcut> Shortcuts { get; }
     }
     public enum ToolModeType
     {

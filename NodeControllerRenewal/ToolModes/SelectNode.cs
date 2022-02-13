@@ -2,17 +2,36 @@
 using ColossalFramework.Math;
 using ModsCommon;
 using ModsCommon.Utilities;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace NodeController
 {
-    public class SelectNodeToolMode : BaseSelectToolMode<NodeControllerTool>, IToolModePanel, IToolMode<ToolModeType>
+    public class SelectNodeToolMode : BaseSelectToolMode<NodeControllerTool>, IToolModePanel, IToolMode<ToolModeType>, IShortcutMode
     {
+        public static NodeControllerShortcut SelectionStepOverShortcut { get; } = new NodeControllerShortcut(nameof(SelectionStepOverShortcut), nameof(CommonLocalize.Settings_ShortcutSelectionStepOver), SavedInputKey.Encode(KeyCode.Space, true, false, false), () => (SingletonTool<NodeControllerTool>.Instance.Mode as SelectNodeToolMode)?.IgnoreSelected(), ToolModeType.Select);
+        public static NodeControllerShortcut EnterUndergroundShortcut { get; } = new NodeControllerShortcut(nameof(EnterUndergroundShortcut), nameof(Localize.Settings_ShortcutEnterUnderground), SavedInputKey.Encode(KeyCode.PageDown, false, false, false), () => (SingletonTool<NodeControllerTool>.Instance.Mode as SelectNodeToolMode)?.ChangeUnderground(true), ToolModeType.Select);
+        public static NodeControllerShortcut ExitUndergroundShortcut { get; } = new NodeControllerShortcut(nameof(ExitUndergroundShortcut), nameof(Localize.Settings_ShortcutExitUnderground), SavedInputKey.Encode(KeyCode.PageUp, false, false, false), () => (SingletonTool<NodeControllerTool>.Instance.Mode as SelectNodeToolMode)?.ChangeUnderground(false), ToolModeType.Select);
+
+
         public bool ShowPanel => false;
         public ToolModeType Type => ToolModeType.Select;
         protected override Color32 NodeColor => Colors.Yellow;
         private bool IsPossibleInsertNode { get; set; }
         private Vector3 InsertPosition { get; set; }
+
+        public virtual IEnumerable<Shortcut> Shortcuts 
+        {
+            get 
+            {
+                yield return SelectionStepOverShortcut;
+
+                if (!Underground)
+                    yield return EnterUndergroundShortcut;
+                else
+                    yield return ExitUndergroundShortcut;
+            } 
+        }
 
         public override string GetToolInfo()
         {
@@ -39,10 +58,14 @@ namespace NodeController
                         return Localize.Tool_InfoInsertNode.AddActionColor() + GetStepOverInfo();
                 }
             }
-            else
+            else if(Settings.IsUndegroundWithModifier)
                 return $"{Localize.Tool_InfoSelectNode}\n\n{string.Format(Localize.Tool_InfoUnderground, LocalizeExtension.Shift.AddInfoColor())}";
+            else if(!Underground)
+                return $"{Localize.Tool_InfoSelectNode}\n\n{string.Format(Localize.Tool_EnterUnderground, EnterUndergroundShortcut.AddInfoColor())}";
+            else
+                return $"{Localize.Tool_InfoSelectNode}\n\n{string.Format(Localize.Tool_ExitUnderground, ExitUndergroundShortcut.AddInfoColor())}";
         }
-        private string GetStepOverInfo() => NodeControllerTool.SelectionStepOverShortcut.NotSet ? string.Empty : "\n\n" + string.Format(CommonLocalize.Tool_InfoSelectionStepOver, NodeControllerTool.SelectionStepOverShortcut.AddInfoColor());
+        private string GetStepOverInfo() => SelectionStepOverShortcut.NotSet ? string.Empty : "\n\n" + string.Format(CommonLocalize.Tool_InfoSelectionStepOver, SelectionStepOverShortcut.AddInfoColor());
 
         protected override bool IsValidNode(ushort nodeId)
         {
@@ -72,10 +95,13 @@ namespace NodeController
         {
             base.OnToolUpdate();
 
-            if (!Underground && Utility.OnlyShiftIsPressed)
-                Underground = true;
-            else if (Underground && !Utility.OnlyShiftIsPressed)
-                Underground = false;
+            if (Settings.IsUndegroundWithModifier)
+            {
+                if (!Underground && Utility.OnlyShiftIsPressed)
+                    Underground = true;
+                else if (Underground && !Utility.OnlyShiftIsPressed)
+                    Underground = false;
+            }
 
             if (IsHoverSegment)
             {
@@ -142,6 +168,10 @@ namespace NodeController
             }
 
             return true;
+        }
+        public void ChangeUnderground(bool underground)
+        {
+            Underground = underground;
         }
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
