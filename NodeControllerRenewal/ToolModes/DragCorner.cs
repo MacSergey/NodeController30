@@ -50,7 +50,7 @@ namespace NodeController
             var forbidden = new OverlayData(cameraInfo) { Color = Colors.Red, RenderLimit = underground };
 
             SegmentEnd[Corner].Render(allow, forbidden, allow);
-            SegmentEnd.RenderСontour(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
+            SegmentEnd.RenderContour(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
             SegmentEnd.RenderEnd(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
             SegmentEnd[Corner].RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground });
         }

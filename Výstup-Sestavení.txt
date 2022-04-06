@@ -1,0 +1,10 @@
+﻿Zahájilo se sestavování...
+1>------ Sestavování zahájeno: Projekt: NodeControllerRenewal, Konfigurace: Beta Debug Any CPU ------
+1>S:\git\NodeController30\ModsCommon\TrajectoryShared\Trajectory.cs(174,18,174,36): warning CS0659: StraightTrajectory přepisuje Object.Equals(object o), ale nepřepisuje Object.GetHashCode().
+1>S:\git\NodeController30\ModsCommon\TrajectoryShared\Trajectory.cs(174,18,174,36): warning CS0661: StraightTrajectory definuje operátor == nebo !=, ale nepřepisuje funkci Object.GetHashCode().
+1>S:\git\NodeController30\ModsCommon\TrajectoryShared\Trajectory.cs(36,18,36,34): warning CS0659: BezierTrajectory přepisuje Object.Equals(object o), ale nepřepisuje Object.GetHashCode().
+1>S:\git\NodeController30\ModsCommon\TrajectoryShared\Trajectory.cs(36,18,36,34): warning CS0661: BezierTrajectory definuje operátor == nebo !=, ale nepřepisuje funkci Object.GetHashCode().
+1>S:\git\NodeController30\ModsCommon\DependencyShared\DependenciesWatcher.cs(162,34,162,40): warning CS8509: Výraz switch nezachycuje všechny možné hodnoty vstupního typu (není úplný). Nezachycuje například vzor ModsCommon.Utilities.DependenciesWatcher.WatcherState.Valid.
+1>  NodeControllerRenewal -> S:\git\NodeController30\NodeControllerRenewal\bin\Beta Debug\NodeController.dll
+1>  AfterBuild event C:\Users\Phanteks\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\NodeControllerRenewalBeta C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\2462845270
+========== Sestavení: 1 úspěšně, 0 se nezdařilo, 0 aktuální, 0 přeskočeno ==========

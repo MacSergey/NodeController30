@@ -336,6 +336,9 @@ Backward compatibility does not provide the transfer of all data, may be require
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Set shift between intersections</value>
   </data>
+  <data name="Settings_ShortcutLaneEdit" xml:space="preserve">
+    <value>Set to lane edit mode</value>
+  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Hold {0} to alignment roads</value>
   </data>
@@ -344,6 +347,9 @@ Backward compatibility does not provide the transfer of all data, may be require
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
     <value>Hold {0} to change main slope direction</value>
+  </data>
+  <data name="Tool_InfoChangeMainMode" xml:space="preserve">
+    <value>Hold {0} see lane editing</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Node #{0}
@@ -395,5 +401,11 @@ Too close to nearby node</value>
   <data name="Tool_InfoUnderground" xml:space="preserve">
     <value>Hold {0} to
 underground mode</value>
+  </data>
+  <data name="Tool_InfoLaneEdit" xml:space="preserve">
+    <value>Hold {0} to switch to lane editing mode</value>
+  </data>
+  <data name="Tool_InfoClickLaneInversion" xml:space="preserve">
+    <value>Click to inverse lane direction (full circle outgoing)</value>
   </data>
 </root>
