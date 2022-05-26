@@ -31,7 +31,7 @@ namespace NodeController
                 SingletonMod<Mod>.Logger.Debug($"Import NC2 data");
 
                 WasImported = true;
-                var state = Backward—ompatibility.Loader.Load<Backward—ompatibility.NCState>(data);
+                var state = BackwardCompatibility.Loader.Load<BackwardCompatibility.NCState>(data);
                 var config = state.ToXml();
                 SetLoadData(config);
             }
