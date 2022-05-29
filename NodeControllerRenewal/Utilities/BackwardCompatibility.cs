@@ -10,7 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Linq;
 using UnityEngine;
 
-namespace NodeController.BackwardСompatibility
+namespace NodeController.BackwardCompatibility
 {
     public static class Loader
     {
