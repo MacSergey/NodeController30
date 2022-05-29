@@ -1,12 +1,52 @@
 ﻿using ColossalFramework;
 using ModsCommon;
 using ModsCommon.Utilities;
+using System;
 using TrafficManager.API.Traffic.Enums;
+using static TrafficManager.API.Hook.IJunctionRestrictionsHook;
 
 namespace NodeController.Patches
 {
     public static class ExternalModPatches
     {
+        public static void UpdateFlag(FlagsHookArgs args, JunctionRestrictionsFlags flag, Func<bool?> func)
+        {
+            if (args.Mask.IsFlagSet(flag))
+            {
+                var value = func();
+                if (value.HasValue)
+                    args.Result = args.Result.SetFlags(flag, value.Value);
+            }
+        }
+
+        public static void GetConfigurableHook(FlagsHookArgs args)
+        {
+            ushort nodeID = args.StartNode ? args.SegmentId.GetSegment().m_startNode : args.SegmentId.GetSegment().m_endNode;
+            var node = SingletonManager<Manager>.Instance[nodeID];
+
+            if (node == null)
+                UpdateFlag(args, JunctionRestrictionsFlags.AllowEnterWhenBlocked, () => IsEnteringBlockedJunctionAllowedConfigurable(args.SegmentId, nodeID));
+            else
+            {
+                UpdateFlag(args, JunctionRestrictionsFlags.AllowUTurn, () => IsUturnAllowedConfigurable(node));
+                UpdateFlag(args, JunctionRestrictionsFlags.AllowPedestrianCrossing, () => IsPedestrianCrossingAllowedConfigurable(node));
+                UpdateFlag(args, JunctionRestrictionsFlags.AllowEnterWhenBlocked, () => IsEnteringBlockedJunctionAllowedConfigurable(node));
+            }
+        }
+
+        public static void GetDefaultsHook(FlagsHookArgs args)
+        {
+            ushort nodeID = args.StartNode ? args.SegmentId.GetSegment().m_startNode : args.SegmentId.GetSegment().m_endNode;
+            var node = SingletonManager<Manager>.Instance[nodeID];
+
+            if (node != null)
+            {
+                UpdateFlag(args, JunctionRestrictionsFlags.AllowUTurn, () => IsDefaultUturnAllowed(node));
+                UpdateFlag(args, JunctionRestrictionsFlags.AllowPedestrianCrossing, () => IsDefaultPedestrianCrossingAllowed(node));
+                UpdateFlag(args, JunctionRestrictionsFlags.AllowEnterWhenBlocked, () => IsDefaultEnteringBlockedJunctionAllowed(node));
+            }
+        }
+
         private static bool? IsUturnAllowedConfigurable(NodeData node) => node?.Type switch
         {
             NodeStyleType.Crossing or NodeStyleType.Stretch or NodeStyleType.Middle or NodeStyleType.Bend => false,// always off
@@ -64,52 +104,14 @@ namespace NodeController.Patches
             var nodeData = SingletonManager<Manager>.Instance[nodeId];
             return HandleNullBool(CanHaveTrafficLights(nodeData, out reason), ref __result);
         }
-        public static bool GetDefaultEnteringBlockedJunctionAllowedPrefix(ushort segmentId, bool startNode, ref bool __result)
-        {
-            ushort nodeID = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
-            var data = SingletonManager<Manager>.Instance[nodeID];
-            return HandleNullBool(IsDefaultEnteringBlockedJunctionAllowed(data), ref __result);
-        }
-        public static bool GetDefaultPedestrianCrossingAllowedPrefix(ushort segmentId, bool startNode, ref bool __result)
-        {
-            ushort nodeID = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
-            NodeData data = SingletonManager<Manager>.Instance[nodeID];
-            return HandleNullBool(IsDefaultPedestrianCrossingAllowed(data), ref __result);
-        }
-        public static bool GetDefaultUturnAllowedPrefix(ushort segmentId, bool startNode, ref bool __result)
-        {
-            ushort nodeID = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
-            var data = SingletonManager<Manager>.Instance[nodeID];
-            return HandleNullBool(IsDefaultUturnAllowed(data), ref __result);
-        }
-        public static bool IsEnteringBlockedJunctionAllowedConfigurablePrefix(ushort segmentId, bool startNode, ref bool __result)
-        {
-            ushort nodeID = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
-            var data = SingletonManager<Manager>.Instance[nodeID];
-            if (data == null)
-            {
-                var flags = nodeID.GetNode().m_flags;
-                bool oneway = flags.IsFlagSet(NetNode.Flags.OneWayIn) & flags.IsFlagSet(NetNode.Flags.OneWayOut);
-                if (oneway & !segmentId.GetSegment().Info.m_hasPedestrianLanes)
-                {
-                    __result = false;
-                    return false;
-                }
-            }
 
-            return HandleNullBool(IsEnteringBlockedJunctionAllowedConfigurable(data), ref __result);
-        }
-        public static bool IsPedestrianCrossingAllowedConfigurablePrefix(ushort segmentId, bool startNode, ref bool __result)
+        private static bool? IsEnteringBlockedJunctionAllowedConfigurable(ushort segmentId, ushort nodeID)
         {
-            ushort nodeID = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
-            var data = SingletonManager<Manager>.Instance[nodeID];
-            return HandleNullBool(IsPedestrianCrossingAllowedConfigurable(data), ref __result);
-        }
-        public static bool IsUturnAllowedConfigurablePrefix(ushort segmentId, bool startNode, ref bool __result)
-        {
-            ushort nodeID = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
-            var data = SingletonManager<Manager>.Instance[nodeID];
-            return HandleNullBool(IsUturnAllowedConfigurable(data), ref __result);
+            var flags = nodeID.GetNode().m_flags;
+            bool oneway = flags.IsFlagSet(NetNode.Flags.OneWayIn) & flags.IsFlagSet(NetNode.Flags.OneWayOut);
+            return oneway && !segmentId.GetSegment().Info.m_hasPedestrianLanes
+                ? true
+                : null;
         }
 
         public static bool ShouldHideCrossingPrefix(ushort nodeID, ushort segmentID, ref bool __result)

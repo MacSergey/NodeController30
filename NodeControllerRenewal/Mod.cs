@@ -335,13 +335,12 @@ namespace NodeController
 
         private void PatchTMPE(ref bool success)
         {
+            var jrHook = TrafficManager.API.Implementations.HookFactory.JunctionRestrictionsHook;
+
+            jrHook.GetConfigurableHook += ExternalModPatches.GetConfigurableHook;
+            jrHook.GetDefaultsHook += ExternalModPatches.GetDefaultsHook;
+
             success &= Patch_TrafficLightManager_CanToggleTrafficLight();
-            success &= Patch_JunctionRestrictionsManager_GetDefaultEnteringBlockedJunctionAllowed();
-            success &= Patch_JunctionRestrictionsManager_GetDefaultPedestrianCrossingAllowed();
-            success &= Patch_JunctionRestrictionsManager_GetDefaultUturnAllowed();
-            success &= Patch_JunctionRestrictionsManager_IsEnteringBlockedJunctionAllowedConfigurable();
-            success &= Patch_JunctionRestrictionsManager_IsPedestrianCrossingAllowedConfigurable();
-            success &= Patch_JunctionRestrictionsManager_IsUturnAllowedConfigurable();
 
             if ((Type.GetType("TrafficManager.TrafficManagerMod") ?? Type.GetType("TrafficManager.Lifecycle.TrafficManagerMod")) is Type tmpeMod)
             {
@@ -359,30 +358,6 @@ namespace NodeController
         private bool Patch_TrafficLightManager_CanToggleTrafficLight()
         {
             return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.CanToggleTrafficLightPrefix), typeof(TrafficLightManager), nameof(TrafficLightManager.CanToggleTrafficLight));
-        }
-        private bool Patch_JunctionRestrictionsManager_GetDefaultEnteringBlockedJunctionAllowed()
-        {
-            return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.GetDefaultEnteringBlockedJunctionAllowedPrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultEnteringBlockedJunctionAllowed));
-        }
-        private bool Patch_JunctionRestrictionsManager_GetDefaultPedestrianCrossingAllowed()
-        {
-            return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.GetDefaultPedestrianCrossingAllowedPrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultPedestrianCrossingAllowed));
-        }
-        private bool Patch_JunctionRestrictionsManager_GetDefaultUturnAllowed()
-        {
-            return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.GetDefaultUturnAllowedPrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.GetDefaultUturnAllowed));
-        }
-        private bool Patch_JunctionRestrictionsManager_IsEnteringBlockedJunctionAllowedConfigurable()
-        {
-            return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.IsEnteringBlockedJunctionAllowedConfigurablePrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsEnteringBlockedJunctionAllowedConfigurable));
-        }
-        private bool Patch_JunctionRestrictionsManager_IsPedestrianCrossingAllowedConfigurable()
-        {
-            return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.IsPedestrianCrossingAllowedConfigurablePrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsPedestrianCrossingAllowedConfigurable));
-        }
-        private bool Patch_JunctionRestrictionsManager_IsUturnAllowedConfigurable()
-        {
-            return AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.IsUturnAllowedConfigurablePrefix), typeof(JunctionRestrictionsManager), nameof(JunctionRestrictionsManager.IsUturnAllowedConfigurable));
         }
 
         #endregion
