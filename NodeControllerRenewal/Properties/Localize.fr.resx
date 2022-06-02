@@ -119,7 +119,7 @@
   </resheader>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Les données du Node Controller originel ont été importées.
-La rétrocompatibilité n'assure pas le transfert de toutes les données, il est peut être nécessaire de faire des ajustements manuels.</value>
+La rétrocompatibilité n'assure pas le transfert de toutes les données, il est peut-être nécessaire de faire des ajustements manuels.</value>
   </data>
   <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
     <value>AVERTISSEMENT : Si vous faites une nouvelle sauvegarde, vous ne pourrez plus utiliser le Node Controller originel sur cette carte.</value>

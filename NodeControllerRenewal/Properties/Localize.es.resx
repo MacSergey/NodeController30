@@ -122,7 +122,7 @@
 La compatibilidad con versiones anteriores no proporciona la transferencia de todos los datos, es posible que se requieran ajustes manuales.</value>
   </data>
   <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
-    <value>ADVERTENCIA: Si realiza un nuevo guardado, ya no podrá utilizar el Node Controller original en este mapa.</value>
+    <value>ADVERTENCIA: Si guardas una nueva partida, ya no podrás utilizar el Node Controller original en este mapa.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Controle el tipo y la forma del nodo</value>

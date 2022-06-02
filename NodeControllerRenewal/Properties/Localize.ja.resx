@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
-    <value>オリジナルのNode Controllerから、設定がインポートされました。
-部分的に設定の互換性がありません、手動で調整や再適用が必要な場合があります。</value>
+    <value>オリジナルのNode Controller2から、各設定をRenewal用に変換しました。
+一部の設定には互換性が無く、手動で調整する必要があります。</value>
   </data>
   <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
-    <value>警告: インポート後にマップの保存を行うと、オリジナルのNode Controllerは使用できなくなります。</value>
+    <value>警告: マップをセーブして次回のロードから、オリジナルのNode Controller2は設定が認識できません。</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>交差点やノードの種類・形状を、調整や変更ができます。</value>
