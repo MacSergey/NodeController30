@@ -117,11 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
+  <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Sono stati importati i dati del Node Controller originale.
 La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibili correzioni manuali necessarie.</value>
   </data>
-  <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
+  <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
     <value>ATTENZIONE: Effettuando un nuovo salvataggio non si potrà più utilizzare il Node Controller originale in questa mappa.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">

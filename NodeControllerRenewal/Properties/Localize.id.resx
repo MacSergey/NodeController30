@@ -117,11 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
+  <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Data Node Controller asli telah diimpor.
 Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyesuaian manual mungkin diperlukan.</value>
   </data>
-  <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
+  <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
     <value>AWAS: Jika Anda membuat penyimpanan baru, Anda tidak akan bisa menggunakan Node Controller original untuk map ini.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">

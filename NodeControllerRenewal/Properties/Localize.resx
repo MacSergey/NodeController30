@@ -121,7 +121,7 @@
     <value>Original Node Controller data was imported.
 Backward compatibility does not provide the transfer of all data, may be required manual adjustments.</value>
   </data>
-  <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
+  <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
     <value>WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">

@@ -117,11 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Mod_BackwardСompatibilityMessage" xml:space="preserve">
+  <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>已导入原版节点控制器模组数据。
 逆向兼容无法包括所有数据，可能需要手动调整。</value>
   </data>
-  <data name="Mod_BackwardСompatibilityWarning" xml:space="preserve">
+  <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
     <value>警告：保存后，您将无法在此地图上继续使用原版节点控制器模组。</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
