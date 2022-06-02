@@ -659,7 +659,7 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Inserting node.
+        ///   Ищет локализованную строку, похожую на Insert node.
         /// </summary>
         internal static string Settings_InsertNode {
             get {
@@ -727,6 +727,71 @@ namespace NodeController {
         internal static string Settings_SelectMiddleNodesDiscription {
             get {
                 return ResourceManager.GetString("Settings_SelectMiddleNodesDiscription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter underground mode.
+        /// </summary>
+        internal static string Settings_ShortcutEnterUnderground {
+            get {
+                return ResourceManager.GetString("Settings_ShortcutEnterUnderground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Exit underground mode.
+        /// </summary>
+        internal static string Settings_ShortcutExitUnderground {
+            get {
+                return ResourceManager.GetString("Settings_ShortcutExitUnderground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Toogle underground.
+        /// </summary>
+        internal static string Settings_ToggleUnderground {
+            get {
+                return ResourceManager.GetString("Settings_ToggleUnderground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Press {0} to enter and {1} to exit.
+        /// </summary>
+        internal static string Settings_ToggleUndergroundButtons {
+            get {
+                return ResourceManager.GetString("Settings_ToggleUndergroundButtons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hold {0}.
+        /// </summary>
+        internal static string Settings_ToggleUndergroundHold {
+            get {
+                return ResourceManager.GetString("Settings_ToggleUndergroundHold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Press {0} to enter
+        ///underground mode.
+        /// </summary>
+        internal static string Tool_EnterUnderground {
+            get {
+                return ResourceManager.GetString("Tool_EnterUnderground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Press {0} to exit
+        ///underground mode.
+        /// </summary>
+        internal static string Tool_ExitUnderground {
+            get {
+                return ResourceManager.GetString("Tool_ExitUnderground", resourceCulture);
             }
         }
         

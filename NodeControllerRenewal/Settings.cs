@@ -20,9 +20,12 @@ namespace NodeController
         public static SavedBool NodeIsSlopedByDefault { get; } = new SavedBool(nameof(NodeIsSlopedByDefault), SettingsFile, false, true);
         public static SavedBool ShowToolTip { get; } = new SavedBool(nameof(ShowToolTip), SettingsFile, true, true);
         public static SavedInt InsertNode { get; } = new SavedInt(nameof(InsertNode), SettingsFile, 0, true);
+        public static SavedInt ToggleUndergroundMode { get; } = new SavedInt(nameof(ToggleUndergroundMode), SettingsFile, 0, true);
         public static bool IsInsertEnable => InsertNode != 2;
         public static bool IsInsertWithModifier => InsertNode == 1;
+        public static bool IsUndegroundWithModifier => ToggleUndergroundMode == 0;
         public static string InsertModifier => LocalizeExtension.Ctrl;
+        public static string UndergroundModifier => LocalizeExtension.Shift;
 
         protected override void FillSettings()
         {
@@ -34,8 +37,22 @@ namespace NodeController
             var keymappingsGroup = GeneralTab.AddGroup(CommonLocalize.Settings_Shortcuts);
             var keymappings = AddKeyMappingPanel(keymappingsGroup);
             keymappings.AddKeymapping(NodeControllerTool.ActivationShortcut);
-            foreach (var shortcut in NodeControllerTool.ToolShortcuts)
-                keymappings.AddKeymapping(shortcut);
+
+            keymappings.AddKeymapping(SelectNodeToolMode.SelectionStepOverShortcut);
+            keymappings.AddKeymapping(SelectNodeToolMode.EnterUndergroundShortcut);
+            keymappings.AddKeymapping(SelectNodeToolMode.ExitUndergroundShortcut);
+
+            keymappings.AddKeymapping(EditNodeToolMode.ResetOffsetShortcut);
+            keymappings.AddKeymapping(EditNodeToolMode.ResetToDefaultShortcut);
+            keymappings.AddKeymapping(EditNodeToolMode.MakeStraightEndsShortcut);
+            keymappings.AddKeymapping(EditNodeToolMode.CalculateShiftByNearbyShortcut);
+            keymappings.AddKeymapping(EditNodeToolMode.CalculateShiftByIntersectionsShortcut);
+            keymappings.AddKeymapping(EditNodeToolMode.SetShiftBetweenIntersectionsShortcut);
+            keymappings.AddKeymapping(EditNodeToolMode.CalculateTwistByNearbyShortcut);
+            keymappings.AddKeymapping(EditNodeToolMode.CalculateTwistByIntersectionsShortcut);
+            keymappings.AddKeymapping(EditNodeToolMode.SetTwistBetweenIntersectionsShortcut);
+            keymappings.AddKeymapping(EditNodeToolMode.ChangeNodeStyleShortcut);
+            keymappings.AddKeymapping(EditNodeToolMode.ChangeMainRoadModeShortcut);
 
 
             var generalGroup = GeneralTab.AddGroup(CommonLocalize.Settings_General);
@@ -44,6 +61,7 @@ namespace NodeController
             AddCheckBox(generalGroup, Localize.Settings_RenderNearNode, RenderNearNode);
             AddCheckBox(generalGroup, Localize.Settings_NodeIsSlopedByDefault, NodeIsSlopedByDefault);
             AddCheckboxPanel(generalGroup, Localize.Settings_InsertNode, InsertNode, new string[] { Localize.Settings_InsertNodeEnabled, string.Format(Localize.Settings_InsertNodeWithModifier, InsertModifier), Localize.Settings_InsertNodeDisabled });
+            var undergroundOptions = AddCheckboxPanel(generalGroup, Localize.Settings_ToggleUnderground, ToggleUndergroundMode, new string[] { string.Format(Localize.Settings_ToggleUndergroundHold, UndergroundModifier), string.Format(Localize.Settings_ToggleUndergroundButtons, SelectNodeToolMode.EnterUndergroundShortcut, SelectNodeToolMode.ExitUndergroundShortcut) });
             AddCheckBox(generalGroup, CommonLocalize.Settings_ShowTooltips, ShowToolTip);
             AddToolButton<NodeControllerTool, NodeControllerButton>(generalGroup);
 
@@ -51,6 +69,13 @@ namespace NodeController
 #if DEBUG
             AddDebug(DebugTab);
 #endif
+
+            keymappings.BindingChanged += OnBindingChanged;
+            void OnBindingChanged(Shortcut shortcut)
+            {
+                if (shortcut == SelectNodeToolMode.EnterUndergroundShortcut || shortcut == SelectNodeToolMode.ExitUndergroundShortcut)
+                    undergroundOptions.checkBoxes[1].label.text = string.Format(Localize.Settings_ToggleUndergroundButtons, SelectNodeToolMode.EnterUndergroundShortcut, SelectNodeToolMode.ExitUndergroundShortcut);
+            }
         }
 
 #if DEBUG
