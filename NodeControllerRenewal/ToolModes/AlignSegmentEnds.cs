@@ -167,7 +167,7 @@ namespace NodeController
             foreach (var segmentData in Tool.Data.SegmentEndDatas)
             {
                 var defaultColor = new OverlayData(cameraInfo) { Color = segmentData.OverlayColor, RenderLimit = underground };
-                segmentData.RenderСontour(defaultColor);
+                segmentData.RenderContour(defaultColor);
                 segmentData.RenderEnd(defaultColor);
             }
 

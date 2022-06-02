@@ -132,7 +132,7 @@
     <Compile Include="Patches\CitizenAIPatches.cs" />
     <Compile Include="UI\OptionPanel.cs" />
     <Compile Include="UI\SimpleMessageBox.cs" />
-    <Compile Include="Utilities\BackwardСompatibility.cs" />
+    <Compile Include="Utilities\BackwardCompatibility.cs" />
     <Compile Include="Manager\Extensions\LoadingExtension.cs" />
     <Compile Include="Manager\NodeType.cs" />
     <Compile Include="Manager\SegmentSide.cs" />
@@ -255,7 +255,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_ConfigurationName="Beta Debug" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="Both" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Beta Debug" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">

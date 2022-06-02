@@ -8,9 +8,9 @@ using UnityEngine;
 
 namespace NodeController.UI
 {
-    public class BackwardСompatibilityMessageBox : OkMessageBox
+    public class BackwardCompatibilityMessageBox : OkMessageBox
     {
-        public BackwardСompatibilityMessageBox()
+        public BackwardCompatibilityMessageBox()
         {
             Panel.StopLayout();
 
@@ -20,7 +20,7 @@ namespace NodeController.UI
             warning.textColor = Color.red;
 
             CaptionText = SingletonMod<Mod>.Instance.NameRaw;
-            MessageText = NodeController.Localize.Mod_BackwardСompatibilityMessage;
+            MessageText = NodeController.Localize.Mod_BackwardCompatibilityMessage;
             warning.text = NodeController.Localize.Mod_BackwardСompatibilityWarning;
 
             Panel.StartLayout();

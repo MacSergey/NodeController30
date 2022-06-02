@@ -14,7 +14,7 @@ namespace NodeController
         protected override void OnLoad()
         {
             if (SingletonItem<SerializableDataExtension>.Instance.WasImported)
-                MessageBox.Show<BackwardСompatibilityMessageBox>();
+                MessageBox.Show<BackwardCompatibilityMessageBox>();
 
             base.OnLoad();
         }

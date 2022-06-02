@@ -814,7 +814,7 @@ namespace NodeController
         {
             var data = SingletonManager<Manager>.Instance[NodeId];
 
-            Render—ontour(contourData);
+            RenderContour(contourData);
             if (data.IsMoveableEnds && IsChangeable)
             {
                 if (!IsNarrow)
@@ -842,7 +842,7 @@ namespace NodeController
         }
         public void RenderAlign(OverlayData contourData, OverlayData? leftData = null, OverlayData? rightData = null)
         {
-            Render—ontour(contourData);
+            RenderContour(contourData);
             RenderEnd(contourData);
 
             if (leftData != null)
@@ -867,7 +867,7 @@ namespace NodeController
             line = line.Cut(startT, 1 - endT);
             line.Render(data);
         }
-        public void Render—ontour(OverlayData data)
+        public void RenderContour(OverlayData data)
         {
             RenderSide(LeftSide, data);
             RenderSide(RightSide, data);

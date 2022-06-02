@@ -64,9 +64,9 @@ namespace NodeController {
         ///   Ищет локализованную строку, похожую на Original Node Controller data was imported.
         ///Backward compatibility does not provide the transfer of all data, may be required manual adjustments..
         /// </summary>
-        internal static string Mod_BackwardСompatibilityMessage {
+        internal static string Mod_BackwardCompatibilityMessage {
             get {
-                return ResourceManager.GetString("Mod_BackwardСompatibilityMessage", resourceCulture);
+                return ResourceManager.GetString("Mod_BackwardCompatibilityMessage", resourceCulture);
             }
         }
         
