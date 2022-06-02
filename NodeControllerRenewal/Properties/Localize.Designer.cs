@@ -73,9 +73,9 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map..
         /// </summary>
-        internal static string Mod_BackwardСompatibilityWarning {
+        internal static string Mod_BackwardCompatibilityWarning {
             get {
-                return ResourceManager.GetString("Mod_BackwardСompatibilityWarning", resourceCulture);
+                return ResourceManager.GetString("Mod_BackwardCompatibilityWarning", resourceCulture);
             }
         }
         

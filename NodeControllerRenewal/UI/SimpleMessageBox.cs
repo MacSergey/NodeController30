@@ -21,7 +21,7 @@ namespace NodeController.UI
 
             CaptionText = SingletonMod<Mod>.Instance.NameRaw;
             MessageText = NodeController.Localize.Mod_BackwardCompatibilityMessage;
-            warning.text = NodeController.Localize.Mod_BackwardСompatibilityWarning;
+            warning.text = NodeController.Localize.Mod_BackwardCompatibilityWarning;
 
             Panel.StartLayout();
         }
