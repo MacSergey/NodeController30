@@ -9,7 +9,7 @@ namespace NodeController
 {
     public class SegmentSide
     {
-        public static float Additional => 32f;
+        public float AdditionalLength => Mathf.Max(SegmentData.Id.GetSegment().Info.m_halfWidth / Mathf.Cos(75f * Mathf.Deg2Rad), 16f);
         private ITrajectory _mainTrajectory;
         private CombinedTrajectory _rawTrajectory;
 
@@ -28,7 +28,7 @@ namespace NodeController
             {
                 if (value != _rawTrajectory)
                 {
-                    var additional = new StraightTrajectory(value.StartPosition - value.StartDirection * Additional, value.StartPosition);
+                    var additional = new StraightTrajectory(value.StartPosition - value.StartDirection * AdditionalLength, value.StartPosition);
                     _rawTrajectory = new CombinedTrajectory(additional, value);
                     _mainTrajectory = value;
                     _minT = 0f;
@@ -156,6 +156,9 @@ namespace NodeController
             if (nodeData.IsEndNode)
                 Direction *= SegmentData.Stretch;
         }
+
+        public float FromMainT(float t) => Mathf.Clamp01(t * (1f - MainT) + MainT);
+
         public static void FixMiddle(SegmentSide first, SegmentSide second)
         {
             var fixPosition = (first.Position + second.Position) / 2f;
