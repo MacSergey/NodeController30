@@ -469,36 +469,37 @@ namespace NodeController
                         var i = j.PrevIndex(count);
                         var k = j.NextIndex(count);
 
-                        if (leftMainMinT[j] == -1 && Intersection.CalculateSingle(endDatas[j].LeftSide.RawTrajectory, endDatas[i].RightSide.RawTrajectory, out var leftT, out _))
-                            leftMainMinT[j] = leftT;
+                        if (leftMainMinT[j] == -1 && Intersection.CalculateSingle(endDatas[j].LeftSide.AdditionalTrajectory, endDatas[i].RightSide.RawTrajectory, out var leftT, out _))
+                            leftMainMinT[j] = endDatas[j].LeftSide.FromAdditionalT(leftT);
 
-                        if (rightMainMinT[j] == -1 && Intersection.CalculateSingle(endDatas[j].RightSide.RawTrajectory, endDatas[k].LeftSide.RawTrajectory, out var rightT, out _))
-                            rightMainMinT[j] = rightT;
+                        if (rightMainMinT[j] == -1 && Intersection.CalculateSingle(endDatas[j].RightSide.AdditionalTrajectory, endDatas[k].LeftSide.RawTrajectory, out var rightT, out _))
+                            rightMainMinT[j] = endDatas[j].RightSide.FromAdditionalT(rightT);
                     }
-                }
-
-                for (var i = 0; i < count; i += 1)
-                {
-
                 }
             }
 
             for (var i = 0; i < count; i += 1)
             {
                 var endData = endDatas[i];
-                if (!endData.IsNodeLess)
+
+                if(!endData.IsNodeLess)
                 {
                     endData.LeftSide.MinT = leftMainMinT[i];
                     endData.RightSide.MinT = rightMainMinT[i];
-
-                    endData.LeftSide.DefaultT = leftDefaultT[i];
-                    endData.RightSide.DefaultT = rightDefaultT[i];
                 }
                 else
                 {
                     endData.LeftSide.MinT = endData.LeftSide.MainT;
                     endData.RightSide.MinT = endData.RightSide.MainT;
+                }
 
+                if(!endData.IsNodeLess && count >= 2)
+                {
+                    endData.LeftSide.DefaultT = leftDefaultT[i];
+                    endData.RightSide.DefaultT = rightDefaultT[i];
+                }
+                else
+                {
                     endData.LeftSide.DefaultT = endData.LeftSide.MainT;
                     endData.RightSide.DefaultT = endData.RightSide.MainT;
                 }
