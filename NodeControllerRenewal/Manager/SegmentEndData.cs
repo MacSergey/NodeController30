@@ -212,7 +212,7 @@ namespace NodeController
             IsPath = ai is PedestrianPathAI || ai is PedestrianBridgeAI || ai is PedestrianTunnelAI;
             IsDecoration = ai is DecorationWallAI;
             IsMainRoad = false;
-            IsNodeLess = !segment.Info.m_clipSegmentEnds || segment.Info.m_twistSegmentEnds || !segment.Info.m_nodes.Any();
+            IsNodeLess = !segment.Info.m_nodes.Any() || (IsDecoration && (!segment.Info.m_clipSegmentEnds || segment.Info.m_twistSegmentEnds));
             IsUntouchable = segment.m_flags.IsSet(NetSegment.Flags.Untouchable);
         }
         public void UpdateNode() => SingletonManager<Manager>.Instance.Update(NodeId, true);
