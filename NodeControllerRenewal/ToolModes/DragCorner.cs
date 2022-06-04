@@ -35,7 +35,11 @@ namespace NodeController
             var ray = new Segment3(Tool.Ray.a + delta, Tool.Ray.b + delta);
 
             SegmentEnd[Corner].RawTrajectory.GetHitPosition(ray, out _, out var t, out _);
-            var offset = SegmentEnd[Corner].RawTrajectory.Distance(0f, t).RoundToNearest(RoundTo);
+            var offset = SegmentEnd[Corner].RawTrajectory.Distance(0f, t);
+            offset -= SegmentEnd[Corner].AdditionalLength;
+            offset = offset.RoundToNearest(RoundTo);
+            offset += SegmentEnd[Corner].AdditionalLength;
+
             if (Corner == SideType.Left)
                 SegmentEnd.LeftOffset = offset;
             else
@@ -62,7 +66,8 @@ namespace NodeController
         {
             var side = SegmentEnd[Corner];
 
-            text = $"{side.RawTrajectory.Cut(0f, side.CurrentT).GetLength(1f, 7) - SegmentSide.Additional:0.0}";
+            var value = side.RawTrajectory.Cut(0f, side.CurrentT).GetLength(1f, 7) - side.AdditionalLength;
+            text = $"{value:0.0}";
             color = side.IsMinBorderT || side.IsMaxBorderT ? Colors.Red : Colors.Yellow;
             size = 2f;
             position = SegmentEnd.Position + SegmentEnd.Direction * SegmentEndData.CircleRadius;
