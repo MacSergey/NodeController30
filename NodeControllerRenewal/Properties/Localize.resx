@@ -323,6 +323,9 @@ Backward compatibility does not provide the transfer of all data, may be require
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Node #{0}</value>
   </data>
+  <data name="Settings_ApplyAfterRestart" xml:space="preserve">
+    <value>Applies after game restart</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Insert node</value>
   </data>
@@ -334,6 +337,9 @@ Backward compatibility does not provide the transfer of all data, may be require
   </data>
   <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
     <value>By click with {0} on segment</value>
+  </data>
+  <data name="Settings_LongIntersectionFix" xml:space="preserve">
+    <value>Fix stuck pedestrian on long intersections</value>
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Node is sloped by default</value>

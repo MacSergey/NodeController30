@@ -659,6 +659,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Applies after game restart.
+        /// </summary>
+        internal static string Settings_ApplyAfterRestart {
+            get {
+                return ResourceManager.GetString("Settings_ApplyAfterRestart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Insert node.
         /// </summary>
         internal static string Settings_InsertNode {
@@ -691,6 +700,15 @@ namespace NodeController {
         internal static string Settings_InsertNodeWithModifier {
             get {
                 return ResourceManager.GetString("Settings_InsertNodeWithModifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Fix stuck pedestrian on long intersections.
+        /// </summary>
+        internal static string Settings_LongIntersectionFix {
+            get {
+                return ResourceManager.GetString("Settings_LongIntersectionFix", resourceCulture);
             }
         }
         
