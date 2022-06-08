@@ -173,6 +173,7 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
     <value>Düğümlerin arasındaki değişimi hesapla</value>
   </data>
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Merkezi sıfırla</value>
   </data>
@@ -251,6 +252,9 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Panel_NodeId" xml:space="preserve">
     <value>#{0} nolu düğüm</value>
   </data>
+  
+  
+  
   
   
   

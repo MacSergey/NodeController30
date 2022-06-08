@@ -173,6 +173,7 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
     <value>Laske sivukaltevuus viereisten liittymien perusteella</value>
   </data>
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Palauta etäisyydet</value>
   </data>
@@ -251,6 +252,9 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Liittymä #{0}</value>
   </data>
+  
+  
+  
   
   
   

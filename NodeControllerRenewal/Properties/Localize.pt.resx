@@ -169,6 +169,7 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   </data>
   
   
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Repor deslocamento</value>
   </data>
@@ -245,6 +246,9 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nó #{0}</value>
   </data>
+  
+  
+  
   
   
   

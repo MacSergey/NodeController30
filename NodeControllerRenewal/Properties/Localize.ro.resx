@@ -173,6 +173,9 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
     <value>Calculează răsucirea între nodurile din apropriere</value>
   </data>
+  <data name="Option_Collision" xml:space="preserve">
+    <value>Coliziuni</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Resetare offset</value>
   </data>
@@ -251,6 +254,9 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nodul #{0}</value>
   </data>
+  <data name="Settings_ApplyAfterRestart" xml:space="preserve">
+    <value>Se aplică la repornirea jocului</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Inserați nodul</value>
   </data>
@@ -262,6 +268,12 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   </data>
   <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
     <value>Făcând clic cu {0} pe segment</value>
+  </data>
+  <data name="Settings_LongIntersectionFix" xml:space="preserve">
+    <value>Fixează problema a pietonilor blocați în intersecțiile mari</value>
+  </data>
+  <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
+    <value>Această opțiune mărește distanța maximă a căilor pe intersecție, care împiedică blocarea pietonilor în intersecții lungi. Opțiunea asta poate afecta viteza simulării</value>
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Nodul este înclinat în mod implicit</value>

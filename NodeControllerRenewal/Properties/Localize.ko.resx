@@ -173,6 +173,9 @@
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
     <value>근처 노드에 의한 비틀림 계산</value>
   </data>
+  <data name="Option_Collision" xml:space="preserve">
+    <value>충돌</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>오프셋 초기화</value>
   </data>
@@ -251,6 +254,9 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>노드 #{0}</value>
   </data>
+  <data name="Settings_ApplyAfterRestart" xml:space="preserve">
+    <value>재시작 후 적용됩니다</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>노드 삽입</value>
   </data>
@@ -262,6 +268,12 @@
   </data>
   <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
     <value>{0} 키를 누른 채 구간 클릭하기</value>
+  </data>
+  <data name="Settings_LongIntersectionFix" xml:space="preserve">
+    <value>긴 교차로에서 보행자 끼임 현상 수정</value>
+  </data>
+  <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
+    <value>이 설정은 교차로 내 길찾기 최대 거리를 늘려서 긴 교차로에서 보행자가 갇히는 현상을 방지하지만, 시뮬레이션 속도에 영향을 줄 수 있습니다</value>
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>노드가 기본적으로 경사졌습니다</value>

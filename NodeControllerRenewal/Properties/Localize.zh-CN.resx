@@ -208,6 +208,7 @@
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
     <value>按附近节点计算倾斜</value>
   </data>
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>重置偏移</value>
   </data>
@@ -286,6 +287,7 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>节点 #{0}</value>
   </data>
+  
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>插入节点</value>
   </data>
@@ -298,6 +300,8 @@
   <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
     <value>在线段上按 {0} 并单击</value>
   </data>
+  
+  
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>节点默认为斜坡</value>
   </data>

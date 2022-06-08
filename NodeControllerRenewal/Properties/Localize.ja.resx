@@ -173,6 +173,9 @@
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
     <value>隣接するノードで、ツイストのスムージング</value>
   </data>
+  <data name="Option_Collision" xml:space="preserve">
+    <value>衝突判定</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>オフセットをリセット</value>
   </data>
@@ -251,6 +254,9 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>ノード #{0} を調整中</value>
   </data>
+  <data name="Settings_ApplyAfterRestart" xml:space="preserve">
+    <value>ゲーム再起動後に適用</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>ノードの追加方法</value>
   </data>
@@ -262,6 +268,12 @@
   </data>
   <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
     <value>セグメント上で {0} をクリック</value>
+  </data>
+  <data name="Settings_LongIntersectionFix" xml:space="preserve">
+    <value>長い交差点で歩行者の立ち往生を修正</value>
+  </data>
+  <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
+    <value>オプションは交差点内での経路探索における最大距離を拡張して、 長い横断歩道で歩行者がスタックする現象を防ぎます。 ただし、有効化するとシミュレーション速度に影響を与える可能性があります。</value>
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>デフォルトでノードを全てスロープ化</value>
