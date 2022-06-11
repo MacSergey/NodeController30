@@ -15,5 +15,6 @@ namespace NodeController
         public float Stretch { get; set; }
         public float StretchPercent { get; set; }
         public bool NoMarkings { get; set; }
+        public bool Collision { get; set; }
     }
 }

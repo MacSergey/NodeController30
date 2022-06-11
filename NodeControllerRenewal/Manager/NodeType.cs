@@ -81,11 +81,12 @@ namespace NodeController
         public virtual SupportOption SupportNoMarking => SupportOption.None;
         public virtual SupportOption SupportSlopeJunction => SupportOption.None;
         public virtual SupportOption SupportStretch => SupportOption.None;
+        public virtual SupportOption SupportCollision => SupportOption.None;
         public virtual bool SupportTrafficLights => false;
         public virtual bool OnlyKeepDefault => false;
         public virtual bool NeedFixDirection => true;
 
-        public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch) & SupportOption.All;
+        public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch | SupportCollision) & SupportOption.All;
         private bool OnlyOnSlope => SupportSlopeJunction != SupportOption.None || DefaultSlopeJunction;
 
         public virtual float DefaultOffset => 0f;
@@ -94,6 +95,7 @@ namespace NodeController
         public virtual float DefaultSlope => 0f;
         public virtual float DefaultTwist => 0f;
         public virtual bool DefaultNoMarking => false;
+        public virtual bool GetDefaultCollision(SegmentEndData segmentEnd) => !segmentEnd.IsTrack;
         public virtual bool DefaultSlopeJunction => Settings.NodeIsSlopedByDefault;
         public virtual float DefaultStretch => 1f;
 
@@ -119,6 +121,9 @@ namespace NodeController
                     return false;
 
                 else if (GetNoMarkings() != DefaultNoMarking)
+                    return false;
+
+                else if (!Data.SegmentEndDatas.Any(s => s.Collision == GetDefaultCollision(s)))
                     return false;
 
                 else if (GetIsSlopeJunctions() != DefaultSlopeJunction)
@@ -233,6 +238,12 @@ namespace NodeController
             foreach (var segmentData in IsRoadDatas)
                 segmentData.NoMarkings = value;
         }
+        public virtual bool GetCollision() => TouchableDatas.All(s => s.Collision);
+        public virtual void SetCollision(bool value)
+        {
+            foreach (var segmentData in TouchableDatas)
+                segmentData.Collision = value;
+        }
 
         public virtual bool GetIsSlopeJunctions() => TouchableDatas.Any(s => s.IsSlope);
         public virtual void SetIsSlopeJunctions(bool value)
@@ -267,6 +278,7 @@ namespace NodeController
             var slope = GetSlopeOption(parent, totalSupport);
             var twist = GetTwistOption(parent, totalSupport);
             var hideMarking = GetNoMarkingsOption(parent, totalSupport);
+            var collision = GetCollisionOption(parent, totalSupport);
 
 
             if (junctionStyle != null)
@@ -332,6 +344,9 @@ namespace NodeController
                     }
                 }
             }
+
+            if (collision != null)
+                components.Add(collision);
 
             if (hideMarking != null)
                 components.Add(hideMarking);
@@ -480,6 +495,19 @@ namespace NodeController
             else
                 return null;
         }
+        private BoolOptionPanel GetCollisionOption(UIComponent parent, SupportOption totalSupport)
+        {
+            if (SupportCollision != SupportOption.None && Data.SegmentEndDatas.Any(s => TouchablePredicate(s)))
+            {
+                var collision = ComponentPool.Get<BoolOptionPanel>(parent);
+                collision.Text = Localize.Option_Collision;
+                collision.Init(Data, SupportNoMarking, totalSupport, CollisionGetter, CollisionSetter, TouchablePredicate);
+
+                return collision;
+            }
+            else
+                return null;
+        }
 
         private void MinMaxOffset(INetworkData data, out float min, out float max)
         {
@@ -568,6 +596,7 @@ namespace NodeController
         private static void TwistSetter(INetworkData data, float value) => data.TwistAngle = value;
         private static void StretchSetter(INetworkData data, float value) => data.StretchPercent = value;
         private static void NoMarkingsSetter(INetworkData data, bool value) => data.NoMarkings = !value;
+        private static void CollisionSetter(INetworkData data, bool value) => data.Collision = value;
 
         private static float OffsetGetter(INetworkData data) => data.Offset;
         private static float ShiftGetter(INetworkData data) => data.Shift;
@@ -576,6 +605,7 @@ namespace NodeController
         private static float TwistGetter(INetworkData data) => data.TwistAngle;
         private static float StretchGetter(INetworkData data) => data.StretchPercent;
         private static bool NoMarkingsGetter(INetworkData data) => !data.NoMarkings;
+        private static bool CollisionGetter(INetworkData data) => data.Collision;
 
         protected static bool HasNodePredicate(SegmentEndData data) => !data.IsNodeLess;
         protected static bool TouchablePredicate(SegmentEndData data) => !data.IsUntouchable;
@@ -764,6 +794,7 @@ namespace NodeController
         public override SupportOption SupportStretch => SupportOption.All;
         public override SupportOption SupportNoMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
+        public override SupportOption SupportCollision => SupportOption.All;
         public override bool IsMoveable => true;
         public override bool SupportTrafficLights => true;
 

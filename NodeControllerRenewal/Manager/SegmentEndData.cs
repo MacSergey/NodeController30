@@ -124,6 +124,7 @@ namespace NodeController
         }
         public bool NoMarkings { get; set; }
         public bool IsSlope { get; set; }
+        public bool Collision { get; set; }
         private bool KeepDefaults
         {
             get => _keepDefault /*|| IsUntouchable*/;
@@ -233,6 +234,9 @@ namespace NodeController
 
             if (style.SupportNoMarking == SupportOption.None || force || IsUntouchable)
                 NoMarkings = style.DefaultNoMarking;
+
+            if (style.SupportCollision == SupportOption.None || force || IsUntouchable)
+                Collision = style.GetDefaultCollision(this);
 
             if (style.SupportSlopeJunction == SupportOption.None || force || IsUntouchable)
                 IsSlope = style.DefaultSlopeJunction;
@@ -391,9 +395,14 @@ namespace NodeController
             {
                 for (var i = 0; i < count; i += 1)
                 {
-                    var j = i.NextIndex(count);
+                    if (!endDatas[i].Collision)
+                        continue;
 
-                    if (endDatas[i].IsTrack && endDatas[j].IsTrack)
+                    var j = i.NextIndex(count);
+                    while (j != i && !endDatas[j].Collision)
+                        j = j.NextIndex(count);
+
+                    if (j == i)
                         continue;
 
                     GetMainMinLimit(endDatas[i], endDatas[j], count, ref leftMainMinT[i], ref rightMainMinT[j]);
@@ -1002,6 +1011,7 @@ namespace NodeController
             config.AddAttr("S", Shift);
             config.AddAttr("ST", Stretch);
             config.AddAttr("NM", NoMarkings ? 1 : 0);
+            config.AddAttr("CL", Collision ? 1 : 0);
             config.AddAttr("IS", IsSlope ? 1 : 0);
             config.AddAttr("KD", KeepDefaults ? 1 : 0);
 
@@ -1024,6 +1034,9 @@ namespace NodeController
 
             if (style.SupportNoMarking != SupportOption.None && !IsUntouchable)
                 NoMarkings = config.GetAttrValue("NM", style.DefaultNoMarking ? 1 : 0) == 1;
+
+            if (style.SupportCollision != SupportOption.None && !IsUntouchable)
+                Collision = config.GetAttrValue("CL", style.GetDefaultCollision(this) ? 1 : 0) == 1;
 
             if (style.SupportSlopeJunction != SupportOption.None)
                 IsSlope = config.GetAttrValue("IS", style.DefaultSlopeJunction ? 1 : 0) == 1;

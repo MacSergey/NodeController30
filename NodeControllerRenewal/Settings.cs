@@ -66,7 +66,7 @@ namespace NodeController
             AddCheckBox(generalGroup, CommonLocalize.Settings_ShowTooltips, ShowToolTip);
             AddToolButton<NodeControllerTool, NodeControllerButton>(generalGroup);
             AddCheckBox(generalGroup, Localize.Settings_LongIntersectionFix, LongIntersectionFix);
-            //AddLabel(generalGroup, Localize.Settings_LongIntersectionFixWarning, 0.8f, Color.red, 25);
+            AddLabel(generalGroup, Localize.Settings_LongIntersectionFixWarning, 0.8f, Color.red, 25);
             AddLabel(generalGroup, Localize.Settings_ApplyAfterRestart, 0.8f, Color.yellow, 25);
 
             AddNotifications(GeneralTab);

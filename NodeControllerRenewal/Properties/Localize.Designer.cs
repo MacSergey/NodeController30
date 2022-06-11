@@ -317,6 +317,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Collision.
+        /// </summary>
+        internal static string Option_Collision {
+            get {
+                return ResourceManager.GetString("Option_Collision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Reset offset.
         /// </summary>
         internal static string Option_KeepDefault {
@@ -709,6 +718,15 @@ namespace NodeController {
         internal static string Settings_LongIntersectionFix {
             get {
                 return ResourceManager.GetString("Settings_LongIntersectionFix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This option increase max pathfind distance on intersection, that prevent stuck pedestrians on such a long intersections, however this option can affect simulation speed.
+        /// </summary>
+        internal static string Settings_LongIntersectionFixWarning {
+            get {
+                return ResourceManager.GetString("Settings_LongIntersectionFixWarning", resourceCulture);
             }
         }
         

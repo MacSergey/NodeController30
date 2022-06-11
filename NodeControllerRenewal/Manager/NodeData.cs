@@ -132,6 +132,11 @@ namespace NodeController
             get => Style.GetNoMarkings();
             set => Style.SetNoMarkings(value);
         }
+        public bool Collision
+        {
+            get => Style.GetCollision();
+            set => Style.SetCollision(value);
+        }
         public bool IsSlopeJunctions
         {
             get => Style.GetIsSlopeJunctions();
