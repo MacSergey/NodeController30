@@ -52,16 +52,16 @@ namespace NodeController
     {
         public abstract NodeStyleType Type { get; }
 
-        public static float MaxShift => 32f;
-        public static float MinShift => -32f;
-        public static float MaxRoadSlope => 30f;
-        public static float MinRoadSlope => -30f;
+        public static float MaxShift => 64f;
+        public static float MinShift => -64f;
+        public static float MaxRoadSlope => 60f;
+        public static float MinRoadSlope => -60f;
         public static float MaxSlope => 85f;
         public static float MinSlope => -85f;
         public static float MaxRotate => 89f;
         public static float MinRotate => -89f;
-        public static float MaxRoadTwist => 30f;
-        public static float MinRoadTwist => -30f;
+        public static float MaxRoadTwist => 60f;
+        public static float MinRoadTwist => -60f;
         public static float MaxTwist => 85f;
         public static float MinTwist => -85f;
         public static float MaxRoadStretch => 500f;
@@ -526,7 +526,13 @@ namespace NodeController
         private void MinMaxStretch(INetworkData data, out float min, out float max)
         {
             min = MinStretch;
-            max = IsNotDecoration(data) ? MaxRoadStretch : MaxStretch;
+
+            if(!IsNotDecoration(data))
+                max = MaxStretch;
+            else if (data is SegmentEndData endData)
+                max = Math.Max(4000f / endData.Id.GetSegment().Info.m_halfWidth, MaxRoadStretch);
+            else
+                max = MaxRoadStretch;
         }
         private void MinMaxSlope(INetworkData data, out float min, out float max)
         {
@@ -607,6 +613,7 @@ namespace NodeController
         public override SupportOption SupportStretch => Support;
 
         public override bool DefaultSlopeJunction => true;
+        public override bool NeedFixDirection => false;
 
         public MiddleNode(NodeData data) : base(data) { }
 

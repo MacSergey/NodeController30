@@ -35,8 +35,8 @@ namespace NodeController
             {
                 foreach (var target in Targets)
                 {
-                    var hitPos = Tool.Ray.GetRayPosition(target.MarkerPosition.y, out _);
-                    if ((target.MarkerPosition - hitPos).sqrMagnitude < SegmentEndData.CenterDotRadius * SegmentEndData.CenterDotRadius)
+                    var hitPos = Tool.Ray.GetRayPosition(target.MarkerPos.y, out _);
+                    if ((target.MarkerPos - hitPos).sqrMagnitude < SegmentEndData.CenterDotRadius * SegmentEndData.CenterDotRadius)
                     {
                         HoverSide = target;
                         return;
@@ -168,7 +168,7 @@ namespace NodeController
             {
                 var defaultColor = new OverlayData(cameraInfo) { Color = segmentData.OverlayColor, RenderLimit = underground };
                 segmentData.RenderContour(defaultColor);
-                segmentData.RenderEnd(defaultColor);
+                segmentData.RenderStart(defaultColor);
             }
 
             foreach (var target in Targets)

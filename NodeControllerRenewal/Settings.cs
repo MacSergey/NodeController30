@@ -85,6 +85,7 @@ namespace NodeController
 #if DEBUG
         public static SavedFloat SegmentId { get; } = new SavedFloat(nameof(SegmentId), SettingsFile, 0f, false);
         public static SavedFloat NodeId { get; } = new SavedFloat(nameof(NodeId), SettingsFile, 0f, false);
+        public static SavedBool ExtraDebug { get; } = new SavedBool(nameof(ExtraDebug), SettingsFile, false, true);
 
         private void AddDebug(UIAdvancedHelper helper)
         {
@@ -102,6 +103,7 @@ namespace NodeController
             AddFloatField(groupOther, "NodeId", NodeId, 0f);
             AddButton(groupOther, "Add all nodes", AddAllNodes, 200f);
             AddButton(groupOther, "Clear", SingletonManager<Manager>.Destroy, 200f);
+            AddCheckBox(groupOther, "Show extra debug", ExtraDebug);
 
             static void AddAllNodes()
             {

@@ -31,7 +31,7 @@ namespace NodeController
         }
         public override void OnMouseDrag(Event e)
         {
-            var delta = SegmentEnd[Corner].Position - SegmentEnd[Corner].MarkerPosition;
+            var delta = SegmentEnd[Corner].StartPos - SegmentEnd[Corner].MarkerPos;
             var ray = new Segment3(Tool.Ray.a + delta, Tool.Ray.b + delta);
 
             SegmentEnd[Corner].RawTrajectory.GetHitPosition(ray, out _, out var t, out _);
@@ -59,7 +59,7 @@ namespace NodeController
 
             SegmentEnd[Corner].Render(allow, forbidden, allow);
             SegmentEnd.RenderContour(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
-            SegmentEnd.RenderEnd(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
+            SegmentEnd.RenderStart(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
             SegmentEnd[Corner].RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground });
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)

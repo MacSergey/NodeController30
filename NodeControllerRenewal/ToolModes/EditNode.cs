@@ -96,9 +96,9 @@ namespace NodeController
         }
         private bool CheckCorner(SegmentEndData segmentData, SideType side)
         {
-            var hitPos = Tool.Ray.GetRayPosition(segmentData[side].MarkerPosition.y, out _);
+            var hitPos = Tool.Ray.GetRayPosition(segmentData[side].MarkerPos.y, out _);
 
-            if ((segmentData[side].MarkerPosition - hitPos).magnitude < SegmentEndData.CornerDotRadius)
+            if ((segmentData[side].MarkerPos - hitPos).magnitude < SegmentEndData.CornerDotRadius)
             {
                 HoverSegmentEndCenter = null;
                 HoverSegmentEndCircle = null;

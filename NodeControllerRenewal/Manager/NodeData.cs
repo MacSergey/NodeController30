@@ -56,8 +56,8 @@ namespace NodeController
         public float Gap { get; private set; }
 
         public BezierTrajectory MainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
-        public BezierTrajectory LeftMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
-        public BezierTrajectory RightMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
+        //public BezierTrajectory LeftMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
+        //public BezierTrajectory RightMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
 
         public MainRoad MainRoad { get; private set; } = new MainRoad();
 
@@ -294,70 +294,78 @@ namespace NodeController
 
         public void LateUpdate()
         {
-            foreach (var segmentEnd in SegmentEndDatas)
-            {
-                if (MainRoad.IsMain(segmentEnd.Id))
-                    segmentEnd.Calculate(true);
-            }
-
-            if (!IsMiddleNode && !IsEndNode && FirstMainSegmentEnd is SegmentEndData first && SecondMainSegmentEnd is SegmentEndData second)
-            {
-                MainBezier = new BezierTrajectory(first.Position, -first.Direction, second.Position, -second.Direction, false);
-                LeftMainBezier = GetBezier(first, second, SideType.Left);
-                RightMainBezier = GetBezier(first, second, SideType.Right);
-
-                static BezierTrajectory GetBezier(SegmentEndData first, SegmentEndData second, SideType side)
-                {
-                    first.GetCorner(side == SideType.Left, out var firstPos, out var firstDir);
-                    second.GetCorner(side == SideType.Right, out var secondPos, out var secondDir);
-                    return new BezierTrajectory(firstPos, -firstDir, secondPos, -secondDir, false);
-                }
-            }
-
-            foreach (var segmentEnd in SegmentEndDatas)
-            {
-                if (!MainRoad.IsMain(segmentEnd.Id))
-                    segmentEnd.Calculate(false);
-            }
-
-            var position = Id.GetNode().m_position;
+            var firstMain = FirstMainSegmentEnd;
+            var secondMain = SecondMainSegmentEnd;
 
             if (IsEndNode)
-                position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
-            else if (!IsMiddleNode)
             {
-                if (IsSlopeJunctions)
-                    position = (LeftMainBezier.Position(0.5f) + RightMainBezier.Position(0.5f)) / 2f;
-                else
-                    position = SegmentEndDatas.AverageOrDefault(s => s.Position, position);
+                firstMain.CalculateMain(out _, out _, out _, out _);
+                firstMain.AfterCalculate();
+
+                Position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
+            }
+            else if (IsMiddleNode)
+            {
+                firstMain.CalculateMain(out _, out _, out _, out _);
+                secondMain.CalculateMain(out _, out _, out _, out _);
+
+                SegmentEndData.FixMiddle(firstMain, secondMain);
+
+                firstMain.AfterCalculate();
+                secondMain.AfterCalculate();
+
+                Position = Id.GetNode().m_position;
             }
             else
-                SegmentEndData.FixMiddle(FirstMainSegmentEnd, SecondMainSegmentEnd);
+            {
+                firstMain.CalculateMain(out var firstLeftPos, out var firstLeftDir, out var firstRightPos, out var firstRightDir);
+                secondMain.CalculateMain(out var secondLeftPos, out var secondLeftDir, out var secondRightPos, out var secondRightDir);
 
-            Position = position;
+                firstMain.AfterCalculate();
+                secondMain.AfterCalculate();
+
+                MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, false);
+                var leftBezier = new BezierTrajectory(firstLeftPos, -firstLeftDir, secondRightPos, -secondRightDir, false);
+                var rightBezier = new BezierTrajectory(secondLeftPos, -secondLeftDir, firstRightPos, -firstRightDir, false);
+
+                foreach (var segmentEnd in SegmentEndDatas)
+                {
+                    if (!MainRoad.IsMain(segmentEnd.Id))
+                    {
+                        segmentEnd.CalculateNotMain(leftBezier, rightBezier);
+                        segmentEnd.AfterCalculate();
+                    }
+                }
+
+                if (IsSlopeJunctions)
+                    Position = (leftBezier.Position(0.5f) + rightBezier.Position(0.5f)) * 0.5f;
+                else
+                    Position = SegmentEndDatas.AverageOrDefault(s => s.Position, Id.GetNode().m_position);
+            }
 
             var maxGap = 0f;
-            foreach(var firstData in SegmentEndDatas)
+            foreach (var firstData in SegmentEndDatas)
             {
                 foreach (var secondData in SegmentEndDatas)
                 {
-                    CalculateGap(ref maxGap, firstData, secondData, true, true);
-                    CalculateGap(ref maxGap, firstData, secondData, true, false);
-                    CalculateGap(ref maxGap, firstData, secondData, false, true);
-                    CalculateGap(ref maxGap, firstData, secondData, false, false);
+                    CalculateGap(ref maxGap, firstData, secondData, SideType.Left, SideType.Left);
+                    CalculateGap(ref maxGap, firstData, secondData, SideType.Left, SideType.Right);
+                    CalculateGap(ref maxGap, firstData, secondData, SideType.Right, SideType.Left);
+                    CalculateGap(ref maxGap, firstData, secondData, SideType.Right, SideType.Right);
+
+                    static void CalculateGap(ref float gap, SegmentEndData firstData, SegmentEndData secondData, SideType firstideType, SideType secondSideType)
+                    {
+                        firstData.GetCorner(firstideType, out var firstPos, out _);
+                        secondData.GetCorner(secondSideType, out var secondPos, out _);
+                        var delta = (firstPos - secondPos).sqrMagnitude;
+                        if (delta > gap)
+                            gap = delta;
+                    }
                 }
             }
             Gap = Mathf.Sqrt(maxGap) + 2f;
         }
-        private void CalculateGap(ref float gap, SegmentEndData firstData, SegmentEndData secondData, bool isFirstLeft, bool isSecondLeft)
-        {
-            firstData.GetCorner(isFirstLeft, out var firstPos, out _);
-            secondData.GetCorner(isSecondLeft, out var secondPos, out _);
-            var delta = (firstPos - secondPos).sqrMagnitude;
-            if (delta > gap)
-                gap = delta;
-        }
-
+ 
         public void UpdateNode(bool now = true) => SingletonManager<Manager>.Instance.Update(Id, now);
         public void SetKeepDefaults()
         {
@@ -424,28 +432,17 @@ namespace NodeController
             };
         }
         public bool IsMainRoad(ushort segmentId) => MainRoad.IsMain(segmentId);
-        public void GetClosest(Vector3 position, out Vector3 closestPos, out Vector3 closestDir, out float t)
-        {
-            LeftMainBezier.Trajectory.ClosestPositionAndDirection(position, out var leftClosestPos, out var leftClosestDir, out var leftT);
-            RightMainBezier.Trajectory.ClosestPositionAndDirection(position, out var rightClosestPos, out var rightClosestDir, out var rightT);
-
-            if ((leftClosestPos - position).sqrMagnitude < (rightClosestPos - position).sqrMagnitude)
-            {
-                closestPos = leftClosestPos;
-                closestDir = leftClosestDir;
-                t = leftT;
-            }
-            else
-            {
-                closestPos = rightClosestPos;
-                closestDir = rightClosestDir;
-                t = rightT;
-            }
-        }
 
         public override string ToString() => $"NodeData(id:{Id} type:{Type})";
 
-        #endregion
+//#if DEBUG
+//        public string GetDebugString()
+//        {
+//            return $"Type: {Type}, Segments: {SegmentCount} Pos: {Position}, OrigPos: {Id.GetNode().m_position}";
+//        }
+//#endif
+
+#endregion
 
         #region XML
 
