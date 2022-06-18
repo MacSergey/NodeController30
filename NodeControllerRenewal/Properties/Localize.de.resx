@@ -128,21 +128,21 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
     <value>Netzwerk-Knoten-Typ und Form steuern</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
-    <value>- Automatischer Modus für die Neigungsrichtung hinzugefügt.
-- Rotes Overlay für kurze Segmente (kurze Segmente führen zur falscher Fahrzeuggeschwindigkeit).
-- Nur Versatz zurücksetzen hinzugefügt.
-- Polnische Übersetzung hinzugefügt.
-- Standard Netz-Knoten Formberechnung korregiert.
-- Fehlerbehebung der falschen Eckberechnung bei zu schrägen oder zu gebogenen Segmenten.
-- Fehlerbehebung für kaputte Netzwerk-Knoten nach dem Neuladen der Karte ohne Neustart.
-- Fehlerbehebung für Kraftfahrzeuganhänger verschwinden.
-- Fehlerbehebung für Straße verschwinden nach Katastrophen.
-- Fehlerbehebung für die falsche Zug-Neigungs-Richtung.
-- Fehlerbehebung für Netzwerk-Knoten-Höhe im Asset-Editor.
-- Fehlerbehebung für standard Versatz-Werte.
-- Fehlerbehebung für die Kompabilität mit TM:PE.
-- Fehlerbehebung für das Laden von Daten von Kreuzungs-Assets.
-- Fehlerbehebung für nicht-löschbare Pfeiler nach dem Setzen von Kreuzungs-Assets.</value>
+    <value>[NEW] Automatischer Modus für die Neigungsrichtung hinzugefügt.
+[NEW] Rotes Overlay für kurze Segmente (kurze Segmente führen zur falscher Fahrzeuggeschwindigkeit).
+[NEW] Nur Versatz zurücksetzen hinzugefügt.
+[NEW] Polnische Übersetzung hinzugefügt.
+[FIXED] Standard Netz-Knoten Formberechnung korregiert.
+[FIXED] Fehlerbehebung der falschen Eckberechnung bei zu schrägen oder zu gebogenen Segmenten.
+[FIXED] Fehlerbehebung für kaputte Netzwerk-Knoten nach dem Neuladen der Karte ohne Neustart.
+[FIXED] Fehlerbehebung für Kraftfahrzeuganhänger verschwinden.
+[FIXED] Fehlerbehebung für Straße verschwinden nach Katastrophen.
+[FIXED] Fehlerbehebung für die falsche Zug-Neigungs-Richtung.
+[FIXED] Fehlerbehebung für Netzwerk-Knoten-Höhe im Asset-Editor.
+[FIXED] Fehlerbehebung für standard Versatz-Werte.
+[FIXED] Fehlerbehebung für die Kompabilität mit TMPE.
+[FIXED] Fehlerbehebung für das Laden von Daten von Kreuzungs-Assets.
+[FIXED] Fehlerbehebung für nicht-löschbare Pfeiler nach dem Setzen von Kreuzungs-Assets.</value>
   </data>
   
   
@@ -151,7 +151,7 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
   
   
   <data name="Mod_WhatsNewMessage3_1_2" xml:space="preserve">
-    <value>- Indonesische, Koreanische und Malaiische Übersetzungen hinzugefügt.</value>
+    <value>[TRANSLATION] Indonesische, Koreanische und Malaiische Übersetzungen hinzugefügt.</value>
   </data>
   
   

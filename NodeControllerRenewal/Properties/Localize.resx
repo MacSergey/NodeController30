@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -128,86 +128,86 @@ Backward compatibility does not provide the transfer of all data, may be require
     <value>Control node type and shape</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
-    <value>- Added auto mode for main slope direction.
-- Added red overlay for short segments (short segments lead wrong vehicle speed).
-- Added the ability reset only offset to default.
-- Added Polish translation.
-- Fix default node shape calculation.
-- Fix wrong corner calculation on too sloped or too curved segments.
-- Fix broken nodes after reload map without close game.
-- Fix vehicle trailers disappear.
-- Fix road disappear after disasters.
-- Fix wrong train twist direction.
-- Fix node height in asset editor.
-- Fix default offset value.
-- Fix compatibility with TMPE.
-- Fix load data from intersection assets.
-- Fix not deletable pilars after place intersection asset.</value>
+    <value>[NEW] Added auto mode for main slope direction.
+[NEW] Added red overlay for short segments (short segments lead wrong vehicle speed).
+[NEW] Added the ability reset only offset to default.
+[NEW] Added Polish translation.
+[FIXED] Fix default node shape calculation.
+[FIXED] Fix wrong corner calculation on too sloped or too curved segments.
+[FIXED] Fix broken nodes after reload map without close game.
+[FIXED] Fix vehicle trailers disappear.
+[FIXED] Fix road disappear after disasters.
+[FIXED] Fix wrong train twist direction.
+[FIXED] Fix node height in asset editor.
+[FIXED] Fix default offset value.
+[FIXED] Fix compatibility with TMPE.
+[FIXED] Fix load data from intersection assets.
+[FIXED] Fix not deletable pilars after place intersection asset.</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_2" xml:space="preserve">
-    <value>- Fix node height outside available tiles (5x5).
-- Fix node center position.
-- Fix crosswalk texture.
-- Fix creating button duplicates
-- Fix despaired "Make end straight" button.</value>
+    <value>[FIXED] Fix node height outside available tiles (5x5).
+[FIXED] Fix node center position.
+[FIXED] Fix crosswalk texture.
+[FIXED] Fix creating button duplicates
+[FIXED] Fix despaired "Make end straight" button.</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_3" xml:space="preserve">
-    <value>- Added Portuguese translation.</value>
+    <value>[TRANSLATION] Added Portuguese translation.</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_4" xml:space="preserve">
-    <value>- Added missing dependencies and mod conflict checker.
-- Removed segments collision between train/metro tracks.
-- Fix loading offset if value more then 100m.
-- Fix segment direction correction on shifted segment.
-- Fix not main segment calculation on sloped node.
-- Fix crossing and uturn node type.
-- Added Italian translation.</value>
+    <value>[NEW] Added missing dependencies and mod conflict checker.
+[NEW] Removed segments collision between train/metro tracks.
+[FIXED] Fix loading offset if value more then 100m.
+[FIXED] Fix segment direction correction on shifted segment.
+[FIXED] Fix not main segment calculation on sloped node.
+[FIXED] Fix crossing and uturn node type.
+[TRANSLATION] Added Italian translation.</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_5" xml:space="preserve">
-    <value>- Fix segments collision calculation.
-- Added Chinese Traditional translation.</value>
+    <value>[FIXED] Fix segments collision calculation.
+[TRANSLATION] Added Chinese Traditional translation.</value>
   </data>
   <data name="Mod_WhatsNewMessage3_1" xml:space="preserve">
-    <value>- Added underground mode (hold Shift to select underground node).
-- Added nearby nodes overlay.
-- Added calculate shift by nearby nodes - set average shift value to node.
-- Added calculate shift by intersections - set shift value for all nodes between intersection for smooth transition (like -2,-1,0,+1,+2).
-- Added set shift between intersections - set this shift value for all nodes between intersection.
-- Added shortcuts, you can bind keys in mod's options.
-- Added the ability to hide marking and change rotation on untouchable (like harbor or cargo station) segments.
-- Fixed resetting node style middle nodes after load map.
-- Fixed resetting node style when replace segment.
-- Fixed auto main slope direction calculation.</value>
+    <value>[NEW] Added underground mode (hold Shift to select underground node).
+[NEW] Added nearby nodes overlay.
+[NEW] Added calculate shift by nearby nodes - set average shift value to node.
+[NEW] Added calculate shift by intersections - set shift value for all nodes between intersection for smooth transition (like -2,-1,0,+1,+2).
+[NEW] Added set shift between intersections - set this shift value for all nodes between intersection.
+[NEW] Added shortcuts, you can bind keys in mod's options.
+[NEW] Added the ability to hide marking and change rotation on untouchable (like harbor or cargo station) segments.
+[FIXED] Fixed resetting node style middle nodes after load map.
+[FIXED] Fixed resetting node style when replace segment.
+[FIXED] Fixed auto main slope direction calculation.</value>
   </data>
   <data name="Mod_WhatsNewMessage3_1_1" xml:space="preserve">
-    <value>- Fixed not updating nodes after loading map.
-- Added selection step over like in MoveIt. Press Ctrl+Space to step over (you can rebind in mod options).
-- Added setting "Node is sloped by default". By default this option disabled.
-- Added the ability to change node type by scroll wheel.
-- Added new icon for UUI button.
-- Added warning for Linux users about missing libraries.</value>
+    <value>[FIXED]  Fixed not updating nodes after loading map.
+[NEW]  Added selection step over like in MoveIt. Press Ctrl+Space to step over (you can rebind in mod options).
+[NEW]  Added setting "Node is sloped by default". By default this option disabled.
+[NEW]  Added the ability to change node type by scroll wheel.
+[NEW]  Added new icon for UUI button.
+[NEW]  Added warning for Linux users about missing libraries.</value>
   </data>
   <data name="Mod_WhatsNewMessage3_1_2" xml:space="preserve">
-    <value>- Added Indonesian, Korean and Malay translations.</value>
+    <value>[TRANSLATION] Added Indonesian, Korean and Malay translations.</value>
   </data>
   <data name="Mod_WhatsNewMessage3_1_3" xml:space="preserve">
-    <value>- Added colored text to tooltips.
-- Added the ability to hide original mod button in toolbar If you use UUI mod.
-- Added Turkish translation.</value>
+    <value>[NEW] Added colored text to tooltips.
+[NEW] Added the ability to hide original mod button in toolbar If you use UUI mod.
+[TRANSLATION] Added Turkish translation.</value>
   </data>
   <data name="Mod_WhatsNewMessage3_2" xml:space="preserve">
-    <value>- Added the ability to edit decorative networks. Max slope and twist value for decoration networks is 85 degrees.
-- Changed game limit for calculation path for pedestrion on intersection: pedestrian no more stuck on wide intersections.
-- Added option for insertion nodes: click on segnemt (default behavior like before), click with Ctrl on segment, disabled.
-- Added twist options:
+    <value>[NEW] Added the ability to edit decorative networks. Max slope and twist value for decoration networks is 85 degrees.
+[NEW] Changed game limit for calculation path for pedestrion on intersection: pedestrian no more stuck on wide intersections.
+[NEW] Added option for insertion nodes: click on segnemt (default behavior like before), click with Ctrl on segment, disabled.
+[NEW] Added twist options:
 --- Calculate twist by nearby nodes - set average twist value to node.
 --- Calculate twist by intersections - set twist value for all nodes between intersection for smooth transition (like -4°,-2°,0°,+2°,+4°).
 --- Set twist between intersections - set this twist value for all nodes between intersection.
-- Added ability to change slope value for each segment on middle node.
-- Added the ability to change offset and rotation for end nodes.
-- Overlay was adapted for too narrow networks.
-- Fixed calculation for nodeless networks.
-- Fixed calculation of node insertion.</value>
+[NEW] Added ability to change slope value for each segment on middle node.
+[NEW] Added the ability to change offset and rotation for end nodes.
+[UPDATED] Overlay was adapted for too narrow networks.
+[FIXED] Fixed calculation for nodeless networks.
+[FIXED] Fixed calculation of node insertion.</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bend</value>
