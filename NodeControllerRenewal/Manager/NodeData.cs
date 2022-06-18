@@ -56,8 +56,6 @@ namespace NodeController
         public float Gap { get; private set; }
 
         public BezierTrajectory MainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
-        //public BezierTrajectory LeftMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
-        //public BezierTrajectory RightMainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
 
         public MainRoad MainRoad { get; private set; } = new MainRoad();
 
