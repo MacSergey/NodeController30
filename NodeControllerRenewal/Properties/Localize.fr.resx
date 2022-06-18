@@ -173,7 +173,9 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
     <value>Calculer la torsion par les nœuds proches</value>
   </data>
-  
+  <data name="Option_Collision" xml:space="preserve">
+    <value>Collision</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Réinitialiser le décalage</value>
   </data>
@@ -191,6 +193,9 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marquage</value>
+  </data>
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>Sans nœud</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Décalage</value>
@@ -252,7 +257,9 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nœud #{0}</value>
   </data>
-  
+  <data name="Settings_ApplyAfterRestart" xml:space="preserve">
+    <value>S'applique après le redémarrage du jeu</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Insertion d'un nœud</value>
   </data>
@@ -265,8 +272,12 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
   <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
     <value>En cliquant avec {0} sur le segment</value>
   </data>
-  
-  
+  <data name="Settings_LongIntersectionFix" xml:space="preserve">
+    <value>Corriger les piétons bloqués sur les longues intersections</value>
+  </data>
+  <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
+    <value>Cette option augmente la distance max de recherche de chemin sur l'intersection, ce qui empêche les piétons bloqués sur une longue intersection, cependant cette option peut affecter la vitesse de simulation</value>
+  </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Les nœuds sont inclinés par défaut</value>
   </data>

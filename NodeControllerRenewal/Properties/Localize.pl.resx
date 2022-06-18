@@ -192,6 +192,7 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Option_Marking" xml:space="preserve">
     <value>Oznakowanie</value>
   </data>
+  
   <data name="Option_Offset" xml:space="preserve">
     <value>Przesunięcie</value>
   </data>

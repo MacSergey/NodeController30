@@ -192,6 +192,7 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcatura</value>
   </data>
+  
   <data name="Option_Offset" xml:space="preserve">
     <value>Spostamento</value>
   </data>

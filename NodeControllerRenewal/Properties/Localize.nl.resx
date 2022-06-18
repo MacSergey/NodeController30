@@ -193,6 +193,9 @@
   <data name="Option_Marking" xml:space="preserve">
     <value>Markering</value>
   </data>
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>Zonder knopen</value>
+  </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Verschuiven (parallel)</value>
   </data>

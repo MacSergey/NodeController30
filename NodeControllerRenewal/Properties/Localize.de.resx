@@ -212,6 +212,9 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
   <data name="Option_Marking" xml:space="preserve">
     <value>Markierung</value>
   </data>
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>Ohne Netzwerk-Knoten</value>
+  </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Versatz</value>
   </data>
@@ -276,7 +279,7 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
     <value>Wird nach dem Neustart des Spiels angewendet</value>
   </data>
   <data name="Settings_InsertNode" xml:space="preserve">
-    <value>Netzwerkknoten einfügen</value>
+    <value>Netzwerk-Knoten einfügen</value>
   </data>
   <data name="Settings_InsertNodeDisabled" xml:space="preserve">
     <value>Deaktiviert</value>
@@ -402,7 +405,7 @@ Klicken zum Bearbeiten</value>
     <value>Klicken, um einen Netzwerk-Knoten einzufügen</value>
   </data>
   <data name="Tool_InfoInsertNodeWithModifier" xml:space="preserve">
-    <value>Klicke mit {0}, um einen Netzwerkknoten einzufügen</value>
+    <value>Klicke mit {0}, um einen Netzwerk-Knoten einzufügen</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Wähle die Ecke, an der du ausrichten möchtest</value>

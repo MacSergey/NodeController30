@@ -194,6 +194,9 @@ Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manu
   <data name="Option_Marking" xml:space="preserve">
     <value>Tanda</value>
   </data>
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>Tanpa nod</value>
+  </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Ofset</value>
   </data>

@@ -227,6 +227,9 @@
   <data name="Option_Marking" xml:space="preserve">
     <value>标线</value>
   </data>
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>无节点</value>
+  </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>偏移</value>
   </data>

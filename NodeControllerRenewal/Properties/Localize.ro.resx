@@ -194,6 +194,9 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcare</value>
   </data>
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>Fără noduri</value>
+  </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Offset</value>
   </data>

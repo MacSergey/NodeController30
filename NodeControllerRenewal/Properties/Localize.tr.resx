@@ -192,6 +192,7 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Option_Marking" xml:space="preserve">
     <value>İşaretleniyor</value>
   </data>
+  
   <data name="Option_Offset" xml:space="preserve">
     <value>Dengele</value>
   </data>

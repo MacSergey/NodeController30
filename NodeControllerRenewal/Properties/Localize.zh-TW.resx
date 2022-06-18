@@ -173,7 +173,9 @@
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
     <value>以臨近節點計算扭轉</value>
   </data>
-  
+  <data name="Option_Collision" xml:space="preserve">
+    <value>碰撞</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>重設偏移</value>
   </data>
@@ -191,6 +193,9 @@
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>標線</value>
+  </data>
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>無節點</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>偏移</value>
@@ -270,7 +275,9 @@
   <data name="Settings_LongIntersectionFix" xml:space="preserve">
     <value>修復卡在長交岔路口的行人</value>
   </data>
-  
+  <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
+    <value>此選項會增加交岔路口的最大尋路距離，可防止行人卡在長交岔路口，但此選項可能會影響模擬速度</value>
+  </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>節點預設為斜坡</value>
   </data>

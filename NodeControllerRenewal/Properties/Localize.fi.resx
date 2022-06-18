@@ -192,6 +192,7 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Option_Marking" xml:space="preserve">
     <value>Merkinnät</value>
   </data>
+  
   <data name="Option_Offset" xml:space="preserve">
     <value>Etäisyys</value>
   </data>

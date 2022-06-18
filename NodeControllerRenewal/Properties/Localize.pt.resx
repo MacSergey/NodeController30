@@ -188,6 +188,7 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcação</value>
   </data>
+  
   <data name="Option_Offset" xml:space="preserve">
     <value>Deslocamento</value>
   </data>

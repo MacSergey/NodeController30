@@ -194,6 +194,9 @@
   <data name="Option_Marking" xml:space="preserve">
     <value>표지</value>
   </data>
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>노드 없음</value>
+  </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>오프셋</value>
   </data>

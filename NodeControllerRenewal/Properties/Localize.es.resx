@@ -194,6 +194,9 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcado</value>
   </data>
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>Sin nodo</value>
+  </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Desplazamiento</value>
   </data>

@@ -266,6 +266,9 @@
   <data name="Option_Marking" xml:space="preserve">
     <value>Разметка</value>
   </data>
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>Без узла</value>
+  </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Отступ</value>
   </data>

@@ -194,6 +194,9 @@
   <data name="Option_Marking" xml:space="preserve">
     <value>横断歩道の表示</value>
   </data>
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>ノードレス</value>
+  </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>オフセット(長さ)</value>
   </data>
