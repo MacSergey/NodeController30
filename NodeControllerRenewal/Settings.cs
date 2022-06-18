@@ -21,6 +21,7 @@ namespace NodeController
         public static SavedBool ShowToolTip { get; } = new SavedBool(nameof(ShowToolTip), SettingsFile, true, true);
         public static SavedInt InsertNode { get; } = new SavedInt(nameof(InsertNode), SettingsFile, 0, true);
         public static SavedInt ToggleUndergroundMode { get; } = new SavedInt(nameof(ToggleUndergroundMode), SettingsFile, 0, true);
+        public static SavedBool LongIntersectionFix { get; } = new SavedBool(nameof(LongIntersectionFix), SettingsFile, false, true);
         public static bool IsInsertEnable => InsertNode != 2;
         public static bool IsInsertWithModifier => InsertNode == 1;
         public static bool IsUndegroundWithModifier => ToggleUndergroundMode == 0;
@@ -64,6 +65,9 @@ namespace NodeController
             var undergroundOptions = AddCheckboxPanel(generalGroup, Localize.Settings_ToggleUnderground, ToggleUndergroundMode, new string[] { string.Format(Localize.Settings_ToggleUndergroundHold, UndergroundModifier), string.Format(Localize.Settings_ToggleUndergroundButtons, SelectNodeToolMode.EnterUndergroundShortcut, SelectNodeToolMode.ExitUndergroundShortcut) });
             AddCheckBox(generalGroup, CommonLocalize.Settings_ShowTooltips, ShowToolTip);
             AddToolButton<NodeControllerTool, NodeControllerButton>(generalGroup);
+            AddCheckBox(generalGroup, Localize.Settings_LongIntersectionFix, LongIntersectionFix);
+            AddLabel(generalGroup, Localize.Settings_LongIntersectionFixWarning, 0.8f, Color.red, 25);
+            AddLabel(generalGroup, Localize.Settings_ApplyAfterRestart, 0.8f, Color.yellow, 25);
 
             AddNotifications(GeneralTab);
 #if DEBUG
@@ -81,6 +85,7 @@ namespace NodeController
 #if DEBUG
         public static SavedFloat SegmentId { get; } = new SavedFloat(nameof(SegmentId), SettingsFile, 0f, false);
         public static SavedFloat NodeId { get; } = new SavedFloat(nameof(NodeId), SettingsFile, 0f, false);
+        public static SavedBool ExtraDebug { get; } = new SavedBool(nameof(ExtraDebug), SettingsFile, false, true);
 
         private void AddDebug(UIAdvancedHelper helper)
         {
@@ -98,6 +103,7 @@ namespace NodeController
             AddFloatField(groupOther, "NodeId", NodeId, 0f);
             AddButton(groupOther, "Add all nodes", AddAllNodes, 200f);
             AddButton(groupOther, "Clear", SingletonManager<Manager>.Destroy, 200f);
+            AddCheckBox(groupOther, "Show extra debug", ExtraDebug);
 
             static void AddAllNodes()
             {

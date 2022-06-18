@@ -35,35 +35,59 @@ namespace NodeController
 
         public override string GetToolInfo()
         {
+            string text;
             if (IsHoverNode)
-                return string.Format(Localize.Tool_InfoClickNode, HoverNode.Id) + GetStepOverInfo();
+            {
+                text = string.Format(Localize.Tool_InfoClickNode, HoverNode.Id) + GetStepOverInfo();
+
+//#if DEBUG
+//                if (Settings.ExtraDebug)
+//                {
+//                    if (SingletonManager<Manager>.Instance.GetNodeData(HoverNode.Id, out var data))
+//                        text += "\n" + data.GetDebugString();
+//                }
+//#endif
+            }
             else if (IsHoverSegment)
             {
                 if (!Settings.IsInsertEnable)
-                    return Localize.Tool_InfoSelectNode + GetStepOverInfo();
+                    text = Localize.Tool_InfoSelectNode + GetStepOverInfo();
                 else if (!IsPossibleInsertNode)
-                    return Localize.Tool_InfoTooCloseNode.AddErrorColor() + GetStepOverInfo();
+                    text = Localize.Tool_InfoTooCloseNode.AddErrorColor() + GetStepOverInfo();
                 else if (HoverSegment.Id.GetSegment().Info.PedestrianLanes() >= 2)
                 {
                     if (Settings.IsInsertWithModifier)
-                        return string.Format(Localize.Tool_InfoInsertCrossingNodeWithModifier.AddActionColor(), Settings.InsertModifier.AddInfoColor()) + GetStepOverInfo();
+                        text = string.Format(Localize.Tool_InfoInsertCrossingNodeWithModifier.AddActionColor(), Settings.InsertModifier.AddInfoColor()) + GetStepOverInfo();
                     else
-                        return Localize.Tool_InfoInsertCrossingNode.AddActionColor() + GetStepOverInfo();
+                        text = Localize.Tool_InfoInsertCrossingNode.AddActionColor() + GetStepOverInfo();
                 }
                 else
                 {
                     if (Settings.IsInsertWithModifier)
-                        return string.Format(Localize.Tool_InfoInsertNodeWithModifier.AddActionColor(), Settings.InsertModifier.AddInfoColor()) + GetStepOverInfo();
+                        text = string.Format(Localize.Tool_InfoInsertNodeWithModifier.AddActionColor(), Settings.InsertModifier.AddInfoColor()) + GetStepOverInfo();
                     else
-                        return Localize.Tool_InfoInsertNode.AddActionColor() + GetStepOverInfo();
+                        text = Localize.Tool_InfoInsertNode.AddActionColor() + GetStepOverInfo();
                 }
+
+//#if DEBUG
+//                if (Settings.ExtraDebug)
+//                {
+//                    SingletonManager<Manager>.Instance.GetSegmentData(HoverSegment.Id, out var start, out var end);
+//                    if (start != null)
+//                        text += "\n Start" + start.GetDebugString();
+//                    if (end != null)
+//                        text += "\n End" + end.GetDebugString();
+//                }
+//#endif
             }
-            else if(Settings.IsUndegroundWithModifier)
-                return $"{Localize.Tool_InfoSelectNode}\n\n{string.Format(Localize.Tool_InfoUnderground, LocalizeExtension.Shift.AddInfoColor())}";
-            else if(!Underground)
-                return $"{Localize.Tool_InfoSelectNode}\n\n{string.Format(Localize.Tool_EnterUnderground, EnterUndergroundShortcut.AddInfoColor())}";
+            else if (Settings.IsUndegroundWithModifier)
+                text = $"{Localize.Tool_InfoSelectNode}\n\n{string.Format(Localize.Tool_InfoUnderground, LocalizeExtension.Shift.AddInfoColor())}";
+            else if (!Underground)
+                text = $"{Localize.Tool_InfoSelectNode}\n\n{string.Format(Localize.Tool_EnterUnderground, EnterUndergroundShortcut.AddInfoColor())}";
             else
-                return $"{Localize.Tool_InfoSelectNode}\n\n{string.Format(Localize.Tool_ExitUnderground, ExitUndergroundShortcut.AddInfoColor())}";
+                text = $"{Localize.Tool_InfoSelectNode}\n\n{string.Format(Localize.Tool_ExitUnderground, ExitUndergroundShortcut.AddInfoColor())}";
+
+            return text;
         }
         private string GetStepOverInfo() => SelectionStepOverShortcut.NotSet ? string.Empty : "\n\n" + string.Format(CommonLocalize.Tool_InfoSelectionStepOver, SelectionStepOverShortcut.AddInfoColor());
 

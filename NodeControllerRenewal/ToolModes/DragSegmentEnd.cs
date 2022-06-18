@@ -13,6 +13,19 @@ namespace NodeController
         private float CachedRotate { get; set; }
         private float RoundTo => Utility.OnlyShiftIsPressed ? 1f : 0.1f;
 
+#if DEBUG
+        public override string GetToolInfo()
+        {
+            if (Settings.ExtraDebug)
+            {
+                return $"Rotate: {SegmentEnd.RotateAngle}, MinRot: {SegmentEnd.MinRotate}, MaxRot: {SegmentEnd.MaxRotate}, Is min: {SegmentEnd.IsMinBorderT}, Cache: {CachedRotate}" +
+                    $"\nOffset: {SegmentEnd.Offset}, T: {SegmentEnd.OffsetT}";
+            }
+            else
+                return null;
+        }
+#endif
+
         protected override void Reset(IToolMode prevMode)
         {
             SegmentEnd = prevMode is EditNodeToolMode editMode ? editMode.HoverSegmentEndCenter : null;
@@ -20,6 +33,13 @@ namespace NodeController
         }
         public override void OnMouseDrag(Event e)
         {
+#if DEBUG
+            if (Settings.ExtraDebug && Settings.SegmentId == SegmentEnd.Id)
+            {
+                SingletonMod<Mod>.Logger.Debug($"Drag segment end");
+            }
+#endif
+
             SegmentEnd.RawSegmentBezier.Trajectory.GetHitPosition(Tool.Ray, out _, out var t, out _);
             SegmentEnd.Offset = SegmentEnd.RawSegmentBezier.Distance(0f, t).RoundToNearest(RoundTo);
             SegmentEnd.SetRotate(CachedRotate, true);

@@ -317,6 +317,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Collision.
+        /// </summary>
+        internal static string Option_Collision {
+            get {
+                return ResourceManager.GetString("Option_Collision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Reset offset.
         /// </summary>
         internal static string Option_KeepDefault {
@@ -659,6 +668,15 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Applies after game restart.
+        /// </summary>
+        internal static string Settings_ApplyAfterRestart {
+            get {
+                return ResourceManager.GetString("Settings_ApplyAfterRestart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Insert node.
         /// </summary>
         internal static string Settings_InsertNode {
@@ -691,6 +709,24 @@ namespace NodeController {
         internal static string Settings_InsertNodeWithModifier {
             get {
                 return ResourceManager.GetString("Settings_InsertNodeWithModifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Fix stuck pedestrian on long intersections.
+        /// </summary>
+        internal static string Settings_LongIntersectionFix {
+            get {
+                return ResourceManager.GetString("Settings_LongIntersectionFix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This option increase max pathfind distance on intersection, that prevent stuck pedestrians on such a long intersections, however this option can affect simulation speed.
+        /// </summary>
+        internal static string Settings_LongIntersectionFixWarning {
+            get {
+                return ResourceManager.GetString("Settings_LongIntersectionFixWarning", resourceCulture);
             }
         }
         

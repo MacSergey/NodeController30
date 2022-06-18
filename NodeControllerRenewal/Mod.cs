@@ -327,7 +327,12 @@ namespace NodeController
 
         private bool Patch_CitizenAI_GetPathTargetPosition()
         {
-            return AddTranspiler(typeof(CitizenAIPatches), nameof(CitizenAIPatches.GetPathTargetPositionTranspilar), typeof(CitizenAI), "GetPathTargetPosition");
+            if (Settings.LongIntersectionFix)
+            {
+                return AddTranspiler(typeof(CitizenAIPatches), nameof(CitizenAIPatches.GetPathTargetPositionTranspilar), typeof(CitizenAI), "GetPathTargetPosition");
+            }
+            else
+                return true;
         }
 
         #region HIDECROSSWALK

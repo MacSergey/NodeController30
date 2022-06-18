@@ -20,7 +20,7 @@ namespace NodeController.Patches
             else
             {
                 smooth = data.NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Middle);
-                data.GetCorner(leftSide, out cornerPos, out cornerDirection);
+                data.GetCorner(leftSide ? SideType.Left : SideType.Right, out cornerPos, out cornerDirection);
 
                 if (heightOffset && startNodeID != 0)
                     cornerPos.y += startNodeID.GetNode().m_heightOffset / 64f;
