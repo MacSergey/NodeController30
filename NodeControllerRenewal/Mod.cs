@@ -28,19 +28,20 @@ namespace NodeController
 
         public override string NameRaw => "Node Controller Renewal";
         public override string Description => !IsBeta ? Localize.Mod_Description : CommonLocalize.Mod_DescriptionBeta;
-        public override List<Version> Versions => new List<Version>()
+        public override List<ModVersion> Versions => new List<ModVersion>()
         {
-            new Version("3.2"),
-            new Version("3.1.3"),
-            new Version("3.1.2"),
-            new Version("3.1.1"),
-            new Version("3.1"),
-            new Version("3.0.5"),
-            new Version("3.0.4"),
-            new Version("3.0.3"),
-            new Version("3.0.2"),
-            new Version("3.0.1"),
-            new Version("3.0")
+            new ModVersion(new Version("3.2.1"), new DateTime()),
+            new ModVersion(new Version("3.2"), new DateTime(2022, 6, 4)),
+            new ModVersion(new Version("3.1.3"), new DateTime(2021, 8, 25)),
+            new ModVersion(new Version("3.1.2"), new DateTime(2021, 8, 7)),
+            new ModVersion(new Version("3.1.1"), new DateTime(2021, 7, 23)),
+            new ModVersion(new Version("3.1"), new DateTime(2021, 7, 6)),
+            new ModVersion(new Version("3.0.5"), new DateTime(2021, 6, 8)),
+            new ModVersion(new Version("3.0.4"), new DateTime(2021, 5, 29)),
+            new ModVersion(new Version("3.0.3"), new DateTime(2021, 5, 19)),
+            new ModVersion(new Version("3.0.2"), new DateTime(2021, 5, 17)),
+            new ModVersion(new Version("3.0.1"), new DateTime(2021, 5, 11)),
+            new ModVersion(new Version("3.0"), new DateTime(2021, 4, 30)),
         };
 
         protected override string IdRaw => nameof(NodeController);
