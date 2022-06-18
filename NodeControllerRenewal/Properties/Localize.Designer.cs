@@ -89,17 +89,16 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на - Added auto mode for main slope direction.
-        ///- Added red overlay for short segments (short segments lead wrong vehicle speed).
-        ///- Added the ability reset only offset to default.
-        ///- Added Polish translation.
-        ///- Fix default node shape calculation.
-        ///- Fix wrong corner calculation on too sloped or too curved segments.
-        ///- Fix broken nodes after reload map without close game.
-        ///- Fix vehicle trailers disappear.
-        ///- Fix road disappear after disasters.
-        ///- Fix wrong train twist direction.
-        ///- Fix node height in asset e [остаток строки не уместился]&quot;;.
+        ///   Ищет локализованную строку, похожую на [NEW] Added auto mode for main slope direction.
+        ///[NEW] Added red overlay for short segments (short segments lead wrong vehicle speed).
+        ///[NEW] Added the ability reset only offset to default.
+        ///[NEW] Added Polish translation.
+        ///[FIXED] Fix default node shape calculation.
+        ///[FIXED] Fix wrong corner calculation on too sloped or too curved segments.
+        ///[FIXED] Fix broken nodes after reload map without close game.
+        ///[FIXED] Fix vehicle trailers disappear.
+        ///[FIXED] Fix road disappear after disasters.
+        ///[FIXED] Fix wrong  [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string Mod_WhatsNewMessage3_0_1 {
             get {
@@ -108,11 +107,11 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на - Fix node height outside available tiles (5x5).
-        ///- Fix node center position.
-        ///- Fix crosswalk texture.
-        ///- Fix creating button duplicates
-        ///- Fix despaired &quot;Make end straight&quot; button..
+        ///   Ищет локализованную строку, похожую на [FIXED] Fix node height outside available tiles (5x5).
+        ///[FIXED] Fix node center position.
+        ///[FIXED] Fix crosswalk texture.
+        ///[FIXED] Fix creating button duplicates
+        ///[FIXED] Fix despaired &quot;Make end straight&quot; button..
         /// </summary>
         internal static string Mod_WhatsNewMessage3_0_2 {
             get {
@@ -121,7 +120,7 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на - Added Portuguese translation..
+        ///   Ищет локализованную строку, похожую на [TRANSLATION] Added Portuguese translation..
         /// </summary>
         internal static string Mod_WhatsNewMessage3_0_3 {
             get {
@@ -130,13 +129,13 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на - Added missing dependencies and mod conflict checker.
-        ///- Removed segments collision between train/metro tracks.
-        ///- Fix loading offset if value more then 100m.
-        ///- Fix segment direction correction on shifted segment.
-        ///- Fix not main segment calculation on sloped node.
-        ///- Fix crossing and uturn node type.
-        ///- Added Italian translation..
+        ///   Ищет локализованную строку, похожую на [NEW] Added missing dependencies and mod conflict checker.
+        ///[NEW] Removed segments collision between train/metro tracks.
+        ///[FIXED] Fix loading offset if value more then 100m.
+        ///[FIXED] Fix segment direction correction on shifted segment.
+        ///[FIXED] Fix not main segment calculation on sloped node.
+        ///[FIXED] Fix crossing and uturn node type.
+        ///[TRANSLATION] Added Italian translation..
         /// </summary>
         internal static string Mod_WhatsNewMessage3_0_4 {
             get {
@@ -145,8 +144,8 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на - Fix segments collision calculation.
-        ///- Added Chinese Traditional translation..
+        ///   Ищет локализованную строку, похожую на [FIXED] Fix segments collision calculation.
+        ///[TRANSLATION] Added Chinese Traditional translation..
         /// </summary>
         internal static string Mod_WhatsNewMessage3_0_5 {
             get {
@@ -155,13 +154,13 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на - Added underground mode (hold Shift to select underground node).
-        ///- Added nearby nodes overlay.
-        ///- Added calculate shift by nearby nodes - set average shift value to node.
-        ///- Added calculate shift by intersections - set shift value for all nodes between intersection for smooth transition (like -2,-1,0,+1,+2).
-        ///- Added set shift between intersections - set this shift value for all nodes between intersection.
-        ///- Added shortcuts, you can bind keys in mod&apos;s options.
-        ///- Added the ability to hide marking and cha [остаток строки не уместился]&quot;;.
+        ///   Ищет локализованную строку, похожую на [NEW] Added underground mode (hold Shift to select underground node).
+        ///[NEW] Added nearby nodes overlay.
+        ///[NEW] Added calculate shift by nearby nodes - set average shift value to node.
+        ///[NEW] Added calculate shift by intersections - set shift value for all nodes between intersection for smooth transition (like -2,-1,0,+1,+2).
+        ///[NEW] Added set shift between intersections - set this shift value for all nodes between intersection.
+        ///[NEW] Added shortcuts, you can bind keys in mod&apos;s options.
+        ///[NEW] Added the abi [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string Mod_WhatsNewMessage3_1 {
             get {
@@ -170,12 +169,12 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на - Fixed not updating nodes after loading map.
-        ///- Added selection step over like in MoveIt. Press Ctrl+Space to step over (you can rebind in mod options).
-        ///- Added setting &quot;Node is sloped by default&quot;. By default this option disabled.
-        ///- Added the ability to change node type by scroll wheel.
-        ///- Added new icon for UUI button.
-        ///- Added warning for Linux users about missing libraries..
+        ///   Ищет локализованную строку, похожую на [FIXED]  Fixed not updating nodes after loading map.
+        ///[NEW]  Added selection step over like in MoveIt. Press Ctrl+Space to step over (you can rebind in mod options).
+        ///[NEW]  Added setting &quot;Node is sloped by default&quot;. By default this option disabled.
+        ///[NEW]  Added the ability to change node type by scroll wheel.
+        ///[NEW]  Added new icon for UUI button.
+        ///[NEW]  Added warning for Linux users about missing libraries..
         /// </summary>
         internal static string Mod_WhatsNewMessage3_1_1 {
             get {
@@ -184,7 +183,7 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на - Added Indonesian, Korean and Malay translations..
+        ///   Ищет локализованную строку, похожую на [TRANSLATION] Added Indonesian, Korean and Malay translations..
         /// </summary>
         internal static string Mod_WhatsNewMessage3_1_2 {
             get {
@@ -193,9 +192,9 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на - Added colored text to tooltips.
-        ///- Added the ability to hide original mod button in toolbar If you use UUI mod.
-        ///- Added Turkish translation..
+        ///   Ищет локализованную строку, похожую на [NEW] Added colored text to tooltips.
+        ///[NEW] Added the ability to hide original mod button in toolbar If you use UUI mod.
+        ///[TRANSLATION] Added Turkish translation..
         /// </summary>
         internal static string Mod_WhatsNewMessage3_1_3 {
             get {
@@ -204,12 +203,12 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на - Added the ability to edit decorative networks. Max slope and twist value for decoration networks is 85 degrees.
-        ///- Changed game limit for calculation path for pedestrion on intersection: pedestrian no more stuck on wide intersections.
-        ///- Added option for insertion nodes: click on segnemt (default behavior like before), click with Ctrl on segment, disabled.
-        ///- Added twist options:
+        ///   Ищет локализованную строку, похожую на [NEW] Added the ability to edit decorative networks. Max slope and twist value for decoration networks is 85 degrees.
+        ///[NEW] Changed game limit for calculation path for pedestrion on intersection: pedestrian no more stuck on wide intersections.
+        ///[NEW] Added option for insertion nodes: click on segnemt (default behavior like before), click with Ctrl on segment, disabled.
+        ///[NEW] Added twist options:
         ///--- Calculate twist by nearby nodes - set average twist value to node.
-        ///--- Calculate twist by intersections - set twist value [остаток строки не уместился]&quot;;.
+        ///--- Calculate twist by intersections - [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string Mod_WhatsNewMessage3_2 {
             get {
@@ -376,6 +375,15 @@ namespace NodeController {
         internal static string Option_Marking {
             get {
                 return ResourceManager.GetString("Option_Marking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Node less.
+        /// </summary>
+        internal static string Option_NodeLess {
+            get {
+                return ResourceManager.GetString("Option_NodeLess", resourceCulture);
             }
         }
         

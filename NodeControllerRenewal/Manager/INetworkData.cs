@@ -14,7 +14,8 @@ namespace NodeController
         public float Shift { get; set; }
         public float Stretch { get; set; }
         public float StretchPercent { get; set; }
-        public bool NoMarkings { get; set; }
-        public bool Collision { get; set; }
+        public bool? NoMarkings { get; set; }
+        public bool? Collision { get; set; }
+        public bool? ForceNodeLess { get; set; }
     }
 }

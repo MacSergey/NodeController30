@@ -179,7 +179,7 @@ namespace NodeController
         {
             var nodeData = SegmentData.NodeData;
 
-            var t = Mathf.Clamp(_temp._rawT, _temp._minT + (nodeData.IsMiddleNode || SegmentData.IsNodeLess ? 0f : _temp.DeltaT), _temp._maxT - _temp.DeltaT);
+            var t = Mathf.Clamp(_temp._rawT, _temp._minT + (nodeData.IsMiddleNode || SegmentData.FinalNodeLess ? 0f : _temp.DeltaT), _temp._maxT - _temp.DeltaT);
             position = _temp._rawTrajectory.Position(t);
             direction = _temp._rawTrajectory.Tangent(t).normalized;
 
@@ -217,7 +217,7 @@ namespace NodeController
         {
             var nodeData = SegmentData.NodeData;
 
-            var t = Mathf.Clamp(_temp._rawT, _temp._minT + (nodeData.IsMiddleNode || SegmentData.IsNodeLess ? 0f : _temp.DeltaT), _temp._maxT - _temp.DeltaT);
+            var t = Mathf.Clamp(_temp._rawT, _temp._minT + (nodeData.IsMiddleNode || SegmentData.FinalNodeLess ? 0f : _temp.DeltaT), _temp._maxT - _temp.DeltaT);
             var position = _temp._rawTrajectory.Position(t);
             var direction = _temp._rawTrajectory.Tangent(t).normalized;
 

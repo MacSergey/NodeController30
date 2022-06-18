@@ -59,6 +59,7 @@ namespace NodeController.Patches
             var checkRenderDistanceMethod = AccessTools.Method(typeof(RenderManager.CameraInfo), nameof(RenderManager.CameraInfo.CheckRenderDistance));
             var nodeMeshField = AccessTools.Field(typeof(NetInfo.Node), nameof(NetInfo.Node.m_nodeMesh));
             var nodeMaterialField = AccessTools.Field(typeof(NetInfo.Node), nameof(NetInfo.Node.m_nodeMaterial));
+            var initializedField = AccessTools.Field(typeof(RenderManager.Instance), nameof(RenderManager.Instance.m_initialized));
 
             var prev = default(CodeInstruction);
             var segmentLocal = default(LocalBuilder);
@@ -78,7 +79,7 @@ namespace NodeController.Patches
                     if (renderCount == needCount)
                     {
                         yield return original.GetLDArg("nodeID");
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(ShouldContinueMedian)));
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.ShouldContinueMedian)));
                         yield return new CodeInstruction(OpCodes.Or);
                     }
                 }
@@ -97,11 +98,36 @@ namespace NodeController.Patches
                         yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.CalculateMaterial)));
                     }
                 }
+                else if(prev != null && prev.opcode == OpCodes.Ldfld && prev.operand == initializedField && instruction.opcode == OpCodes.Brfalse)
+                {
+                    yield return original.GetLDArg("nodeID");
+                    yield return original.GetLDArg("data");
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.IsNodeLess)));
+                    yield return instruction;
+                }
 
                 prev = instruction;
             }
         }
 
+        public static bool IsNodeLess(ushort nodeID, ref RenderManager.Instance data)
+        {
+            if (SingletonManager<Manager>.Instance.GetNodeData(nodeID, out var nodeData))
+            {
+                {
+                    var segmentId = nodeID.GetNode().GetSegment(data.m_dataInt0 >> 4);
+                    if (nodeData.TryGetSegment(segmentId, out var segmentData) && segmentData.ForceNodeLess == true)
+                        return false;
+                }
+                {
+                    var segmentId = nodeID.GetNode().GetSegment(data.m_dataInt0 & 7);
+                    if (nodeData.TryGetSegment(segmentId, out var segmentData) && segmentData.ForceNodeLess == true)
+                        return false;
+                }
+            }
+
+            return true;
+        }
         private static bool ShouldContinueMedian(ushort nodeID) => SingletonManager<Manager>.Instance.GetNodeData(nodeID, out var data) && data.Type == NodeStyleType.Stretch;
         private static Material CalculateMaterial(Material material, ushort nodeId, ushort segmentId) => ShouldContinueMedian(nodeId) ? MaterialUtilities.ContinuesMedian(material, segmentId.GetSegment().Info, false) : material;
         private static Mesh CalculateMesh(Mesh mesh, ushort nodeId, ushort segmentId) => ShouldContinueMedian(nodeId) ? MaterialUtilities.ContinuesMedian(mesh, segmentId.GetSegment().Info) : mesh;
