@@ -195,22 +195,26 @@ namespace NodeController.UI
             base.Refresh();
         }
     }
-    public class BoolOptionPanel : OptionPanel<IOSegmented, bool>
+    public class BoolOptionPanel : OptionPanel<INOSegmented, bool?>
     {
-        protected override void InitItem(INetworkData data, IOSegmented item)
+        protected override void InitItem(INetworkData data, INOSegmented item)
         {
             item.StopLayout();
 
             item.AutoButtonSize = false;
-            item.ButtonWidth = ItemWidth / 2f;
+            item.ButtonWidth = ItemWidth / 2f - (data is NodeData ? 5f : 0f);
             if (TotalOption == SupportOption.Group)
             {
                 item.AddItem(true, CommonLocalize.MessageBox_Yes);
+                if(data is NodeData)
+                    item.AddItem(null, "/", false, 10f);
                 item.AddItem(false, CommonLocalize.MessageBox_No);
             }
             else
             {
                 item.AddItem(true, "I");
+                if (data is NodeData)
+                    item.AddItem(null, "/", false, 10f);
                 item.AddItem(false, "O");
             }
 
@@ -252,4 +256,5 @@ namespace NodeController.UI
         public void Init(float height) => base.Init(height);
     }
     public class IOSegmented : UIOnceSegmented<bool> { }
+    public class INOSegmented : UIOnceSegmented<bool?> { }
 }

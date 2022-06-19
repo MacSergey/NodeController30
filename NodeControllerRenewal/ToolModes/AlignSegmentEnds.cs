@@ -136,7 +136,7 @@ namespace NodeController
             foreach (var i in isLaneInvert ^ !isLeft ? info.m_sortedLanes : info.m_sortedLanes.Reverse())
             {
                 var lane = info.m_lanes[i];
-                if (lane.IsGroundLane())
+                if ((lane.m_vehicleType & (VehicleInfo.VehicleType.Car | VehicleInfo.VehicleType.Bicycle | VehicleInfo.VehicleType.Tram | VehicleInfo.VehicleType.Trolleybus | VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Metro | VehicleInfo.VehicleType.Monorail)) != 0)
                     return ((isLaneInvert ? -1 : 1) * lane.m_position + (isLeft ? 0.5f : -0.5f) * lane.m_width) * segmentEnd.Stretch;
             }
 

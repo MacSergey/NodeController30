@@ -79,7 +79,7 @@ namespace NodeController
         public bool IsStraight => IsTwoRoads && MainDot < -0.995f;
         public bool Is180 => IsTwoRoads && MainDot > 0.995f;
         public bool IsEqualWidth => IsTwoRoads && Math.Abs(FirstSegment.Info.m_halfWidth - SecondSegment.Info.m_halfWidth) < 0.001f;
-        public bool HasNodeLess => SegmentEndDatas.Any(s => s.IsNodeLess);
+        public bool HasNodeLess => SegmentEndDatas.Any(s => s.FinalNodeLess);
         public bool IsUnderground => Id.GetNode().m_flags.IsSet(NetNode.Flags.Underground);
         public bool IsSameRoad
         {
@@ -125,15 +125,20 @@ namespace NodeController
             get => Stretch * 100f;
             set => Stretch = value / 100f;
         }
-        public bool NoMarkings
+        public bool? NoMarkings
         {
             get => Style.GetNoMarkings();
             set => Style.SetNoMarkings(value);
         }
-        public bool Collision
+        public bool? Collision
         {
             get => Style.GetCollision();
             set => Style.SetCollision(value);
+        }
+        public bool? ForceNodeLess
+        {
+            get => Style.GetForceNodeLess();
+            set => Style.SetForceNodeLess(value);
         }
         public bool IsSlopeJunctions
         {
@@ -154,7 +159,7 @@ namespace NodeController
 
 
         public bool NeedsTransitionFlag => IsTwoRoads && (Type == NodeStyleType.Custom || Type == NodeStyleType.Crossing || Type == NodeStyleType.UTurn);
-        public bool ShouldRenderCenteralCrossingTexture => Type == NodeStyleType.Crossing && NoMarkings;
+        public bool ShouldRenderCenteralCrossingTexture => Type == NodeStyleType.Crossing && NoMarkings == true;
 
         #endregion
 

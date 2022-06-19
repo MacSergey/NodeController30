@@ -64,7 +64,7 @@ namespace NodeController
         public bool DefaultIsSlope => !Id.GetSegment().Info.m_flatJunctions && !NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
         //public bool DefaultIsTwist => !DefaultIsSlope && !NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
 
-        public bool IsChangeable => !IsNodeLess;
+        public bool IsChangeable => !FinalNodeLess;
         public bool IsOffsetChangeable => IsChangeable && !IsUntouchable && NodeData.Style.SupportOffset != SupportOption.None;
         public bool IsRotateChangeable => IsChangeable && NodeData.Style.SupportRotate != SupportOption.None;
         public bool IsMainRoad { get; set; }
@@ -75,6 +75,7 @@ namespace NodeController
         public bool IsPath { get; private set; }
         public bool IsDecoration { get; private set; }
         public bool IsNodeLess { get; private set; }
+        public bool FinalNodeLess => IsNodeLess || ForceNodeLess == true;
         public bool IsUntouchable { get; private set; }
 
         public int PedestrianLaneCount { get; }
@@ -122,9 +123,16 @@ namespace NodeController
             get => Stretch * 100f;
             set => Stretch = value / 100f;
         }
-        public bool NoMarkings { get; set; }
+        public bool? NoMarkings { get; set; }
         public bool IsSlope { get; set; }
-        public bool Collision { get; set; }
+        public bool? Collision { get; set; }
+
+        private bool _forceNodeLess;
+        public bool? ForceNodeLess
+        {
+            get => _forceNodeLess;
+            set => SetForceNodeless(value == true, true);
+        }
         private bool KeepDefaults
         {
             get => _keepDefault /*|| IsUntouchable*/;
@@ -147,7 +155,7 @@ namespace NodeController
             {
                 if (NodeData?.Type == NodeStyleType.Stretch)
                     return false; // always ignore.
-                else if (NoMarkings)
+                else if (NoMarkings == true)
                     return true; // always hide
                 else
                     return null; // default.
@@ -241,7 +249,7 @@ namespace NodeController
             if (style.SupportSlopeJunction == SupportOption.None || force || IsUntouchable)
                 IsSlope = style.DefaultSlopeJunction;
 
-            if (IsNodeLess)
+            if (FinalNodeLess)
             {
                 MinPossibleOffset = 0f;
                 MaxPossibleOffset = 0f;
@@ -292,6 +300,15 @@ namespace NodeController
             var t = side.RawTrajectory.Travel(offset);
             side.RawT = Mathf.Clamp(t, side.MinT, side.MaxT);
             SetByCorners(side.Type);
+        }
+        private void SetForceNodeless(bool value, bool reset = false)
+        {
+            if (value != _forceNodeLess)
+            {
+                _forceNodeLess = value;
+                if(reset)
+                    ResetToDefault(NodeData.Style, true);
+            }
         }
 
         #endregion
@@ -395,11 +412,11 @@ namespace NodeController
             {
                 for (var i = 0; i < count; i += 1)
                 {
-                    if (!endDatas[i].Collision)
+                    if (endDatas[i].Collision == false)
                         continue;
 
                     var j = i.NextIndex(count);
-                    while (j != i && !endDatas[j].Collision)
+                    while (j != i && endDatas[j].Collision == false)
                         j = j.NextIndex(count);
 
                     if (j == i)
@@ -490,7 +507,7 @@ namespace NodeController
             {
                 var endData = endDatas[i];
 
-                if (!endData.IsNodeLess)
+                if (!endData.FinalNodeLess)
                 {
                     endData.LeftSide.MinT = leftMainMinT[i];
                     endData.RightSide.MinT = rightMainMinT[i];
@@ -501,7 +518,7 @@ namespace NodeController
                     endData.RightSide.MinT = endData.RightSide.MainT;
                 }
 
-                if (!endData.IsNodeLess && count >= 2)
+                if (!endData.FinalNodeLess && count >= 2)
                 {
                     endData.LeftSide.DefaultT = leftDefaultT[i];
                     endData.RightSide.DefaultT = rightDefaultT[i];
@@ -1010,8 +1027,9 @@ namespace NodeController
             config.AddAttr("TA", TwistAngle);
             config.AddAttr("S", Shift);
             config.AddAttr("ST", Stretch);
-            config.AddAttr("NM", NoMarkings ? 1 : 0);
-            config.AddAttr("CL", Collision ? 1 : 0);
+            config.AddAttr("NM", NoMarkings == true ? 1 : 0);
+            config.AddAttr("CL", Collision == true ? 1 : 0);
+            config.AddAttr("FNL", ForceNodeLess == true ? 1 : 0);
             config.AddAttr("IS", IsSlope ? 1 : 0);
             config.AddAttr("KD", KeepDefaults ? 1 : 0);
 
@@ -1037,6 +1055,9 @@ namespace NodeController
 
             if (style.SupportCollision != SupportOption.None && !IsUntouchable)
                 Collision = config.GetAttrValue("CL", style.GetDefaultCollision(this) ? 1 : 0) == 1;
+
+            if (style.SupportForceNodeLess != SupportOption.None && !IsUntouchable)
+                SetForceNodeless(config.GetAttrValue("FNL", style.DefaultForceNodeLess ? 1 : 0) == 1);
 
             if (style.SupportSlopeJunction != SupportOption.None)
                 IsSlope = config.GetAttrValue("IS", style.DefaultSlopeJunction ? 1 : 0) == 1;
