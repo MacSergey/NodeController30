@@ -131,11 +131,7 @@ namespace NodeController
         public bool? ForceNodeLess
         {
             get => _forceNodeLess;
-            set
-            {
-                _forceNodeLess = value == true;
-                ResetToDefault(NodeData.Style, true);
-            }
+            set => SetForceNodeless(value == true, true);
         }
         private bool KeepDefaults
         {
@@ -304,6 +300,15 @@ namespace NodeController
             var t = side.RawTrajectory.Travel(offset);
             side.RawT = Mathf.Clamp(t, side.MinT, side.MaxT);
             SetByCorners(side.Type);
+        }
+        private void SetForceNodeless(bool value, bool reset = false)
+        {
+            if (value != _forceNodeLess)
+            {
+                _forceNodeLess = value;
+                if(reset)
+                    ResetToDefault(NodeData.Style, true);
+            }
         }
 
         #endregion
@@ -1052,7 +1057,7 @@ namespace NodeController
                 Collision = config.GetAttrValue("CL", style.GetDefaultCollision(this) ? 1 : 0) == 1;
 
             if (style.SupportForceNodeLess != SupportOption.None && !IsUntouchable)
-                ForceNodeLess = config.GetAttrValue("FNL", style.DefaultForceNodeLess ? 1 : 0) == 1;
+                SetForceNodeless(config.GetAttrValue("FNL", style.DefaultForceNodeLess ? 1 : 0) == 1);
 
             if (style.SupportSlopeJunction != SupportOption.None)
                 IsSlope = config.GetAttrValue("IS", style.DefaultSlopeJunction ? 1 : 0) == 1;
