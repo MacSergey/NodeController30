@@ -321,7 +321,7 @@ namespace NodeController
             var stretch = GetStretchOption(parent, totalSupport);
             var slope = GetSlopeOption(parent, totalSupport);
             var twist = GetTwistOption(parent, totalSupport);
-            var hideMarking = GetNoMarkingsOption(parent, totalSupport);
+            var hideMarking = GetMarkingsOption(parent, totalSupport);
             var collision = GetCollisionOption(parent, totalSupport);
             var forceNodeLess = GetForceNodeLessOption(parent, totalSupport);
 
@@ -530,13 +530,13 @@ namespace NodeController
             else
                 return null;
         }
-        private BoolOptionPanel GetNoMarkingsOption(UIComponent parent, SupportOption totalSupport)
+        private BoolOptionPanel GetMarkingsOption(UIComponent parent, SupportOption totalSupport)
         {
             if (SupportNoMarking != SupportOption.None && Data.SegmentEndDatas.Any(s => IsRoadPredicate(s)) && HideCrosswalksEnable)
             {
                 var hideMarking = ComponentPool.Get<BoolOptionPanel>(parent);
                 hideMarking.Text = Localize.Option_Marking;
-                hideMarking.Init(Data, SupportNoMarking, totalSupport, NoMarkingsGetter, NoMarkingsSetter, IsRoadPredicate);
+                hideMarking.Init(Data, SupportNoMarking, totalSupport, MarkingsGetter, MarkingsSetter, IsRoadPredicate);
 
                 return hideMarking;
             }
@@ -656,7 +656,7 @@ namespace NodeController
         private static void SlopeSetter(INetworkData data, float value) => data.SlopeAngle = value;
         private static void TwistSetter(INetworkData data, float value) => data.TwistAngle = value;
         private static void StretchSetter(INetworkData data, float value) => data.StretchPercent = value;
-        private static void NoMarkingsSetter(INetworkData data, bool? value) => data.NoMarkings = value == null ? null : !value.Value;
+        private static void MarkingsSetter(INetworkData data, bool? value) => data.NoMarkings = value == null ? null : !value.Value;
         private static void CollisionSetter(INetworkData data, bool? value) => data.Collision = value;
         private static void ForceNodeLessSetter(INetworkData data, bool? value) => data.ForceNodeLess = value;
 
@@ -666,7 +666,11 @@ namespace NodeController
         private static float SlopeGetter(INetworkData data) => data.SlopeAngle;
         private static float TwistGetter(INetworkData data) => data.TwistAngle;
         private static float StretchGetter(INetworkData data) => data.StretchPercent;
-        private static bool? NoMarkingsGetter(INetworkData data) => data.NoMarkings;
+        private static bool? MarkingsGetter(INetworkData data)
+        {
+            var value = data.NoMarkings;
+            return value == null ? null : !value.Value;
+        }
         private static bool? CollisionGetter(INetworkData data) => data.Collision;
         private static bool? ForceNodeLessGetter(INetworkData data) => data.ForceNodeLess;
 
