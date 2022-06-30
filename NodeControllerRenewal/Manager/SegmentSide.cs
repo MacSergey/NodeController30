@@ -30,12 +30,48 @@ namespace NodeController
             public Vector3 _maxPos;
             public Vector3 _maxDir;
 
-            public float DeltaT => 0.05f / _rawTrajectory.Length;
-            public float CurrentT => Mathf.Clamp(_rawT, _minT + DeltaT, _maxT - DeltaT);
+            public float DeltaT
+            {
+                get
+                {
+                    var deltaT = 0.05f / _rawTrajectory.Length;
+                    return deltaT;
+                }
+            }
+            public float CurrentT
+            {
+                get
+                {
+                    var deltaT = DeltaT;
+                    var currentT = Mathf.Clamp(_rawT, _minT + deltaT, _maxT - deltaT);
+                    return currentT;
+                }
+            }
 
-            public bool IsMinBorderT => _rawT - DeltaT <= _minT;
-            public bool IsMaxBorderT => _rawT + DeltaT >= _maxT;
-            public bool IsShort => (_maxT - CurrentT) <= (1f / _rawTrajectory.Length);
+            public bool IsMinBorderT
+            {
+                get
+                {
+                    var deltaT = DeltaT;
+                    return _rawT - deltaT <= _minT;
+                }
+            }
+            public bool IsMaxBorderT
+            {
+                get
+                {
+                    var deltaT = DeltaT;
+                    return _rawT + deltaT >= _maxT;
+                }
+            }
+            public bool IsShort
+            {
+                get
+                {
+                    var isShort = (_maxT - CurrentT) <= (1f / _rawTrajectory.Length);
+                    return isShort;
+                }
+            }
 
             public DataStruct(SegmentSide segmentSide)
             {
