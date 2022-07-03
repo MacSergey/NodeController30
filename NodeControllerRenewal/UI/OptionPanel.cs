@@ -207,14 +207,14 @@ namespace NodeController.UI
             {
                 item.AddItem(true, CommonLocalize.MessageBox_Yes);
                 if(data is NodeData)
-                    item.AddItem(null, "/", false, 10f);
+                    item.AddItem(null, "/", clickable: false, width: 10f);
                 item.AddItem(false, CommonLocalize.MessageBox_No);
             }
             else
             {
                 item.AddItem(true, "I");
                 if (data is NodeData)
-                    item.AddItem(null, "/", false, 10f);
+                    item.AddItem(null, "/", clickable: false, width: 10f);
                 item.AddItem(false, "O");
             }
 
