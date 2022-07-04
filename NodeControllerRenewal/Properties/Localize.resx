@@ -209,6 +209,18 @@ Backward compatibility does not provide the transfer of all data, may be require
 [FIXED] Fixed calculation for nodeless networks.
 [FIXED] Fixed calculation of node insertion.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] Added the ability to disable option "fix stuck pedestrian on long intersections" due to complaining about affecting simulation speed. The option is disabled by default, can be enabled in the mod settings.
+[NEW] Added option "Collision". if you disable it for segment, segment will not have limits for changing offset and can be overlapped by other segments.
+[NEW] Added option "Nodeless". it makes segment render without node.
+[NEW] Added the ability to hide unused options. All options exclude offset, shift and rotate can be hidden in the mod settings if you dont use them.
+[FIXED] Fixed shift calculation on middle nodes.
+[UPDATED] Max slope value for roads was increased to 60 degrees.
+[UPDATED] Max tweest value for roads was increased to 60 degrees.
+[UPDATED] Max shift value was increased to 64 meters.
+[FIXED] Fixed hole in overlay on such a big nodes.
+[TRANSLATION] Added Romanian language.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bend</value>
   </data>
@@ -265,6 +277,9 @@ Backward compatibility does not provide the transfer of all data, may be require
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marking</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>More options</value>
   </data>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>Nodeless</value>
@@ -352,6 +367,18 @@ Backward compatibility does not provide the transfer of all data, may be require
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Node is sloped by default</value>
+  </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Options visibility</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Сollapsed</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Always visible</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Show nearby nodes overlay</value>

@@ -155,6 +155,18 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
   </data>
   
   
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] Die Möglichkeit zum Deaktivieren der Option "Feststeckte Fußgänger an langen Kreuzungen reparieren" wurde aufgrund von Beschwerden über Auswirkungen auf die Simulationsgeschwindigkeit hinzugefügt. Die Option ist standardmäßig deaktiviert, kann aber in den Mod-Einstellungen aktiviert werden.
+[NEW] Option "Kollision" hinzugefügt. wenn es für das Segment deaktivieret wird, hat das Segment keine Limits für das Ändern des Offsets und kann durch andere Segmente hindurch überlappt werden.
+[NEW] Option "Nodeless" hinzugefügt. Es erstellt das jeweilige Segment ohne Netzwerk-Knoten.
+[NEW] Ungenutzte Optionen ausblenden. Alle Optionen, außer Versatz, Verschieben und Rotation, können in den Mod-Einstellungen ausgeblendet werden, wenn sie nicht verwendet werden.
+[FIXED] Verschiebeerechnung auf Mittelknoten korrigiert.
+[UPDATED] Maximaler Neigungswert für Straßen wurde auf 60 Grad erhöht.
+[UPDATED] Maximaler Verdrehungswert für Straßen wurde auf 60 Grad erhöht.
+[UPDATED] Maximaler Verschiebewert wurde auf 64 Meter erhöht.
+[FIXED] Löcher im Overlay auf übergroßen Netzwerk-Knoten behoben.
+[TRANSLATION] Rumänische Sprache hinzugefügt.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Kurve</value>
   </data>
@@ -211,6 +223,9 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Markierung</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>Weitere Optionen</value>
   </data>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>Ohne Netzwerk-Knoten</value>
@@ -298,6 +313,18 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Netzwerknoten sind standardmäßig geneigt</value>
+  </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Sichtbarkeit der Optionen</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Deaktiviert</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Eingeklappt</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Immer sichtbar</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Zeige Hervorhebung für nahe Netzwerk-Knoten</value>

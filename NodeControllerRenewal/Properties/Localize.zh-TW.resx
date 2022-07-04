@@ -137,6 +137,7 @@
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>彎曲</value>
   </data>
@@ -193,6 +194,9 @@
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>標線</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>更多選項</value>
   </data>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>無節點</value>
@@ -280,6 +284,18 @@
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>節點預設為斜坡</value>
+  </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>選項顯示設定</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>停用</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>摺疊</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>總是顯示</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>凸顯臨近節點</value>

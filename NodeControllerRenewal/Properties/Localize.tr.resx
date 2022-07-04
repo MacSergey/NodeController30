@@ -137,6 +137,7 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Eğim</value>
   </data>
@@ -192,6 +193,7 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Option_Marking" xml:space="preserve">
     <value>İşaretleniyor</value>
   </data>
+  
   
   <data name="Option_Offset" xml:space="preserve">
     <value>Dengele</value>
@@ -263,6 +265,10 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Düğüm varsayılan olarak eğim verildi</value>
   </data>
+  
+  
+  
+  
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Yakındaki kesişen düğümleri göster</value>
   </data>

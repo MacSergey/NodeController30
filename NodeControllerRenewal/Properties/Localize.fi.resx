@@ -137,6 +137,7 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Mutka</value>
   </data>
@@ -192,6 +193,7 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Option_Marking" xml:space="preserve">
     <value>Merkinnät</value>
   </data>
+  
   
   <data name="Option_Offset" xml:space="preserve">
     <value>Etäisyys</value>
@@ -263,6 +265,10 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Liittymät ovat kaltevia oletuksena</value>
   </data>
+  
+  
+  
+  
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Näytä läheisten liittymien peittokuva</value>
   </data>

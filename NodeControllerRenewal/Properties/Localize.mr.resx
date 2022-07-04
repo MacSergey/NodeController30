@@ -137,6 +137,18 @@ Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manu
   
   
   
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] Keupayaan untuk menyahdayakan pilihan "baiki pejalan kaki yang tersangkut pada persimpangan yang panjang" telah ditambah kerana terdapat aduan mengenai terkesannya kelajuan penyelakuan. Pilihan ini dinyahdayakan secara lalai, boleh didayakan dalam tetapan mod.
+[NEW] Pilihan "Perlanggaran" telah ditambah. Jika anda menyahdayakannya untuk segmen, segmen tidak akan ada had dalam pengubahan ofset dan boleh bertindih dengan segmen lain.
+[NEW] Pilihan "Tanpa nod" telah ditambah. Pilihan tersebut membuatkan segmen dikemas gabung tanpa nod.
+[NEW] Keupayaan untuk menyembunyikan pilihan yang tidak digunakan telah ditambah. Semua pilihan kecuali ofset, anjakan dan putaran boleh disembunyikan dalam tetapan mod jika anda tidak menggunakannya.
+[FIXED] Perkiraan anjakan pada nod pertengahan telah dibaiki.
+[UPDATED] Nilai lereng maksimum untuk jalan telah ditingkatkan ke 60 darjah.
+[UPDATED] Nilai pulas maksimum untuk jalan telah ditingkatkan ke 60 darjah.
+[UPDATED] Nilai anjakan maksimum telah ditingkatkan ke 64 meter.
+[FIXED] Lubang dalam tindihan atas pada nod yang amat besar telah dibaiki.
+[TRANSLATION] Bahasa Romania telah ditambah.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Lentur</value>
   </data>
@@ -193,6 +205,9 @@ Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manu
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Tanda</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>Lebih banyak pilihan</value>
   </data>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>Tanpa nod</value>
@@ -280,6 +295,18 @@ Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manu
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Nod berlereng secara lalai</value>
+  </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Ketampakan pilihan</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Dinyahdayakan</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Disembunyikan</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Sentiasa tampak</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Tunjuk tindihan atas nod berhampiran</value>

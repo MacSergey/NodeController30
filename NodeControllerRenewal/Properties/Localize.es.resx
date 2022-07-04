@@ -137,6 +137,7 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Doblado</value>
   </data>
@@ -193,6 +194,9 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcado</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>Más opciones</value>
   </data>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>Sin nodo</value>
@@ -280,6 +284,18 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Inclinar el nodo de forma predeterminada</value>
+  </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Más opciones - Configurar visibilidad</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Deshabilitado</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Colapsado</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Siempre visible</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostrar superposición de nodos cercanos</value>

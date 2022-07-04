@@ -137,6 +137,18 @@
   
   
   
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] Added the ability to disable option "fix stuck pedestrian on long intersections" due to complaining about affecting simulation speed. The option is disabled by default, can be enabled in the mod settings.
+[NEW] Added option "Collision". if you disable it for segment, segment will not have limits for changing offset and can be overlapped by other segments.
+[NEW] Added option "Nodeless". it makes segment render without node.
+[NEW] Added the ability to hide unused options. All options exclude offset, shift and rotate can be hidden in the mod settings if you dont use them.
+[FIXED] Fixed shift calculation on middle nodes.
+[UPDATED] Max slope value for roads was increased to 60 degrees.
+[UPDATED] Max tweest value for roads was increased to 60 degrees.
+[UPDATED] Max shift value was increased to 64 meters.
+[FIXED] Fixed hole in overlay on such a big nodes.
+[TRANSLATION] Added Romanian language.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>ベンド</value>
   </data>
@@ -193,6 +205,9 @@
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>横断歩道の表示</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>オプションを展開</value>
   </data>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>ノードレス</value>
@@ -280,6 +295,18 @@
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>デフォルトでノードを全てスロープ化</value>
+  </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>オプションの表示設定</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>無効化</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>折り畳む</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>常に表示</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>選択中は近くにあるノードをハイライト</value>

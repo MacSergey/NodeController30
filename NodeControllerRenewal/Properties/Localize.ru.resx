@@ -209,6 +209,18 @@
 [FIXED] Исправлен рассчет сетей без узлов.
 [FIXED] Исправлен рассчет вставки узла.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] Добавлена возможность отключить опцию "Исправление застрявания пешеходов на слишком длинных перекрестках" из-за жалоб на влияние на скорость симуляции. Теперь эта опция выключена по умолчанию и может быть включена в настройках мода.
+[NEW] Добавлена опция "Коллизия". Если вы отключите коллизию для сегмента, он не будет иметь ограничений для изменения отступа и может накладываться на другие сегменты.
+[NEW] Добавлена опция "Без узла". Это опция отключает отрисовку узла для сегмента.
+[NEW] Добавлена возможность скрывать ненужные опции. Все опции, кроме отступа, смещения и поворота могут быть скрыть в настройках мода если вы ими не пользуетесь.
+[FIXED] Исплавлен рассчет смещения для среднего узла.
+[UPDATED] Максимальный наклон для дорог увеличин до 60 градусов.
+[UPDATED] Максимальное скручивание для дорог увеличино до 60 градусов.
+[UPDATED] Максимальный сдвиг увеличен до 64 метров.
+[FIXED] Исправлена дыра в оверлеи при наведение на очень большие узлы.
+[TRANSLATION] Добавлен перевод на румынский.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Изгиб</value>
   </data>
@@ -265,6 +277,9 @@
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Разметка</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>Дополнительные параметры</value>
   </data>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>Без узла</value>
@@ -353,6 +368,18 @@
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Узел наклонный по умолчанию</value>
   </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Отображение опций</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Отключено</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Свернуто</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Отображать всегда</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Подсвечивать ближайшие узлы</value>
   </data>
@@ -372,10 +399,10 @@
     <value>Переключение подземного режима</value>
   </data>
   <data name="Settings_ToggleUndergroundButtons" xml:space="preserve">
-    <value>Нажмите {0} для входа и {1} для выхода</value>
+    <value>Нажать {0} для входа и {1} для выхода</value>
   </data>
   <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
-    <value>Удерживайте {0}</value>
+    <value>Удерживать {0}</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>Рассчитать сдвиг между перекрестками</value>

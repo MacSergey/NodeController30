@@ -127,16 +127,100 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
   <data name="Mod_Description" xml:space="preserve">
     <value>Changer le type de nœud et la forme</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
+    <value>[NEW] Ajout d'un mode automatique pour la direction de la pente principale.
+[NEW] Ajout d'une mise en évidence rouge pour les segments courts (les segments courts entraînent une vitesse incorrecte pour les véhicules).
+[NEW] Ajout de la possibilité de réinitialiser uniquement les décalages à la valeur par défaut.
+[FIXED] Correction du calcul de la forme des nœuds par défaut.
+[FIXED] Correction du calcul erroné des angles sur des segments trop inclinés ou trop incurvés.
+[FIXED] Correction des nœuds cassés après avoir rechargé la carte sans fermer le jeu.
+[FIXED] Correction de la disparition des remorques des véhicules.
+[FIXED] Correction de la disparition des routes après les catastrophes.
+[FIXED] Correction du mauvais sens de rotation des trains.
+[FIXED] Correction de la hauteur des nœuds dans l'éditeur de ressources.
+[FIXED] Correction de la valeur de décalage par défaut.
+[FIXED] Correction de la compatibilité avec TM:PE.
+[FIXED] Correction du chargement des données des ressources de type intersection.
+[FIXED] Correction des piliers non supprimables après le placement d'une ressource de type intersection.
+[TRANSLATION] Ajout de la traduction polonaise.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_0_2" xml:space="preserve">
+    <value>[FIXED] Correction de la hauteur des nœuds en dehors des tuiles disponibles (5x5).
+[FIXED] Correction de la position centrale du nœud.
+[FIXED] Correction de la texture des passages piétons.
+[FIXED] Correction de la duplication de boutons
+[FIXED] Correction du bouton défectueux "Rendre les extrémités droites".</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_0_3" xml:space="preserve">
+    <value>[TRANSLATION] Ajout de la traduction portugaise.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_0_4" xml:space="preserve">
+    <value>[NEW] Ajout du contrôle des dépendances manquantes et des conflits entre mods.
+[NEW] Suppression de la collision des segments entre les voies de train/métro.
+[FIXED] Correction du décalage du chargement si la valeur est supérieure à 100m.
+[FIXED] Correction de la direction sur les segments décalés.
+[FIXED] Correction du calcul des segments secondaires sur les nœuds inclinés.
+[FIXED] Correction des nœuds de type croisement et demi-tour.
+[TRANSLATION] Ajout de la traduction italienne.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_0_5" xml:space="preserve">
+    <value>[FIXED] Correction du calcul de la collision des segments.
+[TRANSLATION] Ajout de la traduction en chinois traditionnel.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_1" xml:space="preserve">
+    <value>[NEW] Ajout du mode souterrain (maintenez la touche Maj pour sélectionner les nœuds souterrains).
+[NEW] Ajout d'une mise en évidence des nœuds proches.
+[NEW] Ajout du calcul du décalage avec les nœuds à proximité - réglez la valeur moyenne du décalage pour les nœuds.
+[NEW] Ajout du calcul du décalage par intersections - réglez la valeur du décalage pour tous les nœuds entre les intersections pour une transition douce (comme -2,-1,0,+1,+2).
+[NEW] Ajout d'un décalage entre les intersections - réglez la valeur de décalage pour tous les nœuds entre les intersections.
+[NEW] Ajout de raccourcis, vous pouvez associer les touches dans les options du mod.
+[NEW] Ajout de la possibilité de cacher le marquage et de changer la rotation sur les segments intouchables (comme le port ou la gare de marchandises).
+[FIXED] Correction de la réinitialisation du style des nœuds du milieu après le chargement de la carte.
+[FIXED] Correction de la réinitialisation du style des nœuds lors du remplacement du segment.
+[FIXED] Correction du calcul automatique de la direction de la pente principale.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_1_1" xml:space="preserve">
+    <value>[FIXED]  Correction de la non actualisation des nœuds après le chargement de la carte.
+[NEW]  Ajout d'une fonction de saut de sélection comme dans MoveIt. Appuyez sur Ctrl+Espace pour passer de l'un à l'autre (vous pouvez modifier la combinaison dans les options du mod).
+[NEW]  Ajout du paramètre "Les nœuds sont inclinés par défaut". Cette option est désactivée par défaut.
+[NEW]  Ajout de la possibilité de changer le type de nœud avec la molette de la souris.
+[NEW]  Ajout d'une nouvelle icône pour le bouton UUI.
+[NEW]  Ajout d'un avertissement pour les utilisateurs Linux concernant les bibliothèques manquantes.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_1_2" xml:space="preserve">
+    <value>[TRANSLATION] Ajout des traductions indonésienne, coréenne et malaisienne.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_1_3" xml:space="preserve">
+    <value>[NEW] Ajout de la coloration du texte des infobulles.
+[NEW] Ajout de la possibilité de masquer le bouton original du mod dans la barre d'outils si vous utilisez le mod UUI.
+[TRANSLATION] Ajout de la traduction turque.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_2" xml:space="preserve">
+    <value>[NEW] Ajout de la possibilité de modifier les réseaux décoratif. La valeur maximale de pente et de torsion pour les réseaux décoratif est de 85 degrés.
+[NEW] Modification de la limite du jeu pour le calcul du chemin pour les piétons sur les intersections : les piétons ne sont plus bloqués sur les intersections larges.
+[NEW] Ajout d'une option pour les noeuds d'insertion : cliquer sur le segnemt (comportement par défaut comme avant), cliquer avec Ctrl sur le segment, désactivé.
+[NEW] Ajout d'options de torsion :
+--- Calculer la torsion par les nœuds proches - définir la valeur de torsion moyenne pour le nœud.
+--- Calculer la torsion par intersections - définir la valeur de la torsion pour tous les nœuds entre les intersections pour une transition douce (comme -4°,-2°,0°,+2°,+4°).
+--- Définir la torsion entre les intersections - définit la valeur de torsion pour tous les nœuds entre les intersections.
+[NEW] Ajout de la possibilité de modifier la valeur de la pente pour chaque segment sur le nœud central.
+[NEW] Ajout de la possibilité de modifier le décalage et la rotation des nœuds d'extrémité.
+[UPDATED] La mise en évidence a été adaptée pour les réseaux trop étroits.
+[FIXED] Correction du calcul pour les réseaux sans nœuds.
+[FIXED] Correction du calcul de l'insertion des nœuds.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] Ajout de la possibilité de désactiver l'option "Corriger les piétons bloqués sur les longues intersections" en raison de plaintes concernant l'impact de la vitesse de simulation. L'option est désactivée par défaut, mais peut être activée dans les paramètres du mod.
+[NEW] Ajout de l'option "Collision". Si vous la désactivez pour un segment, ce segment n'aura pas de limites de décalage et d'autres segments peuvent le chevaucher.
+[NEW] Ajout de l'option "Sans nœud". Cela permet d'afficher un segment sans noeud.
+[NEW] Ajout de la possibilité de masquer les options inutilisées. Toutes les options, à l'exception du décalage et de la rotation, peuvent être masquées dans les paramètres du mod si vous ne les utilisez pas.
+[FIXED] Correction du calcul du décalage des nœuds intermédiaires.
+[UPDATED] La valeur de pente maximale pour les routes a été augmentée à 60 degrés.
+[UPDATED] La valeur de torsion maximale pour les routes a été augmentée à 60 degrés.
+[UPDATED] La valeur maximale de décalage a été augmentée à 64 mètres.
+[FIXED] Correction d'un trou dans la mise en évidence des nœuds de grande taille.
+[TRANSLATION] Ajout de la traduction roumaine.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Courbe</value>
   </data>
@@ -193,6 +277,9 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marquage</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>Plus d'options</value>
   </data>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>Sans nœud</value>
@@ -280,6 +367,18 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Les nœuds sont inclinés par défaut</value>
+  </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Visibilité des options</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Désactivé</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Masqué</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Toujours visible</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Afficher les nœuds à proximité</value>

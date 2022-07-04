@@ -137,6 +137,7 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curva</value>
   </data>
@@ -188,6 +189,7 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcação</value>
   </data>
+  
   
   <data name="Option_Offset" xml:space="preserve">
     <value>Deslocamento</value>
@@ -257,6 +259,10 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>O nó é inclinado por padrão</value>
   </data>
+  
+  
+  
+  
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostrar sobreposição de nódulos próximos</value>
   </data>

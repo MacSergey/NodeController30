@@ -137,6 +137,7 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curbă</value>
   </data>
@@ -193,6 +194,9 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcare</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>Mai multe opțiuni</value>
   </data>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>Fără noduri</value>
@@ -280,6 +284,18 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Nodul este înclinat în mod implicit</value>
+  </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Afișare opțiuni</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Dezactivat</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Ascuns</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Mereu vizibil</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Afișați overlay-ul cu nodurile din apropriere</value>

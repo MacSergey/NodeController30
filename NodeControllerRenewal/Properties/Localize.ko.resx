@@ -137,6 +137,18 @@
   
   
   
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] 시뮬레이션 속도에 영향을 준다는 불만 사항을 수용해 "긴 교차로에서 보행자 끼임 현상 수정" 설정을 끌 수 있도록 하였습니다. 설정은 기본적으로 꺼져 있으며, 모드 설정에서 켤 수 있습니다.
+[NEW] "충돌" 옵션 추가. 세그먼트의 충돌 옵션을 끄면, 오프셋 변경 제한이 사라지며 다른 세그먼트와 겹치도록 할 수 있습니다.
+[NEW] "노드 없음" 옵션 추가. 노드 없이 세그먼트를 렌더링합니다.
+[NEW] 사용하지 않는 옵션을 숨기는 기능 추가. 오프셋, 밀려짐(시프트), 회전을 제외한 모든 옵션의 경우, 사용하지 않는다면 모드 설정에서 숨길 수 있습니다.
+[FIXED] 중간 노드에 적용되는 밀려짐(시프트) 계산을 수정했습니다.
+[UPDATED] 최대 경사값을 60도로 늘렸습니다.
+[UPDATED] 최대 비틀림값을 60도로 늘렸습니다.
+[UPDATED] 최대 밀려짐(시프트)값을 64미터로 늘렸습니다.
+[FIXED] 큰 노드의 오버레이에서 나타나는 구멍을 수정했습니다.
+[TRANSLATION] 루마니아어를 지원합니다.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>커브</value>
   </data>
@@ -193,6 +205,9 @@
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>표지</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>더 많은 설정</value>
   </data>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>노드 없음</value>
@@ -280,6 +295,18 @@
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>노드가 기본적으로 경사졌습니다</value>
+  </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>설정 표시 여부</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>꺼짐</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>숨김</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>항상 표시</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>근처 노드 오버레이 표시</value>

@@ -136,6 +136,7 @@
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bocht</value>
   </data>
@@ -192,6 +193,9 @@
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Markering</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>Meer opties</value>
   </data>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>Zonder knopen</value>
@@ -279,6 +283,18 @@
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Knooppunt heeft een helling als standaard</value>
+  </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Zichtbaarheid van opties</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Uitgeschakeld</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Ingeklapt</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Altijd zichtbaar</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Toon nabijgelegen knooppunten overzicht</value>

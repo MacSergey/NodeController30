@@ -137,6 +137,7 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Zegnij</value>
   </data>
@@ -193,6 +194,9 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Oznakowanie</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>Więcej opcji</value>
   </data>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>Bez węzłów</value>
@@ -280,6 +284,18 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Węzeł jest domyślnie pochyły</value>
+  </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Widoczność opcji</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Wyłączone</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Ukryte</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Zawsze widoczne</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Pokaż nakładkę pobliskich węzłów</value>

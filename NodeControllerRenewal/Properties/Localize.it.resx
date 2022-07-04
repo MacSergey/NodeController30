@@ -137,6 +137,7 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Piega</value>
   </data>
@@ -192,6 +193,7 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcatura</value>
   </data>
+  
   
   <data name="Option_Offset" xml:space="preserve">
     <value>Spostamento</value>
@@ -271,6 +273,10 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Il nodo è inclinato di default</value>
   </data>
+  
+  
+  
+  
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostra la sovrapposizione dei nodi vicini</value>
   </data>
