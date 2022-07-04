@@ -78,16 +78,16 @@ namespace NodeController
         public virtual SupportOption SupportRotate => SupportOption.None;
         public virtual SupportOption SupportSlope => SupportOption.None;
         public virtual SupportOption SupportTwist => SupportOption.None;
-        public virtual SupportOption SupportNoMarking => SupportOption.None;
+        public virtual SupportOption SupportMarking => SupportOption.None;
         public virtual SupportOption SupportSlopeJunction => SupportOption.None;
         public virtual SupportOption SupportStretch => SupportOption.None;
         public virtual SupportOption SupportCollision => SupportOption.None;
-        public virtual SupportOption SupportForceNodeLess => SupportOption.None;
+        public virtual SupportOption SupportForceNodeless => SupportOption.None;
         public virtual bool SupportTrafficLights => false;
         public virtual bool OnlyKeepDefault => false;
         public virtual bool NeedFixDirection => true;
 
-        public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch | SupportCollision | SupportForceNodeLess) & SupportOption.All;
+        public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch | SupportCollision | SupportForceNodeless) & SupportOption.All;
         private bool OnlyOnSlope => SupportSlopeJunction != SupportOption.None || DefaultSlopeJunction;
 
         public virtual float DefaultOffset => 0f;
@@ -301,10 +301,13 @@ namespace NodeController
         public List<EditorItem> GetUIComponents(UIComponent parent)
         {
             var components = new List<EditorItem>();
+            var optionPanels = new Dictionary<Options, EditorPropertyPanel>();
             var totalSupport = TotalSupport;
 
             var junctionStyle = GetJunctionButtons(parent);
-            var mainRoad = GetMainRoadButtons(parent);
+            if (GetMainRoadButtons(parent) is EditorPropertyPanel mainRoad)
+                optionPanels.Add(Options.MainRoad, mainRoad);
+
             if (totalSupport == SupportOption.All)
             {
                 var space = ComponentPool.Get<SpacePanel>(parent);
@@ -315,92 +318,122 @@ namespace NodeController
                 titles.Init(Data, SupportOption.All, SupportOption.All);
                 components.Add(titles);
             }
-            var offset = GetOffsetOption(parent, totalSupport);
-            var rotate = GetRotateOption(parent, totalSupport);
-            var shift = GetShiftOption(parent, totalSupport);
-            var stretch = GetStretchOption(parent, totalSupport);
-            var slope = GetSlopeOption(parent, totalSupport);
-            var twist = GetTwistOption(parent, totalSupport);
-            var hideMarking = GetMarkingsOption(parent, totalSupport);
-            var collision = GetCollisionOption(parent, totalSupport);
-            var forceNodeLess = GetForceNodeLessOption(parent, totalSupport);
 
+            foreach (var option in EnumExtension.GetEnumValues<Options>(i => true))
+            {
+                if (Settings.GetOptionVisibility(option) == OptionVisibility.Visible)
+                {
+                    if(GetOptionPanel(parent, option, totalSupport) is EditorPropertyPanel optionPanel)
+                        optionPanels.Add(option, optionPanel);
+                }    
+            }
+
+            bool hiddenExist = false;
+            foreach (var option in EnumExtension.GetEnumValues<Options>(i => true))
+            {
+                if (Settings.GetOptionVisibility(option) == OptionVisibility.Hidden)
+                {
+                    if (GetOptionPanel(parent, option, totalSupport) is EditorPropertyPanel optionPanel)
+                    {
+                        optionPanels.Add(option, optionPanel);
+                        hiddenExist = true;
+                    }
+                }
+            }
+
+            foreach(var optionPanel in optionPanels.Values)
+            {
+                components.Add(optionPanel);
+            }
+
+
+            if (optionPanels.TryGetValue(Options.Offset, out var offset) && offset is IOptionPanel offsetPanel)
+            {
+                if (optionPanels.TryGetValue(Options.Shift, out var shift) && shift is FloatOptionPanel shiftPanel)
+                    shiftPanel.OnChanged += (_, _) => offsetPanel.Refresh();
+
+                if (optionPanels.TryGetValue(Options.Nodeless, out var nodeless) && nodeless is BoolOptionPanel nodelessPanel)
+                    nodelessPanel.OnChanged += (_, _) => offsetPanel.Refresh();
+            }
+
+            if (optionPanels.TryGetValue(Options.Rotate, out var rotate) && rotate is IOptionPanel rotatePanel)
+            {
+                if (optionPanels.TryGetValue(Options.Shift, out var shift) && shift is FloatOptionPanel shiftPanel)
+                    shiftPanel.OnChanged += (_, _) => rotatePanel.Refresh();
+
+                if (optionPanels.TryGetValue(Options.Nodeless, out var nodeless) && nodeless is BoolOptionPanel nodelessPanel)
+                    nodelessPanel.OnChanged += (_, _) => rotatePanel.Refresh();
+            }
+
+            var moreOptionsButton = ComponentPool.Get<ButtonPanel>(parent);
+            components.Add(moreOptionsButton);
+            moreOptionsButton.Text = $"▼ {Localize.Option_MoreOptions} ▼";
+            moreOptionsButton.Init();
+            moreOptionsButton.isVisible = hiddenExist;
+            moreOptionsButton.OnButtonClick += () =>
+            {
+                moreOptionsButton.isVisible = false;
+                UpdateVisible(optionPanels, !moreOptionsButton.isVisibleSelf);
+            };
 
             if (junctionStyle != null)
+            {
                 components.Add(junctionStyle);
-
-            if (mainRoad != null)
-            {
-                SetVisible(Data.IsSlopeJunctions);
-                junctionStyle.OnSelectObjectChanged += SetVisible;
-                components.Add(mainRoad);
-
-                void SetVisible(bool isSlope) => mainRoad.isVisible = isSlope;
+                junctionStyle.OnSelectObjectChanged += (_) => UpdateVisible(optionPanels, !moreOptionsButton.isVisibleSelf);
             }
 
-            if (offset != null)
-            {
-                components.Add(offset);
-                if (shift != null)
-                    shift.OnChanged += (_, _) => offset.Refresh();
-            }
-
-            if (rotate != null)
-            {
-                components.Add(rotate);
-                if (shift != null)
-                    shift.OnChanged += (_, _) => rotate.Refresh();
-            }
-
-            if (shift != null)
-                components.Add(shift);
-
-            if (stretch != null)
-                components.Add(stretch);
-
-            if (slope != null)
-            {
-                components.Add(slope);
-                if (junctionStyle != null)
-                {
-                    SetVisible(Data.IsSlopeJunctions);
-                    junctionStyle.OnSelectObjectChanged += SetVisible;
-
-                    void SetVisible(bool isSlope)
-                    {
-                        slope.isVisible = isSlope;
-                        slope.Refresh();
-                    }
-                }
-            }
-
-            if (twist != null)
-            {
-                components.Add(twist);
-                if (junctionStyle != null)
-                {
-                    SetVisible(Data.IsSlopeJunctions);
-                    junctionStyle.OnSelectObjectChanged += SetVisible;
-
-                    void SetVisible(bool isSlope)
-                    {
-                        twist.isVisible = isSlope;
-                        twist.Refresh();
-                    }
-                }
-            }
-
-            if (collision != null)
-                components.Add(collision);
-
-            if(forceNodeLess != null)
-                components.Add(forceNodeLess);
-
-            if (hideMarking != null)
-                components.Add(hideMarking);
+            UpdateVisible(optionPanels, !moreOptionsButton.isVisibleSelf);
 
             return components;
+
+            
         }
+        private void UpdateVisible(Dictionary<Options, EditorPropertyPanel> optionPanels, bool showHidden)
+        {
+            foreach (var option in EnumExtension.GetEnumValues<Options>(i => true))
+            {
+                if (optionPanels.TryGetValue(option, out var optionPanel))
+                {
+                    bool isVisible = optionPanel.isVisibleSelf;
+                    if (isVisible != IsVisible(option, showHidden))
+                    {
+                        optionPanel.isVisible = !isVisible;
+                        if (!isVisible && optionPanel is IOptionPanel refreshPanel)
+                            refreshPanel.Refresh();
+                    }
+                }
+            }
+        }
+        private bool IsVisible(Options option, bool showHidden)
+        {
+            var visibility = Settings.GetOptionVisibility(option);
+            var visible = visibility == OptionVisibility.Visible || (visibility == OptionVisibility.Hidden && showHidden);
+
+            switch (option)
+            {
+                case Options.Slope:
+                case Options.Twist:
+                    return visible && Data.IsSlopeJunctions;
+                case Options.MainRoad:
+                    return Data.IsSlopeJunctions;
+                default:
+                    return visible;
+            }
+        }
+
+        private EditorPropertyPanel GetOptionPanel(UIComponent parent, Options option, SupportOption support) => option switch
+        {
+            Options.Offset => GetOffsetOption(parent, support),
+            Options.Rotate => GetRotateOption(parent, support),
+            Options.Shift => GetShiftOption(parent, support),
+            Options.Slope => GetSlopeOption(parent, support),
+            Options.Twist => GetTwistOption(parent, support),
+            Options.Stretch => GetStretchOption(parent, support),
+            Options.Marking => GetMarkingsOption(parent, support),
+            Options.Collision => GetCollisionOption(parent, support),
+            Options.Nodeless => GetForceNodeLessOption(parent, support),
+            _ => null,
+        };
 
         private BoolListPropertyPanel GetJunctionButtons(UIComponent parent)
         {
@@ -448,7 +481,7 @@ namespace NodeController
                 offset.Text = Localize.Option_Offset;
                 offset.Format = Localize.Option_OffsetFormat;
                 offset.NumberFormat = "0.##";
-                offset.Init(Data, SupportOffset, totalSupport, OffsetGetter, OffsetSetter, MinMaxOffset, AllowOffsetPredicate);
+                offset.Init(Data, SupportOffset, totalSupport, OffsetGetter, OffsetSetter, MinMaxOffset, HasNodePredicate);
 
                 return offset;
             }
@@ -472,7 +505,7 @@ namespace NodeController
         }
         private FloatOptionPanel GetRotateOption(UIComponent parent, SupportOption totalSupport)
         {
-            if (SupportRotate != SupportOption.None && Data.SegmentEndDatas.Any(s => HasNodePredicate(s)))
+            if (SupportRotate != SupportOption.None && Data.SegmentEndDatas.Any(s => AllowRotatePredicate(s)))
             {
                 var rotate = ComponentPool.Get<FloatOptionPanel>(parent);
                 rotate.Text = Localize.Option_Rotate;
@@ -532,11 +565,11 @@ namespace NodeController
         }
         private BoolOptionPanel GetMarkingsOption(UIComponent parent, SupportOption totalSupport)
         {
-            if (SupportNoMarking != SupportOption.None && Data.SegmentEndDatas.Any(s => IsRoadPredicate(s)) && HideCrosswalksEnable)
+            if (SupportMarking != SupportOption.None && Data.SegmentEndDatas.Any(s => IsRoadPredicate(s)) && HideCrosswalksEnable)
             {
                 var hideMarking = ComponentPool.Get<BoolOptionPanel>(parent);
                 hideMarking.Text = Localize.Option_Marking;
-                hideMarking.Init(Data, SupportNoMarking, totalSupport, MarkingsGetter, MarkingsSetter, IsRoadPredicate);
+                hideMarking.Init(Data, SupportMarking, totalSupport, MarkingsGetter, MarkingsSetter, IsRoadPredicate);
 
                 return hideMarking;
             }
@@ -558,11 +591,11 @@ namespace NodeController
         }
         private BoolOptionPanel GetForceNodeLessOption(UIComponent parent, SupportOption totalSupport)
         {
-            if (SupportForceNodeLess != SupportOption.None && Data.SegmentEndDatas.Any(s => TouchablePredicate(s)))
+            if (SupportForceNodeless != SupportOption.None && Data.SegmentEndDatas.Any(s => TouchablePredicate(s)))
             {
                 var forceNodeLess = ComponentPool.Get<BoolOptionPanel>(parent);
                 forceNodeLess.Text = Localize.Option_NodeLess;
-                forceNodeLess.Init(Data, SupportForceNodeLess, totalSupport, ForceNodeLessGetter, ForceNodeLessSetter, AllowNodeLessPredicate);
+                forceNodeLess.Init(Data, SupportForceNodeless, totalSupport, ForceNodeLessGetter, ForceNodeLessSetter, AllowNodeLessPredicate);
 
                 return forceNodeLess;
             }
@@ -674,16 +707,16 @@ namespace NodeController
         private static bool? CollisionGetter(INetworkData data) => data.Collision;
         private static bool? ForceNodeLessGetter(INetworkData data) => data.ForceNodeLess;
 
-        protected static bool HasNodePredicate(SegmentEndData data) => !data.FinalNodeLess;
+        protected static bool HasNodePredicate(SegmentEndData data) => TouchablePredicate(data) && !data.FinalNodeLess;
         protected static bool TouchablePredicate(SegmentEndData data) => !data.IsUntouchable;
         protected static bool IsRoadPredicate(SegmentEndData data) => data.IsRoad;
         protected static bool IsTrackPredicate(SegmentEndData data) => data.IsTrack;
         protected static bool IsPathPredicate(SegmentEndData data) => data.IsPath;
         protected static bool IsDecorationPredicate(SegmentEndData data) => data.IsDecoration;
 
-        protected static bool AllowOffsetPredicate(SegmentEndData data) => TouchablePredicate(data) && HasNodePredicate(data);
+        protected static bool AllowOffsetPredicate(SegmentEndData data) => TouchablePredicate(data);
         protected static bool AllowShiftPredicate(SegmentEndData data) => TouchablePredicate(data) && !IsDecorationPredicate(data);
-        protected static bool AllowRotatePredicate(SegmentEndData data) => TouchablePredicate(data) && HasNodePredicate(data);
+        protected static bool AllowRotatePredicate(SegmentEndData data) => TouchablePredicate(data);
         protected static bool MainRoadPredicate(SegmentEndData data) => TouchablePredicate(data) && (data.IsMainRoad || data.IsDecoration);
         protected static bool AllowNodeLessPredicate(SegmentEndData data) => TouchablePredicate(data) && !data.IsNodeLess;
 
@@ -792,7 +825,7 @@ namespace NodeController
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
-        public override SupportOption SupportNoMarking => SupportOption.All;
+        public override SupportOption SupportMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool OnlyKeepDefault => true;
         public override bool SupportTrafficLights => true;
@@ -816,7 +849,7 @@ namespace NodeController
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
-        public override SupportOption SupportNoMarking => SupportOption.All;
+        public override SupportOption SupportMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override bool SupportTrafficLights => true;
         public override bool OnlyKeepDefault => true;
@@ -860,10 +893,10 @@ namespace NodeController
         public override SupportOption SupportSlope => SupportOption.All;
         public override SupportOption SupportTwist => SupportOption.All;
         public override SupportOption SupportStretch => SupportOption.All;
-        public override SupportOption SupportNoMarking => SupportOption.All;
+        public override SupportOption SupportMarking => SupportOption.All;
         public override SupportOption SupportSlopeJunction => SupportOption.Group;
         public override SupportOption SupportCollision => SupportOption.All;
-        public override SupportOption SupportForceNodeLess => SupportOption.All;
+        public override SupportOption SupportForceNodeless => SupportOption.All;
         public override bool IsMoveable => true;
         public override bool SupportTrafficLights => true;
 
@@ -918,5 +951,55 @@ namespace NodeController
         Individually = 1,
         Group = 2,
         All = Individually | Group,
+    }
+
+    [Flags]
+    public enum Options
+    {
+        [NotVisible]
+        [Description(nameof(Localize.Option_MainSlopeDirection))]
+        MainRoad = 1 << 0,
+
+        [NotVisible]
+        [Description(nameof(Localize.Option_Offset))]
+        Offset = 1 << 1,
+
+        [NotVisible]
+        [Description(nameof(Localize.Option_Rotate))]
+        Rotate = 1 << 2,
+
+        [NotVisible]
+        [Description(nameof(Localize.Option_Shift))]
+        Shift = 1 << 3,
+
+        [Description(nameof(Localize.Option_Slope))]
+        Slope = 1 << 4,
+
+        [Description(nameof(Localize.Option_Twist))]
+        Twist = 1 << 5,
+
+        [Description(nameof(Localize.Option_Stretch))]
+        Stretch = 1 << 6,
+
+        [Description(nameof(Localize.Option_Marking))]
+        Marking = 1 << 7,
+
+        [Description(nameof(Localize.Option_Collision))]
+        Collision = 1 << 8,
+
+        [Description(nameof(Localize.Option_NodeLess))]
+        Nodeless = 1 << 9,
+    }
+
+    public enum OptionVisibility
+    {
+        [Description(nameof(Localize.Settings_Option_Visible))]
+        Visible,
+
+        [Description(nameof(Localize.Settings_Option_Hidden))]
+        Hidden,
+
+        [Description(nameof(Localize.Settings_Option_Disabled))]
+        Disabled,
     }
 }

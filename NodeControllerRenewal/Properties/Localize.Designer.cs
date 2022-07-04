@@ -379,7 +379,16 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Node less.
+        ///   Ищет локализованную строку, похожую на More options.
+        /// </summary>
+        internal static string Option_MoreOptions {
+            get {
+                return ResourceManager.GetString("Option_MoreOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Nodeless.
         /// </summary>
         internal static string Option_NodeLess {
             get {
@@ -744,6 +753,42 @@ namespace NodeController {
         internal static string Settings_NodeIsSlopedByDefault {
             get {
                 return ResourceManager.GetString("Settings_NodeIsSlopedByDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disabled.
+        /// </summary>
+        internal static string Settings_Option_Disabled {
+            get {
+                return ResourceManager.GetString("Settings_Option_Disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сollapsed.
+        /// </summary>
+        internal static string Settings_Option_Hidden {
+            get {
+                return ResourceManager.GetString("Settings_Option_Hidden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Always visible.
+        /// </summary>
+        internal static string Settings_Option_Visible {
+            get {
+                return ResourceManager.GetString("Settings_Option_Visible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Options visibility.
+        /// </summary>
+        internal static string Settings_OptionsVisibility {
+            get {
+                return ResourceManager.GetString("Settings_OptionsVisibility", resourceCulture);
             }
         }
         

@@ -266,6 +266,9 @@ Backward compatibility does not provide the transfer of all data, may be require
   <data name="Option_Marking" xml:space="preserve">
     <value>Marking</value>
   </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>More options</value>
+  </data>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>Nodeless</value>
   </data>
@@ -352,6 +355,18 @@ Backward compatibility does not provide the transfer of all data, may be require
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Node is sloped by default</value>
+  </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Options visibility</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Сollapsed</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Always visible</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Show nearby nodes overlay</value>

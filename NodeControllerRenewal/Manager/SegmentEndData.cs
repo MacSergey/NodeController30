@@ -272,7 +272,7 @@ namespace NodeController
             if (style.SupportStretch == SupportOption.None || force || IsUntouchable)
                 Stretch = style.DefaultStretch;
 
-            if (style.SupportNoMarking == SupportOption.None || force || IsUntouchable)
+            if (style.SupportMarking == SupportOption.None || force || IsUntouchable)
                 NoMarkings = style.DefaultNoMarking;
 
             if (style.SupportCollision == SupportOption.None || force || IsUntouchable)
@@ -1170,13 +1170,13 @@ namespace NodeController
             if (style.SupportStretch != SupportOption.None && !IsUntouchable)
                 Stretch = config.GetAttrValue("ST", style.DefaultStretch);
 
-            if (style.SupportNoMarking != SupportOption.None && !IsUntouchable)
+            if (style.SupportMarking != SupportOption.None && !IsUntouchable)
                 NoMarkings = config.GetAttrValue("NM", style.DefaultNoMarking ? 1 : 0) == 1;
 
             if (style.SupportCollision != SupportOption.None && !IsUntouchable)
                 Collision = config.GetAttrValue("CL", style.GetDefaultCollision(this) ? 1 : 0) == 1;
 
-            if (style.SupportForceNodeLess != SupportOption.None && !IsUntouchable)
+            if (style.SupportForceNodeless != SupportOption.None && !IsUntouchable)
                 SetForceNodeless(config.GetAttrValue("FNL", style.DefaultForceNodeLess ? 1 : 0) == 1);
 
             if (style.SupportSlopeJunction != SupportOption.None)

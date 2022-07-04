@@ -12,6 +12,7 @@ namespace NodeController.UI
 {
     public interface IOptionPanel
     {
+        public bool isVisible { get; set; }
         void Refresh();
     }
     public abstract class OptionPanel<TypeItem> : EditorPropertyPanel, IReusable, IOptionPanel
