@@ -217,6 +217,18 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на [UPDATED] Added the ability to disable option &quot;fix stuck pedestrian on long intersections&quot; due to complaining about affecting simulation speed. The option is disabled by default, can be enabled in the mod settings.
+        ///[NEW] Added option &quot;Collision&quot;. if you disable it for segment, segment will not have limits for changing offset and can be overlapped by other segments.
+        ///[NEW] Added option &quot;Nodeless&quot;. it makes segment render without node.
+        ///[NEW] Added the ability to hide unused options. All options exclude offs [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string Mod_WhatsNewMessage3_3 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Bend.
         /// </summary>
         internal static string NodeStyle_Bend {
@@ -379,7 +391,16 @@ namespace NodeController {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Node less.
+        ///   Ищет локализованную строку, похожую на More options.
+        /// </summary>
+        internal static string Option_MoreOptions {
+            get {
+                return ResourceManager.GetString("Option_MoreOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Nodeless.
         /// </summary>
         internal static string Option_NodeLess {
             get {
@@ -744,6 +765,42 @@ namespace NodeController {
         internal static string Settings_NodeIsSlopedByDefault {
             get {
                 return ResourceManager.GetString("Settings_NodeIsSlopedByDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disabled.
+        /// </summary>
+        internal static string Settings_Option_Disabled {
+            get {
+                return ResourceManager.GetString("Settings_Option_Disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сollapsed.
+        /// </summary>
+        internal static string Settings_Option_Hidden {
+            get {
+                return ResourceManager.GetString("Settings_Option_Hidden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Always visible.
+        /// </summary>
+        internal static string Settings_Option_Visible {
+            get {
+                return ResourceManager.GetString("Settings_Option_Visible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Options visibility.
+        /// </summary>
+        internal static string Settings_OptionsVisibility {
+            get {
+                return ResourceManager.GetString("Settings_OptionsVisibility", resourceCulture);
             }
         }
         

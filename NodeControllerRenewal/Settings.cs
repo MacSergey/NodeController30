@@ -6,6 +6,7 @@ using ModsCommon.UI;
 using ModsCommon.Utilities;
 using NodeController.UI;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -28,14 +29,84 @@ namespace NodeController
         public static string InsertModifier => LocalizeExtension.Ctrl;
         public static string UndergroundModifier => LocalizeExtension.Shift;
 
+        private static Dictionary<Options, SavedInt> OptionsVisibility { get; } = GetOptionVisibilitySaved();
+        private static Dictionary<Options, SavedInt> GetOptionVisibilitySaved()
+        {
+            var savedDic = new Dictionary<Options, SavedInt>();
+            foreach (var option in EnumExtension.GetEnumValues<Options>(i => true))
+            {
+                var saved = new SavedInt($"{option}Visible", SettingsFile, (int)GetDefaultOptionVisibility(option), true);
+                savedDic[option] = saved;
+            }
+            return savedDic;
+        }
+        private static OptionVisibility GetDefaultOptionVisibility(Options option) => option switch
+        {
+            Options.MainRoad => OptionVisibility.Visible,
+            Options.Offset => OptionVisibility.Visible,
+            Options.Rotate => OptionVisibility.Visible,
+            Options.Shift => OptionVisibility.Visible,
+            Options.Slope => OptionVisibility.Visible,
+            Options.Twist => OptionVisibility.Hidden,
+            Options.Stretch => OptionVisibility.Hidden,
+            Options.Marking => OptionVisibility.Visible,
+            Options.Collision => OptionVisibility.Hidden,
+            Options.Nodeless => OptionVisibility.Hidden,
+            _ => OptionVisibility.Hidden,
+        };
+
+        public static OptionVisibility GetOptionVisibility(Options option) => (OptionVisibility)OptionsVisibility[option].value;
+        public static void SetOptionVisibility(Options option, OptionVisibility visibility) => OptionsVisibility[option].value = (int)visibility;
+
+        protected UIAdvancedHelper ShortcutsTab => GetTab(nameof(ShortcutsTab));
+        protected override IEnumerable<KeyValuePair<string, string>> AdditionalTabs
+        {
+            get
+            {
+                yield return new KeyValuePair<string, string>(nameof(ShortcutsTab), CommonLocalize.Settings_Shortcuts);
+            }
+        }
+
+
         protected override void FillSettings()
         {
             base.FillSettings();
 
             AddLanguage(GeneralTab);
+            AddGeneral(GeneralTab, out var undergroundOptions);
+            AddOptionVisible(GeneralTab);
+            AddNotifications(GeneralTab);
+            AddKeyMapping(ShortcutsTab, undergroundOptions);
+#if DEBUG
+            AddDebug(DebugTab);
+#endif
+        }
 
+        private void AddGeneral(UIAdvancedHelper helper, out OptionPanelWithLabelData undergroundOptions)
+        {
+            var generalGroup = helper.AddGroup(CommonLocalize.Settings_General);
+            AddCheckBox(generalGroup, Localize.Settings_SelectMiddleNodes, SelectMiddleNodes);
+            AddLabel(generalGroup, Localize.Settings_SelectMiddleNodesDiscription, 0.8f, padding: 25);
+            AddCheckBox(generalGroup, Localize.Settings_RenderNearNode, RenderNearNode);
+            AddCheckBox(generalGroup, Localize.Settings_NodeIsSlopedByDefault, NodeIsSlopedByDefault);
+            AddCheckboxPanel(generalGroup, Localize.Settings_InsertNode, InsertNode, new string[] { Localize.Settings_InsertNodeEnabled, string.Format(Localize.Settings_InsertNodeWithModifier, InsertModifier), Localize.Settings_InsertNodeDisabled });
+            undergroundOptions = AddCheckboxPanel(generalGroup, Localize.Settings_ToggleUnderground, ToggleUndergroundMode, new string[] { string.Format(Localize.Settings_ToggleUndergroundHold, UndergroundModifier), string.Format(Localize.Settings_ToggleUndergroundButtons, SelectNodeToolMode.EnterUndergroundShortcut, SelectNodeToolMode.ExitUndergroundShortcut) });
+            AddCheckBox(generalGroup, CommonLocalize.Settings_ShowTooltips, ShowToolTip);
+            AddToolButton<NodeControllerTool, NodeControllerButton>(generalGroup);
+            AddCheckBox(generalGroup, Localize.Settings_LongIntersectionFix, LongIntersectionFix);
+            AddLabel(generalGroup, Localize.Settings_LongIntersectionFixWarning, 0.8f, Color.red, 25);
+            AddLabel(generalGroup, Localize.Settings_ApplyAfterRestart, 0.8f, Color.yellow, 25);
+        }
 
-            var keymappingsGroup = GeneralTab.AddGroup(CommonLocalize.Settings_Shortcuts);
+        private void AddOptionVisible(UIAdvancedHelper helper)
+        {
+            var panel = helper.AddGroup(Localize.Settings_OptionsVisibility).self as UIPanel;
+            panel.gameObject.AddComponent<OptionVisiblePanel>();
+        }
+
+        private void AddKeyMapping(UIAdvancedHelper helper, OptionPanelWithLabelData undergroundOptions)
+        {
+            var keymappingsGroup = helper.AddGroup(CommonLocalize.Settings_Shortcuts);
             var keymappings = AddKeyMappingPanel(keymappingsGroup);
             keymappings.AddKeymapping(NodeControllerTool.ActivationShortcut);
 
@@ -54,25 +125,6 @@ namespace NodeController
             keymappings.AddKeymapping(EditNodeToolMode.SetTwistBetweenIntersectionsShortcut);
             keymappings.AddKeymapping(EditNodeToolMode.ChangeNodeStyleShortcut);
             keymappings.AddKeymapping(EditNodeToolMode.ChangeMainRoadModeShortcut);
-
-
-            var generalGroup = GeneralTab.AddGroup(CommonLocalize.Settings_General);
-            AddCheckBox(generalGroup, Localize.Settings_SelectMiddleNodes, SelectMiddleNodes);
-            AddLabel(generalGroup, Localize.Settings_SelectMiddleNodesDiscription, 0.8f, padding: 25);
-            AddCheckBox(generalGroup, Localize.Settings_RenderNearNode, RenderNearNode);
-            AddCheckBox(generalGroup, Localize.Settings_NodeIsSlopedByDefault, NodeIsSlopedByDefault);
-            AddCheckboxPanel(generalGroup, Localize.Settings_InsertNode, InsertNode, new string[] { Localize.Settings_InsertNodeEnabled, string.Format(Localize.Settings_InsertNodeWithModifier, InsertModifier), Localize.Settings_InsertNodeDisabled });
-            var undergroundOptions = AddCheckboxPanel(generalGroup, Localize.Settings_ToggleUnderground, ToggleUndergroundMode, new string[] { string.Format(Localize.Settings_ToggleUndergroundHold, UndergroundModifier), string.Format(Localize.Settings_ToggleUndergroundButtons, SelectNodeToolMode.EnterUndergroundShortcut, SelectNodeToolMode.ExitUndergroundShortcut) });
-            AddCheckBox(generalGroup, CommonLocalize.Settings_ShowTooltips, ShowToolTip);
-            AddToolButton<NodeControllerTool, NodeControllerButton>(generalGroup);
-            AddCheckBox(generalGroup, Localize.Settings_LongIntersectionFix, LongIntersectionFix);
-            AddLabel(generalGroup, Localize.Settings_LongIntersectionFixWarning, 0.8f, Color.red, 25);
-            AddLabel(generalGroup, Localize.Settings_ApplyAfterRestart, 0.8f, Color.yellow, 25);
-
-            AddNotifications(GeneralTab);
-#if DEBUG
-            AddDebug(DebugTab);
-#endif
 
             keymappings.BindingChanged += OnBindingChanged;
             void OnBindingChanged(Shortcut shortcut)

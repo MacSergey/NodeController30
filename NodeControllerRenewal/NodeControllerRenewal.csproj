@@ -131,6 +131,7 @@
     <Compile Include="Manager\MainRoad.cs" />
     <Compile Include="Patches\CitizenAIPatches.cs" />
     <Compile Include="UI\OptionPanel.cs" />
+    <Compile Include="UI\OptionVisiblePanel.cs" />
     <Compile Include="UI\SimpleMessageBox.cs" />
     <Compile Include="Utilities\BackwardCompatibility.cs" />
     <Compile Include="Manager\Extensions\LoadingExtension.cs" />
@@ -202,13 +203,30 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Localize.zh-TW.resx" />
-    <EmbeddedResource Include="Resources\HeaderButtons.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\UUIButton\UUIButtonHovered.png" />
+    <EmbeddedResource Include="Resources\UUIButton\UUIButtonNormal.png" />
+    <EmbeddedResource Include="Resources\UUIButton\UUIButtonPressed.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Button.png" />
+    <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonActive.png" />
+    <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonHover.png" />
+    <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonIconHover.png" />
+    <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonIconNormal.png" />
+    <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonNormal.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\UUIButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\CalculateShiftIntersectionsHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\CalculateShiftNearbyHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\CalculateTwistIntersectionsHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\CalculateTwistNearbyHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\KeepDefaultHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\MakeStraightHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\ResetToDefaultHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\SetShiftBetweenIntersectionsHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\SetTwistBetweenIntersectionsHeaderButton.png" />
   </ItemGroup>
   <Import Project="..\ModsCommon\ModShared\ModsCommonShared.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\ToolShared\ModsToolShared.projitems" Label="Shared" />
@@ -254,6 +272,8 @@
   <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.id.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.tr.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.ro.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\TriangulatorShared\Triangulator.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\MultyAtlasButton\MultyAtlasButton.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
