@@ -11,44 +11,56 @@ namespace NodeController.Utilities
         public static UITextureAtlas Atlas;
         public static Texture2D Texture => Atlas.texture;
 
-        public static string ButtonNormal => nameof(ButtonNormal);
-        public static string ButtonActive => nameof(ButtonActive);
-        public static string ButtonHover => nameof(ButtonHover);
-        public static string Icon => nameof(Icon);
-        public static string IconActive => nameof(IconActive);
-        public static string IconHover => nameof(IconHover);
+        public static string ActivationButtonNormal => nameof(ActivationButtonNormal);
+        public static string ActivationButtonActive => nameof(ActivationButtonActive);
+        public static string ActivationButtonHover => nameof(ActivationButtonHover);
+        public static string ActivationButtonIconNormal => nameof(ActivationButtonIconNormal);
+        public static string ActivationButtonIconActive => nameof(ActivationButtonIconActive);
+        public static string ActivationButtonIconHover => nameof(ActivationButtonIconHover);
 
-        public static string UUINormal => nameof(UUINormal);
-        public static string UUIHovered => nameof(UUIHovered);
-        public static string UUIPressed => nameof(UUIPressed);
-        //public static string UUIDisabled => nameof(UUIDisabled);
+        public static string UUIButtonNormal => nameof(UUIButtonNormal);
+        public static string UUIButtonHovered => nameof(UUIButtonHovered);
+        public static string UUIButtonPressed => nameof(UUIButtonPressed);
 
-        public static string KeepDefault => nameof(KeepDefault);
-        public static string ResetToDefault => nameof(ResetToDefault);
-        public static string MakeStraight => nameof(MakeStraight);
-        public static string CalculateShiftNearby => nameof(CalculateShiftNearby);
-        public static string CalculateShiftIntersections => nameof(CalculateShiftIntersections);
-        public static string SetShiftBetweenIntersections => nameof(SetShiftBetweenIntersections);
-        public static string CalculateTwistNearby => nameof(CalculateTwistNearby);
-        public static string CalculateTwistIntersections => nameof(CalculateTwistIntersections);
-        public static string SetTwistBetweenIntersections => nameof(SetTwistBetweenIntersections);
-
-        private static Dictionary<string, TextureHelper.SpriteParamsGetter> Files { get; } = new Dictionary<string, TextureHelper.SpriteParamsGetter>
-        {
-            {nameof(Button), Button},
-            {nameof(UUIButton), UUIButton},
-            {nameof(HeaderButtons), HeaderButtons},
-        };
+        public static string KeepDefaultHeaderButton => nameof(KeepDefaultHeaderButton);
+        public static string ResetToDefaultHeaderButton => nameof(ResetToDefaultHeaderButton);
+        public static string MakeStraightHeaderButton => nameof(MakeStraightHeaderButton);
+        public static string CalculateShiftNearbyHeaderButton => nameof(CalculateShiftNearbyHeaderButton);
+        public static string CalculateShiftIntersectionsHeaderButton => nameof(CalculateShiftIntersectionsHeaderButton);
+        public static string SetShiftBetweenIntersectionsHeaderButton => nameof(SetShiftBetweenIntersectionsHeaderButton);
+        public static string CalculateTwistNearbyHeaderButton => nameof(CalculateTwistNearbyHeaderButton);
+        public static string CalculateTwistIntersectionsHeaderButton => nameof(CalculateTwistIntersectionsHeaderButton);
+        public static string SetTwistBetweenIntersectionsHeaderButton => nameof(SetTwistBetweenIntersectionsHeaderButton);
 
         static NodeControllerTextures()
         {
-            Atlas = TextureHelper.CreateAtlas(nameof(NodeController), Files);
+            var spriteParams = new Dictionary<string, RectOffset>();
+
+            //ActivationButton
+            spriteParams[ActivationButtonNormal] = new RectOffset();
+            spriteParams[ActivationButtonActive] = new RectOffset();
+            spriteParams[ActivationButtonHover] = new RectOffset();
+            spriteParams[ActivationButtonIconNormal] = new RectOffset();
+            spriteParams[ActivationButtonIconActive] = new RectOffset();
+            spriteParams[ActivationButtonIconHover] = new RectOffset();
+
+            //UUIButton
+            spriteParams[UUIButtonNormal] = new RectOffset();
+            spriteParams[UUIButtonHovered] = new RectOffset();
+            spriteParams[UUIButtonPressed] = new RectOffset();
+
+            //HeaderButtons
+            spriteParams[KeepDefaultHeaderButton] = new RectOffset();
+            spriteParams[ResetToDefaultHeaderButton] = new RectOffset();
+            spriteParams[MakeStraightHeaderButton] = new RectOffset();
+            spriteParams[CalculateShiftNearbyHeaderButton] = new RectOffset();
+            spriteParams[CalculateShiftIntersectionsHeaderButton] = new RectOffset();
+            spriteParams[SetShiftBetweenIntersectionsHeaderButton] = new RectOffset();
+            spriteParams[CalculateTwistNearbyHeaderButton] = new RectOffset();
+            spriteParams[CalculateTwistIntersectionsHeaderButton] = new RectOffset();
+            spriteParams[SetTwistBetweenIntersectionsHeaderButton] = new RectOffset();
+
+            Atlas = TextureHelper.CreateAtlas(nameof(NodeController), spriteParams);
         }
-
-        private static UITextureAtlas.SpriteInfo[] Button(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 31, 31, ButtonNormal, ButtonActive, ButtonHover, Icon, IconActive, IconHover).ToArray();
-
-        private static UITextureAtlas.SpriteInfo[] UUIButton(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 40, 40, UUINormal, UUIHovered, UUIPressed/*, UUIDisabled*/).ToArray();
-
-        private static UITextureAtlas.SpriteInfo[] HeaderButtons(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 25, 25, new RectOffset(4, 4, 4, 4), 2, KeepDefault, MakeStraight, ResetToDefault, CalculateShiftNearby, CalculateShiftIntersections, SetShiftBetweenIntersections, CalculateTwistNearby, CalculateTwistIntersections, SetTwistBetweenIntersections).ToArray();
     }
 }

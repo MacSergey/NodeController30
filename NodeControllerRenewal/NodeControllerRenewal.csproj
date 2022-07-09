@@ -203,13 +203,30 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Localize.zh-TW.resx" />
-    <EmbeddedResource Include="Resources\HeaderButtons.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\UUIButton\UUIButtonHovered.png" />
+    <EmbeddedResource Include="Resources\UUIButton\UUIButtonNormal.png" />
+    <EmbeddedResource Include="Resources\UUIButton\UUIButtonPressed.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Button.png" />
+    <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonActive.png" />
+    <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonHover.png" />
+    <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonIconHover.png" />
+    <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonIconNormal.png" />
+    <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonNormal.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\UUIButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\CalculateShiftIntersectionsHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\CalculateShiftNearbyHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\CalculateTwistIntersectionsHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\CalculateTwistNearbyHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\KeepDefaultHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\MakeStraightHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\ResetToDefaultHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\SetShiftBetweenIntersectionsHeaderButton.png" />
+    <EmbeddedResource Include="Resources\HeaderButtons\SetTwistBetweenIntersectionsHeaderButton.png" />
   </ItemGroup>
   <Import Project="..\ModsCommon\ModShared\ModsCommonShared.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\ToolShared\ModsToolShared.projitems" Label="Shared" />
@@ -260,7 +277,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_ConfigurationName="Beta Debug" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="Both" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_BuildAction="Both" BuildVersion_StartDate="2000/1/1" BuildVersion_ConfigurationName="Beta Debug" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">
