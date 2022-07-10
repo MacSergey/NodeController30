@@ -586,6 +586,11 @@ namespace NodeController
                     }
                 }
             }
+            else if (count == 1)
+            {
+                limits[0].left.mainMinT = null;
+                limits[0].right.mainMinT = null;
+            }
 
             for (var i = 0; i < count; i += 1)
             {
