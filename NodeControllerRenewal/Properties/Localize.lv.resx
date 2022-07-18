@@ -152,6 +152,30 @@
   <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
     <value>Aprēķiniet maiņu starp krustojumiem</value>
   </data>
+  <data name="Option_CalculateShiftByNearby" xml:space="preserve">
+    <value>Aprēķiniet maiņu pēc tuvējiem mezgliem</value>
+  </data>
+  <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
+    <value>Aprēķināt vīšanas starp krustojumiem</value>
+  </data>
+  <data name="Option_CalculateTwistByNearby" xml:space="preserve">
+    <value>Aprēķināt maiņu pēc tuvējiem mezgliem</value>
+  </data>
+  
+  
+  
+  
+  <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
+    <value>Manuāli</value>
+  </data>
+  
+  
+  
+  
+  
+  <data name="Option_OffsetFormat" xml:space="preserve">
+    <value>{0}m</value>
+  </data>
   
   
   
@@ -167,21 +191,9 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Option_TwistFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   
   
   
