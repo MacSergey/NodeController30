@@ -216,8 +216,12 @@
   <data name="Settings_ToggleUnderground" xml:space="preserve">
     <value>Pārslēgšanās pazemes režīmu</value>
   </data>
-  
-  
+  <data name="Settings_ToggleUndergroundButtons" xml:space="preserve">
+    <value>Noklikšķiniet {0} lai ieiet un {1} lai iziet</value>
+  </data>
+  <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
+    <value>Turēt {0}</value>
+  </data>
   
   
   
