@@ -213,7 +213,9 @@
   
   
   
-  
+  <data name="Settings_ToggleUnderground" xml:space="preserve">
+    <value>Pārslēgšanās pazemes režīmu</value>
+  </data>
   
   
   
