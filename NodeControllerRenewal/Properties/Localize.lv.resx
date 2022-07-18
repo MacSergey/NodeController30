@@ -137,11 +137,21 @@
   <data name="NodeStyle_End" xml:space="preserve">
     <value>Beigas</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="NodeStyle_Middle" xml:space="preserve">
+    <value>Vidējais</value>
+  </data>
+  <data name="NodeStyle_Stretch" xml:space="preserve">
+    <value>Izstiepts</value>
+  </data>
+  <data name="NodeStyle_UTurn" xml:space="preserve">
+    <value>Izvērsums</value>
+  </data>
+  <data name="Options_All" xml:space="preserve">
+    <value>Visi</value>
+  </data>
+  <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
+    <value>Aprēķiniet maiņu starp krustojumiem</value>
+  </data>
   
   
   
