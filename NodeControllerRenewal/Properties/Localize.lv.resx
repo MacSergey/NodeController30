@@ -184,11 +184,21 @@
   
   
   
-  
-  
-  
-  
-  
+  <data name="Option_SlopeFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
+  <data name="Option_Stretch" xml:space="preserve">
+    <value>Stiepšana</value>
+  </data>
+  <data name="Option_StretchFormat" xml:space="preserve">
+    <value>{0}%</value>
+  </data>
+  <data name="Option_Style" xml:space="preserve">
+    <value>Stils</value>
+  </data>
+  <data name="Option_StyleFlat" xml:space="preserve">
+    <value>Līdzens</value>
+  </data>
   
   
   <data name="Option_TwistFormat" xml:space="preserve">
