@@ -164,26 +164,42 @@
   
   
   
-  
+  <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
   <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
     <value>Manuāli</value>
   </data>
   
   
-  
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>Papildu opcijas</value>
+  </data>
   
   
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
+  <data name="Option_ResetToDefault" xml:space="preserve">
+    <value>Atjaunot noklusējuma iestatījumus</value>
+  </data>
+  <data name="Option_Rotate" xml:space="preserve">
+    <value>Pagriezt</value>
+  </data>
+  <data name="Option_RotateFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
+  <data name="Option_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Option_ShiftFormat" xml:space="preserve">
+    <value>{0}m</value>
+  </data>
+  <data name="Option_Slope" xml:space="preserve">
+    <value>Slīpums</value>
+  </data>
   <data name="Option_SlopeFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
@@ -199,10 +215,21 @@
   <data name="Option_StyleFlat" xml:space="preserve">
     <value>Līdzens</value>
   </data>
-  
+  <data name="Option_StyleSlope" xml:space="preserve">
+    <value>Наклонный</value>
+  </data>
   
   <data name="Option_TwistFormat" xml:space="preserve">
     <value>{0}°</value>
+  </data>
+  <data name="Option_Type" xml:space="preserve">
+    <value>Mezgla tips</value>
+  </data>
+  
+  
+  
+  <data name="Settings_InsertNodeDisabled" xml:space="preserve">
+    <value>Izslēgts</value>
   </data>
   
   
@@ -210,12 +237,9 @@
   
   
   
-  
-  
-  
-  
-  
-  
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Izslēgts</value>
+  </data>
   
   
   
@@ -232,6 +256,18 @@
   <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
     <value>Turēt {0}</value>
   </data>
+  <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
+    <value>Aprēķiniet maiņu starp krustojumiem</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
+    <value>Aprēķiniet maiņu pēc tuvējiem mezgliem</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>Aprēķināt vīšanas starp krustojumiem</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>Aprēķināt maiņu pēc tuvējiem mezgliem</value>
+  </data>
   
   
   
@@ -258,11 +294,9 @@
   
   
   
-  
-  
-  
-  
-  
+  <data name="Tool_InfoSelectNode" xml:space="preserve">
+    <value>Izvēlēties mezglu</value>
+  </data>
   
   
   
