@@ -130,11 +130,11 @@ namespace NodeController
         {
             if ((options & Options.UpdateAll) != 0)
             {
-                if (options.IsSet(Options.UpdateThisNow))
-                {
-                    GetUpdateList(toUpdateIds, options & ~Options.UpdateLater, out var nodeIds, out var segmentIds);
-                    UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray(), false, Options.UpdateNow);
-                }
+                //if (options.IsSet(Options.UpdateThisNow))
+                //{
+                //    GetUpdateList(toUpdateIds, options & ~Options.UpdateLater, out var nodeIds, out var segmentIds);
+                //    UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray(), false, Options.UpdateNow);
+                //}
                 if (options.IsSet(Options.UpdateThisLater))
                 {
                     GetUpdateList(toUpdateIds, options & ~Options.UpdateNow, out var nodeIds, out _);
