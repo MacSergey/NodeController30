@@ -138,7 +138,12 @@ namespace NodeController
                 if (options.IsSet(Options.UpdateThisLater))
                 {
                     GetUpdateList(toUpdateIds, options & ~Options.UpdateNow, out var nodeIds, out _);
-                    UpdateLater(nodeIds);
+
+                    SimulationManager.instance.AddAction(() =>
+                    {
+                        foreach (var nodeId in nodeIds)
+                            NetManager.instance.UpdateNode(nodeId);
+                    });
                 }
             }
         }
@@ -218,11 +223,7 @@ namespace NodeController
             SingletonMod<Mod>.Logger.Debug($"Update {id} finish in {sw.ElapsedTicks}; Update={updateDone} Bezier={bezierDone - updateDone} Min={minDone - bezierDone} Max={maxDone - minDone} Late={lateUpdateDone - maxDone}");
 #endif
         }
-        private static void UpdateLater(IEnumerable<ushort> nodeIds)
-        {
-            foreach (var nodeId in nodeIds)
-                NetManager.instance.UpdateNode(nodeId);
-        }
+
         public static void SimulationStep()
         {
             var manager = SingletonManager<Manager>.Instance;

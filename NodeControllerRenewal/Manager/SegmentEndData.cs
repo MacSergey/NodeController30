@@ -981,7 +981,7 @@ namespace NodeController
 
         #region UTILITIES
 
-        public float GetMinCornerOffset(float styleOffset) => Mathf.Clamp(Mathf.Max(Id.GetSegment().Info.m_minCornerOffset, styleOffset), MinPossibleOffset, MaxPossibleOffset);
+        public float GetMinCornerOffset(float styleOffset) => Mathf.Clamp(Mathf.Max(Id.GetSegment().Info.m_netAI.GetMinCornerOffset(Id, ref Id.GetSegment(), NodeId, ref NodeId.GetNode()), styleOffset), MinPossibleOffset, MaxPossibleOffset);
         public void GetCorner(SideType sideType, out Vector3 position, out Vector3 direction)
         {
             var side = sideType == SideType.Left ? LeftSide : RightSide;
