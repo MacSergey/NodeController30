@@ -159,7 +159,7 @@ namespace NodeController
 
 
         public float WidthRatio => Stretch * (IsSlope ? Mathf.Cos(TwistAngle * Mathf.Deg2Rad) : 1f);
-        public float HeightRatio => IsSlope ? Mathf.Sin(TwistAngle * Mathf.Deg2Rad) : 0f;
+        public float HeightRatio => IsSlope ? Mathf.Tan(TwistAngle * Mathf.Deg2Rad) : 0f;
 
         public bool IsStartBorderOffset => Offset == MinOffset;
         public bool IsEndBorderOffset => Offset == MaxOffset;
