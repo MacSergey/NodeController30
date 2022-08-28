@@ -43,6 +43,7 @@ namespace NodeController
             new ModVersion(new Version("3.0.1"), new DateTime(2021, 5, 11)),
             new ModVersion(new Version("3.0"), new DateTime(2021, 4, 30)),
         };
+        protected override Version RequiredGameVersion => new Version(1, 14, 1, 2);
 
         protected override string IdRaw => nameof(NodeController);
         protected override List<BaseDependencyInfo> DependencyInfos
