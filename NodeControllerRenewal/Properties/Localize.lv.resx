@@ -118,15 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
-    <value>Os dados originais do Node Controller foram importados.
-A compatível com versões anteriores não fornece a transferência de todos os dados, talvez sejam necessários ajustamentos manuais.</value>
+    <value>Tika importēti oriģinālie mezgla kontrollera dati.
+Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepieciešama manuāla korekcija.</value>
   </data>
   <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
-    <value>AVISO: Se guardar, deixara de poder usar o Node Controller original neste mapa.</value>
+    <value>BRĪDINĀJUMS: Ja veiksiet jaunu saglabāšanu, jūs vairs nevarēsit izmantot sākotnējo mezgla kontrolleri šajā kartē.</value>
   </data>
-  <data name="Mod_Description" xml:space="preserve">
-    <value>Controle o tipo do nó e sua forma</value>
-  </data>
+  
   
   
   
@@ -139,256 +137,192 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   
   
   <data name="NodeStyle_Bend" xml:space="preserve">
-    <value>Curva</value>
+    <value>Saliekt</value>
   </data>
   <data name="NodeStyle_Crossing" xml:space="preserve">
-    <value>Passadeira</value>
+    <value>Krustojums</value>
   </data>
-  <data name="NodeStyle_Custom" xml:space="preserve">
-    <value>Personalizado</value>
-  </data>
+  
   <data name="NodeStyle_End" xml:space="preserve">
-    <value>Fim</value>
+    <value>Beigas</value>
   </data>
   <data name="NodeStyle_Middle" xml:space="preserve">
-    <value>Meio</value>
+    <value>Vidējais</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
-    <value>Alongado</value>
+    <value>Izstiepts</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
-    <value>Inversão de marcha</value>
+    <value>Izvērsums</value>
   </data>
   <data name="Options_All" xml:space="preserve">
-    <value>Todos</value>
+    <value>Visi</value>
   </data>
   <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
-    <value>Calcular deslocamento pelas interseções</value>
+    <value>Aprēķiniet maiņu starp krustojumiem</value>
   </data>
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
-    <value>Calcular deslocamento nas proximidades</value>
+    <value>Aprēķiniet maiņu pēc tuvējiem mezgliem</value>
   </data>
   <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
-    <value>Calcular a torção pelas interseções</value>
+    <value>Aprēķināt vīšanas starp krustojumiem</value>
   </data>
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
-    <value>Calcular a torção pelos nós próximos</value>
+    <value>Aprēķināt maiņu pēc tuvējiem mezgliem</value>
   </data>
-  <data name="Option_Collision" xml:space="preserve">
-    <value>Colisão</value>
-  </data>
-  <data name="Option_KeepDefault" xml:space="preserve">
-    <value>Repor deslocamento</value>
-  </data>
-  <data name="Option_MainSlopeDirection" xml:space="preserve">
-    <value>Direção da inclinação principal</value>
-  </data>
+  
+  
+  
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>Auto</value>
   </data>
   <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
-    <value>Manual</value>
+    <value>Manuāli</value>
   </data>
-  <data name="Option_MakeStraightEnds" xml:space="preserve">
-    <value>Tornar as extremidades retas</value>
-  </data>
+  
   <data name="Option_Marking" xml:space="preserve">
-    <value>Marcação</value>
+    <value>Marķēšana</value>
   </data>
   <data name="Option_MoreOptions" xml:space="preserve">
-    <value>Mais opções</value>
+    <value>Papildu opcijas</value>
   </data>
-  <data name="Option_NodeLess" xml:space="preserve">
-    <value>Sem nó</value>
-  </data>
-  <data name="Option_Offset" xml:space="preserve">
-    <value>Deslocamento</value>
-  </data>
+  
+  
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
-    <value>Repor predefinição</value>
+    <value>Atjaunot noklusējuma iestatījumus</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>Rodar</value>
+    <value>Pagriezt</value>
   </data>
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
-  <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
-    <value>Aplicar entre intercessões</value>
-  </data>
-  <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
-    <value>Definir a torção entre interseções</value>
-  </data>
+  
+  
   <data name="Option_Shift" xml:space="preserve">
-    <value>Mudar</value>
+    <value>Shift</value>
   </data>
   <data name="Option_ShiftFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
   <data name="Option_Slope" xml:space="preserve">
-    <value>Declive</value>
+    <value>Slīpums</value>
   </data>
   <data name="Option_SlopeFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Stretch" xml:space="preserve">
-    <value>Alargamento</value>
+    <value>Stiepšana</value>
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
   </data>
   <data name="Option_Style" xml:space="preserve">
-    <value>Estilo</value>
+    <value>Stils</value>
   </data>
   <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Plano</value>
+    <value>Līdzens</value>
   </data>
   <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Declive</value>
+    <value>Наклонный</value>
   </data>
-  <data name="Option_Twist" xml:space="preserve">
-    <value>Torcer</value>
-  </data>
+  
   <data name="Option_TwistFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
-    <value>Tipo de Nó</value>
+    <value>Mezgla tips</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
-    <value>Nó #{0}</value>
+    <value>Mezgls #{0}</value>
   </data>
-  <data name="Settings_ApplyAfterRestart" xml:space="preserve">
-    <value>Aplica-se depois do reinício do jogo</value>
-  </data>
-  <data name="Settings_InsertNode" xml:space="preserve">
-    <value>Inserir nó</value>
-  </data>
+  
+  
   <data name="Settings_InsertNodeDisabled" xml:space="preserve">
-    <value>Desativado</value>
-  </data>
-  <data name="Settings_InsertNodeEnabled" xml:space="preserve">
-    <value>Por clique no segmento</value>
-  </data>
-  <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
-    <value>Por clique com {0} no segmento</value>
-  </data>
-  <data name="Settings_LongIntersectionFix" xml:space="preserve">
-    <value>Corrigir peões presos em interseções longas</value>
-  </data>
-  
-  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
-    <value>O nó é inclinado por padrão</value>
-  </data>
-  
-  
-  
-  
-  <data name="Settings_RenderNearNode" xml:space="preserve">
-    <value>Mostrar sobreposição de nódulos próximos</value>
-  </data>
-  <data name="Settings_SelectMiddleNodes" xml:space="preserve">
-    <value>Selecione os nós do meio</value>
-  </data>
-  <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>Se esta opção estiver desativada, os nós do meio vão mover-se para a posição clicada</value>
+    <value>Izslēgts</value>
   </data>
   
   
   
   
   
+  
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Izslēgts</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  <data name="Settings_ToggleUnderground" xml:space="preserve">
+    <value>Pārslēgšanās pazemes režīmu</value>
+  </data>
+  <data name="Settings_ToggleUndergroundButtons" xml:space="preserve">
+    <value>Noklikšķiniet {0} lai ieiet un {1} lai iziet</value>
+  </data>
+  <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
+    <value>Turēt {0}</value>
+  </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
-    <value>Calcular deslocamento pelas interseções</value>
+    <value>Aprēķiniet maiņu starp krustojumiem</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
-    <value>Calcular deslocamento nas proximidades</value>
+    <value>Aprēķiniet maiņu pēc tuvējiem mezgliem</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>Aprēķināt vīšanas starp krustojumiem</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>Aprēķināt maiņu pēc tuvējiem mezgliem</value>
   </data>
   
   
-  <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
-    <value>Alterar o modo de direção da inclinação principal</value>
-  </data>
-  <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
-    <value>Alterar o estilo da barra</value>
-  </data>
-  <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
-    <value>Repor deslocamento</value>
-  </data>
-  <data name="Setting_ShortcutMakeStraightEnds" xml:space="preserve">
-    <value>Tornar as extremidades retas</value>
-  </data>
+  
+  
   <data name="Setting_ShortcutResetToDefault" xml:space="preserve">
-    <value>Repor predefinição</value>
-  </data>
-  <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
-    <value>Aplicar entre intercessões</value>
+    <value>Atjaunot noklusējuma iestatījumus</value>
   </data>
   
   
   
-  <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Segure {0} para alinhar as estradas</value>
-  </data>
-  <data name="Tool_InfoApplyAlign" xml:space="preserve">
-    <value>Clique para alinhar com este canto</value>
-  </data>
-  <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Mantem {0} premido para mudar a direção da inclinação principal</value>
-  </data>
+  
+  
+  
+  
   <data name="Tool_InfoClickNode" xml:space="preserve">
-    <value>Nó #{0}
-Clique para editar</value>
+    <value>Mezgls #{0}
+Noklikšķiniet, lai rediģētu</value>
   </data>
-  <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
-    <value>Clique para selecionar o canto que quer alinhar</value>
-  </data>
-  <data name="Tool_InfoDragCenter" xml:space="preserve">
-    <value>Arraste para alterar o deslocamento</value>
-  </data>
-  <data name="Tool_InfoDragCircle" xml:space="preserve">
-    <value>Arraste para alterar a rotação</value>
-  </data>
-  <data name="Tool_InfoDragCorner" xml:space="preserve">
-    <value>Arraste para alterar deslocamento do canto</value>
-  </data>
-  <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Arraste esta extremidade para mudar a direção da inclinação principal</value>
-  </data>
-  <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Larga esta extremidade para mudar a direção da inclinação principal</value>
-  </data>
-  <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
-    <value>Clique para inserir passadeira</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
   
   <data name="Tool_InfoInsertNode" xml:space="preserve">
-    <value>Clique para inserir nó</value>
+    <value>Noklikšķiniet, lai ievietotu mezglu</value>
+  </data>
+  <data name="Tool_InfoInsertNodeWithModifier" xml:space="preserve">
+    <value>Noklikšķiniet ar {0}, lai ievietotu mezglu</value>
   </data>
   
-  <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
-    <value>Selecione o canto com o qual quer alinhar</value>
-  </data>
-  <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
-    <value>Mudar para a direção da inclinação principal desejada</value>
-  </data>
-  <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
-    <value>Selecione a posição final da direção da inclinação principal</value>
-  </data>
+  
+  
   <data name="Tool_InfoSelectNode" xml:space="preserve">
-    <value>Selecionar Nó</value>
+    <value>Izvēlēties mezglu</value>
   </data>
-  <data name="Tool_InfoSelectToAlign" xml:space="preserve">
-    <value>Selecione os cantos com os quais quer alinhar</value>
-  </data>
-  <data name="Tool_InfoTooCloseNode" xml:space="preserve">
-    <value>Não é possível inserir um nó
-Está demasiado perto de outro nó</value>
-  </data>
+  
+  
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Segurar {0} para o modo subterrâneo</value>
+    <value>Turiet {0}, 
+lai ieslēgtu pazemes režīmu</value>
   </data>
 </root>

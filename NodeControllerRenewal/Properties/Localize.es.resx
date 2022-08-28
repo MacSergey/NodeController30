@@ -137,7 +137,18 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   
   
   
-  
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] Opción para deshabilitar "arreglar peatones atascados en intersecciones amplias". La opción está deshabilitada de forma predeterminada, se puede habilitar en las opciones del mod.
+[NEW] Opción de "Colisión". Si la deshabilitas por segmento, no habrán límites para cambiar el desplazamiento y puede solapar otros segmentos.
+[NEW] Opción para "Sin nodos". Hace que el segmento se muestre sin nodos.
+[NEW] Opción para esconder utilidades de poco uso. Todas las opciones excepto desplazamiento y rotación se pueden esconder en la configuración del mod si no las usas con frecuencia.
+[FIXED] Cálculos de desplazamiento en nodos medios.
+[UPDATED] Valor máximo de pendiente incrementado a 60 grados.
+[UPDATED] Valor máximo de doblado de carreteras incrementado a 60 grados.
+[UPDATED] Valor máximo de cambio incrementado a 64 metros.
+[FIXED] Sombra en capa cuando los nodos son my grandes.
+[TRANSLATION] Idioma Rumano.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Doblado</value>
   </data>
@@ -178,7 +189,7 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
     <value>Colisión</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
-    <value>Restablecer desplazamiento</value>
+    <value>Restablecer separación</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Dirección de la pendiente principal</value>
@@ -202,7 +213,7 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
     <value>Sin nodo</value>
   </data>
   <data name="Option_Offset" xml:space="preserve">
-    <value>Desplazamiento</value>
+    <value>Separar</value>
   </data>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
@@ -340,7 +351,7 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
     <value>Cambiar estilo del nodo</value>
   </data>
   <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
-    <value>Restablecer desplazamiento</value>
+    <value>Restablecer separación</value>
   </data>
   <data name="Setting_ShortcutMakeStraightEnds" xml:space="preserve">
     <value>Haga las puntas rectas</value>
@@ -377,13 +388,13 @@ Clic para editar</value>
     <value>Clic para seleccionar la esquina que quieres alinear</value>
   </data>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
-    <value>Arrastra para cambiar el desplazamiento</value>
+    <value>Arrastra para ajustar la separación</value>
   </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Arrastra para rotar</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
-    <value>Arrastra para cambiar el desplazamiento de la esquina</value>
+    <value>Arrastra para cambiar la separación de la esquina</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Arrastra este extremo para cambiar dirección de la pendiente principal</value>
