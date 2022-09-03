@@ -143,7 +143,6 @@ Global
 		ModsCommon\UIShared\ModsUIShared.projitems*{be979510-7832-4714-95a3-305065d9ded6}*SharedItemsImports = 13
 		ModsCommon\AutoLayoutPanelShared\AutoLayoutPanelShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\ColorsShared\ColorsShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
-		ModsCommon\CustomUIShared\CustomUIShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\DependencyShared\DependencyShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\HeaderShared\HeaderShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\LoadExtensionShared\LoadExtensionShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
@@ -169,7 +168,6 @@ Global
 		ModsCommon\MathExtension\MathExtension.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\MessageBoxShared\MessageBoxShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\ModShared\ModsCommonShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
-		ModsCommon\MultyAtlasButton\MultyAtlasButton.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\NetAssetDataExtension\NetAssetDataExtension.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\NetExtension\NetExtension.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
 		ModsCommon\NetObjectMapShared\NetObjectMapShared.projitems*{c7dd6e8a-e402-47f7-8b2a-52f37a7c21ef}*SharedItemsImports = 4
@@ -282,7 +280,7 @@ Global
 		{423F5152-7A64-4DB3-9979-74D61EFE365A} = {0A4B6CF6-295B-4BCC-9DE3-475C05D51929}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {81553A2A-DCA5-449A-A08F-0BC55141DD0D}
 		BuildVersion_StartDate = 2000/1/1
+		SolutionGuid = {81553A2A-DCA5-449A-A08F-0BC55141DD0D}
 	EndGlobalSection
 EndGlobal
