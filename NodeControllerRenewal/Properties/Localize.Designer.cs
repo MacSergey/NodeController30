@@ -229,6 +229,17 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на [UPDATED] Added Plazas &amp; Promenades DLC support.
+        ///[FIXED] Fixed prop positions on twisted segments.
+        ///[FIXED] Simulation data is not changed from main thread anymore..
+        /// </summary>
+        internal static string Mod_WhatsNewMessage3_4 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Bend.
         /// </summary>
         internal static string NodeStyle_Bend {

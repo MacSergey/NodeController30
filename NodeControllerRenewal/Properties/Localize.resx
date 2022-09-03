@@ -221,6 +221,11 @@ Backward compatibility does not provide the transfer of all data, may be require
 [FIXED] Fixed hole in overlay on such a big nodes.
 [TRANSLATION] Added Romanian language.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_4" xml:space="preserve">
+    <value>[UPDATED] Added Plazas &amp; Promenades DLC support.
+[FIXED] Fixed prop positions on twisted segments.
+[FIXED] Simulation data is not changed from main thread anymore.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bend</value>
   </data>
