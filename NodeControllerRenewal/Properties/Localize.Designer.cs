@@ -231,11 +231,12 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на [UPDATED] Added Plazas &amp; Promenades DLC support.
         ///[FIXED] Fixed prop positions on twisted segments.
-        ///[FIXED] Simulation data is not changed from main thread anymore..
+        ///[FIXED] Simulation data is not changed from main thread anymore.
+        ///[FIXED] Fixed missed croswalk texture on croswalk nodes..
         /// </summary>
-        internal static string Mod_WhatsNewMessage3_4 {
+        internal static string Mod_WhatsNewMessage3_3_1 {
             get {
-                return ResourceManager.GetString("Mod_WhatsNewMessage3_4", resourceCulture);
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_3_1", resourceCulture);
             }
         }
         
