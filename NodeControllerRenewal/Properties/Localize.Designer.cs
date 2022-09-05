@@ -234,7 +234,7 @@ namespace NodeController {
         ///[FIXED] Simulation data is not changed from main thread anymore.
         ///[FIXED] Fixed missed croswalk texture on croswalk nodes..
         /// </summary>
-        internal static string Mod_WhatsNewMessage3_3_1 {
+        public static string Mod_WhatsNewMessage3_3_1 {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessage3_3_1", resourceCulture);
             }
