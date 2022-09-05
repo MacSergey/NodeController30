@@ -1,6 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
+    <Authors>MacSergey</Authors>
+    <Product>Node Controller Renewal</Product>
+    <PackageProjectUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2472062376</PackageProjectUrl>
     <LangVersion>9.0</LangVersion>
     <ManagedDLLPath>$(MSBuildProgramFiles32)/Steam/steamapps/common/Cities_Skylines/Cities_Data/Managed</ManagedDLLPath>
     <ExternalDLLPath>$(SolutionDir)/libs</ExternalDLLPath>
@@ -51,77 +54,6 @@
     <DefineConstants>BETA, DEBUG</DefineConstants>
   </PropertyGroup>
   
-  <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">
-    <WorkshopId>2472062376</WorkshopId>
-    <Type>Stable</Type>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)' == 'Beta Release' OR '$(Configuration)' == 'Beta Debug'">
-    <WorkshopId>2462845270</WorkshopId>
-    <Type>Beta</Type>
-  </PropertyGroup>
-  
-  <PropertyGroup>
-    <LocalDir>$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)$(Type)</LocalDir>
-    <WorkshopDir>C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\$(WorkshopId)</WorkshopDir>
-    <Authors>MacSergey</Authors>
-    <Product>Node Controller Renewal</Product>
-    <PackageProjectUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2472062376</PackageProjectUrl>
-  </PropertyGroup>
-
-  
-  <Target Name="PdbToMdb" AfterTargets="Build">
-    <!--<Message Text="Convert pdb to mdb" Importance="high" />
-
-    <PropertyGroup>
-      <UnityPath>$(MSBuildExtensionsPath64)\..\Unity\</UnityPath>
-      <UnityPath Condition="! Exists ('$(UnityPath)')">..\Unity\</UnityPath>
-      <MonoDir>$(UnityPath)Editor\Data\MonoBleedingEdge\</MonoDir>
-    </PropertyGroup>
-
-    <Exec Command='"$(MonoDir)bin\mono.exe" "$(MonoDir)lib\mono\4.5\pdb2mdb.exe" "$(TargetPath)"' />-->
-    <ItemGroup>
-      <FilesToDelete Include="$(OutDir)*.pdb" />
-    </ItemGroup>
-    <Delete Files="@(FilesToDelete)" />
-  </Target>
-  
-  <Target Name="DeployToLocal" AfterTargets="PdbToMdb">
-    <Message Text="Deploy to local $(LocalDir)" Importance="high" />
-    <RemoveDir Directories="$(LocalDir)" />
-    <ItemGroup>
-      <FilesToCopy Include="$(OutDir)\**\*.*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(LocalDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
-  </Target>
-  
-  <Target Name="DeployToWorkshop" AfterTargets="PdbToMdb" Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Beta Release'">
-    <Message Text="Deploy to workshop $(WorkshopDir)" Importance="high" />
-    <RemoveDir Directories="$(WorkshopDir)" />
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(WorkshopDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="$(ProjectDir)..\Workshop\PreviewImage$(Type).png" DestinationFiles="$(WorkshopDir)\PreviewImage.png" />
-  </Target>
-  
-  
-  <ItemGroup>
-    <None Remove="Resources\ActivationButton\ActivationButtonActive.png" />
-    <None Remove="Resources\ActivationButton\ActivationButtonHover.png" />
-    <None Remove="Resources\ActivationButton\ActivationButtonIconHover.png" />
-    <None Remove="Resources\ActivationButton\ActivationButtonIconNormal.png" />
-    <None Remove="Resources\ActivationButton\ActivationButtonNormal.png" />
-    <None Remove="Resources\HeaderButtons\CalculateShiftIntersectionsHeaderButton.png" />
-    <None Remove="Resources\HeaderButtons\CalculateShiftNearbyHeaderButton.png" />
-    <None Remove="Resources\HeaderButtons\CalculateTwistIntersectionsHeaderButton.png" />
-    <None Remove="Resources\HeaderButtons\CalculateTwistNearbyHeaderButton.png" />
-    <None Remove="Resources\HeaderButtons\KeepDefaultHeaderButton.png" />
-    <None Remove="Resources\HeaderButtons\MakeStraightHeaderButton.png" />
-    <None Remove="Resources\HeaderButtons\ResetToDefaultHeaderButton.png" />
-    <None Remove="Resources\HeaderButtons\SetShiftBetweenIntersectionsHeaderButton.png" />
-    <None Remove="Resources\HeaderButtons\SetTwistBetweenIntersectionsHeaderButton.png" />
-    <None Remove="Resources\UUIButton\UUIButtonHovered.png" />
-    <None Remove="Resources\UUIButton\UUIButtonNormal.png" />
-    <None Remove="Resources\UUIButton\UUIButtonPressed.png" />
-  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonActive.png" />
     <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonHover.png" />
@@ -168,23 +100,29 @@
     <Reference Include="TrafficManager">
       <Private>false</Private>
     </Reference>
+    <Reference Update="System.Xml.Linq">
+      <Private>true</Private>
+    </Reference>
   </ItemGroup>
   
   
   <ItemGroup>
-    <EditorConfigFiles Remove="C:\Users\MacSergey\source\repos\NodeController30\.editorconfig" />
-  </ItemGroup>
-  
-  
-  <ItemGroup>
-    <Compile Update="C:\Users\MacSergey\source\repos\NodeController30\ModsCommon\LocalizeShared\CommonLocalize.Designer.cs">
+    <Compile Update="Properties\Localize.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>CommonLocalize.resx</DependentUpon>
+      <DependentUpon>Localize.resx</DependentUpon>
     </Compile>
   </ItemGroup>
   
   
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Localize.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Localize.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>NodeController</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+    
   <Import Project="..\ModsCommon\AutoLayoutPanelShared\AutoLayoutPanelShared.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\ColorsShared\ColorsShared.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\DependencyShared\DependencyShared.projitems" Label="Shared" />
@@ -229,5 +167,61 @@
   <Import Project="..\ModsCommon\LocalizeShared\ru\LocalizeShared.ru.projitems" Label="Shared" /> 
   <Import Project="..\ModsCommon\LocalizeShared\tr\LocalizeShared.tr.projitems" Label="Shared" /> 
   <Import Project="..\ModsCommon\LocalizeShared\zh-CN\LocalizeShared.zh-CN.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\zh-TW\LocalizeShared.zh-TW.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\zh-TW\LocalizeShared.zh-TW.projitems" Label="Shared" />
+  
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">
+    <WorkshopId>2472062376</WorkshopId>
+    <Type>Stable</Type>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Beta Release' OR '$(Configuration)' == 'Beta Debug'">
+    <WorkshopId>2462845270</WorkshopId>
+    <Type>Beta</Type>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LocalDir>$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(MSBuildProjectName)$(Type)</LocalDir>
+    <WorkshopDir>C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\$(WorkshopId)</WorkshopDir>
+  </PropertyGroup>
+
+
+  <Target Name="PdbToMdb" AfterTargets="Build">
+    <!--<Message Text="Convert pdb to mdb" Importance="high" />
+
+    <PropertyGroup>
+      <UnityPath>$(MSBuildExtensionsPath64)\..\Unity\</UnityPath>
+      <UnityPath Condition="! Exists ('$(UnityPath)')">..\Unity\</UnityPath>
+      <MonoDir>$(UnityPath)Editor\Data\MonoBleedingEdge\</MonoDir>
+    </PropertyGroup>
+
+    <Exec Command='"$(MonoDir)bin\mono.exe" "$(MonoDir)lib\mono\4.5\pdb2mdb.exe" "$(TargetPath)"' />-->
+    <ItemGroup>
+      <FilesToDelete Include="$(OutDir)*.pdb" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+  </Target>
+
+  <Target Name="DeployToLocal" AfterTargets="PdbToMdb">
+    <Message Text="Deploy to local $(LocalDir)" Importance="high" />
+    <RemoveDir Directories="$(LocalDir)" />
+    <ItemGroup>
+      <FilesToCopy Include="$(OutDir)\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(LocalDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+
+  <Target Name="DeployToWorkshop" AfterTargets="PdbToMdb" Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Beta Release'">
+    <Message Text="Deploy to workshop $(WorkshopDir)" Importance="high" />
+    <RemoveDir Directories="$(WorkshopDir)" />
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(WorkshopDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="$(ProjectDir)..\Workshop\PreviewImage$(Type).png" DestinationFiles="$(WorkshopDir)\PreviewImage.png" />
+  </Target>
+
+  <ItemGroup>
+    <Reference Update="System.Xml.Linq">
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+  
 </Project>
