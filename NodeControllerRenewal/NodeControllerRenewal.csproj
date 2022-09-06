@@ -77,6 +77,7 @@
   
   <ItemGroup>
     <PackageReference Include="CitiesHarmony.API" Version="2.1.0" />
+    <PackageReference Include="MoveItIntegration" Version="1.0.0" />
     <PackageReference Include="UnifiedUILib" Version="2.2.12" />
     <Reference Include="Assembly-CSharp">
       <Private>false</Private>
@@ -93,7 +94,6 @@
     <Reference Include="HideCrosswalks">
       <Private>false</Private>
     </Reference>
-    <Reference Include="MoveItIntegration" />
     <Reference Include="TMPE.API">
       <Private>false</Private>
     </Reference>
@@ -218,10 +218,4 @@
     <Copy SourceFiles="$(ProjectDir)..\Workshop\PreviewImage$(Type).png" DestinationFiles="$(WorkshopDir)\PreviewImage.png" />
   </Target>
 
-  <ItemGroup>
-    <Reference Update="System.Xml.Linq">
-      <Private>true</Private>
-    </Reference>
-  </ItemGroup>
-  
 </Project>
