@@ -22,7 +22,7 @@ namespace NodeController {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Localize {
+    public class Localize {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace NodeController {
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NodeController.Properties.Localize", typeof(Localize).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NodeControllerRenewal.Properties.Localize", typeof(Localize).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace NodeController {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -64,7 +64,7 @@ namespace NodeController {
         ///   Ищет локализованную строку, похожую на Original Node Controller data was imported.
         ///Backward compatibility does not provide the transfer of all data, may be required manual adjustments..
         /// </summary>
-        internal static string Mod_BackwardCompatibilityMessage {
+        public static string Mod_BackwardCompatibilityMessage {
             get {
                 return ResourceManager.GetString("Mod_BackwardCompatibilityMessage", resourceCulture);
             }
@@ -73,7 +73,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на WARNING: If you make a new save, you will no longer be able to use original Node Controller on this map..
         /// </summary>
-        internal static string Mod_BackwardCompatibilityWarning {
+        public static string Mod_BackwardCompatibilityWarning {
             get {
                 return ResourceManager.GetString("Mod_BackwardCompatibilityWarning", resourceCulture);
             }
@@ -82,7 +82,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Control node type and shape.
         /// </summary>
-        internal static string Mod_Description {
+        public static string Mod_Description {
             get {
                 return ResourceManager.GetString("Mod_Description", resourceCulture);
             }
@@ -100,7 +100,7 @@ namespace NodeController {
         ///[FIXED] Fix road disappear after disasters.
         ///[FIXED] Fix wrong  [остаток строки не уместился]&quot;;.
         /// </summary>
-        internal static string Mod_WhatsNewMessage3_0_1 {
+        public static string Mod_WhatsNewMessage3_0_1 {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessage3_0_1", resourceCulture);
             }
@@ -113,7 +113,7 @@ namespace NodeController {
         ///[FIXED] Fix creating button duplicates
         ///[FIXED] Fix despaired &quot;Make end straight&quot; button..
         /// </summary>
-        internal static string Mod_WhatsNewMessage3_0_2 {
+        public static string Mod_WhatsNewMessage3_0_2 {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessage3_0_2", resourceCulture);
             }
@@ -122,7 +122,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на [TRANSLATION] Added Portuguese translation..
         /// </summary>
-        internal static string Mod_WhatsNewMessage3_0_3 {
+        public static string Mod_WhatsNewMessage3_0_3 {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessage3_0_3", resourceCulture);
             }
@@ -137,7 +137,7 @@ namespace NodeController {
         ///[FIXED] Fix crossing and uturn node type.
         ///[TRANSLATION] Added Italian translation..
         /// </summary>
-        internal static string Mod_WhatsNewMessage3_0_4 {
+        public static string Mod_WhatsNewMessage3_0_4 {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessage3_0_4", resourceCulture);
             }
@@ -147,7 +147,7 @@ namespace NodeController {
         ///   Ищет локализованную строку, похожую на [FIXED] Fix segments collision calculation.
         ///[TRANSLATION] Added Chinese Traditional translation..
         /// </summary>
-        internal static string Mod_WhatsNewMessage3_0_5 {
+        public static string Mod_WhatsNewMessage3_0_5 {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessage3_0_5", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace NodeController {
         ///[NEW] Added shortcuts, you can bind keys in mod&apos;s options.
         ///[NEW] Added the abi [остаток строки не уместился]&quot;;.
         /// </summary>
-        internal static string Mod_WhatsNewMessage3_1 {
+        public static string Mod_WhatsNewMessage3_1 {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessage3_1", resourceCulture);
             }
@@ -176,7 +176,7 @@ namespace NodeController {
         ///[NEW]  Added new icon for UUI button.
         ///[NEW]  Added warning for Linux users about missing libraries..
         /// </summary>
-        internal static string Mod_WhatsNewMessage3_1_1 {
+        public static string Mod_WhatsNewMessage3_1_1 {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessage3_1_1", resourceCulture);
             }
@@ -185,7 +185,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на [TRANSLATION] Added Indonesian, Korean and Malay translations..
         /// </summary>
-        internal static string Mod_WhatsNewMessage3_1_2 {
+        public static string Mod_WhatsNewMessage3_1_2 {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessage3_1_2", resourceCulture);
             }
@@ -196,7 +196,7 @@ namespace NodeController {
         ///[NEW] Added the ability to hide original mod button in toolbar If you use UUI mod.
         ///[TRANSLATION] Added Turkish translation..
         /// </summary>
-        internal static string Mod_WhatsNewMessage3_1_3 {
+        public static string Mod_WhatsNewMessage3_1_3 {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessage3_1_3", resourceCulture);
             }
@@ -210,7 +210,7 @@ namespace NodeController {
         ///--- Calculate twist by nearby nodes - set average twist value to node.
         ///--- Calculate twist by intersections - [остаток строки не уместился]&quot;;.
         /// </summary>
-        internal static string Mod_WhatsNewMessage3_2 {
+        public static string Mod_WhatsNewMessage3_2 {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessage3_2", resourceCulture);
             }
@@ -222,16 +222,28 @@ namespace NodeController {
         ///[NEW] Added option &quot;Nodeless&quot;. it makes segment render without node.
         ///[NEW] Added the ability to hide unused options. All options exclude offs [остаток строки не уместился]&quot;;.
         /// </summary>
-        internal static string Mod_WhatsNewMessage3_3 {
+        public static string Mod_WhatsNewMessage3_3 {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessage3_3", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на [UPDATED] Added Plazas &amp; Promenades DLC support.
+        ///[FIXED] Fixed prop positions on twisted segments.
+        ///[FIXED] Simulation data is not changed from main thread anymore.
+        ///[FIXED] Fixed missed croswalk texture on croswalk nodes..
+        /// </summary>
+        public static string Mod_WhatsNewMessage3_3_1 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_3_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Bend.
         /// </summary>
-        internal static string NodeStyle_Bend {
+        public static string NodeStyle_Bend {
             get {
                 return ResourceManager.GetString("NodeStyle_Bend", resourceCulture);
             }
@@ -240,7 +252,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Crossing.
         /// </summary>
-        internal static string NodeStyle_Crossing {
+        public static string NodeStyle_Crossing {
             get {
                 return ResourceManager.GetString("NodeStyle_Crossing", resourceCulture);
             }
@@ -249,7 +261,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Custom.
         /// </summary>
-        internal static string NodeStyle_Custom {
+        public static string NodeStyle_Custom {
             get {
                 return ResourceManager.GetString("NodeStyle_Custom", resourceCulture);
             }
@@ -258,7 +270,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на End.
         /// </summary>
-        internal static string NodeStyle_End {
+        public static string NodeStyle_End {
             get {
                 return ResourceManager.GetString("NodeStyle_End", resourceCulture);
             }
@@ -267,7 +279,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Middle.
         /// </summary>
-        internal static string NodeStyle_Middle {
+        public static string NodeStyle_Middle {
             get {
                 return ResourceManager.GetString("NodeStyle_Middle", resourceCulture);
             }
@@ -276,7 +288,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Stretched.
         /// </summary>
-        internal static string NodeStyle_Stretch {
+        public static string NodeStyle_Stretch {
             get {
                 return ResourceManager.GetString("NodeStyle_Stretch", resourceCulture);
             }
@@ -285,7 +297,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на UTurn.
         /// </summary>
-        internal static string NodeStyle_UTurn {
+        public static string NodeStyle_UTurn {
             get {
                 return ResourceManager.GetString("NodeStyle_UTurn", resourceCulture);
             }
@@ -294,7 +306,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Calculate shift by intersections.
         /// </summary>
-        internal static string Option_CalculateShiftByIntersections {
+        public static string Option_CalculateShiftByIntersections {
             get {
                 return ResourceManager.GetString("Option_CalculateShiftByIntersections", resourceCulture);
             }
@@ -303,7 +315,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Calculate shift by nearby nodes.
         /// </summary>
-        internal static string Option_CalculateShiftByNearby {
+        public static string Option_CalculateShiftByNearby {
             get {
                 return ResourceManager.GetString("Option_CalculateShiftByNearby", resourceCulture);
             }
@@ -312,7 +324,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Calculate twist by intersections.
         /// </summary>
-        internal static string Option_CalculateTwistByIntersections {
+        public static string Option_CalculateTwistByIntersections {
             get {
                 return ResourceManager.GetString("Option_CalculateTwistByIntersections", resourceCulture);
             }
@@ -321,7 +333,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Calculate twist by nearby nodes.
         /// </summary>
-        internal static string Option_CalculateTwistByNearby {
+        public static string Option_CalculateTwistByNearby {
             get {
                 return ResourceManager.GetString("Option_CalculateTwistByNearby", resourceCulture);
             }
@@ -330,7 +342,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Collision.
         /// </summary>
-        internal static string Option_Collision {
+        public static string Option_Collision {
             get {
                 return ResourceManager.GetString("Option_Collision", resourceCulture);
             }
@@ -339,7 +351,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Reset offset.
         /// </summary>
-        internal static string Option_KeepDefault {
+        public static string Option_KeepDefault {
             get {
                 return ResourceManager.GetString("Option_KeepDefault", resourceCulture);
             }
@@ -348,7 +360,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Main slope direction.
         /// </summary>
-        internal static string Option_MainSlopeDirection {
+        public static string Option_MainSlopeDirection {
             get {
                 return ResourceManager.GetString("Option_MainSlopeDirection", resourceCulture);
             }
@@ -357,7 +369,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Auto.
         /// </summary>
-        internal static string Option_MainSlopeDirectionAuto {
+        public static string Option_MainSlopeDirectionAuto {
             get {
                 return ResourceManager.GetString("Option_MainSlopeDirectionAuto", resourceCulture);
             }
@@ -366,7 +378,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Manually.
         /// </summary>
-        internal static string Option_MainSlopeDirectionManually {
+        public static string Option_MainSlopeDirectionManually {
             get {
                 return ResourceManager.GetString("Option_MainSlopeDirectionManually", resourceCulture);
             }
@@ -375,7 +387,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Make ends straight.
         /// </summary>
-        internal static string Option_MakeStraightEnds {
+        public static string Option_MakeStraightEnds {
             get {
                 return ResourceManager.GetString("Option_MakeStraightEnds", resourceCulture);
             }
@@ -384,7 +396,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Marking.
         /// </summary>
-        internal static string Option_Marking {
+        public static string Option_Marking {
             get {
                 return ResourceManager.GetString("Option_Marking", resourceCulture);
             }
@@ -393,7 +405,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на More options.
         /// </summary>
-        internal static string Option_MoreOptions {
+        public static string Option_MoreOptions {
             get {
                 return ResourceManager.GetString("Option_MoreOptions", resourceCulture);
             }
@@ -402,7 +414,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Nodeless.
         /// </summary>
-        internal static string Option_NodeLess {
+        public static string Option_NodeLess {
             get {
                 return ResourceManager.GetString("Option_NodeLess", resourceCulture);
             }
@@ -411,7 +423,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Offset.
         /// </summary>
-        internal static string Option_Offset {
+        public static string Option_Offset {
             get {
                 return ResourceManager.GetString("Option_Offset", resourceCulture);
             }
@@ -420,7 +432,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на {0}m.
         /// </summary>
-        internal static string Option_OffsetFormat {
+        public static string Option_OffsetFormat {
             get {
                 return ResourceManager.GetString("Option_OffsetFormat", resourceCulture);
             }
@@ -429,7 +441,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Reset to default.
         /// </summary>
-        internal static string Option_ResetToDefault {
+        public static string Option_ResetToDefault {
             get {
                 return ResourceManager.GetString("Option_ResetToDefault", resourceCulture);
             }
@@ -438,7 +450,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Rotate.
         /// </summary>
-        internal static string Option_Rotate {
+        public static string Option_Rotate {
             get {
                 return ResourceManager.GetString("Option_Rotate", resourceCulture);
             }
@@ -447,7 +459,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на {0}°.
         /// </summary>
-        internal static string Option_RotateFormat {
+        public static string Option_RotateFormat {
             get {
                 return ResourceManager.GetString("Option_RotateFormat", resourceCulture);
             }
@@ -456,7 +468,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Set shift between intersections.
         /// </summary>
-        internal static string Option_SetShiftBetweenIntersections {
+        public static string Option_SetShiftBetweenIntersections {
             get {
                 return ResourceManager.GetString("Option_SetShiftBetweenIntersections", resourceCulture);
             }
@@ -465,7 +477,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Set twist between intersections.
         /// </summary>
-        internal static string Option_SetTwistBetweenIntersections {
+        public static string Option_SetTwistBetweenIntersections {
             get {
                 return ResourceManager.GetString("Option_SetTwistBetweenIntersections", resourceCulture);
             }
@@ -474,7 +486,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Shift.
         /// </summary>
-        internal static string Option_Shift {
+        public static string Option_Shift {
             get {
                 return ResourceManager.GetString("Option_Shift", resourceCulture);
             }
@@ -483,7 +495,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на {0}m.
         /// </summary>
-        internal static string Option_ShiftFormat {
+        public static string Option_ShiftFormat {
             get {
                 return ResourceManager.GetString("Option_ShiftFormat", resourceCulture);
             }
@@ -492,7 +504,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Slope.
         /// </summary>
-        internal static string Option_Slope {
+        public static string Option_Slope {
             get {
                 return ResourceManager.GetString("Option_Slope", resourceCulture);
             }
@@ -501,7 +513,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на {0}°.
         /// </summary>
-        internal static string Option_SlopeFormat {
+        public static string Option_SlopeFormat {
             get {
                 return ResourceManager.GetString("Option_SlopeFormat", resourceCulture);
             }
@@ -510,7 +522,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Stretch.
         /// </summary>
-        internal static string Option_Stretch {
+        public static string Option_Stretch {
             get {
                 return ResourceManager.GetString("Option_Stretch", resourceCulture);
             }
@@ -519,7 +531,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на {0}%.
         /// </summary>
-        internal static string Option_StretchFormat {
+        public static string Option_StretchFormat {
             get {
                 return ResourceManager.GetString("Option_StretchFormat", resourceCulture);
             }
@@ -528,7 +540,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Style.
         /// </summary>
-        internal static string Option_Style {
+        public static string Option_Style {
             get {
                 return ResourceManager.GetString("Option_Style", resourceCulture);
             }
@@ -537,7 +549,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Flat.
         /// </summary>
-        internal static string Option_StyleFlat {
+        public static string Option_StyleFlat {
             get {
                 return ResourceManager.GetString("Option_StyleFlat", resourceCulture);
             }
@@ -546,7 +558,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Slope.
         /// </summary>
-        internal static string Option_StyleSlope {
+        public static string Option_StyleSlope {
             get {
                 return ResourceManager.GetString("Option_StyleSlope", resourceCulture);
             }
@@ -555,7 +567,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Twist.
         /// </summary>
-        internal static string Option_Twist {
+        public static string Option_Twist {
             get {
                 return ResourceManager.GetString("Option_Twist", resourceCulture);
             }
@@ -564,7 +576,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на {0}°.
         /// </summary>
-        internal static string Option_TwistFormat {
+        public static string Option_TwistFormat {
             get {
                 return ResourceManager.GetString("Option_TwistFormat", resourceCulture);
             }
@@ -573,7 +585,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Node type.
         /// </summary>
-        internal static string Option_Type {
+        public static string Option_Type {
             get {
                 return ResourceManager.GetString("Option_Type", resourceCulture);
             }
@@ -582,7 +594,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на All.
         /// </summary>
-        internal static string Options_All {
+        public static string Options_All {
             get {
                 return ResourceManager.GetString("Options_All", resourceCulture);
             }
@@ -591,7 +603,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Node #{0}.
         /// </summary>
-        internal static string Panel_NodeId {
+        public static string Panel_NodeId {
             get {
                 return ResourceManager.GetString("Panel_NodeId", resourceCulture);
             }
@@ -600,7 +612,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Calculate shift by intersections.
         /// </summary>
-        internal static string Setting_ShortcutCalculateShiftByIntersections {
+        public static string Setting_ShortcutCalculateShiftByIntersections {
             get {
                 return ResourceManager.GetString("Setting_ShortcutCalculateShiftByIntersections", resourceCulture);
             }
@@ -609,7 +621,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Calculate shift by nearby nodes.
         /// </summary>
-        internal static string Setting_ShortcutCalculateShiftByNearby {
+        public static string Setting_ShortcutCalculateShiftByNearby {
             get {
                 return ResourceManager.GetString("Setting_ShortcutCalculateShiftByNearby", resourceCulture);
             }
@@ -618,7 +630,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Calculate twist by intersections.
         /// </summary>
-        internal static string Setting_ShortcutCalculateTwistByIntersections {
+        public static string Setting_ShortcutCalculateTwistByIntersections {
             get {
                 return ResourceManager.GetString("Setting_ShortcutCalculateTwistByIntersections", resourceCulture);
             }
@@ -627,7 +639,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Calculate twist by nearby nodes.
         /// </summary>
-        internal static string Setting_ShortcutCalculateTwistByNearby {
+        public static string Setting_ShortcutCalculateTwistByNearby {
             get {
                 return ResourceManager.GetString("Setting_ShortcutCalculateTwistByNearby", resourceCulture);
             }
@@ -636,7 +648,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Change main slope direction mode.
         /// </summary>
-        internal static string Setting_ShortcutChangeMainRoadMode {
+        public static string Setting_ShortcutChangeMainRoadMode {
             get {
                 return ResourceManager.GetString("Setting_ShortcutChangeMainRoadMode", resourceCulture);
             }
@@ -645,7 +657,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Change node style.
         /// </summary>
-        internal static string Setting_ShortcutChangeNodeStyle {
+        public static string Setting_ShortcutChangeNodeStyle {
             get {
                 return ResourceManager.GetString("Setting_ShortcutChangeNodeStyle", resourceCulture);
             }
@@ -654,7 +666,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Reset offset.
         /// </summary>
-        internal static string Setting_ShortcutKeepDefault {
+        public static string Setting_ShortcutKeepDefault {
             get {
                 return ResourceManager.GetString("Setting_ShortcutKeepDefault", resourceCulture);
             }
@@ -663,7 +675,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Make ends straight.
         /// </summary>
-        internal static string Setting_ShortcutMakeStraightEnds {
+        public static string Setting_ShortcutMakeStraightEnds {
             get {
                 return ResourceManager.GetString("Setting_ShortcutMakeStraightEnds", resourceCulture);
             }
@@ -672,7 +684,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Reset to default.
         /// </summary>
-        internal static string Setting_ShortcutResetToDefault {
+        public static string Setting_ShortcutResetToDefault {
             get {
                 return ResourceManager.GetString("Setting_ShortcutResetToDefault", resourceCulture);
             }
@@ -681,7 +693,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Set shift between intersections.
         /// </summary>
-        internal static string Setting_ShortcutSetShiftBetweenIntersections {
+        public static string Setting_ShortcutSetShiftBetweenIntersections {
             get {
                 return ResourceManager.GetString("Setting_ShortcutSetShiftBetweenIntersections", resourceCulture);
             }
@@ -690,7 +702,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Set twist between intersections.
         /// </summary>
-        internal static string Setting_ShortcutSetTwistBetweenIntersections {
+        public static string Setting_ShortcutSetTwistBetweenIntersections {
             get {
                 return ResourceManager.GetString("Setting_ShortcutSetTwistBetweenIntersections", resourceCulture);
             }
@@ -699,7 +711,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Applies after game restart.
         /// </summary>
-        internal static string Settings_ApplyAfterRestart {
+        public static string Settings_ApplyAfterRestart {
             get {
                 return ResourceManager.GetString("Settings_ApplyAfterRestart", resourceCulture);
             }
@@ -708,7 +720,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Insert node.
         /// </summary>
-        internal static string Settings_InsertNode {
+        public static string Settings_InsertNode {
             get {
                 return ResourceManager.GetString("Settings_InsertNode", resourceCulture);
             }
@@ -717,7 +729,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Disabled.
         /// </summary>
-        internal static string Settings_InsertNodeDisabled {
+        public static string Settings_InsertNodeDisabled {
             get {
                 return ResourceManager.GetString("Settings_InsertNodeDisabled", resourceCulture);
             }
@@ -726,7 +738,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на By click on segment.
         /// </summary>
-        internal static string Settings_InsertNodeEnabled {
+        public static string Settings_InsertNodeEnabled {
             get {
                 return ResourceManager.GetString("Settings_InsertNodeEnabled", resourceCulture);
             }
@@ -735,7 +747,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на By click with {0} on segment.
         /// </summary>
-        internal static string Settings_InsertNodeWithModifier {
+        public static string Settings_InsertNodeWithModifier {
             get {
                 return ResourceManager.GetString("Settings_InsertNodeWithModifier", resourceCulture);
             }
@@ -744,7 +756,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Fix stuck pedestrian on long intersections.
         /// </summary>
-        internal static string Settings_LongIntersectionFix {
+        public static string Settings_LongIntersectionFix {
             get {
                 return ResourceManager.GetString("Settings_LongIntersectionFix", resourceCulture);
             }
@@ -753,7 +765,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на This option increase max pathfind distance on intersection, that prevent stuck pedestrians on such a long intersections, however this option can affect simulation speed.
         /// </summary>
-        internal static string Settings_LongIntersectionFixWarning {
+        public static string Settings_LongIntersectionFixWarning {
             get {
                 return ResourceManager.GetString("Settings_LongIntersectionFixWarning", resourceCulture);
             }
@@ -762,7 +774,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Node is sloped by default.
         /// </summary>
-        internal static string Settings_NodeIsSlopedByDefault {
+        public static string Settings_NodeIsSlopedByDefault {
             get {
                 return ResourceManager.GetString("Settings_NodeIsSlopedByDefault", resourceCulture);
             }
@@ -771,7 +783,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Disabled.
         /// </summary>
-        internal static string Settings_Option_Disabled {
+        public static string Settings_Option_Disabled {
             get {
                 return ResourceManager.GetString("Settings_Option_Disabled", resourceCulture);
             }
@@ -780,7 +792,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Сollapsed.
         /// </summary>
-        internal static string Settings_Option_Hidden {
+        public static string Settings_Option_Hidden {
             get {
                 return ResourceManager.GetString("Settings_Option_Hidden", resourceCulture);
             }
@@ -789,7 +801,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Always visible.
         /// </summary>
-        internal static string Settings_Option_Visible {
+        public static string Settings_Option_Visible {
             get {
                 return ResourceManager.GetString("Settings_Option_Visible", resourceCulture);
             }
@@ -798,7 +810,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Options visibility.
         /// </summary>
-        internal static string Settings_OptionsVisibility {
+        public static string Settings_OptionsVisibility {
             get {
                 return ResourceManager.GetString("Settings_OptionsVisibility", resourceCulture);
             }
@@ -807,7 +819,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Show nearby nodes overlay.
         /// </summary>
-        internal static string Settings_RenderNearNode {
+        public static string Settings_RenderNearNode {
             get {
                 return ResourceManager.GetString("Settings_RenderNearNode", resourceCulture);
             }
@@ -816,7 +828,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Select middle nodes.
         /// </summary>
-        internal static string Settings_SelectMiddleNodes {
+        public static string Settings_SelectMiddleNodes {
             get {
                 return ResourceManager.GetString("Settings_SelectMiddleNodes", resourceCulture);
             }
@@ -825,7 +837,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на If this option is disabled, the middle nodes will move to clicked position.
         /// </summary>
-        internal static string Settings_SelectMiddleNodesDiscription {
+        public static string Settings_SelectMiddleNodesDiscription {
             get {
                 return ResourceManager.GetString("Settings_SelectMiddleNodesDiscription", resourceCulture);
             }
@@ -834,7 +846,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Enter underground mode.
         /// </summary>
-        internal static string Settings_ShortcutEnterUnderground {
+        public static string Settings_ShortcutEnterUnderground {
             get {
                 return ResourceManager.GetString("Settings_ShortcutEnterUnderground", resourceCulture);
             }
@@ -843,7 +855,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Exit underground mode.
         /// </summary>
-        internal static string Settings_ShortcutExitUnderground {
+        public static string Settings_ShortcutExitUnderground {
             get {
                 return ResourceManager.GetString("Settings_ShortcutExitUnderground", resourceCulture);
             }
@@ -852,7 +864,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Toogle underground.
         /// </summary>
-        internal static string Settings_ToggleUnderground {
+        public static string Settings_ToggleUnderground {
             get {
                 return ResourceManager.GetString("Settings_ToggleUnderground", resourceCulture);
             }
@@ -861,7 +873,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Press {0} to enter and {1} to exit.
         /// </summary>
-        internal static string Settings_ToggleUndergroundButtons {
+        public static string Settings_ToggleUndergroundButtons {
             get {
                 return ResourceManager.GetString("Settings_ToggleUndergroundButtons", resourceCulture);
             }
@@ -870,7 +882,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Hold {0}.
         /// </summary>
-        internal static string Settings_ToggleUndergroundHold {
+        public static string Settings_ToggleUndergroundHold {
             get {
                 return ResourceManager.GetString("Settings_ToggleUndergroundHold", resourceCulture);
             }
@@ -880,7 +892,7 @@ namespace NodeController {
         ///   Ищет локализованную строку, похожую на Press {0} to enter
         ///underground mode.
         /// </summary>
-        internal static string Tool_EnterUnderground {
+        public static string Tool_EnterUnderground {
             get {
                 return ResourceManager.GetString("Tool_EnterUnderground", resourceCulture);
             }
@@ -890,7 +902,7 @@ namespace NodeController {
         ///   Ищет локализованную строку, похожую на Press {0} to exit
         ///underground mode.
         /// </summary>
-        internal static string Tool_ExitUnderground {
+        public static string Tool_ExitUnderground {
             get {
                 return ResourceManager.GetString("Tool_ExitUnderground", resourceCulture);
             }
@@ -899,7 +911,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Hold {0} to alignment roads.
         /// </summary>
-        internal static string Tool_InfoAlignMode {
+        public static string Tool_InfoAlignMode {
             get {
                 return ResourceManager.GetString("Tool_InfoAlignMode", resourceCulture);
             }
@@ -908,7 +920,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Click to align with this corner.
         /// </summary>
-        internal static string Tool_InfoApplyAlign {
+        public static string Tool_InfoApplyAlign {
             get {
                 return ResourceManager.GetString("Tool_InfoApplyAlign", resourceCulture);
             }
@@ -917,7 +929,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Hold {0} to change main slope direction.
         /// </summary>
-        internal static string Tool_InfoChangeMainMode {
+        public static string Tool_InfoChangeMainMode {
             get {
                 return ResourceManager.GetString("Tool_InfoChangeMainMode", resourceCulture);
             }
@@ -927,7 +939,7 @@ namespace NodeController {
         ///   Ищет локализованную строку, похожую на Node #{0}
         ///Click to edit.
         /// </summary>
-        internal static string Tool_InfoClickNode {
+        public static string Tool_InfoClickNode {
             get {
                 return ResourceManager.GetString("Tool_InfoClickNode", resourceCulture);
             }
@@ -936,7 +948,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Click to select corner you want to align.
         /// </summary>
-        internal static string Tool_InfoClickToSelectFirstAlign {
+        public static string Tool_InfoClickToSelectFirstAlign {
             get {
                 return ResourceManager.GetString("Tool_InfoClickToSelectFirstAlign", resourceCulture);
             }
@@ -945,7 +957,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Drag to change offset.
         /// </summary>
-        internal static string Tool_InfoDragCenter {
+        public static string Tool_InfoDragCenter {
             get {
                 return ResourceManager.GetString("Tool_InfoDragCenter", resourceCulture);
             }
@@ -954,7 +966,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Drag to change rotate.
         /// </summary>
-        internal static string Tool_InfoDragCircle {
+        public static string Tool_InfoDragCircle {
             get {
                 return ResourceManager.GetString("Tool_InfoDragCircle", resourceCulture);
             }
@@ -963,7 +975,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Drag to change corner offset.
         /// </summary>
-        internal static string Tool_InfoDragCorner {
+        public static string Tool_InfoDragCorner {
             get {
                 return ResourceManager.GetString("Tool_InfoDragCorner", resourceCulture);
             }
@@ -972,7 +984,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Drag this end to change main slope direction.
         /// </summary>
-        internal static string Tool_InfoDragMainSlopeDirectionEnd {
+        public static string Tool_InfoDragMainSlopeDirectionEnd {
             get {
                 return ResourceManager.GetString("Tool_InfoDragMainSlopeDirectionEnd", resourceCulture);
             }
@@ -981,7 +993,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Drop this end to change main slope direction.
         /// </summary>
-        internal static string Tool_InfoDropMainSlopeDirectionEnd {
+        public static string Tool_InfoDropMainSlopeDirectionEnd {
             get {
                 return ResourceManager.GetString("Tool_InfoDropMainSlopeDirectionEnd", resourceCulture);
             }
@@ -990,7 +1002,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Click to insert crossing node.
         /// </summary>
-        internal static string Tool_InfoInsertCrossingNode {
+        public static string Tool_InfoInsertCrossingNode {
             get {
                 return ResourceManager.GetString("Tool_InfoInsertCrossingNode", resourceCulture);
             }
@@ -999,7 +1011,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Click with {0} to insert crossing node.
         /// </summary>
-        internal static string Tool_InfoInsertCrossingNodeWithModifier {
+        public static string Tool_InfoInsertCrossingNodeWithModifier {
             get {
                 return ResourceManager.GetString("Tool_InfoInsertCrossingNodeWithModifier", resourceCulture);
             }
@@ -1008,7 +1020,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Click to insert node.
         /// </summary>
-        internal static string Tool_InfoInsertNode {
+        public static string Tool_InfoInsertNode {
             get {
                 return ResourceManager.GetString("Tool_InfoInsertNode", resourceCulture);
             }
@@ -1017,7 +1029,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Click with {0} to insert node.
         /// </summary>
-        internal static string Tool_InfoInsertNodeWithModifier {
+        public static string Tool_InfoInsertNodeWithModifier {
             get {
                 return ResourceManager.GetString("Tool_InfoInsertNodeWithModifier", resourceCulture);
             }
@@ -1026,7 +1038,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Select corner you want to align with.
         /// </summary>
-        internal static string Tool_InfoSelectAlignRelative {
+        public static string Tool_InfoSelectAlignRelative {
             get {
                 return ResourceManager.GetString("Tool_InfoSelectAlignRelative", resourceCulture);
             }
@@ -1035,7 +1047,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Change to desired main slope direction.
         /// </summary>
-        internal static string Tool_InfoSelectMainSlopeDirection {
+        public static string Tool_InfoSelectMainSlopeDirection {
             get {
                 return ResourceManager.GetString("Tool_InfoSelectMainSlopeDirection", resourceCulture);
             }
@@ -1044,7 +1056,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Select end position of main slope direction.
         /// </summary>
-        internal static string Tool_InfoSelectNewMainSlopeDirectionEnd {
+        public static string Tool_InfoSelectNewMainSlopeDirectionEnd {
             get {
                 return ResourceManager.GetString("Tool_InfoSelectNewMainSlopeDirectionEnd", resourceCulture);
             }
@@ -1053,7 +1065,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Select node.
         /// </summary>
-        internal static string Tool_InfoSelectNode {
+        public static string Tool_InfoSelectNode {
             get {
                 return ResourceManager.GetString("Tool_InfoSelectNode", resourceCulture);
             }
@@ -1062,7 +1074,7 @@ namespace NodeController {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Select corners you want to align.
         /// </summary>
-        internal static string Tool_InfoSelectToAlign {
+        public static string Tool_InfoSelectToAlign {
             get {
                 return ResourceManager.GetString("Tool_InfoSelectToAlign", resourceCulture);
             }
@@ -1072,7 +1084,7 @@ namespace NodeController {
         ///   Ищет локализованную строку, похожую на Can&apos;t insert node
         ///Too close to nearby node.
         /// </summary>
-        internal static string Tool_InfoTooCloseNode {
+        public static string Tool_InfoTooCloseNode {
             get {
                 return ResourceManager.GetString("Tool_InfoTooCloseNode", resourceCulture);
             }
@@ -1082,7 +1094,7 @@ namespace NodeController {
         ///   Ищет локализованную строку, похожую на Hold {0} to
         ///underground mode.
         /// </summary>
-        internal static string Tool_InfoUnderground {
+        public static string Tool_InfoUnderground {
             get {
                 return ResourceManager.GetString("Tool_InfoUnderground", resourceCulture);
             }

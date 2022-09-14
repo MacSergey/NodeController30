@@ -53,7 +53,7 @@ namespace NodeController.UI
 
         public OptionVisibleDropDown()
         {
-            SetSettingsStyle(new Vector2(278, 31));
+            this.CustomSettingsStyle(new Vector2(278, 31));
 
             foreach (var visible in EnumExtension.GetEnumValues<OptionVisibility>())
                 AddItem(visible, visible.Description<OptionVisibility, Mod>());

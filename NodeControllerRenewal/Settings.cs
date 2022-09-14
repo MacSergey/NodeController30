@@ -94,8 +94,8 @@ namespace NodeController
             AddCheckBox(generalGroup, CommonLocalize.Settings_ShowTooltips, ShowToolTip);
             AddToolButton<NodeControllerTool, NodeControllerButton>(generalGroup);
             AddCheckBox(generalGroup, Localize.Settings_LongIntersectionFix, LongIntersectionFix);
-            AddLabel(generalGroup, Localize.Settings_LongIntersectionFixWarning, 0.8f, Color.red, 25);
-            AddLabel(generalGroup, Localize.Settings_ApplyAfterRestart, 0.8f, Color.yellow, 25);
+            AddLabel(generalGroup, Localize.Settings_LongIntersectionFixWarning, 0.8f, new Color32(255, 68, 68, 255), 25);
+            AddLabel(generalGroup, Localize.Settings_ApplyAfterRestart, 0.8f, new Color32(255, 215, 81, 255), 25);
         }
 
         private void AddOptionVisible(UIAdvancedHelper helper)

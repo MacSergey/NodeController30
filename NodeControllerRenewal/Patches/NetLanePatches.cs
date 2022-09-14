@@ -38,6 +38,7 @@ namespace NodeController.Patches
                     yield return prevPrev;
                     yield return original.GetLDArg("laneID");
                     yield return original.GetLDArg("laneInfo");
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, 1);
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetLanePatches), nameof(NetLanePatches.FixPropPosition)));
                     yield return new CodeInstruction(OpCodes.Stloc_S, positionLocal);
 
@@ -53,26 +54,27 @@ namespace NodeController.Patches
                 prev = instruction;
             }
         }
-        public static Vector3 FixPropPosition(ref Vector3 pos0, float t, uint laneId, NetInfo.Lane laneInfo)
+        public static Vector3 FixPropPosition(ref Vector3 pos0, float t, uint laneId, NetInfo.Lane laneInfo, bool invert)
         {
             var position = pos0;
-            var segmentId = laneId.GetLane().m_segment;
+            ref var lane = ref laneId.GetLane();
+            var segmentId = lane.m_segment;
             SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
             if (start == null && end == null)
                 return position;
 
-            var reverse = segmentId.GetSegment().IsInvert();
-
             var startWidthRatio = start?.WidthRatio ?? 1f;
             var endWidthRatio = end?.WidthRatio ?? 1f;
             var widthRatio = Mathf.Lerp(startWidthRatio, endWidthRatio, t);
+            position.x *= widthRatio;
 
             var startHeightRatio = start?.HeightRatio ?? 0f;
             var endHeightRatio = end?.HeightRatio ?? 0f;
             var heightRatio = Mathf.Lerp(startHeightRatio, endHeightRatio, t);
 
-            position.x *= widthRatio;
-            position.y += (reverse ? 1 : -1) * position.x * heightRatio;
+            var xDelta = (invert != t < 0.5f ? 1 : -1) * position.x * heightRatio;
+
+            position.y += xDelta;
 
             return position;
         }
