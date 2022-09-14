@@ -148,6 +148,7 @@
 [FIXED] Gaten in overlay op grote netwerkknooppunten opgelost.
 [TRANSLATION] Roemeense taal toegevoegd.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bocht</value>
   </data>

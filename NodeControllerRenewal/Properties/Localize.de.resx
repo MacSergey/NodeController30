@@ -167,6 +167,7 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
 [FIXED] Löcher im Overlay auf übergroßen Netzwerk-Knoten behoben.
 [TRANSLATION] Rumänische Sprache hinzugefügt.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Kurve</value>
   </data>

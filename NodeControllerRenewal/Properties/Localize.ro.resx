@@ -149,6 +149,7 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
 [FIXED] Rezolvată problema a găuriile create în overlay în intersecțiile mai mari.
 [TRANSLATION] Adăugată limba română.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curbă</value>
   </data>

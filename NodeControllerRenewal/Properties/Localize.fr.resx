@@ -221,6 +221,7 @@ La rétrocompatibilité n'assure pas le transfert de toutes les données, il est
 [FIXED] Correction d'un trou dans la mise en évidence des nœuds de grande taille.
 [TRANSLATION] Ajout de la traduction roumaine.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Courbe</value>
   </data>

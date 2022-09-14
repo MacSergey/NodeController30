@@ -149,6 +149,12 @@ Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manu
 [FIXED] Lubang dalam tindihan atas pada nod yang amat besar telah dibaiki.
 [TRANSLATION] Bahasa Romania telah ditambah.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
+    <value>[UPDATED] Sokongan buat DLC Plazas &amp; Promenades telah ditambah.
+[FIXED] Kedudukan prop pada segmen terpulas telah dibaiki.
+[FIXED] Data penyelakuan kini sudah tidak diubah dari bebenang utama.
+[FIXED] Tekstur lintasan pejalan kaki yang hilang pada nod lintasan telah dibaiki.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Lentur</value>
   </data>

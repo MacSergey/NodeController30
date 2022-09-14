@@ -149,6 +149,7 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
 [FIXED] Sombra en capa cuando los nodos son my grandes.
 [TRANSLATION] Idioma Rumano.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Doblado</value>
   </data>

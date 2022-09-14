@@ -221,6 +221,12 @@
 [FIXED] Исправлена дыра в оверлеи при наведение на очень большие узлы.
 [TRANSLATION] Добавлен перевод на румынский.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
+    <value>[UPDATED] Добавлена поддержка Plazas &amp; Promenades DLC.
+[FIXED] Исправлена расположение реквизита на скрученных сегментах.
+[FIXED] Данные симуляции не изменяются из основного потока.
+[FIXED] Исправлена отсутствующая текстура перехода на узле типа переход.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Изгиб</value>
   </data>

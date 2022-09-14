@@ -149,6 +149,7 @@
 [FIXED] 큰 노드의 오버레이에서 나타나는 구멍을 수정했습니다.
 [TRANSLATION] 루마니아어를 지원합니다.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>커브</value>
   </data>
