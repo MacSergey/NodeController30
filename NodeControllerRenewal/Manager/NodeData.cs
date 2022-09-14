@@ -53,6 +53,7 @@ namespace NodeController
         }
         public SegmentEndData this[ushort segmentId] => SegmentEnds.TryGetValue(segmentId, out var data) ? data : null;
         private Vector3 Position { get; set; }
+        private Dictionary<ushort, Vector3> CentrePositions { get; set; } = new Dictionary<ushort, Vector3>();
         public float Gap { get; private set; }
 
         public BezierTrajectory MainBezier { get; private set; } = new BezierTrajectory(new Bezier3());
@@ -305,6 +306,8 @@ namespace NodeController
             var firstMain = FirstMainSegmentEnd;
             var secondMain = SecondMainSegmentEnd;
 
+            CentrePositions.Clear();
+
             if (IsEndNode)
             {
                 firstMain.CalculateMain(out _, out _, out _, out _);
@@ -349,6 +352,32 @@ namespace NodeController
                     Position = (leftBezier.Position(0.5f) + rightBezier.Position(0.5f)) * 0.5f;
                 else
                     Position = SegmentEndDatas.AverageOrDefault(s => s.Position, Id.GetNode().m_position);
+
+                foreach (var segmentEnd1 in SegmentEndDatas)
+                {
+                    List<SegmentEndData> canConnect = new List<SegmentEndData>();
+                    var info1 = segmentEnd1.Id.GetSegment().Info;
+                    var class1 = info1.GetConnectionClass();
+
+                    foreach (var segmentEnd2 in SegmentEndDatas)
+                    {
+                        if (segmentEnd1 == segmentEnd2)
+                            continue;
+
+                        var info2 = segmentEnd2.Id.GetSegment().Info;
+                        var class2 = info2.GetConnectionClass();
+
+                        if ((class1.m_service != class2.m_service || ((info1.m_onlySameConnectionGroup || info2.m_onlySameConnectionGroup) && (info1.m_connectGroup & info2.m_connectGroup) == 0)) && (info1.m_nodeConnectGroups & info2.m_connectGroup) == 0 && (info2.m_nodeConnectGroups & info1.m_connectGroup) == 0)
+                            continue;
+
+                        canConnect.Add(segmentEnd2);
+                    }
+
+                    if (canConnect.Count == 0)
+                        CentrePositions[segmentEnd1.Id] = segmentEnd1.Position;
+                    else
+                        CentrePositions[segmentEnd1.Id] = Position;
+                }
             }
 
             var maxGap = 0f;
@@ -373,7 +402,7 @@ namespace NodeController
             }
             Gap = Mathf.Sqrt(maxGap) + 2f;
         }
- 
+
         public void UpdateNode(bool now = true) => SingletonManager<Manager>.Instance.Update(Id, now);
         public void SetKeepDefaults()
         {
@@ -419,6 +448,15 @@ namespace NodeController
         #region UTILITIES
 
         public Vector3 GetPosition() => Position + Vector3.up * (Id.GetNode().m_heightOffset / 64f);
+        public Vector3 GetPosition(int index)
+        {
+            var segmentId = Id.GetNode().GetSegment(index);
+            if (CentrePositions.TryGetValue(segmentId, out var position))
+                return position;
+            else
+                return Position;
+        }
+
         public bool ContainsSegment(ushort segmentId) => SegmentEnds.ContainsKey(segmentId);
         public bool TryGetSegment(ushort segmentId, out SegmentEndData segmentEnd) => SegmentEnds.TryGetValue(segmentId, out segmentEnd);
         public bool IsPossibleType(NodeStyleType type) => type == Type || IsPossibleTypeImpl(type);
@@ -443,14 +481,14 @@ namespace NodeController
 
         public override string ToString() => $"NodeData(id:{Id} type:{Type})";
 
-//#if DEBUG
-//        public string GetDebugString()
-//        {
-//            return $"Type: {Type}, Segments: {SegmentCount} Pos: {Position}, OrigPos: {Id.GetNode().m_position}";
-//        }
-//#endif
+        //#if DEBUG
+        //        public string GetDebugString()
+        //        {
+        //            return $"Type: {Type}, Segments: {SegmentCount} Pos: {Position}, OrigPos: {Id.GetNode().m_position}";
+        //        }
+        //#endif
 
-#endregion
+        #endregion
 
         #region XML
 

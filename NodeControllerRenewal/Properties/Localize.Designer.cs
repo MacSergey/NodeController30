@@ -229,6 +229,18 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на [UPDATED] Added Plazas &amp; Promenades DLC support.
+        ///[FIXED] Fixed prop positions on twisted segments.
+        ///[FIXED] Simulation data is not changed from main thread anymore.
+        ///[FIXED] Fixed missed croswalk texture on croswalk nodes..
+        /// </summary>
+        public static string Mod_WhatsNewMessage3_3_1 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_3_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Bend.
         /// </summary>
         public static string NodeStyle_Bend {

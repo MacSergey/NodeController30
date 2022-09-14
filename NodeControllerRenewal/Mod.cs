@@ -30,6 +30,7 @@ namespace NodeController
         public override string Description => !IsBeta ? Localize.Mod_Description : CommonLocalize.Mod_DescriptionBeta;
         public override List<ModVersion> Versions => new List<ModVersion>()
         {
+            new ModVersion(new Version("3.3.1"), new DateTime(2022, 9, 14)),
             new ModVersion(new Version("3.3"), new DateTime(2022, 7, 9)),
             new ModVersion(new Version("3.2"), new DateTime(2022, 6, 4)),
             new ModVersion(new Version("3.1.3"), new DateTime(2021, 8, 25)),
@@ -43,7 +44,7 @@ namespace NodeController
             new ModVersion(new Version("3.0.1"), new DateTime(2021, 5, 11)),
             new ModVersion(new Version("3.0"), new DateTime(2021, 4, 30)),
         };
-        protected override Version RequiredGameVersion => new Version(1, 14, 1, 2);
+        protected override Version RequiredGameVersion => new Version(1, 15, 0, 5);
 
         protected override string IdRaw => nameof(NodeController);
         protected override List<BaseDependencyInfo> DependencyInfos
@@ -185,7 +186,6 @@ namespace NodeController
 
             success &= Patch_NetNode_Position_Transpiler("RefreshBendData");
             success &= Patch_NetNode_Position_Transpiler("RefreshEndData");
-            success &= Patch_NetNode_Position_Transpiler("RefreshJunctionData", junctionParams1);
             success &= Patch_NetNode_Position_Transpiler("RefreshJunctionData", junctionParams2);
             success &= Patch_NetNode_Position_Transpiler("RefreshJunctionData", junctionParams3);
             success &= Patch_NetNode_Position_Transpiler(nameof(NetNode.TerrainUpdated));

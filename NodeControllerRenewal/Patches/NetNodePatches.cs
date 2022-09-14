@@ -22,10 +22,10 @@ namespace NodeController.Patches
             var positionField = AccessTools.Field(typeof(NetNode), nameof(NetNode.m_position));
             var positionLocal = generator.DeclareLocal(typeof(Vector3));
 
-            yield return new CodeInstruction(original.GetLDArg("nodeID"));
             yield return new CodeInstruction(OpCodes.Ldarg_0);
             yield return new CodeInstruction(OpCodes.Ldfld, positionField);
-            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.GetNodePosition)));
+            yield return new CodeInstruction(original.GetLDArg("nodeID"));
+            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.GetCentrePosition)));
             yield return new CodeInstruction(OpCodes.Stloc_S, positionLocal);
 
             foreach (var instruction in instructions)
@@ -39,12 +39,14 @@ namespace NodeController.Patches
                     yield return instruction;
             }
         }
-        private static Vector3 GetNodePosition(ushort nodeId, Vector3 defaultPosition) => SingletonManager<Manager>.Instance.GetNodeData(nodeId, out var data) ? data.GetPosition() : defaultPosition;
 
-        public static void RefreshJunctionDataPrefix(ushort nodeID, ref Vector3 centerPos)
+        private static Vector3 GetCentrePosition(Vector3 defaultPosition, ushort nodeId) => SingletonManager<Manager>.Instance.GetNodeData(nodeId, out var data) ? data.GetPosition() : defaultPosition;
+        private static Vector3 GetCentrePositionForSegment(Vector3 defaultPosition, ushort nodeId, int index) => SingletonManager<Manager>.Instance.GetNodeData(nodeId, out var data) ? data.GetPosition(index) : defaultPosition;
+
+        public static void RefreshJunctionDataPrefix(ushort nodeID, int segmentIndex, ref Vector3 centerPos)
         {
             if (SingletonManager<Manager>.Instance.GetNodeData(nodeID, out var data))
-                centerPos = data.GetPosition();
+                centerPos = data.GetPosition(segmentIndex);
         }
 
         public static void RefreshJunctionDataPostfix(ushort nodeID, ref RenderManager.Instance data)
@@ -98,7 +100,7 @@ namespace NodeController.Patches
                         yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(NetNodePatches), nameof(NetNodePatches.CalculateMaterial)));
                     }
                 }
-                else if(prev != null && prev.opcode == OpCodes.Ldfld && prev.operand == initializedField && instruction.opcode == OpCodes.Brfalse)
+                else if (prev != null && prev.opcode == OpCodes.Ldfld && prev.operand == initializedField && instruction.opcode == OpCodes.Brfalse)
                 {
                     yield return original.GetLDArg("nodeID");
                     yield return original.GetLDArg("data");

@@ -159,7 +159,7 @@ namespace NodeController
 
 
         public float WidthRatio => Stretch * (IsSlope ? Mathf.Cos(TwistAngle * Mathf.Deg2Rad) : 1f);
-        public float HeightRatio => IsSlope ? Mathf.Sin(TwistAngle * Mathf.Deg2Rad) : 0f;
+        public float HeightRatio => IsSlope ? Mathf.Tan(TwistAngle * Mathf.Deg2Rad) : 0f;
 
         public bool IsStartBorderOffset => Offset == MinOffset;
         public bool IsEndBorderOffset => Offset == MaxOffset;
@@ -981,7 +981,7 @@ namespace NodeController
 
         #region UTILITIES
 
-        public float GetMinCornerOffset(float styleOffset) => Mathf.Clamp(Mathf.Max(Id.GetSegment().Info.m_minCornerOffset, styleOffset), MinPossibleOffset, MaxPossibleOffset);
+        public float GetMinCornerOffset(float styleOffset) => Mathf.Clamp(Mathf.Max(Id.GetSegment().Info.m_netAI.GetMinCornerOffset(Id, ref Id.GetSegment(), NodeId, ref NodeId.GetNode()), styleOffset), MinPossibleOffset, MaxPossibleOffset);
         public void GetCorner(SideType sideType, out Vector3 position, out Vector3 direction)
         {
             var side = sideType == SideType.Left ? LeftSide : RightSide;
