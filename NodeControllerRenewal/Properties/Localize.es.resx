@@ -149,7 +149,12 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
 [FIXED] Sombra en capa cuando los nodos son my grandes.
 [TRANSLATION] Idioma Rumano.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
+    <value>[UPDATED] Soporte para DLC Plazas &amp; Promedades.
+[FIXED] Posición de elementos en segmentos girados
+[FIXED] Los datos de simulación no cambiarn en el hilo principal.
+[FIXED] Texttura faltante en el cruce peatonal en nodos de cruce.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Doblado</value>
   </data>
@@ -262,7 +267,7 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
     <value>Cuesta</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>Doblar</value>
+    <value>Girar</value>
   </data>
   <data name="Option_TwistFormat" xml:space="preserve">
     <value>{0}°</value>
