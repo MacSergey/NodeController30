@@ -137,6 +137,18 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   
   
   
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] Adăugată abilitatea de a dezactiva opțiunea "Fixează problema a pietonilor blocați în intersecțiile mari" pentru plângerile făcute din cauza afectării a vitezei a simulării. Opțiunea aceasta este dezactivată în mod implicit, aceasta poate fi activată din setările modului.
+[NEW] Adăugată opțiunea "Coliziune". Dacă o dezactivezi pentru segmente, acestea nu o să mai aibă limite la schimbarea offetului și pot fi suprapuse de alte segmente.
+[NEW] Adăugată opțiunea "Fără noduri". Randează segmentele fără noduri.
+[NEW] Adăugată opțiunea de a ascunde opțiunile nefolosite. Toate opțiunile, în afară de offset, schimbă și rotește, pot fi ascunse în setările modului dacă nu o să le folsești.
+[FIXED] Rezolvată problema calculării schimbarii a nodurile din mijloc.
+[UPDATED] Valoarea maximă a pantei pentru străzi a fost crescută la 60 de grade.
+[UPDATED] Valoarea maximă a curbelor pentru străzi a fost crescută la 60 de grade.
+[UPDATED] Valoarea maximă a schimbării pentru străzi a fost crescută la 64 metri.
+[FIXED] Rezolvată problema a găuriile create în overlay în intersecțiile mai mari.
+[TRANSLATION] Adăugată limba română.</value>
+  </data>
   
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curbă</value>

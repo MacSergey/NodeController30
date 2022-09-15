@@ -136,7 +136,24 @@
   
   
   
-  
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] De mogelijkheid is toegevoegd om de optie "Vastzittende voetgangers op lange kruispunten verhelpen" uit te schakelen, vanwege klachten over de impact op de simulatiesnelheid. De optie is standaard uitgeschakeld, maar kan worden ingeschakeld in de mod instellingen.
+[NEW] Optie "Botsing" toegevoegd. Indien uitgeschakeld voor het segment, heeft het segment geen limieten voor het veranderen van de verschuiving en kan het overlapt worden door andere segmenten.
+[NEW] Optie "Zonder knopen" toegevoegd. Het creëert het respectieve segment zonder knooppunten.
+[NEW] Optie om ongebruikte opties te verbergen toegevoegd. Alle opties behalve verschuiven, veplaatsen en rotqtie kunnen verborgen worden in de mod instellingen als ze niet gebruikt worden.
+[FIXED] Verplaatsingsberekening op middelste knooppunt gecorrigeerd.
+[UPDATED] Maximale helling waarde voor wegen is verhoogd naar 60 graden.
+[UPDATED] Maximale verdraaiing voor wegen is verhoogd naar 60 graden.
+[UPDATED] Maximale verplaatsingswaarde is verhoogd naar 64 meter.
+[FIXED] Gaten in overlay op grote netwerkknooppunten opgelost.
+[TRANSLATION] Roemeense taal toegevoegd.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
+    <value>[UPDATED] Ondersteuning toegevoegd voor Plazas &amp; Promenades DLC.
+[FIXED] Probleem met de positie van props op gedraaide segmenten opgelost.
+[FIXED] Simulatiegegevens worden niet langer gewijzigd vanuit de hoofdthread.
+[FIXED] Ontbrekende textuur voor zebrapaden hersteld.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bocht</value>
   </data>

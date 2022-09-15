@@ -173,6 +173,7 @@
 [FIXED] 修复节点插入计算方式。</value>
   </data>
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>弯曲</value>
   </data>

@@ -138,6 +138,7 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Eğim</value>
   </data>

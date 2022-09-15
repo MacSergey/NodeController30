@@ -167,6 +167,12 @@ Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher m
 [FIXED] Löcher im Overlay auf übergroßen Netzwerk-Knoten behoben.
 [TRANSLATION] Rumänische Sprache hinzugefügt.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
+    <value>[UPDATED] DLC-Unterstützung für Plazas &amp; Promenaden hinzugefügt.
+[FIXED] Fehler bei Prop-Positionen auf verdrehten Segmenten behoben.
+[FIXED] Simulationsdaten werden vom Hauptthread nicht mehr geändert.
+[FIXED] Fehlerbehebung der fehlenden Boden-Textur auf den Gehweg-Knoten.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Kurve</value>
   </data>

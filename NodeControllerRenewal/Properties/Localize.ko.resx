@@ -149,6 +149,12 @@
 [FIXED] 큰 노드의 오버레이에서 나타나는 구멍을 수정했습니다.
 [TRANSLATION] 루마니아어를 지원합니다.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
+    <value>[업데이트] Plazas &amp; Promenades DLC를 지원합니다.
+[수정] 비틀린 구간의 프롭 위치를 수정했습니다.
+[수정] 더 이상 주 스레드에서 가져온 시뮬레이션 데이터가 바뀌지 않습니다.
+[수정] 횡단보도 노드의 누락된 텍스처를 수정했습니다.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>커브</value>
   </data>
