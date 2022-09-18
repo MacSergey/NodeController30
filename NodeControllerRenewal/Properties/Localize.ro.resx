@@ -149,7 +149,12 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
 [FIXED] Rezolvată problema a găuriile create în overlay în intersecțiile mai mari.
 [TRANSLATION] Adăugată limba română.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
+    <value>[UPDATED] Adăugat suportul pentru Plazas &amp; Promenades DLC.
+[FIXED] Au fost reglementate pozițiile obiectelor în segmentele răsucite.
+[FIXED] Datele simulării nu mai sunt modificate prin thread-ul principal.
+[FIXED] Rezolvată problema lipsei texturii a trecerilor de pietoni la nodurile trecerilor de pietoni.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curbă</value>
   </data>
