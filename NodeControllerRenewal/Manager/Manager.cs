@@ -179,7 +179,7 @@ namespace NodeController
             }
         }
 
-        private static void UpdateImpl(ushort[] nodeIds, ushort[] segmentIds, Options options)
+        private void UpdateImpl(ushort[] nodeIds, ushort[] segmentIds)
         {
             if (nodeIds.Length == 0)
                 return;
@@ -188,7 +188,7 @@ namespace NodeController
             var id = DateTime.Now.Millisecond;
             var sw = Stopwatch.StartNew();
 
-            SingletonMod<Mod>.Logger.Debug($"Update {id} {options}\nNodes:{string.Join(", ", nodeIds.Select(i => i.ToString()).ToArray())}\nSegments:{string.Join(", ", segmentIds.Select(i => i.ToString()).ToArray())}");
+            SingletonMod<Mod>.Logger.Debug($"Update {id}\nNodes:{string.Join(", ", nodeIds.Select(i => i.ToString()).ToArray())}\nSegments:{string.Join(", ", segmentIds.Select(i => i.ToString()).ToArray())}");
 #endif
             var manager = SingletonManager<Manager>.Instance;
 
@@ -236,7 +236,7 @@ namespace NodeController
             var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)).ToArray();
             var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)).ToArray();
 
-            UpdateImpl(nodeIds, segmentIds, Options.UpdateLater);
+            SingletonManager<Manager>.Instance.UpdateImpl(nodeIds, segmentIds);
         }
         public static void ReleaseNodeImplementationPrefix(ushort node) => SingletonManager<Manager>.Instance.Buffer[node] = null;
 
@@ -305,6 +305,8 @@ namespace NodeController
             }
 
             Update(Options.UpdateAll, toUpdate.ToArray());
+            //GetUpdateList(toUpdate.ToArray(), Options.UpdateThis, out var nodeIds, out var segmentIds);
+            //UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray());
         }
 
         [Flags]
