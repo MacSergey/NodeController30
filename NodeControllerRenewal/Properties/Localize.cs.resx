@@ -117,114 +117,329 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
+    <value>Původní data Node Controlleru byla importována.
+Zpětná kompatibilita neposkytuje přenos všech dat, mohou být vyžadovány manuální úpravy.</value>
+  </data>
+  <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
+    <value>VAROVÁNÍ: Pokud vytvoříte novou uloženou pozici, již nebudete moci na této mapě použít originální Node Controller.</value>
+  </data>
+  <data name="Mod_Description" xml:space="preserve">
+    <value>Nastavení typu a tvaru nodu</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] Přidána možnost "opravit uvízlé chodce na dlouhých křižovatkách" kvůli stížnosti na ovlivnění simulační rychlosti je ve výchozím nastavení je tato možnost zakázána, může být povolena v nastavení módu.
+[NEW] Přidána možnost "Kolize". pokud ji zakážete pro segment, segment nebude mít limity pro změnu odsazení a může být překrytý ostatními segmenty.
+[NEW] Přidána možnost "Nodeless". To vytvoří vykreslení segmentu bez uzlu.
+[NEW] Přidána možnost skrýt nepoužité možnosti. Všechny možnosti kromě odsazení, posunutí a rotace mohou být skryty v nastavení módu, pokud je nepoužíváte.
+[FIXED] Výpočet posunu na středních uzlech.
+[UPDATED] Maximální hodnota sklonu silnic byla zvýšena na 60 stupňů.
+[UPDATED] Maximální hodnota otočení pro silnice byla zvýšena na 60 stupňů.
+[UPDATED] Maximální hodnota odsazení byla zvýšena na 64 metrů.
+[FIXED] Opravená díra v překrytí na velkých uzlích.
+[TRANSLATION] Přidaný rumunský jazyk.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
+    <value>[UPDATED] Přidána podpora DLC Plazas &amp; Promenades.
+[FIXED] Opravené prop pozice na zkroucených segmentech.
+[FIXED] Data simulace se již nemění z hlavního vlákna.
+[FIXED] Opravena chybějící textura přechodů.</value>
+  </data>
+  <data name="NodeStyle_Bend" xml:space="preserve">
+    <value>Ohyb</value>
+  </data>
+  <data name="NodeStyle_Crossing" xml:space="preserve">
+    <value>Přechod</value>
+  </data>
+  <data name="NodeStyle_Custom" xml:space="preserve">
+    <value>Vlastní</value>
+  </data>
+  <data name="NodeStyle_End" xml:space="preserve">
+    <value>Konec</value>
+  </data>
+  <data name="NodeStyle_Middle" xml:space="preserve">
+    <value>Prostředek</value>
+  </data>
+  <data name="NodeStyle_Stretch" xml:space="preserve">
+    <value>Roztažení</value>
+  </data>
+  <data name="NodeStyle_UTurn" xml:space="preserve">
+    <value>Otočka</value>
+  </data>
+  <data name="Options_All" xml:space="preserve">
+    <value>Vše</value>
+  </data>
+  <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
+    <value>Vypočítat posun podle křižovatky</value>
+  </data>
+  <data name="Option_CalculateShiftByNearby" xml:space="preserve">
+    <value>Vypočítat posun podle uzlů</value>
+  </data>
+  <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
+    <value>Vypočítat stočení podle křižovatky</value>
+  </data>
+  <data name="Option_CalculateTwistByNearby" xml:space="preserve">
+    <value>Vypočítat stočení podle uzlů</value>
+  </data>
+  <data name="Option_Collision" xml:space="preserve">
+    <value>Kolize</value>
+  </data>
+  <data name="Option_KeepDefault" xml:space="preserve">
+    <value>Resetovat odsazení</value>
+  </data>
+  <data name="Option_MainSlopeDirection" xml:space="preserve">
+    <value>Směr sklonu</value>
+  </data>
+  <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
+    <value>Automaticky</value>
+  </data>
+  <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
+    <value>Ručně</value>
+  </data>
+  <data name="Option_MakeStraightEnds" xml:space="preserve">
+    <value>Zarovnat konce</value>
+  </data>
+  <data name="Option_Marking" xml:space="preserve">
+    <value>Značení</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>Další možnosti</value>
+  </data>
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>Bez uzlu</value>
+  </data>
+  <data name="Option_Offset" xml:space="preserve">
+    <value>Odsazení</value>
+  </data>
+  <data name="Option_OffsetFormat" xml:space="preserve">
+    <value>{0}m</value>
+  </data>
+  <data name="Option_ResetToDefault" xml:space="preserve">
+    <value>Obnovit výchozí nastavení</value>
+  </data>
+  <data name="Option_Rotate" xml:space="preserve">
+    <value>Otočit</value>
+  </data>
+  <data name="Option_RotateFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
+  <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
+    <value>Nastavit posun mezi křižovatkami</value>
+  </data>
+  <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
+    <value>Nastavit stočení mezi křižovatkami</value>
+  </data>
+  <data name="Option_Shift" xml:space="preserve">
+    <value>Posun</value>
+  </data>
+  <data name="Option_ShiftFormat" xml:space="preserve">
+    <value>{0}m</value>
+  </data>
+  <data name="Option_Slope" xml:space="preserve">
+    <value>Sklon</value>
+  </data>
+  <data name="Option_SlopeFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
+  <data name="Option_Stretch" xml:space="preserve">
+    <value>Natažení</value>
+  </data>
+  <data name="Option_StretchFormat" xml:space="preserve">
+    <value>{0}%</value>
+  </data>
+  <data name="Option_Style" xml:space="preserve">
+    <value>Styl</value>
+  </data>
+  <data name="Option_StyleFlat" xml:space="preserve">
+    <value>Plochý</value>
+  </data>
+  <data name="Option_StyleSlope" xml:space="preserve">
+    <value>Sklon</value>
+  </data>
+  <data name="Option_Twist" xml:space="preserve">
+    <value>Točit</value>
+  </data>
+  <data name="Option_TwistFormat" xml:space="preserve">
+    <value>{0}°</value>
+  </data>
+  <data name="Option_Type" xml:space="preserve">
+    <value>Typ uzlu</value>
+  </data>
+  <data name="Panel_NodeId" xml:space="preserve">
+    <value>Uzel #{0}</value>
+  </data>
+  <data name="Settings_ApplyAfterRestart" xml:space="preserve">
+    <value>Projeví se po restartu hry</value>
+  </data>
+  <data name="Settings_InsertNode" xml:space="preserve">
+    <value>Vložit nod</value>
+  </data>
+  <data name="Settings_InsertNodeDisabled" xml:space="preserve">
+    <value>Deaktivován</value>
+  </data>
+  <data name="Settings_InsertNodeEnabled" xml:space="preserve">
+    <value>Kliknutím na segment</value>
+  </data>
+  <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
+    <value>Kliknutím s {0} na segment</value>
+  </data>
+  <data name="Settings_LongIntersectionFix" xml:space="preserve">
+    <value>Oprav uvězněné chodce na dlouhých křižovatkách</value>
+  </data>
+  <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
+    <value>Tato možnost zvětšuje maximální vzdálenost pro nalezení cesty na křižovatce, která zabraňuje uvěznění chodců na dlouhých křižovatkách, ale tato možnost může ovlivnit rychlost simulace</value>
+  </data>
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>Uzel je ve výchozím nastavení nakloněn</value>
+  </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Viditelnost nastavení</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Vypnuto</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Sbaleno</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Vždy zobrazit</value>
+  </data>
+  <data name="Settings_RenderNearNode" xml:space="preserve">
+    <value>Zobrazit blízké překrytí uzlů</value>
+  </data>
+  <data name="Settings_SelectMiddleNodes" xml:space="preserve">
+    <value>Vybrat prostřední uzly</value>
+  </data>
+  <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
+    <value>Pokud je tato volba zakázána, střední uzly se přesunou do pozice na kterou kliknete</value>
+  </data>
+  <data name="Settings_ShortcutEnterUnderground" xml:space="preserve">
+    <value>Vstoupit do podzemního režimu</value>
+  </data>
+  <data name="Settings_ShortcutExitUnderground" xml:space="preserve">
+    <value>Ukončit podzemní režim</value>
+  </data>
+  <data name="Settings_ToggleUnderground" xml:space="preserve">
+    <value>Přepnout podzemní režim</value>
+  </data>
+  <data name="Settings_ToggleUndergroundButtons" xml:space="preserve">
+    <value>Stiskněte {0} pro vstup a {1} pro ukončení</value>
+  </data>
+  <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
+    <value>Držte {0}</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
+    <value>Vypočítat posun podle křižovatek</value>
+  </data>
+  <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
+    <value>Vypočítat posun podle uzlů</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>Vypočítat otočení podle křižovatek</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>Vypočítat otočení podle blízkých uzlů</value>
+  </data>
+  <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
+    <value>Změnit režim sklonu</value>
+  </data>
+  <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
+    <value>Změna stylu uzlu</value>
+  </data>
+  <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
+    <value>Resetovat odsazení</value>
+  </data>
+  <data name="Setting_ShortcutMakeStraightEnds" xml:space="preserve">
+    <value>Zarovnat konce</value>
+  </data>
+  <data name="Setting_ShortcutResetToDefault" xml:space="preserve">
+    <value>Obnovit výchozí nastavení</value>
+  </data>
+  <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
+    <value>Nastavit posun mezi křižovatkami</value>
+  </data>
+  <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
+    <value>Nastavit otočení mezi křižovatkami</value>
+  </data>
+  <data name="Tool_EnterUnderground" xml:space="preserve">
+    <value>Stiskněte {0} podzemní režim</value>
+  </data>
+  <data name="Tool_ExitUnderground" xml:space="preserve">
+    <value>Stiskněte {0} pro ukončení podzemního režimu</value>
+  </data>
+  <data name="Tool_InfoAlignMode" xml:space="preserve">
+    <value>Podržte {0} pro zarovnání silnic</value>
+  </data>
+  <data name="Tool_InfoApplyAlign" xml:space="preserve">
+    <value>Klikněte pro zarovnání s tímto rohem</value>
+  </data>
+  <data name="Tool_InfoChangeMainMode" xml:space="preserve">
+    <value>Držte {0} pro změnu směru sklonu</value>
+  </data>
+  <data name="Tool_InfoClickNode" xml:space="preserve">
+    <value>Uzel #{0}
+Klikněte pro úpravu</value>
+  </data>
+  <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
+    <value>Klikněte pro výběr rohu, který chcete zarovnat</value>
+  </data>
+  <data name="Tool_InfoDragCenter" xml:space="preserve">
+    <value>Tažením změníte odsazení</value>
+  </data>
+  <data name="Tool_InfoDragCircle" xml:space="preserve">
+    <value>Tažením změníte otočení</value>
+  </data>
+  <data name="Tool_InfoDragCorner" xml:space="preserve">
+    <value>Tažením změníte odsazení rohů</value>
+  </data>
+  <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
+    <value>Tažením tohoto konce změníte směr sklonu</value>
+  </data>
+  <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
+    <value>Puštěním tohoto konce změníte směr sklonu</value>
+  </data>
+  <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
+    <value>Klikněte pro vložení přechodu</value>
+  </data>
+  <data name="Tool_InfoInsertCrossingNodeWithModifier" xml:space="preserve">
+    <value>Klikněte s {0} pro vložení přechodu</value>
+  </data>
+  <data name="Tool_InfoInsertNode" xml:space="preserve">
+    <value>Klikněte pro vložení uzlu</value>
+  </data>
+  <data name="Tool_InfoInsertNodeWithModifier" xml:space="preserve">
+    <value>Klikněte s {0} pro vložení uzlu</value>
+  </data>
+  <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
+    <value>Vyberte roh, se kterým se chcete zarovnat</value>
+  </data>
+  <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
+    <value>Změnit požadovaný směr sklonu</value>
+  </data>
+  <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
+    <value>Vyberte koncovou pozici směru sklonu</value>
+  </data>
+  <data name="Tool_InfoSelectNode" xml:space="preserve">
+    <value>Vybrat uzel</value>
+  </data>
+  <data name="Tool_InfoSelectToAlign" xml:space="preserve">
+    <value>Vyberte rohy, které chcete zarovnat</value>
+  </data>
+  <data name="Tool_InfoTooCloseNode" xml:space="preserve">
+    <value>Nelze vložit uzel
+Příliš blízko k jinému uzlu</value>
+  </data>
+  <data name="Tool_InfoUnderground" xml:space="preserve">
+    <value>Stiskněte {0} pro podzemní mód</value>
+  </data>
 </root>
