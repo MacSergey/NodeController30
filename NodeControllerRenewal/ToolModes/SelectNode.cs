@@ -142,7 +142,7 @@ namespace NodeController
         public override void OnPrimaryMouseClicked(Event e)
         {
             if (IsHoverNode)
-                Set(SingletonManager<Manager>.Instance[HoverNode.Id, true]);
+                Set(SingletonManager<Manager>.Instance.GetOrCreateNodeData(HoverNode.Id));
             else if (IsHoverSegment && IsPossibleInsertNode && (!Settings.IsInsertWithModifier || Utility.OnlyCtrlIsPressed))
             {
                 var controlPoint = new NetTool.ControlPoint() { m_segment = HoverSegment.Id, m_position = InsertPosition };

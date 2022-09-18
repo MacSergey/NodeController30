@@ -30,19 +30,6 @@ namespace NodeController
             Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
         }
 
-        public NodeData this[ushort nodeId, bool create = false] => this[nodeId, create ? Options.Default : Options.None];
-        public NodeData this[ushort nodeId, Options options]
-        {
-            get
-            {
-                if (Buffer[nodeId] is not NodeData data)
-                    data = options.IsSet(Options.CreateThis) ? Create(nodeId, options) : null;
-
-                return data;
-            }
-        }
-        public SegmentEndData this[ushort nodeId, ushort segmentId, bool create = false] => this[nodeId, create] is NodeData data ? data[segmentId] : null;
-
         private void Clear()
         {
             SingletonMod<Mod>.Logger.Debug("Clear manager");
@@ -72,26 +59,43 @@ namespace NodeController
             }
         }
 
-        public bool GetNodeData(ushort nodeId, out NodeData data)
+        public NodeData GetNodeData(ushort nodeId) => Buffer[nodeId];
+        public NodeData GetOrCreateNodeData(ushort nodeId, Options options = Options.Default)
+        {
+            if (Buffer[nodeId] is not NodeData data)
+            {
+                if ((options & Options.CreateThis) != 0)
+                    data = Create(nodeId, options);
+                else
+                    data = null;
+            }
+
+            return data;
+        }
+
+        public bool TryGetNodeData(ushort nodeId, out NodeData data)
         {
             data = Buffer[nodeId];
             return data != null;
         }
-        public bool GetSegmentData(ushort segmentId, bool isStart, out SegmentEndData data)
-        {
-            data = Buffer[segmentId.GetSegment().GetNode(isStart)]?[segmentId];
-            return data != null;
-        }
-        public bool GetSegmentData(ushort nodeId, ushort segmentId, out SegmentEndData data)
-        {
-            data = Buffer[nodeId]?[segmentId];
-            return data != null;
-        }
+
+        public SegmentEndData GetSegmentData(ushort nodeId, ushort segmentId) => GetNodeData(nodeId)?[segmentId];
         public void GetSegmentData(ushort segmentId, out SegmentEndData start, out SegmentEndData end)
         {
             ref var segment = ref segmentId.GetSegment();
             start = Buffer[segment.m_startNode]?[segmentId];
             end = Buffer[segment.m_endNode]?[segmentId];
+        }
+
+        public bool TryGetSegmentData(ushort segmentId, bool isStart, out SegmentEndData data)
+        {
+            data = Buffer[segmentId.GetSegment().GetNode(isStart)]?[segmentId];
+            return data != null;
+        }
+        public bool TryGetSegmentData(ushort nodeId, ushort segmentId, out SegmentEndData data)
+        {
+            data = Buffer[nodeId]?[segmentId];
+            return data != null;
         }
 
         public bool ContainsNode(ushort nodeId) => Buffer[nodeId] != null;
@@ -137,12 +141,7 @@ namespace NodeController
         {
             if ((options & Options.UpdateAll) != 0)
             {
-                //if (options.IsSet(Options.UpdateThisNow))
-                //{
-                //    GetUpdateList(toUpdateIds, options & ~Options.UpdateLater, out var nodeIds, out var segmentIds);
-                //    UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray(), false, Options.UpdateNow);
-                //}
-                if (options.IsSet(Options.UpdateThisLater))
+                if ((options & Options.UpdateThisLater) != 0)
                 {
                     GetUpdateList(toUpdateIds, options & ~Options.UpdateNow, out var nodeIds, out _);
 
@@ -173,7 +172,7 @@ namespace NodeController
                     foreach (var segmentIs in nodeSegmentIds)
                     {
                         var otherNodeId = segmentIs.GetSegment().GetOtherNode(nodeId);
-                        if (this[otherNodeId, nearbyOptions & Options.CreateAll & ~Options.Nearby | Options.This] != null)
+                        if (GetOrCreateNodeData(otherNodeId, nearbyOptions & Options.CreateAll & ~Options.Nearby | Options.This) != null)
                             nodeIds.Add(otherNodeId);
                     }
                 }

@@ -173,7 +173,7 @@ namespace NodeController
             nodeIds.AddRange(Data.Id.NextNodes(Data.MainRoad.Second, true, maxCount));
 
             var manager = SingletonManager<Manager>.Instance;
-            datas = nodeIds.Select(i => manager[i, true]).ToArray();
+            datas = nodeIds.Select(id => manager.GetOrCreateNodeData(id)).ToArray();
             segments = new ushort[nodeIds.Count - 1];
 
             if (datas.Any(d => d == null))

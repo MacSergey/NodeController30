@@ -394,8 +394,8 @@ namespace NodeController
             endPos = segment.m_endNode.GetNode().m_position;
             endDir = segment.m_endDirection;
 
-            var start = SingletonManager<Manager>.Instance[segment.m_startNode];
-            var end = SingletonManager<Manager>.Instance[segment.m_endNode];
+            var start = SingletonManager<Manager>.Instance.GetNodeData(segment.m_startNode);
+            var end = SingletonManager<Manager>.Instance.GetNodeData(segment.m_endNode);
 
             var startShift = start?[segmentId]?.Shift ?? 0f;
             var endShift = end?[segmentId]?.Shift ?? 0f;
@@ -1062,7 +1062,7 @@ namespace NodeController
         public void Render(OverlayData data) => Render(data, data, data, data, data);
         public void Render(OverlayData contourData, OverlayData outterData, OverlayData innerData, OverlayData? leftData = null, OverlayData? rightData = null)
         {
-            var data = SingletonManager<Manager>.Instance[NodeId];
+            var data = SingletonManager<Manager>.Instance.GetNodeData(NodeId);
 
             RenderContour(contourData);
             if (data.IsMoveableEnds && IsChangeable)
