@@ -179,12 +179,11 @@ namespace NodeController
             UpdateStyle(true, nodeType);
             UpdateMainRoadSegments();
         }
-        public void Update(bool updateFlags)
+        public void EarlyUpdate()
         {
             UpdateSegmentEndsImpl();
             MainRoad.Update(this);
-            if (updateFlags)
-                UpdateFlags();
+            UpdateFlags();
             UpdateMainRoadSegments();
         }
         public void UpdateSegmentEnds()

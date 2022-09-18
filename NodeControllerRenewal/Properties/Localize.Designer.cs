@@ -89,6 +89,26 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Load was completed with errors.
+        ///Failed to load data for {0} nodes..
+        /// </summary>
+        public static string Mod_LoadFailed {
+            get {
+                return ResourceManager.GetString("Mod_LoadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Load was completed with errors.
+        ///Failed to load data for all nodes..
+        /// </summary>
+        public static string Mod_LoadFailedAll {
+            get {
+                return ResourceManager.GetString("Mod_LoadFailedAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на [NEW] Added auto mode for main slope direction.
         ///[NEW] Added red overlay for short segments (short segments lead wrong vehicle speed).
         ///[NEW] Added the ability reset only offset to default.
@@ -232,7 +252,7 @@ namespace NodeController {
         ///   Ищет локализованную строку, похожую на [UPDATED] Added Plazas &amp; Promenades DLC support.
         ///[FIXED] Fixed prop positions on twisted segments.
         ///[FIXED] Simulation data is not changed from main thread anymore.
-        ///[FIXED] Fixed missed croswalk texture on croswalk nodes..
+        ///[FIXED] Fixed missing crosswalk texture on crosswalk nodes..
         /// </summary>
         public static string Mod_WhatsNewMessage3_3_1 {
             get {

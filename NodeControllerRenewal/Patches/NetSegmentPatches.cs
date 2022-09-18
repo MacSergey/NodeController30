@@ -25,15 +25,6 @@ namespace NodeController.Patches
                 if (heightOffset && startNodeID != 0)
                     cornerPos.y += startNodeID.GetNode().m_heightOffset / 64f;
 
-                //var segment = ignoreSegmentID.GetSegment();
-                //var isStart = segment.IsStartNode(startNodeID);
-                //var startPos = (isStart ? segment.m_startNode : segment.m_endNode).GetNode().m_position;
-                //var startDir = isStart ? segment.m_startDirection : segment.m_endDirection;
-                //var endPos = (isStart ? segment.m_endNode : segment.m_startNode).GetNode().m_position;
-                //var endDir = isStart ? segment.m_endDirection : segment.m_startDirection;
-                //CornerSource.CalculateCorner(segment.Info, startPos, endPos, startDir, endDir, ignoreSegmentID, startNodeID, true, leftSide, out var cp, out var cd, out _);
-                //cornerPos = cp;
-                //cornerDirection = cd;
                 return false;
             }
         }

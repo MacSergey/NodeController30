@@ -15,6 +15,13 @@ namespace NodeController
 {
     public class Manager : IManager
     {
+        public static int Errors { get; set; } = 0;
+        public static bool HasErrors => Errors != 0;
+        public static void SetFailed()
+        {
+            Errors = -1;
+        }
+
         private NodeData[] Buffer { get; set; }
 
         public Manager()
@@ -173,7 +180,7 @@ namespace NodeController
             }
         }
 
-        private static void UpdateImpl(ushort[] nodeIds, ushort[] segmentIds, bool updateFlags, Options options)
+        private static void UpdateImpl(ushort[] nodeIds, ushort[] segmentIds, Options options)
         {
             if (nodeIds.Length == 0)
                 return;
@@ -187,7 +194,7 @@ namespace NodeController
             var manager = SingletonManager<Manager>.Instance;
 
             foreach (var nodeId in nodeIds)
-                manager.Buffer[nodeId].Update(updateFlags);
+                manager.Buffer[nodeId].EarlyUpdate();
 
 #if DEBUG
             var updateDone = sw.ElapsedTicks;
@@ -230,15 +237,16 @@ namespace NodeController
             var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)).ToArray();
             var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)).ToArray();
 
-            UpdateImpl(nodeIds, segmentIds, true, Options.UpdateLater);
+            UpdateImpl(nodeIds, segmentIds, Options.UpdateLater);
         }
         public static void ReleaseNodeImplementationPrefix(ushort node) => SingletonManager<Manager>.Instance.Buffer[node] = null;
 
         public XElement ToXml()
         {
             var config = new XElement(nameof(NodeController));
-
             config.AddAttr("V", SingletonMod<Mod>.Version);
+
+            Errors = 0;
 
             foreach (var data in Buffer)
             {
@@ -250,6 +258,8 @@ namespace NodeController
         }
         public void FromXml(XElement config, NetObjectsMap map)
         {
+            Errors = 0;
+
             var toUpdate = new List<ushort>();
 
             foreach (var nodeConfig in config.Elements(NodeData.XmlName))
@@ -263,6 +273,13 @@ namespace NodeController
                 {
                     try
                     {
+                        if ((id.GetNode().flags & (NetNode.FlagsLong.Created | NetNode.FlagsLong.Deleted)) != NetNode.FlagsLong.Created)
+                        {
+                            SingletonMod<Mod>.Logger.Error($"Can't load Node data #{id}: Node is not created");
+                            Errors += 1;
+                            continue;
+                        }
+
                         var type = (NodeStyleType)nodeConfig.GetAttrValue("T", (int)NodeStyleType.Custom);
                         var data = new NodeData(id, type);
                         data.FromXml(nodeConfig, map);
@@ -273,14 +290,17 @@ namespace NodeController
                     catch (NodeNotCreatedException error)
                     {
                         SingletonMod<Mod>.Logger.Error($"Can't load Node data #{id}: {error.Message}");
+                        Errors += 1;
                     }
                     catch (NodeStyleNotImplementedException error)
                     {
                         SingletonMod<Mod>.Logger.Error($"Can't load Node data #{id}: {error.Message}");
+                        Errors += 1;
                     }
                     catch (Exception error)
                     {
                         SingletonMod<Mod>.Logger.Error($"Can't load Node data #{id}", error);
+                        Errors += 1;
                     }
                 }
             }

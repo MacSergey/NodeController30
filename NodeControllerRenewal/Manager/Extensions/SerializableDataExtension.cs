@@ -23,6 +23,7 @@ namespace NodeController
 
         protected override XElement GetSaveData() => SingletonManager<Manager>.Instance.ToXml();
         protected override void SetLoadData(XElement config) => SingletonManager<Manager>.Instance.FromXml(config, new NetObjectsMap());
+        protected override void OnLoadFailed() => Manager.SetFailed();
 
         public override void OnLoadData()
         {
