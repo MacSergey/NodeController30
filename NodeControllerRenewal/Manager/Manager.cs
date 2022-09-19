@@ -136,21 +136,12 @@ namespace NodeController
             });
         }
 
-        public void Update(ushort nodeId, bool now = false)
-        {
-            var option = Options.UpdateLater | (now ? Options.UpdateNow : Options.None);
-            Update(option, nodeId);
-        }
-        public void Update(ushort[] nodeIds, bool now = false)
-        {
-            var option = Options.UpdateLater | (now ? Options.UpdateNow : Options.None);
-            Update(option, nodeIds);
-        }
+        public void Update(ushort nodeId) => Update(Options.UpdateAll, nodeId);
         private void Update(Options options, params ushort[] toUpdateIds)
         {
-            if ((options & Options.UpdateAll) != 0 && (options & Options.UpdateThisLater) != 0)
+            if ((options & Options.UpdateAll) != 0)
             {
-                GetUpdateList(toUpdateIds, options & ~Options.UpdateNow, out var nodeIds, out _);
+                GetUpdateList(toUpdateIds, options, out var nodeIds, out _);
 
                 SimulationManager.instance.AddAction(() =>
                 {
@@ -159,7 +150,7 @@ namespace NodeController
                 });
             }
         }
-        private void GetUpdateList(ushort[] toUpdateIds, Options nearbyOptions, out HashSet<ushort> nodeIds, out HashSet<ushort> segmentIds)
+        private void GetUpdateList(ushort[] toUpdateIds, Options options, out HashSet<ushort> nodeIds, out HashSet<ushort> segmentIds)
         {
             nodeIds = new HashSet<ushort>();
             segmentIds = new HashSet<ushort>();
@@ -173,12 +164,12 @@ namespace NodeController
                 var nodeSegmentIds = nodeId.GetNode().SegmentIds().ToArray();
                 segmentIds.AddRange(nodeSegmentIds);
 
-                if ((nearbyOptions & Options.UpdateNearby) != 0)
+                if ((options & Options.UpdateNearby) != 0)
                 {
                     foreach (var segmentIs in nodeSegmentIds)
                     {
                         var otherNodeId = segmentIs.GetSegment().GetOtherNode(nodeId);
-                        if (GetOrCreateNodeData(otherNodeId, nearbyOptions & Options.CreateAll & ~Options.Nearby | Options.This) != null)
+                        if (GetOrCreateNodeData(otherNodeId, options) != null)
                             nodeIds.Add(otherNodeId);
                     }
                 }
@@ -326,27 +317,12 @@ namespace NodeController
         {
             None = 0,
 
-            This = 1,
-            Nearby = 2,
+            CreateThis = 1,
+            UpdateThis = 2,
+            UpdateNearby = 4,
 
-            Create = 4,
-            CreateThis = This | Create,
-            CreateNearby = Nearby | Create,
-            CreateAll = CreateThis | CreateNearby,
-
-            UpdateThisNow = 8,
-            UpdateThisLater = 16,
-            UpdateThis = UpdateThisNow | UpdateThisLater,
-
-            UpdateNearbyNow = 32,
-            UpdateNearbyLater = 64,
-            UpdateNearby = UpdateNearbyNow | UpdateNearbyLater,
-
-            UpdateNow = UpdateThisNow | UpdateNearbyNow,
-            UpdateLater = UpdateThisLater | UpdateNearbyLater,
-            UpdateAll = UpdateNow | UpdateLater,
-
-            Default = CreateThis | CreateNearby | UpdateThis | UpdateNearbyLater,
+            UpdateAll = UpdateThis | UpdateNearby,
+            Default = CreateThis | UpdateAll,
         }
     }
 

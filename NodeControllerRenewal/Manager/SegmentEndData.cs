@@ -255,7 +255,7 @@ namespace NodeController
             IsNodeLess = !segment.Info.m_nodes.Any() || (IsDecoration && (!segment.Info.m_clipSegmentEnds || segment.Info.m_twistSegmentEnds));
             IsUntouchable = segment.m_flags.IsSet(NetSegment.Flags.Untouchable);
         }
-        public void UpdateNode() => SingletonManager<Manager>.Instance.Update(NodeId, true);
+        public void UpdateNode() => SingletonManager<Manager>.Instance.Update(NodeId);
 
         public void SetKeepDefaults() => KeepDefaults = true;
         public void ResetToDefault(NodeStyle style, bool force)

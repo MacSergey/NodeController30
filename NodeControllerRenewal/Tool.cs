@@ -138,7 +138,7 @@ namespace NodeController
             if (Data.Style.SupportSlopeJunction != SupportOption.None)
             {
                 Data.IsSlopeJunctions = !Data.IsSlopeJunctions;
-                Data.UpdateNode(false);
+                Data.UpdateNode();
                 Panel.SetPanel();
             }
         }
@@ -147,7 +147,7 @@ namespace NodeController
             if (Data.IsJunction && Data.Style.SupportSlopeJunction != SupportOption.None)
             {
                 Data.MainRoad.Auto = !Data.MainRoad.Auto;
-                Data.UpdateNode(false);
+                Data.UpdateNode();
                 Panel.SetPanel();
             }
         }
@@ -218,7 +218,7 @@ namespace NodeController
                     var value = Mathf.Lerp(startValue, endValue, currentLength / fullLength);
                     dataSetter(datas[i][segments[i - 1]], -value);
                     dataSetter(datas[i][segments[i]], value);
-                    datas[i].UpdateNode(false);
+                    datas[i].UpdateNode();
                 }
             }
         }
