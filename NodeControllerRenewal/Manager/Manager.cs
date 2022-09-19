@@ -15,6 +15,7 @@ namespace NodeController
 {
     public class Manager : IManager
     {
+        private static bool InitialUpdateInProgress = false;
         public static int Errors { get; set; } = 0;
         public static bool HasErrors => Errors != 0;
         public static void SetFailed()
@@ -28,12 +29,14 @@ namespace NodeController
         {
             SingletonMod<Mod>.Logger.Debug("Create manager");
             Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
+            InitialUpdateInProgress = false;
         }
 
         private void Clear()
         {
             SingletonMod<Mod>.Logger.Debug("Clear manager");
             Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
+            InitialUpdateInProgress = false;
         }
         private NodeData Create(ushort nodeId, Options options, NodeStyleType? nodeType = null)
         {
@@ -118,13 +121,19 @@ namespace NodeController
             return data;
         }
 
-        public void UpdateAll() => SimulationManager.instance.AddAction(UpdateAllImpl);
-        private void UpdateAllImpl()
+        public void InitialUpdate(ushort[] toUpdateIds)
         {
-            SingletonMod<Mod>.Logger.Debug("Update all nodes");
+            SingletonMod<Mod>.Logger.Debug("Start initial update");
+            InitialUpdateInProgress = true;
 
-            var toUpdate = Buffer.Where(d => d != null).Select(d => d.Id).ToArray();
-            Update(toUpdate);
+            GetUpdateList(toUpdateIds, Options.UpdateThis, out var nodeIds, out var segmentIds);
+            UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray());
+
+            SimulationManager.instance.AddAction(() =>
+            {
+                foreach (var nodeId in nodeIds)
+                    NetManager.instance.UpdateNode(nodeId);
+            });
         }
 
         public void Update(ushort nodeId, bool now = false)
@@ -139,18 +148,15 @@ namespace NodeController
         }
         private void Update(Options options, params ushort[] toUpdateIds)
         {
-            if ((options & Options.UpdateAll) != 0)
+            if ((options & Options.UpdateAll) != 0 && (options & Options.UpdateThisLater) != 0)
             {
-                if ((options & Options.UpdateThisLater) != 0)
-                {
-                    GetUpdateList(toUpdateIds, options & ~Options.UpdateNow, out var nodeIds, out _);
+                GetUpdateList(toUpdateIds, options & ~Options.UpdateNow, out var nodeIds, out _);
 
-                    SimulationManager.instance.AddAction(() =>
-                    {
-                        foreach (var nodeId in nodeIds)
-                            NetManager.instance.UpdateNode(nodeId);
-                    });
-                }
+                SimulationManager.instance.AddAction(() =>
+                {
+                    foreach (var nodeId in nodeIds)
+                        NetManager.instance.UpdateNode(nodeId);
+                });
             }
         }
         private void GetUpdateList(ushort[] toUpdateIds, Options nearbyOptions, out HashSet<ushort> nodeIds, out HashSet<ushort> segmentIds)
@@ -232,11 +238,19 @@ namespace NodeController
 
         public static void SimulationStep()
         {
-            var manager = SingletonManager<Manager>.Instance;
-            var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)).ToArray();
-            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)).ToArray();
+            if (InitialUpdateInProgress)
+            {
+                InitialUpdateInProgress = false;
+                SingletonMod<Mod>.Logger.Debug("Finish initial update");
+            }
+            else
+            {
+                var manager = SingletonManager<Manager>.Instance;
+                var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)).ToArray();
+                var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)).ToArray();
 
-            SingletonManager<Manager>.Instance.UpdateImpl(nodeIds, segmentIds);
+                SingletonManager<Manager>.Instance.UpdateImpl(nodeIds, segmentIds);
+            }
         }
         public static void ReleaseNodeImplementationPrefix(ushort node) => SingletonManager<Manager>.Instance.Buffer[node] = null;
 
@@ -304,9 +318,7 @@ namespace NodeController
                 }
             }
 
-            Update(Options.UpdateAll, toUpdate.ToArray());
-            //GetUpdateList(toUpdate.ToArray(), Options.UpdateThis, out var nodeIds, out var segmentIds);
-            //UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray());
+            InitialUpdate(toUpdate.ToArray());
         }
 
         [Flags]
