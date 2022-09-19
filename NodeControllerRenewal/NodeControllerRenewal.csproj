@@ -20,7 +20,7 @@
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)' == 'Beta Release' OR '$(Configuration)' == 'Beta Debug'">
-    <Version>3.3.0.222</Version>
+    <Version>3.3.0.240</Version>
   </PropertyGroup>
   
   
