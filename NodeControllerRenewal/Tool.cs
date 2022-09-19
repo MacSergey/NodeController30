@@ -138,7 +138,7 @@ namespace NodeController
             if (Data.Style.SupportSlopeJunction != SupportOption.None)
             {
                 Data.IsSlopeJunctions = !Data.IsSlopeJunctions;
-                Data.UpdateNode(false);
+                Data.UpdateNode();
                 Panel.SetPanel();
             }
         }
@@ -147,7 +147,7 @@ namespace NodeController
             if (Data.IsJunction && Data.Style.SupportSlopeJunction != SupportOption.None)
             {
                 Data.MainRoad.Auto = !Data.MainRoad.Auto;
-                Data.UpdateNode(false);
+                Data.UpdateNode();
                 Panel.SetPanel();
             }
         }
@@ -173,7 +173,7 @@ namespace NodeController
             nodeIds.AddRange(Data.Id.NextNodes(Data.MainRoad.Second, true, maxCount));
 
             var manager = SingletonManager<Manager>.Instance;
-            datas = nodeIds.Select(i => manager[i, true]).ToArray();
+            datas = nodeIds.Select(id => manager.GetOrCreateNodeData(id)).ToArray();
             segments = new ushort[nodeIds.Count - 1];
 
             if (datas.Any(d => d == null))
@@ -218,7 +218,7 @@ namespace NodeController
                     var value = Mathf.Lerp(startValue, endValue, currentLength / fullLength);
                     dataSetter(datas[i][segments[i - 1]], -value);
                     dataSetter(datas[i][segments[i]], value);
-                    datas[i].UpdateNode(false);
+                    datas[i].UpdateNode();
                 }
             }
         }

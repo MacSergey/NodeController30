@@ -15,31 +15,28 @@ namespace NodeController
 {
     public class Manager : IManager
     {
+        private static bool InitialUpdateInProgress = false;
+        public static int Errors { get; set; } = 0;
+        public static bool HasErrors => Errors != 0;
+        public static void SetFailed()
+        {
+            Errors = -1;
+        }
+
         private NodeData[] Buffer { get; set; }
 
         public Manager()
         {
             SingletonMod<Mod>.Logger.Debug("Create manager");
             Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
+            InitialUpdateInProgress = false;
         }
-
-        public NodeData this[ushort nodeId, bool create = false] => this[nodeId, create ? Options.Default : Options.None];
-        public NodeData this[ushort nodeId, Options options]
-        {
-            get
-            {
-                if (Buffer[nodeId] is not NodeData data)
-                    data = options.IsSet(Options.CreateThis) ? Create(nodeId, options) : null;
-
-                return data;
-            }
-        }
-        public SegmentEndData this[ushort nodeId, ushort segmentId, bool create = false] => this[nodeId, create] is NodeData data ? data[segmentId] : null;
 
         private void Clear()
         {
             SingletonMod<Mod>.Logger.Debug("Clear manager");
             Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
+            InitialUpdateInProgress = false;
         }
         private NodeData Create(ushort nodeId, Options options, NodeStyleType? nodeType = null)
         {
@@ -65,26 +62,43 @@ namespace NodeController
             }
         }
 
-        public bool GetNodeData(ushort nodeId, out NodeData data)
+        public NodeData GetNodeData(ushort nodeId) => Buffer[nodeId];
+        public NodeData GetOrCreateNodeData(ushort nodeId, Options options = Options.Default)
+        {
+            if (Buffer[nodeId] is not NodeData data)
+            {
+                if ((options & Options.CreateThis) != 0)
+                    data = Create(nodeId, options);
+                else
+                    data = null;
+            }
+
+            return data;
+        }
+
+        public bool TryGetNodeData(ushort nodeId, out NodeData data)
         {
             data = Buffer[nodeId];
             return data != null;
         }
-        public bool GetSegmentData(ushort segmentId, bool isStart, out SegmentEndData data)
-        {
-            data = Buffer[segmentId.GetSegment().GetNode(isStart)]?[segmentId];
-            return data != null;
-        }
-        public bool GetSegmentData(ushort nodeId, ushort segmentId, out SegmentEndData data)
-        {
-            data = Buffer[nodeId]?[segmentId];
-            return data != null;
-        }
+
+        public SegmentEndData GetSegmentData(ushort nodeId, ushort segmentId) => GetNodeData(nodeId)?[segmentId];
         public void GetSegmentData(ushort segmentId, out SegmentEndData start, out SegmentEndData end)
         {
             ref var segment = ref segmentId.GetSegment();
             start = Buffer[segment.m_startNode]?[segmentId];
             end = Buffer[segment.m_endNode]?[segmentId];
+        }
+
+        public bool TryGetSegmentData(ushort segmentId, bool isStart, out SegmentEndData data)
+        {
+            data = Buffer[segmentId.GetSegment().GetNode(isStart)]?[segmentId];
+            return data != null;
+        }
+        public bool TryGetSegmentData(ushort nodeId, ushort segmentId, out SegmentEndData data)
+        {
+            data = Buffer[nodeId]?[segmentId];
+            return data != null;
         }
 
         public bool ContainsNode(ushort nodeId) => Buffer[nodeId] != null;
@@ -107,47 +121,36 @@ namespace NodeController
             return data;
         }
 
-        public void UpdateAll() => SimulationManager.instance.AddAction(UpdateAllImpl);
-        private void UpdateAllImpl()
+        public void InitialUpdate(ushort[] toUpdateIds)
         {
-            SingletonMod<Mod>.Logger.Debug("Update all nodes");
+            SingletonMod<Mod>.Logger.Debug("Start initial update");
+            InitialUpdateInProgress = true;
 
-            var toUpdate = Buffer.Where(d => d != null).Select(d => d.Id).ToArray();
-            Update(toUpdate);
+            GetUpdateList(toUpdateIds, Options.UpdateThis, out var nodeIds, out var segmentIds);
+            UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray());
+
+            SimulationManager.instance.AddAction(() =>
+            {
+                foreach (var nodeId in nodeIds)
+                    NetManager.instance.UpdateNode(nodeId);
+            });
         }
 
-        public void Update(ushort nodeId, bool now = false)
-        {
-            var option = Options.UpdateLater | (now ? Options.UpdateNow : Options.None);
-            Update(option, nodeId);
-        }
-        public void Update(ushort[] nodeIds, bool now = false)
-        {
-            var option = Options.UpdateLater | (now ? Options.UpdateNow : Options.None);
-            Update(option, nodeIds);
-        }
+        public void Update(ushort nodeId) => Update(Options.UpdateAll, nodeId);
         private void Update(Options options, params ushort[] toUpdateIds)
         {
             if ((options & Options.UpdateAll) != 0)
             {
-                //if (options.IsSet(Options.UpdateThisNow))
-                //{
-                //    GetUpdateList(toUpdateIds, options & ~Options.UpdateLater, out var nodeIds, out var segmentIds);
-                //    UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray(), false, Options.UpdateNow);
-                //}
-                if (options.IsSet(Options.UpdateThisLater))
-                {
-                    GetUpdateList(toUpdateIds, options & ~Options.UpdateNow, out var nodeIds, out _);
+                GetUpdateList(toUpdateIds, options, out var nodeIds, out _);
 
-                    SimulationManager.instance.AddAction(() =>
-                    {
-                        foreach (var nodeId in nodeIds)
-                            NetManager.instance.UpdateNode(nodeId);
-                    });
-                }
+                SimulationManager.instance.AddAction(() =>
+                {
+                    foreach (var nodeId in nodeIds)
+                        NetManager.instance.UpdateNode(nodeId);
+                });
             }
         }
-        private void GetUpdateList(ushort[] toUpdateIds, Options nearbyOptions, out HashSet<ushort> nodeIds, out HashSet<ushort> segmentIds)
+        private void GetUpdateList(ushort[] toUpdateIds, Options options, out HashSet<ushort> nodeIds, out HashSet<ushort> segmentIds)
         {
             nodeIds = new HashSet<ushort>();
             segmentIds = new HashSet<ushort>();
@@ -161,19 +164,19 @@ namespace NodeController
                 var nodeSegmentIds = nodeId.GetNode().SegmentIds().ToArray();
                 segmentIds.AddRange(nodeSegmentIds);
 
-                if ((nearbyOptions & Options.UpdateNearby) != 0)
+                if ((options & Options.UpdateNearby) != 0)
                 {
                     foreach (var segmentIs in nodeSegmentIds)
                     {
                         var otherNodeId = segmentIs.GetSegment().GetOtherNode(nodeId);
-                        if (this[otherNodeId, nearbyOptions & Options.CreateAll & ~Options.Nearby | Options.This] != null)
+                        if (GetOrCreateNodeData(otherNodeId, options) != null)
                             nodeIds.Add(otherNodeId);
                     }
                 }
             }
         }
 
-        private static void UpdateImpl(ushort[] nodeIds, ushort[] segmentIds, bool updateFlags, Options options)
+        private void UpdateImpl(ushort[] nodeIds, ushort[] segmentIds)
         {
             if (nodeIds.Length == 0)
                 return;
@@ -182,12 +185,12 @@ namespace NodeController
             var id = DateTime.Now.Millisecond;
             var sw = Stopwatch.StartNew();
 
-            SingletonMod<Mod>.Logger.Debug($"Update {id} {options}\nNodes:{string.Join(", ", nodeIds.Select(i => i.ToString()).ToArray())}\nSegments:{string.Join(", ", segmentIds.Select(i => i.ToString()).ToArray())}");
+            SingletonMod<Mod>.Logger.Debug($"Update {id}\nNodes:{string.Join(", ", nodeIds.Select(i => i.ToString()).ToArray())}\nSegments:{string.Join(", ", segmentIds.Select(i => i.ToString()).ToArray())}");
 #endif
             var manager = SingletonManager<Manager>.Instance;
 
             foreach (var nodeId in nodeIds)
-                manager.Buffer[nodeId].Update(updateFlags);
+                manager.Buffer[nodeId].EarlyUpdate();
 
 #if DEBUG
             var updateDone = sw.ElapsedTicks;
@@ -226,19 +229,28 @@ namespace NodeController
 
         public static void SimulationStep()
         {
-            var manager = SingletonManager<Manager>.Instance;
-            var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)).ToArray();
-            var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)).ToArray();
+            if (InitialUpdateInProgress)
+            {
+                InitialUpdateInProgress = false;
+                SingletonMod<Mod>.Logger.Debug("Finish initial update");
+            }
+            else
+            {
+                var manager = SingletonManager<Manager>.Instance;
+                var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)).ToArray();
+                var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)).ToArray();
 
-            UpdateImpl(nodeIds, segmentIds, true, Options.UpdateLater);
+                SingletonManager<Manager>.Instance.UpdateImpl(nodeIds, segmentIds);
+            }
         }
         public static void ReleaseNodeImplementationPrefix(ushort node) => SingletonManager<Manager>.Instance.Buffer[node] = null;
 
         public XElement ToXml()
         {
             var config = new XElement(nameof(NodeController));
-
             config.AddAttr("V", SingletonMod<Mod>.Version);
+
+            Errors = 0;
 
             foreach (var data in Buffer)
             {
@@ -250,6 +262,8 @@ namespace NodeController
         }
         public void FromXml(XElement config, NetObjectsMap map)
         {
+            Errors = 0;
+
             var toUpdate = new List<ushort>();
 
             foreach (var nodeConfig in config.Elements(NodeData.XmlName))
@@ -263,6 +277,13 @@ namespace NodeController
                 {
                     try
                     {
+                        if ((id.GetNode().flags & (NetNode.FlagsLong.Created | NetNode.FlagsLong.Deleted)) != NetNode.FlagsLong.Created)
+                        {
+                            SingletonMod<Mod>.Logger.Error($"Can't load Node data #{id}: Node is not created");
+                            Errors += 1;
+                            continue;
+                        }
+
                         var type = (NodeStyleType)nodeConfig.GetAttrValue("T", (int)NodeStyleType.Custom);
                         var data = new NodeData(id, type);
                         data.FromXml(nodeConfig, map);
@@ -273,19 +294,22 @@ namespace NodeController
                     catch (NodeNotCreatedException error)
                     {
                         SingletonMod<Mod>.Logger.Error($"Can't load Node data #{id}: {error.Message}");
+                        Errors += 1;
                     }
                     catch (NodeStyleNotImplementedException error)
                     {
                         SingletonMod<Mod>.Logger.Error($"Can't load Node data #{id}: {error.Message}");
+                        Errors += 1;
                     }
                     catch (Exception error)
                     {
                         SingletonMod<Mod>.Logger.Error($"Can't load Node data #{id}", error);
+                        Errors += 1;
                     }
                 }
             }
 
-            Update(Options.UpdateAll, toUpdate.ToArray());
+            InitialUpdate(toUpdate.ToArray());
         }
 
         [Flags]
@@ -293,27 +317,12 @@ namespace NodeController
         {
             None = 0,
 
-            This = 1,
-            Nearby = 2,
+            CreateThis = 1,
+            UpdateThis = 2,
+            UpdateNearby = 4,
 
-            Create = 4,
-            CreateThis = This | Create,
-            CreateNearby = Nearby | Create,
-            CreateAll = CreateThis | CreateNearby,
-
-            UpdateThisNow = 8,
-            UpdateThisLater = 16,
-            UpdateThis = UpdateThisNow | UpdateThisLater,
-
-            UpdateNearbyNow = 32,
-            UpdateNearbyLater = 64,
-            UpdateNearby = UpdateNearbyNow | UpdateNearbyLater,
-
-            UpdateNow = UpdateThisNow | UpdateNearbyNow,
-            UpdateLater = UpdateThisLater | UpdateNearbyLater,
-            UpdateAll = UpdateNow | UpdateLater,
-
-            Default = CreateThis | CreateNearby | UpdateThis | UpdateNearbyLater,
+            UpdateAll = UpdateThis | UpdateNearby,
+            Default = CreateThis | UpdateAll,
         }
     }
 

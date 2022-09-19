@@ -14,7 +14,7 @@ namespace NodeController.Patches
     {
         public static void CalculateNodePostfix(ushort nodeID)
         {
-            if (SingletonManager<Manager>.Instance.GetNodeData(nodeID, out var data))
+            if (SingletonManager<Manager>.Instance.TryGetNodeData(nodeID, out var data))
                 data.UpdateSegmentEnds();
         }
         public static IEnumerable<CodeInstruction> ReplaceNodePositionTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
@@ -40,18 +40,18 @@ namespace NodeController.Patches
             }
         }
 
-        private static Vector3 GetCentrePosition(Vector3 defaultPosition, ushort nodeId) => SingletonManager<Manager>.Instance.GetNodeData(nodeId, out var data) ? data.GetPosition() : defaultPosition;
-        private static Vector3 GetCentrePositionForSegment(Vector3 defaultPosition, ushort nodeId, int index) => SingletonManager<Manager>.Instance.GetNodeData(nodeId, out var data) ? data.GetPosition(index) : defaultPosition;
+        private static Vector3 GetCentrePosition(Vector3 defaultPosition, ushort nodeId) => SingletonManager<Manager>.Instance.TryGetNodeData(nodeId, out var data) ? data.GetPosition() : defaultPosition;
+        private static Vector3 GetCentrePositionForSegment(Vector3 defaultPosition, ushort nodeId, int index) => SingletonManager<Manager>.Instance.TryGetNodeData(nodeId, out var data) ? data.GetPosition(index) : defaultPosition;
 
         public static void RefreshJunctionDataPrefix(ushort nodeID, int segmentIndex, ref Vector3 centerPos)
         {
-            if (SingletonManager<Manager>.Instance.GetNodeData(nodeID, out var data))
+            if (SingletonManager<Manager>.Instance.TryGetNodeData(nodeID, out var data))
                 centerPos = data.GetPosition(segmentIndex);
         }
 
         public static void RefreshJunctionDataPostfix(ushort nodeID, ref RenderManager.Instance data)
         {
-            if (SingletonManager<Manager>.Instance.GetNodeData(nodeID, out var blendData) && blendData.ShouldRenderCenteralCrossingTexture)
+            if (SingletonManager<Manager>.Instance.TryGetNodeData(nodeID, out var blendData) && blendData.ShouldRenderCenteralCrossingTexture)
                 data.m_dataVector1.w = 0.01f;
         }
 
@@ -114,7 +114,7 @@ namespace NodeController.Patches
 
         public static bool IsNodeLess(ushort nodeID, ref RenderManager.Instance data)
         {
-            if (SingletonManager<Manager>.Instance.GetNodeData(nodeID, out var nodeData))
+            if (SingletonManager<Manager>.Instance.TryGetNodeData(nodeID, out var nodeData))
             {
                 {
                     var segmentId = nodeID.GetNode().GetSegment(data.m_dataInt0 >> 4);
@@ -130,7 +130,7 @@ namespace NodeController.Patches
 
             return true;
         }
-        private static bool ShouldContinueMedian(ushort nodeID) => SingletonManager<Manager>.Instance.GetNodeData(nodeID, out var data) && data.Type == NodeStyleType.Stretch;
+        private static bool ShouldContinueMedian(ushort nodeID) => SingletonManager<Manager>.Instance.TryGetNodeData(nodeID, out var data) && data.Type == NodeStyleType.Stretch;
         private static Material CalculateMaterial(Material material, ushort nodeId, ushort segmentId) => ShouldContinueMedian(nodeId) ? MaterialUtilities.ContinuesMedian(material, segmentId.GetSegment().Info, false) : material;
         private static Mesh CalculateMesh(Mesh mesh, ushort nodeId, ushort segmentId) => ShouldContinueMedian(nodeId) ? MaterialUtilities.ContinuesMedian(mesh, segmentId.GetSegment().Info) : mesh;
     }

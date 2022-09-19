@@ -21,7 +21,7 @@ namespace NodeController.Utilities
 
         public override object Copy(InstanceID sourceInstanceID)
         {
-            if (SingletonManager<Manager>.Instance[sourceInstanceID.NetNode] is NodeData data)
+            if (SingletonManager<Manager>.Instance.GetNodeData(sourceInstanceID.NetNode) is NodeData data)
                 return data.ToXml();
             else
                 return null;
@@ -31,7 +31,7 @@ namespace NodeController.Utilities
             if (record is not XElement config || targetInstanceID.NetNode == 0)
                 return;
 
-            if (SingletonManager<Manager>.Instance[targetInstanceID.NetNode, true] is NodeData data)
+            if (SingletonManager<Manager>.Instance.GetOrCreateNodeData(targetInstanceID.NetNode) is NodeData data)
             {
                 var map = new NetObjectsMap();
                 map.FromDictionary(sourceMap);

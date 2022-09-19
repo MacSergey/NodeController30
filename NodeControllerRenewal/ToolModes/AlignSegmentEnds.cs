@@ -110,14 +110,14 @@ namespace NodeController
             {
                 if (Tool.Data.Style.SupportShift.IsSet(SupportOption.Individually))
                 {
-                    if (SingletonManager<Manager>.Instance.GetSegmentData(SelectedSide.SegmentData.Id, !SelectedSide.SegmentData.IsStartNode, out var data))
+                    if (SingletonManager<Manager>.Instance.TryGetSegmentData(SelectedSide.SegmentData.Id, !SelectedSide.SegmentData.IsStartNode, out var data))
                         Targets.Add(data[SelectedSide.Type.Invert()]);
                 }
                 else if (!Tool.Data.IsJunction)
                 {
                     foreach (var segmentEnd in Tool.Data.SegmentEndDatas)
                     {
-                        if (SingletonManager<Manager>.Instance.GetSegmentData(segmentEnd.Id, !segmentEnd.IsStartNode, out var otherData))
+                        if (SingletonManager<Manager>.Instance.TryGetSegmentData(segmentEnd.Id, !segmentEnd.IsStartNode, out var otherData))
                             Targets.Add(otherData[segmentEnd == SelectedSide.SegmentData ? SelectedSide.Type.Invert() : SelectedSide.Type]);
                     }
                 }

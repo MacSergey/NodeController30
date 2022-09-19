@@ -179,12 +179,11 @@ namespace NodeController
             UpdateStyle(true, nodeType);
             UpdateMainRoadSegments();
         }
-        public void Update(bool updateFlags)
+        public void EarlyUpdate()
         {
             UpdateSegmentEndsImpl();
             MainRoad.Update(this);
-            if (updateFlags)
-                UpdateFlags();
+            UpdateFlags();
             UpdateMainRoadSegments();
         }
         public void UpdateSegmentEnds()
@@ -403,7 +402,7 @@ namespace NodeController
             Gap = Mathf.Sqrt(maxGap) + 2f;
         }
 
-        public void UpdateNode(bool now = true) => SingletonManager<Manager>.Instance.Update(Id, now);
+        public void UpdateNode() => SingletonManager<Manager>.Instance.Update(Id);
         public void SetKeepDefaults()
         {
             foreach (var segmentEnd in SegmentEndDatas)

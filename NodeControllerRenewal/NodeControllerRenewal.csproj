@@ -16,7 +16,7 @@
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">
-    <Version>3.3.1</Version>
+    <Version>3.3.2</Version>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)' == 'Beta Release' OR '$(Configuration)' == 'Beta Debug'">
@@ -53,6 +53,10 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>BETA, DEBUG</DefineConstants>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Remove="Properties\Localize.lv.resx" />
+  </ItemGroup>
   
   <ItemGroup>
     <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonActive.png" />
