@@ -112,20 +112,28 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
-    <value>Původní data Node Controlleru byla importována.
+    <value>Data z původního Node Controlleru byla importována.
 Zpětná kompatibilita neposkytuje přenos všech dat, mohou být vyžadovány manuální úpravy.</value>
   </data>
   <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
     <value>VAROVÁNÍ: Pokud vytvoříte novou uloženou pozici, již nebudete moci na této mapě použít originální Node Controller.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Nastavení typu a tvaru nodu</value>
+    <value>Nastavení typu a tvaru uzlu</value>
+  </data>
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>Při načítání se vyskytly chyby.
+Nepodařilo se načíst data pro {0} uzlů.</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>Při načítání se vyskytly chyby.
+Nepodařilo se načíst data všechny uzly.</value>
   </data>
   
   
@@ -138,28 +146,32 @@ Zpětná kompatibilita neposkytuje přenos všech dat, mohou být vyžadovány m
   
   
   <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
-    <value>[UPDATED] Přidána možnost "opravit uvízlé chodce na dlouhých křižovatkách" kvůli stížnosti na ovlivnění simulační rychlosti je ve výchozím nastavení je tato možnost zakázána, může být povolena v nastavení módu.
-[NEW] Přidána možnost "Kolize". pokud ji zakážete pro segment, segment nebude mít limity pro změnu odsazení a může být překrytý ostatními segmenty.
-[NEW] Přidána možnost "Nodeless". To vytvoří vykreslení segmentu bez uzlu.
+    <value>[UPDATED] Přidána možnost "opravit uvízlé chodce na dlouhých křižovatkách" kvůli stížnosti na ovlivnění simulační rychlosti je ve výchozím nastavení tato možnost zakázána, může být povolena v nastavení módu.
+[NEW] Přidána možnost "Kolize". pokud ji na segmentu zakážete, segment nebude mít limity pro změnu odsazení a může být překrytý ostatními segmenty.
+[NEW] Přidána možnost "Bez uzlu". To vytvoří vykreslení segmentu bez uzlu.
 [NEW] Přidána možnost skrýt nepoužité možnosti. Všechny možnosti kromě odsazení, posunutí a rotace mohou být skryty v nastavení módu, pokud je nepoužíváte.
 [FIXED] Výpočet posunu na středních uzlech.
 [UPDATED] Maximální hodnota sklonu silnic byla zvýšena na 60 stupňů.
-[UPDATED] Maximální hodnota otočení pro silnice byla zvýšena na 60 stupňů.
+[UPDATED] Maximální hodnota náklonu silnice byla zvýšena na 60 stupňů.
 [UPDATED] Maximální hodnota odsazení byla zvýšena na 64 metrů.
 [FIXED] Opravená díra v překrytí na velkých uzlích.
-[TRANSLATION] Přidaný rumunský jazyk.</value>
+[TRANSLATION] Přidán Rumunský jazyk.</value>
   </data>
   <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
     <value>[UPDATED] Přidána podpora DLC Plazas &amp; Promenades.
-[FIXED] Opravené prop pozice na zkroucených segmentech.
+[FIXED] Opravené pozice objektů na nakloněných segmentech.
 [FIXED] Data simulace se již nemění z hlavního vlákna.
 [FIXED] Opravena chybějící textura přechodů.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_3_2" xml:space="preserve">
+    <value>[FIXED] Opraveny povrchové glitche, které se mohou objevit při používání Surface Painteru.
+[TRANSLATION] Přidán Český jazyk.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
-    <value>Ohyb</value>
+    <value>Ohebný</value>
   </data>
   <data name="NodeStyle_Crossing" xml:space="preserve">
-    <value>Přechod</value>
+    <value>Přechod pro chodce</value>
   </data>
   <data name="NodeStyle_Custom" xml:space="preserve">
     <value>Vlastní</value>
@@ -168,28 +180,28 @@ Zpětná kompatibilita neposkytuje přenos všech dat, mohou být vyžadovány m
     <value>Konec</value>
   </data>
   <data name="NodeStyle_Middle" xml:space="preserve">
-    <value>Prostředek</value>
+    <value>Střed</value>
   </data>
   <data name="NodeStyle_Stretch" xml:space="preserve">
-    <value>Roztažení</value>
+    <value>Natažený</value>
   </data>
   <data name="NodeStyle_UTurn" xml:space="preserve">
-    <value>Otočka</value>
+    <value>Prázdný</value>
   </data>
   <data name="Options_All" xml:space="preserve">
-    <value>Vše</value>
+    <value>Všechny</value>
   </data>
   <data name="Option_CalculateShiftByIntersections" xml:space="preserve">
-    <value>Vypočítat posun podle křižovatky</value>
+    <value>Vypočítat posun podle křižovatek</value>
   </data>
   <data name="Option_CalculateShiftByNearby" xml:space="preserve">
-    <value>Vypočítat posun podle uzlů</value>
+    <value>Vypočítat posun podle blízkých uzlů</value>
   </data>
   <data name="Option_CalculateTwistByIntersections" xml:space="preserve">
-    <value>Vypočítat stočení podle křižovatky</value>
+    <value>Vypočítat náklon podle křižovatek</value>
   </data>
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
-    <value>Vypočítat stočení podle uzlů</value>
+    <value>Vypočítat náklon podle uzlů</value>
   </data>
   <data name="Option_Collision" xml:space="preserve">
     <value>Kolize</value>
@@ -228,7 +240,7 @@ Zpětná kompatibilita neposkytuje přenos všech dat, mohou být vyžadovány m
     <value>Obnovit výchozí nastavení</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
-    <value>Otočit</value>
+    <value>Otočení</value>
   </data>
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>
@@ -237,7 +249,7 @@ Zpětná kompatibilita neposkytuje přenos všech dat, mohou být vyžadovány m
     <value>Nastavit posun mezi křižovatkami</value>
   </data>
   <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
-    <value>Nastavit stočení mezi křižovatkami</value>
+    <value>Nastavit náklon mezi křižovatkami</value>
   </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Posun</value>
@@ -261,13 +273,13 @@ Zpětná kompatibilita neposkytuje přenos všech dat, mohou být vyžadovány m
     <value>Styl</value>
   </data>
   <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Plochý</value>
+    <value>Rovný</value>
   </data>
   <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Sklon</value>
+    <value>Nakloněný</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
-    <value>Točit</value>
+    <value>Náklon</value>
   </data>
   <data name="Option_TwistFormat" xml:space="preserve">
     <value>{0}°</value>
@@ -282,10 +294,10 @@ Zpětná kompatibilita neposkytuje přenos všech dat, mohou být vyžadovány m
     <value>Projeví se po restartu hry</value>
   </data>
   <data name="Settings_InsertNode" xml:space="preserve">
-    <value>Vložit nod</value>
+    <value>Vložit uzel</value>
   </data>
   <data name="Settings_InsertNodeDisabled" xml:space="preserve">
-    <value>Deaktivován</value>
+    <value>Vypnuto</value>
   </data>
   <data name="Settings_InsertNodeEnabled" xml:space="preserve">
     <value>Kliknutím na segment</value>
@@ -294,16 +306,16 @@ Zpětná kompatibilita neposkytuje přenos všech dat, mohou být vyžadovány m
     <value>Kliknutím s {0} na segment</value>
   </data>
   <data name="Settings_LongIntersectionFix" xml:space="preserve">
-    <value>Oprav uvězněné chodce na dlouhých křižovatkách</value>
+    <value>Oprava uvězněných chodců na dlouhých křižovatkách</value>
   </data>
   <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
-    <value>Tato možnost zvětšuje maximální vzdálenost pro nalezení cesty na křižovatce, která zabraňuje uvěznění chodců na dlouhých křižovatkách, ale tato možnost může ovlivnit rychlost simulace</value>
+    <value>Tato možnost zvětšuje maximální vzdálenost pro nalezení cesty na křižovatce. Zabraňuje uvěznění chodců na dlouhých křižovatkách, ale může ovlivnit rychlost simulace</value>
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Uzel je ve výchozím nastavení nakloněn</value>
   </data>
   <data name="Settings_OptionsVisibility" xml:space="preserve">
-    <value>Viditelnost nastavení</value>
+    <value>Nastavení viditelnosti</value>
   </data>
   <data name="Settings_Option_Disabled" xml:space="preserve">
     <value>Vypnuto</value>
@@ -315,13 +327,13 @@ Zpětná kompatibilita neposkytuje přenos všech dat, mohou být vyžadovány m
     <value>Vždy zobrazit</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
-    <value>Zobrazit blízké překrytí uzlů</value>
+    <value>Zobrazit blízké uzly</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
-    <value>Vybrat prostřední uzly</value>
+    <value>Vyberte střední uzly</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
-    <value>Pokud je tato volba zakázána, střední uzly se přesunou do pozice na kterou kliknete</value>
+    <value>Pokud je tato volba zakázána, prostřední uzly se přesunou do pozice na kterou kliknete</value>
   </data>
   <data name="Settings_ShortcutEnterUnderground" xml:space="preserve">
     <value>Vstoupit do podzemního režimu</value>
@@ -336,22 +348,22 @@ Zpětná kompatibilita neposkytuje přenos všech dat, mohou být vyžadovány m
     <value>Stiskněte {0} pro vstup a {1} pro ukončení</value>
   </data>
   <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
-    <value>Držte {0}</value>
+    <value>Podržte {0}</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>Vypočítat posun podle křižovatek</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
-    <value>Vypočítat posun podle uzlů</value>
+    <value>Vypočítat posun podle blízkých uzlů</value>
   </data>
   <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
-    <value>Vypočítat otočení podle křižovatek</value>
+    <value>Vypočítat náklon podle křižovatek</value>
   </data>
   <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
-    <value>Vypočítat otočení podle blízkých uzlů</value>
+    <value>Vypočítat náklon podle blízkých uzlů</value>
   </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
-    <value>Změnit režim sklonu</value>
+    <value>Změnit režim směru sklonu</value>
   </data>
   <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
     <value>Změna stylu uzlu</value>
@@ -369,22 +381,22 @@ Zpětná kompatibilita neposkytuje přenos všech dat, mohou být vyžadovány m
     <value>Nastavit posun mezi křižovatkami</value>
   </data>
   <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
-    <value>Nastavit otočení mezi křižovatkami</value>
+    <value>Nastavit náklon mezi křižovatkami</value>
   </data>
   <data name="Tool_EnterUnderground" xml:space="preserve">
-    <value>Stiskněte {0} podzemní režim</value>
+    <value>Stiskněte {0} pro podzemní režim</value>
   </data>
   <data name="Tool_ExitUnderground" xml:space="preserve">
     <value>Stiskněte {0} pro ukončení podzemního režimu</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Podržte {0} pro zarovnání silnic</value>
+    <value>Podržte {0} pro zarovnání okrajů</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Klikněte pro zarovnání s tímto rohem</value>
   </data>
   <data name="Tool_InfoChangeMainMode" xml:space="preserve">
-    <value>Držte {0} pro změnu směru sklonu</value>
+    <value>Podržte {0} pro změnu směru sklonu</value>
   </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Uzel #{0}
@@ -421,7 +433,7 @@ Klikněte pro úpravu</value>
     <value>Klikněte s {0} pro vložení uzlu</value>
   </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
-    <value>Vyberte roh, se kterým se chcete zarovnat</value>
+    <value>Vyberte roh se kterým se chcete zarovnat</value>
   </data>
   <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
     <value>Změnit požadovaný směr sklonu</value>
@@ -433,13 +445,13 @@ Klikněte pro úpravu</value>
     <value>Vybrat uzel</value>
   </data>
   <data name="Tool_InfoSelectToAlign" xml:space="preserve">
-    <value>Vyberte rohy, které chcete zarovnat</value>
+    <value>Vyberte rohy které chcete zarovnat</value>
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
     <value>Nelze vložit uzel
 Příliš blízko k jinému uzlu</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
-    <value>Stiskněte {0} pro podzemní mód</value>
+    <value>Podržte {0} pro podzemní mód</value>
   </data>
 </root>

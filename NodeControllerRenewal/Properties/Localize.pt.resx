@@ -112,21 +112,29 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Os dados originais do Node Controller foram importados.
-A compatível com versões anteriores não fornece a transferência de todos os dados, talvez sejam necessários ajustamentos manuais.</value>
+A compatível com versões anteriores não fornece a transferência de todos os dados, talvez sejam necessários ajustes manuais.</value>
   </data>
   <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
-    <value>AVISO: Se guardar, deixara de poder usar o Node Controller original neste mapa.</value>
+    <value>AVISO: Se criar um novo save, não poderá mais usar o Node Controller original neste mapa.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Controle o tipo do nó e sua forma</value>
   </data>
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>O carregamento foi concluído com erros.
+O carregamento de {0} marcações falhou.</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>O carregamento foi concluído com erros.
+O carregamento de todas marcações falhou.</value>
+  </data>
   
   
   
@@ -137,8 +145,28 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   
   
   
-  
-  
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] Adicionado a habilidade de desativar a opção "consertar pedestre preso em interseções longas" devido a reclamação de afetar a velocidade de simulação. A opção está desabilitada por padrão pode ser ativada nas configurações do mods.
+[NEW] Opção adicionada "Collisão". Se você desativar isto para segmento, o segmento não terá limites para alterar o deslocamento e pode ser sobreposto por outros segmentos.
+[NEW] Adicionada opção "Sem nós". Isso faz o segmento renderizar sem nós.
+[NEW] Adicionou a habilidade de ocultar opções não usadas. Todas as opções excluem o deslocamento, mudança e rotação podem ser ocultadas nas configurações do mod se você não usá-las.
+[FIXED] Cálculo de deslocamento fixo nos nós médios.
+[UPDATED] valor máximo de inclinação para estradas foi aumentado em 60 graus.
+[UPDATED] valor máximo de torção para estradas foi aumentado em 60 graus.
+[UPDATED] O valor máximo de deslocamento foi aumentado para 64 metros.
+[FIXED] buracos corrigidos na sobreposição em um nó tão grande.
+[TRANSLATION] Adição de idioma romeno.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
+    <value>[UPDATED] Adicionado suporte a DLC Plazas e Passeios.
+[FIXED] Corrigido posição de props em segmentos distorcidos
+[FIXED] Dados de simulação não são mais alterados da thread principal.
+[FIXED] Corrigido faixa de pedestre faltante em cruzamentos com faixa de pedestre.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_2" xml:space="preserve">
+    <value>[FIXED] Corrigido erros de terreno que aparece ao usar o pintor de terreno.
+[TRANSLATION] Adicionado linguagem Tcheca.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curva</value>
   </data>
@@ -278,16 +306,26 @@ A compatível com versões anteriores não fornece a transferência de todos os 
     <value>Por clique com {0} no segmento</value>
   </data>
   <data name="Settings_LongIntersectionFix" xml:space="preserve">
-    <value>Corrigir peões presos em interseções longas</value>
+    <value>Corrigir pedestres presos em interseções longas</value>
   </data>
-  
+  <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
+    <value>Esta opção aumenta a distância máxima de procura de caminho na interseção, que impede que pedestres fiquem presos em uma interseção muito longa, no entanto esta opção pode afetar a velocidade de simulação</value>
+  </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>O nó é inclinado por padrão</value>
   </data>
-  
-  
-  
-  
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Visibilidade das opções</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Desativado</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Colapsado</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Sempre visível</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostrar sobreposição de nódulos próximos</value>
   </data>
@@ -297,19 +335,33 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Se esta opção estiver desativada, os nós do meio vão mover-se para a posição clicada</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="Settings_ShortcutEnterUnderground" xml:space="preserve">
+    <value>Entrar no modo subterrâneo</value>
+  </data>
+  <data name="Settings_ShortcutExitUnderground" xml:space="preserve">
+    <value>Sair do modo subterrâneo</value>
+  </data>
+  <data name="Settings_ToggleUnderground" xml:space="preserve">
+    <value>Ativar/Desativar subsolo</value>
+  </data>
+  <data name="Settings_ToggleUndergroundButtons" xml:space="preserve">
+    <value>Pressione {0} para entrar e {1} para sair</value>
+  </data>
+  <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
+    <value>Segure {0}</value>
+  </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>Calcular deslocamento pelas interseções</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByNearby" xml:space="preserve">
     <value>Calcular deslocamento nas proximidades</value>
   </data>
-  
-  
+  <data name="Setting_ShortcutCalculateTwistByIntersections" xml:space="preserve">
+    <value>Calcular a torção pelas interseções</value>
+  </data>
+  <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
+    <value>Calcular a torção pelos nós próximos</value>
+  </data>
   <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
     <value>Alterar o modo de direção da inclinação principal</value>
   </data>
@@ -328,9 +380,16 @@ A compatível com versões anteriores não fornece a transferência de todos os 
   <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
     <value>Aplicar entre intercessões</value>
   </data>
-  
-  
-  
+  <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
+    <value>Definir a torção entre interseções</value>
+  </data>
+  <data name="Tool_EnterUnderground" xml:space="preserve">
+    <value>Pressione {0} para entrar no modo subterrâneo</value>
+  </data>
+  <data name="Tool_ExitUnderground" xml:space="preserve">
+    <value>Pressione {0} para sair do
+modo subterrâneo</value>
+  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Segure {0} para alinhar as estradas</value>
   </data>
@@ -365,11 +424,15 @@ Clique para editar</value>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Clique para inserir passadeira</value>
   </data>
-  
+  <data name="Tool_InfoInsertCrossingNodeWithModifier" xml:space="preserve">
+    <value>Clique com {0} para inserir nó de cruzamento</value>
+  </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>Clique para inserir nó</value>
   </data>
-  
+  <data name="Tool_InfoInsertNodeWithModifier" xml:space="preserve">
+    <value>Clique com {0} para inserir um nó</value>
+  </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Selecione o canto com o qual quer alinhar</value>
   </data>

@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>オリジナルのNode Controller2から、各設定をRenewal用に変換しました。
@@ -126,6 +126,14 @@
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>交差点やノードの種類・形状を、調整や変更ができます。</value>
+  </data>
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>ロード中にエラーが発生しました。
+ {0} ヶ所のノードでロードに失敗しました。</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>ロード中にエラーが発生しました。
+全てのノードでロードに失敗しました。</value>
   </data>
   
   
@@ -154,6 +162,10 @@
 [FIXED] Fixed prop positions on twisted segments.
 [FIXED] Simulation data is not changed from main thread anymore.
 [FIXED] Fixed missing crosswalk texture on crosswalk nodes.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_2" xml:space="preserve">
+    <value>[FIXED] Fixed terrain glitches that could appear when using Surface Painter mod.
+[TRANSLATION] Added Czech language.</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>ベンド</value>

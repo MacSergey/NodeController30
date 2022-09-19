@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Data Node Controller asal telah diimport.
@@ -126,6 +126,14 @@ Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manu
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Kawal jenis dan bentuk nod</value>
+  </data>
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>Pemuatan selesai dengan ralat.
+Gagal memuatkan data untuk {0} nod.</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>Pemuatan selesai dengan ralat.
+Gagal memuatkan data untuk kesemua nod.</value>
   </data>
   
   
@@ -154,6 +162,10 @@ Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manu
 [FIXED] Kedudukan prop pada segmen terpulas telah dibaiki.
 [FIXED] Data penyelakuan kini sudah tidak diubah dari bebenang utama.
 [FIXED] Tekstur lintasan pejalan kaki pada nod lintasan yang hilang telah dibaiki.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_2" xml:space="preserve">
+    <value>[FIXED] Glic rupa bumi yang mampu muncul ketika menggunakan mod Surface Painter telah dibaiki.
+[TRANSLATION] Bahasa Czechoslovakia telah ditambah.</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Lentur</value>

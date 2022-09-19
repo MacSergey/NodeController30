@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>기존 Node Controller의 데이터를 불러왔습니다.
@@ -126,6 +126,14 @@
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>노드의 유형 및 모양을 바꿉니다</value>
+  </data>
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>로드 중에 에러가 있습니다.
+노드 {0}개의 정보를 로딩하지 못했습니다.</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>로드 중에 에러가 있습니다.
+모든 노드의 정보를 로딩하지 못했습니다.</value>
   </data>
   
   
@@ -154,6 +162,10 @@
 [수정] 비틀린 구간의 프롭 위치를 수정했습니다.
 [수정] 더 이상 주 스레드에서 가져온 시뮬레이션 데이터가 바뀌지 않습니다.
 [수정] 횡단보도 노드의 누락된 텍스처를 수정했습니다.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_2" xml:space="preserve">
+    <value>[FIXED] Surface Painter mod를 사용할 때 생기는 지형 버그가 수정되었습니다.
+[TRANSLATION] 체코어 번역이 추가되었습니다.</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>커브</value>

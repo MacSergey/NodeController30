@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Originele Node Controllerdata is geïmporteerd. Achterwaartse compatibiliteit biedt geen overdracht van alle gegevens, handmatige aanpassingen zijn mogelijk nodig.</value>
@@ -125,6 +125,14 @@
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Beheer knooppunttype en vorm</value>
+  </data>
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>Er zijn fouten opgetreden tijdens het laden.
+Het laden van gegevens voor {0} knooppunten is mislukt.</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>Er zijn fouten opgetreden tijdens het laden.
+Het laden van gegevens voor alle knooppunten is mislukt.</value>
   </data>
   
   
@@ -153,6 +161,10 @@
 [FIXED] Probleem met de positie van props op gedraaide segmenten opgelost.
 [FIXED] Simulatiegegevens worden niet langer gewijzigd vanuit de hoofdthread.
 [FIXED] Ontbrekende textuur voor zebrapaden hersteld.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_2" xml:space="preserve">
+    <value>[FIXED] Terreinproblemen opgelost die konden optreden bij gebruik van de Surface Painter mod.
+[TRANSLATION] Tsjechische taal toegevoegd.</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bocht</value>

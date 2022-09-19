@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Данные оригинального Node Controller импортированы.
@@ -126,6 +126,14 @@
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Контролируйте тип и форму узлов</value>
+  </data>
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>Загрузка завершилась с ошибками.
+Не удалось загрузить данные для {0} узлов.</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>Загрузка завершилась с ошибками.
+Не удалось загрузить разметку для всех узлов.</value>
   </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>[NEW] Добавлен автоматический режим для выбора основного направления наклона.
@@ -226,6 +234,10 @@
 [FIXED] Исправлена расположение реквизита на скрученных сегментах.
 [FIXED] Данные симуляции не изменяются из основного потока.
 [FIXED] Исправлена отсутствующая текстура перехода на узле типа переход.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_2" xml:space="preserve">
+    <value>[FIXED] исправлены проволы в земле при использование мода Surface Painter.
+[TRANSLATION] Добавлен чешский язык.</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Изгиб</value>

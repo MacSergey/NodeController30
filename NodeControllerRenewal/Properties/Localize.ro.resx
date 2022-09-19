@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Datele originale al modului Node Controller au fost importate.
@@ -126,6 +126,14 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Tipul și forma nodului de control</value>
+  </data>
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>Încărcarea a fost efectuată cu erori.
+Încărcarea a eșuat pentru {0} noduri.</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>Încărcarea a fost efectuată cu erori.
+Încărcarea a eșuat pentru toate nodurile.</value>
   </data>
   
   
@@ -154,6 +162,10 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
 [FIXED] Au fost reglementate pozițiile obiectelor în segmentele răsucite.
 [FIXED] Datele simulării nu mai sunt modificate prin thread-ul principal.
 [FIXED] Rezolvată problema lipsei texturii a trecerilor de pietoni la nodurile trecerilor de pietoni.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_2" xml:space="preserve">
+    <value>[FIXED] Glitch-uri de teren care puteau să apară când se folosea modul Surface Painter.
+[TRANSLATION] A fost adăugată limba cehă.</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curbă</value>

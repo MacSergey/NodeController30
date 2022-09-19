@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Se importaron los datos del Node Controller original.
@@ -126,6 +126,14 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Controle el tipo y la forma del nodo</value>
+  </data>
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>Hubo errores al cargar el juego.
+No se pudieron cargar datos para {0} nodos.</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>Hubo errores al cargar el juego.
+No se pudieron cargar datos para todos los nodos.</value>
   </data>
   
   
@@ -154,6 +162,10 @@ La compatibilidad con versiones anteriores no proporciona la transferencia de to
 [FIXED] Posición de elementos en segmentos girados
 [FIXED] Los datos de simulación no cambiarn en el hilo principal.
 [FIXED] Texttura faltante en el cruce peatonal en nodos de cruce.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_2" xml:space="preserve">
+    <value>[FIXED] Errores en el terreno que podrían aparecer al usar el mod Surface Painter.
+[TRANSLATION] Añadido idioma checo.</value>
   </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Doblado</value>
