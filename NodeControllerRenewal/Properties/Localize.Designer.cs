@@ -261,6 +261,16 @@ namespace NodeController {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на [FIXED] Fixed terrain glitches that could appear when using Surface Painter mod.
+        ///[TRANSLATION] Added Czech language..
+        /// </summary>
+        public static string Mod_WhatsNewMessage3_3_2 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessage3_3_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Bend.
         /// </summary>
         public static string NodeStyle_Bend {
