@@ -64,6 +64,7 @@ If you want to help improve existing translations or you want to translate into 
 [*] [url=https://steamcommunity.com/id/gocaspro13/]GOCAS[/url] (Portugal translation)
 [*] John Deehe (French translation)
 [*] [url=https://steamcommunity.com/id/koesj]Koesj[/url](Testing)
+[*] [url=https://steamcommunity.com/profiles/76561198038296068/]KoXz [/url](Czech translation)
 [*] [url=https://github.com/kevinlin18]kevinlin18[/url] (Chinese translation)
 [*] [url=https://steamcommunity.com/profiles/76561198141193559]krzychu124[/url]
 [*] [url=https://steamcommunity.com/id/mrlojnat/]MrLojnat[/url] (French translation)
