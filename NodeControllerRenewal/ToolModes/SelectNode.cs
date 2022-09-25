@@ -1,5 +1,6 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Math;
+using ColossalFramework.Threading;
 using ModsCommon;
 using ModsCommon.Utilities;
 using System.Collections.Generic;
@@ -20,9 +21,9 @@ namespace NodeController
         private bool IsPossibleInsertNode { get; set; }
         private Vector3 InsertPosition { get; set; }
 
-        public virtual IEnumerable<Shortcut> Shortcuts 
+        public virtual IEnumerable<Shortcut> Shortcuts
         {
-            get 
+            get
             {
                 yield return SelectionStepOverShortcut;
 
@@ -30,7 +31,7 @@ namespace NodeController
                     yield return EnterUndergroundShortcut;
                 else
                     yield return ExitUndergroundShortcut;
-            } 
+            }
         }
 
         public override string GetToolInfo()
@@ -40,13 +41,13 @@ namespace NodeController
             {
                 text = string.Format(Localize.Tool_InfoClickNode, HoverNode.Id) + GetStepOverInfo();
 
-//#if DEBUG
-//                if (Settings.ExtraDebug)
-//                {
-//                    if (SingletonManager<Manager>.Instance.GetNodeData(HoverNode.Id, out var data))
-//                        text += "\n" + data.GetDebugString();
-//                }
-//#endif
+                //#if DEBUG
+                //                if (Settings.ExtraDebug)
+                //                {
+                //                    if (SingletonManager<Manager>.Instance.GetNodeData(HoverNode.Id, out var data))
+                //                        text += "\n" + data.GetDebugString();
+                //                }
+                //#endif
             }
             else if (IsHoverSegment)
             {
@@ -69,16 +70,16 @@ namespace NodeController
                         text = Localize.Tool_InfoInsertNode.AddActionColor() + GetStepOverInfo();
                 }
 
-//#if DEBUG
-//                if (Settings.ExtraDebug)
-//                {
-//                    SingletonManager<Manager>.Instance.GetSegmentData(HoverSegment.Id, out var start, out var end);
-//                    if (start != null)
-//                        text += "\n Start" + start.GetDebugString();
-//                    if (end != null)
-//                        text += "\n End" + end.GetDebugString();
-//                }
-//#endif
+                //#if DEBUG
+                //                if (Settings.ExtraDebug)
+                //                {
+                //                    SingletonManager<Manager>.Instance.GetSegmentData(HoverSegment.Id, out var start, out var end);
+                //                    if (start != null)
+                //                        text += "\n Start" + start.GetDebugString();
+                //                    if (end != null)
+                //                        text += "\n End" + end.GetDebugString();
+                //                }
+                //#endif
             }
             else if (Settings.IsUndegroundWithModifier)
                 text = $"{Localize.Tool_InfoSelectNode}\n\n{string.Format(Localize.Tool_InfoUnderground, LocalizeExtension.Shift.AddInfoColor())}";
@@ -151,7 +152,12 @@ namespace NodeController
                 {
                     var controlPoint = new NetTool.ControlPoint() { m_segment = HoverSegment.Id, m_position = InsertPosition };
                     var newNode = SingletonManager<Manager>.Instance.InsertNode(controlPoint);
-                    Set(newNode);
+                    NeedClearSelectionBuffer();
+                    ThreadHelper.dispatcher.Dispatch(() =>
+                    {
+                        Set(newNode);
+                    });
+
                 });
             }
         }
