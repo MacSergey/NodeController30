@@ -197,7 +197,9 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcatura</value>
   </data>
-  
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>Altre opzioni</value>
+  </data>
   
   <data name="Option_Offset" xml:space="preserve">
     <value>Spostamento</value>
@@ -278,9 +280,13 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
     <value>Il nodo è inclinato di default</value>
   </data>
   
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Disabilitato</value>
+  </data>
   
-  
-  
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Sempre visibile</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostra la sovrapposizione dei nodi vicini</value>
   </data>
