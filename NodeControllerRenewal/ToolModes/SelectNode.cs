@@ -96,20 +96,22 @@ namespace NodeController
             if (!base.IsValidNode(nodeId))
                 return false;
 
-            if (Settings.SelectMiddleNodes)
-                return true;
+            ref var node = ref nodeId.GetNode();
 
-            var node = nodeId.GetNode();
-            return node.m_flags.CheckFlags(0, NetNode.Flags.Middle | NetNode.Flags.Outside) || node.m_flags.CheckFlags(0, NetNode.Flags.Moveable | NetNode.Flags.Outside);
+            if ((node.flags & NodeData.SupportFlags) == 0)
+                return false;
+
+            if ((node.flags & NetNode.FlagsLong.Outside) != 0)
+                return false;
+
+            if ((node.flags & NetNode.FlagsLong.Middle) != 0 && !Settings.SelectMiddleNodes)
+                return false;
+
+            return true;
         }
         protected override bool CheckSegment(ushort segmentId) => segmentId.GetSegment().m_flags.CheckFlags(0, NetSegment.Flags.Untouchable) && base.CheckSegment(segmentId);
         protected override bool CheckItemClass(ItemClass itemClass) => (itemClass.m_layer == ItemClass.Layer.Default || itemClass.m_layer == ItemClass.Layer.MetroTunnels) && itemClass switch
         {
-            //{ m_service: ItemClass.Service.Road } => true,
-            //{ m_service: ItemClass.Service.PublicTransport } => true,
-            //{ m_service: ItemClass.Service.Beautification, m_level: >= ItemClass.Level.Level3 } => true,
-            //{ m_service: ItemClass.Service.Beautification, m_subService: ItemClass.SubService.BeautificationParks } => true,
-            //_ => false,
             { m_service: ItemClass.Service.Electricity } => false,
             { m_service: ItemClass.Service.Water } => false,
             _ => true,
@@ -145,9 +147,12 @@ namespace NodeController
                 Set(SingletonManager<Manager>.Instance.GetOrCreateNodeData(HoverNode.Id));
             else if (IsHoverSegment && IsPossibleInsertNode && (!Settings.IsInsertWithModifier || Utility.OnlyCtrlIsPressed))
             {
-                var controlPoint = new NetTool.ControlPoint() { m_segment = HoverSegment.Id, m_position = InsertPosition };
-                var newNode = SingletonManager<Manager>.Instance.InsertNode(controlPoint);
-                Set(newNode);
+                SimulationManager.instance.AddAction(() =>
+                {
+                    var controlPoint = new NetTool.ControlPoint() { m_segment = HoverSegment.Id, m_position = InsertPosition };
+                    var newNode = SingletonManager<Manager>.Instance.InsertNode(controlPoint);
+                    Set(newNode);
+                });
             }
         }
         private void Set(NodeData data)

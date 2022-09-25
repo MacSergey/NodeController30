@@ -125,23 +125,30 @@ namespace NodeController
         {
             SingletonMod<Mod>.Logger.Debug("Start initial update");
             InitialUpdateInProgress = true;
+            Update(Options.UpdateThisNow | Options.UpdateThisLater, toUpdateIds);
 
-            GetUpdateList(toUpdateIds, Options.UpdateThis, out var nodeIds, out var segmentIds);
-            UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray());
+            //GetUpdateList(toUpdateIds, Options.UpdateThisLater, out var nodeIds, out var segmentIds);
+            //UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray());
 
-            SimulationManager.instance.AddAction(() =>
-            {
-                foreach (var nodeId in nodeIds)
-                    NetManager.instance.UpdateNode(nodeId);
-            });
+            //SimulationManager.instance.AddAction(() =>
+            //{
+            //    foreach (var nodeId in nodeIds)
+            //        NetManager.instance.UpdateNode(nodeId);
+            //});
         }
 
-        public void Update(ushort nodeId) => Update(Options.UpdateAll, nodeId);
+        public void Update(ushort nodeId) => Update(Options.UpdateAllLater, nodeId);
         private void Update(Options options, params ushort[] toUpdateIds)
         {
-            if ((options & Options.UpdateAll) != 0)
+            if((options & Options.UpdateThisNow) != 0)
             {
-                GetUpdateList(toUpdateIds, options, out var nodeIds, out _);
+                GetUpdateList(toUpdateIds, options & ~Options.UpdateAllLater, out var nodeIds, out var segmentIds);
+                UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray());
+            }
+
+            if ((options & Options.UpdateAllLater) != 0)
+            {
+                GetUpdateList(toUpdateIds, options & ~Options.UpdateThisNow, out var nodeIds, out _);
 
                 SimulationManager.instance.AddAction(() =>
                 {
@@ -164,12 +171,12 @@ namespace NodeController
                 var nodeSegmentIds = nodeId.GetNode().SegmentIds().ToArray();
                 segmentIds.AddRange(nodeSegmentIds);
 
-                if ((options & Options.UpdateNearby) != 0)
+                if ((options & Options.UpdateNearbyLater) != 0)
                 {
                     foreach (var segmentIs in nodeSegmentIds)
                     {
                         var otherNodeId = segmentIs.GetSegment().GetOtherNode(nodeId);
-                        if (GetOrCreateNodeData(otherNodeId, options) != null)
+                        if (GetOrCreateNodeData(otherNodeId, options & Options.CreateThis | Options.UpdateThisNow) != null)
                             nodeIds.Add(otherNodeId);
                     }
                 }
@@ -190,7 +197,10 @@ namespace NodeController
             var manager = SingletonManager<Manager>.Instance;
 
             foreach (var nodeId in nodeIds)
-                manager.Buffer[nodeId].EarlyUpdate();
+            {
+                if (TryGetNodeData(nodeId, out var nodeData))
+                    nodeData.EarlyUpdate();
+            }
 
 #if DEBUG
             var updateDone = sw.ElapsedTicks;
@@ -204,7 +214,10 @@ namespace NodeController
 #endif
 
             foreach (var nodeId in nodeIds)
-                SegmentEndData.UpdateMinLimits(manager.Buffer[nodeId]);
+            {
+                if (TryGetNodeData(nodeId, out var nodeData))
+                    SegmentEndData.UpdateMinLimits(nodeData);
+            }
 
 #if DEBUG
             var minDone = sw.ElapsedTicks;
@@ -218,7 +231,10 @@ namespace NodeController
 #endif
 
             foreach (var nodeId in nodeIds)
-                manager.Buffer[nodeId].LateUpdate();
+            {
+                if (TryGetNodeData(nodeId, out var nodeData))
+                    nodeData.LateUpdate();
+            }
 
 #if DEBUG
             var lateUpdateDone = sw.ElapsedTicks;
@@ -318,10 +334,14 @@ namespace NodeController
             None = 0,
 
             CreateThis = 1,
-            UpdateThis = 2,
-            UpdateNearby = 4,
 
-            UpdateAll = UpdateThis | UpdateNearby,
+            UpdateThisNow = 2,
+            UpdateThisLater = 4,
+            UpdateNearbyLater = 8,
+
+            UpdateAllLater = UpdateThisLater | UpdateNearbyLater,
+            UpdateAll = UpdateAllLater | UpdateThisNow,
+
             Default = CreateThis | UpdateAll,
         }
     }

@@ -169,11 +169,10 @@ namespace NodeController
                     var isRoad = node.Segments().Any(s => s.Info.m_netAI is RoadBaseAI);
                     if (created && isRoad)
                     {
-                        _ = manager[i, Manager.Options.Create];
+                        _ = manager.GetOrCreateNodeData(i);
                         SingletonMod<Mod>.Logger.Debug($"Added node #{i}");
                     }
                 }
-                manager.UpdateAll();
             }
         }
 #endif

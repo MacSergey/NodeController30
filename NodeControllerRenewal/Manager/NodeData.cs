@@ -24,7 +24,7 @@ namespace NodeController
 
         public string Title => string.Format(Localize.Panel_NodeId, Id);
         public string XmlSection => XmlName;
-        public static NetNode.Flags SupportFlags { get; } = NetNode.Flags.End | NetNode.Flags.Middle | NetNode.Flags.Junction | NetNode.Flags.Bend;
+        public static NetNode.FlagsLong SupportFlags { get; } = NetNode.FlagsLong.End | NetNode.FlagsLong.Middle | NetNode.FlagsLong.Junction | NetNode.FlagsLong.Bend;
 
         public ushort Id { get; set; }
         public NodeStyle Style { get; private set; }
@@ -269,7 +269,7 @@ namespace NodeController
         private void UpdateStyle(bool force, NodeStyleType? nodeType = null)
         {
             ref var node = ref Id.GetNode();
-            if (node.m_flags.IsSet(NetNode.Flags.Created) && !node.m_flags.IsSet(NetNode.Flags.Deleted) && (node.m_flags & SupportFlags) == 0)
+            if (node.m_flags.IsSet(NetNode.Flags.Created) && !node.m_flags.IsSet(NetNode.Flags.Deleted) && (node.flags & SupportFlags) == 0)
                 node.CalculateNode(Id);
 
             DefaultFlags = node.m_flags;
@@ -451,7 +451,7 @@ namespace NodeController
         {
             var segmentId = Id.GetNode().GetSegment(index);
             if (CentrePositions.TryGetValue(segmentId, out var position))
-                return position;
+                return position + Vector3.up * (Id.GetNode().m_heightOffset / 64f);
             else
                 return Position;
         }
