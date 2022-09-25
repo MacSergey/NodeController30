@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using ModsCommon;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using NodeController.UI;
@@ -298,7 +299,7 @@ namespace NodeController
 
         #region UICOMPONENTS
 
-        public List<EditorItem> GetUIComponents(UIComponent parent)
+        public List<EditorItem> GetUIComponents(UIComponent parent, Func<bool> getShowHidden, Action<bool> setShowHidden)
         {
             var components = new List<EditorItem>();
             var optionPanels = new Dictionary<Options, EditorPropertyPanel>();
@@ -369,20 +370,21 @@ namespace NodeController
             components.Add(moreOptionsButton);
             moreOptionsButton.Text = $"▼ {Localize.Option_MoreOptions} ▼";
             moreOptionsButton.Init();
-            moreOptionsButton.isVisible = hiddenExist;
+            moreOptionsButton.isVisible = hiddenExist && !getShowHidden();
             moreOptionsButton.OnButtonClick += () =>
             {
+                setShowHidden(true);
                 moreOptionsButton.isVisible = false;
-                UpdateVisible(optionPanels, !moreOptionsButton.isVisibleSelf);
+                UpdateVisible(optionPanels, true);
             };
 
             if (junctionStyle != null)
             {
                 components.Add(junctionStyle);
-                junctionStyle.OnSelectObjectChanged += (_) => UpdateVisible(optionPanels, !moreOptionsButton.isVisibleSelf);
+                junctionStyle.OnSelectObjectChanged += (_) => UpdateVisible(optionPanels, getShowHidden());
             }
 
-            UpdateVisible(optionPanels, !moreOptionsButton.isVisibleSelf);
+            UpdateVisible(optionPanels, getShowHidden());
 
             return components;
 

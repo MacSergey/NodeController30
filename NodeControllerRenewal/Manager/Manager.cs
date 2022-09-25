@@ -137,7 +137,7 @@ namespace NodeController
             //});
         }
 
-        public void Update(ushort nodeId) => Update(Options.UpdateAllLater, nodeId);
+        public void Update(ushort nodeId) => Update(Options.UpdateAll, nodeId);
         private void Update(Options options, params ushort[] toUpdateIds)
         {
             if((options & Options.UpdateThisNow) != 0)
