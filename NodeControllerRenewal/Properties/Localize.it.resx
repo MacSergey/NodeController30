@@ -127,6 +127,14 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   <data name="Mod_Description" xml:space="preserve">
     <value>Cambia tipologia e forma del nodo</value>
   </data>
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>Il caricamento è stato completato con errori.
+Impossibile caricare i dati per {0} nodi.</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>Il caricamento è stato completato con errori.
+Impossibile caricare i dati per tutti i nodi.</value>
+  </data>
   
   
   
@@ -137,11 +145,28 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   
   
   
-  
-  
-  
-  
-  
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] Aggiunta la possibilità di disabilitare l'opzione "Correggi i pedoni bloccati su intersezioni lunghe" a causa di lamentele riguardo l'impatto sulla velocità di simulazione. L'opzione è disabilitata di default, può essere abilitata nelle impostazioni della mod.
+[NEW] Aggiunta l'opzione "Collisione". Se la disattivi per il segmento, non avrà limiti per cambiare l'offset e potrà essere sovrapposto da altri segmenti.
+[NEW] Aggiunta l'opzione "Senza nodo". Fa renderizzare i segmenti senza nodi.
+[NEW] Aggiunta la possibilità di nascondere le opzioni inutilizzate. Tutte le opzioni escludono offset, spostamento e rotazione possono essere nascoste nelle impostazioni della mod se non le usate.
+[FIXED] Sistemato il calcolo dello spostamento sui nodi centrali.
+[UPDATED] Il valore massimo della pendenza per le strade è stato aumentato a 60 gradi.
+[UPDATED] Il valore massimo di torsione per le strade è stato aumentato a 60 gradi.
+[UPDATED] Il valore massimo dello spostamento è stato aumentato a 64 metri.
+[FIXED] Risolto il buco in sovrapposizione su un nodo di grandi dimensioni.
+[TRANSLATION] Aggiunta lingua rumena.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
+    <value>[UPDATED] Aggiunto il supporto per il DLC Plaza &amp; Promenades.
+[FIXED] Corrette le posizioni dei prop su segmenti inclinati.
+[FIXED] I dati di simulazione non sono più cambiati dal thread principale.
+[FIXED] Risolta la mancanza della texture delle strisce pedonali sui nodi con attraversamento.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_2" xml:space="preserve">
+    <value>[FIXED] Risolti i glitch del terreno che potrebbero apparire quando si usa la mod Surface Painter.
+[TRANSLATION] Aggiunta la lingua ceca.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Piega</value>
   </data>
@@ -178,7 +203,9 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
     <value>Calcola torsione per nodi vicini</value>
   </data>
-  
+  <data name="Option_Collision" xml:space="preserve">
+    <value>Collisione</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Ripristina la deviazione</value>
   </data>
@@ -200,7 +227,9 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Altre opzioni</value>
   </data>
-  
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>Senza nodo</value>
+  </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Spostamento</value>
   </data>
@@ -261,7 +290,9 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nodo #{0}</value>
   </data>
-  
+  <data name="Settings_ApplyAfterRestart" xml:space="preserve">
+    <value>Si applica dopo il riavvio del gioco</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Inserimento nodo</value>
   </data>
@@ -274,16 +305,24 @@ La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibil
   <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
     <value>Cliccando con {0} sul segmento</value>
   </data>
-  
-  
+  <data name="Settings_LongIntersectionFix" xml:space="preserve">
+    <value>Correggi i pedoni bloccati su intersezioni lunghe</value>
+  </data>
+  <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
+    <value>Questa opzione aumenta la distanza massima di ricerca del percorso all'intersezione, impedendo ai pedoni di bloccarsi su intersezioni così lunghe, tuttavia questa opzione può influenzare la velocità di simulazione</value>
+  </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Il nodo è inclinato di default</value>
   </data>
-  
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Visibilità opzioni</value>
+  </data>
   <data name="Settings_Option_Disabled" xml:space="preserve">
     <value>Disabilitato</value>
   </data>
-  
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Nascosto</value>
+  </data>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Sempre visibile</value>
   </data>
