@@ -15,6 +15,7 @@ namespace NodeController.UI
         private PanelHeader Header { get; set; }
         private NodeTypePropertyPanel TypeProperty { get; set; }
         private List<EditorItem> Properties { get; set; } = new List<EditorItem>();
+        private bool ShowHidden { get; set; }
 
         public NodeData Data { get; private set; }
 
@@ -41,6 +42,8 @@ namespace NodeController.UI
 
         public void SetData(NodeData data)
         {
+            ShowHidden = false;
+
             if ((Data = data) != null)
                 SetPanel();
             else
@@ -71,7 +74,7 @@ namespace NodeController.UI
             Content.StartLayout();
         }
 
-        private void FillProperties() => Properties = Data.Style.GetUIComponents(Content);
+        private void FillProperties() => Properties = Data.Style.GetUIComponents(Content, () => ShowHidden, (show) => ShowHidden = show);
         private void ClearProperties()
         {
             foreach (var property in Properties)
