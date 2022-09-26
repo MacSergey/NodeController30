@@ -127,8 +127,14 @@
   <data name="Mod_Description" xml:space="preserve">
     <value>控制节点类型和形状</value>
   </data>
-  
-  
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>加载完成时出现错误。
+无法加载 {0} 节点的数据。</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>加载完成时出现错误。
+无法加载所有节点的数据。</value>
+  </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>[NEW] 添加自动设置主要斜坡方向模式。
 [NEW] 添加红色指示来标记出过短的段落(段落太短会导致车速错误)。
@@ -174,9 +180,28 @@
 [FIXED] 修复无节点网络计算方式。
 [FIXED] 修复节点插入计算方式。</value>
   </data>
-  
-  
-  
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] 由于可能影响模拟速度，增加了禁用选项“修复长交叉路口上卡住的行人”的功能。默认情况下，该选项处于禁用状态，可以在模组设置中启用。
+[NEW] 添加选项“碰撞”。如果禁用该选项，则路段将没有更改偏移的限制，并且可以与其他路段重叠。
+[NEW] 添加选项“无节点”。它使得路段的渲染没有节点。
+[NEW] 添加了隐藏未使用选项的功能。如果你不使用所有的选项（不包括偏移、移位和旋转），那么都可以隐藏在模组设置中。
+[FIXED] 修复中间节点上的移位计算。
+[UPDATED] 道路的最大坡度值增加到60度。
+[UPDATED] 道路的最大斜度值增加到60度。
+[UPDATED] 最大移位值增加到64米。
+[FIXED] 修复了大节点上覆盖层的蓝洞问题。
+[TRANSLATION] 添加了罗马尼亚语。</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
+    <value>[UPDATED] 添加了 Plazas &amp; Promenades DLC 的支持。
+[FIXED] 修复了弯曲路段上的摆件位置。
+[FIXED] 模拟数据不再从主线程更改。
+[FIXED] 修复了人行横道节点上缺少的人行横道纹理。</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_2" xml:space="preserve">
+    <value>[FIXED] 修正了使用Surface Painter mod时可能出现的地形问题。
+[TRANSLATION] 添加了捷克语。</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>弯曲</value>
   </data>
@@ -213,7 +238,9 @@
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
     <value>按附近节点计算倾斜</value>
   </data>
-  
+  <data name="Option_Collision" xml:space="preserve">
+    <value>碰撞</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>重置偏移</value>
   </data>
@@ -232,7 +259,9 @@
   <data name="Option_Marking" xml:space="preserve">
     <value>标线</value>
   </data>
-  
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>显示更多选项</value>
+  </data>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>无节点</value>
   </data>
@@ -296,7 +325,9 @@
   <data name="Panel_NodeId" xml:space="preserve">
     <value>节点 #{0}</value>
   </data>
-  
+  <data name="Settings_ApplyAfterRestart" xml:space="preserve">
+    <value>游戏重启后生效</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>插入节点</value>
   </data>
@@ -309,15 +340,27 @@
   <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
     <value>在线段上按 {0} 并单击</value>
   </data>
-  
-  
+  <data name="Settings_LongIntersectionFix" xml:space="preserve">
+    <value>修复在较长的交叉路口上行人被卡住的问题</value>
+  </data>
+  <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
+    <value>此选项会增加交叉路口上的最大路径距离，防止在较长的间距上行人被卡住，不过此选项会影响模拟速度</value>
+  </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>节点默认为斜坡</value>
   </data>
-  
-  
-  
-  
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>选项可见度</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>禁用</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>折叠的</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>总是可见</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>显示光标附近节点</value>
   </data>

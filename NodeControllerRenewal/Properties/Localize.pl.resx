@@ -127,8 +127,14 @@ Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być 
   <data name="Mod_Description" xml:space="preserve">
     <value>Kontroluj typ i kształt węzła</value>
   </data>
-  
-  
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>Ładowanie danych zakończone z błędami.
+Nie udało się załadować danych dla {0} węzłów.</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>Ładowanie danych zakończone z błędami.
+Nie udało się załadować danych wszystkich węzłów.</value>
+  </data>
   
   
   
