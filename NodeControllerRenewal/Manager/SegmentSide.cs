@@ -76,7 +76,7 @@ namespace NodeController
             public DataStruct(SegmentSide segmentSide)
             {
                 _segmentSide = segmentSide;
-                _rawTrajectory = null;
+                _rawTrajectory = new CombinedTrajectory(new StraightTrajectory(Vector3.zero, Vector3.zero));
 
                 _minT = 0f;
                 _maxT = 1f;
@@ -94,7 +94,7 @@ namespace NodeController
 
             public void Set(ITrajectory trajectory)
             {
-                if (_rawTrajectory == null || !_rawTrajectory[1].Equals(trajectory))
+                if (_rawTrajectory.IsZero || !_rawTrajectory[1].Equals(trajectory))
                 {
                     var mainTrajectory = trajectory;
                     var additionalTrajectory = new StraightTrajectory(trajectory.StartPosition - trajectory.StartDirection * _segmentSide.AdditionalLength, trajectory.StartPosition);
