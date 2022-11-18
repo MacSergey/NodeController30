@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-	<AssemblyVersion>3.3.0.264</AssemblyVersion>
+	<AssemblyVersion>3.3.0.270</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">
@@ -54,10 +54,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <EmbeddedResource Remove="Properties\Localize.lv.resx" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonActive.png" />
     <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonHover.png" />
     <EmbeddedResource Include="Resources\ActivationButton\ActivationButtonIconHover.png" />
@@ -75,6 +71,88 @@
     <EmbeddedResource Include="Resources\UUIButton\UUIButtonHovered.png" />
     <EmbeddedResource Include="Resources\UUIButton\UUIButtonNormal.png" />
     <EmbeddedResource Include="Resources\UUIButton\UUIButtonPressed.png" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="Properties\Localize.cs.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.de.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.es.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.fi.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.fr.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.id.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.it.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.ja.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.ko.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.mr.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.nl.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.pl.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.pt.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.resx">
+      <Generator>LocalizeGenerator</Generator>
+      <LastGenOutput>Localize.cs</LastGenOutput>
+      <CustomToolNamespace>NodeController</CustomToolNamespace>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.ro.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.ru.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.tr.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.zh-CN.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Localize.zh-TW.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Remove="Properties\Localize.cs.resx" />
+    <EmbeddedResource Remove="Properties\Localize.de.resx" />
+    <EmbeddedResource Remove="Properties\Localize.es.resx" />
+    <EmbeddedResource Remove="Properties\Localize.fi.resx" />
+    <EmbeddedResource Remove="Properties\Localize.fr.resx" />
+    <EmbeddedResource Remove="Properties\Localize.id.resx" />
+    <EmbeddedResource Remove="Properties\Localize.it.resx" />
+    <EmbeddedResource Remove="Properties\Localize.ja.resx" />
+    <EmbeddedResource Remove="Properties\Localize.ko.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.lv.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.mr.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.nl.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.pl.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.pt.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.ro.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.ru.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.tr.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.zh-CN.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.zh-TW.resx" />
   </ItemGroup>
   
   
@@ -110,20 +188,11 @@
   
   
   <ItemGroup>
-    <Compile Update="Properties\Localize.Designer.cs">
+    <Compile Update="Properties\Localize.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Localize.resx</DependentUpon>
     </Compile>
-  </ItemGroup>
-  
-  
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Localize.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Localize.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>NodeController</CustomToolNamespace>
-    </EmbeddedResource>
   </ItemGroup>
     
   <Import Project="..\ModsCommon\AutoLayoutPanelShared\AutoLayoutPanelShared.projitems" Label="Shared" />
@@ -153,24 +222,25 @@
   <Import Project="..\ModsCommon\WhatsNewMessageBoxShared\WhatsNewMessageBoxShared.projitems" Label="Shared" /> 
   <Import Project="..\ModsCommon\XmlExtension\XmlExtension.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\LocalizeShared\LocalizeShared.projitems" Label="Shared" />
-  <Import Project="..\ModsCommon\LocalizeShared\cs\LocalizeShared.cs.projitems" Label="Shared" />
-  <Import Project="..\ModsCommon\LocalizeShared\de\LocalizeShared.de.projitems" Label="Shared" />
-  <Import Project="..\ModsCommon\LocalizeShared\es\LocalizeShared.es.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\fi\LocalizeShared.fi.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\fr\LocalizeShared.fr.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\id\LocalizeShared.id.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\it\LocalizeShared.it.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\ja\LocalizeShared.ja.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\ko\LocalizeShared.ko.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\mr\LocalizeShared.mr.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\nl\LocalizeShared.nl.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\pl\LocalizeShared.pl.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\pt\LocalizeShared.pt.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\ro\LocalizeShared.ro.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\ru\LocalizeShared.ru.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\tr\LocalizeShared.tr.projitems" Label="Shared" /> 
   <Import Project="..\ModsCommon\LocalizeShared\zh-CN\LocalizeShared.zh-CN.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\zh-TW\LocalizeShared.zh-TW.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\LocalizeShared\zh-TW\LocalizeShared.zh-TW.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\cs-CZ\LocalizeShared.cs-CZ.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\de-DE\LocalizeShared.de-DE.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\es-ES\LocalizeShared.es-ES.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\fi-FI\LocalizeShared.fi-FI.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\fr-FR\LocalizeShared.fr-FR.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\id-ID\LocalizeShared.id-ID.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\it-IT\LocalizeShared.it-IT.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\ja-JP\LocalizeShared.ja-JP.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\ko-KR\LocalizeShared.ko-KR.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\mr-MR\LocalizeShared.mr-MR.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\nl-NL\LocalizeShared.nl-NL.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\pl-PL\LocalizeShared.pl-PL.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\pt-PT\LocalizeShared.pt-PT.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\ro-RO\LocalizeShared.ro-RO.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\ru-RU\LocalizeShared.ru-RU.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\tr-TR\LocalizeShared.tr-TR.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\LocalizeManager\LocalizeManager.projitems" Label="Shared" />
   
 
   <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">
@@ -190,19 +260,21 @@
 
 
   <Target Name="PdbToMdb" AfterTargets="Build">
-    <!--<Message Text="Convert pdb to mdb" Importance="high" />
-
-    <PropertyGroup>
-      <UnityPath>$(MSBuildExtensionsPath64)\..\Unity\</UnityPath>
-      <UnityPath Condition="! Exists ('$(UnityPath)')">..\Unity\</UnityPath>
-      <MonoDir>$(UnityPath)Editor\Data\MonoBleedingEdge\</MonoDir>
-    </PropertyGroup>
-
-    <Exec Command='"$(MonoDir)bin\mono.exe" "$(MonoDir)lib\mono\4.5\pdb2mdb.exe" "$(TargetPath)"' />-->
     <ItemGroup>
       <FilesToDelete Include="$(OutDir)*.pdb" />
     </ItemGroup>
     <Delete Files="@(FilesToDelete)" />
+
+	  <ItemGroup>
+		  <LocalizeToMove Include="$(OutDir)Properties\*.resx" />
+	  </ItemGroup>
+	  <Move SourceFiles="@(LocalizeToMove)" DestinationFiles="@(LocalizeToMove->'$(OutDir)Localize\%(Filename)%(Extension)')" />
+	  <RemoveDir Directories="$(OutDir)Properties" />
+
+	  <ItemGroup>
+		  <CommonLocalizeToMove Include="$(OutDir)*.resx" />
+	  </ItemGroup>
+	  <Move SourceFiles="@(CommonLocalizeToMove)" DestinationFiles="@(CommonLocalizeToMove->'$(OutDir)Localize\%(Filename)%(Extension)')" />
   </Target>
 
   <Target Name="DeployToLocal" AfterTargets="PdbToMdb">
