@@ -70,7 +70,7 @@ namespace NodeController
         public override bool IsBeta => false;
 #endif
         #endregion
-        protected override ResourceManager LocalizeManager => Localize.ResourceManager;
+        protected override LocalizeManager LocalizeManager => Localize.LocaleManager;
         protected override bool NeedMonoDevelopImpl => true;
         public override string CrowdinUrl => "https://crowdin.com/translate/node-controller-renewal/50";
 
