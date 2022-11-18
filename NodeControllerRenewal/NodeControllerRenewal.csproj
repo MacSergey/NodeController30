@@ -74,43 +74,43 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Include="Properties\Localize.cs.resx">
+    <None Include="Properties\Localize.cs-CZ.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.de.resx">
+    <None Include="Properties\Localize.de-DE.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.es.resx">
+    <None Include="Properties\Localize.es-ES.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.fi.resx">
+    <None Include="Properties\Localize.fi-FI.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.fr.resx">
+    <None Include="Properties\Localize.fr-FR.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.id.resx">
+    <None Include="Properties\Localize.id-ID.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.it.resx">
+    <None Include="Properties\Localize.it-IT.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.ja.resx">
+    <None Include="Properties\Localize.ja-JP.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.ko.resx">
+    <None Include="Properties\Localize.ko-KR.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.mr.resx">
+    <None Include="Properties\Localize.ms-MY.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.nl.resx">
+    <None Include="Properties\Localize.nl-NL.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.pl.resx">
+    <None Include="Properties\Localize.pl-PL.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.pt.resx">
+    <None Include="Properties\Localize.pt-PT.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Localize.resx">
@@ -119,13 +119,13 @@
       <CustomToolNamespace>NodeController</CustomToolNamespace>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.ro.resx">
+    <None Include="Properties\Localize.ro-RO.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.ru.resx">
+    <None Include="Properties\Localize.ru-RU.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Properties\Localize.tr.resx">
+    <None Include="Properties\Localize.tr-TR.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Localize.zh-CN.resx">
@@ -134,22 +134,39 @@
     <None Include="Properties\Localize.zh-TW.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Remove="Properties\Localize.cs-CZ.resx" />
     <EmbeddedResource Remove="Properties\Localize.cs.resx" />
+    <EmbeddedResource Remove="Properties\Localize.de-DE.resx" />
     <EmbeddedResource Remove="Properties\Localize.de.resx" />
+    <EmbeddedResource Remove="Properties\Localize.es-ES.resx" />
     <EmbeddedResource Remove="Properties\Localize.es.resx" />
+    <EmbeddedResource Remove="Properties\Localize.fi-FI.resx" />
     <EmbeddedResource Remove="Properties\Localize.fi.resx" />
+    <EmbeddedResource Remove="Properties\Localize.fr-FR.resx" />
     <EmbeddedResource Remove="Properties\Localize.fr.resx" />
+    <EmbeddedResource Remove="Properties\Localize.id-ID.resx" />
     <EmbeddedResource Remove="Properties\Localize.id.resx" />
+    <EmbeddedResource Remove="Properties\Localize.it-IT.resx" />
     <EmbeddedResource Remove="Properties\Localize.it.resx" />
+    <EmbeddedResource Remove="Properties\Localize.ja-JP.resx" />
     <EmbeddedResource Remove="Properties\Localize.ja.resx" />
+    <EmbeddedResource Remove="Properties\Localize.ko-KR.resx" />
     <EmbeddedResource Remove="Properties\Localize.ko.resx" />
+    <EmbeddedResource Remove="Properties\Localize.lv-LV.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.lv.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.mr.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.ms-MY.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.nl-NL.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.nl.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.pl-PL.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.pl.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.pt-PT.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.pt.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.ro-RO.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.ro.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.ru-RU.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.ru.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.tr-TR.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.tr.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.zh-CN.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.zh-TW.resx" />
@@ -233,14 +250,14 @@
   <Import Project="..\ModsCommon\LocalizeShared\it-IT\LocalizeShared.it-IT.projitems" Label="Shared" /> 
   <Import Project="..\ModsCommon\LocalizeShared\ja-JP\LocalizeShared.ja-JP.projitems" Label="Shared" /> 
   <Import Project="..\ModsCommon\LocalizeShared\ko-KR\LocalizeShared.ko-KR.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\mr-MR\LocalizeShared.mr-MR.projitems" Label="Shared" /> 
   <Import Project="..\ModsCommon\LocalizeShared\nl-NL\LocalizeShared.nl-NL.projitems" Label="Shared" /> 
   <Import Project="..\ModsCommon\LocalizeShared\pl-PL\LocalizeShared.pl-PL.projitems" Label="Shared" /> 
   <Import Project="..\ModsCommon\LocalizeShared\pt-PT\LocalizeShared.pt-PT.projitems" Label="Shared" /> 
   <Import Project="..\ModsCommon\LocalizeShared\ro-RO\LocalizeShared.ro-RO.projitems" Label="Shared" /> 
   <Import Project="..\ModsCommon\LocalizeShared\ru-RU\LocalizeShared.ru-RU.projitems" Label="Shared" /> 
   <Import Project="..\ModsCommon\LocalizeShared\tr-TR\LocalizeShared.tr-TR.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\LocalizeManager\LocalizeManager.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\LocalizeShared\LocalizeManager\LocalizeManager.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\ms-MY\LocalizeShared.ms-MY.projitems" Label="Shared" />
   
 
   <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">
