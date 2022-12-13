@@ -15,7 +15,10 @@ namespace NodeController.Patches
         public static void CalculateNodePostfix(ushort nodeID)
         {
             if (SingletonManager<Manager>.Instance.TryGetNodeData(nodeID, out var data))
+            {
+                data.UpdateFlags();
                 data.UpdateSegmentEnds();
+            }
         }
         public static IEnumerable<CodeInstruction> ReplaceNodePositionTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)
         {

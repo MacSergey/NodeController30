@@ -230,7 +230,7 @@ namespace NodeController
                 i += 1;
             }
         }
-        private void UpdateFlags()
+        public void UpdateFlags()
         {
             ref var node = ref Id.GetNode();
 
