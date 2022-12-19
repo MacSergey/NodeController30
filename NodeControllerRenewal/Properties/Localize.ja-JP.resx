@@ -167,6 +167,7 @@
     <value>[FIXED] Fixed terrain glitches that could appear when using Surface Painter mod.
 [TRANSLATION] Added Czech language.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>ベンド</value>
   </data>

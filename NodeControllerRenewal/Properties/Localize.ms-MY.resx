@@ -167,6 +167,7 @@ Gagal memuatkan data untuk kesemua nod.</value>
     <value>[FIXED] Glic rupa bumi yang mampu muncul ketika menggunakan mod Surface Painter telah dibaiki.
 [TRANSLATION] Bahasa Czechoslovakia telah ditambah.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Lentur</value>
   </data>

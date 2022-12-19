@@ -127,6 +127,14 @@
   <data name="Mod_Description" xml:space="preserve">
     <value>控制節點類型和形狀</value>
   </data>
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>載入完畢時發生錯誤。
+無法載入 {0} 節點的資料。</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>載入完畢時出現錯誤。
+無法載入所有節點的資料。</value>
+  </data>
   
   
   
@@ -137,10 +145,28 @@
   
   
   
-  
-  
-  
-  
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] 由於可能影響模擬速度，添加了禁用「修復卡在長交叉路口的行人」的選項。該選項默認禁用，可以在模組設定中啟用。
+[NEW] 添加選項「碰撞」。如果禁用該選項，則路段將失去更改偏移的限制，並且可以與其他路段重疊。
+[NEW] 添加選項「無節點」。它使得路段的渲染沒有節點。
+[NEW] 添加了隱藏未使用選項的功能。如果你不使用這些選項，那麼除了「偏移、移位和旋轉」都可以在模組設定中隱藏它們。
+[FIXED] 修正中間節點上的移位計量。
+[UPDATED] 道路的最大坡度值增加到60度。
+[UPDATED] 道路的最大斜度值增加到60度。
+[UPDATED] 最大移位值增加到64米。
+[FIXED] 修正了大節點上覆蓋層的藍洞。
+[TRANSLATION] 添加了羅馬尼亞語。</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
+    <value>[UPDATED] 添加對 Plazas &amp; Promenades DLC 軟體版本的支持。
+[FIXED] 修正了彎曲路段上的物件位置。
+[FIXED] 模擬數據不再從主線程更改。
+[FIXED] 修正了人行道節點上缺少的人行道紋理。</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_2" xml:space="preserve">
+    <value>[FIXED] 修正了與Surface Painter mod一同使用時可能的地形問題。
+[TRANSLATION] 添加了捷克語。</value>
+  </data>
   
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>彎曲</value>

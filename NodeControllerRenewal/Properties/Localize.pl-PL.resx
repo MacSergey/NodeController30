@@ -145,8 +145,28 @@ Nie udało się załadować danych wszystkich węzłów.</value>
   
   
   
-  
-  
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] Dodano możliwość wyłączenia opcji "napraw pieszych na długich przecięciach" ze względu na narzekanie na prędkość symulacji. Opcja jest domyślnie wyłączona, może być włączona w ustawieniach modyfikacji.
+[NEW] Dodano opcję "Kolizja". jeśli wyłączysz go dla segmentu, segment nie będzie miał limitów zmiany przesunięcia i może być nakładany na siebie przez inne segmenty.
+[NEW] Dodano opcję "Nodeless". Tworzy ona renderowanie segmentu bez węzła.
+[NEW] Dodano możliwość ukrycia nieużywanych opcji. Wszystkie opcje wykluczając przesuwanie, przesunięcie i obracanie mogą być ukryte w ustawieniach modyfikacji, jeśli ich nie używasz.
+[FIXED] Naprawiono obliczanie przesunięcia na środkowych węzłach.
+[UPDATED] Maksymalna wartość nachylenia dróg została zwiększona do 60 stopni.
+[UPDATED] Maksymalna wartość skręcania dróg wzrosła do 60 stopni.
+[UPDATED] Maksymalna wartość przesunięcia została zwiększona do 64 metrów.
+[FIXED] Naprawiono dziurę w nakładce na w dużych węzłach.
+[TRANSLATION] Dodano język rumuński.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
+    <value>[UPDATED] Dodano obsługę DLC Place i Promenady.
+[FIXED] Naprawiono pozycje rekwizytów na skręconych segmentach.
+[FIXED] Dane symulacyjne nie są już zmieniane z głównego wątku.
+[FIXED] Naprawiono brakującą teksturę przejść dla pieszych na węzłach z przejściem dla pieszych.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_2" xml:space="preserve">
+    <value>[FIXED] Naprawiono glicze pojawiające się na ziemi, podczas używania modu Surface Painter.
+[TRANSLATION] Dodano język czeski.</value>
+  </data>
   
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Zegnij</value>

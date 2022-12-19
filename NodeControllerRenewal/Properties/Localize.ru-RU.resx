@@ -239,6 +239,10 @@
     <value>[FIXED] исправлены проволы в земле при использование мода Surface Painter.
 [TRANSLATION] Добавлен чешский язык.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_3_3" xml:space="preserve">
+    <value>[FIXED] Исправлена совместимость с модом Adaptive Network которая могла вызвать синие пустоты вместо узлов.
+[FIXED] Исправлена ошибка когда при отсутствующих ассетах дорог NCR не мог загрузить данные.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Изгиб</value>
   </data>

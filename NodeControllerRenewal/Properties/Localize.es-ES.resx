@@ -167,6 +167,7 @@ No se pudieron cargar datos para todos los nodos.</value>
     <value>[FIXED] Errores en el terreno que podrían aparecer al usar el mod Surface Painter.
 [TRANSLATION] Añadido idioma checo.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Doblado</value>
   </data>

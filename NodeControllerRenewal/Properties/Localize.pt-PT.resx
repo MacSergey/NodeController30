@@ -167,6 +167,7 @@ O carregamento de todas marcações falhou.</value>
     <value>[FIXED] Corrigido erros de terreno que aparece ao usar o pintor de terreno.
 [TRANSLATION] Adicionado linguagem Tcheca.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curva</value>
   </data>

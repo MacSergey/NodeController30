@@ -167,6 +167,7 @@ Nepodařilo se načíst data všechny uzly.</value>
     <value>[FIXED] Opraveny povrchové glitche, které se mohou objevit při používání Surface Painteru.
 [TRANSLATION] Přidán Český jazyk.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Ohebný</value>
   </data>

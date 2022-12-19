@@ -167,6 +167,7 @@ Impossibile caricare i dati per tutti i nodi.</value>
     <value>[FIXED] Risolti i glitch del terreno che potrebbero apparire quando si usa la mod Surface Painter.
 [TRANSLATION] Aggiunta la lingua ceca.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Piega</value>
   </data>

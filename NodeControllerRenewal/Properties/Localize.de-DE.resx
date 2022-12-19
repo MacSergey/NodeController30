@@ -185,6 +185,7 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
     <value>[FIXED] Geländeglitches, die bei Verwendung des Surface Painter-Mods angezeigt werden konnten.
 [TRANSLATION] Tschechische Sprache hinzugefügt.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Kurve</value>
   </data>

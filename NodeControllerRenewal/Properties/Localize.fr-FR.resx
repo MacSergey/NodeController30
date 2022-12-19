@@ -239,6 +239,7 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
     <value>[FIXED] Correction de problèmes de terrain qui pouvaient apparaître lors de l'utilisation du mod Surface Painter.
 [TRANSLATION] Ajout de la langue tchèque.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Courbe</value>
   </data>

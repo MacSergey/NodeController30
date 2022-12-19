@@ -167,6 +167,7 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
     <value>[FIXED] Glitch-uri de teren care puteau să apară când se folosea modul Surface Painter.
 [TRANSLATION] A fost adăugată limba cehă.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curbă</value>
   </data>
