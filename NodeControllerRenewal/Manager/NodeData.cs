@@ -26,6 +26,7 @@ namespace NodeController
         public string XmlSection => XmlName;
         public static NetNode.FlagsLong SupportFlags { get; } = NetNode.FlagsLong.End | NetNode.FlagsLong.Middle | NetNode.FlagsLong.Junction | NetNode.FlagsLong.Bend;
 
+        public bool IsDirty { get; private set; } = true;
         public ushort Id { get; set; }
         public NodeStyle Style { get; private set; }
         public NodeStyleType Type
@@ -181,6 +182,8 @@ namespace NodeController
         }
         public void EarlyUpdate()
         {
+            IsDirty = true;
+
             UpdateSegmentEndsImpl();
             MainRoad.Update(this);
             UpdateFlags();
@@ -230,7 +233,7 @@ namespace NodeController
                 i += 1;
             }
         }
-        public void UpdateFlags()
+        private void UpdateFlags()
         {
             ref var node = ref Id.GetNode();
 
@@ -240,10 +243,19 @@ namespace NodeController
             if (node.m_flags != DefaultFlags)
                 UpdateStyle(false, Style.Type);
 
-            if (NeedsTransitionFlag)
-                node.m_flags |= NetNode.Flags.Transition;
-            else
-                node.m_flags &= ~NetNode.Flags.Transition;
+            SetFlags();
+        }
+        public void SetFlags()
+        {
+            ref var node = ref Id.GetNode();
+#if BETA
+            var oldFlags = node.m_flags;
+#endif
+            //it causes junction voids
+            //if (NeedsTransitionFlag)
+            //    node.m_flags |= NetNode.Flags.Transition;
+            //else
+            //    node.m_flags &= ~NetNode.Flags.Transition;
 
             if (IsMiddleNode)
             {
@@ -265,6 +277,9 @@ namespace NodeController
                 node.m_flags |= NetNode.Flags.Moveable;
             else
                 node.m_flags &= ~NetNode.Flags.Moveable;
+#if BETA
+            SingletonMod<Mod>.Logger.Debug($"Node #{Id} flags:  Set={node.m_flags & ~oldFlags}\tReset:{oldFlags & ~node.m_flags}");
+#endif
         }
         private void UpdateStyle(bool force, NodeStyleType? nodeType = null)
         {
@@ -305,14 +320,15 @@ namespace NodeController
             var firstMain = FirstMainSegmentEnd;
             var secondMain = SecondMainSegmentEnd;
 
-            CentrePositions.Clear();
+            var position = Vector3.zero;
+            var centrePositions = new Dictionary<ushort, Vector3>();
 
             if (IsEndNode)
             {
                 firstMain.CalculateMain(out _, out _, out _, out _);
                 firstMain.AfterCalculate();
 
-                Position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
+                position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
             }
             else if (IsMiddleNode)
             {
@@ -324,7 +340,7 @@ namespace NodeController
                 firstMain.AfterCalculate();
                 secondMain.AfterCalculate();
 
-                Position = Id.GetNode().m_position;
+                position = Id.GetNode().m_position;
             }
             else
             {
@@ -348,9 +364,9 @@ namespace NodeController
                 }
 
                 if (IsSlopeJunctions)
-                    Position = (leftBezier.Position(0.5f) + rightBezier.Position(0.5f)) * 0.5f;
+                    position = (leftBezier.Position(0.5f) + rightBezier.Position(0.5f)) * 0.5f;
                 else
-                    Position = SegmentEndDatas.AverageOrDefault(s => s.Position, Id.GetNode().m_position);
+                    position = SegmentEndDatas.AverageOrDefault(s => s.Position, Id.GetNode().m_position);
 
                 foreach (var segmentEnd1 in SegmentEndDatas)
                 {
@@ -373,9 +389,9 @@ namespace NodeController
                     }
 
                     if (canConnect.Count == 0)
-                        CentrePositions[segmentEnd1.Id] = segmentEnd1.Position;
+                        centrePositions[segmentEnd1.Id] = segmentEnd1.Position;
                     else
-                        CentrePositions[segmentEnd1.Id] = Position;
+                        centrePositions[segmentEnd1.Id] = position;
                 }
             }
 
@@ -399,7 +415,12 @@ namespace NodeController
                     }
                 }
             }
+
+            Position = position;
+            CentrePositions = centrePositions;
             Gap = Mathf.Sqrt(maxGap) + 2f;
+
+            IsDirty = false;
         }
 
         public void UpdateNode() => SingletonManager<Manager>.Instance.Update(Id);

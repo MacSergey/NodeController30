@@ -16,7 +16,7 @@ namespace NodeController.Patches
         {
             if (SingletonManager<Manager>.Instance.TryGetNodeData(nodeID, out var data))
             {
-                data.UpdateFlags();
+                data.SetFlags();
                 data.UpdateSegmentEnds();
             }
         }
@@ -43,19 +43,28 @@ namespace NodeController.Patches
             }
         }
 
-        private static Vector3 GetCentrePosition(Vector3 defaultPosition, ushort nodeId) => SingletonManager<Manager>.Instance.TryGetNodeData(nodeId, out var data) ? data.GetPosition() : defaultPosition;
-        private static Vector3 GetCentrePositionForSegment(Vector3 defaultPosition, ushort nodeId, int index) => SingletonManager<Manager>.Instance.TryGetNodeData(nodeId, out var data) ? data.GetPosition(index) : defaultPosition;
+        private static Vector3 GetCentrePosition(Vector3 defaultPosition, ushort nodeId)
+        {
+            if (SingletonManager<Manager>.Instance.TryGetNodeData(nodeId, out var data))
+                return data.GetPosition();
+            else
+                return defaultPosition;
+        }
 
         public static void RefreshJunctionDataPrefix(ushort nodeID, int segmentIndex, ref Vector3 centerPos)
         {
             if (SingletonManager<Manager>.Instance.TryGetNodeData(nodeID, out var data))
+            {
                 centerPos = data.GetPosition(segmentIndex);
+            }
         }
 
         public static void RefreshJunctionDataPostfix(ushort nodeID, ref RenderManager.Instance data)
         {
             if (SingletonManager<Manager>.Instance.TryGetNodeData(nodeID, out var blendData) && blendData.ShouldRenderCenteralCrossingTexture)
+            {
                 data.m_dataVector1.w = 0.01f;
+            }
         }
 
         public static IEnumerable<CodeInstruction> RenderInstanceTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)

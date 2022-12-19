@@ -126,15 +126,6 @@ namespace NodeController
             SingletonMod<Mod>.Logger.Debug("Start initial update");
             InitialUpdateInProgress = true;
             Update(Options.UpdateThisNow | Options.UpdateThisLater, toUpdateIds);
-
-            //GetUpdateList(toUpdateIds, Options.UpdateThisLater, out var nodeIds, out var segmentIds);
-            //UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray());
-
-            //SimulationManager.instance.AddAction(() =>
-            //{
-            //    foreach (var nodeId in nodeIds)
-            //        NetManager.instance.UpdateNode(nodeId);
-            //});
         }
 
         public void Update(ushort nodeId) => Update(Options.UpdateAll, nodeId);
