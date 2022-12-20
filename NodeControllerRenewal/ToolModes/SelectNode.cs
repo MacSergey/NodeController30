@@ -40,14 +40,6 @@ namespace NodeController
             if (IsHoverNode)
             {
                 text = string.Format(Localize.Tool_InfoClickNode, HoverNode.Id) + GetStepOverInfo();
-
-                //#if DEBUG
-                //                if (Settings.ExtraDebug)
-                //                {
-                //                    if (SingletonManager<Manager>.Instance.GetNodeData(HoverNode.Id, out var data))
-                //                        text += "\n" + data.GetDebugString();
-                //                }
-                //#endif
             }
             else if (IsHoverSegment)
             {
@@ -69,17 +61,6 @@ namespace NodeController
                     else
                         text = Localize.Tool_InfoInsertNode.AddActionColor() + GetStepOverInfo();
                 }
-
-                //#if DEBUG
-                //                if (Settings.ExtraDebug)
-                //                {
-                //                    SingletonManager<Manager>.Instance.GetSegmentData(HoverSegment.Id, out var start, out var end);
-                //                    if (start != null)
-                //                        text += "\n Start" + start.GetDebugString();
-                //                    if (end != null)
-                //                        text += "\n End" + end.GetDebugString();
-                //                }
-                //#endif
             }
             else if (Settings.IsUndegroundWithModifier)
                 text = $"{Localize.Tool_InfoSelectNode}\n\n{string.Format(Localize.Tool_InfoUnderground, LocalizeExtension.Shift.AddInfoColor())}";
@@ -99,13 +80,13 @@ namespace NodeController
 
             ref var node = ref nodeId.GetNode();
 
-            if ((node.flags & NodeData.SupportFlags) == 0)
+            if ((node.m_flags & NodeData.SupportFlags) == 0)
                 return false;
 
-            if ((node.flags & NetNode.FlagsLong.Outside) != 0)
+            if ((node.m_flags & NetNode.Flags.Outside) != 0)
                 return false;
 
-            if ((node.flags & NetNode.FlagsLong.Middle) != 0 && !Settings.SelectMiddleNodes)
+            if ((node.m_flags & NetNode.Flags.Middle) != 0 && !Settings.SelectMiddleNodes)
                 return false;
 
             return true;

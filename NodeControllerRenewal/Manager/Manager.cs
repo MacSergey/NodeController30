@@ -24,6 +24,8 @@ namespace NodeController
         }
 
         private NodeData[] Buffer { get; set; }
+        private static List<ushort> NodesToUpdate { get; } = new List<ushort>();
+        private static List<ushort> SegmentsToUpdate { get; } = new List<ushort>();
 
         public Manager()
         {
@@ -134,7 +136,7 @@ namespace NodeController
             if((options & Options.UpdateThisNow) != 0)
             {
                 GetUpdateList(toUpdateIds, options & ~Options.UpdateAllLater, out var nodeIds, out var segmentIds);
-                UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray());
+                UpdateImpl(nodeIds.ToList(), segmentIds.ToList());
             }
 
             if ((options & Options.UpdateAllLater) != 0)
@@ -174,16 +176,16 @@ namespace NodeController
             }
         }
 
-        private void UpdateImpl(ushort[] nodeIds, ushort[] segmentIds)
+        private void UpdateImpl(List<ushort> nodeIds, List<ushort> segmentIds)
         {
-            if (nodeIds.Length == 0)
+            if (nodeIds.Count == 0)
                 return;
 
 #if DEBUG
             var id = DateTime.Now.Millisecond;
             var sw = Stopwatch.StartNew();
 
-            SingletonMod<Mod>.Logger.Debug($"Update {id}\nNodes:{string.Join(", ", nodeIds.Select(i => i.ToString()).ToArray())}\nSegments:{string.Join(", ", segmentIds.Select(i => i.ToString()).ToArray())}");
+            SingletonMod<Mod>.Logger.Debug($"Update #{id} start\nNodes:{string.Join(", ", nodeIds.Select(i => i.ToString()).ToArray())}\nSegments:{string.Join(", ", segmentIds.Select(i => i.ToString()).ToArray())}");
 #endif
             var manager = SingletonManager<Manager>.Instance;
 
@@ -230,11 +232,17 @@ namespace NodeController
 #if DEBUG
             var lateUpdateDone = sw.ElapsedTicks;
 
-            SingletonMod<Mod>.Logger.Debug($"Update {id} finish in {sw.ElapsedTicks}; Update={updateDone} Bezier={bezierDone - updateDone} Min={minDone - bezierDone} Max={maxDone - minDone} Late={lateUpdateDone - maxDone}");
+            SingletonMod<Mod>.Logger.Debug($"Update #{id} finish {sw.ElapsedTicks / 10000f}ms; Early={updateDone / 10000f}ms Bezier={(bezierDone - updateDone) / 10000f}ms Min={(minDone - bezierDone) / 10000f}ms Max={(maxDone - minDone) / 10000f}ms Late={(lateUpdateDone - maxDone) / 10000f}ms");
 #endif
         }
 
-        public static void SimulationStep()
+        public static void SimulationStepPrefix()
+        {
+            var manager = SingletonManager<Manager>.Instance;
+            NodesToUpdate.AddRange(NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)));
+            SegmentsToUpdate.AddRange(NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)));
+        }
+        public static void SimulationStepPostfix()
         {
             if (InitialUpdateInProgress)
             {
@@ -243,13 +251,18 @@ namespace NodeController
             }
             else
             {
-                var manager = SingletonManager<Manager>.Instance;
-                var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)).ToArray();
-                var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)).ToArray();
-
-                SingletonManager<Manager>.Instance.UpdateImpl(nodeIds, segmentIds);
+                try
+                {
+                    SingletonManager<Manager>.Instance.UpdateImpl(NodesToUpdate, SegmentsToUpdate);
+                }
+                finally
+                {
+                    NodesToUpdate.Clear();
+                    SegmentsToUpdate.Clear();
+                }
             }
         }
+
         public static void ReleaseNodeImplementationPrefix(ushort node) => SingletonManager<Manager>.Instance.Buffer[node] = null;
 
         public XElement ToXml()

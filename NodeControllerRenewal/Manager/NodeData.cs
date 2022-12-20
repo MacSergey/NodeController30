@@ -1,6 +1,7 @@
 using ColossalFramework;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
+using HarmonyLib;
 using ModsCommon;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using static ColossalFramework.Math.VectorUtils;
 using static ModsCommon.Utilities.VectorUtilsExtensions;
 
@@ -24,7 +26,7 @@ namespace NodeController
 
         public string Title => string.Format(Localize.Panel_NodeId, Id);
         public string XmlSection => XmlName;
-        public static NetNode.FlagsLong SupportFlags { get; } = NetNode.FlagsLong.End | NetNode.FlagsLong.Middle | NetNode.FlagsLong.Junction | NetNode.FlagsLong.Bend;
+        public static NetNode.Flags SupportFlags { get; } = NetNode.Flags.End | NetNode.Flags.Middle | NetNode.Flags.Junction | NetNode.Flags.Bend;
 
         public bool IsDirty { get; private set; } = true;
         public ushort Id { get; set; }
@@ -175,19 +177,16 @@ namespace NodeController
             Id = nodeId;
 
             UpdateSegmentEnds();
-            UpdateSegmentEndsImpl();
             MainRoad.Update(this);
             UpdateStyle(true, nodeType);
-            UpdateMainRoadSegments();
+            UpdateRoadSegments();
         }
         public void EarlyUpdate()
         {
             IsDirty = true;
 
-            UpdateSegmentEndsImpl();
             MainRoad.Update(this);
-            UpdateFlags();
-            UpdateMainRoadSegments();
+            UpdateRoadSegments();
         }
         public void UpdateSegmentEnds()
         {
@@ -218,11 +217,11 @@ namespace NodeController
                         newSegmentEnd.ResetToDefault(style, true);
                 }
             }
-
+#if DEBUG
+            SingletonMod<Mod>.Logger.Debug($"Node #{Id} segments: Before={string.Join(", ", SegmentEnds.Keys.Select(k => k.ToString()).ToArray())};\tAfter={string.Join(", ", newSegmentEnds.Keys.Select(k => k.ToString()).ToArray())}");
+#endif
             SegmentEnds = newSegmentEnds;
-        }
-        private void UpdateSegmentEndsImpl()
-        {
+
             foreach (var segmentEnd in SegmentEnds.Values)
                 segmentEnd.Update();
 
@@ -233,22 +232,16 @@ namespace NodeController
                 i += 1;
             }
         }
-        private void UpdateFlags()
+        public void UpdateFlags()
         {
             ref var node = ref Id.GetNode();
 
             if (node.m_flags == NetNode.Flags.None || node.m_flags.IsFlagSet(NetNode.Flags.Outside))
                 return;
 
-            if (node.m_flags != DefaultFlags)
+            if ((node.m_flags & SupportFlags) != DefaultFlags)
                 UpdateStyle(false, Style.Type);
-
-            SetFlags();
-        }
-        public void SetFlags()
-        {
-            ref var node = ref Id.GetNode();
-#if BETA
+#if DEBUG
             var oldFlags = node.m_flags;
 #endif
             //it causes junction voids
@@ -277,32 +270,34 @@ namespace NodeController
                 node.m_flags |= NetNode.Flags.Moveable;
             else
                 node.m_flags &= ~NetNode.Flags.Moveable;
-#if BETA
-            SingletonMod<Mod>.Logger.Debug($"Node #{Id} flags:  Set={node.m_flags & ~oldFlags}\tReset:{oldFlags & ~node.m_flags}");
+#if DEBUG
+            var set = node.m_flags & ~oldFlags;
+            var reset = oldFlags & ~node.m_flags;
+            SingletonMod<Mod>.Logger.Debug($"Node #{Id} Flags={node.m_flags};\tSet={set};\tReset={reset}");
 #endif
         }
         private void UpdateStyle(bool force, NodeStyleType? nodeType = null)
         {
             ref var node = ref Id.GetNode();
-            if (node.m_flags.IsSet(NetNode.Flags.Created) && !node.m_flags.IsSet(NetNode.Flags.Deleted) && (node.flags & SupportFlags) == 0)
+            if ((node.m_flags & NetNode.Flags.Created) != 0 && (node.m_flags & NetNode.Flags.Deleted) == 0 && (node.m_flags & SupportFlags) == 0)
                 node.CalculateNode(Id);
 
-            DefaultFlags = node.m_flags;
+            DefaultFlags = node.m_flags & SupportFlags;
 
-            if (DefaultFlags.IsFlagSet(NetNode.Flags.Middle))
+            if ((DefaultFlags & NetNode.Flags.Middle) != 0)
                 DefaultType = NodeStyleType.Middle;
-            else if (DefaultFlags.IsFlagSet(NetNode.Flags.Bend))
+            else if ((DefaultFlags & NetNode.Flags.Bend) != 0)
                 DefaultType = NodeStyleType.Bend;
-            else if (DefaultFlags.IsFlagSet(NetNode.Flags.Junction))
+            else if ((DefaultFlags & NetNode.Flags.Junction) != 0)
                 DefaultType = NodeStyleType.Custom;
-            else if (DefaultFlags.IsFlagSet(NetNode.Flags.End))
+            else if ((DefaultFlags & NetNode.Flags.End) != 0)
                 DefaultType = NodeStyleType.End;
             else
                 throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
 
             SetType(nodeType != null && IsPossibleTypeImpl(nodeType.Value) ? nodeType.Value : DefaultType, force);
         }
-        private void UpdateMainRoadSegments()
+        private void UpdateRoadSegments()
         {
             foreach (var segmentEnd in SegmentEndDatas)
             {
@@ -442,6 +437,9 @@ namespace NodeController
             if (type == Style?.Type && !force)
                 return;
 
+#if DEBUG
+            SingletonMod<Mod>.Logger.Debug($"Node #{Id} set Type={type}");
+#endif
             Style = type.GetStyle(this);
 
             foreach (var segmentEnd in SegmentEndDatas)
@@ -500,13 +498,6 @@ namespace NodeController
         public bool IsMainRoad(ushort segmentId) => MainRoad.IsMain(segmentId);
 
         public override string ToString() => $"NodeData(id:{Id} type:{Type})";
-
-        //#if DEBUG
-        //        public string GetDebugString()
-        //        {
-        //            return $"Type: {Type}, Segments: {SegmentCount} Pos: {Position}, OrigPos: {Id.GetNode().m_position}";
-        //        }
-        //#endif
 
         #endregion
 

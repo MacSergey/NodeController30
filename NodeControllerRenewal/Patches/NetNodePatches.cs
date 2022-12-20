@@ -16,8 +16,8 @@ namespace NodeController.Patches
         {
             if (SingletonManager<Manager>.Instance.TryGetNodeData(nodeID, out var data))
             {
-                data.SetFlags();
                 data.UpdateSegmentEnds();
+                data.UpdateFlags();
             }
         }
         public static IEnumerable<CodeInstruction> ReplaceNodePositionTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions, MethodBase original)

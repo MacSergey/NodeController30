@@ -1042,17 +1042,6 @@ namespace NodeController
         }
         public override string ToString() => $"segment:{Id} node:{NodeId}";
 
-        //#if DEBUG
-        //        public string GetDebugString()
-        //        {
-        //            return $"Node: {NodeId}, Position: {Position}, Direction: {Direction}\n" +
-        //                $"RowBezier: {RawSegmentBezier.StartPosition} {RawSegmentBezier.StartDirection} - {RawSegmentBezier.EndPosition} {RawSegmentBezier.EndDirection}\n" +
-        //                $"Bezier: {SegmentBezier.StartPosition} {SegmentBezier.StartDirection} - {SegmentBezier.EndPosition} {SegmentBezier.EndDirection}\n" +
-        //                $"[Left side] StartPos: {LeftSide.StartPos}, StartDir: {LeftSide.StartDir} EndPos: {LeftSide.EndPos}, EndDir: {LeftSide.EndDir}\n" +
-        //                $"[Right side] StartPos: {RightSide.StartPos}, StartDir: {RightSide.StartDir} EndPos: {RightSide.EndPos}, EndDir: {RightSide.EndDir}\n";
-        //        }
-        //#endif
-
         #endregion
 
         #region RENDER
