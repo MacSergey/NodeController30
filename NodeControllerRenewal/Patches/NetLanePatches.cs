@@ -59,7 +59,7 @@ namespace NodeController.Patches
             var position = pos0;
             ref var lane = ref laneId.GetLane();
             var segmentId = lane.m_segment;
-            SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
+            SingletonManager<Manager>.Instance.GetFinalSegmentData(segmentId, out var start, out var end);
             if (start == null && end == null)
                 return position;
 

@@ -349,20 +349,55 @@ namespace NodeController
 
         public static void UpdateBeziers(ushort segmentId)
         {
-            CalculateSegmentBeziers(segmentId, out var bezier, out var leftBezier, out var rightBezier);
-            SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
+            SegmentEndData start = null;
+            SegmentEndData end = null;
+            try
+            {
+                SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out start, out end);
+                if(start != null && end != null)
+                {
+                    if ((start.NodeData.State & State.Error) != 0 && (end.NodeData.State & State.Error) != 0)
+                        return;
+                }
+                else if(start != null)
+                {
+                    if ((start.NodeData.State & State.Error) != 0)
+                        return;
+                }
+                else if(end != null)
+                {
+                    if ((end.NodeData.State & State.Error) != 0)
+                        return;
+                }
+#if DEBUG
+                SingletonMod<Mod>.Logger.Debug($"Segment #{segmentId} update beziers");
+#endif
+                CalculateSegmentBeziers(segmentId, out var bezier, out var leftBezier, out var rightBezier);
 
-            if (start != null)
-            {
-                start.RawSegmentBezier = bezier;
-                start.LeftSide.SetTrajectory(leftBezier);
-                start.RightSide.SetTrajectory(rightBezier);
+                if (start != null)
+                {
+                    start.RawSegmentBezier = bezier;
+                    start.LeftSide.SetTrajectory(leftBezier);
+                    start.RightSide.SetTrajectory(rightBezier);
+                }
+                if (end != null)
+                {
+                    end.RawSegmentBezier = bezier.Invert();
+                    end.LeftSide.SetTrajectory(rightBezier.Invert());
+                    end.RightSide.SetTrajectory(leftBezier.Invert());
+                }
+#if DEBUG
+                SingletonMod<Mod>.Logger.Debug($"Segment #{segmentId}\nCentre={bezier}\nLeft={leftBezier}\nRight={rightBezier}");
+#endif
             }
-            if (end != null)
+            catch (Exception error)
             {
-                end.RawSegmentBezier = bezier.Invert();
-                end.LeftSide.SetTrajectory(rightBezier.Invert());
-                end.RightSide.SetTrajectory(leftBezier.Invert());
+                if (start != null)
+                    start.NodeData.State = State.Error;
+                if (end != null)
+                    end.NodeData.State = State.Error;
+
+                SingletonMod<Mod>.Logger.Error($"Segment #{segmentId} update beziers failed", error);
             }
         }
         public static void CalculateSegmentBeziers(ushort segmentId, out BezierTrajectory bezier, out ITrajectory leftSide, out ITrajectory rightSide)
@@ -394,11 +429,18 @@ namespace NodeController
             endPos = segment.m_endNode.GetNode().m_position;
             endDir = segment.m_endDirection;
 
-            var start = SingletonManager<Manager>.Instance.GetNodeData(segment.m_startNode);
-            var end = SingletonManager<Manager>.Instance.GetNodeData(segment.m_endNode);
-
-            var startShift = start?[segmentId]?.Shift ?? 0f;
-            var endShift = end?[segmentId]?.Shift ?? 0f;
+            var startShift = 0f;
+            var endShift = 0f;
+            if (SingletonManager<Manager>.Instance.TryGetNodeData(segment.m_startNode, out var startData))
+            {
+                if (startData.TryGetSegment(segmentId, out var startSegmentData))
+                    startShift = startSegmentData.Shift;
+            }
+            if (SingletonManager<Manager>.Instance.TryGetNodeData(segment.m_endNode, out var endData))
+            {
+                if (endData.TryGetSegment(segmentId, out var endSegmentData))
+                    endShift = endSegmentData.Shift;
+            }
 
             if (startShift == 0f && endShift == 0f)
                 return;
@@ -409,10 +451,10 @@ namespace NodeController
             var dir = (endPos - startPos).MakeFlat();
             var deltaAngle = Mathf.Asin((startShift + endShift) / dir.magnitude);
 
-            if (start?.Style.NeedFixDirection != false)
+            if (startData?.Style.NeedFixDirection != false)
                 startDir = startDir.TurnRad(deltaAngle, true);
 
-            if (end?.Style.NeedFixDirection != false)
+            if (endData?.Style.NeedFixDirection != false)
                 endDir = endDir.TurnRad(deltaAngle, true);
         }
         private static void GetBuildingAngle(ushort nodeId, ref Vector3 normal)
@@ -477,146 +519,159 @@ namespace NodeController
         }
         public static void UpdateMinLimits(NodeData data)
         {
-            var endDatas = data.SegmentEndDatas.OrderBy(s => s.AbsoluteAngle).ToArray();
-            var count = endDatas.Length;
-            var limits = endDatas.Select(d => new SegmentLimits(d)).ToArray();
-
-            if (count >= 2 && !data.IsMiddleNode)
+            try
             {
-                for (var leftI = 0; leftI < count; leftI += 1)
+                if ((data.State & State.Error) != 0)
+                    return;
+#if DEBUG
+                SingletonMod<Mod>.Logger.Debug($"Node #{data.Id} update min limits");
+#endif
+                var endDatas = data.SegmentEndDatas.OrderBy(s => s.AbsoluteAngle).ToArray();
+                var count = endDatas.Length;
+                var limits = endDatas.Select(d => new SegmentLimits(d)).ToArray();
+
+                if (count >= 2 && !data.IsMiddleNode)
                 {
-                    if (endDatas[leftI].Collision == false)
+                    for (var leftI = 0; leftI < count; leftI += 1)
                     {
-                        limits[leftI].left.mainMinT = null;
-                        limits[leftI].right.mainMinT = null;
-                        limits[leftI].left.defaultT = null;
-                        limits[leftI].right.defaultT = null;
-                        continue;
+                        if (endDatas[leftI].Collision == false)
+                        {
+                            limits[leftI].left.mainMinT = null;
+                            limits[leftI].right.mainMinT = null;
+                            limits[leftI].left.defaultT = null;
+                            limits[leftI].right.defaultT = null;
+                            continue;
+                        }
+
+                        if (!GetNextIndex(leftI, out var rightI, endDatas))
+                            continue;
+
+                        GetMainMinLimit(endDatas[leftI], endDatas[rightI], count, ref limits[leftI].left, ref limits[rightI].right);
+                        limits[leftI].left.defaultT = limits[leftI].left.mainMinT;
+                        limits[rightI].right.defaultT = limits[rightI].right.mainMinT;
+
+                        var leftDir = NormalizeXZ(endDatas[leftI].RawSegmentBezier.StartDirection);
+                        var rightDir = NormalizeXZ(endDatas[rightI].RawSegmentBezier.StartDirection);
+                        var cross = CrossXZ(leftDir, rightDir);
+                        var dot = DotXZ(leftDir, rightDir);
+
+                        if ((cross > 0f || dot < -0.75f) && (count > 2 || (dot > -0.999f && cross > 0.001f)))
+                        {
+                            if (GetPrevIndex(leftI, out var prevLeftI, endDatas))
+                                GetSubMinLimit(endDatas[leftI].RightSide.MainTrajectory, endDatas[prevLeftI].LeftSide.MainTrajectory, SideType.Left, ref limits[leftI].left.defaultT);
+
+                            if (GetNextIndex(rightI, out var nextRightI, endDatas))
+                                GetSubMinLimit(endDatas[rightI].LeftSide.MainTrajectory, endDatas[nextRightI].RightSide.MainTrajectory, SideType.Right, ref limits[rightI].right.defaultT);
+                        }
                     }
 
-                    if (!GetNextIndex(leftI, out var rightI, endDatas))
-                        continue;
-
-                    GetMainMinLimit(endDatas[leftI], endDatas[rightI], count, ref limits[leftI].left, ref limits[rightI].right);
-                    limits[leftI].left.defaultT = limits[leftI].left.mainMinT;
-                    limits[rightI].right.defaultT = limits[rightI].right.mainMinT;
-
-                    var leftDir = NormalizeXZ(endDatas[leftI].RawSegmentBezier.StartDirection);
-                    var rightDir = NormalizeXZ(endDatas[rightI].RawSegmentBezier.StartDirection);
-                    var cross = CrossXZ(leftDir, rightDir);
-                    var dot = DotXZ(leftDir, rightDir);
-
-                    if ((cross > 0f || dot < -0.75f) && (count > 2 || (dot > -0.999f && cross > 0.001f)))
+                    if (count >= 3)
                     {
-                        if (GetPrevIndex(leftI, out var prevLeftI, endDatas))
-                            GetSubMinLimit(endDatas[leftI].RightSide.MainTrajectory, endDatas[prevLeftI].LeftSide.MainTrajectory, SideType.Left, ref limits[leftI].left.defaultT);
+                        for (var currentI = 0; currentI < count; currentI += 1)
+                        {
+                            if (endDatas[currentI].Collision == false)
+                                continue;
 
-                        if (GetNextIndex(rightI, out var nextRightI, endDatas))
-                            GetSubMinLimit(endDatas[rightI].LeftSide.MainTrajectory, endDatas[nextRightI].RightSide.MainTrajectory, SideType.Right, ref limits[rightI].right.defaultT);
+                            if (!GetPrevIndex(currentI, out var prevI, endDatas) || !GetNextIndex(currentI, out var nextI, endDatas) || prevI == nextI)
+                                continue;
+
+                            var prevMin = Mathf.Clamp01(limits[prevI].left.mainMinT ?? 0f);
+                            var nextMin = Mathf.Clamp01(limits[nextI].right.mainMinT ?? 0f);
+                            var prevBezier = endDatas[prevI].LeftSide.MainTrajectory;
+                            var nextBezier = endDatas[nextI].RightSide.MainTrajectory;
+
+                            var limitBezier = new BezierTrajectory(prevBezier.Position(prevMin), -prevBezier.Tangent(prevMin), nextBezier.Position(nextMin), -nextBezier.Tangent(nextMin));
+
+                            if (Intersection.CalculateSingle(endDatas[currentI].LeftSide.MainTrajectory, limitBezier, out var leftT, out _))
+                            {
+                                limits[currentI].left.mainMinT = Mathf.Max(limits[currentI].left.mainMinT ?? 0f, leftT);
+                                limits[currentI].left.defaultT = Mathf.Max(limits[currentI].left.defaultT ?? 0f, leftT);
+                            }
+
+                            if (Intersection.CalculateSingle(endDatas[currentI].RightSide.MainTrajectory, limitBezier, out var rightT, out _))
+                            {
+                                limits[currentI].right.mainMinT = Mathf.Max(limits[currentI].right.mainMinT ?? 0f, rightT);
+                                limits[currentI].right.defaultT = Mathf.Max(limits[currentI].right.defaultT ?? 0f, rightT);
+                            }
+                        }
                     }
-                }
 
-                if (count >= 3)
-                {
                     for (var currentI = 0; currentI < count; currentI += 1)
                     {
                         if (endDatas[currentI].Collision == false)
                             continue;
 
-                        if (!GetPrevIndex(currentI, out var prevI, endDatas) || !GetNextIndex(currentI, out var nextI, endDatas) || prevI == nextI)
-                            continue;
-
-                        var prevMin = Mathf.Clamp01(limits[prevI].left.mainMinT ?? 0f);
-                        var nextMin = Mathf.Clamp01(limits[nextI].right.mainMinT ?? 0f);
-                        var prevBezier = endDatas[prevI].LeftSide.MainTrajectory;
-                        var nextBezier = endDatas[nextI].RightSide.MainTrajectory;
-
-                        var limitBezier = new BezierTrajectory(prevBezier.Position(prevMin), -prevBezier.Tangent(prevMin), nextBezier.Position(nextMin), -nextBezier.Tangent(nextMin));
-
-                        if (Intersection.CalculateSingle(endDatas[currentI].LeftSide.MainTrajectory, limitBezier, out var leftT, out _))
+                        if ((limits[currentI].left.defaultT == null) != (limits[currentI].right.defaultT == null))
                         {
-                            limits[currentI].left.mainMinT = Mathf.Max(limits[currentI].left.mainMinT ?? 0f, leftT);
-                            limits[currentI].left.defaultT = Mathf.Max(limits[currentI].left.defaultT ?? 0f, leftT);
+                            if (limits[currentI].left.defaultT == null)
+                            {
+                                if (limits[currentI].right.defaultT.Value == 0)
+                                    limits[currentI].left.defaultT = 0;
+                            }
+                            else if (limits[currentI].right.defaultT == null)
+                            {
+                                if (limits[currentI].left.defaultT.Value == 0)
+                                    limits[currentI].right.defaultT = 0;
+                            }
                         }
 
-                        if (Intersection.CalculateSingle(endDatas[currentI].RightSide.MainTrajectory, limitBezier, out var rightT, out _))
+                        var minCornerOffset = endDatas[currentI].GetMinCornerOffset(data.Style.DefaultOffset);
+                        var defaultOffset = endDatas[currentI].Id.GetSegment().Info.m_halfWidth < 4f ? 0f : 8f;
+                        var additionalOffset = data.Style.AdditionalOffset;
+
+                        CorrectDefaultOffset(endDatas[currentI].LeftSide.MainTrajectory, ref limits[currentI].left.defaultT, count == 2, defaultOffset, minCornerOffset, additionalOffset);
+                        CorrectDefaultOffset(endDatas[currentI].RightSide.MainTrajectory, ref limits[currentI].right.defaultT, count == 2, defaultOffset, minCornerOffset, additionalOffset);
+
+                        if (!limits[currentI].left.MinFound && GetPrevIndex(currentI, out var prevI, endDatas))
                         {
-                            limits[currentI].right.mainMinT = Mathf.Max(limits[currentI].right.mainMinT ?? 0f, rightT);
-                            limits[currentI].right.defaultT = Mathf.Max(limits[currentI].right.defaultT ?? 0f, rightT);
+                            if (Intersection.CalculateSingle(endDatas[currentI].LeftSide.AdditionalTrajectory, endDatas[prevI].RightSide.RawTrajectory, out var leftT, out _))
+                                limits[currentI].left.additionalMinT = leftT;
+                        }
+
+                        if (!limits[currentI].right.MinFound && GetNextIndex(currentI, out var nextI, endDatas))
+                        {
+                            if (Intersection.CalculateSingle(endDatas[currentI].RightSide.AdditionalTrajectory, endDatas[nextI].LeftSide.RawTrajectory, out var rightT, out _))
+                                limits[currentI].right.additionalMinT = rightT;
                         }
                     }
                 }
-
-                for (var currentI = 0; currentI < count; currentI += 1)
+                else if (count == 1)
                 {
-                    if (endDatas[currentI].Collision == false)
-                        continue;
+                    limits[0].left.mainMinT = null;
+                    limits[0].right.mainMinT = null;
+                }
 
-                    if ((limits[currentI].left.defaultT == null) != (limits[currentI].right.defaultT == null))
+                for (var i = 0; i < count; i += 1)
+                {
+                    var endData = endDatas[i];
+
+                    if (!endData.FinalNodeLess)
                     {
-                        if (limits[currentI].left.defaultT == null)
-                        {
-                            if (limits[currentI].right.defaultT.Value == 0)
-                                limits[currentI].left.defaultT = 0;
-                        }
-                        else if (limits[currentI].right.defaultT == null)
-                        {
-                            if (limits[currentI].left.defaultT.Value == 0)
-                                limits[currentI].right.defaultT = 0;
-                        }
+                        endData.LeftSide.MinT = limits[i].left.FinalMinT;
+                        endData.RightSide.MinT = limits[i].right.FinalMinT;
+                    }
+                    else
+                    {
+                        endData.LeftSide.MinT = endData.LeftSide.MainT;
+                        endData.RightSide.MinT = endData.RightSide.MainT;
                     }
 
-                    var minCornerOffset = endDatas[currentI].GetMinCornerOffset(data.Style.DefaultOffset);
-                    var defaultOffset = endDatas[currentI].Id.GetSegment().Info.m_halfWidth < 4f ? 0f : 8f;
-                    var additionalOffset = data.Style.AdditionalOffset;
-
-                    CorrectDefaultOffset(endDatas[currentI].LeftSide.MainTrajectory, ref limits[currentI].left.defaultT, count == 2, defaultOffset, minCornerOffset, additionalOffset);
-                    CorrectDefaultOffset(endDatas[currentI].RightSide.MainTrajectory, ref limits[currentI].right.defaultT, count == 2, defaultOffset, minCornerOffset, additionalOffset);
-
-                    if (!limits[currentI].left.MinFound && GetPrevIndex(currentI, out var prevI, endDatas))
+                    if (!endData.FinalNodeLess && count >= 2)
                     {
-                        if (Intersection.CalculateSingle(endDatas[currentI].LeftSide.AdditionalTrajectory, endDatas[prevI].RightSide.RawTrajectory, out var leftT, out _))
-                            limits[currentI].left.additionalMinT = leftT;
+                        endData.LeftSide.DefaultT = limits[i].left.FinalDefaultT;
+                        endData.RightSide.DefaultT = limits[i].right.FinalDefaultT;
                     }
-
-                    if (!limits[currentI].right.MinFound && GetNextIndex(currentI, out var nextI, endDatas))
+                    else
                     {
-                        if (Intersection.CalculateSingle(endDatas[currentI].RightSide.AdditionalTrajectory, endDatas[nextI].LeftSide.RawTrajectory, out var rightT, out _))
-                            limits[currentI].right.additionalMinT = rightT;
+                        endData.LeftSide.DefaultT = endData.LeftSide.MainT;
+                        endData.RightSide.DefaultT = endData.RightSide.MainT;
                     }
                 }
             }
-            else if (count == 1)
+            catch (Exception error)
             {
-                limits[0].left.mainMinT = null;
-                limits[0].right.mainMinT = null;
-            }
-
-            for (var i = 0; i < count; i += 1)
-            {
-                var endData = endDatas[i];
-
-                if (!endData.FinalNodeLess)
-                {
-                    endData.LeftSide.MinT = limits[i].left.FinalMinT;
-                    endData.RightSide.MinT = limits[i].right.FinalMinT;
-                }
-                else
-                {
-                    endData.LeftSide.MinT = endData.LeftSide.MainT;
-                    endData.RightSide.MinT = endData.RightSide.MainT;
-                }
-
-                if (!endData.FinalNodeLess && count >= 2)
-                {
-                    endData.LeftSide.DefaultT = limits[i].left.FinalDefaultT;
-                    endData.RightSide.DefaultT = limits[i].right.FinalDefaultT;
-                }
-                else
-                {
-                    endData.LeftSide.DefaultT = endData.LeftSide.MainT;
-                    endData.RightSide.DefaultT = endData.RightSide.MainT;
-                }
+                data.State = State.Error;
+                SingletonMod<Mod>.Logger.Error($"Node #{data.Id} update min limits failed", error);
             }
 
             static bool GetPrevIndex(int index, out int prev, SegmentEndData[] endDatas)
@@ -747,16 +802,48 @@ namespace NodeController
 
         public static void UpdateMaxLimits(ushort segmentId)
         {
-            SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out var start, out var end);
-
-            if (start == null)
-                SetNoMaxLimits(end);
-            else if (end == null)
-                SetNoMaxLimits(start);
-            else
+            SegmentEndData start = null;
+            SegmentEndData end = null;
+            try
             {
-                SetMaxLimits(start, end, SideType.Left);
-                SetMaxLimits(start, end, SideType.Right);
+                SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out start, out end);
+                if (start != null && end != null)
+                {
+                    if ((start.NodeData.State & State.Error) != 0 && (end.NodeData.State & State.Error) != 0)
+                        return;
+                }
+                else if (start != null)
+                {
+                    if ((start.NodeData.State & State.Error) != 0)
+                        return;
+                }
+                else if (end != null)
+                {
+                    if ((end.NodeData.State & State.Error) != 0)
+                        return;
+                }
+#if DEBUG
+                SingletonMod<Mod>.Logger.Debug($"Segment #{segmentId} update max limits");
+#endif
+
+                if (start == null)
+                    SetNoMaxLimits(end);
+                else if (end == null)
+                    SetNoMaxLimits(start);
+                else
+                {
+                    SetMaxLimits(start, end, SideType.Left);
+                    SetMaxLimits(start, end, SideType.Right);
+                }
+            }
+            catch (Exception error)
+            {
+                if(start != null)
+                    start.NodeData.State = State.Error;
+                if (end != null)
+                    end.NodeData.State = State.Error;
+
+                SingletonMod<Mod>.Logger.Error($"Segment #{segmentId} update max limits failed", error);
             }
 
             static void SetNoMaxLimits(SegmentEndData segmentEnd)
@@ -1051,7 +1138,7 @@ namespace NodeController
         public void Render(OverlayData data) => Render(data, data, data, data, data);
         public void Render(OverlayData contourData, OverlayData outterData, OverlayData innerData, OverlayData? leftData = null, OverlayData? rightData = null)
         {
-            var data = SingletonManager<Manager>.Instance.GetNodeData(NodeId);
+            SingletonManager<Manager>.Instance.TryGetNodeData(NodeId, out var data);
 
             RenderContour(contourData);
             if (data.IsMoveableEnds && IsChangeable)

@@ -159,8 +159,13 @@ namespace NodeController
 
             if (GetDatas(maxCount, out var datas, out var segments))
             {
-                var startValue = dataGetter(datas.First()[segments.First()]);
-                var endValue = -dataGetter(datas.Last()[segments.Last()]);
+                var startValue = 0f;
+                var endValue = 0f;
+                if(datas.First().TryGetSegment(segments.First(), out var firstSegmentData))
+                    startValue = dataGetter(firstSegmentData);
+                if (datas.Last().TryGetSegment(segments.Last(), out var lastSegmentData))
+                    endValue = -dataGetter(lastSegmentData);
+
                 SetValue(datas, segments, startValue, endValue, false, dataSetter);
             }
         }
@@ -205,19 +210,27 @@ namespace NodeController
                 if (i == 0)
                 {
                     if (includeEnds)
-                        dataSetter(datas[i][segments[i]], startValue);
+                    {
+                        if(datas[i].TryGetSegment(segments[i], out var segmentData))
+                            dataSetter(segmentData, startValue);
+                    }      
                 }
                 else if (i == datas.Length - 1)
                 {
                     if (includeEnds)
-                        dataSetter(datas[i][segments[i - 1]], -endValue);
+                    {
+                        if (datas[i].TryGetSegment(segments[i - 1], out var segmentData))
+                            dataSetter(segmentData, -endValue);
+                    }
                 }
                 else
                 {
                     currentLength += lengths[i - 1];
                     var value = Mathf.Lerp(startValue, endValue, currentLength / fullLength);
-                    dataSetter(datas[i][segments[i - 1]], -value);
-                    dataSetter(datas[i][segments[i]], value);
+                    if (datas[i].TryGetSegment(segments[i - 1], out var segmentData1))
+                        dataSetter(segmentData1, -value);
+                    if (datas[i].TryGetSegment(segments[i], out var segmentData2))
+                        dataSetter(segmentData2, value);
                     datas[i].UpdateNode();
                 }
             }

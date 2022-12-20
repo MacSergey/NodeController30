@@ -23,6 +23,8 @@ namespace NodeController
                 messageBox.MessageText = Manager.Errors > 0 ? string.Format(Localize.Mod_LoadFailed, Manager.Errors) : Localize.Mod_LoadFailedAll;
             }
 
+            SingletonManager<Manager>.Instance.FinishInitialUpdate();
+
             base.OnLoad();
         }
         protected override void OnUnload()

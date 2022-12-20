@@ -19,6 +19,9 @@ namespace NodeController.UI
 
         public NodeData Data { get; private set; }
 
+        private static Color32 DefaultColor => new Color32(72, 80, 80, 255);
+        private static Color32 ErrorColor => Colors.Error;
+
         public NodeControllerPanel()
         {
             AddContent();
@@ -28,7 +31,7 @@ namespace NodeController.UI
         {
             Content = ComponentPool.Get<PropertyGroupPanel>(this);
             Content.minimumSize = new Vector2(300f, 0f);
-            Content.color = new Color32(72, 80, 80, 255);
+            Content.color = DefaultColor;
             Content.autoLayoutDirection = LayoutDirection.Vertical;
             Content.autoFitChildrenVertically = true;
             Content.eventSizeChanged += (UIComponent component, Vector2 value) => size = value;
@@ -111,6 +114,12 @@ namespace NodeController.UI
 
             foreach (var property in Properties.OfType<IOptionPanel>())
                 property.Refresh();
+        }
+
+        public override void Update()
+        {
+            base.Update();
+            Content.color = Data == null || (Data.State & State.Fail) == 0 ? DefaultColor : ErrorColor;
         }
     }
     public class PanelHeader : HeaderMoveablePanel<PanelHeaderContent>

@@ -64,7 +64,6 @@ namespace NodeController
             }
         }
 
-        public NodeData GetNodeData(ushort nodeId) => Buffer[nodeId];
         public NodeData GetOrCreateNodeData(ushort nodeId, Options options = Options.Default)
         {
             if (Buffer[nodeId] is not NodeData data)
@@ -77,29 +76,77 @@ namespace NodeController
 
             return data;
         }
-
         public bool TryGetNodeData(ushort nodeId, out NodeData data)
         {
             data = Buffer[nodeId];
             return data != null;
         }
+        public bool TryGetFinalNodeData(ushort nodeId, out NodeData data)
+        {
+            if (!TryGetNodeData(nodeId, out data) || (data.State & State.Fail) != 0)
+            {
+                data = null;
+                return false;
+            }
+            else
+                return true;
+        }
 
-        public SegmentEndData GetSegmentData(ushort nodeId, ushort segmentId) => GetNodeData(nodeId)?[segmentId];
-        public void GetSegmentData(ushort segmentId, out SegmentEndData start, out SegmentEndData end)
+        public bool TryGetFinalSegmentData(ushort nodeId, ushort segmentId, out SegmentEndData segmentData)
+        {
+            if (TryGetFinalNodeData(nodeId, out var data))
+                data.TryGetSegment(segmentId, out segmentData);
+            else
+                segmentData = null;
+
+            return segmentData != null;
+        }
+
+        public void GetSegmentData(ushort segmentId, out SegmentEndData startData, out SegmentEndData endData)
         {
             ref var segment = ref segmentId.GetSegment();
-            start = Buffer[segment.m_startNode]?[segmentId];
-            end = Buffer[segment.m_endNode]?[segmentId];
+
+            if (TryGetNodeData(segment.m_startNode, out var startNodeData))
+                startNodeData.TryGetSegment(segmentId, out startData);
+            else
+                startData = null;
+
+            if (TryGetNodeData(segment.m_endNode, out var endNodeData))
+                endNodeData.TryGetSegment(segmentId, out endData);
+            else
+                endData = null;
+        }
+        public void GetFinalSegmentData(ushort segmentId, out SegmentEndData startData, out SegmentEndData endData)
+        {
+            ref var segment = ref segmentId.GetSegment();
+
+            if (TryGetFinalNodeData(segment.m_startNode, out var startNodeData))
+                startNodeData.TryGetSegment(segmentId, out startData);
+            else
+                startData = null;
+
+            if (TryGetFinalNodeData(segment.m_endNode, out var endNodeData))
+                endNodeData.TryGetSegment(segmentId, out endData);
+            else
+                endData = null;
         }
 
         public bool TryGetSegmentData(ushort segmentId, bool isStart, out SegmentEndData data)
         {
-            data = Buffer[segmentId.GetSegment().GetNode(isStart)]?[segmentId];
+            if (TryGetNodeData(segmentId.GetSegment().GetNode(isStart), out NodeData nodeData))
+                nodeData.TryGetSegment(segmentId, out data);
+            else
+                data = null;
+
             return data != null;
         }
-        public bool TryGetSegmentData(ushort nodeId, ushort segmentId, out SegmentEndData data)
+        public bool TryGetFinalSegmentData(ushort segmentId, bool isStart, out SegmentEndData data)
         {
-            data = Buffer[nodeId]?[segmentId];
+            if (TryGetFinalNodeData(segmentId.GetSegment().GetNode(isStart), out NodeData nodeData))
+                nodeData.TryGetSegment(segmentId, out data);
+            else
+                data = null;
+
             return data != null;
         }
 
@@ -123,11 +170,16 @@ namespace NodeController
             return data;
         }
 
-        public void InitialUpdate(ushort[] toUpdateIds)
+        public void StartInitialUpdate(ushort[] toUpdateIds)
         {
             SingletonMod<Mod>.Logger.Debug("Start initial update");
             InitialUpdateInProgress = true;
             Update(Options.UpdateThisNow | Options.UpdateThisLater, toUpdateIds);
+        }
+        public void FinishInitialUpdate()
+        {
+            SingletonMod<Mod>.Logger.Debug("Finish initial update");
+            InitialUpdateInProgress = false;
         }
 
         public void Update(ushort nodeId) => Update(Options.UpdateAll, nodeId);
@@ -244,12 +296,7 @@ namespace NodeController
         }
         public static void SimulationStepPostfix()
         {
-            if (InitialUpdateInProgress)
-            {
-                InitialUpdateInProgress = false;
-                SingletonMod<Mod>.Logger.Debug("Finish initial update");
-            }
-            else
+            if (!InitialUpdateInProgress)
             {
                 try
                 {
@@ -329,7 +376,7 @@ namespace NodeController
                 }
             }
 
-            InitialUpdate(toUpdate.ToArray());
+            StartInitialUpdate(toUpdate.ToArray());
         }
 
         [Flags]

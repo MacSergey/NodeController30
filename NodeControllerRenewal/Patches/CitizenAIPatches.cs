@@ -27,11 +27,11 @@ namespace NodeController.Patches
             }
         }
 
-        private static float GetGap(PathUnit.Position pathPos/*, ref CitizenInstance citizen*/)
+        private static float GetGap(PathUnit.Position pathPos)
         {
             ref var segment = ref pathPos.m_segment.GetSegment();
             var nodeId = pathPos.m_offset == 0 ? segment.m_startNode : segment.m_endNode;
-            return SingletonManager<Manager>.Instance.TryGetNodeData(nodeId, out var data) ? data.Gap : Mathf.Max(128f, segment.Info.m_halfWidth * 2f);
+            return SingletonManager<Manager>.Instance.TryGetFinalNodeData(nodeId, out var data) ? data.Gap : Mathf.Max(128f, segment.Info.m_halfWidth * 2f);
         }
     }
 }

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
+using UnityEngine.Networking.Types;
 using static ColossalFramework.Math.VectorUtils;
 using static ModsCommon.Utilities.VectorUtilsExtensions;
 
@@ -28,7 +29,7 @@ namespace NodeController
         public string XmlSection => XmlName;
         public static NetNode.Flags SupportFlags { get; } = NetNode.Flags.End | NetNode.Flags.Middle | NetNode.Flags.Junction | NetNode.Flags.Bend;
 
-        public bool IsDirty { get; private set; } = true;
+        public State State { get; set; } = State.None;
         public ushort Id { get; set; }
         public NodeStyle Style { get; private set; }
         public NodeStyleType Type
@@ -54,7 +55,6 @@ namespace NodeController
                 }
             }
         }
-        public SegmentEndData this[ushort segmentId] => SegmentEnds.TryGetValue(segmentId, out var data) ? data : null;
         private Vector3 Position { get; set; }
         private Dictionary<ushort, Vector3> CentrePositions { get; set; } = new Dictionary<ushort, Vector3>();
         public float Gap { get; private set; }
@@ -181,13 +181,41 @@ namespace NodeController
             UpdateStyle(true, nodeType);
             UpdateRoadSegments();
         }
+        public void AfterCalculateNode()
+        {
+            try
+            {
+#if DEBUG
+                SingletonMod<Mod>.Logger.Debug($"Node #{Id} after calculate node");
+#endif
+                UpdateSegmentEnds();
+                UpdateFlags();
+            }
+            catch (Exception error)
+            {
+                State = State.Error;
+                SingletonMod<Mod>.Logger.Error($"Node #{Id} after calculate node failed", error);
+            }
+        }
         public void EarlyUpdate()
         {
-            IsDirty = true;
+            try
+            {
+#if DEBUG
+                SingletonMod<Mod>.Logger.Debug($"Node #{Id} early update");
+#endif
+                State |= State.Dirty;
 
-            MainRoad.Update(this);
-            UpdateRoadSegments();
+                MainRoad.Update(this);
+                UpdateRoadSegments();
+            }
+            catch (Exception error)
+            {
+                State = State.Error;
+                SingletonMod<Mod>.Logger.Error($"Node #{Id} update failed", error);
+            }
         }
+
         public void UpdateSegmentEnds()
         {
             var before = SegmentEnds.Values.Select(v => v.Id).ToList();
@@ -218,7 +246,10 @@ namespace NodeController
                 }
             }
 #if DEBUG
-            SingletonMod<Mod>.Logger.Debug($"Node #{Id} segments: Before={string.Join(", ", SegmentEnds.Keys.Select(k => k.ToString()).ToArray())};\tAfter={string.Join(", ", newSegmentEnds.Keys.Select(k => k.ToString()).ToArray())}");
+            if (SegmentEnds.Count == 0)
+                SingletonMod<Mod>.Logger.Debug($"Node #{Id} Segments: {string.Join(", ", newSegmentEnds.Keys.Select(k => k.ToString()).ToArray())}");
+            else
+                SingletonMod<Mod>.Logger.Debug($"Node #{Id} Segments: Before={string.Join(", ", SegmentEnds.Keys.Select(k => k.ToString()).ToArray())};\tAfter={string.Join(", ", newSegmentEnds.Keys.Select(k => k.ToString()).ToArray())}");
 #endif
             SegmentEnds = newSegmentEnds;
 
@@ -312,110 +343,125 @@ namespace NodeController
 
         public void LateUpdate()
         {
-            var firstMain = FirstMainSegmentEnd;
-            var secondMain = SecondMainSegmentEnd;
-
-            var position = Vector3.zero;
-            var centrePositions = new Dictionary<ushort, Vector3>();
-
-            if (IsEndNode)
+            try
             {
-                firstMain.CalculateMain(out _, out _, out _, out _);
-                firstMain.AfterCalculate();
+                if ((State & State.Error) != 0)
+                    return;
+#if DEBUG
+                SingletonMod<Mod>.Logger.Debug($"Node #{Id} late update");
+#endif
+                var firstMain = FirstMainSegmentEnd;
+                var secondMain = SecondMainSegmentEnd;
 
-                position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
-            }
-            else if (IsMiddleNode)
-            {
-                firstMain.CalculateMain(out _, out _, out _, out _);
-                secondMain.CalculateMain(out _, out _, out _, out _);
+                var position = Vector3.zero;
+                var centrePositions = new Dictionary<ushort, Vector3>();
 
-                SegmentEndData.FixMiddle(firstMain, secondMain);
-
-                firstMain.AfterCalculate();
-                secondMain.AfterCalculate();
-
-                position = Id.GetNode().m_position;
-            }
-            else
-            {
-                firstMain.CalculateMain(out var firstLeftPos, out var firstLeftDir, out var firstRightPos, out var firstRightDir);
-                secondMain.CalculateMain(out var secondLeftPos, out var secondLeftDir, out var secondRightPos, out var secondRightDir);
-
-                firstMain.AfterCalculate();
-                secondMain.AfterCalculate();
-
-                MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, false);
-                var leftBezier = new BezierTrajectory(firstLeftPos, -firstLeftDir, secondRightPos, -secondRightDir, false);
-                var rightBezier = new BezierTrajectory(secondLeftPos, -secondLeftDir, firstRightPos, -firstRightDir, false);
-
-                foreach (var segmentEnd in SegmentEndDatas)
+                if (IsEndNode)
                 {
-                    if (!MainRoad.IsMain(segmentEnd.Id))
-                    {
-                        segmentEnd.CalculateNotMain(leftBezier, rightBezier);
-                        segmentEnd.AfterCalculate();
-                    }
-                }
+                    firstMain.CalculateMain(out _, out _, out _, out _);
+                    firstMain.AfterCalculate();
 
-                if (IsSlopeJunctions)
-                    position = (leftBezier.Position(0.5f) + rightBezier.Position(0.5f)) * 0.5f;
+                    position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
+                }
+                else if (IsMiddleNode)
+                {
+                    firstMain.CalculateMain(out _, out _, out _, out _);
+                    secondMain.CalculateMain(out _, out _, out _, out _);
+
+                    SegmentEndData.FixMiddle(firstMain, secondMain);
+
+                    firstMain.AfterCalculate();
+                    secondMain.AfterCalculate();
+
+                    position = Id.GetNode().m_position;
+                }
                 else
-                    position = SegmentEndDatas.AverageOrDefault(s => s.Position, Id.GetNode().m_position);
-
-                foreach (var segmentEnd1 in SegmentEndDatas)
                 {
-                    List<SegmentEndData> canConnect = new List<SegmentEndData>();
-                    var info1 = segmentEnd1.Id.GetSegment().Info;
-                    var class1 = info1.GetConnectionClass();
+                    firstMain.CalculateMain(out var firstLeftPos, out var firstLeftDir, out var firstRightPos, out var firstRightDir);
+                    secondMain.CalculateMain(out var secondLeftPos, out var secondLeftDir, out var secondRightPos, out var secondRightDir);
 
-                    foreach (var segmentEnd2 in SegmentEndDatas)
+                    firstMain.AfterCalculate();
+                    secondMain.AfterCalculate();
+
+                    MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, false);
+                    var leftBezier = new BezierTrajectory(firstLeftPos, -firstLeftDir, secondRightPos, -secondRightDir, false);
+                    var rightBezier = new BezierTrajectory(secondLeftPos, -secondLeftDir, firstRightPos, -firstRightDir, false);
+
+                    foreach (var segmentEnd in SegmentEndDatas)
                     {
-                        if (segmentEnd1 == segmentEnd2)
-                            continue;
-
-                        var info2 = segmentEnd2.Id.GetSegment().Info;
-                        var class2 = info2.GetConnectionClass();
-
-                        if ((class1.m_service != class2.m_service || ((info1.m_onlySameConnectionGroup || info2.m_onlySameConnectionGroup) && (info1.m_connectGroup & info2.m_connectGroup) == 0)) && (info1.m_nodeConnectGroups & info2.m_connectGroup) == 0 && (info2.m_nodeConnectGroups & info1.m_connectGroup) == 0)
-                            continue;
-
-                        canConnect.Add(segmentEnd2);
+                        if (!MainRoad.IsMain(segmentEnd.Id))
+                        {
+                            segmentEnd.CalculateNotMain(leftBezier, rightBezier);
+                            segmentEnd.AfterCalculate();
+                        }
                     }
 
-                    if (canConnect.Count == 0)
-                        centrePositions[segmentEnd1.Id] = segmentEnd1.Position;
+                    if (IsSlopeJunctions)
+                        position = (leftBezier.Position(0.5f) + rightBezier.Position(0.5f)) * 0.5f;
                     else
-                        centrePositions[segmentEnd1.Id] = position;
-                }
-            }
+                        position = SegmentEndDatas.AverageOrDefault(s => s.Position, Id.GetNode().m_position);
 
-            var maxGap = 0f;
-            foreach (var firstData in SegmentEndDatas)
-            {
-                foreach (var secondData in SegmentEndDatas)
-                {
-                    CalculateGap(ref maxGap, firstData, secondData, SideType.Left, SideType.Left);
-                    CalculateGap(ref maxGap, firstData, secondData, SideType.Left, SideType.Right);
-                    CalculateGap(ref maxGap, firstData, secondData, SideType.Right, SideType.Left);
-                    CalculateGap(ref maxGap, firstData, secondData, SideType.Right, SideType.Right);
-
-                    static void CalculateGap(ref float gap, SegmentEndData firstData, SegmentEndData secondData, SideType firstideType, SideType secondSideType)
+                    foreach (var segmentEnd1 in SegmentEndDatas)
                     {
-                        firstData.GetCorner(firstideType, out var firstPos, out _);
-                        secondData.GetCorner(secondSideType, out var secondPos, out _);
-                        var delta = (firstPos - secondPos).sqrMagnitude;
-                        if (delta > gap)
-                            gap = delta;
+                        List<SegmentEndData> canConnect = new List<SegmentEndData>();
+                        var info1 = segmentEnd1.Id.GetSegment().Info;
+                        var class1 = info1.GetConnectionClass();
+
+                        foreach (var segmentEnd2 in SegmentEndDatas)
+                        {
+                            if (segmentEnd1 == segmentEnd2)
+                                continue;
+
+                            var info2 = segmentEnd2.Id.GetSegment().Info;
+                            var class2 = info2.GetConnectionClass();
+
+                            if ((class1.m_service != class2.m_service || ((info1.m_onlySameConnectionGroup || info2.m_onlySameConnectionGroup) && (info1.m_connectGroup & info2.m_connectGroup) == 0)) && (info1.m_nodeConnectGroups & info2.m_connectGroup) == 0 && (info2.m_nodeConnectGroups & info1.m_connectGroup) == 0)
+                                continue;
+
+                            canConnect.Add(segmentEnd2);
+                        }
+
+                        if (canConnect.Count == 0)
+                            centrePositions[segmentEnd1.Id] = segmentEnd1.Position;
+                        else
+                            centrePositions[segmentEnd1.Id] = position;
                     }
                 }
+
+                var maxGap = 0f;
+                foreach (var firstData in SegmentEndDatas)
+                {
+                    foreach (var secondData in SegmentEndDatas)
+                    {
+                        CalculateGap(ref maxGap, firstData, secondData, SideType.Left, SideType.Left);
+                        CalculateGap(ref maxGap, firstData, secondData, SideType.Left, SideType.Right);
+                        CalculateGap(ref maxGap, firstData, secondData, SideType.Right, SideType.Left);
+                        CalculateGap(ref maxGap, firstData, secondData, SideType.Right, SideType.Right);
+
+                        static void CalculateGap(ref float gap, SegmentEndData firstData, SegmentEndData secondData, SideType firstideType, SideType secondSideType)
+                        {
+                            firstData.GetCorner(firstideType, out var firstPos, out _);
+                            secondData.GetCorner(secondSideType, out var secondPos, out _);
+                            var delta = (firstPos - secondPos).sqrMagnitude;
+                            if (delta > gap)
+                                gap = delta;
+                        }
+                    }
+                }
+
+                Position = position;
+                CentrePositions = centrePositions;
+                Gap = Mathf.Sqrt(maxGap) + 2f;
             }
-
-            Position = position;
-            CentrePositions = centrePositions;
-            Gap = Mathf.Sqrt(maxGap) + 2f;
-
-            IsDirty = false;
+            catch (Exception error)
+            {
+                State = State.Error;
+                SingletonMod<Mod>.Logger.Error($"Node #{Id} update failed", error);
+            }
+            finally
+            {
+                State = (State & State.Error) != 0 ? State.Fail : State.Fine;
+            }
         }
 
         public void UpdateNode() => SingletonManager<Manager>.Instance.Update(Id);
@@ -535,6 +581,15 @@ namespace NodeController
         }
 
         #endregion
+    }
+
+    public enum State
+    {
+        None = 0,
+        Fine = 1,
+        Dirty = 2,
+        Error = 4,
+        Fail = 8,
     }
 
     public class NodeTypePropertyPanel : EnumOncePropertyPanel<NodeStyleType, NodeTypePropertyPanel.NodeTypeDropDown>
