@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace NodeController
 {
-    public class AssetDataExtension : BaseNetAssetDataExtension<Mod, AssetDataExtension, NetObjectsMap>
+    public class AssetDataExtension : BaseBuildingAssetDataExtension<Mod, AssetDataExtension, NetObjectsMap>
     {
         public const string NC_ID = "NodeController_V1.0";
 
