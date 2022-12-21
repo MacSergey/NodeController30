@@ -167,7 +167,10 @@
     <value>[FIXED] 修正了與Surface Painter mod一同使用時可能的地形問題。
 [TRANSLATION] 添加了捷克語。</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_3_3" xml:space="preserve">
+    <value>[FIXED] 修復後與自適應網路模組(Adaptive Network Mod) 相容，之前可能導致節點顯示為藍洞。
+[FIXED] 修復了丟失道路（網路）素材時使NCR資料載入失敗的錯誤。</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>彎曲</value>
   </data>

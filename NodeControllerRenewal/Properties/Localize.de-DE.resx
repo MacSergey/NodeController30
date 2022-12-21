@@ -185,7 +185,10 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
     <value>[FIXED] Geländeglitches, die bei Verwendung des Surface Painter-Mods angezeigt werden konnten.
 [TRANSLATION] Tschechische Sprache hinzugefügt.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_3_3" xml:space="preserve">
+    <value>[FIXED] Kompatibilität mit Adaptive Network Mod korrigiert, die blaue Flächen anstelle von Netzwerknoten verursachen konnte.
+[FIXED] Fehler behoben durch den es bei fehlenden Netzwerken zu einem Fehler beim Laden von NCR-Daten kommen konnte.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Kurve</value>
   </data>

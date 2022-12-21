@@ -167,7 +167,10 @@
     <value>[FIXED] Fixed terrain glitches that could appear when using Surface Painter mod.
 [TRANSLATION] Added Czech language.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_3_3" xml:space="preserve">
+    <value>[FIXED] Fixed compatibility with Adaptive Network mod which could cause blue voids instead of nodes.
+[FIXED] Fixed error when missed network asset could cause NCR data loading failure.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>ベンド</value>
   </data>

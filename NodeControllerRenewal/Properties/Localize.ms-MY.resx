@@ -167,7 +167,10 @@ Gagal memuatkan data untuk kesemua nod.</value>
     <value>[FIXED] Glic rupa bumi yang mampu muncul ketika menggunakan mod Surface Painter telah dibaiki.
 [TRANSLATION] Bahasa Czechoslovakia telah ditambah.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_3_3" xml:space="preserve">
+    <value>[FIXED] Keserasian dengan mod Adaptive Network yang mampu menyebabkan lompang biru menggantikan nod telah dibaiki.
+[FIXED] Ralat ketika kehilangan aset rangkaian mampu menyebabkan kegagalan pemuatan data NCR telah dibaiki.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Lentur</value>
   </data>

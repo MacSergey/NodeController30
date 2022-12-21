@@ -239,7 +239,10 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
     <value>[FIXED] Correction de problèmes de terrain qui pouvaient apparaître lors de l'utilisation du mod Surface Painter.
 [TRANSLATION] Ajout de la langue tchèque.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_3_3" xml:space="preserve">
+    <value>[FIXED] Correction d'un problème de compatibilité avec le mod Adaptive Network qui pouvait causer des vides bleus au lieu de nœuds.
+[FIXED] Correction d'une erreur lorsqu'une ressource réseau manquante pouvait causer l'échec du chargement des données de NCR.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Courbe</value>
   </data>
