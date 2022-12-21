@@ -176,10 +176,11 @@ namespace NodeController
 
             Id = nodeId;
 
+            UpdateSegmentEndSet();
             UpdateSegmentEnds();
             MainRoad.Update(this);
             UpdateStyle(true, nodeType);
-            UpdateRoadSegments();
+            UpdateMainRoadSegments();
         }
         public void AfterCalculateNode()
         {
@@ -188,8 +189,8 @@ namespace NodeController
 #if DEBUG
                 SingletonMod<Mod>.Logger.Debug($"Node #{Id} after calculate node");
 #endif
-                UpdateSegmentEnds();
-                UpdateFlags();
+                SetFlags();
+                UpdateSegmentEndSet();
             }
             catch (Exception error)
             {
@@ -206,8 +207,10 @@ namespace NodeController
 #endif
                 State |= State.Dirty;
 
+                UpdateSegmentEnds();
                 MainRoad.Update(this);
-                UpdateRoadSegments();
+                UpdateFlags();
+                UpdateMainRoadSegments();
             }
             catch (Exception error)
             {
@@ -216,7 +219,7 @@ namespace NodeController
             }
         }
 
-        public void UpdateSegmentEnds()
+        private void UpdateSegmentEndSet()
         {
             var before = SegmentEnds.Values.Select(v => v.Id).ToList();
             var after = Id.GetNode().SegmentIds().ToList();
@@ -252,7 +255,9 @@ namespace NodeController
                 SingletonMod<Mod>.Logger.Debug($"Node #{Id} Segments: Before={string.Join(", ", SegmentEnds.Keys.Select(k => k.ToString()).ToArray())};\tAfter={string.Join(", ", newSegmentEnds.Keys.Select(k => k.ToString()).ToArray())}");
 #endif
             SegmentEnds = newSegmentEnds;
-
+        }
+        private void UpdateSegmentEnds()
+        {
             foreach (var segmentEnd in SegmentEnds.Values)
                 segmentEnd.Update();
 
@@ -263,7 +268,8 @@ namespace NodeController
                 i += 1;
             }
         }
-        public void UpdateFlags()
+
+        private void UpdateFlags()
         {
             ref var node = ref Id.GetNode();
 
@@ -272,6 +278,12 @@ namespace NodeController
 
             if ((node.m_flags & SupportFlags) != DefaultFlags)
                 UpdateStyle(false, Style.Type);
+
+            SetFlags();
+        }
+        private void SetFlags()
+        {
+            ref var node = ref Id.GetNode();
 #if DEBUG
             var oldFlags = node.m_flags;
 #endif
@@ -328,7 +340,7 @@ namespace NodeController
 
             SetType(nodeType != null && IsPossibleTypeImpl(nodeType.Value) ? nodeType.Value : DefaultType, force);
         }
-        private void UpdateRoadSegments()
+        private void UpdateMainRoadSegments()
         {
             foreach (var segmentEnd in SegmentEndDatas)
             {
