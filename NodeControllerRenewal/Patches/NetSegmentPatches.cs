@@ -1,6 +1,5 @@
 using ColossalFramework;
 using HarmonyLib;
-using JetBrains.Annotations;
 using ModsCommon;
 using ModsCommon.Utilities;
 using System.Collections.Generic;
@@ -10,12 +9,11 @@ using UnityEngine;
 
 namespace NodeController.Patches
 {
-    [UsedImplicitly]
     public static class NetSegmentPatches
     {
         public static bool CalculateCornerPrefix(NetInfo extraInfo1, NetInfo extraInfo2, ushort ignoreSegmentID, ushort startNodeID, bool heightOffset, bool leftSide, ref Vector3 cornerPos, ref Vector3 cornerDirection, ref bool smooth)
         {
-            if (extraInfo1 != null || extraInfo2 != null || !SingletonManager<Manager>.Instance.TryGetSegmentData(startNodeID, ignoreSegmentID, out var data))
+            if (extraInfo1 != null || extraInfo2 != null || !SingletonManager<Manager>.Instance.TryGetFinalSegmentData(startNodeID, ignoreSegmentID, out var data))
                 return true;
             else
             {
@@ -57,7 +55,7 @@ namespace NodeController.Patches
 
         public static bool GetFlatJunctions(bool flatJunctions, ushort segmentId, ushort nodeId)
         {
-            if (SingletonManager<Manager>.Instance.TryGetSegmentData(nodeId, segmentId, out var data))
+            if (SingletonManager<Manager>.Instance.TryGetFinalSegmentData(nodeId, segmentId, out var data))
                 return !data.IsSlope;
             else
                 return flatJunctions;

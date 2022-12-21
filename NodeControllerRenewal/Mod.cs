@@ -30,6 +30,7 @@ namespace NodeController
         public override string Description => !IsBeta ? Localize.Mod_Description : CommonLocalize.Mod_DescriptionBeta;
         public override List<ModVersion> Versions => new List<ModVersion>()
         {
+            new ModVersion(new Version("3.3.3"), new DateTime(2022, 12, 21)),
             new ModVersion(new Version("3.3.2"), new DateTime(2022, 9, 24)),
             new ModVersion(new Version("3.3.1"), new DateTime(2022, 9, 14)),
             new ModVersion(new Version("3.3"), new DateTime(2022, 7, 9)),
@@ -120,11 +121,6 @@ namespace NodeController
 
             return success;
         }
-        private static bool MVPatch(ref bool __result)
-        {
-            __result = true;
-            return false;
-        }
 
         private bool AddTool()
         {
@@ -156,7 +152,8 @@ namespace NodeController
         private void PatchNetManager(ref bool success)
         {
             success &= Patch_NetManager_ReleaseNodeImplementation();
-            success &= Patch_NetManager_SimulationStepImpl();
+            success &= Patch_NetManager_SimulationStepImpl_Prefix();
+            success &= Patch_NetManager_SimulationStepImpl_Postfix();
             success &= Patch_NetManager_UpdateSegment();
         }
 
@@ -165,9 +162,13 @@ namespace NodeController
             var parameters = new Type[] { typeof(ushort), typeof(NetNode).MakeByRefType() };
             return AddPrefix(typeof(Manager), nameof(Manager.ReleaseNodeImplementationPrefix), typeof(NetManager), "ReleaseNodeImplementation", parameters);
         }
-        private bool Patch_NetManager_SimulationStepImpl()
+        private bool Patch_NetManager_SimulationStepImpl_Prefix()
         {
-            return AddTranspiler(typeof(NetManagerPatches), nameof(NetManagerPatches.SimulationStepImplTranspiler), typeof(NetManager), "SimulationStepImpl");
+            return AddPrefix(typeof(Manager), nameof(Manager.SimulationStepPrefix), typeof(NetManager), "SimulationStepImpl");
+        }
+        private bool Patch_NetManager_SimulationStepImpl_Postfix()
+        {
+            return AddPostfix(typeof(Manager), nameof(Manager.SimulationStepPostfix), typeof(NetManager), "SimulationStepImpl");
         }
         private bool Patch_NetManager_UpdateSegment()
         {

@@ -75,7 +75,7 @@ namespace NodeController.Patches
             var isReversed = vehicleData.m_flags.IsFlagSet(Vehicle.Flags.Reversed);
             if (vehicleData.m_pathPositionIndex % 2 == 0)
             {
-                SingletonManager<Manager>.Instance.GetSegmentData(prevPos.m_segment, out var start, out var end);
+                SingletonManager<Manager>.Instance.GetFinalSegmentData(prevPos.m_segment, out var start, out var end);
                 var startTwist = start?.VehicleTwist ?? 0f;
                 var endTwist = end?.VehicleTwist ?? 0f;
                 var twist = Mathf.Lerp(startTwist, -endTwist, t);
@@ -84,8 +84,8 @@ namespace NodeController.Patches
             }
             else
             {
-                SingletonManager<Manager>.Instance.GetSegmentData(prevPos.m_segment, out var prevStart, out var prevEnd);
-                SingletonManager<Manager>.Instance.GetSegmentData(nextPos.m_segment, out var nextStart, out var nextEnd);
+                SingletonManager<Manager>.Instance.GetFinalSegmentData(prevPos.m_segment, out var prevStart, out var prevEnd);
+                SingletonManager<Manager>.Instance.GetFinalSegmentData(nextPos.m_segment, out var nextStart, out var nextEnd);
 
                 var startTwist = (prevPos.m_offset == byte.MinValue ? prevStart : prevEnd)?.VehicleTwist ?? 0f;
                 var endTwist = (nextPos.m_offset == byte.MaxValue ? nextStart : nextEnd)?.VehicleTwist ?? 0f;

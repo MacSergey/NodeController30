@@ -24,6 +24,8 @@ namespace NodeController
         }
 
         private NodeData[] Buffer { get; set; }
+        private static List<ushort> NodesToUpdate { get; } = new List<ushort>();
+        private static List<ushort> SegmentsToUpdate { get; } = new List<ushort>();
 
         public Manager()
         {
@@ -62,7 +64,6 @@ namespace NodeController
             }
         }
 
-        public NodeData GetNodeData(ushort nodeId) => Buffer[nodeId];
         public NodeData GetOrCreateNodeData(ushort nodeId, Options options = Options.Default)
         {
             if (Buffer[nodeId] is not NodeData data)
@@ -75,29 +76,77 @@ namespace NodeController
 
             return data;
         }
-
         public bool TryGetNodeData(ushort nodeId, out NodeData data)
         {
             data = Buffer[nodeId];
             return data != null;
         }
+        public bool TryGetFinalNodeData(ushort nodeId, out NodeData data)
+        {
+            if (!TryGetNodeData(nodeId, out data) || (data.State & State.Fail) != 0)
+            {
+                data = null;
+                return false;
+            }
+            else
+                return true;
+        }
 
-        public SegmentEndData GetSegmentData(ushort nodeId, ushort segmentId) => GetNodeData(nodeId)?[segmentId];
-        public void GetSegmentData(ushort segmentId, out SegmentEndData start, out SegmentEndData end)
+        public bool TryGetFinalSegmentData(ushort nodeId, ushort segmentId, out SegmentEndData segmentData)
+        {
+            if (TryGetFinalNodeData(nodeId, out var data))
+                data.TryGetSegment(segmentId, out segmentData);
+            else
+                segmentData = null;
+
+            return segmentData != null;
+        }
+
+        public void GetSegmentData(ushort segmentId, out SegmentEndData startData, out SegmentEndData endData)
         {
             ref var segment = ref segmentId.GetSegment();
-            start = Buffer[segment.m_startNode]?[segmentId];
-            end = Buffer[segment.m_endNode]?[segmentId];
+
+            if (TryGetNodeData(segment.m_startNode, out var startNodeData))
+                startNodeData.TryGetSegment(segmentId, out startData);
+            else
+                startData = null;
+
+            if (TryGetNodeData(segment.m_endNode, out var endNodeData))
+                endNodeData.TryGetSegment(segmentId, out endData);
+            else
+                endData = null;
+        }
+        public void GetFinalSegmentData(ushort segmentId, out SegmentEndData startData, out SegmentEndData endData)
+        {
+            ref var segment = ref segmentId.GetSegment();
+
+            if (TryGetFinalNodeData(segment.m_startNode, out var startNodeData))
+                startNodeData.TryGetSegment(segmentId, out startData);
+            else
+                startData = null;
+
+            if (TryGetFinalNodeData(segment.m_endNode, out var endNodeData))
+                endNodeData.TryGetSegment(segmentId, out endData);
+            else
+                endData = null;
         }
 
         public bool TryGetSegmentData(ushort segmentId, bool isStart, out SegmentEndData data)
         {
-            data = Buffer[segmentId.GetSegment().GetNode(isStart)]?[segmentId];
+            if (TryGetNodeData(segmentId.GetSegment().GetNode(isStart), out NodeData nodeData))
+                nodeData.TryGetSegment(segmentId, out data);
+            else
+                data = null;
+
             return data != null;
         }
-        public bool TryGetSegmentData(ushort nodeId, ushort segmentId, out SegmentEndData data)
+        public bool TryGetFinalSegmentData(ushort segmentId, bool isStart, out SegmentEndData data)
         {
-            data = Buffer[nodeId]?[segmentId];
+            if (TryGetFinalNodeData(segmentId.GetSegment().GetNode(isStart), out NodeData nodeData))
+                nodeData.TryGetSegment(segmentId, out data);
+            else
+                data = null;
+
             return data != null;
         }
 
@@ -121,20 +170,16 @@ namespace NodeController
             return data;
         }
 
-        public void InitialUpdate(ushort[] toUpdateIds)
+        public void StartInitialUpdate(ushort[] toUpdateIds)
         {
             SingletonMod<Mod>.Logger.Debug("Start initial update");
             InitialUpdateInProgress = true;
             Update(Options.UpdateThisNow | Options.UpdateThisLater, toUpdateIds);
-
-            //GetUpdateList(toUpdateIds, Options.UpdateThisLater, out var nodeIds, out var segmentIds);
-            //UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray());
-
-            //SimulationManager.instance.AddAction(() =>
-            //{
-            //    foreach (var nodeId in nodeIds)
-            //        NetManager.instance.UpdateNode(nodeId);
-            //});
+        }
+        public void FinishInitialUpdate()
+        {
+            SingletonMod<Mod>.Logger.Debug("Finish initial update");
+            InitialUpdateInProgress = false;
         }
 
         public void Update(ushort nodeId) => Update(Options.UpdateAll, nodeId);
@@ -143,7 +188,7 @@ namespace NodeController
             if((options & Options.UpdateThisNow) != 0)
             {
                 GetUpdateList(toUpdateIds, options & ~Options.UpdateAllLater, out var nodeIds, out var segmentIds);
-                UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray());
+                UpdateImpl(nodeIds.ToList(), segmentIds.ToList());
             }
 
             if ((options & Options.UpdateAllLater) != 0)
@@ -183,16 +228,16 @@ namespace NodeController
             }
         }
 
-        private void UpdateImpl(ushort[] nodeIds, ushort[] segmentIds)
+        private void UpdateImpl(List<ushort> nodeIds, List<ushort> segmentIds)
         {
-            if (nodeIds.Length == 0)
+            if (nodeIds.Count == 0)
                 return;
 
 #if DEBUG
             var id = DateTime.Now.Millisecond;
             var sw = Stopwatch.StartNew();
 
-            SingletonMod<Mod>.Logger.Debug($"Update {id}\nNodes:{string.Join(", ", nodeIds.Select(i => i.ToString()).ToArray())}\nSegments:{string.Join(", ", segmentIds.Select(i => i.ToString()).ToArray())}");
+            SingletonMod<Mod>.Logger.Debug($"Update #{id} start\nNodes:{string.Join(", ", nodeIds.Select(i => i.ToString()).ToArray())}\nSegments:{string.Join(", ", segmentIds.Select(i => i.ToString()).ToArray())}");
 #endif
             var manager = SingletonManager<Manager>.Instance;
 
@@ -239,26 +284,32 @@ namespace NodeController
 #if DEBUG
             var lateUpdateDone = sw.ElapsedTicks;
 
-            SingletonMod<Mod>.Logger.Debug($"Update {id} finish in {sw.ElapsedTicks}; Update={updateDone} Bezier={bezierDone - updateDone} Min={minDone - bezierDone} Max={maxDone - minDone} Late={lateUpdateDone - maxDone}");
+            SingletonMod<Mod>.Logger.Debug($"Update #{id} finish {sw.ElapsedTicks / 10000f}ms; Early={updateDone / 10000f}ms Bezier={(bezierDone - updateDone) / 10000f}ms Min={(minDone - bezierDone) / 10000f}ms Max={(maxDone - minDone) / 10000f}ms Late={(lateUpdateDone - maxDone) / 10000f}ms");
 #endif
         }
 
-        public static void SimulationStep()
+        public static void SimulationStepPrefix()
         {
-            if (InitialUpdateInProgress)
+            var manager = SingletonManager<Manager>.Instance;
+            NodesToUpdate.AddRange(NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)));
+            SegmentsToUpdate.AddRange(NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)));
+        }
+        public static void SimulationStepPostfix()
+        {
+            if (!InitialUpdateInProgress)
             {
-                InitialUpdateInProgress = false;
-                SingletonMod<Mod>.Logger.Debug("Finish initial update");
-            }
-            else
-            {
-                var manager = SingletonManager<Manager>.Instance;
-                var nodeIds = NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)).ToArray();
-                var segmentIds = NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)).ToArray();
-
-                SingletonManager<Manager>.Instance.UpdateImpl(nodeIds, segmentIds);
+                try
+                {
+                    SingletonManager<Manager>.Instance.UpdateImpl(NodesToUpdate, SegmentsToUpdate);
+                }
+                finally
+                {
+                    NodesToUpdate.Clear();
+                    SegmentsToUpdate.Clear();
+                }
             }
         }
+
         public static void ReleaseNodeImplementationPrefix(ushort node) => SingletonManager<Manager>.Instance.Buffer[node] = null;
 
         public XElement ToXml()
@@ -325,7 +376,7 @@ namespace NodeController
                 }
             }
 
-            InitialUpdate(toUpdate.ToArray());
+            StartInitialUpdate(toUpdate.ToArray());
         }
 
         [Flags]

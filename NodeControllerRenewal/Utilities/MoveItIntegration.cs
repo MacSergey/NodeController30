@@ -21,7 +21,7 @@ namespace NodeController.Utilities
 
         public override object Copy(InstanceID sourceInstanceID)
         {
-            if (SingletonManager<Manager>.Instance.GetNodeData(sourceInstanceID.NetNode) is NodeData data)
+            if (SingletonManager<Manager>.Instance.TryGetFinalNodeData(sourceInstanceID.NetNode, out var data))
                 return data.ToXml();
             else
                 return null;
