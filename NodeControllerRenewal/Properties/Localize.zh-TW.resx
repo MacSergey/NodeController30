@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>這項操作無法復原。</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>已匯入原版 Node Controller 的資料。
 向下相容無法轉移所有資料，可能需要手動調整。</value>
@@ -297,6 +300,33 @@
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>遊戲重新啟動後套用</value>
   </data>
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>備份</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>複製路徑到剪貼簿</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>刪除所有節點的資料</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>刪除所有資料</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>您確定要刪除所有資料嗎？</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>將節點資料導出為文件</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>導出節點資料</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>無法導出</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>已成功儲存檔案到文件</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>插入節點</value>
   </data>
@@ -332,6 +362,25 @@
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>凸顯臨近節點</value>
+  </data>
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>復原</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>從檔案還原節點資料</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>還原節點資料</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>你真的想要復原節點資料嗎？
+復原的資料會取代現在所有的節點資料。</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>無法還原節點資料</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>節點資料已還原成功</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>選擇中間節點</value>

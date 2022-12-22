@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>此操作不可撤销。</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>已导入原版节点控制器模组数据。
 逆向兼容无法包括所有数据，可能需要手动调整。</value>
@@ -332,6 +335,33 @@
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>游戏重启后生效</value>
   </data>
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>备份</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>复制路径到剪贴板</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>删除所有节点的数据</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>删除所有数据</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>确定要删除所有数据吗?</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>将节点数据以文件形式导出</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>导出节点数据</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>导出失败</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>已成功导出并保存为文件</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>插入节点</value>
   </data>
@@ -367,6 +397,25 @@
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>显示光标附近节点</value>
+  </data>
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>恢复</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>从文件中恢复节点数据</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>恢复节点数据</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>确定要恢复节点数据吗?
+恢复后的数据将会覆盖所有的现有节点数据。</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>节点数据恢复失败</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>节点数据恢复成功</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>选择中间节点</value>

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>Tindakan ini tidak boleh dibuat asal.</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Data Node Controller asal telah diimport.
 Keserasian ke belakang tidak menyediakan pemindahan kesemua data, pelarasan manual mungkin diperlukan.</value>
@@ -297,6 +300,33 @@ Gagal memuatkan data untuk kesemua nod.</value>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Diterapkan selepas permainan dimulakan semula</value>
   </data>
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>Sandaran</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>Salin laluan ke papan keratan</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>Padamkan data dari semua nod</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>Padamkan semua data</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>Adakah anda benar-benar ingin membuang semua data?</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>Longgokkan data nod ke fail</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>Longgokkan data nod</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>Longgokan gagal</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>Longgokan berjaya disimpan ke fail</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Masukkan nod</value>
   </data>
@@ -332,6 +362,25 @@ Gagal memuatkan data untuk kesemua nod.</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Tunjuk tindihan atas nod berhampiran</value>
+  </data>
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>Pulih</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>Pulihkan data nod dari fail</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>Pulihkan data nod</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>Adakah anda benar-benar ingin memulihkan data nod?
+Data yang dipulihkan akan menggantikan kesemua data nod sedia ada.</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>Pemulihan data nod telah gagal</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>Data nod berjaya dipulihkan</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Pilih nod pertengahan</value>

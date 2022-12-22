@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Originele Node Controllerdata is geïmporteerd. Achterwaartse compatibiliteit biedt geen overdracht van alle gegevens, handmatige aanpassingen zijn mogelijk nodig.</value>
   </data>
@@ -293,6 +294,15 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Van toepassing na spel herstart</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Knooppunt invoegen</value>
   </data>
@@ -329,6 +339,12 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Toon nabijgelegen knooppunten overzicht</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Selecteer middenknopen</value>
   </data>

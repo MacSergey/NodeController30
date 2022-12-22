@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Os dados originais do Node Controller foram importados.
 A compatível com versões anteriores não fornece a transferência de todos os dados, talvez sejam necessários ajustes manuais.</value>
@@ -294,6 +295,15 @@ O carregamento de todas marcações falhou.</value>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Aplica-se depois do reinício do jogo</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Inserir nó</value>
   </data>
@@ -330,6 +340,12 @@ O carregamento de todas marcações falhou.</value>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostrar sobreposição de nódulos próximos</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Selecione os nós do meio</value>
   </data>

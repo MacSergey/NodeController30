@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>Cette action est irréversible.</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Les données du Node Controller originel ont été importées.
 La rétrocompatibilité n'assure pas le transfert de toutes les données, il est peut-être nécessaire de faire des ajustements manuels.</value>
@@ -369,6 +372,23 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>S'applique après le redémarrage du jeu</value>
   </data>
+  
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>Copier le chemin dans le presse-papier</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>Supprimer les données de tous les nœuds</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>Supprimer toutes les données</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>Voulez-vous vraiment supprimer toutes les données ?</value>
+  </data>
+  
+  
+  
+  
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Insertion d'un nœud</value>
   </data>
@@ -404,6 +424,25 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Afficher les nœuds à proximité</value>
+  </data>
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>Restaurer</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>Restaurer les données des nœuds à partir du fichier</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>Restaurer les données des nœuds</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>Voulez-vous vraiment restaurer les données des nœuds ?
+Les données restaurées remplaceront toutes les données existantes.</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>Restauration des données des nœuds échouée</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>Restauration des données des nœuds réussie</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Sélectionner les nœuds du milieu</value>

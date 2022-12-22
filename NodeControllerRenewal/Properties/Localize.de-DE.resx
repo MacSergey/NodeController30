@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Original Node Controller Daten wurden importiert.
 Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher manuell angepasst werden.</value>
@@ -315,6 +316,15 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Wird nach dem Neustart des Spiels angewendet</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Netzwerk-Knoten einfügen</value>
   </data>
@@ -351,6 +361,12 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Zeige Hervorhebung für nahe Netzwerk-Knoten</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Mittige Netzwerk-Knoten zwischen zwei Straßen anwählen</value>
   </data>

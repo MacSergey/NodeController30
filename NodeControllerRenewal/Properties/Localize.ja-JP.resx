@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>この操作は元に戻せません。</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>オリジナルのNode Controller2から、各設定をRenewal用に変換しました。
 一部の設定には互換性が無く、手動で調整する必要があります。</value>
@@ -297,6 +300,33 @@
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>ゲーム再起動後に適用</value>
   </data>
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>バックアップ</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>クリップボードにコピー</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>全てのノードからデータを削除</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>全てのデータを削除</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>本当に全てのデータを削除しますか？</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>ノードデータをファイルに保存</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>ノードデータのダンプ出力</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>ダンプ出力に失敗しました。</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>ダンプ出力は正常に行われました。</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>ノードの追加方法</value>
   </data>
@@ -332,6 +362,25 @@
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>選択中は近くにあるノードをハイライト</value>
+  </data>
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>復元</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>ノードデータをファイルから復元</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>ノードデータを復元</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>本当にデータを復元しますか？
+復元すると、既存のノードデータを全て置き換えます。</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>ノードデータの復元に失敗しました。</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>ノードデータの復元に成功しました。</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>中間部分にあるノードも選択</value>

@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Data Node Controller asli telah diimpor.
 Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyesuaian manual mungkin diperlukan.</value>
@@ -261,6 +262,15 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
     <value>Titik hubung #{0}</value>
   </data>
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Masukan titik hubung</value>
   </data>
@@ -285,6 +295,12 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Perlihatkan hamparan titik hubung yang berdekatan</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Pilih titik hubung tengah</value>
   </data>

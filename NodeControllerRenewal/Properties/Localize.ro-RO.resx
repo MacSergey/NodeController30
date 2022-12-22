@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Datele originale al modului Node Controller au fost importate.
 Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita ajustări manuale.</value>
@@ -294,6 +295,15 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Se aplică la repornirea jocului</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Inserați nodul</value>
   </data>
@@ -330,6 +340,12 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Afișați overlay-ul cu nodurile din apropriere</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Alegeți nodurile din mijloc</value>
   </data>

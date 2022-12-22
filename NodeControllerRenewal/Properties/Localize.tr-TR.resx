@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Orijinal Node Controller verileri içe aktarıldı.
 Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlamalar gerekebilir.</value>
@@ -267,6 +268,15 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Düğüm varsayılan olarak eğim verildi</value>
   </data>
@@ -277,6 +287,12 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Yakındaki kesişen düğümleri göster</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Orta düğümü seç</value>
   </data>
