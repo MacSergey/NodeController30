@@ -171,15 +171,15 @@ namespace NodeController
 
         public NodeData(ushort nodeId, NodeStyleType? nodeType = null)
         {
-            if (!nodeId.GetNode().m_flags.IsSet(NetNode.Flags.Created))
+            ref var node = ref nodeId.GetNode();
+            if ((node.m_flags & NetNode.Flags.Created) == 0)
                 throw new NodeNotCreatedException(nodeId);
 
             Id = nodeId;
 
-            UpdateSegmentEndSet();
             UpdateSegmentEnds();
             MainRoad.Update(this);
-            UpdateStyle(true, nodeType);
+            UpdateStyle(nodeType, true, true);
             UpdateMainRoadSegments();
         }
         public void AfterCalculateNode()
@@ -189,8 +189,8 @@ namespace NodeController
 #if DEBUG
                 SingletonMod<Mod>.Logger.Debug($"Node #{Id} after calculate node");
 #endif
-                SetFlags();
-                UpdateSegmentEndSet();
+                UpdateSegmentEnds();
+                UpdateStyle(Style.Type, false, true);
             }
             catch (Exception error)
             {
@@ -209,7 +209,7 @@ namespace NodeController
 
                 UpdateSegmentEnds();
                 MainRoad.Update(this);
-                UpdateFlags();
+                UpdateStyle(Style.Type, false, false);
                 UpdateMainRoadSegments();
             }
             catch (Exception error)
@@ -219,7 +219,7 @@ namespace NodeController
             }
         }
 
-        private void UpdateSegmentEndSet()
+        private void UpdateSegmentEnds()
         {
             var before = SegmentEnds.Values.Select(v => v.Id).ToList();
             var after = Id.GetNode().SegmentIds().ToList();
@@ -255,9 +255,7 @@ namespace NodeController
                 SingletonMod<Mod>.Logger.Debug($"Node #{Id} Segments: Before={string.Join(", ", SegmentEnds.Keys.Select(k => k.ToString()).ToArray())};\tAfter={string.Join(", ", newSegmentEnds.Keys.Select(k => k.ToString()).ToArray())}");
 #endif
             SegmentEnds = newSegmentEnds;
-        }
-        private void UpdateSegmentEnds()
-        {
+
             foreach (var segmentEnd in SegmentEnds.Values)
                 segmentEnd.Update();
 
@@ -268,20 +266,33 @@ namespace NodeController
                 i += 1;
             }
         }
-
-        private void UpdateFlags()
+        private void UpdateStyle(NodeStyleType? nodeType, bool force, bool updateDefaults)
         {
             ref var node = ref Id.GetNode();
 
-            if (node.m_flags == NetNode.Flags.None || node.m_flags.IsFlagSet(NetNode.Flags.Outside))
+            if (node.m_flags == NetNode.Flags.None || (node.m_flags & NetNode.Flags.Outside) != 0)
                 return;
 
-            if ((node.m_flags & SupportFlags) != DefaultFlags)
-                UpdateStyle(false, Style.Type);
+            if (updateDefaults)
+                DefaultFlags = node.m_flags & SupportFlags;
 
-            SetFlags();
+            if ((DefaultFlags & NetNode.Flags.Middle) != 0)
+                DefaultType = NodeStyleType.Middle;
+            else if ((DefaultFlags & NetNode.Flags.Bend) != 0)
+                DefaultType = NodeStyleType.Bend;
+            else if ((DefaultFlags & NetNode.Flags.Junction) != 0)
+                DefaultType = NodeStyleType.Custom;
+            else if ((DefaultFlags & NetNode.Flags.End) != 0)
+                DefaultType = NodeStyleType.End;
+            else
+                throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
+
+            var newType = nodeType != null && IsPossibleTypeImpl(nodeType.Value) ? nodeType.Value : DefaultType;
+            SetType(newType, force);
+
+            UpdateFlags();
         }
-        private void SetFlags()
+        private void UpdateFlags()
         {
             ref var node = ref Id.GetNode();
 #if DEBUG
@@ -300,7 +311,7 @@ namespace NodeController
             }
             else if (IsBendNode)
             {
-                node.m_flags |= NetNode.Flags.Bend; // TODO set asymForward and asymBackward
+                node.m_flags |= NetNode.Flags.Bend;
                 node.m_flags &= ~(NetNode.Flags.Junction | NetNode.Flags.Middle);
             }
             else if (IsJunctionNode)
@@ -319,27 +330,24 @@ namespace NodeController
             SingletonMod<Mod>.Logger.Debug($"Node #{Id} Flags={node.m_flags};\tSet={set};\tReset={reset}");
 #endif
         }
-        private void UpdateStyle(bool force, NodeStyleType? nodeType = null)
-        {
-            ref var node = ref Id.GetNode();
-            if ((node.m_flags & NetNode.Flags.Created) != 0 && (node.m_flags & NetNode.Flags.Deleted) == 0 && (node.m_flags & SupportFlags) == 0)
-                node.CalculateNode(Id);
 
-            DefaultFlags = node.m_flags & SupportFlags;
+        //private void UpdateStyle(bool force, NodeStyleType? nodeType = null)
+        //{
+        //    ref var node = ref Id.GetNode();
 
-            if ((DefaultFlags & NetNode.Flags.Middle) != 0)
-                DefaultType = NodeStyleType.Middle;
-            else if ((DefaultFlags & NetNode.Flags.Bend) != 0)
-                DefaultType = NodeStyleType.Bend;
-            else if ((DefaultFlags & NetNode.Flags.Junction) != 0)
-                DefaultType = NodeStyleType.Custom;
-            else if ((DefaultFlags & NetNode.Flags.End) != 0)
-                DefaultType = NodeStyleType.End;
-            else
-                throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
+        //    if ((DefaultFlags & NetNode.Flags.Middle) != 0)
+        //        DefaultType = NodeStyleType.Middle;
+        //    else if ((DefaultFlags & NetNode.Flags.Bend) != 0)
+        //        DefaultType = NodeStyleType.Bend;
+        //    else if ((DefaultFlags & NetNode.Flags.Junction) != 0)
+        //        DefaultType = NodeStyleType.Custom;
+        //    else if ((DefaultFlags & NetNode.Flags.End) != 0)
+        //        DefaultType = NodeStyleType.End;
+        //    else
+        //        throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
 
-            SetType(nodeType != null && IsPossibleTypeImpl(nodeType.Value) ? nodeType.Value : DefaultType, force);
-        }
+        //    SetType(nodeType != null && IsPossibleTypeImpl(nodeType.Value) ? nodeType.Value : DefaultType, force);
+        //}
         private void UpdateMainRoadSegments()
         {
             foreach (var segmentEnd in SegmentEndDatas)
@@ -498,7 +506,17 @@ namespace NodeController
 #if DEBUG
             SingletonMod<Mod>.Logger.Debug($"Node #{Id} set Type={type}");
 #endif
-            Style = type.GetStyle(this);
+            Style = type switch
+            {
+                NodeStyleType.Middle => new MiddleNode(this),
+                NodeStyleType.Bend => new BendNode(this),
+                NodeStyleType.Stretch => new StretchNode(this),
+                NodeStyleType.Crossing => new CrossingNode(this),
+                NodeStyleType.UTurn => new UTurnNode(this),
+                NodeStyleType.Custom => new CustomNode(this),
+                NodeStyleType.End => new EndNode(this),
+                _ => throw new NotImplementedException(),
+            };
 
             foreach (var segmentEnd in SegmentEndDatas)
                 segmentEnd.ResetToDefault(Style, force);
@@ -595,6 +613,7 @@ namespace NodeController
         #endregion
     }
 
+    [Flags]
     public enum State
     {
         None = 0,

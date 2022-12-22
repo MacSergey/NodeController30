@@ -40,6 +40,14 @@ namespace NodeController
             if (IsHoverNode)
             {
                 text = string.Format(Localize.Tool_InfoClickNode, HoverNode.Id) + GetStepOverInfo();
+#if DEBUG
+                if (SingletonManager<Manager>.Instance.TryGetNodeData(HoverNode.Id, out var data))
+                {
+                    text += $"\n\nState: {data.State}\nType: {data.Type}\nDefaultType: {data.DefaultType}\nFlags: {data.Id.GetNode().flags}\nDefaultFlags: {data.DefaultFlags}\nSegments: {data.SegmentCount}";
+                }
+                else
+                    text += "\n\nNo data";
+#endif
             }
             else if (IsHoverSegment)
             {
