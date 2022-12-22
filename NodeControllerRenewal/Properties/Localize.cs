@@ -6,6 +6,11 @@ namespace NodeController
 		public static ModsCommon.LocalizeManager LocaleManager {get;} = new ModsCommon.LocalizeManager("Localize", typeof(Localize).Assembly);
 
 		/// <summary>
+		/// This action cannot be undone.
+		/// </summary>
+		public static string MessageBox_CantUndone => LocaleManager.GetString("MessageBox_CantUndone", Culture);
+
+		/// <summary>
 		/// Original Node Controller data was imported.
 		/// </summary>
 		public static string Mod_BackwardCompatibilityMessage => LocaleManager.GetString("Mod_BackwardCompatibilityMessage", Culture);
@@ -311,6 +316,51 @@ namespace NodeController
 		public static string Settings_ApplyAfterRestart => LocaleManager.GetString("Settings_ApplyAfterRestart", Culture);
 
 		/// <summary>
+		/// Backup
+		/// </summary>
+		public static string Settings_BackupTab => LocaleManager.GetString("Settings_BackupTab", Culture);
+
+		/// <summary>
+		/// Copy path to clipboard
+		/// </summary>
+		public static string Settings_CopyPathToClipboard => LocaleManager.GetString("Settings_CopyPathToClipboard", Culture);
+
+		/// <summary>
+		/// Delete data from all nodes
+		/// </summary>
+		public static string Settings_DeleteDataButton => LocaleManager.GetString("Settings_DeleteDataButton", Culture);
+
+		/// <summary>
+		/// Delete all data
+		/// </summary>
+		public static string Settings_DeleteDataCaption => LocaleManager.GetString("Settings_DeleteDataCaption", Culture);
+
+		/// <summary>
+		/// Do you really want to remove all data?
+		/// </summary>
+		public static string Settings_DeleteDataMessage => LocaleManager.GetString("Settings_DeleteDataMessage", Culture);
+
+		/// <summary>
+		/// Dump nodes data to file
+		/// </summary>
+		public static string Settings_DumpDataButton => LocaleManager.GetString("Settings_DumpDataButton", Culture);
+
+		/// <summary>
+		/// Dump nodes data
+		/// </summary>
+		public static string Settings_DumpDataCaption => LocaleManager.GetString("Settings_DumpDataCaption", Culture);
+
+		/// <summary>
+		/// Dump failed
+		/// </summary>
+		public static string Settings_DumpMessageFailed => LocaleManager.GetString("Settings_DumpMessageFailed", Culture);
+
+		/// <summary>
+		/// Dump successfully saved to file
+		/// </summary>
+		public static string Settings_DumpMessageSuccess => LocaleManager.GetString("Settings_DumpMessageSuccess", Culture);
+
+		/// <summary>
 		/// Insert node
 		/// </summary>
 		public static string Settings_InsertNode => LocaleManager.GetString("Settings_InsertNode", Culture);
@@ -369,6 +419,36 @@ namespace NodeController
 		/// Show nearby nodes overlay
 		/// </summary>
 		public static string Settings_RenderNearNode => LocaleManager.GetString("Settings_RenderNearNode", Culture);
+
+		/// <summary>
+		/// Restore
+		/// </summary>
+		public static string Settings_Restore => LocaleManager.GetString("Settings_Restore", Culture);
+
+		/// <summary>
+		/// Restore nodes data from file
+		/// </summary>
+		public static string Settings_RestoreDataButton => LocaleManager.GetString("Settings_RestoreDataButton", Culture);
+
+		/// <summary>
+		/// Restore nodes data
+		/// </summary>
+		public static string Settings_RestoreDataCaption => LocaleManager.GetString("Settings_RestoreDataCaption", Culture);
+
+		/// <summary>
+		/// Do you really want to restore nodes data?
+		/// </summary>
+		public static string Settings_RestoreDataMessage => LocaleManager.GetString("Settings_RestoreDataMessage", Culture);
+
+		/// <summary>
+		/// Nodes data restore failed
+		/// </summary>
+		public static string Settings_RestoreDataMessageFailed => LocaleManager.GetString("Settings_RestoreDataMessageFailed", Culture);
+
+		/// <summary>
+		/// Nodes data successfully restored
+		/// </summary>
+		public static string Settings_RestoreDataMessageSuccess => LocaleManager.GetString("Settings_RestoreDataMessageSuccess", Culture);
 
 		/// <summary>
 		/// Select middle nodes

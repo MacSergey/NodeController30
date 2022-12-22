@@ -38,6 +38,17 @@ namespace NodeController
             Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
             InitialUpdateInProgress = false;
         }
+        public void RemoveAll()
+        {
+            var nodeIds = Buffer.Where(d => d != null).Select(d => d.Id).ToArray();
+            SimulationManager.instance.AddAction(() =>
+            {
+                foreach (var nodeId in nodeIds)
+                    NetManager.instance.UpdateNode(nodeId);
+            });
+            Clear();
+        }
+
         private NodeData Create(ushort nodeId, Options options, NodeStyleType? nodeType = null)
         {
             try
@@ -371,6 +382,11 @@ namespace NodeController
             }
 
             StartInitialUpdate(toUpdate.ToArray());
+        }
+        public void Import(XElement config)
+        {
+            RemoveAll();
+            FromXml(config, new NetObjectsMap());
         }
 
         [Flags]

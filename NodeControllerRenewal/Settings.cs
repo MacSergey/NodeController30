@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using static ModsCommon.SettingsHelper;
 
 namespace NodeController
@@ -59,11 +58,15 @@ namespace NodeController
         public static void SetOptionVisibility(Options option, OptionVisibility visibility) => OptionsVisibility[option].value = (int)visibility;
 
         protected UIAdvancedHelper ShortcutsTab => GetTab(nameof(ShortcutsTab));
+        protected UIAdvancedHelper BackupTab => GetTab(nameof(BackupTab));
+
         protected override IEnumerable<KeyValuePair<string, string>> AdditionalTabs
         {
             get
             {
                 yield return new KeyValuePair<string, string>(nameof(ShortcutsTab), CommonLocalize.Settings_Shortcuts);
+                if (Utility.InGame)
+                    yield return new KeyValuePair<string, string>(nameof(BackupTab), Localize.Settings_BackupTab);
             }
         }
 
@@ -77,6 +80,9 @@ namespace NodeController
             AddOptionVisible(GeneralTab);
             AddNotifications(GeneralTab);
             AddKeyMapping(ShortcutsTab, undergroundOptions);
+
+            if (Utility.InGame)
+                AddBackupData(BackupTab);
 #if DEBUG
             AddDebug(DebugTab);
 #endif
@@ -134,6 +140,79 @@ namespace NodeController
             }
         }
 
+        private void AddBackupData(UIAdvancedHelper helper)
+        {
+            var group = helper.AddGroup();
+
+            AddDeleteAll(group);
+            AddDump(group);
+            AddRestore(group);
+        }
+        private void AddDeleteAll(UIHelper group)
+        {
+            var button = AddButton(group, Localize.Settings_DeleteDataButton, Click, 600);
+            button.color = new Color32(255, 40, 40, 255);
+            button.hoveredColor = new Color32(224, 40, 40, 255);
+            button.pressedColor = new Color32(192, 40, 40, 255);
+            button.focusedColor = button.color;
+
+            void Click()
+            {
+                var messageBox = MessageBox.Show<YesNoMessageBox>();
+                messageBox.CaptionText = Localize.Settings_DeleteDataCaption;
+                messageBox.MessageText = $"{Localize.Settings_DeleteDataMessage}\n{Localize.MessageBox_CantUndone}";
+                messageBox.OnButton1Click = Ñonfirmed;
+            }
+            bool Ñonfirmed()
+            {
+                SingletonManager<Manager>.Instance.RemoveAll();
+                return true;
+            }
+        }
+        private void AddDump(UIHelper group)
+        {
+            AddButton(group, Localize.Settings_DumpDataButton, Click, 600);
+
+            void Click()
+            {
+                var result = Loader.DumpData(out string path);
+
+                if (result)
+                {
+                    var messageBox = MessageBox.Show<TwoButtonMessageBox>();
+                    messageBox.CaptionText = Localize.Settings_DumpDataCaption;
+                    messageBox.MessageText = Localize.Settings_DumpMessageSuccess;
+                    messageBox.Button1Text = Localize.Settings_CopyPathToClipboard;
+                    messageBox.Button2Text = CommonLocalize.MessageBox_OK;
+                    messageBox.OnButton1Click = CopyToClipboard;
+                    messageBox.SetButtonsRatio(2, 1);
+
+                    bool CopyToClipboard()
+                    {
+                        Clipboard.text = path;
+                        return false;
+                    }
+                }
+                else
+                {
+                    var messageBox = MessageBox.Show<OkMessageBox>();
+                    messageBox.CaptionText = Localize.Settings_DumpDataCaption;
+                    messageBox.MessageText = Localize.Settings_DumpMessageFailed;
+                }
+            }
+        }
+        private void AddRestore(UIHelper group)
+        {
+            AddButton(group, Localize.Settings_RestoreDataButton, Click, 600);
+
+            void Click()
+            {
+                var messageBox = MessageBox.Show<ImportDataMessageBox>();
+                messageBox.CaptionText = Localize.Settings_RestoreDataCaption;
+                messageBox.MessageText = $"{Localize.Settings_RestoreDataMessage}\n{Localize.MessageBox_CantUndone}";
+
+            }
+        }
 #if DEBUG
         public static SavedFloat SegmentId { get; } = new SavedFloat(nameof(SegmentId), SettingsFile, 0f, false);
         public static SavedFloat NodeId { get; } = new SavedFloat(nameof(NodeId), SettingsFile, 0f, false);
@@ -176,6 +255,66 @@ namespace NodeController
             }
         }
 #endif
+    }
+
+    public class ImportDataMessageBox : SimpleMessageBox
+    {
+        private CustomUIButton ImportButton { get; set; }
+        private CustomUIButton CancelButton { get; set; }
+        protected FileDropDown DropDown { get; set; }
+        public ImportDataMessageBox()
+        {
+            ImportButton = AddButton(ImportClick);
+            ImportButton.text = NodeController.Localize.Settings_Restore;
+            ImportButton.Disable();
+            CancelButton = AddButton(CancelClick);
+            CancelButton.text = CommonLocalize.Settings_Cancel;
+
+            AddFileList();
+        }
+        private void AddFileList()
+        {
+            DropDown = Panel.Content.AddUIComponent<FileDropDown>();
+            ComponentStyle.CustomSettingsStyle(DropDown, new Vector2(DefaultWidth - 2 * Padding, 38));
+
+            DropDown.listWidth = (int)DropDown.width;
+            DropDown.listHeight = 200;
+            DropDown.itemPadding = new RectOffset(14, 14, 0, 0);
+            DropDown.textScale = 1.25f;
+            DropDown.clampListToScreen = true;
+            DropDown.eventSelectedIndexChanged += DropDownIndexChanged;
+
+            AddData();
+            DropDown.selectedIndex = 0;
+        }
+
+        private void DropDownIndexChanged(UIComponent component, int value)
+        {
+            if (DropDown.SelectedObject != null)
+                ImportButton.Enable();
+            else
+                ImportButton.Disable();
+        }
+
+        private void AddData()
+        {
+            foreach (var file in Loader.GetDataRestoreList())
+                DropDown.AddItem(file.Key, file.Value);
+        }
+        private void ImportClick()
+        {
+            var result = Loader.ImportData(DropDown.SelectedObject);
+
+            var resultMessageBox = MessageBox.Show<OkMessageBox>();
+            resultMessageBox.CaptionText = NodeController.Localize.Settings_RestoreDataCaption;
+            resultMessageBox.MessageText = result ? NodeController.Localize.Settings_RestoreDataMessageSuccess : NodeController.Localize.Settings_RestoreDataMessageFailed;
+
+            Close();
+        }
+
+        protected virtual void CancelClick() => Close();
+
+        public class FileDropDown : UIDropDown<string> { }
     }
 }
 
