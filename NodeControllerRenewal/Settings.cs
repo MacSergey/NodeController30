@@ -166,7 +166,7 @@ namespace NodeController
                 {
                     var node = i.GetNode();
                     var created = node.m_flags.IsSet(NetNode.Flags.Created);
-                    var isRoad = node.Segments().Any(s => s.Info.m_netAI is RoadBaseAI);
+                    var isRoad = node.SegmentIds().Any(s => s.GetSegment().Info.m_netAI is RoadBaseAI);
                     if (created && isRoad)
                     {
                         _ = manager.GetOrCreateNodeData(i);

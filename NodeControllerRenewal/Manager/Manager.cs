@@ -24,8 +24,6 @@ namespace NodeController
         }
 
         private NodeData[] Buffer { get; set; }
-        private static List<ushort> NodesToUpdate { get; } = new List<ushort>();
-        private static List<ushort> SegmentsToUpdate { get; } = new List<ushort>();
 
         public Manager()
         {
@@ -188,7 +186,7 @@ namespace NodeController
             if((options & Options.UpdateThisNow) != 0)
             {
                 GetUpdateList(toUpdateIds, options & ~Options.UpdateAllLater, out var nodeIds, out var segmentIds);
-                UpdateImpl(nodeIds.ToList(), segmentIds.ToList());
+                UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray());
             }
 
             if ((options & Options.UpdateAllLater) != 0)
@@ -228,9 +226,9 @@ namespace NodeController
             }
         }
 
-        private void UpdateImpl(List<ushort> nodeIds, List<ushort> segmentIds)
+        private void UpdateImpl(ushort[] nodeIds, ushort[] segmentIds)
         {
-            if (nodeIds.Count == 0)
+            if (nodeIds.Length == 0)
                 return;
 
 #if DEBUG
@@ -288,24 +286,20 @@ namespace NodeController
 #endif
         }
 
-        public static void SimulationStepPrefix()
-        {
-            var manager = SingletonManager<Manager>.Instance;
-            NodesToUpdate.AddRange(NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)));
-            SegmentsToUpdate.AddRange(NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)));
-        }
-        public static void SimulationStepPostfix()
+        public static void SimulationStep()
         {
             if (!InitialUpdateInProgress)
             {
                 try
                 {
-                    SingletonManager<Manager>.Instance.UpdateImpl(NodesToUpdate, SegmentsToUpdate);
+                    var manager = SingletonManager<Manager>.Instance;
+                    var nodesToUpdate = NetManager.instance.GetUpdateNodes().Where(s => manager.ContainsNode(s)).ToArray();
+                    var segmentsToUpdate = NetManager.instance.GetUpdateSegments().Where(s => manager.ContainsSegment(s)).ToArray();
+                    manager.UpdateImpl(nodesToUpdate, segmentsToUpdate);
                 }
-                finally
+                catch (Exception error)
                 {
-                    NodesToUpdate.Clear();
-                    SegmentsToUpdate.Clear();
+                    SingletonMod<Mod>.Logger.Error("Simulation step error" ,error);
                 }
             }
         }

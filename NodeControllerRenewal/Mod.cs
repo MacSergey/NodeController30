@@ -152,8 +152,7 @@ namespace NodeController
         private void PatchNetManager(ref bool success)
         {
             success &= Patch_NetManager_ReleaseNodeImplementation();
-            success &= Patch_NetManager_SimulationStepImpl_Prefix();
-            success &= Patch_NetManager_SimulationStepImpl_Postfix();
+            success &= Patch_NetManager_SimulationStepImpl();
             success &= Patch_NetManager_UpdateSegment();
         }
 
@@ -162,13 +161,9 @@ namespace NodeController
             var parameters = new Type[] { typeof(ushort), typeof(NetNode).MakeByRefType() };
             return AddPrefix(typeof(Manager), nameof(Manager.ReleaseNodeImplementationPrefix), typeof(NetManager), "ReleaseNodeImplementation", parameters);
         }
-        private bool Patch_NetManager_SimulationStepImpl_Prefix()
+        private bool Patch_NetManager_SimulationStepImpl()
         {
-            return AddPrefix(typeof(Manager), nameof(Manager.SimulationStepPrefix), typeof(NetManager), "SimulationStepImpl");
-        }
-        private bool Patch_NetManager_SimulationStepImpl_Postfix()
-        {
-            return AddPostfix(typeof(Manager), nameof(Manager.SimulationStepPostfix), typeof(NetManager), "SimulationStepImpl");
+            return AddTranspiler(typeof(NetManagerPatches), nameof(NetManagerPatches.SimulationStepImplTranspiler), typeof(NetManager), "SimulationStepImpl");
         }
         private bool Patch_NetManager_UpdateSegment()
         {
