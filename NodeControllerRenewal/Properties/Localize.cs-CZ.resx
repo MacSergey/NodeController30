@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Data z původního Node Controlleru byla importována.
 Zpětná kompatibilita neposkytuje přenos všech dat, mohou být vyžadovány manuální úpravy.</value>
@@ -294,6 +295,15 @@ Nepodařilo se načíst data všechny uzly.</value>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Projeví se po restartu hry</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Vložit uzel</value>
   </data>
@@ -330,6 +340,12 @@ Nepodařilo se načíst data všechny uzly.</value>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Zobrazit blízké uzly</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Vyberte střední uzly</value>
   </data>

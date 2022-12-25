@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Alkuperäisen Node Controllerin tiedot tuotiin.
 Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittymistä voi vaatia hienosäätöä.</value>
@@ -267,6 +268,15 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Liittymät ovat kaltevia oletuksena</value>
   </data>
@@ -277,6 +287,12 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Näytä läheisten liittymien peittokuva</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Valitse keskiliittymät</value>
   </data>

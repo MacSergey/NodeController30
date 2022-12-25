@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Se importaron los datos del Node Controller original.
 La compatibilidad con versiones anteriores no proporciona la transferencia de todos los datos, es posible que se requieran ajustes manuales.</value>
@@ -294,6 +295,15 @@ No se pudieron cargar datos para todos los nodos.</value>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Se aplica después de reiniciar el juego</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Insertar nodo</value>
   </data>
@@ -330,6 +340,12 @@ No se pudieron cargar datos para todos los nodos.</value>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostrar superposición de nodos cercanos</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Seleccionar nodos del medio</value>
   </data>

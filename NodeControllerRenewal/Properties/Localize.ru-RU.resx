@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>Это действие нельзя отменить.</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Данные оригинального Node Controller импортированы.
 Обратная совместимость не обеспечивает перенос всех данных, может потребоваться ручная корректировка.</value>
@@ -369,6 +372,33 @@
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Изменения вступят в силу после перезагрузки игры</value>
   </data>
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>Pезервирование</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>Копировать путь в буфер</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>Удалить данные со всех узлов</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>Удалить все данные</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>Вы действительно хотите удалить все данные?</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>Сохранить данные узлов в файл</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>Сохранить данные узлов</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>Не удалось сохранить</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>Сохранение успешно сохранено в файл</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Добавление узла</value>
   </data>
@@ -404,6 +434,25 @@
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Подсвечивать ближайшие узлы</value>
+  </data>
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>Восстановление</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>Восстановление данных узлов из файла</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>Восстановление данных узлов</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>Вы действительно хотите восстановить данные узлов?
+Она заменит всю существующие данные.</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>Не удалось восстановить данные узлов</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>Данные узлов успешно восстановлены</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Выбирать средние узлы</value>

@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Tika importēti oriģinālie mezgla kontrollera dati.
 Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepieciešama manuāla korekcija.</value>
@@ -246,6 +247,15 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   </data>
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="Settings_InsertNodeDisabled" xml:space="preserve">
     <value>Izslēgts</value>
   </data>
@@ -258,6 +268,12 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   <data name="Settings_Option_Disabled" xml:space="preserve">
     <value>Izslēgts</value>
   </data>
+  
+  
+  
+  
+  
+  
   
   
   

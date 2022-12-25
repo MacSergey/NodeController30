@@ -179,10 +179,10 @@ namespace NodeController
             return data;
         }
 
-        public void StartInitialUpdate(ushort[] toUpdateIds)
+        public void StartInitialUpdate(ushort[] toUpdateIds, bool initial)
         {
             SingletonMod<Mod>.Logger.Debug("Start initial update");
-            InitialUpdateInProgress = true;
+            InitialUpdateInProgress = initial;
             Update(Options.UpdateThisNow | Options.UpdateThisLater, toUpdateIds);
         }
         public void FinishInitialUpdate()
@@ -332,7 +332,7 @@ namespace NodeController
 
             return config;
         }
-        public void FromXml(XElement config, NetObjectsMap map)
+        public void FromXml(XElement config, NetObjectsMap map, bool inital)
         {
             Errors = 0;
 
@@ -357,11 +357,15 @@ namespace NodeController
                         }
 
                         var type = (NodeStyleType)nodeConfig.GetAttrValue("T", (int)NodeStyleType.Custom);
-                        var data = new NodeData(id, type);
-                        data.FromXml(nodeConfig, map);
-                        Buffer[data.Id] = data;
 
-                        toUpdate.Add(data.Id);
+                        if (inital || !ContainsNode(id))
+                        {
+                            var data = new NodeData(id, type);
+                            data.FromXml(nodeConfig, map);
+                            Buffer[data.Id] = data;
+
+                            toUpdate.Add(data.Id);
+                        }
                     }
                     catch (NodeNotCreatedException error)
                     {
@@ -381,7 +385,7 @@ namespace NodeController
                 }
             }
 
-            StartInitialUpdate(toUpdate.ToArray());
+            StartInitialUpdate(toUpdate.ToArray(), inital);
         }
         public void Import(XElement config)
         {
