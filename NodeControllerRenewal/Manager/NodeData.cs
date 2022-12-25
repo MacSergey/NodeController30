@@ -171,11 +171,14 @@ namespace NodeController
 
         public NodeData(ushort nodeId, NodeStyleType? nodeType = null)
         {
-            ref var node = ref nodeId.GetNode();
+            Id = nodeId;
+            State |= State.Dirty;
+            ref var node = ref Id.GetNode();
+
             if ((node.m_flags & NetNode.Flags.Created) == 0)
                 throw new NodeNotCreatedException(nodeId);
-
-            Id = nodeId;
+            else if ((node.m_flags & NetNode.Flags.Deleted) == 0 && (node.m_flags & SupportFlags) == 0)
+                node.CalculateNode(Id);
 
             UpdateSegmentEnds();
             MainRoad.Update(this);
@@ -331,23 +334,6 @@ namespace NodeController
 #endif
         }
 
-        //private void UpdateStyle(bool force, NodeStyleType? nodeType = null)
-        //{
-        //    ref var node = ref Id.GetNode();
-
-        //    if ((DefaultFlags & NetNode.Flags.Middle) != 0)
-        //        DefaultType = NodeStyleType.Middle;
-        //    else if ((DefaultFlags & NetNode.Flags.Bend) != 0)
-        //        DefaultType = NodeStyleType.Bend;
-        //    else if ((DefaultFlags & NetNode.Flags.Junction) != 0)
-        //        DefaultType = NodeStyleType.Custom;
-        //    else if ((DefaultFlags & NetNode.Flags.End) != 0)
-        //        DefaultType = NodeStyleType.End;
-        //    else
-        //        throw new NotImplementedException($"Unsupported node flags: {DefaultFlags}");
-
-        //    SetType(nodeType != null && IsPossibleTypeImpl(nodeType.Value) ? nodeType.Value : DefaultType, force);
-        //}
         private void UpdateMainRoadSegments()
         {
             foreach (var segmentEnd in SegmentEndDatas)
