@@ -15,6 +15,6 @@ namespace NodeController
         protected override NetObjectsMap CreateMap(bool isSimple) => new NetObjectsMap(isSimple);
         protected override XElement GetConfig() => SingletonManager<Manager>.Instance.ToXml();
 
-        protected override void PlaceAsset(XElement config, NetObjectsMap map) => SingletonManager<Manager>.Instance.FromXml(config, map);
+        protected override void PlaceAsset(XElement config, NetObjectsMap map) => SingletonManager<Manager>.Instance.FromXml(config, map, false);
     }
 }
