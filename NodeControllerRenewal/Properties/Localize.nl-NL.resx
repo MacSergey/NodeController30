@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>Deze actie kan niet ongedaan worden gemaakt.</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Originele Node Controllerdata is geïmporteerd. Achterwaartse compatibiliteit biedt geen overdracht van alle gegevens, handmatige aanpassingen zijn mogelijk nodig.</value>
   </data>
@@ -167,7 +169,10 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
     <value>[FIXED] Terreinproblemen opgelost die konden optreden bij gebruik van de Surface Painter mod.
 [TRANSLATION] Tsjechische taal toegevoegd.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_3_3" xml:space="preserve">
+    <value>[FIXED] Compatibiliteit met Adaptive Network mod hersteld die blauwe leegtes kon veroorzaken in plaats van knooppunten.
+[FIXED] Fout opgelost wanneer een gemist netwerkasset kon leiden tot het mislukken van laden van NCR gegevens.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bocht</value>
   </data>
@@ -206,6 +211,9 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
   </data>
   <data name="Option_Collision" xml:space="preserve">
     <value>Botsing</value>
+  </data>
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>Hide crosswalks mod vereist</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Parallele verschuiving herstellen</value>
@@ -294,15 +302,33 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Van toepassing na spel herstart</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>Back-up</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>Kopieer bestandslocatie naar klembord</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>Verwijder gegevens van alle knooppunten</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>Verwijder alle gegevens</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>Weet je zeker dat je alle gegevens wilt verwijderen?</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>Exporteer knooppuntgegevens naar bestand</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>Exporteer knooppuntgegevens</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>Exporteren mislukt</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>Exporteren naar bestand gelukt</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Knooppunt invoegen</value>
   </data>
@@ -339,12 +365,25 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Toon nabijgelegen knooppunten overzicht</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>Herstel</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>Herstel knooppuntgegevens uit bestand</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>Herstel knooppuntgegevens</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>Wil je echt de knooppuntgegevens herstellen?
+De herstelde gegevens zullen alle bestaande knooppuntgegevens vervangen.</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>Knooppuntgegevens herstellen mislukt</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>Knooppuntgegevens zijn succesvol hersteld</value>
+  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Selecteer middenknopen</value>
   </data>

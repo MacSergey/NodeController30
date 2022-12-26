@@ -181,6 +181,7 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
     <value>Laske sivukaltevuus viereisten liittymien perusteella</value>
   </data>
   
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Palauta etäisyydet</value>
   </data>

@@ -208,6 +208,7 @@ Nepodařilo se načíst data všechny uzly.</value>
   <data name="Option_Collision" xml:space="preserve">
     <value>Kolize</value>
   </data>
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Resetovat odsazení</value>
   </data>

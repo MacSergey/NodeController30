@@ -213,6 +213,9 @@
   <data name="Option_Collision" xml:space="preserve">
     <value>碰撞</value>
   </data>
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>需要 Hide TMPE Crosswalks 模組</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>重設偏移</value>
   </data>

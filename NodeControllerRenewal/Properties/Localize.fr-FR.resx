@@ -285,6 +285,9 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   <data name="Option_Collision" xml:space="preserve">
     <value>Collision</value>
   </data>
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>Le mod Hide crosswalks est nécessaire</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Réinitialiser le décalage</value>
   </data>
@@ -372,7 +375,9 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>S'applique après le redémarrage du jeu</value>
   </data>
-  
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>Sauvegarde</value>
+  </data>
   <data name="Settings_CopyPathToClipboard" xml:space="preserve">
     <value>Copier le chemin dans le presse-papier</value>
   </data>
@@ -385,10 +390,18 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   <data name="Settings_DeleteDataMessage" xml:space="preserve">
     <value>Voulez-vous vraiment supprimer toutes les données ?</value>
   </data>
-  
-  
-  
-  
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>Extraire les données des nœuds vers un fichier</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>Extraire les données des nœuds</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>L'extraction a échoué</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>Extraction enregistrée avec succès dans le fichier</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Insertion d'un nœud</value>
   </data>

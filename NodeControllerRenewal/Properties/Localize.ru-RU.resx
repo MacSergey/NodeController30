@@ -285,6 +285,9 @@
   <data name="Option_Collision" xml:space="preserve">
     <value>Коллизия</value>
   </data>
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>Необходим мод Hide Crosswalks</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Отступ по умолчанию</value>
   </data>

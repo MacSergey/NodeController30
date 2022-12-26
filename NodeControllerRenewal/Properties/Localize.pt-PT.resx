@@ -208,6 +208,7 @@ O carregamento de todas marcações falhou.</value>
   <data name="Option_Collision" xml:space="preserve">
     <value>Colisão</value>
   </data>
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Repor deslocamento</value>
   </data>

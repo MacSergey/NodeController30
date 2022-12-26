@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>Esta acción no se puede deshacer.</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Se importaron los datos del Node Controller original.
 La compatibilidad con versiones anteriores no proporciona la transferencia de todos los datos, es posible que se requieran ajustes manuales.</value>
@@ -168,7 +170,10 @@ No se pudieron cargar datos para todos los nodos.</value>
     <value>[FIXED] Errores en el terreno que podrían aparecer al usar el mod Surface Painter.
 [TRANSLATION] Añadido idioma checo.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_3_3" xml:space="preserve">
+    <value>[FIXED] Compatibilidad con Adaptive Network mod que podría causar vacíos azules en lugar de nodos.
+[FIXED] Corregido error cuando el recurso de red perdido podría causar que la carga de datos NCR fallara.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Doblado</value>
   </data>
@@ -207,6 +212,9 @@ No se pudieron cargar datos para todos los nodos.</value>
   </data>
   <data name="Option_Collision" xml:space="preserve">
     <value>Colisión</value>
+  </data>
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>Se requiere el mod "Hide crosswalks"</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Restablecer separación</value>
@@ -295,15 +303,33 @@ No se pudieron cargar datos para todos los nodos.</value>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Se aplica después de reiniciar el juego</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>Copia de seguridad</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>Copiar la ruta al portapapeles</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>Eliminar datos de todos los nodos</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>Eliminar todos los datos</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>¿De verdad quieres borrar todos los datos?</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>Volcar datos de nodo a un archivo</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>Volcar datos de nodos</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>Volcado fallido</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>Volcado guardado correctamente en el archivo</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Insertar nodo</value>
   </data>
@@ -340,12 +366,25 @@ No se pudieron cargar datos para todos los nodos.</value>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostrar superposición de nodos cercanos</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>Restaurar</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>Restaurar datos de nodo desde archivo</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>Restaurar datos de nodo</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>¿De verdad deseas restaurar los datos de nodos?
+Los datos restaurados reemplazarán todos los datos de nodos existentes.</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>Recuperación de datos de nodos fallida</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>Los datos de nodo se han recuperado con éxito</value>
+  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Seleccionar nodos del medio</value>
   </data>

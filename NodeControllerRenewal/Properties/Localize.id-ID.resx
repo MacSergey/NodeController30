@@ -181,6 +181,7 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
     <value>Hitungkan twist berdasarkan titik hubung yang berdekatan</value>
   </data>
   
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Setel ulang pergeseran</value>
   </data>

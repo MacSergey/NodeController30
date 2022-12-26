@@ -213,6 +213,9 @@ Gagal memuatkan data untuk kesemua nod.</value>
   <data name="Option_Collision" xml:space="preserve">
     <value>Perlanggaran</value>
   </data>
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>Mod “Hide crosswalks” diperlukan</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Tetap semula ofset</value>
   </data>

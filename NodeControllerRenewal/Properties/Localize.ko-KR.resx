@@ -213,6 +213,7 @@
   <data name="Option_Collision" xml:space="preserve">
     <value>충돌</value>
   </data>
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>오프셋 초기화</value>
   </data>

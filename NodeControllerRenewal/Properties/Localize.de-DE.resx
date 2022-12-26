@@ -229,6 +229,9 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   <data name="Option_Collision" xml:space="preserve">
     <value>Kollision</value>
   </data>
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>Hide crosswalks mod erforderlich</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Versatz zurücksetzen</value>
   </data>

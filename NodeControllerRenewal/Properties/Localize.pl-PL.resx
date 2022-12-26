@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>Tej czynności nie można cofnąć.</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Dane z oryginalnego Node Controller'a zostały zaimportowane.
 Kompatybilność wsteczna nie pozwala na transfer wszystkich danych, mogą być konieczne ręczne korekty.</value>
@@ -208,6 +210,7 @@ Nie udało się załadować danych wszystkich węzłów.</value>
   <data name="Option_Collision" xml:space="preserve">
     <value>Kolizja</value>
   </data>
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Zresetuj przesunięcie</value>
   </data>
@@ -295,13 +298,27 @@ Nie udało się załadować danych wszystkich węzłów.</value>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Zostanie zastosowane po ponownym uruchomieniu gry</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>Kopia zapasowa</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>Skopiuj ścieżkę do schowka</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>Usuń dane ze wszystkich węzłów</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>Usuń wszystkie dane</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>Czy na pewno chcesz usunąć wszystkie dane?</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>Zrzuć dane węzłów do pliku</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>Zrzuć dane węzłów</value>
+  </data>
   
   
   <data name="Settings_InsertNode" xml:space="preserve">
