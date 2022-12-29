@@ -390,7 +390,7 @@ namespace NodeController
         public void Import(XElement config)
         {
             RemoveAll();
-            FromXml(config, new NetObjectsMap());
+            FromXml(config, new NetObjectsMap(), true);
         }
 
         [Flags]
