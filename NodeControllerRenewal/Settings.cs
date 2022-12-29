@@ -5,6 +5,7 @@ using ModsCommon;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using NodeController.UI;
+using NodeController.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +55,15 @@ namespace NodeController
             _ => OptionVisibility.Hidden,
         };
 
-        public static OptionVisibility GetOptionVisibility(Options option) => (OptionVisibility)OptionsVisibility[option].value;
+        public static OptionVisibility GetOptionVisibility(Options option)
+        {
+            var visible = (OptionVisibility)OptionsVisibility[option].value;
+            if (option != Options.Marking || DependencyUtilities.HideCrossings?.isEnabled == true || visible != OptionVisibility.Visible)
+                return visible;
+            else
+                return OptionVisibility.Hidden;
+
+        }
         public static void SetOptionVisibility(Options option, OptionVisibility visibility) => OptionsVisibility[option].value = (int)visibility;
 
         protected UIAdvancedHelper ShortcutsTab => GetTab(nameof(ShortcutsTab));

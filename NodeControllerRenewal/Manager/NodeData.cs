@@ -189,7 +189,7 @@ namespace NodeController
         {
             try
             {
-#if DEBUG
+#if DEBUG && EXTRALOG
                 SingletonMod<Mod>.Logger.Debug($"Node #{Id} after calculate node");
 #endif
                 UpdateSegmentEnds();
@@ -205,7 +205,7 @@ namespace NodeController
         {
             try
             {
-#if DEBUG
+#if DEBUG && EXTRALOG
                 SingletonMod<Mod>.Logger.Debug($"Node #{Id} early update");
 #endif
                 State |= State.Dirty;
@@ -251,7 +251,7 @@ namespace NodeController
                         newSegmentEnd.ResetToDefault(style, true);
                 }
             }
-#if DEBUG
+#if DEBUG && EXTRALOG
             if (SegmentEnds.Count == 0)
                 SingletonMod<Mod>.Logger.Debug($"Node #{Id} Segments: {string.Join(", ", newSegmentEnds.Keys.Select(k => k.ToString()).ToArray())}");
             else
@@ -298,7 +298,7 @@ namespace NodeController
         private void UpdateFlags()
         {
             ref var node = ref Id.GetNode();
-#if DEBUG
+#if DEBUG && EXTRALOG
             var oldFlags = node.m_flags;
 #endif
             //it causes junction voids
@@ -327,7 +327,7 @@ namespace NodeController
                 node.m_flags |= NetNode.Flags.Moveable;
             else
                 node.m_flags &= ~NetNode.Flags.Moveable;
-#if DEBUG
+#if DEBUG && EXTRALOG
             var set = node.m_flags & ~oldFlags;
             var reset = oldFlags & ~node.m_flags;
             SingletonMod<Mod>.Logger.Debug($"Node #{Id} Flags={node.m_flags};\tSet={set};\tReset={reset}");
@@ -353,7 +353,7 @@ namespace NodeController
             {
                 if ((State & State.Error) != 0)
                     return;
-#if DEBUG
+#if DEBUG && EXTRALOG
                 SingletonMod<Mod>.Logger.Debug($"Node #{Id} late update");
 #endif
                 var firstMain = FirstMainSegmentEnd;
@@ -489,7 +489,7 @@ namespace NodeController
             if (type == Style?.Type && !force)
                 return;
 
-#if DEBUG
+#if DEBUG && EXTRALOG
             SingletonMod<Mod>.Logger.Debug($"Node #{Id} set Type={type}");
 #endif
             Style = type switch
