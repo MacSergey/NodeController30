@@ -285,6 +285,9 @@ Failed to load data for all nodes.</value>
   <data name="Option_Collision" xml:space="preserve">
     <value>Collision</value>
   </data>
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>Hide crosswalks mod required</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Reset offset</value>
   </data>
