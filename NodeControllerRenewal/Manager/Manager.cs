@@ -15,7 +15,7 @@ namespace NodeController
 {
     public class Manager : IManager
     {
-        private static bool InitialUpdateInProgress = false;
+        private static InitialState InitialUpdateState = InitialState.NotRunning;
         public static int Errors { get; set; } = 0;
         public static bool HasErrors => Errors != 0;
         public static void SetFailed()
@@ -29,14 +29,14 @@ namespace NodeController
         {
             SingletonMod<Mod>.Logger.Debug("Create manager");
             Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
-            InitialUpdateInProgress = false;
+            InitialUpdateState = InitialState.NotRunning;
         }
 
         private void Clear()
         {
             SingletonMod<Mod>.Logger.Debug("Clear manager");
             Buffer = new NodeData[NetManager.MAX_NODE_COUNT];
-            InitialUpdateInProgress = false;
+            InitialUpdateState = InitialState.NotRunning;
         }
         public void RemoveAll()
         {
@@ -182,19 +182,19 @@ namespace NodeController
         public void StartInitialUpdate(ushort[] toUpdateIds, bool initial)
         {
             SingletonMod<Mod>.Logger.Debug("Start initial update");
-            InitialUpdateInProgress = initial;
+            InitialUpdateState = initial ? InitialState.InProgress : InitialState.NotRunning;
             Update(Options.UpdateThisNow | Options.UpdateThisLater, toUpdateIds);
         }
         public void FinishInitialUpdate()
         {
             SingletonMod<Mod>.Logger.Debug("Finish initial update");
-            InitialUpdateInProgress = false;
+            InitialUpdateState = InitialState.Finished;
         }
 
         public void Update(ushort nodeId) => Update(Options.UpdateAll, nodeId);
         private void Update(Options options, params ushort[] toUpdateIds)
         {
-            if((options & Options.UpdateThisNow) != 0)
+            if ((options & Options.UpdateThisNow) != 0)
             {
                 GetUpdateList(toUpdateIds, options & ~Options.UpdateAllLater, out var nodeIds, out var segmentIds);
                 UpdateImpl(nodeIds.ToArray(), segmentIds.ToArray());
@@ -204,11 +204,19 @@ namespace NodeController
             {
                 GetUpdateList(toUpdateIds, options & ~Options.UpdateThisNow, out var nodeIds, out _);
 
-                SimulationManager.instance.AddAction(() =>
+                if (InitialUpdateState == InitialState.InProgress)
                 {
                     foreach (var nodeId in nodeIds)
                         NetManager.instance.UpdateNode(nodeId);
-                });
+                }
+                else
+                {
+                    SimulationManager.instance.AddAction(() =>
+                    {
+                        foreach (var nodeId in nodeIds)
+                            NetManager.instance.UpdateNode(nodeId);
+                    });
+                }
             }
         }
         private void GetUpdateList(ushort[] toUpdateIds, Options options, out HashSet<ushort> nodeIds, out HashSet<ushort> segmentIds)
@@ -245,8 +253,11 @@ namespace NodeController
 #if DEBUG
             var id = DateTime.Now.Millisecond;
             var sw = Stopwatch.StartNew();
-
+#if EXTRALOG
             SingletonMod<Mod>.Logger.Debug($"Update #{id} start\nNodes:{string.Join(", ", nodeIds.Select(i => i.ToString()).ToArray())}\nSegments:{string.Join(", ", segmentIds.Select(i => i.ToString()).ToArray())}");
+#else
+            SingletonMod<Mod>.Logger.Debug($"Update #{id} start\tNodes:{nodeIds.Length}\tSegments:{segmentIds.Length}");
+#endif
 #endif
             var manager = SingletonManager<Manager>.Instance;
 
@@ -256,14 +267,14 @@ namespace NodeController
                     nodeData.EarlyUpdate();
             }
 
-#if DEBUG
+#if DEBUG && EXTRALOG
             var updateDone = sw.ElapsedTicks;
 #endif
 
             foreach (var segmentId in segmentIds)
                 SegmentEndData.UpdateBeziers(segmentId);
 
-#if DEBUG
+#if DEBUG && EXTRALOG
             var bezierDone = sw.ElapsedTicks;
 #endif
 
@@ -273,14 +284,14 @@ namespace NodeController
                     SegmentEndData.UpdateMinLimits(nodeData);
             }
 
-#if DEBUG
+#if DEBUG && EXTRALOG
             var minDone = sw.ElapsedTicks;
 #endif
 
             foreach (var segmentId in segmentIds)
                 SegmentEndData.UpdateMaxLimits(segmentId);
 
-#if DEBUG
+#if DEBUG && EXTRALOG
             var maxDone = sw.ElapsedTicks;
 #endif
 
@@ -291,15 +302,30 @@ namespace NodeController
             }
 
 #if DEBUG
+#if EXTRALOG
             var lateUpdateDone = sw.ElapsedTicks;
 
-            SingletonMod<Mod>.Logger.Debug($"Update #{id} finish {sw.ElapsedTicks / 10000f}ms; Early={updateDone / 10000f}ms Bezier={(bezierDone - updateDone) / 10000f}ms Min={(minDone - bezierDone) / 10000f}ms Max={(maxDone - minDone) / 10000f}ms Late={(lateUpdateDone - maxDone) / 10000f}ms");
+            SingletonMod<Mod>.Logger.Debug($"Update #{id} finished after {sw.ElapsedTicks / 10000f}ms; Early={updateDone / 10000f}ms Bezier={(bezierDone - updateDone) / 10000f}ms Min={(minDone - bezierDone) / 10000f}ms Max={(maxDone - minDone) / 10000f}ms Late={(lateUpdateDone - maxDone) / 10000f}ms");
+#else
+            SingletonMod<Mod>.Logger.Debug($"Update #{id} finished after {sw.ElapsedTicks / 10000f}ms");
+#endif
 #endif
         }
 
         public static void SimulationStep()
         {
-            if (!InitialUpdateInProgress)
+            if (InitialUpdateState == InitialState.InProgress)
+            {
+                SingletonMod<Mod>.Logger.Debug($"Initial update is in progress, Simulation step skipped");
+                return;
+            }
+            else if (InitialUpdateState == InitialState.Finished)
+            {
+                SingletonMod<Mod>.Logger.Debug($"Initial update finished, the first Simulation step skipped");
+                InitialUpdateState = InitialState.NotRunning;
+                return;
+            }
+            else
             {
                 try
                 {
@@ -310,7 +336,7 @@ namespace NodeController
                 }
                 catch (Exception error)
                 {
-                    SingletonMod<Mod>.Logger.Error("Simulation step error" ,error);
+                    SingletonMod<Mod>.Logger.Error("Simulation step error", error);
                 }
             }
         }
@@ -390,7 +416,7 @@ namespace NodeController
         public void Import(XElement config)
         {
             RemoveAll();
-            FromXml(config, new NetObjectsMap());
+            FromXml(config, new NetObjectsMap(), true);
         }
 
         [Flags]
@@ -408,6 +434,13 @@ namespace NodeController
             UpdateAll = UpdateAllLater | UpdateThisNow,
 
             Default = CreateThis | UpdateAll,
+        }
+
+        private enum InitialState
+        {
+            NotRunning,
+            InProgress,
+            Finished,
         }
     }
 

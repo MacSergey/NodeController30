@@ -171,6 +171,11 @@ namespace NodeController
 		public static string Option_Collision => LocaleManager.GetString("Option_Collision", Culture);
 
 		/// <summary>
+		/// Hide crosswalks mod required
+		/// </summary>
+		public static string Option_HideCrosswalkModRequired => LocaleManager.GetString("Option_HideCrosswalkModRequired", Culture);
+
+		/// <summary>
 		/// Reset offset
 		/// </summary>
 		public static string Option_KeepDefault => LocaleManager.GetString("Option_KeepDefault", Culture);

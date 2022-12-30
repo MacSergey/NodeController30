@@ -552,15 +552,50 @@ namespace NodeController
             else
                 return null;
         }
-        private BoolOptionPanel GetMarkingsOption(UIComponent parent, SupportOption totalSupport)
+        private EditorPropertyPanel GetMarkingsOption(UIComponent parent, SupportOption totalSupport)
         {
-            if (SupportMarking != SupportOption.None && Data.SegmentEndDatas.Any(s => IsRoadPredicate(s)) && HideCrosswalksEnable)
+            if (SupportMarking != SupportOption.None && Data.SegmentEndDatas.Any(s => IsRoadPredicate(s)))
             {
-                var hideMarking = ComponentPool.Get<BoolOptionPanel>(parent);
-                hideMarking.Text = Localize.Option_Marking;
-                hideMarking.Init(Data, SupportMarking, totalSupport, MarkingsGetter, MarkingsSetter, IsRoadPredicate);
+                if (HideCrosswalksEnable)
+                {
+                    var hideMarking = ComponentPool.Get<BoolOptionPanel>(parent);
+                    hideMarking.Text = Localize.Option_Marking;
+                    hideMarking.Init(Data, SupportMarking, totalSupport, MarkingsGetter, MarkingsSetter, IsRoadPredicate);
 
-                return hideMarking;
+                    return hideMarking;
+                }
+                else
+                {
+                    var hideMarking = ComponentPool.Get<ButtonPropertyPanel>(parent);
+                    hideMarking.Text = Localize.Option_Marking;
+                    hideMarking.ButtonText = Localize.Option_HideCrosswalkModRequired;
+                    hideMarking.WordWrap = true;
+                    hideMarking.autoSize = true;
+                    hideMarking.Init();
+                    hideMarking.autoSize = false;
+                    var actualWidth = hideMarking.Width;
+
+                    if (totalSupport == SupportOption.Group)
+                        hideMarking.Width = 100f;
+                    else
+                    {
+                        var count = 0;
+                        if ((totalSupport & SupportOption.Group) != 0)
+                            count += 1;
+                        if ((totalSupport & SupportOption.Individually) != 0)
+                            count += Data.SegmentCount;
+
+                        hideMarking.Width = count * 50f + (count - 1) * 5f;
+                    }
+                    if (hideMarking.Width < actualWidth)
+                        hideMarking.Init(50f);
+                    else
+                        hideMarking.Init();
+
+                    hideMarking.OnButtonClick += () => DependencyUtilities.HideCrosswalksId.GetWorkshopUrl().OpenUrl();
+
+                    return hideMarking;
+                }
             }
             else
                 return null;

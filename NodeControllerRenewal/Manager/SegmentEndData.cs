@@ -369,7 +369,7 @@ namespace NodeController
                     if ((end.NodeData.State & State.Error) != 0)
                         return;
                 }
-#if DEBUG
+#if DEBUG && EXTRALOG
                 SingletonMod<Mod>.Logger.Debug($"Segment #{segmentId} update beziers");
 #endif
                 CalculateSegmentBeziers(segmentId, out var bezier, out var leftBezier, out var rightBezier);
@@ -386,7 +386,7 @@ namespace NodeController
                     end.LeftSide.SetTrajectory(rightBezier.Invert());
                     end.RightSide.SetTrajectory(leftBezier.Invert());
                 }
-#if DEBUG
+#if DEBUG && EXTRALOG
                 SingletonMod<Mod>.Logger.Debug($"Segment #{segmentId}\nCentre={bezier}\nLeft={leftBezier}\nRight={rightBezier}");
 #endif
             }
@@ -523,7 +523,7 @@ namespace NodeController
             {
                 if ((data.State & State.Error) != 0)
                     return;
-#if DEBUG
+#if DEBUG && EXTRALOG
                 SingletonMod<Mod>.Logger.Debug($"Node #{data.Id} update min limits");
 #endif
                 var endDatas = data.SegmentEndDatas.OrderBy(s => s.AbsoluteAngle).ToArray();
@@ -822,7 +822,7 @@ namespace NodeController
                     if ((end.NodeData.State & State.Error) != 0)
                         return;
                 }
-#if DEBUG
+#if DEBUG && EXTRALOG
                 SingletonMod<Mod>.Logger.Debug($"Segment #{segmentId} update max limits");
 #endif
 
@@ -946,7 +946,7 @@ namespace NodeController
             MinRotate = Mathf.Clamp(Mathf.Max(startLeft, endRight), NodeStyle.MinRotate, NodeStyle.MaxRotate);
             MaxRotate = Mathf.Clamp(Mathf.Min(endLeft, startRight), NodeStyle.MinRotate, NodeStyle.MaxRotate);
 
-#if DEBUG
+#if DEBUG && EXTRALOG
             if (Settings.ExtraDebug && Settings.SegmentId == Id)
             {
                 SingletonMod<Mod>.Logger.Debug($"LS: {LeftSide.MinPos}, LE: {LeftSide.MaxPos}, RS: {RightSide.MinPos}, RE: {RightSide.MaxPos}");
