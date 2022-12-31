@@ -202,6 +202,10 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   </data>
   
   
+  
+  
+  
+  
   <data name="Option_Offset" xml:space="preserve">
     <value>Etäisyys</value>
   </data>
@@ -240,15 +244,6 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>Tyyli</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Tasainen</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Kalteva</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Sivukaltevuus</value>

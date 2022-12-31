@@ -227,6 +227,10 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcare</value>
   </data>
+  
+  
+  
+  
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Mai multe opțiuni</value>
   </data>
@@ -271,15 +275,6 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>Stil</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Plat</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Pantă</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Răsucit</value>

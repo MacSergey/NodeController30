@@ -234,6 +234,10 @@
   <data name="Option_Marking" xml:space="preserve">
     <value>標線</value>
   </data>
+  
+  
+  
+  
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>更多選項</value>
   </data>
@@ -278,15 +282,6 @@
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>樣式</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>平坦</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>斜坡</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>扭轉</value>

@@ -234,6 +234,18 @@ No se pudieron cargar datos para todos los nodos.</value>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcado</value>
   </data>
+  <data name="Option_Mode" xml:space="preserve">
+    <value>Modo</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>Plano</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>Forma Libre</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>Pendiente</value>
+  </data>
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Más opciones</value>
   </data>
@@ -279,15 +291,6 @@ No se pudieron cargar datos para todos los nodos.</value>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
   </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>Estilo</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Plano</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Cuesta</value>
-  </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Girar</value>
   </data>
@@ -319,16 +322,16 @@ No se pudieron cargar datos para todos los nodos.</value>
     <value>¿De verdad quieres borrar todos los datos?</value>
   </data>
   <data name="Settings_DumpDataButton" xml:space="preserve">
-    <value>Volcar datos de nodo a un archivo</value>
+    <value>Exportar datos de nodos a un archivo</value>
   </data>
   <data name="Settings_DumpDataCaption" xml:space="preserve">
-    <value>Volcar datos de nodos</value>
+    <value>Exportar datos de nodos</value>
   </data>
   <data name="Settings_DumpMessageFailed" xml:space="preserve">
-    <value>Volcado fallido</value>
+    <value>Fallo al exportar datos</value>
   </data>
   <data name="Settings_DumpMessageSuccess" xml:space="preserve">
-    <value>Volcado guardado correctamente en el archivo</value>
+    <value>Datos guardados correctamente en el archivo</value>
   </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Insertar nodo</value>
@@ -370,10 +373,10 @@ No se pudieron cargar datos para todos los nodos.</value>
     <value>Restaurar</value>
   </data>
   <data name="Settings_RestoreDataButton" xml:space="preserve">
-    <value>Restaurar datos de nodo desde archivo</value>
+    <value>Restaurar datos de nodos desde archivo</value>
   </data>
   <data name="Settings_RestoreDataCaption" xml:space="preserve">
-    <value>Restaurar datos de nodo</value>
+    <value>Restaurar datos de nodos</value>
   </data>
   <data name="Settings_RestoreDataMessage" xml:space="preserve">
     <value>¿De verdad deseas restaurar los datos de nodos?
@@ -383,7 +386,7 @@ Los datos restaurados reemplazarán todos los datos de nodos existentes.</value>
     <value>Recuperación de datos de nodos fallida</value>
   </data>
   <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
-    <value>Los datos de nodo se han recuperado con éxito</value>
+    <value>Los datos de nodos se han recuperado con éxito</value>
   </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Seleccionar nodos del medio</value>

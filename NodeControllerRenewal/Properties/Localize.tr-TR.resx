@@ -202,6 +202,10 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   </data>
   
   
+  
+  
+  
+  
   <data name="Option_Offset" xml:space="preserve">
     <value>Dengele</value>
   </data>
@@ -240,15 +244,6 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>Stil</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Düz</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Yokuş</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Bükük</value>

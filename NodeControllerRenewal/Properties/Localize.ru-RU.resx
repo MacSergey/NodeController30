@@ -306,6 +306,18 @@
   <data name="Option_Marking" xml:space="preserve">
     <value>Разметка</value>
   </data>
+  <data name="Option_Mode" xml:space="preserve">
+    <value>Режим</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>Плоский</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>Свободный</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>Наклон</value>
+  </data>
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Дополнительные параметры</value>
   </data>
@@ -350,15 +362,6 @@
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>Стиль</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Плоский</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Наклонный</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Скручивание</value>

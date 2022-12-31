@@ -227,6 +227,10 @@ O carregamento de todas marcações falhou.</value>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcação</value>
   </data>
+  
+  
+  
+  
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Mais opções</value>
   </data>
@@ -271,15 +275,6 @@ O carregamento de todas marcações falhou.</value>
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>Estilo</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Plano</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Declive</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Torcer</value>

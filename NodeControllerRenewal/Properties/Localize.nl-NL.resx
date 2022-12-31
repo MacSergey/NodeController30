@@ -233,6 +233,18 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
   <data name="Option_Marking" xml:space="preserve">
     <value>Markering</value>
   </data>
+  <data name="Option_Mode" xml:space="preserve">
+    <value>Modus</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>Vlak</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>Vrije vorm</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>Helling</value>
+  </data>
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Meer opties</value>
   </data>
@@ -277,15 +289,6 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>Stijl</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Plat</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Helling</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Kantelen</value>

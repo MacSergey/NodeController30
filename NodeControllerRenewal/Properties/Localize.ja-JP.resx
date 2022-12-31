@@ -234,6 +234,10 @@
   <data name="Option_Marking" xml:space="preserve">
     <value>横断歩道の表示</value>
   </data>
+  
+  
+  
+  
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>オプションを展開</value>
   </data>
@@ -278,15 +282,6 @@
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>スタイル</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>フラット</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>スロープ</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>ツイスト(バンク)</value>

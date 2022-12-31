@@ -190,6 +190,10 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   <data name="Option_Marking" xml:space="preserve">
     <value>Marķēšana</value>
   </data>
+  
+  
+  
+  
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Papildu opcijas</value>
   </data>
@@ -226,15 +230,6 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>Stils</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Līdzens</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Наклонный</value>
   </data>
   
   <data name="Option_TwistFormat" xml:space="preserve">

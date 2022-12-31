@@ -249,7 +249,7 @@
     <value>碰撞</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
-    <value>需要 Hide TMPE crosswalks 模组</value>
+    <value>你需要 Hide TMPE crosswalks 模组</value>
   </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>重置偏移</value>
@@ -268,6 +268,18 @@
   </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>标线</value>
+  </data>
+  <data name="Option_Mode" xml:space="preserve">
+    <value>模式</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>平坦</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>自由形状</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>斜坡</value>
   </data>
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>显示更多选项</value>
@@ -313,15 +325,6 @@
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>样式</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>平坦</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>斜坡</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>扭曲</value>

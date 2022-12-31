@@ -213,7 +213,9 @@
   <data name="Option_Collision" xml:space="preserve">
     <value>충돌</value>
   </data>
-  
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>Hide crosswalks 모드 필요</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>오프셋 초기화</value>
   </data>
@@ -232,6 +234,10 @@
   <data name="Option_Marking" xml:space="preserve">
     <value>표지</value>
   </data>
+  
+  
+  
+  
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>더 많은 설정</value>
   </data>
@@ -276,15 +282,6 @@
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>스타일</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>평탄</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>경사</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>비틀기</value>

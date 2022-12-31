@@ -306,6 +306,10 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marquage</value>
   </data>
+  
+  
+  
+  
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Plus d'options</value>
   </data>
@@ -350,15 +354,6 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>Style</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Plat</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>En pente</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Torsion</value>

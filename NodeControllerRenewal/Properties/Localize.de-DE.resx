@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>Diese Aktion kann nicht rückgängig gemacht werden.</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Original Node Controller Daten wurden importiert.
 Abwärtskompatibilität bietet nicht die Übernahme aller Daten und muss daher manuell angepasst werden.</value>
@@ -250,6 +252,18 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   <data name="Option_Marking" xml:space="preserve">
     <value>Markierung</value>
   </data>
+  <data name="Option_Mode" xml:space="preserve">
+    <value>Modus</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>Flach</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>Freie Form</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>Gefälle</value>
+  </data>
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Weitere Optionen</value>
   </data>
@@ -295,15 +309,6 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0} %</value>
   </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>Stil</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Flach</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Geneigt</value>
-  </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Querneigung</value>
   </data>
@@ -319,15 +324,33 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Wird nach dem Neustart des Spiels angewendet</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>Backup</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>Pfad in die Zwischenablage kopiert</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>Die Daten aller Netzwerk-Knoten löschen</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>Alle Daten löschen</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>Möchtest du wirklich alle Daten löschen?</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>Daten des Netzwerk-Knotens in einer Datei speichern</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>Daten des Netzwerk-Knotens kopieren</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>Kopie fehlgeschlagen</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>Die Kopie wurde erfolgreich in einer Datei gespeichert</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Netzwerk-Knoten einfügen</value>
   </data>
@@ -364,12 +387,25 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Zeige Hervorhebung für nahe Netzwerk-Knoten</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>wiederherstellen</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>Daten des Netzwerk-Knotens aus einer Datei wiederherstellen</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>Daten des Netzwerk-Knotens wiederherstellen</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>Möchtest du wirklich die Daten des Netzwerk-Knotens wiederherstellen?
+Die wiederhergestellten Daten werden den jetzigen Netzwerk-Knoten überschreiben.</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>Daten des Netzwerk-Knotens konnten nicht wiederhergestellt werden</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>Daten des Netzwerk-Knotens erfolgreich wiederhergestellt</value>
+  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Mittige Netzwerk-Knoten zwischen zwei Straßen anwählen</value>
   </data>

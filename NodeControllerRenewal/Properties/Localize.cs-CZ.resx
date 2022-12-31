@@ -227,6 +227,10 @@ Nepodařilo se načíst data všechny uzly.</value>
   <data name="Option_Marking" xml:space="preserve">
     <value>Značení</value>
   </data>
+  
+  
+  
+  
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Další možnosti</value>
   </data>
@@ -271,15 +275,6 @@ Nepodařilo se načíst data všechny uzly.</value>
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>Styl</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Rovný</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Nakloněný</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Náklon</value>

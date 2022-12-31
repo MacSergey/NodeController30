@@ -202,6 +202,10 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   </data>
   
   
+  
+  
+  
+  
   <data name="Option_Offset" xml:space="preserve">
     <value>Pemunduran</value>
   </data>
@@ -240,15 +244,6 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>Gaya</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Datar</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Lereng</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Twist</value>

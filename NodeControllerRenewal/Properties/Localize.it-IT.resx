@@ -227,6 +227,10 @@ Impossibile caricare i dati per tutti i nodi.</value>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcatura</value>
   </data>
+  
+  
+  
+  
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Altre opzioni</value>
   </data>
@@ -271,15 +275,6 @@ Impossibile caricare i dati per tutti i nodi.</value>
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>Stile</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Pianura</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Pendio</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Torsione</value>
