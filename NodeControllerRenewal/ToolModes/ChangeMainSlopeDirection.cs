@@ -127,7 +127,7 @@ namespace NodeController
 
                 if (IsHoverSegmentEnd)
                 {
-                    var bezier = new BezierTrajectory(SelectedSegmentEnd.Position, -SelectedSegmentEnd.Direction, HoverSegmentEnd.Position, -HoverSegmentEnd.Direction);
+                    var bezier = new BezierTrajectory(SelectedSegmentEnd.Position, -SelectedSegmentEnd.Direction, HoverSegmentEnd.Position, -HoverSegmentEnd.Direction, true, true, true);
                     bezier.Render(new OverlayData(cameraInfo) { Width = width, Color = Colors.Yellow, RenderLimit = underground });
                 }
                 else

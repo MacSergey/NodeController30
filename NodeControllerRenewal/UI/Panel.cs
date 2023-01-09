@@ -14,6 +14,7 @@ namespace NodeController.UI
         private PropertyGroupPanel Content { get; set; }
         private PanelHeader Header { get; set; }
         private NodeTypePropertyPanel TypeProperty { get; set; }
+        private BoolListPropertyPanel FreeFormProperty { get; set; }
         private List<EditorItem> Properties { get; set; } = new List<EditorItem>();
         private bool ShowHidden { get; set; }
 
@@ -40,6 +41,7 @@ namespace NodeController.UI
         {
             Header = ComponentPool.Get<PanelHeader>(Content);
             Header.Target = this;
+            Header.backgroundSprite = "ButtonWhite";
             Header.Init();
         }
 
@@ -72,6 +74,7 @@ namespace NodeController.UI
             Content.StopLayout();
 
             ComponentPool.Free(TypeProperty);
+            ComponentPool.Free(FreeFormProperty);
             ClearProperties();
 
             Content.StartLayout();
@@ -107,6 +110,7 @@ namespace NodeController.UI
                 Content.StartLayout();
             };
         }
+
         public void RefreshHeader() => Header.Refresh();
         public override void RefreshPanel()
         {
@@ -120,6 +124,7 @@ namespace NodeController.UI
         {
             base.Update();
             Content.color = Data == null || (Data.State & State.Fail) == 0 ? DefaultColor : ErrorColor;
+            Header.color = Data == null || Data.Mode != Mode.FreeForm ? DefaultColor : Colors.Orange;
         }
     }
     public class PanelHeader : HeaderMoveablePanel<PanelHeaderContent>

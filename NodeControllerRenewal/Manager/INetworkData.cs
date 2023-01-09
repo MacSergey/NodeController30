@@ -17,5 +17,7 @@ namespace NodeController
         public bool? NoMarkings { get; set; }
         public bool? Collision { get; set; }
         public bool? ForceNodeLess { get; set; }
+        public float DeltaHeight { get; set; }
+        public bool? FollowSlope { get; set; }
     }
 }

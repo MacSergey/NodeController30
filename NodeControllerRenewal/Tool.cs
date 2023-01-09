@@ -133,18 +133,18 @@ namespace NodeController
             Panel.RefreshPanel();
         }
 
-        public void ChangeNodeStyle()
-        {
-            if (Data.Style.SupportSlopeJunction != SupportOption.None)
-            {
-                Data.IsSlopeJunctions = !Data.IsSlopeJunctions;
-                Data.UpdateNode();
-                Panel.SetPanel();
-            }
-        }
+        //public void ChangeNodeStyle()
+        //{
+        //    if (Data.Style.SupportMode != SupportOption.None)
+        //    {
+        //        Data.IsSlopeJunctions = !Data.IsSlopeJunctions;
+        //        Data.UpdateNode();
+        //        Panel.SetPanel();
+        //    }
+        //}
         public void ChangeMainRoadMode()
         {
-            if (Data.IsJunction && Data.Style.SupportSlopeJunction != SupportOption.None)
+            if (Data.IsJunction && Data.Style.SupportMode != SupportOption.None)
             {
                 Data.MainRoad.Auto = !Data.MainRoad.Auto;
                 Data.UpdateNode();

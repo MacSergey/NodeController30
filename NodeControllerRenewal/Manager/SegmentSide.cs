@@ -111,10 +111,10 @@ namespace NodeController
             public void Update()
             {
                 _minPos = _rawTrajectory.Position(_minT);
-                _minDir = _rawTrajectory.Tangent(_minT);
-                
+                _minDir = _rawTrajectory.Tangent(_minT).normalized;
+
                 _maxPos = _rawTrajectory.Position(_maxT);
-                _maxDir = -_rawTrajectory.Tangent(_maxT);
+                _maxDir = -_rawTrajectory.Tangent(_maxT).normalized;
             }
         }
 
@@ -219,7 +219,7 @@ namespace NodeController
             position = _temp._rawTrajectory.Position(t);
             direction = _temp._rawTrajectory.Tangent(t).normalized;
 
-            if (!SegmentData.IsSlope)
+            if (SegmentData.Mode == Mode.Flat)
             {
                 position.y = SegmentData.NodeId.GetNode().m_position.y;
                 direction = direction.MakeFlatNormalized();
@@ -239,6 +239,8 @@ namespace NodeController
 
                     position.y += (Type == SideType.Left ? -1 : 1) * SegmentData.Id.GetSegment().Info.m_halfWidth * ratio;
                 }
+                if (SegmentData.Mode == Mode.FreeForm)
+                    position.y += SegmentData.DeltaHeight;
             }
 
             direction = NormalizeXZ(direction);
@@ -257,7 +259,7 @@ namespace NodeController
             var position = _temp._rawTrajectory.Position(t);
             var direction = _temp._rawTrajectory.Tangent(t).normalized;
 
-            if (!SegmentData.IsSlope)
+            if (SegmentData.Mode == Mode.Flat)
             {
                 position.y = SegmentData.NodeId.GetNode().m_position.y;
                 direction = direction.MakeFlatNormalized();
@@ -279,6 +281,9 @@ namespace NodeController
                 plane.Raycast(new Ray(point, Vector3.up), out rayT);
                 point += Vector3.up * rayT;
                 direction = point - position;
+
+                if (SegmentData.NodeData.Mode == Mode.FreeForm)
+                    position.y += SegmentData.DeltaHeight;
             }
 
             direction = NormalizeXZ(direction);

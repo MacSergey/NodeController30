@@ -8,11 +8,10 @@ using ModsCommon.Utilities;
 using NodeController.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
-using UnityEngine.Networking.Types;
 using static ColossalFramework.Math.VectorUtils;
 using static ModsCommon.Utilities.VectorUtilsExtensions;
 
@@ -94,6 +93,11 @@ namespace NodeController
             }
         }
 
+        public Mode Mode
+        {
+            get => Style.GetMode();
+            set => Style.SetMode(value);
+        }
         public float Offset
         {
             get => Style.GetOffset();
@@ -144,10 +148,15 @@ namespace NodeController
             get => Style.GetForceNodeLess();
             set => Style.SetForceNodeLess(value);
         }
-        public bool IsSlopeJunctions
+        public float DeltaHeight
         {
-            get => Style.GetIsSlopeJunctions();
-            set => Style.SetIsSlopeJunctions(value);
+            get => Style.GetDeltaHeight();
+            set => Style.SetDeltaHeight(value);
+        }
+        public bool? FollowSlope
+        {
+            get => Style.GetFollowSlope();
+            set => Style.SetFollowSlope(value);
         }
 
         public bool IsRoad => SegmentEndDatas.All(s => s.IsRoad);
@@ -158,7 +167,7 @@ namespace NodeController
         public bool IsBendNode => Type == NodeStyleType.Bend;
         public bool IsJunctionNode => !IsMiddleNode && !IsBendNode && !IsEndNode;
         public bool IsMoveableEnds => Style.IsMoveable;
-        public bool AllowSetMainRoad => IsJunction && IsSlopeJunctions && !IsDecoration;
+        public bool AllowSetMainRoad => IsJunction && Mode != Mode.Flat && !IsDecoration;
         public bool IsDecoration => SegmentEndDatas.Any(s => s.IsDecoration);
 
 
@@ -339,7 +348,7 @@ namespace NodeController
             foreach (var segmentEnd in SegmentEndDatas)
             {
                 segmentEnd.IsMainRoad = IsMainRoad(segmentEnd.Id);
-                if (!segmentEnd.IsMainRoad && !segmentEnd.IsDecoration)
+                if (Mode != Mode.FreeForm && !segmentEnd.IsMainRoad && !segmentEnd.IsDecoration)
                 {
                     segmentEnd.TwistAngle = Style.DefaultTwist;
                     segmentEnd.SlopeAngle = Style.DefaultSlope;
@@ -389,9 +398,9 @@ namespace NodeController
                     firstMain.AfterCalculate();
                     secondMain.AfterCalculate();
 
-                    MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, false);
-                    var leftBezier = new BezierTrajectory(firstLeftPos, -firstLeftDir, secondRightPos, -secondRightDir, false);
-                    var rightBezier = new BezierTrajectory(secondLeftPos, -secondLeftDir, firstRightPos, -firstRightDir, false);
+                    MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, true, true, true);
+                    var leftBezier = new BezierTrajectory(firstLeftPos, -firstLeftDir, secondRightPos, -secondRightDir, true, true, true);
+                    var rightBezier = new BezierTrajectory(secondLeftPos, -secondLeftDir, firstRightPos, -firstRightDir, true, true, true);
 
                     foreach (var segmentEnd in SegmentEndDatas)
                     {
@@ -402,7 +411,7 @@ namespace NodeController
                         }
                     }
 
-                    if (IsSlopeJunctions)
+                    if (Mode != Mode.Flat)
                         position = (leftBezier.Position(0.5f) + rightBezier.Position(0.5f)) * 0.5f;
                     else
                         position = SegmentEndDatas.AverageOrDefault(s => s.Position, Id.GetNode().m_position);
@@ -608,6 +617,17 @@ namespace NodeController
         Error = 4,
         Fail = 8,
     }
+    public enum Mode
+    {
+        [Description(nameof(Localize.Option_ModeFlat))]
+        Flat = 0,
+
+        [Description(nameof(Localize.Option_ModeSlope))]
+        Slope = 1,
+
+        [Description(nameof(Localize.Option_ModeFreeForm))]
+        FreeForm = 2,
+    }
 
     public class NodeTypePropertyPanel : EnumOncePropertyPanel<NodeStyleType, NodeTypePropertyPanel.NodeTypeDropDown>
     {
@@ -615,5 +635,12 @@ namespace NodeController
         protected override bool IsEqual(NodeStyleType first, NodeStyleType second) => first == second;
         public class NodeTypeDropDown : UIDropDown<NodeStyleType> { }
         protected override string GetDescription(NodeStyleType value) => value.Description();
+    }
+    public class ModePropertyPanel : EnumOncePropertyPanel<Mode, ModePropertyPanel.ModeSegmented>
+    {
+        protected override string GetDescription(Mode value) => value.Description();
+        protected override bool IsEqual(Mode first, Mode second) => first == second;
+
+        public class ModeSegmented : UIOnceSegmented<Mode> { }
     }
 }

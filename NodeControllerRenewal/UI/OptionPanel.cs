@@ -152,6 +152,7 @@ namespace NodeController.UI
 
         private MinMaxGetter MinMax { get; set; }
         public string NumberFormat { get; set; }
+        public float WheelStep { get; set; } = 1f;
 
         public void Init(NodeData data, SupportOption option, SupportOption totalOption, Getter getter, Setter setter, MinMaxGetter minMax, EnableGetter enableGetter)
         {
@@ -162,6 +163,7 @@ namespace NodeController.UI
         {
             base.DeInit();
             NumberFormat = null;
+            WheelStep = 1f;
         }
 
         protected override void InitItem(INetworkData data, FloatUITextField item)
@@ -171,7 +173,7 @@ namespace NodeController.UI
             item.CheckMin = true;
             item.CheckMax = true;
             item.UseWheel = true;
-            item.WheelStep = 1f;
+            item.WheelStep = WheelStep;
             item.WheelTip = Settings.ShowToolTip;
 
             if (MinMax != null)

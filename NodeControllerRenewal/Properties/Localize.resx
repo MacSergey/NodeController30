@@ -306,6 +306,18 @@ Failed to load data for all nodes.</value>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marking</value>
   </data>
+  <data name="Option_Mode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>Flat</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>FreeForm</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>Slope</value>
+  </data>
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>More options</value>
   </data>
@@ -350,15 +362,6 @@ Failed to load data for all nodes.</value>
   </data>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
-  </data>
-  <data name="Option_Style" xml:space="preserve">
-    <value>Style</value>
-  </data>
-  <data name="Option_StyleFlat" xml:space="preserve">
-    <value>Flat</value>
-  </data>
-  <data name="Option_StyleSlope" xml:space="preserve">
-    <value>Slope</value>
   </data>
   <data name="Option_Twist" xml:space="preserve">
     <value>Twist</value>

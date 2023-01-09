@@ -142,7 +142,7 @@ namespace NodeController
             set => Stretch = value / 100f;
         }
         public bool? NoMarkings { get; set; }
-        public bool IsSlope { get; set; }
+        public Mode Mode { get; set; }
         public bool? Collision { get; set; }
 
         private bool _forceNodeLess;
@@ -151,6 +151,8 @@ namespace NodeController
             get => _forceNodeLess;
             set => SetForceNodeless(value == true, true);
         }
+        public float DeltaHeight { get; set; }
+        public bool? FollowSlope { get; set; }
         private bool KeepDefaults
         {
             get => _keepDefault /*|| IsUntouchable*/;
@@ -158,8 +160,8 @@ namespace NodeController
         }
 
 
-        public float WidthRatio => Stretch * (IsSlope ? Mathf.Cos(TwistAngle * Mathf.Deg2Rad) : 1f);
-        public float HeightRatio => IsSlope ? Mathf.Tan(TwistAngle * Mathf.Deg2Rad) : 0f;
+        public float WidthRatio => Stretch * (Mode != Mode.Flat ? Mathf.Cos(TwistAngle * Mathf.Deg2Rad) : 1f);
+        public float HeightRatio => Mode != Mode.Flat ? Mathf.Tan(TwistAngle * Mathf.Deg2Rad) : 0f;
 
         public bool IsStartBorderOffset => Offset == MinOffset;
         public bool IsEndBorderOffset => Offset == MaxOffset;
@@ -278,8 +280,14 @@ namespace NodeController
             if (style.SupportCollision == SupportOption.None || force || IsUntouchable)
                 Collision = style.GetDefaultCollision(this);
 
-            if (style.SupportSlopeJunction == SupportOption.None || force || IsUntouchable)
-                IsSlope = style.DefaultSlopeJunction;
+            if(style.SupportFollowMainSlope == SupportOption.None || force || IsUntouchable)
+                FollowSlope = style.DefaultFollowSlope;
+
+            if (style.SupportDeltaHeight == SupportOption.None || force || IsUntouchable)
+                DeltaHeight = style.DefaultDeltaHeight;
+
+            if (style.SupportMode == SupportOption.None || force || IsUntouchable)
+                Mode = style.DefaultMode;
 
             if (FinalNodeLess)
             {
@@ -404,7 +412,7 @@ namespace NodeController
         {
             GetSegmentPosAndDir(segmentId, out var startPos, out var startDir, out var endPos, out var endDir);
 
-            bezier = new BezierTrajectory(startPos, startDir, endPos, endDir);
+            bezier = new BezierTrajectory(startPos, startDir, endPos, endDir, true, true, true);
 
             var startNormal = Vector3.Cross(startDir, Vector3.up).normalized;
             var endNormal = Vector3.Cross(endDir, Vector3.up).normalized;
@@ -418,8 +426,8 @@ namespace NodeController
 
             GetSegmentWidth(segmentId, out var startHalfWidth, out var endHalfWidth);
 
-            leftSide = new BezierTrajectory(startPos + startNormal * startHalfWidth, startDir, endPos - endNormal * endHalfWidth, endDir);
-            rightSide = new BezierTrajectory(startPos - startNormal * startHalfWidth, startDir, endPos + endNormal * endHalfWidth, endDir);
+            leftSide = new BezierTrajectory(startPos + startNormal * startHalfWidth, startDir, endPos - endNormal * endHalfWidth, endDir, true, true, true);
+            rightSide = new BezierTrajectory(startPos - startNormal * startHalfWidth, startDir, endPos + endNormal * endHalfWidth, endDir, true, true, true);
         }
         private static void GetSegmentPosAndDir(ushort segmentId, out Vector3 startPos, out Vector3 startDir, out Vector3 endPos, out Vector3 endDir)
         {
@@ -580,7 +588,7 @@ namespace NodeController
                             var prevBezier = endDatas[prevI].LeftSide.MainTrajectory;
                             var nextBezier = endDatas[nextI].RightSide.MainTrajectory;
 
-                            var limitBezier = new BezierTrajectory(prevBezier.Position(prevMin), -prevBezier.Tangent(prevMin), nextBezier.Position(nextMin), -nextBezier.Tangent(nextMin));
+                            var limitBezier = new BezierTrajectory(prevBezier.Position(prevMin), -prevBezier.Tangent(prevMin), nextBezier.Position(nextMin), -nextBezier.Tangent(nextMin), false, true, true);
 
                             if (Intersection.CalculateSingle(endDatas[currentI].LeftSide.MainTrajectory, limitBezier, out var leftT, out _))
                             {
@@ -777,7 +785,7 @@ namespace NodeController
                 var mirrorNormal = Vector3.Cross(mirror, Vector3.up);
                 var halfWidth = LengthXZ(sub.StartPosition - point);
 
-                sub = new BezierTrajectory(point + (side == SideType.Left ? halfWidth : -halfWidth) * mirrorNormal, mirror, sub.EndPosition, sub.EndDirection);
+                sub = new BezierTrajectory(point + (side == SideType.Left ? halfWidth : -halfWidth) * mirrorNormal, mirror, sub.EndPosition, sub.EndDirection, true, true, true);
             }
 
             if (Intersection.CalculateSingle(main, sub, out var t, out _))
@@ -898,7 +906,7 @@ namespace NodeController
             CalculateSegmentLimit();
             CalculateOffset();
 
-            if (IsDecoration)
+            if (IsDecoration || IsMainRoad || (Mode == Mode.FreeForm && FollowSlope == false))
             {
                 LeftSide.CalculateMain(out _, out _);
                 RightSide.CalculateMain(out _, out _);
@@ -1201,7 +1209,7 @@ namespace NodeController
         }
         private void RenderSide(SegmentSide side, OverlayData data)
         {
-            var bezier = new BezierTrajectory(side.StartPos, side.StartDir, side.EndPos, side.EndDir);
+            var bezier = new BezierTrajectory(side.StartPos, side.StartDir, side.EndPos, side.EndDir, true, true, true);
             bezier.Render(data);
         }
         private void RenderEnd(OverlayData data)
@@ -1231,7 +1239,7 @@ namespace NodeController
             config.AddAttr("NM", NoMarkings == true ? 1 : 0);
             config.AddAttr("CL", Collision == true ? 1 : 0);
             config.AddAttr("FNL", ForceNodeLess == true ? 1 : 0);
-            config.AddAttr("IS", IsSlope ? 1 : 0);
+            config.AddAttr("IS", Mode);
             config.AddAttr("KD", KeepDefaults ? 1 : 0);
 
             return config;
@@ -1260,8 +1268,8 @@ namespace NodeController
             if (style.SupportForceNodeless != SupportOption.None && !IsUntouchable)
                 SetForceNodeless(config.GetAttrValue("FNL", style.DefaultForceNodeLess ? 1 : 0) == 1);
 
-            if (style.SupportSlopeJunction != SupportOption.None)
-                IsSlope = config.GetAttrValue("IS", style.DefaultSlopeJunction ? 1 : 0) == 1;
+            if (style.SupportMode != SupportOption.None)
+                Mode = (Mode)config.GetAttrValue("IS", (int)style.DefaultMode);
 
             KeepDefaults = style.OnlyKeepDefault && config.GetAttrValue("KD", 0) == 1;
 
