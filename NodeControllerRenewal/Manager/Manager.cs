@@ -301,6 +301,15 @@ namespace NodeController
                     nodeData.LateUpdate();
             }
 
+            foreach (var segmentId in segmentIds)
+                SegmentEndData.AfterCalculate(segmentId);
+
+            foreach (var nodeId in nodeIds)
+            {
+                if (TryGetNodeData(nodeId, out var nodeData))
+                    nodeData.AfterUpdate();
+            }
+
 #if DEBUG
 #if EXTRALOG
             var lateUpdateDone = sw.ElapsedTicks;

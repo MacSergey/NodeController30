@@ -8,11 +8,10 @@ using ModsCommon.Utilities;
 using NodeController.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
-using UnityEngine.Networking.Types;
 using static ColossalFramework.Math.VectorUtils;
 using static ModsCommon.Utilities.VectorUtilsExtensions;
 
@@ -94,6 +93,11 @@ namespace NodeController
             }
         }
 
+        public Mode Mode
+        {
+            get => Style.GetMode();
+            set => Style.SetMode(value);
+        }
         public float Offset
         {
             get => Style.GetOffset();
@@ -144,10 +148,15 @@ namespace NodeController
             get => Style.GetForceNodeLess();
             set => Style.SetForceNodeLess(value);
         }
-        public bool IsSlopeJunctions
+        public float DeltaHeight
         {
-            get => Style.GetIsSlopeJunctions();
-            set => Style.SetIsSlopeJunctions(value);
+            get => Style.GetDeltaHeight();
+            set => Style.SetDeltaHeight(value);
+        }
+        public bool? FollowSlope
+        {
+            get => Style.GetFollowSlope();
+            set => Style.SetFollowSlope(value);
         }
 
         public bool IsRoad => SegmentEndDatas.All(s => s.IsRoad);
@@ -158,7 +167,7 @@ namespace NodeController
         public bool IsBendNode => Type == NodeStyleType.Bend;
         public bool IsJunctionNode => !IsMiddleNode && !IsBendNode && !IsEndNode;
         public bool IsMoveableEnds => Style.IsMoveable;
-        public bool AllowSetMainRoad => IsJunction && IsSlopeJunctions && !IsDecoration;
+        public bool AllowSetMainRoad => IsJunction && Mode != Mode.Flat && !IsDecoration;
         public bool IsDecoration => SegmentEndDatas.Any(s => s.IsDecoration);
 
 
@@ -339,7 +348,7 @@ namespace NodeController
             foreach (var segmentEnd in SegmentEndDatas)
             {
                 segmentEnd.IsMainRoad = IsMainRoad(segmentEnd.Id);
-                if (!segmentEnd.IsMainRoad && !segmentEnd.IsDecoration)
+                if (Mode != Mode.FreeForm && !segmentEnd.IsMainRoad && !segmentEnd.IsDecoration)
                 {
                     segmentEnd.TwistAngle = Style.DefaultTwist;
                     segmentEnd.SlopeAngle = Style.DefaultSlope;
@@ -359,21 +368,65 @@ namespace NodeController
                 var firstMain = FirstMainSegmentEnd;
                 var secondMain = SecondMainSegmentEnd;
 
+                if (IsEndNode)
+                {
+                    firstMain.CalculateMain();
+                }
+                else if (IsMiddleNode)
+                {
+                    firstMain.CalculateMain();
+                    secondMain.CalculateMain();
+                }
+                else if(IsTwoRoads)
+                {
+                    firstMain.CalculateMain();
+                    secondMain.CalculateMain();
+                }
+                else
+                {
+                    firstMain.CalculateMain();
+                    secondMain.CalculateMain();
+
+                    var leftBezier = new BezierTrajectory(firstMain.LeftSide.TempPos, -firstMain.LeftSide.TempDir, secondMain.RightSide.TempPos, -secondMain.RightSide.TempDir, true, true, true);
+                    var rightBezier = new BezierTrajectory(secondMain.LeftSide.TempPos, -secondMain.LeftSide.TempDir, firstMain.RightSide.TempPos, -firstMain.RightSide.TempDir, true, true, true);
+
+                    foreach (var segmentEnd in SegmentEndDatas)
+                    {
+                        if (!MainRoad.IsMain(segmentEnd.Id))
+                            segmentEnd.CalculateNotMain(leftBezier, rightBezier);
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                State = State.Error;
+                SingletonMod<Mod>.Logger.Error($"Node #{Id} update failed", error);
+            }
+        }
+
+        public void AfterUpdate()
+        {
+            try
+            {
+                if ((State & State.Error) != 0)
+                    return;
+#if DEBUG && EXTRALOG
+                SingletonMod<Mod>.Logger.Debug($"Node #{Id} late update");
+#endif
+                var firstMain = FirstMainSegmentEnd;
+                var secondMain = SecondMainSegmentEnd;
+
                 var position = Vector3.zero;
                 var centrePositions = new Dictionary<ushort, Vector3>();
 
                 if (IsEndNode)
                 {
-                    firstMain.CalculateMain(out _, out _, out _, out _);
                     firstMain.AfterCalculate();
 
                     position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
                 }
                 else if (IsMiddleNode)
                 {
-                    firstMain.CalculateMain(out _, out _, out _, out _);
-                    secondMain.CalculateMain(out _, out _, out _, out _);
-
                     SegmentEndData.FixMiddle(firstMain, secondMain);
 
                     firstMain.AfterCalculate();
@@ -383,26 +436,21 @@ namespace NodeController
                 }
                 else
                 {
-                    firstMain.CalculateMain(out var firstLeftPos, out var firstLeftDir, out var firstRightPos, out var firstRightDir);
-                    secondMain.CalculateMain(out var secondLeftPos, out var secondLeftDir, out var secondRightPos, out var secondRightDir);
-
                     firstMain.AfterCalculate();
                     secondMain.AfterCalculate();
-
-                    MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, false);
-                    var leftBezier = new BezierTrajectory(firstLeftPos, -firstLeftDir, secondRightPos, -secondRightDir, false);
-                    var rightBezier = new BezierTrajectory(secondLeftPos, -secondLeftDir, firstRightPos, -firstRightDir, false);
 
                     foreach (var segmentEnd in SegmentEndDatas)
                     {
                         if (!MainRoad.IsMain(segmentEnd.Id))
-                        {
-                            segmentEnd.CalculateNotMain(leftBezier, rightBezier);
                             segmentEnd.AfterCalculate();
-                        }
                     }
 
-                    if (IsSlopeJunctions)
+                    MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, true, true, true);
+
+                    var leftBezier = new BezierTrajectory(firstMain.LeftSide.TempPos, -firstMain.LeftSide.TempDir, secondMain.RightSide.TempPos, -secondMain.RightSide.TempDir, true, true, true);
+                    var rightBezier = new BezierTrajectory(secondMain.LeftSide.TempPos, -secondMain.LeftSide.TempDir, firstMain.RightSide.TempPos, -firstMain.RightSide.TempDir, true, true, true);
+
+                    if (Mode != Mode.Flat)
                         position = (leftBezier.Position(0.5f) + rightBezier.Position(0.5f)) * 0.5f;
                     else
                         position = SegmentEndDatas.AverageOrDefault(s => s.Position, Id.GetNode().m_position);
@@ -608,6 +656,17 @@ namespace NodeController
         Error = 4,
         Fail = 8,
     }
+    public enum Mode
+    {
+        [Description(nameof(Localize.Option_ModeFlat))]
+        Flat = 0,
+
+        [Description(nameof(Localize.Option_ModeSlope))]
+        Slope = 1,
+
+        [Description(nameof(Localize.Option_ModeFreeForm))]
+        FreeForm = 2,
+    }
 
     public class NodeTypePropertyPanel : EnumOncePropertyPanel<NodeStyleType, NodeTypePropertyPanel.NodeTypeDropDown>
     {
@@ -615,5 +674,12 @@ namespace NodeController
         protected override bool IsEqual(NodeStyleType first, NodeStyleType second) => first == second;
         public class NodeTypeDropDown : UIDropDown<NodeStyleType> { }
         protected override string GetDescription(NodeStyleType value) => value.Description();
+    }
+    public class ModePropertyPanel : EnumOncePropertyPanel<Mode, ModePropertyPanel.ModeSegmented>
+    {
+        protected override string GetDescription(Mode value) => value.Description();
+        protected override bool IsEqual(Mode first, Mode second) => first == second;
+
+        public class ModeSegmented : UIOnceSegmented<Mode> { }
     }
 }

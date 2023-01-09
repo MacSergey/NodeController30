@@ -56,7 +56,7 @@ namespace NodeController.Patches
         public static bool GetFlatJunctions(bool flatJunctions, ushort segmentId, ushort nodeId)
         {
             if (SingletonManager<Manager>.Instance.TryGetFinalSegmentData(nodeId, segmentId, out var data))
-                return !data.IsSlope;
+                return data.Mode == Mode.Flat;
             else
                 return flatJunctions;
         }

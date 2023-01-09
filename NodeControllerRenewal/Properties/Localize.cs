@@ -206,6 +206,26 @@ namespace NodeController
 		public static string Option_Marking => LocaleManager.GetString("Option_Marking", Culture);
 
 		/// <summary>
+		/// Mode
+		/// </summary>
+		public static string Option_Mode => LocaleManager.GetString("Option_Mode", Culture);
+
+		/// <summary>
+		/// Flat
+		/// </summary>
+		public static string Option_ModeFlat => LocaleManager.GetString("Option_ModeFlat", Culture);
+
+		/// <summary>
+		/// FreeForm
+		/// </summary>
+		public static string Option_ModeFreeForm => LocaleManager.GetString("Option_ModeFreeForm", Culture);
+
+		/// <summary>
+		/// Slope
+		/// </summary>
+		public static string Option_ModeSlope => LocaleManager.GetString("Option_ModeSlope", Culture);
+
+		/// <summary>
 		/// More options
 		/// </summary>
 		public static string Option_MoreOptions => LocaleManager.GetString("Option_MoreOptions", Culture);
@@ -279,21 +299,6 @@ namespace NodeController
 		/// {0}%
 		/// </summary>
 		public static string Option_StretchFormat => LocaleManager.GetString("Option_StretchFormat", Culture);
-
-		/// <summary>
-		/// Style
-		/// </summary>
-		public static string Option_Style => LocaleManager.GetString("Option_Style", Culture);
-
-		/// <summary>
-		/// Flat
-		/// </summary>
-		public static string Option_StyleFlat => LocaleManager.GetString("Option_StyleFlat", Culture);
-
-		/// <summary>
-		/// Slope
-		/// </summary>
-		public static string Option_StyleSlope => LocaleManager.GetString("Option_StyleSlope", Culture);
 
 		/// <summary>
 		/// Twist

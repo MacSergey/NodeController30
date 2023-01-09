@@ -20,7 +20,7 @@ namespace NodeController
         public static NodeControllerShortcut CalculateTwistByIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(CalculateTwistByIntersectionsShortcut), nameof(Localize.Setting_ShortcutCalculateTwistByIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.CalculateTwistByIntersections());
         public static NodeControllerShortcut SetTwistBetweenIntersectionsShortcut { get; } = new NodeControllerShortcut(nameof(SetTwistBetweenIntersectionsShortcut), nameof(Localize.Setting_ShortcutSetTwistBetweenIntersections), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.SetTwistBetweenIntersections());
 
-        public static NodeControllerShortcut ChangeNodeStyleShortcut { get; } = new NodeControllerShortcut(nameof(ChangeNodeStyleShortcut), nameof(Localize.Setting_ShortcutChangeNodeStyle), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeNodeStyle());
+        //public static NodeControllerShortcut ChangeNodeStyleShortcut { get; } = new NodeControllerShortcut(nameof(ChangeNodeStyleShortcut), nameof(Localize.Setting_ShortcutChangeNodeStyle), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeNodeStyle());
         public static NodeControllerShortcut ChangeMainRoadModeShortcut { get; } = new NodeControllerShortcut(nameof(ChangeMainRoadModeShortcut), nameof(Localize.Setting_ShortcutChangeMainRoadMode), SavedInputKey.Empty, () => SingletonTool<NodeControllerTool>.Instance.ChangeMainRoadMode());
 
 
@@ -52,7 +52,7 @@ namespace NodeController
                 yield return CalculateTwistByIntersectionsShortcut;
                 yield return SetTwistBetweenIntersectionsShortcut;
 
-                yield return ChangeNodeStyleShortcut;
+                //yield return ChangeNodeStyleShortcut;
                 yield return ChangeMainRoadModeShortcut;
             }
         }

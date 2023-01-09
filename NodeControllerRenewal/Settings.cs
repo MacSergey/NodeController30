@@ -138,7 +138,7 @@ namespace NodeController
             keymappings.AddKeymapping(EditNodeToolMode.CalculateTwistByNearbyShortcut);
             keymappings.AddKeymapping(EditNodeToolMode.CalculateTwistByIntersectionsShortcut);
             keymappings.AddKeymapping(EditNodeToolMode.SetTwistBetweenIntersectionsShortcut);
-            keymappings.AddKeymapping(EditNodeToolMode.ChangeNodeStyleShortcut);
+            //keymappings.AddKeymapping(EditNodeToolMode.ChangeNodeStyleShortcut);
             keymappings.AddKeymapping(EditNodeToolMode.ChangeMainRoadModeShortcut);
 
             keymappings.BindingChanged += OnBindingChanged;
