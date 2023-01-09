@@ -588,7 +588,7 @@ namespace NodeController
                             var prevBezier = endDatas[prevI].LeftSide.MainTrajectory;
                             var nextBezier = endDatas[nextI].RightSide.MainTrajectory;
 
-                            var limitBezier = new BezierTrajectory(prevBezier.Position(prevMin), -prevBezier.Tangent(prevMin), nextBezier.Position(nextMin), -nextBezier.Tangent(nextMin), false, true, true);
+                            var limitBezier = new BezierTrajectory(prevBezier.Position(prevMin), -prevBezier.Tangent(prevMin), nextBezier.Position(nextMin), -nextBezier.Tangent(nextMin), true, true, true);
 
                             if (Intersection.CalculateSingle(endDatas[currentI].LeftSide.MainTrajectory, limitBezier, out var leftT, out _))
                             {
