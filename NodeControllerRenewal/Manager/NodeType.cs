@@ -884,6 +884,7 @@ namespace NodeController
         public override SupportOption SupportShift => SupportOption.All;
         public override SupportOption SupportStretch => SupportOption.All;
         public override SupportOption SupportMode => SupportOption.Group;
+        public override SupportOption SupportDeltaHeight => SupportOption.All;
         public override bool IsMoveable => true;
 
         public BendNode(NodeData data) : base(data) { }

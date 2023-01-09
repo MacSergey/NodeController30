@@ -368,21 +368,65 @@ namespace NodeController
                 var firstMain = FirstMainSegmentEnd;
                 var secondMain = SecondMainSegmentEnd;
 
+                if (IsEndNode)
+                {
+                    firstMain.CalculateMain();
+                }
+                else if (IsMiddleNode)
+                {
+                    firstMain.CalculateMain();
+                    secondMain.CalculateMain();
+                }
+                else if(IsTwoRoads)
+                {
+                    firstMain.CalculateMain();
+                    secondMain.CalculateMain();
+                }
+                else
+                {
+                    firstMain.CalculateMain();
+                    secondMain.CalculateMain();
+
+                    var leftBezier = new BezierTrajectory(firstMain.LeftSide.TempPos, -firstMain.LeftSide.TempDir, secondMain.RightSide.TempPos, -secondMain.RightSide.TempDir, true, true, true);
+                    var rightBezier = new BezierTrajectory(secondMain.LeftSide.TempPos, -secondMain.LeftSide.TempDir, firstMain.RightSide.TempPos, -firstMain.RightSide.TempDir, true, true, true);
+
+                    foreach (var segmentEnd in SegmentEndDatas)
+                    {
+                        if (!MainRoad.IsMain(segmentEnd.Id))
+                            segmentEnd.CalculateNotMain(leftBezier, rightBezier);
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                State = State.Error;
+                SingletonMod<Mod>.Logger.Error($"Node #{Id} update failed", error);
+            }
+        }
+
+        public void AfterUpdate()
+        {
+            try
+            {
+                if ((State & State.Error) != 0)
+                    return;
+#if DEBUG && EXTRALOG
+                SingletonMod<Mod>.Logger.Debug($"Node #{Id} late update");
+#endif
+                var firstMain = FirstMainSegmentEnd;
+                var secondMain = SecondMainSegmentEnd;
+
                 var position = Vector3.zero;
                 var centrePositions = new Dictionary<ushort, Vector3>();
 
                 if (IsEndNode)
                 {
-                    firstMain.CalculateMain(out _, out _, out _, out _);
                     firstMain.AfterCalculate();
 
                     position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
                 }
                 else if (IsMiddleNode)
                 {
-                    firstMain.CalculateMain(out _, out _, out _, out _);
-                    secondMain.CalculateMain(out _, out _, out _, out _);
-
                     SegmentEndData.FixMiddle(firstMain, secondMain);
 
                     firstMain.AfterCalculate();
@@ -392,24 +436,19 @@ namespace NodeController
                 }
                 else
                 {
-                    firstMain.CalculateMain(out var firstLeftPos, out var firstLeftDir, out var firstRightPos, out var firstRightDir);
-                    secondMain.CalculateMain(out var secondLeftPos, out var secondLeftDir, out var secondRightPos, out var secondRightDir);
-
                     firstMain.AfterCalculate();
                     secondMain.AfterCalculate();
-
-                    MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, true, true, true);
-                    var leftBezier = new BezierTrajectory(firstLeftPos, -firstLeftDir, secondRightPos, -secondRightDir, true, true, true);
-                    var rightBezier = new BezierTrajectory(secondLeftPos, -secondLeftDir, firstRightPos, -firstRightDir, true, true, true);
 
                     foreach (var segmentEnd in SegmentEndDatas)
                     {
                         if (!MainRoad.IsMain(segmentEnd.Id))
-                        {
-                            segmentEnd.CalculateNotMain(leftBezier, rightBezier);
                             segmentEnd.AfterCalculate();
-                        }
                     }
+
+                    MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, true, true, true);
+
+                    var leftBezier = new BezierTrajectory(firstMain.LeftSide.TempPos, -firstMain.LeftSide.TempDir, secondMain.RightSide.TempPos, -secondMain.RightSide.TempDir, true, true, true);
+                    var rightBezier = new BezierTrajectory(secondMain.LeftSide.TempPos, -secondMain.LeftSide.TempDir, firstMain.RightSide.TempPos, -firstMain.RightSide.TempDir, true, true, true);
 
                     if (Mode != Mode.Flat)
                         position = (leftBezier.Position(0.5f) + rightBezier.Position(0.5f)) * 0.5f;

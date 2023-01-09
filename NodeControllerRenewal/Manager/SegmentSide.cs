@@ -26,6 +26,8 @@ namespace NodeController
 
             public Vector3 _position;
             public Vector3 _direction;
+            public Quaternion _deltaD;
+            public float _deltaH;
 
             public Vector3 _maxPos;
             public Vector3 _maxDir;
@@ -88,6 +90,8 @@ namespace NodeController
                 _minDir = default;
                 _position = default;
                 _direction = default;
+                _deltaH = default;
+                _deltaD = Quaternion.identity;
                 _maxPos = default;
                 _maxDir = default;
             }
@@ -175,11 +179,14 @@ namespace NodeController
         public Vector3 MaxDir => _temp._maxDir;
 
 
-        public Vector3 StartPos => _final._position;
+        public Vector3 StartPos => _final._position + new Vector3(0f, _final._deltaH, 0f);
         public Vector3 StartDir => _final._direction;
 
         public Vector3 EndPos => _final._maxPos;
         public Vector3 EndDir => _final._maxDir;
+
+        public Vector3 TempPos => _temp._position + new Vector3(0f, _temp._deltaH, 0f);
+        public Vector3 TempDir => _temp._direction;
 
         public Vector3 MarkerPos
         {
@@ -211,13 +218,13 @@ namespace NodeController
             _temp.Set(trajectory);
         }
 
-        public void CalculateMain(out Vector3 position, out Vector3 direction)
+        public void CalculateMain()
         {
             var nodeData = SegmentData.NodeData;
 
             var t = Mathf.Clamp(_temp._rawT, _temp._minT + (nodeData.IsMiddleNode || SegmentData.FinalNodeLess ? 0f : _temp.DeltaT), _temp._maxT - _temp.DeltaT);
-            position = _temp._rawTrajectory.Position(t);
-            direction = _temp._rawTrajectory.Tangent(t).normalized;
+            var position = _temp._rawTrajectory.Position(t);
+            var direction = _temp._rawTrajectory.Tangent(t).normalized;
 
             if (SegmentData.Mode == Mode.Flat)
             {
@@ -237,10 +244,10 @@ namespace NodeController
                     if (nodeData.Style.SupportStretch != SupportOption.None)
                         ratio *= SegmentData.Stretch;
 
-                    position.y += (Type == SideType.Left ? -1 : 1) * SegmentData.Id.GetSegment().Info.m_halfWidth * ratio;
+                    _temp._deltaH = (Type == SideType.Left ? -1 : 1) * SegmentData.Id.GetSegment().Info.m_halfWidth * ratio;
                 }
                 if (SegmentData.Mode == Mode.FreeForm)
-                    position.y += SegmentData.DeltaHeight;
+                    _temp._deltaH = SegmentData.DeltaHeight;
             }
 
             direction = NormalizeXZ(direction);
@@ -283,7 +290,7 @@ namespace NodeController
                 direction = point - position;
 
                 if (SegmentData.NodeData.Mode == Mode.FreeForm)
-                    position.y += SegmentData.DeltaHeight;
+                    _temp._deltaH = SegmentData.DeltaHeight;
             }
 
             direction = NormalizeXZ(direction);
@@ -338,6 +345,28 @@ namespace NodeController
             var secondFixDirection = -fixDirection;
             secondFixDirection.y = second._temp._direction.y;
             second._temp._direction = secondFixDirection;
+        }
+        public static void FixBend(SegmentSide left, SegmentSide right)
+        {
+            var isLeft = left.SegmentData.NodeData.IsBendNode && left.SegmentData.Mode != Mode.Flat;
+            var isRight = right.SegmentData.NodeData.IsBendNode && right.SegmentData.Mode != Mode.Flat;
+
+            if (isLeft == isRight)
+                return;
+            else if (isLeft)
+            {
+                var bezier = new BezierTrajectory(left.MainTrajectory.StartPosition, left.MainTrajectory.StartDirection, right._temp._position, right._temp._direction, true, true, true);
+                bezier.GetHitPosition(new Segment3(left._temp._position, left._temp._position + Vector3.up), out _, out var t, out _);
+                left._temp._position = bezier.Position(t);
+                left._temp._direction = bezier.Tangent(t).normalized;
+            }
+            else
+            {
+                var bezier = new BezierTrajectory(right.MainTrajectory.StartPosition, right.MainTrajectory.StartDirection, left._temp._position, left._temp._direction, true, true, true);
+                bezier.GetHitPosition(new Segment3(right._temp._position, right._temp._position + Vector3.up), out _, out var t, out _);
+                right._temp._position = bezier.Position(t);
+                right._temp._direction = bezier.Tangent(t).normalized;
+            }
         }
 
         public void Render(OverlayData dataAllow, OverlayData dataForbidden, OverlayData dataLimit)

@@ -54,8 +54,8 @@ namespace NodeController
         public BezierTrajectory RawSegmentBezier { get; private set; }
         public BezierTrajectory SegmentBezier { get; private set; }
 
-        private SegmentSide LeftSide { get; }
-        private SegmentSide RightSide { get; }
+        public SegmentSide LeftSide { get; }
+        public SegmentSide RightSide { get; }
 
         public float AbsoluteAngle { get; private set; }
         public float Weight { get; }
@@ -893,13 +893,13 @@ namespace NodeController
 
         #region CALCULATE
 
-        public void CalculateMain(out Vector3 leftPos, out Vector3 leftDir, out Vector3 rightPos, out Vector3 rightDir)
+        public void CalculateMain()
         {
             CalculateSegmentLimit();
             CalculateOffset();
 
-            LeftSide.CalculateMain(out leftPos, out leftDir);
-            RightSide.CalculateMain(out rightPos, out rightDir);
+            LeftSide.CalculateMain();
+            RightSide.CalculateMain();
         }
         public void CalculateNotMain(BezierTrajectory left, BezierTrajectory right)
         {
@@ -908,8 +908,8 @@ namespace NodeController
 
             if (IsDecoration || IsMainRoad || (Mode == Mode.FreeForm && FollowSlope == false))
             {
-                LeftSide.CalculateMain(out _, out _);
-                RightSide.CalculateMain(out _, out _);
+                LeftSide.CalculateMain();
+                RightSide.CalculateMain();
             }
             else
             {
@@ -917,7 +917,29 @@ namespace NodeController
                 RightSide.CalculateNotMain(left, right);
             }
         }
+        public static void AfterCalculate(ushort segmentId)
+        {
+            SegmentEndData start = null;
+            SegmentEndData end = null;
+            try
+            {
+                SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out start, out end);
+                if (start != null && end != null)
+                {
+                    SegmentSide.FixBend(start.LeftSide, end.RightSide);
+                    SegmentSide.FixBend(end.LeftSide, start.RightSide);
+                }
+            }
+            catch (Exception error)
+            {
+                if (start != null)
+                    start.NodeData.State = State.Error;
+                if (end != null)
+                    end.NodeData.State = State.Error;
 
+                SingletonMod<Mod>.Logger.Error($"Segment #{segmentId} after calculate failed", error);
+            }
+        }
         public void AfterCalculate()
         {
             LeftSide.AfterCalculate();
@@ -1230,6 +1252,7 @@ namespace NodeController
             var config = new XElement(XmlSection);
 
             config.AddAttr(nameof(Id), Id);
+            config.AddAttr("IS", Mode);
             config.AddAttr("O", _offsetValue);
             config.AddAttr("RA", _rotateValue);
             config.AddAttr("SA", SlopeAngle);
@@ -1239,14 +1262,18 @@ namespace NodeController
             config.AddAttr("NM", NoMarkings == true ? 1 : 0);
             config.AddAttr("CL", Collision == true ? 1 : 0);
             config.AddAttr("FNL", ForceNodeLess == true ? 1 : 0);
-            config.AddAttr("IS", Mode);
             config.AddAttr("KD", KeepDefaults ? 1 : 0);
+            config.AddAttr("FS", FollowSlope == true ? 1 : 0);
+            config.AddAttr("DH", DeltaHeight);
 
             return config;
         }
 
         public void FromXml(XElement config, NodeStyle style)
         {
+            if (style.SupportMode != SupportOption.None)
+                Mode = (Mode)config.GetAttrValue("IS", (int)style.DefaultMode);
+
             if (style.SupportSlope != SupportOption.None && !IsUntouchable)
                 SlopeAngle = config.GetAttrValue("SA", style.DefaultSlope);
 
@@ -1268,8 +1295,11 @@ namespace NodeController
             if (style.SupportForceNodeless != SupportOption.None && !IsUntouchable)
                 SetForceNodeless(config.GetAttrValue("FNL", style.DefaultForceNodeLess ? 1 : 0) == 1);
 
-            if (style.SupportMode != SupportOption.None)
-                Mode = (Mode)config.GetAttrValue("IS", (int)style.DefaultMode);
+            if (style.SupportFollowMainSlope != SupportOption.None && !IsUntouchable)
+                FollowSlope = config.GetAttrValue("FS", style.DefaultFollowSlope ? 1 : 0) == 1;
+
+            if (style.SupportDeltaHeight != SupportOption.None && !IsUntouchable)
+                DeltaHeight = config.GetAttrValue("DH", style.DefaultDeltaHeight);
 
             KeepDefaults = style.OnlyKeepDefault && config.GetAttrValue("KD", 0) == 1;
 
