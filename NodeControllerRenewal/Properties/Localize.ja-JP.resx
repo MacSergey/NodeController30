@@ -234,10 +234,18 @@
   <data name="Option_Marking" xml:space="preserve">
     <value>横断歩道の表示</value>
   </data>
-  
-  
-  
-  
+  <data name="Option_Mode" xml:space="preserve">
+    <value>モード</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>フラット</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>フリーフォーム</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>スロープ</value>
+  </data>
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>オプションを展開</value>
   </data>
