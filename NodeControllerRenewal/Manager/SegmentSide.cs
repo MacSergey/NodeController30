@@ -26,8 +26,9 @@ namespace NodeController
 
             public Vector3 _position;
             public Vector3 _direction;
-            public Quaternion _deltaD;
-            public float _deltaH;
+            public Quaternion _dirRotation;
+            public float _dirRatio;
+            public Vector3 _deltaPos;
 
             public Vector3 _maxPos;
             public Vector3 _maxDir;
@@ -90,8 +91,9 @@ namespace NodeController
                 _minDir = default;
                 _position = default;
                 _direction = default;
-                _deltaH = default;
-                _deltaD = Quaternion.identity;
+                _deltaPos = default;
+                _dirRotation = Quaternion.identity;
+                _dirRatio = 1;
                 _maxPos = default;
                 _maxDir = default;
             }
@@ -179,14 +181,14 @@ namespace NodeController
         public Vector3 MaxDir => _temp._maxDir;
 
 
-        public Vector3 StartPos => _final._position + new Vector3(0f, _final._deltaH, 0f);
-        public Vector3 StartDir => _final._direction;
+        public Vector3 StartPos => _final._position + _final._deltaPos;
+        public Vector3 StartDir => NormalizeXZ(_final._dirRotation * _final._direction) * _final._dirRatio;
 
         public Vector3 EndPos => _final._maxPos;
         public Vector3 EndDir => _final._maxDir;
 
-        public Vector3 TempPos => _temp._position + new Vector3(0f, _temp._deltaH, 0f);
-        public Vector3 TempDir => _temp._direction;
+        public Vector3 TempPos => _temp._position + _temp._deltaPos;
+        public Vector3 TempDir => NormalizeXZ(_temp._dirRotation * _temp._direction) * _temp._dirRatio;
 
         public Vector3 MarkerPos
         {
@@ -225,6 +227,9 @@ namespace NodeController
             var t = Mathf.Clamp(_temp._rawT, _temp._minT + (nodeData.IsMiddleNode || SegmentData.FinalNodeLess ? 0f : _temp.DeltaT), _temp._maxT - _temp.DeltaT);
             var position = _temp._rawTrajectory.Position(t);
             var direction = _temp._rawTrajectory.Tangent(t).normalized;
+            _temp._deltaPos = Vector3.zero;
+            _temp._dirRotation = Quaternion.identity;
+            _temp._dirRatio = 1f;
 
             if (SegmentData.Mode == Mode.Flat)
             {
@@ -235,8 +240,7 @@ namespace NodeController
             {
                 if (nodeData.Style.SupportSlope != SupportOption.None)
                 {
-                    var quaternion = Quaternion.AngleAxis(SegmentData.SlopeAngle, direction.MakeFlat().Turn90(true));
-                    direction = quaternion * direction;
+                    _temp._dirRotation = Quaternion.AngleAxis(SegmentData.SlopeAngle, direction.MakeFlat().Turn90(true));
                 }
                 if (nodeData.Style.SupportTwist != SupportOption.None)
                 {
@@ -244,18 +248,18 @@ namespace NodeController
                     if (nodeData.Style.SupportStretch != SupportOption.None)
                         ratio *= SegmentData.Stretch;
 
-                    _temp._deltaH = (Type == SideType.Left ? -1 : 1) * SegmentData.Id.GetSegment().Info.m_halfWidth * ratio;
+                    _temp._deltaPos.y += (Type == SideType.Left ? -1 : 1) * SegmentData.Id.GetSegment().Info.m_halfWidth * ratio;
                 }
                 if (SegmentData.Mode == Mode.FreeForm)
-                    _temp._deltaH = SegmentData.DeltaHeight;
+                    _temp._deltaPos.y += SegmentData.DeltaHeight;
             }
 
-            direction = NormalizeXZ(direction);
+
             if (nodeData.IsEndNode)
-                direction *= SegmentData.Stretch;
+                _temp._dirRatio *= SegmentData.Stretch;
 
             _temp._position = position;
-            _temp._direction = direction;
+            _temp._direction = direction.normalized;
         }
 
         public void CalculateNotMain(BezierTrajectory left, BezierTrajectory right)
@@ -265,6 +269,9 @@ namespace NodeController
             var t = Mathf.Clamp(_temp._rawT, _temp._minT + (nodeData.IsMiddleNode || SegmentData.FinalNodeLess ? 0f : _temp.DeltaT), _temp._maxT - _temp.DeltaT);
             var position = _temp._rawTrajectory.Position(t);
             var direction = _temp._rawTrajectory.Tangent(t).normalized;
+            _temp._deltaPos = Vector3.zero;
+            _temp._dirRotation = Quaternion.identity;
+            _temp._dirRatio = 1f;
 
             if (SegmentData.Mode == Mode.Flat)
             {
@@ -290,15 +297,14 @@ namespace NodeController
                 direction = point - position;
 
                 if (SegmentData.NodeData.Mode == Mode.FreeForm)
-                    _temp._deltaH = SegmentData.DeltaHeight;
+                    _temp._deltaPos.y += SegmentData.DeltaHeight;
             }
 
-            direction = NormalizeXZ(direction);
             if (nodeData.IsEndNode)
-                direction *= SegmentData.Stretch;
+                _temp._dirRatio *= SegmentData.Stretch;
 
             _temp._position = position;
-            _temp._direction = direction;
+            _temp._direction = direction.normalized;
         }
         public void GetClosest(BezierTrajectory left, BezierTrajectory right, Vector3 position, out Vector3 closestPos, out Vector3 closestDir, out float t)
         {
@@ -348,8 +354,8 @@ namespace NodeController
         }
         public static void FixBend(SegmentSide left, SegmentSide right)
         {
-            var isLeft = left.SegmentData.NodeData.IsBendNode && left.SegmentData.Mode != Mode.Flat;
-            var isRight = right.SegmentData.NodeData.IsBendNode && right.SegmentData.Mode != Mode.Flat;
+            var isLeft = left.SegmentData.NodeData.IsTwoRoads && left.SegmentData.Mode != Mode.Flat;
+            var isRight = right.SegmentData.NodeData.IsTwoRoads && right.SegmentData.Mode != Mode.Flat;
 
             if (isLeft == isRight)
                 return;

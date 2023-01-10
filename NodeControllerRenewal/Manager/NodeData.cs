@@ -377,7 +377,7 @@ namespace NodeController
                     firstMain.CalculateMain();
                     secondMain.CalculateMain();
                 }
-                else if(IsTwoRoads)
+                else if (IsTwoRoads)
                 {
                     firstMain.CalculateMain();
                     secondMain.CalculateMain();
@@ -387,8 +387,8 @@ namespace NodeController
                     firstMain.CalculateMain();
                     secondMain.CalculateMain();
 
-                    var leftBezier = new BezierTrajectory(firstMain.LeftSide.TempPos, -firstMain.LeftSide.TempDir, secondMain.RightSide.TempPos, -secondMain.RightSide.TempDir, true, true, true);
-                    var rightBezier = new BezierTrajectory(secondMain.LeftSide.TempPos, -secondMain.LeftSide.TempDir, firstMain.RightSide.TempPos, -firstMain.RightSide.TempDir, true, true, true);
+                    var leftBezier = new BezierTrajectory(firstMain.LeftSide.TempPos, -firstMain.LeftSide.TempDir, secondMain.RightSide.TempPos, -secondMain.RightSide.TempDir, false, true, true);
+                    var rightBezier = new BezierTrajectory(secondMain.LeftSide.TempPos, -secondMain.LeftSide.TempDir, firstMain.RightSide.TempPos, -firstMain.RightSide.TempDir, false, true, true);
 
                     foreach (var segmentEnd in SegmentEndDatas)
                     {
@@ -447,13 +447,10 @@ namespace NodeController
 
                     MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, true, true, true);
 
-                    var leftBezier = new BezierTrajectory(firstMain.LeftSide.TempPos, -firstMain.LeftSide.TempDir, secondMain.RightSide.TempPos, -secondMain.RightSide.TempDir, true, true, true);
-                    var rightBezier = new BezierTrajectory(secondMain.LeftSide.TempPos, -secondMain.LeftSide.TempDir, firstMain.RightSide.TempPos, -firstMain.RightSide.TempDir, true, true, true);
+                    var leftBezier = new BezierTrajectory(firstMain.LeftSide.TempPos, -firstMain.LeftSide.TempDir, secondMain.RightSide.TempPos, -secondMain.RightSide.TempDir, false, true, true);
+                    var rightBezier = new BezierTrajectory(secondMain.LeftSide.TempPos, -secondMain.LeftSide.TempDir, firstMain.RightSide.TempPos, -firstMain.RightSide.TempDir, false, true, true);
 
-                    if (Mode != Mode.Flat)
-                        position = (leftBezier.Position(0.5f) + rightBezier.Position(0.5f)) * 0.5f;
-                    else
-                        position = SegmentEndDatas.AverageOrDefault(s => s.Position, Id.GetNode().m_position);
+                    position = (leftBezier.Position(0.5f) + rightBezier.Position(0.5f)) * 0.5f;
 
                     foreach (var segmentEnd1 in SegmentEndDatas)
                     {
