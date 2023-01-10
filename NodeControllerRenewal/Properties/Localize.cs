@@ -171,6 +171,16 @@ namespace NodeController
 		public static string Option_Collision => LocaleManager.GetString("Option_Collision", Culture);
 
 		/// <summary>
+		/// Delta height
+		/// </summary>
+		public static string Option_DeltaHeight => LocaleManager.GetString("Option_DeltaHeight", Culture);
+
+		/// <summary>
+		/// Follow main slope
+		/// </summary>
+		public static string Option_FollowSlope => LocaleManager.GetString("Option_FollowSlope", Culture);
+
+		/// <summary>
 		/// Hide crosswalks mod required
 		/// </summary>
 		public static string Option_HideCrosswalkModRequired => LocaleManager.GetString("Option_HideCrosswalkModRequired", Culture);
@@ -216,7 +226,7 @@ namespace NodeController
 		public static string Option_ModeFlat => LocaleManager.GetString("Option_ModeFlat", Culture);
 
 		/// <summary>
-		/// FreeForm
+		/// Free form
 		/// </summary>
 		public static string Option_ModeFreeForm => LocaleManager.GetString("Option_ModeFreeForm", Culture);
 
