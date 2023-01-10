@@ -248,6 +248,12 @@
   <data name="Option_Collision" xml:space="preserve">
     <value>碰撞</value>
   </data>
+  <data name="Option_DeltaHeight" xml:space="preserve">
+    <value>三角形高度</value>
+  </data>
+  <data name="Option_FollowSlope" xml:space="preserve">
+    <value>跟随主斜坡</value>
+  </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>你需要 Hide TMPE crosswalks 模组</value>
   </data>

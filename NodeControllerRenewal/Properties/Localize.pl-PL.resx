@@ -211,6 +211,8 @@ Nie udało się załadować danych wszystkich węzłów.</value>
     <value>Kolizja</value>
   </data>
   
+  
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Zresetuj przesunięcie</value>
   </data>

@@ -213,6 +213,12 @@ No se pudieron cargar datos para todos los nodos.</value>
   <data name="Option_Collision" xml:space="preserve">
     <value>Colisión</value>
   </data>
+  <data name="Option_DeltaHeight" xml:space="preserve">
+    <value>Diferencia de altura</value>
+  </data>
+  <data name="Option_FollowSlope" xml:space="preserve">
+    <value>Seguir pendiente principal</value>
+  </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Se requiere el mod "Hide crosswalks"</value>
   </data>

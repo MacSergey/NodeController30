@@ -209,6 +209,8 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
     <value>Coliziuni</value>
   </data>
   
+  
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Resetare offset</value>
   </data>

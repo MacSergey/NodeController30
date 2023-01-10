@@ -213,6 +213,12 @@ Gagal memuatkan data untuk kesemua nod.</value>
   <data name="Option_Collision" xml:space="preserve">
     <value>Perlanggaran</value>
   </data>
+  <data name="Option_DeltaHeight" xml:space="preserve">
+    <value>Ketinggian delta</value>
+  </data>
+  <data name="Option_FollowSlope" xml:space="preserve">
+    <value>Ikut lereng utama</value>
+  </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Mod “Hide crosswalks” diperlukan</value>
   </data>

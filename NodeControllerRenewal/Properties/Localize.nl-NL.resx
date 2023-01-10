@@ -212,6 +212,12 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
   <data name="Option_Collision" xml:space="preserve">
     <value>Botsing</value>
   </data>
+  <data name="Option_DeltaHeight" xml:space="preserve">
+    <value>Deltahoogte</value>
+  </data>
+  <data name="Option_FollowSlope" xml:space="preserve">
+    <value>Hoofdhelling volgen</value>
+  </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Hide crosswalks mod vereist</value>
   </data>

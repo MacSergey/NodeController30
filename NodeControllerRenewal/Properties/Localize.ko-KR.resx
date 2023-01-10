@@ -213,6 +213,8 @@
   <data name="Option_Collision" xml:space="preserve">
     <value>충돌</value>
   </data>
+  
+  
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Hide crosswalks 모드 필요</value>
   </data>

@@ -182,6 +182,8 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   </data>
   
   
+  
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Merkezi sıfırla</value>
   </data>

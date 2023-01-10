@@ -213,6 +213,12 @@
   <data name="Option_Collision" xml:space="preserve">
     <value>衝突判定</value>
   </data>
+  <data name="Option_DeltaHeight" xml:space="preserve">
+    <value>デルタの高さ</value>
+  </data>
+  <data name="Option_FollowSlope" xml:space="preserve">
+    <value>メインのスロープに追従</value>
+  </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Hide Crosswalks MODが必要</value>
   </data>

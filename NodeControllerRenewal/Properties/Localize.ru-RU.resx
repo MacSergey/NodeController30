@@ -285,6 +285,12 @@
   <data name="Option_Collision" xml:space="preserve">
     <value>Коллизия</value>
   </data>
+  <data name="Option_DeltaHeight" xml:space="preserve">
+    <value>Изменение высоты</value>
+  </data>
+  <data name="Option_FollowSlope" xml:space="preserve">
+    <value>Следовать основному наклону</value>
+  </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Необходим мод Hide Crosswalks</value>
   </data>

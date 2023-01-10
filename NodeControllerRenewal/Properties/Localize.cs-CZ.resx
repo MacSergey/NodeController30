@@ -209,6 +209,8 @@ Nepodařilo se načíst data všechny uzly.</value>
     <value>Kolize</value>
   </data>
   
+  
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Resetovat odsazení</value>
   </data>

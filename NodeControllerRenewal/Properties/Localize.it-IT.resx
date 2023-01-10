@@ -209,6 +209,8 @@ Impossibile caricare i dati per tutti i nodi.</value>
     <value>Collisione</value>
   </data>
   
+  
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Ripristina la deviazione</value>
   </data>

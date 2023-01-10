@@ -285,6 +285,12 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   <data name="Option_Collision" xml:space="preserve">
     <value>Collision</value>
   </data>
+  <data name="Option_DeltaHeight" xml:space="preserve">
+    <value>Différence de hauteur</value>
+  </data>
+  <data name="Option_FollowSlope" xml:space="preserve">
+    <value>Suivre la pente principale</value>
+  </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Le mod Hide crosswalks est nécessaire</value>
   </data>

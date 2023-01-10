@@ -117,10 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>Tindakan ini tidak bisa dibatalkan.</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Data Node Controller asli telah diimpor.
-Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyesuaian manual mungkin diperlukan.</value>
+Kompatibilitas ke belakang tidak menyediakan perpindahan semua data. Penyesuaian manual mungkin diperlukan.</value>
   </data>
   <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
     <value>AWAS: Jika Anda membuat penyimpanan baru, Anda tidak akan bisa menggunakan Node Controller original untuk map ini.</value>
@@ -128,6 +130,14 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   <data name="Mod_Description" xml:space="preserve">
     <value>Mengontrol tipe dan bentuk titik hubung</value>
   </data>
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>Pemuatan telah selesai dengan kendala.
+Pemuatan gagal untuk {0} node.</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>Pemuatan telah selesai dengan kendala.
+Pemuatan gagal untuk semua node.</value>
+  </data>
   
   
   
@@ -138,12 +148,32 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   
   
   
-  
-  
-  
-  
-  
-  
+  <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
+    <value>[UPDATED] Menambahkan opsi untuk mematikan fungsi "Perbaiki pejalan kaki yang tersangkut pada persimpangan besar" karena komplen terpengaruhnya kecepatan simulasi. Opsi ini mati secara bawaan, dapat dinyalakan pada prasetelan mod.
+[NEW] Menambahkan opsi "Collision". Jika dimatikan pada segmen, segmen tidak akan memiliki batas ketika mengubah pemunduran dan dapat saling tumpang tindih dengan segmen lain.
+[NEW] Menambahkan opsi "Nodeless". Akan membuat segmen dirender tanpa node.
+[NEW] Menambahkan kemampuan untuk menyembunyikan opsi tak terpakai. Semua opsi kecuali pemunduran, pergeseran dan perputaran dapat disembunyikan pada prasetelan mod.
+[FIXED] Memperbaiki kalkulasi pergeseran pada node tengah.
+[UPDATED] Nilai maks. kemiringan untuk jalan dinaikkan menjadi 60 derajat.
+[UPDATED] Nilai maks. twist untuk jalan dinaikkan menjadi 60 derajat.
+[UPDATED] Nilai maks. pergeseran dinaikkan menjadi 64 meter.
+[FIXED] Memperbaiki lubang pada lapisan di node-node yang besar.
+[TRANSLATION] Menambahkan bahasa Romania.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_1" xml:space="preserve">
+    <value>[UPDATED] Menambahkan dukungan untuk DLC Plazas &amp; Promenades.
+[FIXED] Memperbaiki posisi prop pada segmen yang terpelintir.
+[FIXED] Data simulasi tidak diubah dari main thread lagi.
+[FIXED] Memperbaiki tekstur penyebrangan yang hilang pada node penyebrangan.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_2" xml:space="preserve">
+    <value>[FIXED] Memperbaiki terrain glitches yang dapat muncul ketika menggunakan mod Surface Painter.
+[TRANSLATION] Menambahkan bahasa Ceko.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_3_3" xml:space="preserve">
+    <value>[FIXED] Memperbaiki kompatibilitas dengan mod Adaptive Network yang dapat menyebabkan lubang-lubang biru pada node.
+[FIXED] Memperbaiki error ketika aset network tidak ditemukan menyebabkan pemuatan data NCR gagal.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Tikungan</value>
   </data>
@@ -180,8 +210,18 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
     <value>Hitungkan twist berdasarkan titik hubung yang berdekatan</value>
   </data>
-  
-  
+  <data name="Option_Collision" xml:space="preserve">
+    <value>Collision</value>
+  </data>
+  <data name="Option_DeltaHeight" xml:space="preserve">
+    <value>Perbedaan tinggi</value>
+  </data>
+  <data name="Option_FollowSlope" xml:space="preserve">
+    <value>Ikuti kemiringan utama</value>
+  </data>
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>Mod Hide crosswalks dibutuhkan</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Setel ulang pergeseran</value>
   </data>
@@ -200,12 +240,24 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   <data name="Option_Marking" xml:space="preserve">
     <value>Markah</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Option_Mode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>Datar</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>Gaya bebas</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>Kemiringan</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>Pilihan lainnya</value>
+  </data>
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>Tanpa node</value>
+  </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Pemunduran</value>
   </data>
@@ -257,46 +309,91 @@ Kompatibilitas ke belakang tidak memfasilitasi pentransferan segala data. Penyes
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Titik hubung #{0}</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Settings_ApplyAfterRestart" xml:space="preserve">
+    <value>Diterapkan setelah game direstart</value>
+  </data>
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>Cadangan</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>Salin jalur ke salinan</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>Hapus data dari semua node</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>Hapus semua data</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>Apakah Anda yakin untuk menghapus semua data?</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>Limpahkan data node ke file</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>Limpahkan data node</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>Pelimpahan gagal</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>Pelimpahan ke file berhasil</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Masukan titik hubung</value>
   </data>
   <data name="Settings_InsertNodeDisabled" xml:space="preserve">
     <value>Nonaktif</value>
   </data>
-  
-  
-  
-  
+  <data name="Settings_InsertNodeEnabled" xml:space="preserve">
+    <value>Dengan klik pada segmen</value>
+  </data>
+  <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
+    <value>Dengan mengklik {0} pada segmen</value>
+  </data>
+  <data name="Settings_LongIntersectionFix" xml:space="preserve">
+    <value>Perbaiki pejalan kaki yang tersangkut pada persimpangan besar</value>
+  </data>
+  <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
+    <value>Opsi ini akan memperbesar jarak untuk pencarian jalur yang mencegah tersangkutnya pejalan kaki pada persimpangan besar. Namun, opsi ini memengaruhi kecepatan simulasi</value>
+  </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Titik hubung dimiringkan sesuai dengan standar</value>
   </data>
-  
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Penglihatan opsi</value>
+  </data>
   <data name="Settings_Option_Disabled" xml:space="preserve">
     <value>Nonaktif</value>
   </data>
-  
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Tertutup</value>
+  </data>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Selalu Tampak</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Perlihatkan hamparan titik hubung yang berdekatan</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>Pulihkan</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>Pulihkan data node dari file</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>Pemulihan data node</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>Apakah Anda yakin untuk memulihkan data node?
+Data yang dipulihkan akan menggantikan semua data node yang ada.</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>Pemulihan data node gagal</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>Pemulihan data node berhasil</value>
+  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Pilih titik hubung tengah</value>
   </data>
