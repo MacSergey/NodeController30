@@ -306,10 +306,18 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marquage</value>
   </data>
-  
-  
-  
-  
+  <data name="Option_Mode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>Plat</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>Forme libre</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>Pente</value>
+  </data>
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Plus d'options</value>
   </data>
