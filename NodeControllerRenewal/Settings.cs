@@ -52,6 +52,10 @@ namespace NodeController
             Options.Marking => OptionVisibility.Visible,
             Options.Collision => OptionVisibility.Hidden,
             Options.Nodeless => OptionVisibility.Hidden,
+            Options.LeftCornerPos => OptionVisibility.Visible,
+            Options.RightCornerPos => OptionVisibility.Visible,
+            Options.LeftCornerDir => OptionVisibility.Visible,
+            Options.RightCornerDir => OptionVisibility.Visible,
             _ => OptionVisibility.Hidden,
         };
 

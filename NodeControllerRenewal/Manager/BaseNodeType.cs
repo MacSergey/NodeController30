@@ -1,4 +1,5 @@
-﻿using ColossalFramework.UI;
+﻿using ColossalFramework;
+using ColossalFramework.UI;
 using ModsCommon;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
@@ -32,9 +33,12 @@ namespace NodeController
         public static float MinStretch => 1f;
         public static float MaxOffset => 1000f;
         public static float MinOffset => 0f;
+        public static Vector3 MinPosDelta => new Vector3(-100f, -100f, -100f);
+        public static Vector3 MaxPosDelta => new Vector3(100f, 100f, 100f);
+        public static Vector3 MinDirDelta => new Vector3(-180f, -180f, -100f);
+        public static Vector3 MaxDirDelta => new Vector3(180f, 180f, 100f);
+
         private static bool HideCrosswalksEnable { get; } = DependencyUtilities.HideCrossings?.isEnabled == true;
-        public static float MinDeltaHeight => -10f;
-        public static float MaxDeltaHeight => 10f;
 
         #endregion
 
@@ -54,13 +58,13 @@ namespace NodeController
         public virtual SupportOption SupportStretch => SupportOption.None;
         public virtual SupportOption SupportCollision => SupportOption.None;
         public virtual SupportOption SupportForceNodeless => SupportOption.None;
-        public virtual SupportOption SupportDeltaHeight => SupportOption.None;
         public virtual SupportOption SupportFollowMainSlope => SupportOption.None;
+        public virtual SupportOption SupportCornerDelta => SupportOption.None;
         public virtual bool SupportTrafficLights => false;
         public virtual bool OnlyKeepDefault => false;
         public virtual bool NeedFixDirection => true;
 
-        public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch | SupportCollision | SupportForceNodeless | SupportDeltaHeight | SupportFollowMainSlope) & SupportOption.All;
+        public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch | SupportCollision | SupportForceNodeless | SupportFollowMainSlope | SupportCornerDelta) & SupportOption.All;
         private bool OnlyOnSlope => SupportMode != SupportOption.None || DefaultMode != Mode.Flat;
 
         public virtual float DefaultOffset => 0f;
@@ -73,7 +77,7 @@ namespace NodeController
         public virtual bool DefaultForceNodeLess => false;
         public virtual Mode DefaultMode => Settings.NodeIsSlopedByDefault ? Mode.Slope : Mode.Flat;
         public virtual float DefaultStretch => 1f;
-        public virtual float DefaultDeltaHeight => 0f;
+        public virtual Vector3 DefaultDelta => Vector3.zero;
         public virtual bool DefaultFollowSlope => true;
 
         public virtual bool IsMoveable => false;
@@ -109,8 +113,8 @@ namespace NodeController
                 else if (Data.ForceNodeLess != DefaultForceNodeLess)
                     return false;
 
-                else if (Data.DeltaHeight != DefaultDeltaHeight)
-                    return false;
+                //else if (Data.DeltaHeight != DefaultDeltaHeight)
+                //    return false;
 
                 else if (Data.FollowSlope != DefaultFollowSlope)
                     return false;
@@ -281,12 +285,6 @@ namespace NodeController
                 segmentData.Mode = value;
         }
 
-        public virtual float GetDeltaHeight() => TouchableDatas.AverageOrDefault(s => s.DeltaHeight, DefaultDeltaHeight);
-        public virtual void SetDeltaHeight(float value)
-        {
-            foreach (var segmentData in TouchableDatas)
-                segmentData.DeltaHeight = value;
-        }
         public virtual bool? GetFollowSlope()
         {
             if (GetDatas(NotMainRoadPredicate).All(s => s.FollowSlope == true))
@@ -426,14 +424,25 @@ namespace NodeController
             {
                 case Options.Slope:
                 case Options.Twist:
-                    return visible && Data.Mode != Mode.Flat;
-                case Options.MainRoad:
-                    return Data.Mode != Mode.Flat;
-                case Options.Collision:
-                case Options.Nodeless:
-                case Options.DeltaHeight:
                 case Options.FollowSlope:
+                    return visible && Data.Mode == Mode.Slope;
+
+                case Options.Offset:
+                case Options.Rotate:
+                case Options.Stretch:
+                case Options.Shift:
+                case Options.Collision:
+                    return visible && Data.Mode != Mode.FreeForm;
+
+                case Options.LeftCornerPos:
+                case Options.RightCornerPos:
+                case Options.LeftCornerDir:
+                case Options.RightCornerDir:
                     return visible && Data.Mode == Mode.FreeForm;
+
+                case Options.MainRoad:
+                    return Data.Mode == Mode.Slope;
+
                 default:
                     return visible;
             }
@@ -450,8 +459,11 @@ namespace NodeController
             Options.Marking => GetMarkingsOption(parent, support),
             Options.Collision => GetCollisionOption(parent, support),
             Options.Nodeless => GetForceNodeLessOption(parent, support),
-            Options.DeltaHeight => GetDeltaHeightOption(parent, support),
             Options.FollowSlope => GetFollowSlopeOption(parent, support),
+            Options.LeftCornerPos => GetCornerPosOption(parent, support, true),
+            Options.RightCornerPos => GetCornerPosOption(parent, support, false),
+            Options.LeftCornerDir => GetCornerDirOption(parent, support, true),
+            Options.RightCornerDir => GetCornerDirOption(parent, support, false),
             _ => null,
         };
 
@@ -653,22 +665,6 @@ namespace NodeController
             else
                 return null;
         }
-        private FloatOptionPanel GetDeltaHeightOption(UIComponent parent, SupportOption totalSupport)
-        {
-            if (SupportDeltaHeight != SupportOption.None && Data.SegmentEndDatas.Any(s => TouchablePredicate(s)))
-            {
-                var deltaHeight = ComponentPool.Get<FloatOptionPanel>(parent);
-                deltaHeight.Text = Localize.Option_DeltaHeight;
-                deltaHeight.Format = Localize.Option_ShiftFormat;
-                deltaHeight.WheelStep = 0.1f;
-                deltaHeight.NumberFormat = "0.##";
-                deltaHeight.Init(Data, SupportDeltaHeight, totalSupport, DeltaHeightGetter, DeltaHeightSetter, MinMaxDeltaHeight, TouchablePredicate);
-
-                return deltaHeight;
-            }
-            else
-                return null;
-        }
         private BoolOptionPanel GetFollowSlopeOption(UIComponent parent, SupportOption totalSupport)
         {
             if (SupportFollowMainSlope != SupportOption.None && Data.SegmentEndDatas.Any(s => NotMainRoadPredicate(s)))
@@ -678,6 +674,44 @@ namespace NodeController
                 followSlope.Init(Data, SupportFollowMainSlope, totalSupport, FollowSlopeGetter, FollowSlopeSetter, NotMainRoadPredicate);
 
                 return followSlope;
+            }
+            else
+                return null;
+        }
+
+        private DeltaOptionPanel GetCornerPosOption(UIComponent parent, SupportOption totalSupport, bool left)
+        {
+            if (SupportCornerDelta != SupportOption.None && Data.SegmentEndDatas.Any(s => TouchablePredicate(s)))
+            {
+                var cornerPos = ComponentPool.Get<DeltaOptionPanel>(parent);
+                cornerPos.Text = "Corner position delta";
+                cornerPos.XTitle = "Vertical";
+                cornerPos.YTitle = "Horizontal";
+                cornerPos.ZTitle = "Elevation";
+                cornerPos.Format = new string[] { Localize.Option_OffsetFormat, Localize.Option_OffsetFormat, Localize.Option_OffsetFormat };
+                cornerPos.NumberFormat = new string[] { "0.#", "0.#", "0.#" };
+                cornerPos.Init(Data, SupportFollowMainSlope, totalSupport, left ? LeftCornerPosGetter : RightCornerPosGetter, left ? LeftCornerPosSetter : RightCornerPosSetter, MinMaxPosDelta, TouchablePredicate);
+
+                return cornerPos;
+            }
+            else
+                return null;
+        }
+        private DeltaOptionPanel GetCornerDirOption(UIComponent parent, SupportOption totalSupport, bool left)
+        {
+            if (SupportCornerDelta != SupportOption.None && Data.SegmentEndDatas.Any(s => TouchablePredicate(s)))
+            {
+                var cornerDir = ComponentPool.Get<DeltaOptionPanel>(parent);
+                cornerDir.Text = "Corner direction delta";
+                cornerDir.XTitle = "Rotate";
+                cornerDir.YTitle = "Slope";
+                cornerDir.ZTitle = "Distance";
+                cornerDir.Format = new string[] { Localize.Option_RotateFormat, Localize.Option_RotateFormat, Localize.Option_OffsetFormat };
+                cornerDir.NumberFormat = new string[] { "0.#", "0.#", "0.#" };
+                cornerDir.WheelStep = new Vector3(10f, 10f, 1f);
+                cornerDir.Init(Data, SupportFollowMainSlope, totalSupport, left ? LeftCornerDirGetter : RightCornerDirGetter, left ? LeftCornerDirSetter : RightCornerDirSetter, MinMaxDirDelta, TouchablePredicate);
+
+                return cornerDir;
             }
             else
                 return null;
@@ -762,10 +796,15 @@ namespace NodeController
                 max = MaxTwist;
             }
         }
-        private void MinMaxDeltaHeight(INetworkData data, out float min, out float max)
+        private void MinMaxPosDelta(INetworkData data, out Vector3 min, out Vector3 max)
         {
-            min = MinDeltaHeight;
-            max = MaxDeltaHeight;
+            min = MinPosDelta;
+            max = MaxPosDelta;
+        }
+        private void MinMaxDirDelta(INetworkData data, out Vector3 min, out Vector3 max)
+        {
+            min = MinDirDelta;
+            max = MaxDirDelta;
         }
 
         private static void OffsetSetter(INetworkData data, float value) => data.Offset = value;
@@ -777,8 +816,11 @@ namespace NodeController
         private static void MarkingsSetter(INetworkData data, bool? value) => data.NoMarkings = value == null ? null : !value.Value;
         private static void CollisionSetter(INetworkData data, bool? value) => data.Collision = value;
         private static void ForceNodeLessSetter(INetworkData data, bool? value) => data.ForceNodeLess = value;
-        private static void DeltaHeightSetter(INetworkData data, float value) => data.DeltaHeight = value;
         private static void FollowSlopeSetter(INetworkData data, bool? value) => data.FollowSlope = value;
+        private static void LeftCornerPosSetter(INetworkData data, Vector3 value) => data.LeftPosDelta = InvertPosCoord(value);
+        private static void RightCornerPosSetter(INetworkData data, Vector3 value) => data.RightPosDelta = InvertPosCoord(value);
+        private static void LeftCornerDirSetter(INetworkData data, Vector3 value) => data.LeftDirDelta = value;
+        private static void RightCornerDirSetter(INetworkData data, Vector3 value) => data.RightDirDelta = value;
 
         private static float OffsetGetter(INetworkData data) => data.Offset;
         private static float ShiftGetter(INetworkData data) => data.Shift;
@@ -793,8 +835,12 @@ namespace NodeController
         }
         private static bool? CollisionGetter(INetworkData data) => data.Collision;
         private static bool? ForceNodeLessGetter(INetworkData data) => data.ForceNodeLess;
-        private static float DeltaHeightGetter(INetworkData data) => data.DeltaHeight;
         private static bool? FollowSlopeGetter(INetworkData data) => data.FollowSlope;
+        private static Vector3 LeftCornerPosGetter(INetworkData data) => InvertPosCoord(data.LeftPosDelta);
+        private static Vector3 RightCornerPosGetter(INetworkData data) => InvertPosCoord(data.RightPosDelta);
+        private static Vector3 LeftCornerDirGetter(INetworkData data) => data.LeftDirDelta;
+        private static Vector3 RightCornerDirGetter(INetworkData data) => data.RightDirDelta;
+        private static Vector3 InvertPosCoord(Vector3 value) => new Vector3(value.x, value.z, value.y);
 
         protected static bool HasNodePredicate(SegmentEndData data) => TouchablePredicate(data) && !data.FinalNodeLess;
         protected static bool TouchablePredicate(SegmentEndData data) => !data.IsUntouchable;
@@ -810,6 +856,7 @@ namespace NodeController
         protected static bool NotMainRoadPredicate(SegmentEndData data) => TouchablePredicate(data) && (!data.IsMainRoad && !data.IsDecoration);
         protected static bool AllowNodeLessPredicate(SegmentEndData data) => TouchablePredicate(data) && !data.IsNodeLess;
         protected static bool FreeFormPredicate(SegmentEndData data) => data.Mode == Mode.FreeForm ? TouchablePredicate(data) : MainRoadPredicate(data);
+        protected static bool WithoutCollisionPredicate(SegmentEndData data) => data.Mode == Mode.FreeForm && TouchablePredicate(data) && data.Collision == false;
 
         #endregion
     }
@@ -869,13 +916,21 @@ namespace NodeController
         [Order(10)]
         Nodeless = 1 << 9,
 
-        [Description(nameof(Localize.Option_DeltaHeight))]
-        [Order(7)]
-        DeltaHeight = 1 << 10,
-
         [Description(nameof(Localize.Option_FollowSlope))]
         [Order(8)]
-        FollowSlope = 1 << 11,
+        FollowSlope = 1 << 10,
+
+        [Order(11)]
+        LeftCornerPos = 1 << 11,
+
+        [Order(12)]
+        LeftCornerDir = 1 << 12,
+
+        [Order(13)]
+        RightCornerPos = 1 << 13,
+
+        [Order(14)]
+        RightCornerDir = 1 << 14,
     }
 
     public enum OptionVisibility

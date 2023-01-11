@@ -1,5 +1,6 @@
 using ColossalFramework.UI;
 using System;
+using UnityEngine;
 
 namespace NodeController
 {
@@ -17,7 +18,10 @@ namespace NodeController
         public bool? NoMarkings { get; set; }
         public bool? Collision { get; set; }
         public bool? ForceNodeLess { get; set; }
-        public float DeltaHeight { get; set; }
         public bool? FollowSlope { get; set; }
+        public Vector3 LeftPosDelta { get; set; }
+        public Vector3 RightPosDelta { get; set; }
+        public Vector3 LeftDirDelta { get; set; }
+        public Vector3 RightDirDelta { get; set; }
     }
 }

@@ -54,15 +54,11 @@ namespace NodeController
         public BezierTrajectory RawSegmentBezier { get; private set; }
         public BezierTrajectory SegmentBezier { get; private set; }
 
-        public SegmentSide LeftSide { get; }
-        public SegmentSide RightSide { get; }
+        private SegmentSide LeftSide { get; }
+        private SegmentSide RightSide { get; }
 
         public float AbsoluteAngle { get; private set; }
         public float Weight { get; }
-
-
-        public bool DefaultIsSlope => !Id.GetSegment().Info.m_flatJunctions && !NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
-        //public bool DefaultIsTwist => !DefaultIsSlope && !NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
 
         public bool IsChangeable => !FinalNodeLess;
         public bool IsOffsetChangeable => IsChangeable && !IsUntouchable && NodeData.Style.SupportOffset != SupportOption.None;
@@ -78,8 +74,9 @@ namespace NodeController
         public bool FinalNodeLess => IsNodeLess || ForceNodeLess == true;
         public bool IsUntouchable { get; private set; }
 
-        public int PedestrianLaneCount { get; }
         public float VehicleTwist { get; private set; }
+
+        public Mode Mode { get; set; }
 
         private float _offsetValue;
         private float _rotateValue;
@@ -132,30 +129,67 @@ namespace NodeController
         }
         public float MinRotate { get; set; }
         public float MaxRotate { get; set; }
-        public float SlopeAngle { get; set; }
-        public float TwistAngle { get; set; }
-        public float Shift { get; set; }
-        public float Stretch { get; set; }
+
+
+        private float _slope;
+        private float _twist;
+        private float _shift;
+        private float _stretch;
+        public float SlopeAngle
+        {
+            get => Mode != Mode.FreeForm ? _slope : 0f;
+            set => _slope = value;
+        }
+        public float TwistAngle
+        {
+            get => Mode != Mode.FreeForm ? _twist : 0f;
+            set => _twist = value;
+        }
+        public float Shift
+        {
+            get => Mode != Mode.FreeForm ? _shift : 0f;
+            set => _shift = value;
+        }
+        public float Stretch
+        {
+            get => Mode != Mode.FreeForm ? _stretch : 1f;
+            set => _stretch = value;
+        }
+
         public float StretchPercent
         {
             get => Stretch * 100f;
             set => Stretch = value / 100f;
         }
-        public bool? NoMarkings { get; set; }
-        public Mode Mode { get; set; }
-        public bool? Collision { get; set; }
 
+
+        private bool? _collision;
         private bool _forceNodeLess;
+        private bool? _followSlope;
+        public bool? NoMarkings { get; set; }
+        public bool? Collision
+        {
+            get => Mode != Mode.FreeForm ? _collision : true;
+            set => _collision = value;
+        }
         public bool? ForceNodeLess
         {
             get => _forceNodeLess;
             set => SetForceNodeless(value == true, true);
         }
-        public float DeltaHeight { get; set; }
-        public bool? FollowSlope { get; set; }
+        public bool? FollowSlope
+        {
+            get => IsMainRoad ? true : _followSlope;
+            set => _followSlope = value;
+        }
+        public Vector3 LeftPosDelta { get; set; }
+        public Vector3 RightPosDelta { get; set; }
+        public Vector3 LeftDirDelta { get; set; }
+        public Vector3 RightDirDelta { get; set; }
+
         private bool KeepDefaults
         {
-            get => _keepDefault /*|| IsUntouchable*/;
+            get => _keepDefault;
             set => _keepDefault = value;
         }
 
@@ -223,7 +257,6 @@ namespace NodeController
             var segment = Id.GetSegment();
             var info = segment.Info;
 
-            PedestrianLaneCount = info.PedestrianLanes();
             Weight = info.m_halfWidth * 2;
             if ((info.m_netAI as RoadBaseAI)?.m_highwayRules == true)
                 Weight *= 1.5f;
@@ -259,9 +292,19 @@ namespace NodeController
         }
         public void UpdateNode() => SingletonManager<Manager>.Instance.Update(NodeId);
 
-        public void SetKeepDefaults() => KeepDefaults = true;
+        public void SetKeepDefaults(NodeStyle style)
+        {
+            KeepDefaults = true;
+            LeftPosDelta = style.DefaultDelta;
+            RightPosDelta = style.DefaultDelta;
+            LeftDirDelta = style.DefaultDelta;
+            RightDirDelta = style.DefaultDelta;
+        }
         public void ResetToDefault(NodeStyle style, bool force)
         {
+            if (style.SupportMode == SupportOption.None || force || IsUntouchable)
+                Mode = style.DefaultMode;
+
             if (style.SupportSlope == SupportOption.None || force || IsUntouchable)
                 SlopeAngle = style.DefaultSlope;
 
@@ -280,14 +323,16 @@ namespace NodeController
             if (style.SupportCollision == SupportOption.None || force || IsUntouchable)
                 Collision = style.GetDefaultCollision(this);
 
-            if(style.SupportFollowMainSlope == SupportOption.None || force || IsUntouchable)
+            if (style.SupportFollowMainSlope == SupportOption.None || force || IsUntouchable)
                 FollowSlope = style.DefaultFollowSlope;
 
-            if (style.SupportDeltaHeight == SupportOption.None || force || IsUntouchable)
-                DeltaHeight = style.DefaultDeltaHeight;
-
-            if (style.SupportMode == SupportOption.None || force || IsUntouchable)
-                Mode = style.DefaultMode;
+            if (style.SupportCornerDelta == SupportOption.None || force || IsUntouchable)
+            {
+                LeftPosDelta = style.DefaultDelta;
+                RightPosDelta = style.DefaultDelta;
+                LeftDirDelta = style.DefaultDelta;
+                RightDirDelta = style.DefaultDelta;
+            }
 
             if (FinalNodeLess)
             {
@@ -362,17 +407,17 @@ namespace NodeController
             try
             {
                 SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out start, out end);
-                if(start != null && end != null)
+                if (start != null && end != null)
                 {
                     if ((start.NodeData.State & State.Error) != 0 && (end.NodeData.State & State.Error) != 0)
                         return;
                 }
-                else if(start != null)
+                else if (start != null)
                 {
                     if ((start.NodeData.State & State.Error) != 0)
                         return;
                 }
-                else if(end != null)
+                else if (end != null)
                 {
                     if ((end.NodeData.State & State.Error) != 0)
                         return;
@@ -653,7 +698,12 @@ namespace NodeController
                 {
                     var endData = endDatas[i];
 
-                    if (!endData.FinalNodeLess)
+                    if (endData.Mode == Mode.FreeForm)
+                    {
+                        endData.LeftSide.MinT = endData.LeftSide.MainT;
+                        endData.RightSide.MinT = endData.RightSide.MainT;
+                    }
+                    else if (!endData.FinalNodeLess)
                     {
                         endData.LeftSide.MinT = limits[i].left.FinalMinT;
                         endData.RightSide.MinT = limits[i].right.FinalMinT;
@@ -846,7 +896,7 @@ namespace NodeController
             }
             catch (Exception error)
             {
-                if(start != null)
+                if (start != null)
                     start.NodeData.State = State.Error;
                 if (end != null)
                     end.NodeData.State = State.Error;
@@ -906,7 +956,7 @@ namespace NodeController
             CalculateSegmentLimit();
             CalculateOffset();
 
-            if (IsDecoration || IsMainRoad || (Mode == Mode.FreeForm && FollowSlope == false))
+            if (IsDecoration || IsMainRoad || Mode == Mode.FreeForm || FollowSlope == false)
             {
                 LeftSide.CalculateMain();
                 RightSide.CalculateMain();
@@ -1078,12 +1128,16 @@ namespace NodeController
         private void CalculatePositionAndDirection()
         {
             var line = new StraightTrajectory(LeftSide.StartPos, RightSide.StartPos);
-            var t = 0.5f;
+            float t;
 
-            if (Intersection.CalculateSingle(line, RawSegmentBezier, out var firstT, out _))
+            if (Mode == Mode.FreeForm)
+                t = 0.5f;
+            else if (Intersection.CalculateSingle(line, RawSegmentBezier, out var firstT, out _))
                 t = firstT;
             else if (Intersection.CalculateSingle(line, new StraightTrajectory(RawSegmentBezier.StartPosition, RawSegmentBezier.StartPosition + RawSegmentBezier.StartDirection, false), out firstT, out _))
                 t = firstT;
+            else
+                t = 0.5f;
 
             Position = line.Position(t);
             Direction = NormalizeXZ(LeftSide.StartDir * t + RightSide.StartDir * (1 - t));
@@ -1180,11 +1234,14 @@ namespace NodeController
                     RenderOutterCircle(outterData);
                 }
                 else
+                {
                     RenderStart(contourData);
+                }
 
                 if (IsOffsetChangeable)
                 {
                     RenderInnerCircle(innerData);
+
                     if (leftData != null)
                         LeftSide.RenderCircle(leftData.Value);
                     if (rightData != null)
@@ -1264,7 +1321,7 @@ namespace NodeController
             config.AddAttr("FNL", ForceNodeLess == true ? 1 : 0);
             config.AddAttr("KD", KeepDefaults ? 1 : 0);
             config.AddAttr("FS", FollowSlope == true ? 1 : 0);
-            config.AddAttr("DH", DeltaHeight);
+            //config.AddAttr("DH", DeltaHeight);
 
             return config;
         }
@@ -1298,8 +1355,8 @@ namespace NodeController
             if (style.SupportFollowMainSlope != SupportOption.None && !IsUntouchable)
                 FollowSlope = config.GetAttrValue("FS", style.DefaultFollowSlope ? 1 : 0) == 1;
 
-            if (style.SupportDeltaHeight != SupportOption.None && !IsUntouchable)
-                DeltaHeight = config.GetAttrValue("DH", style.DefaultDeltaHeight);
+            //if (style.SupportDeltaHeight != SupportOption.None && !IsUntouchable)
+            //    DeltaHeight = config.GetAttrValue("DH", style.DefaultDeltaHeight);
 
             KeepDefaults = style.OnlyKeepDefault && config.GetAttrValue("KD", 0) == 1;
 

@@ -148,15 +148,30 @@ namespace NodeController
             get => Style.GetForceNodeLess();
             set => Style.SetForceNodeLess(value);
         }
-        public float DeltaHeight
-        {
-            get => Style.GetDeltaHeight();
-            set => Style.SetDeltaHeight(value);
-        }
         public bool? FollowSlope
         {
             get => Style.GetFollowSlope();
             set => Style.SetFollowSlope(value);
+        }
+        public Vector3 LeftPosDelta
+        {
+            get => Vector3.zero;
+            set { }
+        }
+        public Vector3 RightPosDelta
+        {
+            get => Vector3.zero;
+            set { }
+        }
+        public Vector3 LeftDirDelta
+        {
+            get => Vector3.zero;
+            set { }
+        }
+        public Vector3 RightDirDelta
+        {
+            get => Vector3.zero;
+            set { }
         }
 
         public bool IsRoad => SegmentEndDatas.All(s => s.IsRoad);
@@ -189,10 +204,10 @@ namespace NodeController
             else if ((node.m_flags & NetNode.Flags.Deleted) == 0 && (node.m_flags & SupportFlags) == 0)
                 node.CalculateNode(Id);
 
-            UpdateSegmentEnds();
+            UpdateSegmentEndSet();
             MainRoad.Update(this);
             UpdateStyle(nodeType, true, true);
-            UpdateMainRoadSegments();
+            UpdateSegmentEnds();
         }
         public void AfterCalculateNode()
         {
@@ -201,7 +216,7 @@ namespace NodeController
 #if DEBUG && EXTRALOG
                 SingletonMod<Mod>.Logger.Debug($"Node #{Id} after calculate node");
 #endif
-                UpdateSegmentEnds();
+                UpdateSegmentEndSet();
                 UpdateStyle(Style.Type, false, true);
             }
             catch (Exception error)
@@ -219,10 +234,10 @@ namespace NodeController
 #endif
                 State |= State.Dirty;
 
-                UpdateSegmentEnds();
+                UpdateSegmentEndSet();
                 MainRoad.Update(this);
                 UpdateStyle(Style.Type, false, false);
-                UpdateMainRoadSegments();
+                UpdateSegmentEnds();
             }
             catch (Exception error)
             {
@@ -231,7 +246,7 @@ namespace NodeController
             }
         }
 
-        private void UpdateSegmentEnds()
+        private void UpdateSegmentEndSet()
         {
             var before = SegmentEnds.Values.Select(v => v.Id).ToList();
             var after = Id.GetNode().SegmentIds().ToList();
@@ -343,11 +358,12 @@ namespace NodeController
 #endif
         }
 
-        private void UpdateMainRoadSegments()
+        private void UpdateSegmentEnds()
         {
             foreach (var segmentEnd in SegmentEndDatas)
             {
                 segmentEnd.IsMainRoad = IsMainRoad(segmentEnd.Id);
+                segmentEnd.Mode = Mode;
                 if (Mode != Mode.FreeForm && !segmentEnd.IsMainRoad && !segmentEnd.IsDecoration)
                 {
                     segmentEnd.TwistAngle = Style.DefaultTwist;
@@ -387,8 +403,13 @@ namespace NodeController
                     firstMain.CalculateMain();
                     secondMain.CalculateMain();
 
-                    var leftBezier = new BezierTrajectory(firstMain.LeftSide.TempPos, -firstMain.LeftSide.TempDir, secondMain.RightSide.TempPos, -secondMain.RightSide.TempDir, false, true, true);
-                    var rightBezier = new BezierTrajectory(secondMain.LeftSide.TempPos, -secondMain.LeftSide.TempDir, firstMain.RightSide.TempPos, -firstMain.RightSide.TempDir, false, true, true);
+                    var firstLeft = firstMain[SideType.Left];
+                    var firstRight = firstMain[SideType.Right];
+                    var secondLeft = secondMain[SideType.Left];
+                    var secondRight = secondMain[SideType.Right];
+
+                    var leftBezier = new BezierTrajectory(firstLeft.TempPos, -firstLeft.TempDir, secondRight.TempPos, -secondRight.TempDir, false, true, true);
+                    var rightBezier = new BezierTrajectory(secondLeft.TempPos, -secondLeft.TempDir, firstRight.TempPos, -firstRight.TempDir, false, true, true);
 
                     foreach (var segmentEnd in SegmentEndDatas)
                     {
@@ -447,8 +468,13 @@ namespace NodeController
 
                     MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, true, true, true);
 
-                    var leftBezier = new BezierTrajectory(firstMain.LeftSide.TempPos, -firstMain.LeftSide.TempDir, secondMain.RightSide.TempPos, -secondMain.RightSide.TempDir, false, true, true);
-                    var rightBezier = new BezierTrajectory(secondMain.LeftSide.TempPos, -secondMain.LeftSide.TempDir, firstMain.RightSide.TempPos, -firstMain.RightSide.TempDir, false, true, true);
+                    var firstLeft = firstMain[SideType.Left];
+                    var firstRight = firstMain[SideType.Right];
+                    var secondLeft = secondMain[SideType.Left];
+                    var secondRight = secondMain[SideType.Right];
+
+                    var leftBezier = new BezierTrajectory(firstLeft.TempPos, -firstLeft.TempDir, secondRight.TempPos, -secondRight.TempDir, false, true, true);
+                    var rightBezier = new BezierTrajectory(secondLeft.TempPos, -secondLeft.TempDir, firstRight.TempPos, -firstRight.TempDir, false, true, true);
 
                     position = (leftBezier.Position(0.5f) + rightBezier.Position(0.5f)) * 0.5f;
 
@@ -519,7 +545,7 @@ namespace NodeController
         public void SetKeepDefaults()
         {
             foreach (var segmentEnd in SegmentEndDatas)
-                segmentEnd.SetKeepDefaults();
+                segmentEnd.SetKeepDefaults(Style);
 
             UpdateNode();
         }

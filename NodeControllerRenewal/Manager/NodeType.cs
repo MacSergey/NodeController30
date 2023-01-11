@@ -96,7 +96,6 @@ namespace NodeController
         public override SupportOption SupportShift => SupportOption.All;
         public override SupportOption SupportStretch => SupportOption.All;
         public override SupportOption SupportMode => SupportOption.Group;
-        public override SupportOption SupportDeltaHeight => SupportOption.All;
         public override bool IsMoveable => true;
 
         public BendNode(NodeData data) : base(data) { }
@@ -213,8 +212,8 @@ namespace NodeController
         public override SupportOption SupportMode => SupportOption.Group;
         public override SupportOption SupportCollision => SupportOption.All;
         public override SupportOption SupportForceNodeless => SupportOption.All;
-        public override SupportOption SupportDeltaHeight => SupportOption.All;
         public override SupportOption SupportFollowMainSlope => SupportOption.All;
+        public override SupportOption SupportCornerDelta => SupportOption.Individually;
         public override bool IsMoveable => true;
         public override bool SupportTrafficLights => true;
 
