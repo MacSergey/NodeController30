@@ -8,6 +8,7 @@ namespace NodeController
     {
         public string Title { get; }
 
+        public Mode Mode { get; }
         public float Offset { get; set; }
         public float RotateAngle { get; set; }
         public float SlopeAngle { get; set; }
@@ -19,6 +20,7 @@ namespace NodeController
         public bool? Collision { get; set; }
         public bool? ForceNodeLess { get; set; }
         public bool? FollowSlope { get; set; }
+        public float DeltaHeight { get; set; }
         public Vector3 LeftPosDelta { get; set; }
         public Vector3 RightPosDelta { get; set; }
         public Vector3 LeftDirDelta { get; set; }

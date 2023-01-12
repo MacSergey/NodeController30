@@ -131,7 +131,7 @@ namespace NodeController
         public float StretchPercent
         {
             get => Stretch * 100f;
-            set => Stretch = value / 100f;
+            set => Stretch = value * 0.01f;
         }
         public bool? NoMarkings
         {
@@ -152,6 +152,11 @@ namespace NodeController
         {
             get => Style.GetFollowSlope();
             set => Style.SetFollowSlope(value);
+        }
+        public float DeltaHeight
+        {
+            get => Style.GetDeltaHeight();
+            set => Style.SetDeltaHeight(value);
         }
         public Vector3 LeftPosDelta
         {

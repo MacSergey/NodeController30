@@ -250,10 +250,12 @@ namespace NodeController
                     break;
                 case Mode.Slope:
                     {
+                        if (nodeData.Style.SupportDeltaHeight != SupportOption.None)
+                            _temp._deltaPos.y = PosDelta.y;
+
                         if (nodeData.Style.SupportSlope != SupportOption.None)
-                        {
                             _temp._dirRotation = Quaternion.AngleAxis(SegmentData.SlopeAngle, direction.MakeFlat().Turn90(true));
-                        }
+
                         if (nodeData.Style.SupportTwist != SupportOption.None)
                         {
                             var ratio = Mathf.Sin(SegmentData.TwistAngle * Mathf.Deg2Rad);
@@ -314,6 +316,9 @@ namespace NodeController
                     break;
                 case Mode.Slope:
                     {
+                        if (nodeData.Style.SupportDeltaHeight != SupportOption.None && SegmentData.FollowSlope == false)
+                            _temp._deltaPos.y = PosDelta.y;
+
                         GetClosest(left, right, position, out var closestPos, out var closestDir, out var closestT);
 
                         var normal = closestDir.MakeFlat().Turn90(true);

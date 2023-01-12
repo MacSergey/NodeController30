@@ -14,6 +14,7 @@ namespace NodeController.UI
     public interface IOptionPanel
     {
         public bool isVisible { get; set; }
+        public bool isVisibleSelf { get; }
         void Refresh();
     }
     public abstract class OptionPanel<TypeNodeItem, TypeSegmentItem> : EditorPropertyPanel, IReusable, IOptionPanel
@@ -161,8 +162,6 @@ namespace NodeController.UI
         {
             ValueSetter(data, value);
             OnChanged?.Invoke(data, value);
-            Data.UpdateNode();
-            Refresh();
         }
         public override void Refresh()
         {

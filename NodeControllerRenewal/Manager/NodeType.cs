@@ -97,6 +97,7 @@ namespace NodeController
         public override SupportOption SupportTwist => SupportOption.All;
         public override SupportOption SupportShift => SupportOption.All;
         public override SupportOption SupportStretch => SupportOption.All;
+        public override SupportOption SupportDeltaHeight => SupportOption.All;
         public override SupportOption SupportCornerDelta => SupportOption.Individually;
         public override bool IsMoveable => true;
 
@@ -124,6 +125,7 @@ namespace NodeController
         public override SupportOption SupportTwist => SupportOption.All;
         public override SupportOption SupportShift => SupportOption.All;
         public override SupportOption SupportStretch => SupportOption.All;
+        public override SupportOption SupportDeltaHeight => SupportOption.All;
         public override SupportOption SupportCornerDelta => SupportOption.Individually;
         public override bool IsMoveable => true;
 
@@ -141,11 +143,11 @@ namespace NodeController
         public override NodeStyleType Type => NodeStyleType.Crossing;
         public override float DefaultOffset => 2f;
 
+        public override SupportOption SupportMode => SupportOption.Group;
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportMarking => SupportOption.All;
-        public override SupportOption SupportMode => SupportOption.Group;
         public override bool OnlyKeepDefault => true;
         public override bool SupportTrafficLights => true;
         public override bool NeedFixDirection => false;
@@ -195,6 +197,7 @@ namespace NodeController
         public override SupportOption SupportSlope => SupportOption.Group;
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
+        public override SupportOption SupportDeltaHeight => SupportOption.All;
         public override SupportOption SupportCornerDelta => SupportOption.Individually;
         public override bool SupportTrafficLights => true;
         public override bool IsMoveable => true;
@@ -220,6 +223,7 @@ namespace NodeController
         public override SupportOption SupportCollision => SupportOption.All;
         public override SupportOption SupportForceNodeless => SupportOption.All;
         public override SupportOption SupportFollowMainSlope => SupportOption.All;
+        public override SupportOption SupportDeltaHeight => SupportOption.All;
         public override SupportOption SupportCornerDelta => SupportOption.Individually;
         public override bool IsMoveable => true;
         public override bool SupportTrafficLights => true;

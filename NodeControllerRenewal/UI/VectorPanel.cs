@@ -40,6 +40,12 @@ namespace NodeController.UI
         public string YTitle { get; set; } = string.Empty;
         public string ZTitle { get; set; } = string.Empty;
 
+        protected override TextStaticPanel AddNodeItem(NodeData data)
+        {
+            var item = base.AddNodeItem(data);
+            item.width = 75f;
+            return item;
+        }
         protected override void InitNodeItem(NodeData data, TextStaticPanel item)
         {
             item.SetText(0, XTitle);
