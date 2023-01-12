@@ -89,13 +89,15 @@ namespace NodeController
         public override float DefaultOffset => 8f;
         public override float AdditionalOffset => 2f;
 
+        public override Mode SupportModes => Mode.Flat | Mode.Slope | Mode.FreeForm;
+        public override SupportOption SupportMode => SupportOption.Group;
         public override SupportOption SupportOffset => SupportOption.All;
         public override SupportOption SupportRotate => SupportOption.All;
         public override SupportOption SupportSlope => SupportOption.All;
         public override SupportOption SupportTwist => SupportOption.All;
         public override SupportOption SupportShift => SupportOption.All;
         public override SupportOption SupportStretch => SupportOption.All;
-        public override SupportOption SupportMode => SupportOption.Group;
+        public override SupportOption SupportCornerDelta => SupportOption.Individually;
         public override bool IsMoveable => true;
 
         public BendNode(NodeData data) : base(data) { }
@@ -114,13 +116,15 @@ namespace NodeController
         public override float DefaultOffset => 8f;
         public override float AdditionalOffset => 2f;
 
+        public override Mode SupportModes => Mode.Flat | Mode.Slope | Mode.FreeForm;
+        public override SupportOption SupportMode => SupportOption.Group;
         public override SupportOption SupportOffset => SupportOption.All;
         public override SupportOption SupportRotate => SupportOption.All;
         public override SupportOption SupportSlope => SupportOption.All;
         public override SupportOption SupportTwist => SupportOption.All;
         public override SupportOption SupportShift => SupportOption.All;
         public override SupportOption SupportStretch => SupportOption.All;
-        public override SupportOption SupportMode => SupportOption.Group;
+        public override SupportOption SupportCornerDelta => SupportOption.Individually;
         public override bool IsMoveable => true;
 
         public StretchNode(NodeData data) : base(data) { }
@@ -183,13 +187,15 @@ namespace NodeController
     {
         public override NodeStyleType Type => NodeStyleType.End;
 
+        public override Mode SupportModes => Mode.Flat | Mode.Slope | Mode.FreeForm;
+        public override SupportOption SupportMode => SupportOption.Group;
         public override SupportOption SupportOffset => SupportOption.None;
         public override SupportOption SupportRotate => SupportOption.Group;
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportSlope => SupportOption.Group;
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
-        public override SupportOption SupportMode => SupportOption.Group;
+        public override SupportOption SupportCornerDelta => SupportOption.Individually;
         public override bool SupportTrafficLights => true;
         public override bool IsMoveable => true;
 
@@ -202,6 +208,8 @@ namespace NodeController
         public override float DefaultOffset => 8f;
         public override float AdditionalOffset => 2f;
 
+        public override Mode SupportModes => Mode.Flat | Mode.Slope | Mode.FreeForm;
+        public override SupportOption SupportMode => SupportOption.Group;
         public override SupportOption SupportOffset => SupportOption.All;
         public override SupportOption SupportShift => SupportOption.All;
         public override SupportOption SupportRotate => SupportOption.All;
@@ -209,7 +217,6 @@ namespace NodeController
         public override SupportOption SupportTwist => SupportOption.All;
         public override SupportOption SupportStretch => SupportOption.All;
         public override SupportOption SupportMarking => SupportOption.All;
-        public override SupportOption SupportMode => SupportOption.Group;
         public override SupportOption SupportCollision => SupportOption.All;
         public override SupportOption SupportForceNodeless => SupportOption.All;
         public override SupportOption SupportFollowMainSlope => SupportOption.All;

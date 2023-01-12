@@ -266,13 +266,14 @@ namespace NodeController
             }
             else
             {
+                var mode = Style != null ? Mode : Mode.Flat;
                 foreach (var segmentId in add)
                 {
                     var newSegmentEnd = new SegmentEndData(this, segmentId);
                     newSegmentEnds[newSegmentEnd.Id] = newSegmentEnd;
 
                     if (Style is NodeStyle style)
-                        newSegmentEnd.ResetToDefault(style, true);
+                        newSegmentEnd.ResetToDefault(style, mode, true);
                 }
             }
 #if DEBUG && EXTRALOG
@@ -363,7 +364,6 @@ namespace NodeController
             foreach (var segmentEnd in SegmentEndDatas)
             {
                 segmentEnd.IsMainRoad = IsMainRoad(segmentEnd.Id);
-                segmentEnd.Mode = Mode;
                 if (Mode != Mode.FreeForm && !segmentEnd.IsMainRoad && !segmentEnd.IsDecoration)
                 {
                     segmentEnd.TwistAngle = Style.DefaultTwist;
@@ -575,8 +575,9 @@ namespace NodeController
                 _ => throw new NotImplementedException(),
             };
 
+            var mode = Mode;
             foreach (var segmentEnd in SegmentEndDatas)
-                segmentEnd.ResetToDefault(Style, force);
+                segmentEnd.ResetToDefault(Style, mode, force);
         }
         public void SetMain(ushort first, ushort second)
         {
@@ -679,16 +680,18 @@ namespace NodeController
         Error = 4,
         Fail = 8,
     }
+
+    [Flags]
     public enum Mode
     {
         [Description(nameof(Localize.Option_ModeFlat))]
-        Flat = 0,
+        Flat = 1,
 
         [Description(nameof(Localize.Option_ModeSlope))]
-        Slope = 1,
+        Slope = 2,
 
         [Description(nameof(Localize.Option_ModeFreeForm))]
-        FreeForm = 2,
+        FreeForm = 4,
     }
 
     public class NodeTypePropertyPanel : EnumOncePropertyPanel<NodeStyleType, NodeTypePropertyPanel.NodeTypeDropDown>

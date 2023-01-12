@@ -3,7 +3,6 @@ using ColossalFramework.Math;
 using ColossalFramework.UI;
 using ModsCommon;
 using ModsCommon.Utilities;
-using NodeController.Utilities;
 using System;
 using System.Linq;
 using System.Xml.Linq;
@@ -77,7 +76,7 @@ namespace NodeController
 
         public float VehicleTwist { get; private set; }
 
-        public Mode Mode { get; set; }
+        public Mode Mode { get; private set; }
 
         private float _offsetValue;
         private float _rotateValue;
@@ -369,10 +368,15 @@ namespace NodeController
             LeftSide.DirDelta = style.DefaultDelta;
             RightSide.DirDelta = style.DefaultDelta;
         }
-        public void ResetToDefault(NodeStyle style, bool force)
+        public void ResetToDefault(NodeStyle style, Mode mode, bool force)
         {
-            if (style.SupportMode == SupportOption.None || force || IsUntouchable)
+            var oldMode = Mode;
+            if (style.SupportMode == SupportOption.None || (mode & style.SupportModes) == 0 || force || IsUntouchable)
                 Mode = style.DefaultMode;
+            else
+                Mode = mode;
+
+            var freeModeSwitched = (oldMode == Mode.FreeForm) ^ (Mode == Mode.FreeForm);
 
             if (style.SupportSlope == SupportOption.None || force || IsUntouchable)
                 SlopeAngle = style.DefaultSlope;
@@ -395,7 +399,7 @@ namespace NodeController
             if (style.SupportFollowMainSlope == SupportOption.None || force || IsUntouchable)
                 FollowSlope = style.DefaultFollowSlope;
 
-            if (style.SupportCornerDelta == SupportOption.None || force || IsUntouchable)
+            if (style.SupportCornerDelta == SupportOption.None || force || IsUntouchable || freeModeSwitched)
             {
                 LeftSide.PosDelta = style.DefaultDelta;
                 RightSide.PosDelta = style.DefaultDelta;
@@ -429,7 +433,7 @@ namespace NodeController
             else
                 SetOffset(Offset);
 
-            if (force || style.OnlyKeepDefault)
+            if (force || style.OnlyKeepDefault || freeModeSwitched)
                 KeepDefaults = true;
         }
 
@@ -461,7 +465,7 @@ namespace NodeController
             {
                 _forceNodeLess = value;
                 if (reset)
-                    ResetToDefault(NodeData.Style, true);
+                    ResetToDefault(NodeData.Style, Mode, true);
             }
         }
 
@@ -1375,7 +1379,7 @@ namespace NodeController
             var config = new XElement(XmlSection);
 
             config.AddAttr(nameof(Id), Id);
-            config.AddAttr("IS", Mode);
+            config.AddAttr("M", (int)Mode);
             config.AddAttr("O", _offsetValue);
             config.AddAttr("RA", _rotateValue);
             config.AddAttr("SA", SlopeAngle);
@@ -1395,7 +1399,11 @@ namespace NodeController
         public void FromXml(XElement config, NodeStyle style)
         {
             if (style.SupportMode != SupportOption.None)
-                Mode = (Mode)config.GetAttrValue("IS", (int)style.DefaultMode);
+            {
+                var isSlope = config.GetAttrValue("IS", 0) == 1;
+                Mode = isSlope ? Mode.Slope : Mode.Flat;
+                Mode = (Mode)config.GetAttrValue("M", (int)style.DefaultMode);
+            }
 
             if (style.SupportSlope != SupportOption.None && !IsUntouchable)
                 SlopeAngle = config.GetAttrValue("SA", style.DefaultSlope);

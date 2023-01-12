@@ -83,7 +83,7 @@ namespace NodeController
                 var rightDirDelta = right.DirDelta;
                 var rightAngle = (CachedRightRot + deltaAngle) % 360f;
                 rightDirDelta.x = rightAngle > 180f ? rightAngle - 360f : rightAngle;
-                right.DirDelta = leftDirDelta;
+                right.DirDelta = rightDirDelta;
             }
 
             SegmentEnd.UpdateNode();

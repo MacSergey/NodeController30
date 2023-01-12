@@ -106,7 +106,7 @@ namespace NodeController
             var hitPos = Tool.Ray.GetRayPosition(segmentData[side].MarkerPos.y, out _);
             var magnitude = (segmentData[side].MarkerPos - hitPos).magnitude;
 
-            if (magnitude < SegmentEndData.CornerCenterRadius)
+            if (segmentData.IsOffsetChangeable && magnitude < SegmentEndData.CornerCenterRadius)
             {
                 HoverSegmentCenter = null;
                 HoverSegmentCircle = null;
@@ -115,7 +115,7 @@ namespace NodeController
                 HoverCorner = side;
                 return true;
             }
-            else if(segmentData.Mode == Mode.FreeForm && magnitude > SegmentEndData.CornerCircleRadius - 0.5f && magnitude < SegmentEndData.CornerCircleRadius + 1f )
+            else if(segmentData.Mode == Mode.FreeForm && segmentData.IsRotateChangeable && magnitude > SegmentEndData.CornerCircleRadius - 0.5f && magnitude < SegmentEndData.CornerCircleRadius + 1f )
             {
                 HoverSegmentCenter = null;
                 HoverSegmentCircle = null;
@@ -179,13 +179,16 @@ namespace NodeController
                 var center = segmentData == HoverSegmentCenter ? hover : segmentColor;
                 segmentData.Render(defaultColor, circle, center);
 
-                var leftCenter = segmentData == HoverCornerCenter && HoverCorner == SideType.Left ? hover : yellow;
-                segmentData[SideType.Left].RenderCenter(leftCenter);
+                if (segmentData.IsOffsetChangeable)
+                {
+                    var leftCenter = segmentData == HoverCornerCenter && HoverCorner == SideType.Left ? hover : yellow;
+                    segmentData[SideType.Left].RenderCenter(leftCenter);
 
-                var rightCenter = segmentData == HoverCornerCenter && HoverCorner == SideType.Right ? hover : yellow;
-                segmentData[SideType.Right].RenderCenter(rightCenter);
+                    var rightCenter = segmentData == HoverCornerCenter && HoverCorner == SideType.Right ? hover : yellow;
+                    segmentData[SideType.Right].RenderCenter(rightCenter);
+                }
 
-                if (segmentData.Mode == Mode.FreeForm)
+                if (segmentData.Mode == Mode.FreeForm && segmentData.IsRotateChangeable)
                 {
                     var leftCircle = segmentData == HoverCornerCircle && HoverCorner == SideType.Left ? hover : yellow;
                     segmentData[SideType.Left].RenderCircle(leftCircle);

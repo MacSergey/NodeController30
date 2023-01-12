@@ -48,13 +48,14 @@ namespace NodeController
 
         public virtual float AdditionalOffset => 0f;
 
+        public virtual Mode SupportModes => Mode.Flat | Mode.Slope;
+        public virtual SupportOption SupportMode => SupportOption.None;
         public virtual SupportOption SupportOffset => SupportOption.None;
         public virtual SupportOption SupportShift => SupportOption.None;
         public virtual SupportOption SupportRotate => SupportOption.None;
         public virtual SupportOption SupportSlope => SupportOption.None;
         public virtual SupportOption SupportTwist => SupportOption.None;
         public virtual SupportOption SupportMarking => SupportOption.None;
-        public virtual SupportOption SupportMode => SupportOption.None;
         public virtual SupportOption SupportStretch => SupportOption.None;
         public virtual SupportOption SupportCollision => SupportOption.None;
         public virtual SupportOption SupportForceNodeless => SupportOption.None;
@@ -65,7 +66,7 @@ namespace NodeController
         public virtual bool NeedFixDirection => true;
 
         public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch | SupportCollision | SupportForceNodeless | SupportFollowMainSlope | SupportCornerDelta) & SupportOption.All;
-        private bool OnlyOnSlope => SupportMode != SupportOption.None || DefaultMode != Mode.Flat;
+        private bool OnlyOnSlope => DefaultMode != Mode.Flat;
 
         public virtual float DefaultOffset => 0f;
         public virtual float DefaultShift => 0f;
@@ -282,7 +283,10 @@ namespace NodeController
         public virtual void SetMode(Mode value)
         {
             foreach (var segmentData in TouchableDatas)
-                segmentData.Mode = value;
+            {
+                if (segmentData.Mode != value)
+                    segmentData.ResetToDefault(this, value, false);
+            }
         }
 
         public virtual bool? GetFollowSlope()
@@ -337,7 +341,7 @@ namespace NodeController
                 }
             }
 
-            bool hiddenExist = false;
+            int hiddenCount = 0;
             foreach (var option in EnumExtension.GetEnumValues<Options>(i => true))
             {
                 if (Settings.GetOptionVisibility(option) == OptionVisibility.Hidden)
@@ -345,7 +349,7 @@ namespace NodeController
                     if (GetOptionPanel(parent, option, totalSupport) is EditorPropertyPanel optionPanel)
                     {
                         optionPanels.Add(option, optionPanel);
-                        hiddenExist = true;
+                        hiddenCount += 1;
                     }
                 }
             }
@@ -378,7 +382,7 @@ namespace NodeController
             components.Add(moreOptionsButton);
             moreOptionsButton.Text = $"▼ {Localize.Option_MoreOptions} ▼";
             moreOptionsButton.Init();
-            moreOptionsButton.isVisible = hiddenExist && !getShowHidden();
+            moreOptionsButton.isVisible = hiddenCount >= 2 && !getShowHidden();
             moreOptionsButton.OnButtonClick += () =>
             {
                 setShowHidden(true);
@@ -428,7 +432,9 @@ namespace NodeController
                     return visible && Data.Mode == Mode.Slope;
 
                 case Options.Offset:
-                //case Options.Rotate:
+#if !DEBUG
+                case Options.Rotate:
+#endif
                 case Options.Stretch:
                 case Options.Shift:
                 case Options.Collision:
@@ -473,7 +479,7 @@ namespace NodeController
             {
                 var modeProperty = ComponentPool.Get<ModePropertyPanel>(parent);
                 modeProperty.Text = Localize.Option_Mode;
-                modeProperty.Init();
+                modeProperty.Init(m => (m & SupportModes) != 0);
                 modeProperty.SelectedObject = Data.Mode;
 
                 return modeProperty;
@@ -609,9 +615,9 @@ namespace NodeController
                     hideMarking.ButtonText = Localize.Option_HideCrosswalkModRequired;
 
                     hideMarking.WordWrap = true;
-                    hideMarking.autoSize = true;
+                    hideMarking.AutoSize = true;
                     hideMarking.Init();
-                    hideMarking.autoSize = false;
+                    hideMarking.AutoSize = false;
                     var actualWidth = hideMarking.Width;
 
                     if (totalSupport == SupportOption.Group)
@@ -858,7 +864,7 @@ namespace NodeController
         protected static bool FreeFormPredicate(SegmentEndData data) => data.Mode == Mode.FreeForm ? TouchablePredicate(data) : MainRoadPredicate(data);
         protected static bool WithoutCollisionPredicate(SegmentEndData data) => data.Mode == Mode.FreeForm && TouchablePredicate(data) && data.Collision == false;
 
-        #endregion
+#endregion
     }
 
     [Flags]

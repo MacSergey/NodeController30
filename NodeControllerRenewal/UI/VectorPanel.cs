@@ -54,6 +54,7 @@ namespace NodeController.UI
             item.CheckMax = true;
             item.UseWheel = true;
             item.WheelStep = WheelStep;
+            item.CyclicalValue = true;
             item.WheelTip = Settings.ShowToolTip;
 
             if (MinMax != null)

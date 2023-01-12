@@ -56,18 +56,9 @@ namespace NodeController
             var quaternion = Quaternion.FromToRotation(BeginDirection, CurrentDirection);
             var angle = (CachedRotate + quaternion.eulerAngles.y).RoundToNearest(RoundTo) % 360f;
 
-            if (Corner == SideType.Left)
-            {
-                var deltaDir = SegmentEnd.LeftDirDelta;
-                deltaDir.x = angle;
-                SegmentEnd.LeftDirDelta = deltaDir;
-            }
-            else
-            {
-                var deltaDir = SegmentEnd.RightDirDelta;
-                deltaDir.x = angle;
-                SegmentEnd.RightDirDelta = deltaDir;
-            }
+            var deltaDir = SegmentEnd[Corner].DirDelta;
+            deltaDir.x = angle;
+            SegmentEnd[Corner].DirDelta = deltaDir;
 
             SegmentEnd.UpdateNode();
             Tool.Panel.RefreshPanel();
