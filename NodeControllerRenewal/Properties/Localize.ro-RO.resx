@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>Această acțiune nu poate fi refăcută.</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Datele originale al modului Node Controller au fost importate.
 Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita ajustări manuale.</value>
@@ -168,6 +170,10 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
     <value>[FIXED] Glitch-uri de teren care puteau să apară când se folosea modul Surface Painter.
 [TRANSLATION] A fost adăugată limba cehă.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_3_3" xml:space="preserve">
+    <value>[FIXED] S-a rezolvat Compatibilitatea cu Adaptive Network mod care ar putea cauza goluri albastre în locul nodurilor.
+[FIXED] Eroare rezolvată atunci când un activ de rețea pierdut ar putea cauza eșecul încărcării datelor NCR.</value>
+  </data>
   
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curbă</value>
@@ -208,12 +214,23 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Option_Collision" xml:space="preserve">
     <value>Coliziuni</value>
   </data>
+  <data name="Option_DeltaHeight" xml:space="preserve">
+    <value>Înălțime Delta</value>
+  </data>
   
   
+  <data name="Option_FollowSlope" xml:space="preserve">
+    <value>Urmărește panta principală</value>
+  </data>
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>Modul hide crosswalks este necesar</value>
+  </data>
   
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Resetare offset</value>
   </data>
+  
+  
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Direcția pantei principale</value>
   </data>
@@ -229,10 +246,18 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcare</value>
   </data>
-  
-  
-  
-  
+  <data name="Option_Mode" xml:space="preserve">
+    <value>Mod</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>Plat</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>Trasare liberă</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>Pantă</value>
+  </data>
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Mai multe opțiuni</value>
   </data>
@@ -248,6 +273,8 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Resetare la valori implicite</value>
   </data>
+  
+  
   <data name="Option_Rotate" xml:space="preserve">
     <value>Rotire</value>
   </data>
@@ -287,21 +314,40 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Option_Type" xml:space="preserve">
     <value>Tipul de nod</value>
   </data>
+  
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nodul #{0}</value>
   </data>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Se aplică la repornirea jocului</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>Backup</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>Copiați calea în clipboard</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>Ștergeți datele din toate nodurile</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>Ștergeți toate datele</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>Doriți într-adevăr să eliminaţi toate datele?</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>Salvați datele nodurilor într-un fișier</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>Salvați datele nodurilor</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>Salvare eșuată</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>Salvare efectuată cu succes</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Inserați nodul</value>
   </data>
@@ -338,12 +384,25 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Afișați overlay-ul cu nodurile din apropriere</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>Restabilire</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>Restabiliți datele nodurilor din fișier</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>Restabilire date noduri</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>Sigur doriți să restaurați datele nodurilor?
+Datele restaurate vor înlocui toate datele existente ale nodurilor.</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>Restabilirea datelor nodurilor a eșuat</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>Datele nodurilor au fost restaurate cu succes</value>
+  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Alegeți nodurile din mijloc</value>
   </data>
@@ -425,12 +484,14 @@ Apăsați pentru a modifica</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Trageți pentru a schimba offset-ul</value>
   </data>
+  
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Trageți pentru a schimba rotația</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Trageți pentru a schimba offset-ul colțului</value>
   </data>
+  
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Trageți sfârșitul ăsta pentru a schimba direcția pantei principale</value>
   </data>

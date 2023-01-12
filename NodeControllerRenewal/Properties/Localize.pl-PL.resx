@@ -171,6 +171,7 @@ Nie udało się załadować danych wszystkich węzłów.</value>
 [TRANSLATION] Dodano język czeski.</value>
   </data>
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Zegnij</value>
   </data>
@@ -213,9 +214,14 @@ Nie udało się załadować danych wszystkich węzłów.</value>
   
   
   
+  
+  
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Zresetuj przesunięcie</value>
   </data>
+  
+  
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Główny kierunek nachylenia</value>
   </data>
@@ -250,6 +256,8 @@ Nie udało się załadować danych wszystkich węzłów.</value>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Resetuj do domyślnych</value>
   </data>
+  
+  
   <data name="Option_Rotate" xml:space="preserve">
     <value>Obróć</value>
   </data>
@@ -289,6 +297,7 @@ Nie udało się załadować danych wszystkich węzłów.</value>
   <data name="Option_Type" xml:space="preserve">
     <value>Typ węzła</value>
   </data>
+  
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Węzeł #{0}</value>
   </data>
@@ -439,12 +448,14 @@ Kliknij aby edytować</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Przeciągnij aby zmienić przesunięcie</value>
   </data>
+  
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Przeciągnij aby zmienić obrót</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Przeciągnij aby zmienić przesunięcie rogu</value>
   </data>
+  
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Przeciągnij ten koniec aby zmienić główny kierunek nachylnia</value>
   </data>

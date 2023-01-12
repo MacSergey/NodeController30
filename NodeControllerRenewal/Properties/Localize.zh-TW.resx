@@ -174,6 +174,7 @@
     <value>[FIXED] 修復後與自適應網路模組(Adaptive Network Mod) 相容，之前可能導致節點顯示為藍洞。
 [FIXED] 修復了丟失道路（網路）素材時使NCR資料載入失敗的錯誤。</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>彎曲</value>
   </data>
@@ -213,14 +214,23 @@
   <data name="Option_Collision" xml:space="preserve">
     <value>碰撞</value>
   </data>
+  <data name="Option_DeltaHeight" xml:space="preserve">
+    <value>三角形高度</value>
+  </data>
   
   
+  <data name="Option_FollowSlope" xml:space="preserve">
+    <value>跟隨主斜坡</value>
+  </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>需要 Hide TMPE Crosswalks 模組</value>
   </data>
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>重設偏移</value>
   </data>
+  
+  
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>主斜坡方向</value>
   </data>
@@ -236,10 +246,18 @@
   <data name="Option_Marking" xml:space="preserve">
     <value>標線</value>
   </data>
-  
-  
-  
-  
+  <data name="Option_Mode" xml:space="preserve">
+    <value>模式</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>平坦</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>自由形狀</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>斜坡</value>
+  </data>
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>更多選項</value>
   </data>
@@ -255,6 +273,8 @@
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>重設為預設值</value>
   </data>
+  
+  
   <data name="Option_Rotate" xml:space="preserve">
     <value>旋轉</value>
   </data>
@@ -294,6 +314,7 @@
   <data name="Option_Type" xml:space="preserve">
     <value>節點類型</value>
   </data>
+  
   <data name="Panel_NodeId" xml:space="preserve">
     <value>節點 #{0}</value>
   </data>
@@ -463,12 +484,14 @@
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>拖曳以調整偏移</value>
   </data>
+  
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>拖曳以調整旋轉角度</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>拖曳以調整角落偏移</value>
   </data>
+  
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>拖曳這端來調整主斜坡方向</value>
   </data>

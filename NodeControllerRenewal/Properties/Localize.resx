@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -246,6 +246,13 @@ Failed to load data for all nodes.</value>
     <value>[FIXED] Fixed compatibility with Adaptive Network mod which could cause blue voids instead of nodes.
 [FIXED] Fixed error when missed network asset could cause NCR data loading failure.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_4" xml:space="preserve">
+    <value>[NEW] Added free-form mode that allow to set corner position and rotation without any limitations.
+[NEW] Added the ability to disable "Follow main slope" for segments that allows to make segments slope independently.
+[NEW] Added the ability to set delta height for each segment.
+[UPDATED] Bend nodes follow slope of near nodes, so that segment between them is smoother.
+[FIXED] Default offset of railways is not set to 0.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bend</value>
   </data>
@@ -288,14 +295,31 @@ Failed to load data for all nodes.</value>
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Delta height</value>
   </data>
+  <data name="Option_Distance" xml:space="preserve">
+    <value>Distance</value>
+  </data>
+  <data name="Option_Elevation" xml:space="preserve">
+    <value>Elevation</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Follow main slope</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Hide crosswalks mod required</value>
   </data>
+  <data name="Option_Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Reset offset</value>
+  </data>
+  <data name="Option_LeftCornerDirDelta" xml:space="preserve">
+    <value>Left corner
+Direction</value>
+  </data>
+  <data name="Option_LeftCornerPosDelta" xml:space="preserve">
+    <value>Left corner
+Position</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Main slope direction</value>
@@ -339,6 +363,14 @@ Failed to load data for all nodes.</value>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Reset to default</value>
   </data>
+  <data name="Option_RightCornerDirDelta" xml:space="preserve">
+    <value>Right corner
+Direction</value>
+  </data>
+  <data name="Option_RightCornerPosDelta" xml:space="preserve">
+    <value>Right corner
+Position</value>
+  </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Rotate</value>
   </data>
@@ -377,6 +409,9 @@ Failed to load data for all nodes.</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
     <value>Node type</value>
+  </data>
+  <data name="Option_Vertical" xml:space="preserve">
+    <value>Vertical</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Node #{0}</value>
@@ -547,11 +582,19 @@ Click to edit</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Drag to change offset</value>
   </data>
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>Drag to change position
+Hold {0} to change elevation</value>
+  </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Drag to change rotate</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Drag to change corner offset</value>
+  </data>
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>Drag to change corner position
+Hold {0} to change corner elevation</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Drag this end to change main slope direction</value>

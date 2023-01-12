@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>Questa azione non può esser annullata.</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Sono stati importati i dati del Node Controller originale.
 La retrocompatibilitá non garantisce il trasferimento di tutti i dati; possibili correzioni manuali necessarie.</value>
@@ -168,6 +170,10 @@ Impossibile caricare i dati per tutti i nodi.</value>
     <value>[FIXED] Risolti i glitch del terreno che potrebbero apparire quando si usa la mod Surface Painter.
 [TRANSLATION] Aggiunta la lingua ceca.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_3_3" xml:space="preserve">
+    <value>[FIXED] Corretta la compatibilità con Adaptive Network mod che potrebbe causare vuoti blu al posto dei nodi.
+[FIXED] Errore corretto quando la risorsa di rete è persa, potrebbe causare un errore di caricamento dei dati NCR.</value>
+  </data>
   
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Piega</value>
@@ -208,12 +214,23 @@ Impossibile caricare i dati per tutti i nodi.</value>
   <data name="Option_Collision" xml:space="preserve">
     <value>Collisione</value>
   </data>
+  <data name="Option_DeltaHeight" xml:space="preserve">
+    <value>Altezza Delta</value>
+  </data>
   
   
+  <data name="Option_FollowSlope" xml:space="preserve">
+    <value>Segui la pendenza principale</value>
+  </data>
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>È richiesta la Mod Hide Crosswalks</value>
+  </data>
   
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Ripristina la deviazione</value>
   </data>
+  
+  
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Direzione principale della pendenza</value>
   </data>
@@ -229,10 +246,18 @@ Impossibile caricare i dati per tutti i nodi.</value>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcatura</value>
   </data>
-  
-  
-  
-  
+  <data name="Option_Mode" xml:space="preserve">
+    <value>Modo</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>Flat</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>Forma libera</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>Pendenza</value>
+  </data>
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Altre opzioni</value>
   </data>
@@ -248,6 +273,8 @@ Impossibile caricare i dati per tutti i nodi.</value>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Ripristina impostazioni predefinite</value>
   </data>
+  
+  
   <data name="Option_Rotate" xml:space="preserve">
     <value>Rotazione</value>
   </data>
@@ -287,21 +314,40 @@ Impossibile caricare i dati per tutti i nodi.</value>
   <data name="Option_Type" xml:space="preserve">
     <value>Tipologia di nodo</value>
   </data>
+  
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nodo #{0}</value>
   </data>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Si applica dopo il riavvio del gioco</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>Backup</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>Copia il percorso negli appunti</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>Elimina dati da tutti i nodi</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>Elimina tutti i dati</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>Vuoi veramente rimuovere tutti i dati?</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>Scarica i dati dei nodi su file</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>Scarica i dati dei nodi</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>Scarico fallito</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>Scarico salvato correttamente sul file</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Inserimento nodo</value>
   </data>
@@ -338,12 +384,25 @@ Impossibile caricare i dati per tutti i nodi.</value>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostra la sovrapposizione dei nodi vicini</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>Ripristina</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>Ripristina i dati dei nodi da file</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>Ripristina dati nodi</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>Sei sicuro di voler ripristinare i dati dei nodi?
+I dati dei nodi ripristinati sostituiranno quelli esistenti.</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>Ripristino dati nodi non riuscito</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>Dati dei nodi ripristinati con successo</value>
+  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Seleziona nodi centrali</value>
   </data>
@@ -423,12 +482,14 @@ Clicca per modificare</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Trascina per cambiare lo spostamento</value>
   </data>
+  
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Trascina per cambiare la rotazione</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Trascina per cambiare lo spostamento dell'angolo</value>
   </data>
+  
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Trascina questa estremità per cambiare la direzione della pendenza principale</value>
   </data>

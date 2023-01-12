@@ -173,6 +173,7 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
     <value>[FIXED] Compatibiliteit met Adaptive Network mod hersteld die blauwe leegtes kon veroorzaken in plaats van knooppunten.
 [FIXED] Fout opgelost wanneer een gemist netwerkasset kon leiden tot het mislukken van laden van NCR gegevens.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bocht</value>
   </data>
@@ -215,15 +216,20 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Deltahoogte</value>
   </data>
+  
+  
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Hoofdhelling volgen</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Hide crosswalks mod vereist</value>
   </data>
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Parallele verschuiving herstellen</value>
   </data>
+  
+  
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Hoofdrichting helling</value>
   </data>
@@ -266,6 +272,8 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Terug naar standaardwaarde</value>
   </data>
+  
+  
   <data name="Option_Rotate" xml:space="preserve">
     <value>Roteren</value>
   </data>
@@ -305,6 +313,7 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
   <data name="Option_Type" xml:space="preserve">
     <value>Knooptype</value>
   </data>
+  
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Knoop #{0}</value>
   </data>
@@ -472,12 +481,14 @@ Klik om te wijzigen</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Sleep om de verschuiving te veranderen</value>
   </data>
+  
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Sleep om de rotatie te veranderen</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Sleep om de hoekverschuiving te veranderen</value>
   </data>
+  
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Sleep dit uiteinde om de hellingsrichting te veranderen</value>
   </data>

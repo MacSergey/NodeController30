@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>Esta ação não pode ser desfeita.</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Os dados originais do Node Controller foram importados.
 A compatível com versões anteriores não fornece a transferência de todos os dados, talvez sejam necessários ajustes manuais.</value>
@@ -169,6 +171,7 @@ O carregamento de todas marcações falhou.</value>
 [TRANSLATION] Adicionado linguagem Tcheca.</value>
   </data>
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curva</value>
   </data>
@@ -211,9 +214,14 @@ O carregamento de todas marcações falhou.</value>
   
   
   
+  
+  
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Repor deslocamento</value>
   </data>
+  
+  
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Direção da inclinação principal</value>
   </data>
@@ -248,6 +256,8 @@ O carregamento de todas marcações falhou.</value>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Repor predefinição</value>
   </data>
+  
+  
   <data name="Option_Rotate" xml:space="preserve">
     <value>Rodar</value>
   </data>
@@ -287,6 +297,7 @@ O carregamento de todas marcações falhou.</value>
   <data name="Option_Type" xml:space="preserve">
     <value>Tipo de Nó</value>
   </data>
+  
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nó #{0}</value>
   </data>
@@ -424,12 +435,14 @@ Clique para editar</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Arraste para alterar o deslocamento</value>
   </data>
+  
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Arraste para alterar a rotação</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Arraste para alterar deslocamento do canto</value>
   </data>
+  
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Arraste esta extremidade para mudar a direção da inclinação principal</value>
   </data>

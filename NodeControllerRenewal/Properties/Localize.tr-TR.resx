@@ -144,6 +144,7 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Eğim</value>
   </data>
@@ -184,9 +185,14 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   
   
   
+  
+  
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Merkezi sıfırla</value>
   </data>
+  
+  
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Ana eğim yönü</value>
   </data>
@@ -217,6 +223,8 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Varsayılanlara sıfırla</value>
   </data>
+  
+  
   <data name="Option_Rotate" xml:space="preserve">
     <value>Döndür</value>
   </data>
@@ -256,6 +264,7 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Option_Type" xml:space="preserve">
     <value>Düğüm tipi</value>
   </data>
+  
   <data name="Panel_NodeId" xml:space="preserve">
     <value>#{0} nolu düğüm</value>
   </data>
@@ -356,12 +365,14 @@ Ayarlamak için tıklayın</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Merkez noktayı ayarlamak için tutup çekin</value>
   </data>
+  
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Açıyı ayarlamak için tutup çekin</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Köşelerin çıkıntısını ayarlamak için tutup çekin</value>
   </data>
+  
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Ana eğim yönünü değiştirmek için bu uçtan tutup çekin</value>
   </data>

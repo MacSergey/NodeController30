@@ -121,11 +121,11 @@
     <value>此操作不可撤销。</value>
   </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
-    <value>已导入原版节点控制器模组数据。
-逆向兼容无法包括所有数据，可能需要手动调整。</value>
+    <value>已导入原版的 Node Controller 模组的数据。
+向下兼容无法继承所有数据，部分节点可能需要手动调整。</value>
   </data>
   <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
-    <value>警告：保存后，您将无法在此地图上继续使用原版节点控制器模组。</value>
+    <value>警告：当您存档后，将无法在此地图上继续使用原版的 Node Controller 模组。</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>控制节点类型和形状</value>
@@ -209,6 +209,7 @@
     <value>[FIXED] 修复了与 Adaptive Network 的兼容性，之前可能导致节点显示为蓝洞。
 [FIXED] 修复了当丢失网络资产时 NCR 数据加载失败的错误。</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>弯曲</value>
   </data>
@@ -251,15 +252,20 @@
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>三角形高度</value>
   </data>
+  
+  
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>跟随主斜坡</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>你需要 Hide TMPE crosswalks 模组</value>
   </data>
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>重置偏移</value>
   </data>
+  
+  
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>主斜坡方向</value>
   </data>
@@ -302,6 +308,8 @@
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>重置为默认值</value>
   </data>
+  
+  
   <data name="Option_Rotate" xml:space="preserve">
     <value>旋转</value>
   </data>
@@ -341,6 +349,7 @@
   <data name="Option_Type" xml:space="preserve">
     <value>节点类型</value>
   </data>
+  
   <data name="Panel_NodeId" xml:space="preserve">
     <value>节点 #{0}</value>
   </data>
@@ -390,7 +399,7 @@
     <value>修复在较长的交叉路口上行人被卡住的问题</value>
   </data>
   <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
-    <value>此选项会增加交叉路口上的最大路径距离，防止在较长的间距上行人被卡住，不过此选项会影响模拟速度</value>
+    <value>此选项会增加交叉路口上的最大寻路距离，以防止行人被较大的路口卡住，不过此选项会影响（降低）模拟速度</value>
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>节点默认为斜坡</value>
@@ -510,12 +519,14 @@
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>拖动以改变偏移</value>
   </data>
+  
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>拖动以改变旋转</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>拖动以改变边角偏移</value>
   </data>
+  
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>拖动此端来改变主要斜坡方向</value>
   </data>

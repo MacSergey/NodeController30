@@ -192,6 +192,7 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
     <value>[FIXED] Kompatibilität mit Adaptive Network Mod korrigiert, die blaue Flächen anstelle von Netzwerknoten verursachen konnte.
 [FIXED] Fehler behoben durch den es bei fehlenden Netzwerken zu einem Fehler beim Laden von NCR-Daten kommen konnte.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Kurve</value>
   </data>
@@ -234,15 +235,20 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Deltahöhe</value>
   </data>
+  
+  
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Hauptgefälle folgen</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Hide crosswalks mod erforderlich</value>
   </data>
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Versatz zurücksetzen</value>
   </data>
+  
+  
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Neigungsrichtung</value>
   </data>
@@ -285,6 +291,8 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Auf Standard zurücksetzen</value>
   </data>
+  
+  
   <data name="Option_Rotate" xml:space="preserve">
     <value>Drehung</value>
   </data>
@@ -324,6 +332,7 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   <data name="Option_Type" xml:space="preserve">
     <value>Netzwerk-Knoten-Typ</value>
   </data>
+  
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Netzwerk-Knoten #{0}</value>
   </data>
@@ -334,7 +343,7 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
     <value>Backup</value>
   </data>
   <data name="Settings_CopyPathToClipboard" xml:space="preserve">
-    <value>Pfad in die Zwischenablage kopiert</value>
+    <value>Pfad in die Zwischenablage kopieren</value>
   </data>
   <data name="Settings_DeleteDataButton" xml:space="preserve">
     <value>Die Daten aller Netzwerk-Knoten löschen</value>
@@ -352,10 +361,10 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
     <value>Daten des Netzwerk-Knotens kopieren</value>
   </data>
   <data name="Settings_DumpMessageFailed" xml:space="preserve">
-    <value>Kopie fehlgeschlagen</value>
+    <value>Export fehlgeschlagen</value>
   </data>
   <data name="Settings_DumpMessageSuccess" xml:space="preserve">
-    <value>Die Kopie wurde erfolgreich in einer Datei gespeichert</value>
+    <value>Der Export wurde erfolgreich in einer Datei gespeichert</value>
   </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Netzwerk-Knoten einfügen</value>
@@ -394,7 +403,7 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
     <value>Zeige Hervorhebung für nahe Netzwerk-Knoten</value>
   </data>
   <data name="Settings_Restore" xml:space="preserve">
-    <value>wiederherstellen</value>
+    <value>Wiederherstellen</value>
   </data>
   <data name="Settings_RestoreDataButton" xml:space="preserve">
     <value>Daten des Netzwerk-Knotens aus einer Datei wiederherstellen</value>
@@ -404,7 +413,7 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   </data>
   <data name="Settings_RestoreDataMessage" xml:space="preserve">
     <value>Möchtest du wirklich die Daten des Netzwerk-Knotens wiederherstellen?
-Die wiederhergestellten Daten werden den jetzigen Netzwerk-Knoten überschreiben.</value>
+Die wiederhergestellten Daten werden die jetzigen Netzwerk-Knoten Daten überschreiben.</value>
   </data>
   <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
     <value>Daten des Netzwerk-Knotens konnten nicht wiederhergestellt werden</value>
@@ -493,12 +502,14 @@ Klicken zum Bearbeiten</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Ziehen, um den Versatz zu ändern</value>
   </data>
+  
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Ziehen, um die Links-Rechts-Drehung zu ändern</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Ziehen, um den Versatz der Ecke zu ändern</value>
   </data>
+  
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Ziehe dieses Ende, um die Neigungsrichtung zu ändern</value>
   </data>

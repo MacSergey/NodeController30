@@ -174,6 +174,7 @@ Pemuatan gagal untuk semua node.</value>
     <value>[FIXED] Memperbaiki kompatibilitas dengan mod Adaptive Network yang dapat menyebabkan lubang-lubang biru pada node.
 [FIXED] Memperbaiki error ketika aset network tidak ditemukan menyebabkan pemuatan data NCR gagal.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Tikungan</value>
   </data>
@@ -216,15 +217,20 @@ Pemuatan gagal untuk semua node.</value>
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Perbedaan tinggi</value>
   </data>
+  
+  
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Ikuti kemiringan utama</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Mod Hide crosswalks dibutuhkan</value>
   </data>
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Setel ulang pergeseran</value>
   </data>
+  
+  
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Arah lereng utama</value>
   </data>
@@ -267,6 +273,8 @@ Pemuatan gagal untuk semua node.</value>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Setel ulang ke standar</value>
   </data>
+  
+  
   <data name="Option_Rotate" xml:space="preserve">
     <value>Perputaran</value>
   </data>
@@ -306,6 +314,7 @@ Pemuatan gagal untuk semua node.</value>
   <data name="Option_Type" xml:space="preserve">
     <value>Jenis titik hubung</value>
   </data>
+  
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Titik hubung #{0}</value>
   </data>
@@ -475,12 +484,14 @@ Klik untuk mengedit</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Seretkan untuk mengubah pergeseran</value>
   </data>
+  
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Seretkan untuk mengubah putaran</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Seretkan untuk mengubah pergeseran pojok</value>
   </data>
+  
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Seretkan ujung ini untuk mengubah arah lereng utama</value>
   </data>

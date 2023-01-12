@@ -246,6 +246,13 @@
     <value>[FIXED] Исправлена совместимость с модом Adaptive Network которая могла вызвать синие пустоты вместо узлов.
 [FIXED] Исправлена ошибка когда при отсутствующих ассетах дорог NCR не мог загрузить данные.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_4" xml:space="preserve">
+    <value>[NEW] Добавлен режим свободной формы который позволяет задавать положение и вращение угла без ограничений.
+[NEW] Добавлена возможность отключить "Следовать за основным наклоном" для сегментов что позволяет делать сегменты наклонными независимо.
+[NEW] Добавлена возможность задавать отклонение по высоте для каждого сегмента.
+[UPDATED] Узлы "Изгиб" следуют наклону ближайших узлов что делает сегмент между ними более гладким.
+[FIXED] Значение по умолчанию для рельс не сбрасывается на 0.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Изгиб</value>
   </data>
@@ -288,14 +295,31 @@
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Изменение высоты</value>
   </data>
+  <data name="Option_Distance" xml:space="preserve">
+    <value>Расстояние</value>
+  </data>
+  <data name="Option_Elevation" xml:space="preserve">
+    <value>Подъем</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Следовать основному наклону</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Необходим мод Hide Crosswalks</value>
   </data>
+  <data name="Option_Horizontal" xml:space="preserve">
+    <value>Горизонталь</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Отступ по умолчанию</value>
+  </data>
+  <data name="Option_LeftCornerDirDelta" xml:space="preserve">
+    <value>Левый угол
+Направление</value>
+  </data>
+  <data name="Option_LeftCornerPosDelta" xml:space="preserve">
+    <value>Левый угол
+Позиция</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Основное направление наклона</value>
@@ -339,6 +363,14 @@
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Сбросить к по умолчанию</value>
   </data>
+  <data name="Option_RightCornerDirDelta" xml:space="preserve">
+    <value>Правый угол
+Направление</value>
+  </data>
+  <data name="Option_RightCornerPosDelta" xml:space="preserve">
+    <value>Правый угол
+Позиция</value>
+  </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Поворот</value>
   </data>
@@ -377,6 +409,9 @@
   </data>
   <data name="Option_Type" xml:space="preserve">
     <value>Тип узла</value>
+  </data>
+  <data name="Option_Vertical" xml:space="preserve">
+    <value>Вертикаль</value>
   </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Узел #{0}</value>
@@ -547,11 +582,19 @@
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Перетащите для изменения отступа</value>
   </data>
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>Перетажите для изменения положения
+Удерживайтей {0} для изменения подъема</value>
+  </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Перетащите для изменения поворота</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Перетащите для изменения отступа угла</value>
+  </data>
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>Перетажите для изменения положения угла
+Удерживайтей {0} для изменения подъема угла</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Перетащите конец для изменения основного направления наклона</value>

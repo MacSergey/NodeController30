@@ -142,6 +142,7 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Saliekt</value>
   </data>
@@ -182,6 +183,11 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   
   
   
+  
+  
+  
+  
+  
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>Auto</value>
   </data>
@@ -207,6 +213,8 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Atjaunot noklusējuma iestatījumus</value>
   </data>
+  
+  
   <data name="Option_Rotate" xml:space="preserve">
     <value>Pagriezt</value>
   </data>
@@ -240,6 +248,7 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   <data name="Option_Type" xml:space="preserve">
     <value>Mezgla tips</value>
   </data>
+  
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Mezgls #{0}</value>
   </data>
@@ -318,6 +327,8 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
     <value>Mezgls #{0}
 Noklikšķiniet, lai rediģētu</value>
   </data>
+  
+  
   
   
   

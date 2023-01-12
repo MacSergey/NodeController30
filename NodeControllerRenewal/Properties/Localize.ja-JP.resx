@@ -174,6 +174,7 @@
     <value>[FIXED] Fixed compatibility with Adaptive Network mod which could cause blue voids instead of nodes.
 [FIXED] Fixed error when missed network asset could cause NCR data loading failure.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>ベンド</value>
   </data>
@@ -216,15 +217,20 @@
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>デルタの高さ</value>
   </data>
+  
+  
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>メインのスロープに追従</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Hide Crosswalks MODが必要</value>
   </data>
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>オフセットをリセット</value>
   </data>
+  
+  
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>スロープ化の選択方法</value>
   </data>
@@ -267,6 +273,8 @@
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>デフォルトに戻す</value>
   </data>
+  
+  
   <data name="Option_Rotate" xml:space="preserve">
     <value>回転(角度)</value>
   </data>
@@ -306,6 +314,7 @@
   <data name="Option_Type" xml:space="preserve">
     <value>ノードの設定</value>
   </data>
+  
   <data name="Panel_NodeId" xml:space="preserve">
     <value>ノード #{0} を調整中</value>
   </data>
@@ -457,7 +466,7 @@
 地下表示を終了</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>{0} で、シフトして自動的に整列</value>
+    <value>{0} で、ネットワークを整列</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>クリックしてこのコーナーへ自動整列</value>
@@ -475,12 +484,14 @@
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>ドラッグしてオフセットを変更</value>
   </data>
+  
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>ドラッグして回転(角度)を変更</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>ドラッグしてコーナーオフセットを変更</value>
   </data>
+  
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>終端をドラッグして、スロープ化したい接続先を変更</value>
   </data>
