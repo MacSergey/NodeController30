@@ -3,7 +3,6 @@ using ColossalFramework.Math;
 using ColossalFramework.UI;
 using ModsCommon;
 using ModsCommon.Utilities;
-using NodeController.Utilities;
 using System;
 using System.Linq;
 using System.Xml.Linq;
@@ -18,8 +17,9 @@ namespace NodeController
         #region STATIC
 
         public static float CircleRadius => 2.5f;
-        public static float CenterDotRadius => 1f;
-        public static float CornerDotRadius => 0.5f;
+        public static float CenterRadius => 1f;
+        public static float CornerCenterRadius => 0.5f;
+        public static float CornerCircleRadius => 1.5f;
         public static float MinNarrowWidth => 8f;
 
         public static string XmlName => "SE";
@@ -54,15 +54,11 @@ namespace NodeController
         public BezierTrajectory RawSegmentBezier { get; private set; }
         public BezierTrajectory SegmentBezier { get; private set; }
 
-        public SegmentSide LeftSide { get; }
-        public SegmentSide RightSide { get; }
+        private SegmentSide LeftSide { get; }
+        private SegmentSide RightSide { get; }
 
         public float AbsoluteAngle { get; private set; }
         public float Weight { get; }
-
-
-        public bool DefaultIsSlope => !Id.GetSegment().Info.m_flatJunctions && !NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
-        //public bool DefaultIsTwist => !DefaultIsSlope && !NodeId.GetNode().m_flags.IsFlagSet(NetNode.Flags.Untouchable);
 
         public bool IsChangeable => !FinalNodeLess;
         public bool IsOffsetChangeable => IsChangeable && !IsUntouchable && NodeData.Style.SupportOffset != SupportOption.None;
@@ -78,8 +74,9 @@ namespace NodeController
         public bool FinalNodeLess => IsNodeLess || ForceNodeLess == true;
         public bool IsUntouchable { get; private set; }
 
-        public int PedestrianLaneCount { get; }
         public float VehicleTwist { get; private set; }
+
+        public Mode Mode { get; private set; }
 
         private float _offsetValue;
         private float _rotateValue;
@@ -121,7 +118,8 @@ namespace NodeController
 
         public float MinOffset { get; private set; } = NodeStyle.MinOffset;
         public float MaxOffset { get; private set; } = NodeStyle.MaxOffset;
-        public float RotateAngle
+
+        private float Rotate
         {
             get => _rotateValue;
             set
@@ -130,37 +128,218 @@ namespace NodeController
                 KeepDefaults = false;
             }
         }
-        public float MinRotate { get; set; }
-        public float MaxRotate { get; set; }
-        public float SlopeAngle { get; set; }
-        public float TwistAngle { get; set; }
-        public float Shift { get; set; }
-        public float Stretch { get; set; }
+
+        private float MinRotate { get; set; }
+        private float MaxRotate { get; set; }
+        public float MinRotateAngle
+        {
+            get => Mode != Mode.FreeForm ? MinRotate : -180f;
+        }
+        public float MaxRotateAngle
+        {
+            get => Mode != Mode.FreeForm ? MaxRotate : 180f;
+        }
+
+
+        private float _slope;
+        private float _twist;
+        private float _shift;
+        private float _stretch;
+
+        public float RotateAngle
+        {
+            get
+            {
+                if (Mode != Mode.FreeForm)
+                    return Rotate;
+                else
+                {
+                    var originDir = LeftSide.OriginalPos.MakeFlat() - RightSide.OriginalPos.MakeFlat();
+                    var currentDir = LeftSide.StartPos.MakeFlat() - RightSide.StartPos.MakeFlat();
+                    var rotation = Quaternion.FromToRotation(originDir, currentDir);
+
+                    return rotation.eulerAngles.y > 180f ? rotation.eulerAngles.y - 360 : rotation.eulerAngles.y;
+                }
+            }
+            set
+            {
+                if (Mode != Mode.FreeForm)
+                    Rotate = value;
+                else
+                {
+                    var leftOriginalPos = LeftSide.OriginalPos.MakeFlat();
+                    var rightOriginalPos = RightSide.OriginalPos.MakeFlat();
+                    var originDir = leftOriginalPos - rightOriginalPos;
+                    var length = originDir.magnitude;
+                    var dir = Quaternion.AngleAxis(value, Vector3.up) * originDir.normalized;
+
+                    var leftPos = Position + dir * length * 0.5f;
+                    var leftDelta = leftPos - leftOriginalPos;
+                    leftDelta = LeftSide.FromAbsoluteDeltaPos(leftDelta);
+                    leftDelta.y = LeftSide.PosDelta.y;
+                    LeftSide.PosDelta = leftDelta;
+
+                    var rightPos = Position - dir * length * 0.5f;
+                    var rightDelta = rightPos - rightOriginalPos;
+                    rightDelta = RightSide.FromAbsoluteDeltaPos(rightDelta);
+                    rightDelta.y = RightSide.PosDelta.y;
+                    RightSide.PosDelta = rightDelta;
+                }
+            }
+        }
+        public float SlopeAngle
+        {
+            get => Mode != Mode.FreeForm ? _slope : 0f;
+            set => _slope = value;
+        }
+        public float TwistAngle
+        {
+            get
+            {
+                if (Mode != Mode.FreeForm)
+                    return _twist;
+                else
+                {
+                    var leftPos = LeftSide.StartPos;
+                    var rightPos = RightSide.StartPos;
+
+                    var deltaH = rightPos.y - leftPos.y;
+                    var distance = (rightPos - leftPos).magnitude;
+
+                    var angle = Mathf.Asin(deltaH / distance) * Mathf.Rad2Deg;
+                    return angle;
+                }
+            }
+            set
+            {
+                if (Mode != Mode.FreeForm)
+                    _twist = value;
+                else
+                {
+                    var direction = RightSide.StartPos - LeftSide.StartPos;
+                    var halfWidth = direction.magnitude * 0.5f;
+                    direction = direction.MakeFlatNormalized();
+                    var normal = direction.Turn90(false);
+                    direction = Quaternion.AngleAxis(value, normal) * direction;
+
+                    var leftPos = Position - direction * halfWidth;
+                    var leftDelta = leftPos - LeftSide.OriginalPos;
+                    LeftSide.PosDelta = LeftSide.FromAbsoluteDeltaPos(leftDelta);
+
+                    var rightPos = Position + direction * halfWidth;
+                    var rightDelta = rightPos - RightSide.OriginalPos;
+                    RightSide.PosDelta = RightSide.FromAbsoluteDeltaPos(rightDelta);
+                }
+            }
+        }
+        public float Shift
+        {
+            get => Mode != Mode.FreeForm ? _shift : 0f;
+            set => _shift = value;
+        }
+        public float Stretch
+        {
+            get
+            {
+                if (Mode != Mode.FreeForm)
+                    return _stretch;
+                else
+                {
+                    var distance = (RightSide.StartPos - LeftSide.StartPos).magnitude;
+                    var width = Id.GetSegment().Info.m_halfWidth * 2f;
+                    return distance / width;
+                }
+            }
+            set
+            {
+                if (Mode != Mode.FreeForm)
+                    _stretch = value;
+                else
+                {
+                    var direction = (LeftSide.StartPos - RightSide.StartPos).normalized;
+                    var halfWidth = Id.GetSegment().Info.m_halfWidth * value;
+
+                    var leftPos = Position + direction * halfWidth;
+                    var leftDelta = leftPos - LeftSide.OriginalPos;
+                    LeftSide.PosDelta = LeftSide.FromAbsoluteDeltaPos(leftDelta);
+
+                    var rightPos = Position - direction * halfWidth;
+                    var rightDelta = rightPos - RightSide.OriginalPos;
+                    RightSide.PosDelta = RightSide.FromAbsoluteDeltaPos(rightDelta);
+                }
+            }
+        }
+
         public float StretchPercent
         {
             get => Stretch * 100f;
-            set => Stretch = value / 100f;
+            set => Stretch = value * 0.01f;
         }
-        public bool? NoMarkings { get; set; }
-        public Mode Mode { get; set; }
-        public bool? Collision { get; set; }
 
+
+        private bool? _collision;
         private bool _forceNodeLess;
+        private bool? _followSlope;
+        public bool? NoMarkings { get; set; }
+        public bool? Collision
+        {
+            get => Mode != Mode.FreeForm ? _collision : true;
+            set => _collision = value;
+        }
         public bool? ForceNodeLess
         {
             get => _forceNodeLess;
             set => SetForceNodeless(value == true, true);
         }
-        public float DeltaHeight { get; set; }
-        public bool? FollowSlope { get; set; }
+        public bool? FollowSlope
+        {
+            get => IsMainRoad ? true : _followSlope;
+            set => _followSlope = value;
+        }
+        public float DeltaHeight
+        {
+            get => (LeftPosDelta.y + RightPosDelta.y) * 0.5f;
+            set
+            {
+                LeftPosDelta = new Vector3(0f, value, 0f);
+                RightPosDelta = new Vector3(0f, value, 0f);
+            }
+        }
+        public Vector3 LeftPosDelta
+        {
+            get => LeftSide.PosDelta;
+            set => LeftSide.PosDelta = value;
+        }
+        public Vector3 RightPosDelta
+        {
+            get => RightSide.PosDelta;
+            set => RightSide.PosDelta = value;
+        }
+        public Vector3 LeftDirDelta
+        {
+            get => LeftSide.DirDelta;
+            set => LeftSide.DirDelta = value;
+        }
+        public Vector3 RightDirDelta
+        {
+            get => RightSide.DirDelta;
+            set => RightSide.DirDelta = value;
+        }
+
         private bool KeepDefaults
         {
-            get => _keepDefault /*|| IsUntouchable*/;
+            get => _keepDefault;
             set => _keepDefault = value;
         }
 
 
-        public float WidthRatio => Stretch * (Mode != Mode.Flat ? Mathf.Cos(TwistAngle * Mathf.Deg2Rad) : 1f);
+        public float WidthRatio => Mode switch
+        {
+            Mode.Flat => Stretch,
+            Mode.Slope => Stretch * Mathf.Cos(TwistAngle * Mathf.Deg2Rad),
+            Mode.FreeForm => 1f,
+        };
+
         public float HeightRatio => Mode != Mode.Flat ? Mathf.Tan(TwistAngle * Mathf.Deg2Rad) : 0f;
 
         public bool IsStartBorderOffset => Offset == MinOffset;
@@ -169,7 +348,7 @@ namespace NodeController
         {
             get
             {
-                var isBorder = RotateAngle == MinRotate || RotateAngle == MaxRotate;
+                var isBorder = Rotate == MinRotate || Rotate == MaxRotate;
                 return isBorder;
             }
         }
@@ -177,7 +356,7 @@ namespace NodeController
         {
             get
             {
-                var isMin = RotateAngle >= 0 ? LeftSide.IsMinBorderT : RightSide.IsMinBorderT;
+                var isMin = Rotate >= 0 ? LeftSide.IsMinBorderT : RightSide.IsMinBorderT;
                 return isMin;
             }
         }
@@ -223,7 +402,6 @@ namespace NodeController
             var segment = Id.GetSegment();
             var info = segment.Info;
 
-            PedestrianLaneCount = info.PedestrianLanes();
             Weight = info.m_halfWidth * 2;
             if ((info.m_netAI as RoadBaseAI)?.m_highwayRules == true)
                 Weight *= 1.5f;
@@ -259,63 +437,91 @@ namespace NodeController
         }
         public void UpdateNode() => SingletonManager<Manager>.Instance.Update(NodeId);
 
-        public void SetKeepDefaults() => KeepDefaults = true;
-        public void ResetToDefault(NodeStyle style, bool force)
+        public void SetKeepDefaults(NodeStyle style)
         {
-            if (style.SupportSlope == SupportOption.None || force || IsUntouchable)
-                SlopeAngle = style.DefaultSlope;
+            KeepDefaults = true;
+            LeftSide.PosDelta = style.DefaultDelta;
+            RightSide.PosDelta = style.DefaultDelta;
+            LeftSide.DirDelta = style.DefaultDelta;
+            RightSide.DirDelta = style.DefaultDelta;
+        }
+        public void ResetToDefault(NodeStyle style, Mode mode, bool force)
+        {
+            var oldMode = Mode;
+            if (style.SupportMode == SupportOption.None || (mode & style.SupportModes) == 0 || force || IsUntouchable)
+                Mode = style.DefaultMode;
+            else
+                Mode = mode;
 
-            if (style.SupportTwist == SupportOption.None || force || IsUntouchable)
-                TwistAngle = style.DefaultTwist;
-
-            if (style.SupportShift == SupportOption.None || force || IsUntouchable)
-                Shift = style.DefaultShift;
-
-            if (style.SupportStretch == SupportOption.None || force || IsUntouchable)
-                Stretch = style.DefaultStretch;
+            var freeModeSwitched = (oldMode == Mode.FreeForm) ^ (Mode == Mode.FreeForm);
 
             if (style.SupportMarking == SupportOption.None || force || IsUntouchable)
                 NoMarkings = style.DefaultNoMarking;
 
-            if (style.SupportCollision == SupportOption.None || force || IsUntouchable)
-                Collision = style.GetDefaultCollision(this);
+            if (style.SupportForceNodeless == SupportOption.None || force || IsUntouchable)
+                ForceNodeLess = style.DefaultForceNodeLess;
 
-            if(style.SupportFollowMainSlope == SupportOption.None || force || IsUntouchable)
-                FollowSlope = style.DefaultFollowSlope;
-
-            if (style.SupportDeltaHeight == SupportOption.None || force || IsUntouchable)
-                DeltaHeight = style.DefaultDeltaHeight;
-
-            if (style.SupportMode == SupportOption.None || force || IsUntouchable)
-                Mode = style.DefaultMode;
-
-            if (FinalNodeLess)
+            if (Mode != Mode.FreeForm)
             {
-                MinPossibleOffset = 0f;
-                MaxPossibleOffset = 0f;
-            }
-            else if (style.SupportOffset == SupportOption.None)
-            {
-                MinPossibleOffset = style.DefaultOffset;
-                MaxPossibleOffset = style.DefaultOffset;
+                if (style.SupportSlope == SupportOption.None || force || IsUntouchable)
+                    SlopeAngle = style.DefaultSlope;
+
+                if (style.SupportTwist == SupportOption.None || force || IsUntouchable)
+                    TwistAngle = style.DefaultTwist;
+
+                if (style.SupportShift == SupportOption.None || force || IsUntouchable)
+                    Shift = style.DefaultShift;
+
+                if (style.SupportStretch == SupportOption.None || force || IsUntouchable)
+                    Stretch = style.DefaultStretch;
+
+                if (style.SupportCollision == SupportOption.None || force || IsUntouchable)
+                    Collision = style.GetDefaultCollision(this);
+
+                if (style.SupportFollowMainSlope == SupportOption.None || force || IsUntouchable)
+                    FollowSlope = style.DefaultFollowSlope;
+
+                if (style.SupportDeltaHeight == SupportOption.None || force || IsUntouchable)
+                    DeltaHeight = style.DefaultDeltaHeight;
+
+                if (FinalNodeLess)
+                {
+                    MinPossibleOffset = 0f;
+                    MaxPossibleOffset = 0f;
+                }
+                else if (style.SupportOffset == SupportOption.None)
+                {
+                    MinPossibleOffset = style.DefaultOffset;
+                    MaxPossibleOffset = style.DefaultOffset;
+                }
+                else
+                {
+                    MinPossibleOffset = NodeStyle.MinOffset;
+                    MaxPossibleOffset = NodeStyle.MaxOffset;
+                }
+
+                if (style.SupportRotate == SupportOption.None || force || !IsRotateChangeable)
+                    SetRotate(style.DefaultRotate);
+
+                if (style.SupportOffset == SupportOption.None)
+                    SetOffset(style.DefaultOffset);
+                else if (force || IsUntouchable)
+                    SetOffset(GetMinCornerOffset(style.DefaultOffset));
+                else
+                    SetOffset(Offset);
             }
             else
             {
-                MinPossibleOffset = NodeStyle.MinOffset;
-                MaxPossibleOffset = NodeStyle.MaxOffset;
+                if (style.SupportCornerDelta == SupportOption.None || force || IsUntouchable || freeModeSwitched)
+                {
+                    LeftSide.PosDelta = style.DefaultDelta;
+                    RightSide.PosDelta = style.DefaultDelta;
+                    LeftSide.DirDelta = style.DefaultDelta;
+                    RightSide.DirDelta = style.DefaultDelta;
+                }
             }
 
-            if (style.SupportRotate == SupportOption.None || force || !IsRotateChangeable)
-                SetRotate(style.DefaultRotate);
-
-            if (style.SupportOffset == SupportOption.None)
-                SetOffset(style.DefaultOffset);
-            else if (force || IsUntouchable)
-                SetOffset(GetMinCornerOffset(style.DefaultOffset));
-            else
-                SetOffset(Offset);
-
-            if (force || style.OnlyKeepDefault)
+            if (force || style.OnlyKeepDefault || freeModeSwitched)
                 KeepDefaults = true;
         }
 
@@ -347,7 +553,7 @@ namespace NodeController
             {
                 _forceNodeLess = value;
                 if (reset)
-                    ResetToDefault(NodeData.Style, true);
+                    ResetToDefault(NodeData.Style, Mode, true);
             }
         }
 
@@ -362,17 +568,17 @@ namespace NodeController
             try
             {
                 SingletonManager<Manager>.Instance.GetSegmentData(segmentId, out start, out end);
-                if(start != null && end != null)
+                if (start != null && end != null)
                 {
                     if ((start.NodeData.State & State.Error) != 0 && (end.NodeData.State & State.Error) != 0)
                         return;
                 }
-                else if(start != null)
+                else if (start != null)
                 {
                     if ((start.NodeData.State & State.Error) != 0)
                         return;
                 }
-                else if(end != null)
+                else if (end != null)
                 {
                     if ((end.NodeData.State & State.Error) != 0)
                         return;
@@ -653,7 +859,12 @@ namespace NodeController
                 {
                     var endData = endDatas[i];
 
-                    if (!endData.FinalNodeLess)
+                    if (endData.Mode == Mode.FreeForm)
+                    {
+                        endData.LeftSide.MinT = endData.LeftSide.MainT;
+                        endData.RightSide.MinT = endData.RightSide.MainT;
+                    }
+                    else if (!endData.FinalNodeLess)
                     {
                         endData.LeftSide.MinT = limits[i].left.FinalMinT;
                         endData.RightSide.MinT = limits[i].right.FinalMinT;
@@ -846,7 +1057,7 @@ namespace NodeController
             }
             catch (Exception error)
             {
-                if(start != null)
+                if (start != null)
                     start.NodeData.State = State.Error;
                 if (end != null)
                     end.NodeData.State = State.Error;
@@ -906,7 +1117,7 @@ namespace NodeController
             CalculateSegmentLimit();
             CalculateOffset();
 
-            if (IsDecoration || IsMainRoad || (Mode == Mode.FreeForm && FollowSlope == false))
+            if (IsDecoration || IsMainRoad || Mode == Mode.FreeForm || FollowSlope == false)
             {
                 LeftSide.CalculateMain();
                 RightSide.CalculateMain();
@@ -951,8 +1162,8 @@ namespace NodeController
 
         private void CalculateSegmentLimit()
         {
-            var startLimitLine = new StraightTrajectory(LeftSide.MinPos, RightSide.MinPos);
-            var endLimitLine = new StraightTrajectory(LeftSide.MaxPos, RightSide.MaxPos);
+            var startLimitLine = new StraightTrajectory(LeftSide.MinTempPos, RightSide.MinTempPos);
+            var endLimitLine = new StraightTrajectory(LeftSide.MaxTempPos, RightSide.MaxTempPos);
 
             var segmentMinT = Intersection.CalculateSingle(RawSegmentBezier, startLimitLine, out var minFirstT, out _) ? minFirstT : 0f;
             var segmentMaxT = Intersection.CalculateSingle(RawSegmentBezier, endLimitLine, out var maxFirstT, out _) ? maxFirstT : 1f;
@@ -968,10 +1179,10 @@ namespace NodeController
             var position = RawSegmentBezier.Position(t);
             var direction = Vector3.Cross(RawSegmentBezier.Tangent(t), Vector3.up).normalized;
 
-            var startLeft = GetAngle(LeftSide.MinPos - position, direction);
-            var endLeft = GetAngle(LeftSide.MaxPos - position, direction);
-            var startRight = GetAngle(position - RightSide.MinPos, direction);
-            var endRight = GetAngle(position - RightSide.MaxPos, direction);
+            var startLeft = GetAngle(LeftSide.MinTempPos - position, direction);
+            var endLeft = GetAngle(LeftSide.MaxTempPos - position, direction);
+            var startRight = GetAngle(position - RightSide.MinTempPos, direction);
+            var endRight = GetAngle(position - RightSide.MaxTempPos, direction);
 
             MinRotate = Mathf.Clamp(Mathf.Max(startLeft, endRight), NodeStyle.MinRotate, NodeStyle.MaxRotate);
             MaxRotate = Mathf.Clamp(Mathf.Min(endLeft, startRight), NodeStyle.MinRotate, NodeStyle.MaxRotate);
@@ -996,7 +1207,7 @@ namespace NodeController
             else
             {
                 SetOffset(Offset);
-                SetRotate(RotateAngle, true);
+                SetRotate(Rotate, true);
 
                 var t = OffsetT;
                 LeftSide.RawT = GetCornerOffset(LeftSide, t);
@@ -1005,8 +1216,8 @@ namespace NodeController
         }
         private void SetByCorners(SideType? prioritySide = null)
         {
-            var leftPosition = LeftSide.RawTrajectory.Position(LeftSide.CurrentT);
-            var rightPosition = RightSide.RawTrajectory.Position(RightSide.CurrentT);
+            var leftPosition = LeftSide.RawTrajectory.Position(LeftSide.CurrentTempT);
+            var rightPosition = RightSide.RawTrajectory.Position(RightSide.CurrentTempT);
 
             var line = new StraightTrajectory(rightPosition, leftPosition);
             var intersect = Intersection.CalculateSingle(RawSegmentBezier, line, out var t, out _);
@@ -1016,7 +1227,7 @@ namespace NodeController
                 var side = this[prioritySide.Value];
                 var anotherSide = this[prioritySide.Value.Invert()];
 
-                var sidePosition = side.RawTrajectory.Position(side.CurrentT);
+                var sidePosition = side.RawTrajectory.Position(side.CurrentTempT);
                 var position = RawSegmentBezier.Position(0.05f / RawSegmentBezier.Length);
 
                 if (Intersection.CalculateSingle(anotherSide.RawTrajectory, new StraightTrajectory(sidePosition, position, false), out var anotherT, out _))
@@ -1041,7 +1252,7 @@ namespace NodeController
 
                 var additional = new StraightTrajectory(RawSegmentBezier.StartPosition, RawSegmentBezier.StartPosition - RawSegmentBezier.StartDirection, false);
                 if (Intersection.CalculateSingle(additional, line, out t, out _) && Math.Abs(t) <= 0.05f)
-                    SetRotate(RotateAngle, true);
+                    SetRotate(Rotate, true);
                 else
                     SetRotate(0f, true);
             }
@@ -1060,7 +1271,7 @@ namespace NodeController
         private float GetCornerOffset(SegmentSide side, float t)
         {
             var position = RawSegmentBezier.Position(t);
-            var direction = RawSegmentBezier.Tangent(t).MakeFlatNormalized().TurnDeg(90 + RotateAngle, true);
+            var direction = RawSegmentBezier.Tangent(t).MakeFlatNormalized().TurnDeg(90 + Rotate, true);
 
             var line = new StraightTrajectory(position, position + direction, false);
             var intersections = Intersection.Calculate(side.RawTrajectory, line);
@@ -1070,20 +1281,24 @@ namespace NodeController
                 var intersect = intersections.Aggregate((i, j) => Mathf.Abs(i.FirstT - t) < Mathf.Abs(j.FirstT - t) ? i : j);
                 return intersect.FirstT;
             }
-            else if (RotateAngle == 0f)
+            else if (Rotate == 0f)
                 return t <= 0.5f ? 0f : 1f;
             else
-                return side.Type == SideType.Left ^ RotateAngle > 0f ? 0f : 1f;
+                return side.Type == SideType.Left ^ Rotate > 0f ? 0f : 1f;
         }
         private void CalculatePositionAndDirection()
         {
             var line = new StraightTrajectory(LeftSide.StartPos, RightSide.StartPos);
-            var t = 0.5f;
+            float t;
 
-            if (Intersection.CalculateSingle(line, RawSegmentBezier, out var firstT, out _))
+            if (Mode == Mode.FreeForm)
+                t = 0.5f;
+            else if (Intersection.CalculateSingle(line, RawSegmentBezier, out var firstT, out _))
                 t = firstT;
             else if (Intersection.CalculateSingle(line, new StraightTrajectory(RawSegmentBezier.StartPosition, RawSegmentBezier.StartPosition + RawSegmentBezier.StartDirection, false), out firstT, out _))
                 t = firstT;
+            else
+                t = 0.5f;
 
             Position = line.Position(t);
             Direction = NormalizeXZ(LeftSide.StartDir * t + RightSide.StartDir * (1 - t));
@@ -1123,8 +1338,8 @@ namespace NodeController
         }
         private float GetStraightT(SegmentSide side)
         {
-            var position = side.RawTrajectory.Position(side.CurrentT);
-            var direction = side.RawTrajectory.Tangent(side.CurrentT).Turn90(true);
+            var position = side.RawTrajectory.Position(side.CurrentTempT);
+            var direction = side.RawTrajectory.Tangent(side.CurrentTempT).Turn90(true);
             var line = new StraightTrajectory(position, position + direction, false);
             return Intersection.CalculateSingle(RawSegmentBezier, line, out var t, out _) ? t : 0f;
         }
@@ -1165,8 +1380,13 @@ namespace NodeController
 
         public Color32 OverlayColor => IsShort ? Colors.Red : Colors.Green;
 
-        public void Render(OverlayData data) => Render(data, data, data, data, data);
-        public void Render(OverlayData contourData, OverlayData outterData, OverlayData innerData, OverlayData? leftData = null, OverlayData? rightData = null)
+        public void Render(OverlayData data)
+        {
+            Render(data, data, data);
+            LeftSide.RenderCenter(data);
+            RightSide.RenderCenter(data);
+        }
+        public void Render(OverlayData contourData, OverlayData circleData, OverlayData centerData)
         {
             SingletonManager<Manager>.Instance.TryGetNodeData(NodeId, out var data);
 
@@ -1177,21 +1397,17 @@ namespace NodeController
                 {
                     RenderStart(contourData, LengthXZ(LeftSide.StartPos - Position) + CircleRadius, 0f);
                     RenderStart(contourData, 0f, LengthXZ(RightSide.StartPos - Position) + CircleRadius);
-                    RenderOutterCircle(outterData);
+                    RenderCircle(circleData);
                 }
                 else
+                {
                     RenderStart(contourData);
+                }
 
                 if (IsOffsetChangeable)
-                {
-                    RenderInnerCircle(innerData);
-                    if (leftData != null)
-                        LeftSide.RenderCircle(leftData.Value);
-                    if (rightData != null)
-                        RightSide.RenderCircle(rightData.Value);
-                }
+                    RenderCenter(centerData);
                 else if (IsRotateChangeable)
-                    Position.RenderCircle(innerData, CenterDotRadius * 2, CenterDotRadius * 1.2f);
+                    Position.RenderCircle(centerData, CenterRadius * 2, CenterRadius * 1.2f);
             }
             else
                 RenderStart(contourData);
@@ -1202,9 +1418,9 @@ namespace NodeController
             RenderStart(contourData);
 
             if (leftData != null)
-                LeftSide.RenderCircle(leftData.Value);
+                LeftSide.RenderCenter(leftData.Value);
             if (rightData != null)
-                RightSide.RenderCircle(rightData.Value);
+                RightSide.RenderCenter(rightData.Value);
         }
 
         public void RenderContour(OverlayData data)
@@ -1212,11 +1428,6 @@ namespace NodeController
             RenderSide(LeftSide, data);
             RenderSide(RightSide, data);
             RenderEnd(data);
-        }
-        public void RenderSides(OverlayData dataAllow, OverlayData dataForbidden, OverlayData dataLimit)
-        {
-            LeftSide.Render(dataAllow, dataForbidden, dataLimit);
-            RightSide.Render(dataAllow, dataForbidden, dataLimit);
         }
         public void RenderStart(OverlayData data, float? leftCut = null, float? rightCut = null)
         {
@@ -1239,9 +1450,13 @@ namespace NodeController
             var endSide = new StraightTrajectory(LeftSide.EndPos, RightSide.EndPos);
             endSide.Render(data);
         }
-
-        public void RenderInnerCircle(OverlayData data) => Position.RenderCircle(data, CenterDotRadius * 2, 0f);
-        public void RenderOutterCircle(OverlayData data) => Position.RenderCircle(data, CircleRadius * 2 + 0.5f, CircleRadius * 2 - 0.5f);
+        public void RenderCenter(OverlayData data) => Position.RenderCircle(data, CenterRadius * 2, 0f);
+        public void RenderCircle(OverlayData data) => Position.RenderCircle(data, CircleRadius * 2 + 0.5f, CircleRadius * 2 - 0.5f);
+        public void RenderGuides(OverlayData dataAllow, OverlayData dataForbidden, OverlayData dataDefault)
+        {
+            LeftSide.RenderGuides(dataAllow, dataForbidden, dataDefault);
+            RightSide.RenderGuides(dataAllow, dataForbidden, dataDefault);
+        }
 
         #endregion
 
@@ -1252,19 +1467,43 @@ namespace NodeController
             var config = new XElement(XmlSection);
 
             config.AddAttr(nameof(Id), Id);
-            config.AddAttr("IS", Mode);
+            config.AddAttr("M", (int)Mode);
+            config.AddAttr("KD", KeepDefaults ? 1 : 0);
+
             config.AddAttr("O", _offsetValue);
             config.AddAttr("RA", _rotateValue);
-            config.AddAttr("SA", SlopeAngle);
-            config.AddAttr("TA", TwistAngle);
-            config.AddAttr("S", Shift);
-            config.AddAttr("ST", Stretch);
+
             config.AddAttr("NM", NoMarkings == true ? 1 : 0);
-            config.AddAttr("CL", Collision == true ? 1 : 0);
             config.AddAttr("FNL", ForceNodeLess == true ? 1 : 0);
-            config.AddAttr("KD", KeepDefaults ? 1 : 0);
-            config.AddAttr("FS", FollowSlope == true ? 1 : 0);
-            config.AddAttr("DH", DeltaHeight);
+
+            if (Mode != Mode.FreeForm)
+            {
+                config.AddAttr("SA", SlopeAngle);
+                config.AddAttr("TA", TwistAngle);
+                config.AddAttr("S", Shift);
+                config.AddAttr("ST", Stretch);
+                config.AddAttr("CL", Collision == true ? 1 : 0);
+                config.AddAttr("FS", FollowSlope == true ? 1 : 0);
+                //config.AddAttr("DH", DeltaHeight);
+            }
+            else
+            {
+                config.AddAttr("LPDX", LeftPosDelta.x);
+                config.AddAttr("LPDY", LeftPosDelta.y);
+                config.AddAttr("LPDZ", LeftPosDelta.z);
+
+                config.AddAttr("RPDX", RightPosDelta.x);
+                config.AddAttr("RPDY", RightPosDelta.y);
+                config.AddAttr("RPDZ", RightPosDelta.z);
+
+                config.AddAttr("LDDX", LeftDirDelta.x);
+                config.AddAttr("LDDY", LeftDirDelta.y);
+                config.AddAttr("LDDZ", LeftDirDelta.z);
+
+                config.AddAttr("RDDX", RightDirDelta.x);
+                config.AddAttr("RDDY", RightDirDelta.y);
+                config.AddAttr("RDDZ", RightDirDelta.z);
+            }
 
             return config;
         }
@@ -1272,34 +1511,66 @@ namespace NodeController
         public void FromXml(XElement config, NodeStyle style)
         {
             if (style.SupportMode != SupportOption.None)
-                Mode = (Mode)config.GetAttrValue("IS", (int)style.DefaultMode);
-
-            if (style.SupportSlope != SupportOption.None && !IsUntouchable)
-                SlopeAngle = config.GetAttrValue("SA", style.DefaultSlope);
-
-            if (style.SupportTwist != SupportOption.None && !IsUntouchable)
-                TwistAngle = config.GetAttrValue("TA", style.DefaultTwist);
-
-            if (style.SupportShift != SupportOption.None && !IsUntouchable)
-                Shift = config.GetAttrValue("S", style.DefaultShift);
-
-            if (style.SupportStretch != SupportOption.None && !IsUntouchable)
-                Stretch = config.GetAttrValue("ST", style.DefaultStretch);
+            {
+                var isSlope = config.GetAttrValue("IS", 0) == 1;
+                Mode = isSlope ? Mode.Slope : Mode.Flat;
+                Mode = (Mode)config.GetAttrValue("M", (int)style.DefaultMode);
+            }
 
             if (style.SupportMarking != SupportOption.None && !IsUntouchable)
                 NoMarkings = config.GetAttrValue("NM", style.DefaultNoMarking ? 1 : 0) == 1;
 
-            if (style.SupportCollision != SupportOption.None && !IsUntouchable)
-                Collision = config.GetAttrValue("CL", style.GetDefaultCollision(this) ? 1 : 0) == 1;
-
             if (style.SupportForceNodeless != SupportOption.None && !IsUntouchable)
                 SetForceNodeless(config.GetAttrValue("FNL", style.DefaultForceNodeLess ? 1 : 0) == 1);
 
-            if (style.SupportFollowMainSlope != SupportOption.None && !IsUntouchable)
-                FollowSlope = config.GetAttrValue("FS", style.DefaultFollowSlope ? 1 : 0) == 1;
+            if (Mode != Mode.FreeForm)
+            {
+                if (style.SupportSlope != SupportOption.None && !IsUntouchable)
+                    SlopeAngle = config.GetAttrValue("SA", style.DefaultSlope);
 
-            if (style.SupportDeltaHeight != SupportOption.None && !IsUntouchable)
-                DeltaHeight = config.GetAttrValue("DH", style.DefaultDeltaHeight);
+                if (style.SupportTwist != SupportOption.None && !IsUntouchable)
+                    TwistAngle = config.GetAttrValue("TA", style.DefaultTwist);
+
+                if (style.SupportShift != SupportOption.None && !IsUntouchable)
+                    Shift = config.GetAttrValue("S", style.DefaultShift);
+
+                if (style.SupportStretch != SupportOption.None && !IsUntouchable)
+                    Stretch = config.GetAttrValue("ST", style.DefaultStretch);
+
+                if (style.SupportCollision != SupportOption.None && !IsUntouchable)
+                    Collision = config.GetAttrValue("CL", style.GetDefaultCollision(this) ? 1 : 0) == 1;
+
+                if (style.SupportFollowMainSlope != SupportOption.None && !IsUntouchable)
+                    FollowSlope = config.GetAttrValue("FS", style.DefaultFollowSlope ? 1 : 0) == 1;
+
+                if (style.SupportDeltaHeight != SupportOption.None && !IsUntouchable)
+                    DeltaHeight = config.GetAttrValue("DH", style.DefaultDeltaHeight);
+            }
+            else
+            {
+                if (style.SupportCornerDelta != SupportOption.None && !IsUntouchable)
+                {
+                    var x = config.GetAttrValue("LPDX", style.DefaultDelta.x);
+                    var y = config.GetAttrValue("LPDY", style.DefaultDelta.y);
+                    var z = config.GetAttrValue("LPDZ", style.DefaultDelta.z);
+                    LeftPosDelta = new Vector3(x, y, z);
+
+                    x = config.GetAttrValue("RPDX", style.DefaultDelta.x);
+                    y = config.GetAttrValue("RPDY", style.DefaultDelta.y);
+                    z = config.GetAttrValue("RPDZ", style.DefaultDelta.z);
+                    RightPosDelta = new Vector3(x, y, z);
+
+                    x = config.GetAttrValue("LDDX", style.DefaultDelta.x);
+                    y = config.GetAttrValue("LDDY", style.DefaultDelta.y);
+                    z = config.GetAttrValue("LDDZ", style.DefaultDelta.z);
+                    LeftDirDelta = new Vector3(x, y, z);
+
+                    x = config.GetAttrValue("RDDX", style.DefaultDelta.x);
+                    y = config.GetAttrValue("RDDY", style.DefaultDelta.y);
+                    z = config.GetAttrValue("RDDZ", style.DefaultDelta.z);
+                    RightDirDelta = new Vector3(x, y, z);
+                }
+            }
 
             KeepDefaults = style.OnlyKeepDefault && config.GetAttrValue("KD", 0) == 1;
 

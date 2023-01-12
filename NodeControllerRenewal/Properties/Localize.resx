@@ -529,7 +529,7 @@ underground mode</value>
 underground mode</value>
   </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
-    <value>Hold {0} to alignment roads</value>
+    <value>Hold {0} to align roads</value>
   </data>
   <data name="Tool_InfoApplyAlign" xml:space="preserve">
     <value>Click to align with this corner</value>

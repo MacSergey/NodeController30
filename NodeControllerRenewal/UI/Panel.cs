@@ -16,7 +16,7 @@ namespace NodeController.UI
         private NodeTypePropertyPanel TypeProperty { get; set; }
         private BoolListPropertyPanel FreeFormProperty { get; set; }
         private List<EditorItem> Properties { get; set; } = new List<EditorItem>();
-        private bool ShowHidden { get; set; }
+        private bool _showHidden;
 
         public NodeData Data { get; private set; }
 
@@ -47,7 +47,7 @@ namespace NodeController.UI
 
         public void SetData(NodeData data)
         {
-            ShowHidden = false;
+            _showHidden = false;
 
             if ((Data = data) != null)
                 SetPanel();
@@ -80,7 +80,7 @@ namespace NodeController.UI
             Content.StartLayout();
         }
 
-        private void FillProperties() => Properties = Data.Style.GetUIComponents(Content, () => ShowHidden, (show) => ShowHidden = show);
+        private void FillProperties() => Properties = Data.Style.GetUIComponents(Content, GetShowHidden, SetShowHidden);
         private void ClearProperties()
         {
             foreach (var property in Properties)
@@ -111,13 +111,19 @@ namespace NodeController.UI
             };
         }
 
+        private bool GetShowHidden() => _showHidden;
+        private void SetShowHidden(bool show) => _showHidden = show;
         public void RefreshHeader() => Header.Refresh();
         public override void RefreshPanel()
         {
             RefreshHeader();
+            Data.Style.RefreshUIComponents(Content, GetShowHidden, SetShowHidden);
 
-            foreach (var property in Properties.OfType<IOptionPanel>())
-                property.Refresh();
+            //foreach (var property in Properties.OfType<IOptionPanel>())
+            //{
+            //    if(property.isVisibleSelf)
+            //        property.Refresh();
+            //}
         }
 
         public override void Update()

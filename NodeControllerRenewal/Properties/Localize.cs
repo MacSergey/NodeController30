@@ -571,7 +571,7 @@ namespace NodeController
 		public static string Tool_ExitUnderground => LocaleManager.GetString("Tool_ExitUnderground", Culture);
 
 		/// <summary>
-		/// Hold {0} to alignment roads
+		/// Hold {0} to align roads
 		/// </summary>
 		public static string Tool_InfoAlignMode => LocaleManager.GetString("Tool_InfoAlignMode", Culture);
 

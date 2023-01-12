@@ -129,6 +129,9 @@ namespace NodeController
         public SideType Type { get; }
         public SegmentEndData SegmentData { get; }
 
+        public Vector3 PosDelta { get; set; }
+        public Vector3 DirDelta { get; set; }
+
         private DataStruct _final;
         private DataStruct _temp;
 
@@ -171,18 +174,21 @@ namespace NodeController
         {
             set => _temp._rawT = value;
         }
-        public float CurrentT => _temp.CurrentT;
-        public float DeltaT => _temp.DeltaT;
+        public float CurrentTempT => _temp.CurrentT;
+        public float CurrentT => _final.CurrentT;
 
-        public Vector3 MinPos => _temp._minPos;
-        public Vector3 MinDir => _temp._minDir;
+        public Vector3 MinTempPos => _temp._minPos;
+        public Vector3 MinTempDir => _temp._minDir;
 
-        public Vector3 MaxPos => _temp._maxPos;
-        public Vector3 MaxDir => _temp._maxDir;
+        public Vector3 MaxTempPos => _temp._maxPos;
+        public Vector3 MaxTempDir => _temp._maxDir;
 
 
         public Vector3 StartPos => _final._position + _final._deltaPos;
         public Vector3 StartDir => NormalizeXZ(_final._dirRotation * _final._direction) * _final._dirRatio;
+        public Vector3 OriginalPos => _final._position;
+        public Vector3 OriginalDir => _final._direction;
+
 
         public Vector3 EndPos => _final._maxPos;
         public Vector3 EndDir => _final._maxDir;
@@ -231,32 +237,56 @@ namespace NodeController
             _temp._dirRotation = Quaternion.identity;
             _temp._dirRatio = 1f;
 
-            if (SegmentData.Mode == Mode.Flat)
+            switch (SegmentData.Mode)
             {
-                position.y = SegmentData.NodeId.GetNode().m_position.y;
-                direction = direction.MakeFlatNormalized();
+                case Mode.Flat:
+                    {
+                        position.y = SegmentData.NodeId.GetNode().m_position.y;
+                        direction = direction.MakeFlatNormalized();
+
+                        if (nodeData.IsEndNode)
+                            _temp._dirRatio *= SegmentData.Stretch;
+                    }
+                    break;
+                case Mode.Slope:
+                    {
+                        if (nodeData.Style.SupportDeltaHeight != SupportOption.None)
+                            _temp._deltaPos.y = PosDelta.y;
+
+                        if (nodeData.Style.SupportSlope != SupportOption.None)
+                            _temp._dirRotation = Quaternion.AngleAxis(SegmentData.SlopeAngle, direction.MakeFlat().Turn90(true));
+
+                        if (nodeData.Style.SupportTwist != SupportOption.None)
+                        {
+                            var ratio = Mathf.Sin(SegmentData.TwistAngle * Mathf.Deg2Rad);
+                            if (nodeData.Style.SupportStretch != SupportOption.None)
+                                ratio *= SegmentData.Stretch;
+
+                            _temp._deltaPos.y += (Type == SideType.Left ? -1 : 1) * SegmentData.Id.GetSegment().Info.m_halfWidth * ratio;
+                        }
+
+                        if (nodeData.IsEndNode)
+                            _temp._dirRatio *= SegmentData.Stretch;
+                    }
+                    break;
+                case Mode.FreeForm:
+                    {
+                        var angle = direction.AbsoluteAngle();
+                        _temp._deltaPos += Quaternion.AngleAxis(-angle * Mathf.Rad2Deg, Vector3.up) * PosDelta;
+
+                        var deltaDir = Type switch
+                        {
+                            SideType.Left => SegmentData.LeftDirDelta,
+                            SideType.Right => SegmentData.RightDirDelta,
+                            _ => Vector3.zero,
+                        };
+                        if (deltaDir.x != 0f)
+                            _temp._dirRotation *= Quaternion.AngleAxis(deltaDir.x, Vector3.up);
+                        if (deltaDir.y != 0f)
+                            _temp._dirRotation *= Quaternion.AngleAxis(deltaDir.y, Vector3.forward);
+                    }
+                    break;
             }
-            else
-            {
-                if (nodeData.Style.SupportSlope != SupportOption.None)
-                {
-                    _temp._dirRotation = Quaternion.AngleAxis(SegmentData.SlopeAngle, direction.MakeFlat().Turn90(true));
-                }
-                if (nodeData.Style.SupportTwist != SupportOption.None)
-                {
-                    var ratio = Mathf.Sin(SegmentData.TwistAngle * Mathf.Deg2Rad);
-                    if (nodeData.Style.SupportStretch != SupportOption.None)
-                        ratio *= SegmentData.Stretch;
-
-                    _temp._deltaPos.y += (Type == SideType.Left ? -1 : 1) * SegmentData.Id.GetSegment().Info.m_halfWidth * ratio;
-                }
-                if (SegmentData.Mode == Mode.FreeForm)
-                    _temp._deltaPos.y += SegmentData.DeltaHeight;
-            }
-
-
-            if (nodeData.IsEndNode)
-                _temp._dirRatio *= SegmentData.Stretch;
 
             _temp._position = position;
             _temp._direction = direction.normalized;
@@ -273,40 +303,49 @@ namespace NodeController
             _temp._dirRotation = Quaternion.identity;
             _temp._dirRatio = 1f;
 
-            if (SegmentData.Mode == Mode.Flat)
+            switch (SegmentData.Mode)
             {
-                position.y = SegmentData.NodeId.GetNode().m_position.y;
-                direction = direction.MakeFlatNormalized();
+                case Mode.Flat:
+                    {
+                        position.y = SegmentData.NodeId.GetNode().m_position.y;
+                        direction = direction.MakeFlatNormalized();
+
+                        if (nodeData.IsEndNode)
+                            _temp._dirRatio *= SegmentData.Stretch;
+                    }
+                    break;
+                case Mode.Slope:
+                    {
+                        if (nodeData.Style.SupportDeltaHeight != SupportOption.None && SegmentData.FollowSlope == false)
+                            _temp._deltaPos.y = PosDelta.y;
+
+                        GetClosest(left, right, position, out var closestPos, out var closestDir, out var closestT);
+
+                        var normal = closestDir.MakeFlat().Turn90(true);
+                        var twist = Mathf.Lerp(-nodeData.FirstMainSegmentEnd.TwistAngle, nodeData.SecondMainSegmentEnd.TwistAngle, closestT);
+                        normal.y = normal.magnitude * Mathf.Sin(twist * Mathf.Deg2Rad);
+
+                        var plane = new Plane();
+                        plane.Set3Points(closestPos, closestPos + closestDir, closestPos + normal);
+                        plane.Raycast(new Ray(position, Vector3.up), out var rayT);
+                        position += Vector3.up * rayT;
+
+                        var point = position + direction;
+                        plane.Raycast(new Ray(point, Vector3.up), out rayT);
+                        point += Vector3.up * rayT;
+                        direction = point - position;
+
+                        if (nodeData.IsEndNode)
+                            _temp._dirRatio *= SegmentData.Stretch;
+                    }
+                    break;
             }
-            else
-            {
-                GetClosest(left, right, position, out var closestPos, out var closestDir, out var closestT);
-
-                var normal = closestDir.MakeFlat().Turn90(true);
-                var twist = Mathf.Lerp(-nodeData.FirstMainSegmentEnd.TwistAngle, nodeData.SecondMainSegmentEnd.TwistAngle, closestT);
-                normal.y = normal.magnitude * Mathf.Sin(twist * Mathf.Deg2Rad);
-
-                var plane = new Plane();
-                plane.Set3Points(closestPos, closestPos + closestDir, closestPos + normal);
-                plane.Raycast(new Ray(position, Vector3.up), out var rayT);
-                position += Vector3.up * rayT;
-
-                var point = position + direction;
-                plane.Raycast(new Ray(point, Vector3.up), out rayT);
-                point += Vector3.up * rayT;
-                direction = point - position;
-
-                if (SegmentData.NodeData.Mode == Mode.FreeForm)
-                    _temp._deltaPos.y += SegmentData.DeltaHeight;
-            }
-
-            if (nodeData.IsEndNode)
-                _temp._dirRatio *= SegmentData.Stretch;
 
             _temp._position = position;
             _temp._direction = direction.normalized;
         }
-        public void GetClosest(BezierTrajectory left, BezierTrajectory right, Vector3 position, out Vector3 closestPos, out Vector3 closestDir, out float t)
+
+        private void GetClosest(BezierTrajectory left, BezierTrajectory right, Vector3 position, out Vector3 closestPos, out Vector3 closestDir, out float t)
         {
             left.Trajectory.ClosestPositionAndDirection(position, out var leftClosestPos, out var leftClosestDir, out var leftT);
             right.Trajectory.ClosestPositionAndDirection(position, out var rightClosestPos, out var rightClosestDir, out var rightT);
@@ -335,6 +374,19 @@ namespace NodeController
 
         public float ToMainT(float t) => _temp._rawTrajectory.ToPartT(1, t);
         public float ToAdditionalT(float t) => _temp._rawTrajectory.ToPartT(0, t);
+
+        public Vector3 FromAbsoluteDeltaPos(Vector3 deltaPos)
+        {
+            var angle = OriginalDir.AbsoluteAngle();
+            deltaPos = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.up) * deltaPos;
+            return deltaPos;
+        }
+        public Vector3 ToAbsoluteDeltaPos(Vector3 deltaPos)
+        {
+            var angle = OriginalDir.AbsoluteAngle();
+            deltaPos = Quaternion.AngleAxis(-angle * Mathf.Rad2Deg, Vector3.up) * deltaPos;
+            return deltaPos;
+        }
 
         public static void FixMiddle(SegmentSide first, SegmentSide second)
         {
@@ -375,7 +427,7 @@ namespace NodeController
             }
         }
 
-        public void Render(OverlayData dataAllow, OverlayData dataForbidden, OverlayData dataLimit)
+        public void RenderGuides(OverlayData dataAllow, OverlayData dataForbidden, OverlayData dataDefault)
         {
             var deltaT = 0.2f / _final._rawTrajectory.Length;
             if (_final._minT == 0f)
@@ -395,10 +447,15 @@ namespace NodeController
                 if (_final._rawT - _final._minT >= 0.2f / _final._rawTrajectory.Length)
                     _final._rawTrajectory.Cut(_final._minT, _final._rawT).Render(dataAllow);
             }
-            dataLimit.Color ??= Colors.Purple;
-            _final._rawTrajectory.Position(_final._defaultT).RenderCircle(dataLimit);
+            dataDefault.Color ??= Colors.Purple;
+            _final._rawTrajectory.Position(_final._defaultT).RenderCircle(dataDefault);
         }
-        public void RenderCircle(OverlayData data)
+        public void Render(OverlayData centerData, OverlayData circleData)
+        {
+            RenderCenter(centerData);
+            RenderCircle(circleData);
+        }
+        public void RenderCenter(OverlayData data)
         {
             var markerPosition = MarkerPos;
             if ((markerPosition - _final._position).sqrMagnitude > 0.25f)
@@ -406,7 +463,11 @@ namespace NodeController
                 var color = data.Color.HasValue ? ((Color32)data.Color.Value).SetAlpha(128) : Colors.White128;
                 new StraightTrajectory(markerPosition, _final._position).Render(new OverlayData(data.CameraInfo) { Color = color });
             }
-            markerPosition.RenderCircle(data, data.Width ?? SegmentEndData.CornerDotRadius * 2, 0f);
+            markerPosition.RenderCircle(data, data.Width ?? SegmentEndData.CornerCenterRadius * 2, 0f);
+        }
+        public void RenderCircle(OverlayData data)
+        {
+            MarkerPos.RenderCircle(data, SegmentEndData.CornerCircleRadius * 2 + 0.5f, SegmentEndData.CornerCircleRadius * 2 - 0.5f);
         }
 
         public override string ToString() => $"{Type}: {nameof(_final._rawT)}={_final._rawT}; {nameof(_final._minT)}={_final._minT}; {nameof(_final._maxT)}={_final._maxT}; {nameof(_final._position)}={_final._position};";

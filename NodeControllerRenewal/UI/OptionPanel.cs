@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TrafficManager.UI.MainMenu.OSD;
 using UnityEngine;
 
 namespace NodeController.UI
@@ -13,10 +14,12 @@ namespace NodeController.UI
     public interface IOptionPanel
     {
         public bool isVisible { get; set; }
+        public bool isVisibleSelf { get; }
         void Refresh();
     }
-    public abstract class OptionPanel<TypeItem> : EditorPropertyPanel, IReusable, IOptionPanel
-        where TypeItem : UIComponent
+    public abstract class OptionPanel<TypeNodeItem, TypeSegmentItem> : EditorPropertyPanel, IReusable, IOptionPanel
+        where TypeNodeItem : UIComponent
+        where TypeSegmentItem : UIComponent
     {
         public delegate bool EnableGetter(SegmentEndData data);
 
@@ -26,7 +29,8 @@ namespace NodeController.UI
         protected SupportOption TotalOption { get; set; }
         protected EnableGetter IsEnableGetter { get; set; }
 
-        protected Dictionary<INetworkData, TypeItem> Items { get; } = new Dictionary<INetworkData, TypeItem>();
+        protected TypeNodeItem NodeItem { get; set; }
+        protected Dictionary<SegmentEndData, TypeSegmentItem> SegmentItems { get; } = new Dictionary<SegmentEndData, TypeSegmentItem>();
         protected float ItemWidth => TotalOption == SupportOption.Group ? 100f : 50f;
 
         public void Init(NodeData data, SupportOption option, SupportOption totalOption, EnableGetter enableGetter = null)
@@ -46,7 +50,8 @@ namespace NodeController.UI
 
             Data = null;
             IsEnableGetter = null;
-            Items.Clear();
+            NodeItem = null;
+            SegmentItems.Clear();
 
             foreach (var component in Content.components.ToArray())
                 ComponentPool.Free(component);
@@ -54,32 +59,37 @@ namespace NodeController.UI
         private void PlaceItems()
         {
             if (TotalOption.IsSet(SupportOption.Group))
-                Items[Data] = AddItem(Data);
+                NodeItem = AddNodeItem(Data);
 
             if (TotalOption.IsSet(SupportOption.Individually))
             {
                 foreach (var segmentData in Data.SegmentEndDatas)
-                    Items[segmentData] = AddItem(segmentData);
+                    SegmentItems[segmentData] = AddSegmentItem(segmentData);
             }
 
             Content.Refresh();
             Refresh();
         }
 
-        protected virtual TypeItem AddItem(INetworkData data)
+        protected virtual TypeNodeItem AddNodeItem(NodeData data)
         {
-            var item = Content.AddUIComponent<TypeItem>();
+            var item = Content.AddUIComponent<TypeNodeItem>();
+            return item;
+        }
+        protected virtual TypeSegmentItem AddSegmentItem(SegmentEndData data)
+        {
+            var item = Content.AddUIComponent<TypeSegmentItem>();
             return item;
         }
 
         public virtual void Refresh()
         {
-            if (!Option.IsSet(SupportOption.Group) && Items.TryGetValue(Data, out var nodeItem))
+            if (!Option.IsSet(SupportOption.Group) && NodeItem is TypeNodeItem nodeItem)
                 nodeItem.isEnabled = false;
 
             foreach (var segmentData in Data.SegmentEndDatas)
             {
-                if (Items.TryGetValue(segmentData, out var segmentEndItem))
+                if (SegmentItems.TryGetValue(segmentData, out var segmentEndItem))
                 {
                     if (!Option.IsSet(SupportOption.Individually))
                         segmentEndItem.isEnabled = false;
@@ -89,8 +99,9 @@ namespace NodeController.UI
             }
         }
     }
-    public abstract class OptionPanel<TypeItem, TypeValue> : OptionPanel<TypeItem>
-        where TypeItem : UIComponent, IValueChanger<TypeValue>
+    public abstract class OptionPanel<TypeNodeItem, TypeSegmentItem, TypeValue> : OptionPanel<TypeNodeItem, TypeSegmentItem>
+        where TypeNodeItem : UIComponent, IValueChanger<TypeValue>
+        where TypeSegmentItem : UIComponent, IValueChanger<TypeValue>
     {
         public delegate TypeValue Getter(INetworkData data);
         public delegate void Setter(INetworkData data, TypeValue value);
@@ -117,11 +128,11 @@ namespace NodeController.UI
             OnChanged = null;
         }
 
-        protected override TypeItem AddItem(INetworkData data)
+        protected override TypeNodeItem AddNodeItem(NodeData data)
         {
-            var item = ComponentPool.Get<TypeItem>(Content);
+            var item = ComponentPool.Get<TypeNodeItem>(Content);
 
-            InitItem(data, item);
+            InitNodeItem(data, item);
 
             item.width = ItemWidth;
             item.Format = Format;
@@ -130,23 +141,39 @@ namespace NodeController.UI
 
             return item;
         }
-        protected virtual void InitItem(INetworkData data, TypeItem item) { }
+
+        protected override TypeSegmentItem AddSegmentItem(SegmentEndData data)
+        {
+            var item = ComponentPool.Get<TypeSegmentItem>(Content);
+
+            InitSegmentItem(data, item);
+
+            item.width = ItemWidth;
+            item.Format = Format;
+            item.Value = ValueGetter(data);
+            item.OnValueChanged += (value) => ValueChanged(data, value);
+
+            return item;
+        }
+        protected virtual void InitNodeItem(NodeData data, TypeNodeItem item) { }
+        protected virtual void InitSegmentItem(SegmentEndData data, TypeSegmentItem item) { }
+
         private void ValueChanged(INetworkData data, TypeValue value)
         {
             ValueSetter(data, value);
             OnChanged?.Invoke(data, value);
-            Data.UpdateNode();
-            Refresh();
         }
         public override void Refresh()
         {
             base.Refresh();
 
-            foreach (var item in Items)
+            if (NodeItem != null)
+                NodeItem.Value = ValueGetter(Data);
+            foreach (var item in SegmentItems)
                 item.Value.Value = ValueGetter(item.Key);
         }
     }
-    public class FloatOptionPanel : OptionPanel<FloatUITextField, float>
+    public class FloatOptionPanel : OptionPanel<FloatUITextField, FloatUITextField, float>
     {
         public delegate void MinMaxGetter(INetworkData data, out float min, out float max);
 
@@ -166,7 +193,9 @@ namespace NodeController.UI
             WheelStep = 1f;
         }
 
-        protected override void InitItem(INetworkData data, FloatUITextField item)
+        protected override void InitNodeItem(NodeData data, FloatUITextField item) => InitItem(data, item);
+        protected override void InitSegmentItem(SegmentEndData data, FloatUITextField item) => InitItem(data, item);
+        private void InitItem(INetworkData data, FloatUITextField item)
         {
             item.SetDefaultStyle();
             item.NumberFormat = NumberFormat;
@@ -183,11 +212,12 @@ namespace NodeController.UI
                 item.MaxValue = max;
             }
         }
+
         public override void Refresh()
         {
             if (MinMax != null)
             {
-                foreach (var item in Items)
+                foreach (var item in SegmentItems)
                 {
                     MinMax(item.Key, out var min, out var max);
                     item.Value.MinValue = min;
@@ -198,9 +228,11 @@ namespace NodeController.UI
             base.Refresh();
         }
     }
-    public class BoolOptionPanel : OptionPanel<INOSegmented, bool?>
+    public class BoolOptionPanel : OptionPanel<INOSegmented, INOSegmented, bool?>
     {
-        protected override void InitItem(INetworkData data, INOSegmented item)
+        protected override void InitNodeItem(NodeData data, INOSegmented item) => InitItem(data, item);
+        protected override void InitSegmentItem(SegmentEndData data, INOSegmented item) => InitItem(data, item);
+        private void InitItem(INetworkData data, INOSegmented item)
         {
             item.StopLayout();
 
@@ -209,7 +241,7 @@ namespace NodeController.UI
             if (TotalOption == SupportOption.Group)
             {
                 item.AddItem(true, CommonLocalize.MessageBox_Yes);
-                if(data is NodeData)
+                if (data is NodeData)
                     item.AddItem(null, "/", clickable: false, width: 10f);
                 item.AddItem(false, CommonLocalize.MessageBox_No);
             }
@@ -224,12 +256,25 @@ namespace NodeController.UI
             item.StartLayout();
         }
     }
-    public class TextOptionPanel : OptionPanel<CustomUILabel>
+    public class TextOptionPanel : OptionPanel<CustomUILabel, CustomUILabel>
     {
-        protected override CustomUILabel AddItem(INetworkData data)
+        protected override CustomUILabel AddNodeItem(NodeData data)
         {
-            var item = base.AddItem(data);
-
+            var item = base.AddNodeItem(data);
+            AddItem(item);
+            item.text = NodeController.Localize.Options_All;
+            return item;
+        }
+        protected override CustomUILabel AddSegmentItem(SegmentEndData data)
+        {
+            var item = base.AddSegmentItem(data);
+            AddItem(item);
+            item.color = data.Color;
+            item.text = $"#{data.Id}";
+            return item;
+        }
+        private void AddItem(CustomUILabel item)
+        {
             item.autoSize = false;
             item.width = ItemWidth;
             item.height = 18f;
@@ -239,16 +284,6 @@ namespace NodeController.UI
             item.padding.top = 3;
             item.atlas = TextureHelper.InGameAtlas;
             item.backgroundSprite = "ButtonWhite";
-
-            if (data is NodeData)
-                item.text = NodeController.Localize.Options_All;
-            if (data is SegmentEndData endData)
-            {
-                item.color = endData.Color;
-                item.text = $"#{endData.Id}";
-            }
-
-            return item;
         }
     }
     public class SpacePanel : EditorItem, IReusable

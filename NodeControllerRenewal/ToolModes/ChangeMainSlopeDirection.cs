@@ -13,7 +13,7 @@ namespace NodeController
         private bool IsHoverSegmentEnd => HoverSegmentEnd != null;
         private SegmentEndData SelectedSegmentEnd { get; set; }
         private bool IsSelectedSegmentEnd => SelectedSegmentEnd != null;
-        private float Radius => SegmentEndData.CenterDotRadius + 0.5f;
+        private float Radius => SegmentEndData.CenterRadius + 0.5f;
 
         protected override void Reset(IToolMode prevMode)
         {
@@ -112,7 +112,7 @@ namespace NodeController
                 Tool.Data.MainBezier.Render(new OverlayData(cameraInfo) { Width = width, Color = Colors.Yellow, RenderLimit = underground });
 
                 foreach (var segmentData in Tool.Data.SegmentEndDatas)
-                    segmentData.RenderOutterCircle(new OverlayData(cameraInfo) { Color = segmentData.OverlayColor, RenderLimit = underground });
+                    segmentData.RenderCircle(new OverlayData(cameraInfo) { Color = segmentData.OverlayColor, RenderLimit = underground });
 
                 foreach (var segmentData in Tool.Data.MainSegmentEndDatas)
                     segmentData.Position.RenderCircle(new OverlayData(cameraInfo) { Color = segmentData == HoverSegmentEnd ? Color.white : Colors.Yellow, RenderLimit = underground }, width, 0f);
@@ -139,7 +139,7 @@ namespace NodeController
                 foreach (var segmentData in Tool.Data.SegmentEndDatas)
                 {
                     if (segmentData != SelectedSegmentEnd)
-                        segmentData.RenderOutterCircle(new OverlayData(cameraInfo) { Color = segmentData == HoverSegmentEnd ? Color.white : segmentData.OverlayColor, RenderLimit = underground });
+                        segmentData.RenderCircle(new OverlayData(cameraInfo) { Color = segmentData == HoverSegmentEnd ? Color.white : segmentData.OverlayColor, RenderLimit = underground });
                 }
 
                 SelectedSegmentEnd.Position.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground }, width, 0f);
