@@ -129,6 +129,9 @@ namespace NodeController
         public SideType Type { get; }
         public SegmentEndData SegmentData { get; }
 
+        public Vector3 PosDelta { get; set; }
+        public Vector3 DirDelta { get; set; }
+
         private DataStruct _final;
         private DataStruct _temp;
 
@@ -171,18 +174,21 @@ namespace NodeController
         {
             set => _temp._rawT = value;
         }
-        public float CurrentT => _temp.CurrentT;
-        public float DeltaT => _temp.DeltaT;
+        public float CurrentTempT => _temp.CurrentT;
+        public float CurrentT => _final.CurrentT;
 
-        public Vector3 MinPos => _temp._minPos;
-        public Vector3 MinDir => _temp._minDir;
+        public Vector3 MinTempPos => _temp._minPos;
+        public Vector3 MinTempDir => _temp._minDir;
 
-        public Vector3 MaxPos => _temp._maxPos;
-        public Vector3 MaxDir => _temp._maxDir;
+        public Vector3 MaxTempPos => _temp._maxPos;
+        public Vector3 MaxTempDir => _temp._maxDir;
 
 
         public Vector3 StartPos => _final._position + _final._deltaPos;
         public Vector3 StartDir => NormalizeXZ(_final._dirRotation * _final._direction) * _final._dirRatio;
+        public Vector3 OriginalPos => _final._position;
+        public Vector3 OriginalDir => _final._direction;
+
 
         public Vector3 EndPos => _final._maxPos;
         public Vector3 EndDir => _final._maxDir;
@@ -263,15 +269,8 @@ namespace NodeController
                     break;
                 case Mode.FreeForm:
                     {
-                        var deltaPos = Type switch
-                        {
-                            SideType.Left => SegmentData.LeftPosDelta,
-                            SideType.Right => SegmentData.RightPosDelta,
-                            _ => Vector3.zero,
-                        };
-
                         var angle = direction.AbsoluteAngle();
-                        _temp._deltaPos += Quaternion.AngleAxis(-angle * Mathf.Rad2Deg, Vector3.up) * deltaPos;
+                        _temp._deltaPos += Quaternion.AngleAxis(-angle * Mathf.Rad2Deg, Vector3.up) * PosDelta;
 
                         var deltaDir = Type switch
                         {
@@ -371,6 +370,19 @@ namespace NodeController
         public float ToMainT(float t) => _temp._rawTrajectory.ToPartT(1, t);
         public float ToAdditionalT(float t) => _temp._rawTrajectory.ToPartT(0, t);
 
+        public Vector3 FromAbsoluteDeltaPos(Vector3 deltaPos)
+        {
+            var angle = OriginalDir.AbsoluteAngle();
+            deltaPos = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.up) * deltaPos;
+            return deltaPos;
+        }
+        public Vector3 ToAbsoluteDeltaPos(Vector3 deltaPos)
+        {
+            var angle = OriginalDir.AbsoluteAngle();
+            deltaPos = Quaternion.AngleAxis(-angle * Mathf.Rad2Deg, Vector3.up) * deltaPos;
+            return deltaPos;
+        }
+
         public static void FixMiddle(SegmentSide first, SegmentSide second)
         {
             var fixPosition = (first._temp._position + second._temp._position) / 2f;
@@ -410,7 +422,7 @@ namespace NodeController
             }
         }
 
-        public void Render(OverlayData dataAllow, OverlayData dataForbidden, OverlayData dataLimit)
+        public void RenderGuides(OverlayData dataAllow, OverlayData dataForbidden, OverlayData dataDefault)
         {
             var deltaT = 0.2f / _final._rawTrajectory.Length;
             if (_final._minT == 0f)
@@ -430,10 +442,15 @@ namespace NodeController
                 if (_final._rawT - _final._minT >= 0.2f / _final._rawTrajectory.Length)
                     _final._rawTrajectory.Cut(_final._minT, _final._rawT).Render(dataAllow);
             }
-            dataLimit.Color ??= Colors.Purple;
-            _final._rawTrajectory.Position(_final._defaultT).RenderCircle(dataLimit);
+            dataDefault.Color ??= Colors.Purple;
+            _final._rawTrajectory.Position(_final._defaultT).RenderCircle(dataDefault);
         }
-        public void RenderCircle(OverlayData data)
+        public void Render(OverlayData centerData, OverlayData circleData)
+        {
+            RenderCenter(centerData);
+            RenderCircle(circleData);
+        }
+        public void RenderCenter(OverlayData data)
         {
             var markerPosition = MarkerPos;
             if ((markerPosition - _final._position).sqrMagnitude > 0.25f)
@@ -441,7 +458,11 @@ namespace NodeController
                 var color = data.Color.HasValue ? ((Color32)data.Color.Value).SetAlpha(128) : Colors.White128;
                 new StraightTrajectory(markerPosition, _final._position).Render(new OverlayData(data.CameraInfo) { Color = color });
             }
-            markerPosition.RenderCircle(data, data.Width ?? SegmentEndData.CornerDotRadius * 2, 0f);
+            markerPosition.RenderCircle(data, data.Width ?? SegmentEndData.CornerCenterRadius * 2, 0f);
+        }
+        public void RenderCircle(OverlayData data)
+        {
+            MarkerPos.RenderCircle(data, SegmentEndData.CornerCircleRadius * 2 + 0.5f, SegmentEndData.CornerCircleRadius * 2 - 0.5f);
         }
 
         public override string ToString() => $"{Type}: {nameof(_final._rawT)}={_final._rawT}; {nameof(_final._minT)}={_final._minT}; {nameof(_final._maxT)}={_final._maxT}; {nameof(_final._position)}={_final._position};";

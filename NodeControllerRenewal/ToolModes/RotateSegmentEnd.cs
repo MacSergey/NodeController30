@@ -7,7 +7,7 @@ namespace NodeController
 {
     public class RotateSegmentEndToolMode : NodeControllerToolMode
     {
-        public override ToolModeType Type => ToolModeType.Rotate;
+        public override ToolModeType Type => ToolModeType.RotateEnd;
         public SegmentEndData SegmentEnd { get; private set; } = null;
         public Vector3 BeginDirection { get; private set; }
         public float BeginRotate { get; private set; }
@@ -41,7 +41,7 @@ namespace NodeController
 
         protected override void Reset(IToolMode prevMode)
         {
-            SegmentEnd = prevMode is EditNodeToolMode editMode ? editMode.HoverSegmentEndCircle : null;
+            SegmentEnd = prevMode is EditNodeToolMode editMode ? editMode.HoverSegmentCircle : null;
             BeginDirection = CurrentDirection;
 
             if (SegmentEnd.Mode != Mode.FreeForm)
@@ -54,7 +54,7 @@ namespace NodeController
                 CachedLeftPosDelta = SegmentEnd.LeftPosDelta;
                 CachedRightPosDelta = SegmentEnd.RightPosDelta;
                 CachedLeftRot = SegmentEnd.LeftDirDelta.x;
-                CachedRightRot= SegmentEnd.RightDirDelta.x;
+                CachedRightRot = SegmentEnd.RightDirDelta.x;
             }
         }
 
@@ -69,32 +69,39 @@ namespace NodeController
             }
             else
             {
-                SegmentEnd.LeftPosDelta = CachedLeftPosDelta + GetCornerDelta(SideType.Left, deltaAngle);
-                SegmentEnd.RightPosDelta = CachedRightPosDelta + GetCornerDelta(SideType.Right, deltaAngle);
+                var left = SegmentEnd[SideType.Left];
+                var right = SegmentEnd[SideType.Right];
 
-                var leftDirDelta = SegmentEnd.LeftDirDelta;
-                leftDirDelta.x = CachedLeftRot + deltaAngle;
-                SegmentEnd.LeftDirDelta = leftDirDelta;
+                left.PosDelta = GetCornerDelta(SideType.Left, CachedLeftPosDelta, deltaAngle);
+                right.PosDelta = GetCornerDelta(SideType.Right, CachedRightPosDelta, deltaAngle);
 
-                var rightDirDelta = SegmentEnd.RightDirDelta;
-                rightDirDelta.x = CachedRightRot + deltaAngle;
-                SegmentEnd.RightDirDelta = leftDirDelta;
+                var leftDirDelta = left.DirDelta;
+                var leftAngle = (CachedLeftRot + deltaAngle) % 360f;
+                leftDirDelta.x = leftAngle > 180f ? leftAngle - 360f : leftAngle;
+                left.DirDelta = leftDirDelta;
+
+                var rightDirDelta = right.DirDelta;
+                var rightAngle = (CachedRightRot + deltaAngle) % 360f;
+                rightDirDelta.x = rightAngle > 180f ? rightAngle - 360f : rightAngle;
+                right.DirDelta = leftDirDelta;
             }
 
             SegmentEnd.UpdateNode();
             Tool.Panel.RefreshPanel();
         }
-        private Vector3 GetCornerDelta(SideType sideType, float deltaAngle)
+        private Vector3 GetCornerDelta(SideType sideType, Vector3 deltaPos, float deltaAngle)
         {
             var side = SegmentEnd[sideType];
-            var sidePos = side.RawTrajectory.Position(side.CurrentT);
+            var zeroPos = side.RawTrajectory.Position(side.CurrentT);
             var angle = side.RawTrajectory.Tangent(side.CurrentT).AbsoluteAngle();
 
-            var direction = sidePos - CachedPosition;
+            var oldPos = zeroPos + Quaternion.AngleAxis(-angle * Mathf.Rad2Deg, Vector3.up) * deltaPos;
+            var direction = oldPos - CachedPosition;
             direction = direction.TurnDeg(-deltaAngle, false);
             var newPos = CachedPosition + direction;
-            var deltaPos = newPos - sidePos;
-            return Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.up) * deltaPos;
+
+            deltaPos = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.up) * (newPos - zeroPos);
+            return deltaPos;
         }
 
         public override void OnPrimaryMouseClicked(Event e) => OnMouseUp(e);
@@ -110,7 +117,7 @@ namespace NodeController
 
             if (SegmentEnd.Mode != Mode.FreeForm)
             {
-                SegmentEnd.RenderSides(allow, forbidden, allow);
+                SegmentEnd.RenderGuides(allow, forbidden, allow);
                 SegmentEnd.Render(defaultColor, yellow, defaultColor);
             }
             else
@@ -120,23 +127,22 @@ namespace NodeController
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
         {
+            size = 2f;
+            position = SegmentEnd.Position + SegmentEnd.Direction * SegmentEndData.CircleRadius;
+            direction = SegmentEnd.Direction;
             if (SegmentEnd.Mode != Mode.FreeForm)
             {
                 text = $"{SegmentEnd.RotateAngle:0}°";
                 color = SegmentEnd.IsBorderRotate ? Colors.Red : Colors.Yellow;
-                size = 2f;
-                position = SegmentEnd.Position + SegmentEnd.Direction * SegmentEndData.CircleRadius;
-                direction = SegmentEnd.Direction;
                 return true;
             }
             else
             {
-                text = default;
-                color = default;
-                size = default;
-                position = default;
-                direction = default;
-                return false;
+                var quaternion = Quaternion.FromToRotation(BeginDirection, CurrentDirection);
+                var angle = ((CachedLeftRot + CachedRightRot) * 0.5f + quaternion.eulerAngles.y) % 360f;
+                text = $"{(angle > 180f ? angle - 360f : angle):0}°";
+                color = Colors.Yellow;
+                return true;
             }
         }
     }

@@ -19,17 +19,47 @@ namespace NodeController
         public SegmentEndData SegmentEnd { get; private set; } = null;
         public SideType Corner { get; private set; }
 
+        private Vector3 CachedPosition { get; set; }
+        private Vector3 CachedDelta { get; set; }
+        private float CachedDeltaHeight { get; set; }
+        private bool WasShiftPressed { get; set; }
+
         private float RoundTo => Utility.OnlyShiftIsPressed ? 1f : 0.1f;
 
         protected override void Reset(IToolMode prevMode)
         {
             if (prevMode is EditNodeToolMode editMode)
             {
-                SegmentEnd = editMode.HoverSegmentEndCorner;
+                SegmentEnd = editMode.HoverCornerCenter;
                 Corner = editMode.HoverCorner;
+            }
+            else if (prevMode is DragCornerToolMode dragMode)
+            {
+                SegmentEnd = dragMode.SegmentEnd;
+                Corner = dragMode.Corner;
             }
             else
                 SegmentEnd = null;
+
+            if (SegmentEnd.Mode == Mode.FreeForm)
+            {
+                CachedPosition = SegmentEnd[Corner].StartPos;
+                CachedDelta = SegmentEnd[Corner].PosDelta;
+                CachedDeltaHeight = 0f;
+                WasShiftPressed = false;
+            }
+        }
+        public override void OnToolUpdate()
+        {
+            if (SegmentEnd.Mode == Mode.FreeForm)
+            {
+                var isShiftPressed = Utility.OnlyShiftIsPressed;
+                if (isShiftPressed != WasShiftPressed)
+                {
+                    Reset(this);
+                }
+                WasShiftPressed = isShiftPressed;
+            }
         }
         public override void OnMouseDrag(Event e)
         {
@@ -51,28 +81,27 @@ namespace NodeController
             }
             else
             {
-                var t = SegmentEnd[Corner].CurrentT;
-                var pos = SegmentEnd[Corner].RawTrajectory.Position(t);
-                var dir = SegmentEnd[Corner].RawTrajectory.Tangent(t).MakeFlatNormalized();
-                var normal = dir.Turn90(true);
-
-                var rayPos = Tool.Ray.GetRayPosition(pos.y, out _);
-                Line2.Intersect(XZ(pos), XZ(pos + dir), XZ(rayPos), XZ(rayPos + normal), out var x, out var z);
-
-                if (Corner == SideType.Left)
+                Vector3 deltaPos;
+                if (Utility.OnlyShiftIsPressed)
                 {
-                    var delta = SegmentEnd.LeftPosDelta;
-                    delta.x = x;
-                    delta.z = z;
-                    SegmentEnd.LeftPosDelta = delta;
+                    var plane = new Plane(Tool.CameraDirection, CachedPosition);
+                    if (plane.Raycast(Tool.MouseRay, out var rayT))
+                    {
+                        var intersectPos = Tool.MouseRay.origin + Tool.MouseRay.direction * rayT;
+                        CachedDeltaHeight = intersectPos.y - CachedPosition.y;
+                    }
+                    deltaPos = new Vector3(0f, CachedDeltaHeight, 0f);
                 }
                 else
                 {
-                    var delta = SegmentEnd.RightPosDelta;
-                    delta.x = x;
-                    delta.z = z;
-                    SegmentEnd.RightPosDelta = delta;
+                    var rayPos = Tool.Ray.GetRayPosition(CachedPosition.y, out _);
+                    deltaPos = rayPos - CachedPosition;
                 }
+
+                var side = SegmentEnd[Corner];
+                var angle = side.RawTrajectory.Tangent(side.CurrentT).AbsoluteAngle();
+
+                SegmentEnd[Corner].PosDelta = CachedDelta + Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.up) * deltaPos;
             }
 
             SegmentEnd.UpdateNode();
@@ -89,20 +118,24 @@ namespace NodeController
 
             if (SegmentEnd.Mode != Mode.FreeForm)
             {
-                SegmentEnd[Corner].Render(allow, forbidden, allow);
+                SegmentEnd[Corner].RenderGuides(allow, forbidden, allow);
                 SegmentEnd.RenderContour(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
                 SegmentEnd.RenderStart(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
-                SegmentEnd[Corner].RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground });
+                SegmentEnd[Corner].RenderCenter(new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground });
             }
             else
             {
                 SegmentEnd.RenderContour(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
                 SegmentEnd.RenderStart(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
-                SegmentEnd[Corner].RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground });
+                SegmentEnd[Corner].RenderCenter(new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground });
             }
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
         {
+            size = 2f;
+            position = SegmentEnd.Position + SegmentEnd.Direction * SegmentEndData.CircleRadius;
+            direction = SegmentEnd.Direction;
+
             if (SegmentEnd.Mode != Mode.FreeForm)
             {
                 var side = SegmentEnd[Corner];
@@ -110,19 +143,25 @@ namespace NodeController
                 var value = side.RawTrajectory.Cut(0f, side.CurrentT).GetLength(1f, 7) - side.AdditionalLength;
                 text = $"{value:0.0}";
                 color = side.IsMinBorderT || side.IsMaxBorderT ? Colors.Red : Colors.Yellow;
-                size = 2f;
-                position = SegmentEnd.Position + SegmentEnd.Direction * SegmentEndData.CircleRadius;
-                direction = SegmentEnd.Direction;
+                return true;
+            }
+            else if (Utility.OnlyShiftIsPressed)
+            {
+                var y = SegmentEnd[Corner].PosDelta.y;
+                var ySign = y < 0 ? "-" : y > 0 ? "+" : "";
+                text = $"{ySign}{Mathf.Abs(y):0.0}";
+                color = Colors.Yellow;
                 return true;
             }
             else
             {
-                text = default;
-                color = default;
-                size = default;
-                position = default;
-                direction = default;
-                return false;
+                var x = SegmentEnd[Corner].PosDelta.x;
+                var z = SegmentEnd[Corner].PosDelta.z;
+                var xSign = x < 0 ? "-" : x > 0 ? "+" : "";
+                var zSign = z < 0 ? "-" : z > 0 ? "+" : "";
+                text = $"X: {xSign}{Mathf.Abs(x):0.0}\nY: {zSign}{Mathf.Abs(z):0.0}";
+                color = Colors.Yellow;
+                return true;
             }
         }
     }

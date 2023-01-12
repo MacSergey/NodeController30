@@ -36,7 +36,7 @@ namespace NodeController
                 foreach (var target in Targets)
                 {
                     var hitPos = Tool.Ray.GetRayPosition(target.MarkerPos.y, out _);
-                    if ((target.MarkerPos - hitPos).sqrMagnitude < SegmentEndData.CenterDotRadius * SegmentEndData.CenterDotRadius)
+                    if ((target.MarkerPos - hitPos).sqrMagnitude < SegmentEndData.CenterRadius * SegmentEndData.CenterRadius)
                     {
                         HoverSide = target;
                         return;
@@ -161,7 +161,7 @@ namespace NodeController
         }
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
-            var width = SegmentEndData.CenterDotRadius * 2;
+            var width = SegmentEndData.CenterRadius * 2;
             var underground = IsUnderground;
 
             foreach (var segmentData in Tool.Data.SegmentEndDatas)
@@ -174,14 +174,14 @@ namespace NodeController
             foreach (var target in Targets)
             {
                 if (target != HoverSide)
-                    target.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow, Width = width, RenderLimit = underground });
+                    target.RenderCenter(new OverlayData(cameraInfo) { Color = Colors.Yellow, Width = width, RenderLimit = underground });
             }
 
             if (IsHoverSide)
-                HoverSide.RenderCircle(new OverlayData(cameraInfo) { Width = width, RenderLimit = underground });
+                HoverSide.RenderCenter(new OverlayData(cameraInfo) { Width = width, RenderLimit = underground });
 
             if (IsSelectedSide)
-                SelectedSide.RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Purple, Width = width, RenderLimit = underground });
+                SelectedSide.RenderCenter(new OverlayData(cameraInfo) { Color = Colors.Purple, Width = width, RenderLimit = underground });
         }
     }
 }

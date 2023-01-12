@@ -428,7 +428,7 @@ namespace NodeController
                     return visible && Data.Mode == Mode.Slope;
 
                 case Options.Offset:
-                case Options.Rotate:
+                //case Options.Rotate:
                 case Options.Stretch:
                 case Options.Shift:
                 case Options.Collision:
@@ -744,13 +744,13 @@ namespace NodeController
         {
             if (data is SegmentEndData segmentEnd)
             {
-                min = segmentEnd.MinRotate;
-                max = segmentEnd.MaxRotate;
+                min = segmentEnd.MinRotateAngle;
+                max = segmentEnd.MaxRotateAngle;
             }
             else if (data is NodeData nodeData)
             {
-                min = nodeData.SegmentEndDatas.Min(s => s.MinRotate);
-                max = nodeData.SegmentEndDatas.Max(s => s.MaxRotate);
+                min = nodeData.SegmentEndDatas.Min(s => s.MinRotateAngle);
+                max = nodeData.SegmentEndDatas.Max(s => s.MaxRotateAngle);
             }
             else
             {

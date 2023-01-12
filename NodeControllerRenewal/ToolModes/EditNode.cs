@@ -26,15 +26,19 @@ namespace NodeController
 
         public override ToolModeType Type => ToolModeType.Edit;
 
-        public SegmentEndData HoverSegmentEndCenter { get; private set; }
-        private bool IsHoverSegmentEndCenter => HoverSegmentEndCenter != null;
+        public SegmentEndData HoverSegmentCenter { get; private set; }
+        private bool IsHoverSegmentCenter => HoverSegmentCenter != null;
 
-        public SegmentEndData HoverSegmentEndCircle { get; private set; }
-        private bool IsHoverSegmentEndCircle => HoverSegmentEndCircle != null;
+        public SegmentEndData HoverSegmentCircle { get; private set; }
+        private bool IsHoverSegmentCircle => HoverSegmentCircle != null;
 
-        public SegmentEndData HoverSegmentEndCorner { get; private set; }
+
         public SideType HoverCorner { get; private set; }
-        private bool IsHoverSegmentEndCorner => HoverSegmentEndCorner != null;
+        public SegmentEndData HoverCornerCenter { get; private set; }
+        private bool IsHoverCornerCenter => HoverCornerCenter != null;
+
+        public SegmentEndData HoverCornerCircle { get; private set; }
+        private bool IsHoverCornerCircle => HoverCornerCircle != null;
 
         public override IEnumerable<Shortcut> Shortcuts
         {
@@ -71,18 +75,20 @@ namespace NodeController
 
                     var magnitude = (segmentData.Position - hitPos).magnitude;
 
-                    if (segmentData.IsOffsetChangeable && magnitude < SegmentEndData.CenterDotRadius)
+                    if (segmentData.IsOffsetChangeable && magnitude < SegmentEndData.CenterRadius)
                     {
-                        HoverSegmentEndCenter = segmentData;
-                        HoverSegmentEndCircle = null;
-                        HoverSegmentEndCorner = null;
+                        HoverSegmentCenter = segmentData;
+                        HoverSegmentCircle = null;
+                        HoverCornerCenter = null;
+                        HoverCornerCircle = null;
                         return;
                     }
-                    else if (!segmentData.IsNarrow && segmentData.IsRotateChangeable && magnitude < SegmentEndData.CircleRadius + 1f && magnitude > SegmentEndData.CircleRadius - 0.5f)
+                    else if (!segmentData.IsNarrow && segmentData.IsRotateChangeable && magnitude > SegmentEndData.CircleRadius - 0.5f && magnitude < SegmentEndData.CircleRadius + 1f)
                     {
-                        HoverSegmentEndCenter = null;
-                        HoverSegmentEndCircle = segmentData;
-                        HoverSegmentEndCorner = null;
+                        HoverSegmentCenter = null;
+                        HoverSegmentCircle = segmentData;
+                        HoverCornerCenter = null;
+                        HoverCornerCircle = null;
                         return;
                     }
                     else if (segmentData.IsOffsetChangeable && CheckCorner(segmentData, SideType.Left) || CheckCorner(segmentData, SideType.Right))
@@ -90,19 +96,31 @@ namespace NodeController
                 }
             }
 
-            HoverSegmentEndCenter = null;
-            HoverSegmentEndCircle = null;
-            HoverSegmentEndCorner = null;
+            HoverSegmentCenter = null;
+            HoverSegmentCircle = null;
+            HoverCornerCenter = null;
+            HoverCornerCircle = null;
         }
         private bool CheckCorner(SegmentEndData segmentData, SideType side)
         {
             var hitPos = Tool.Ray.GetRayPosition(segmentData[side].MarkerPos.y, out _);
+            var magnitude = (segmentData[side].MarkerPos - hitPos).magnitude;
 
-            if ((segmentData[side].MarkerPos - hitPos).magnitude < SegmentEndData.CornerDotRadius)
+            if (magnitude < SegmentEndData.CornerCenterRadius)
             {
-                HoverSegmentEndCenter = null;
-                HoverSegmentEndCircle = null;
-                HoverSegmentEndCorner = segmentData;
+                HoverSegmentCenter = null;
+                HoverSegmentCircle = null;
+                HoverCornerCenter = segmentData;
+                HoverCornerCircle = null;
+                HoverCorner = side;
+                return true;
+            }
+            else if(segmentData.Mode == Mode.FreeForm && magnitude > SegmentEndData.CornerCircleRadius - 0.5f && magnitude < SegmentEndData.CornerCircleRadius + 1f )
+            {
+                HoverSegmentCenter = null;
+                HoverSegmentCircle = null;
+                HoverCornerCenter = null;
+                HoverCornerCircle = segmentData;
                 HoverCorner = side;
                 return true;
             }
@@ -117,20 +135,22 @@ namespace NodeController
         }
         public override void OnMouseDown(Event e)
         {
-            if (IsHoverSegmentEndCenter)
+            if (IsHoverSegmentCenter)
                 Tool.SetMode(ToolModeType.DragEnd);
-            else if (IsHoverSegmentEndCircle)
-                Tool.SetMode(ToolModeType.Rotate);
-            else if (IsHoverSegmentEndCorner)
+            else if (IsHoverSegmentCircle)
+                Tool.SetMode(ToolModeType.RotateEnd);
+            else if (IsHoverCornerCenter)
                 Tool.SetMode(ToolModeType.DragCorner);
+            else if (IsHoverCornerCircle)
+                Tool.SetMode(ToolModeType.RotateCorner);
         }
         public override string GetToolInfo()
         {
-            if (IsHoverSegmentEndCenter)
+            if (IsHoverSegmentCenter)
                 return Localize.Tool_InfoDragCenter;
-            else if (IsHoverSegmentEndCircle)
+            else if (IsHoverSegmentCircle)
                 return Localize.Tool_InfoDragCircle;
-            if (IsHoverSegmentEndCorner)
+            else if (IsHoverCornerCenter)
                 return Localize.Tool_InfoDragCorner;
             else
             {
@@ -155,11 +175,24 @@ namespace NodeController
             {
                 var defaultColor = new OverlayData(cameraInfo) { Color = segmentData.OverlayColor, RenderLimit = underground };
                 var segmentColor = new OverlayData(cameraInfo) { Color = segmentData.Color, RenderLimit = underground };
-                var outter = segmentData == HoverSegmentEndCircle ? hover : yellow;
-                var inner = segmentData == HoverSegmentEndCenter ? hover : segmentColor;
-                var left = segmentData == HoverSegmentEndCorner && HoverCorner == SideType.Left ? hover : yellow;
-                var right = segmentData == HoverSegmentEndCorner && HoverCorner == SideType.Right ? hover : yellow;
-                segmentData.Render(defaultColor, outter, inner, left, right);
+                var circle = segmentData == HoverSegmentCircle ? hover : yellow;
+                var center = segmentData == HoverSegmentCenter ? hover : segmentColor;
+                segmentData.Render(defaultColor, circle, center);
+
+                var leftCenter = segmentData == HoverCornerCenter && HoverCorner == SideType.Left ? hover : yellow;
+                segmentData[SideType.Left].RenderCenter(leftCenter);
+
+                var rightCenter = segmentData == HoverCornerCenter && HoverCorner == SideType.Right ? hover : yellow;
+                segmentData[SideType.Right].RenderCenter(rightCenter);
+
+                if (segmentData.Mode == Mode.FreeForm)
+                {
+                    var leftCircle = segmentData == HoverCornerCircle && HoverCorner == SideType.Left ? hover : yellow;
+                    segmentData[SideType.Left].RenderCircle(leftCircle);
+
+                    var rightCircle = segmentData == HoverCornerCircle && HoverCorner == SideType.Right ? hover : yellow;
+                    segmentData[SideType.Right].RenderCircle(rightCircle);
+                }
             }
         }
     }

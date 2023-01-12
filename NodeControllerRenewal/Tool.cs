@@ -48,6 +48,7 @@ namespace NodeController
             yield return CreateToolMode<DragSegmentEndToolMode>();
             yield return CreateToolMode<DragCornerToolMode>();
             yield return CreateToolMode<RotateSegmentEndToolMode>();
+            yield return CreateToolMode<RotateCornerToolMode>();
             yield return CreateToolMode<ChangeMainSlopeDirectionToolMode>();
             yield return CreateToolMode<AlignSegmentEndsToolMode>();
         }
@@ -255,9 +256,10 @@ namespace NodeController
         Edit = 2,
         DragEnd = 4,
         DragCorner = 8,
-        Rotate = 16,
-        ChangeMain = 32,
-        Aling = 64,
+        RotateEnd = 16,
+        RotateCorner = 32,
+        ChangeMain = 64,
+        Aling = 128,
     }
     public class NodeControllerShortcut : ToolShortcut<Mod, NodeControllerTool, ToolModeType>
     {
