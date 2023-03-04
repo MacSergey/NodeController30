@@ -145,6 +145,7 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Mutka</value>
   </data>
@@ -188,9 +189,11 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   
   
   
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Palauta etäisyydet</value>
   </data>
+  
   
   
   <data name="Option_MainSlopeDirection" xml:space="preserve">
@@ -220,9 +223,11 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
+  
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Palauta oletukseksi</value>
   </data>
+  
   
   
   <data name="Option_Rotate" xml:space="preserve">

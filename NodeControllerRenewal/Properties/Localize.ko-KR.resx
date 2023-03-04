@@ -138,6 +138,9 @@
     <value>로드 중에 에러가 있습니다.
 모든 노드의 정보를 로딩하지 못했습니다.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
+    <value>[RELEASE] 신규 버전 출시</value>
+  </data>
   
   
   
@@ -174,7 +177,13 @@
     <value>[수정] Adaptive Network 모드와의 호환성 문제로 노드 대신 파란 공백이 생성되던 오류를 수정했습니다.
 [수정] 네트워크 에셋이 누락되면 모드 데이터를 불러올 수 없던 오류를 수정했습니다.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_4" xml:space="preserve">
+    <value>[NEW] 아무 제한 없이 코너의 위치와 방향을 설정할 수 있는 자유형 모드를 추가했습니다.
+[NEW] 구간의 경사를 따로 설정할 수 있도록 "주 경사 따르기"를 끄는 기능을 추가했습니다.
+[NEW] 각 구간의 삼각형 높이를 설정할 수 있는 기능을 추가했습니다.
+[UPDATED] 커브 노드가 근처 노드의 경사를 따르도록 하여, 노드 사이의 구간이 더욱 부드러워졌습니다.
+[FIXED] 철도의 기본 오프셋이 0으로 설정되지 않던 것을 수정했습니다.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>커브</value>
   </data>
@@ -217,20 +226,36 @@
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>삼각형 높이</value>
   </data>
-  
-  
+  <data name="Option_Direction" xml:space="preserve">
+    <value>방향</value>
+  </data>
+  <data name="Option_Distance" xml:space="preserve">
+    <value>거리</value>
+  </data>
+  <data name="Option_Elevation" xml:space="preserve">
+    <value>고도</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>주 경사 따르기</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Hide crosswalks 모드 필요</value>
   </data>
-  
+  <data name="Option_Horizontal" xml:space="preserve">
+    <value>수평</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>오프셋 초기화</value>
   </data>
-  
-  
+  <data name="Option_LeftCorner" xml:space="preserve">
+    <value>왼쪽 코너</value>
+  </data>
+  <data name="Option_LeftCornerDirection" xml:space="preserve">
+    <value>왼쪽 코너 방향</value>
+  </data>
+  <data name="Option_LeftCornerPosition" xml:space="preserve">
+    <value>왼쪽 코너 위치</value>
+  </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>주 경사 방향</value>
   </data>
@@ -270,11 +295,21 @@
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
+  <data name="Option_Position" xml:space="preserve">
+    <value>위치</value>
+  </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>기본값으로 초기화</value>
   </data>
-  
-  
+  <data name="Option_RightCorner" xml:space="preserve">
+    <value>오른쪽 코너</value>
+  </data>
+  <data name="Option_RightCornerDirection" xml:space="preserve">
+    <value>오른쪽 코너 방향</value>
+  </data>
+  <data name="Option_RightCornerPosition" xml:space="preserve">
+    <value>오른쪽 코너 위치</value>
+  </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>회전</value>
   </data>
@@ -314,7 +349,9 @@
   <data name="Option_Type" xml:space="preserve">
     <value>노드 유형</value>
   </data>
-  
+  <data name="Option_Vertical" xml:space="preserve">
+    <value>수직</value>
+  </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>노드 #{0}</value>
   </data>
@@ -484,14 +521,20 @@
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>드래그해 오프셋 변경</value>
   </data>
-  
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>드래그해 위치 변경
+{0} 키를 누른 채로 고도 변경</value>
+  </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>드래그해 회전</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>드래그해 코너 오프셋 수정</value>
   </data>
-  
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>드래그해 코너 위치 변경
+{0} 키를 누른 채로 코너 고도 변경</value>
+  </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>이쪽 끝을 드래그해 주 경사 방향 변경</value>
   </data>

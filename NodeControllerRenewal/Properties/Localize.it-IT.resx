@@ -138,6 +138,9 @@ Impossibile caricare i dati per {0} nodi.</value>
     <value>Il caricamento è stato completato con errori.
 Impossibile caricare i dati per tutti i nodi.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
+    <value>[RELEASE] rilascio versione Renewal</value>
+  </data>
   
   
   
@@ -174,7 +177,13 @@ Impossibile caricare i dati per tutti i nodi.</value>
     <value>[FIXED] Corretta la compatibilità con Adaptive Network mod che potrebbe causare vuoti blu al posto dei nodi.
 [FIXED] Errore corretto quando la risorsa di rete è persa, potrebbe causare un errore di caricamento dei dati NCR.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_4" xml:space="preserve">
+    <value>[NEW] Aggiunta la modalità a forma libera che permette di impostare la posizione e la rotazione dell'angolo senza alcuna limitazione.
+[NEW] Aggiunta la possibilità di disabilitare "Segui la pendenza principale" per segmenti che permettono di rendere i segmenti pendenti indipendentemente.
+[NEW] Aggiunta la possibilità di impostare l'altezza Delta per ogni segmento.
+[UPDATED] I nodi di curva seguono la pendenza dei nodi vicini, in modo che il segmento tra di essi sia più liscio.
+[FIXED] Lo spostamento predefinito delle ferrovie non è impostato a 0.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Piega</value>
   </data>
@@ -217,20 +226,36 @@ Impossibile caricare i dati per tutti i nodi.</value>
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Altezza Delta</value>
   </data>
-  
-  
+  <data name="Option_Direction" xml:space="preserve">
+    <value>Direzione</value>
+  </data>
+  <data name="Option_Distance" xml:space="preserve">
+    <value>Distanza</value>
+  </data>
+  <data name="Option_Elevation" xml:space="preserve">
+    <value>Elevazione</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Segui la pendenza principale</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>È richiesta la Mod Hide Crosswalks</value>
   </data>
-  
+  <data name="Option_Horizontal" xml:space="preserve">
+    <value>Orizzontale</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Ripristina la deviazione</value>
   </data>
-  
-  
+  <data name="Option_LeftCorner" xml:space="preserve">
+    <value>Angolo sinistro</value>
+  </data>
+  <data name="Option_LeftCornerDirection" xml:space="preserve">
+    <value>Direzione dell'angolo sinistro</value>
+  </data>
+  <data name="Option_LeftCornerPosition" xml:space="preserve">
+    <value>Posizione dell'angolo sinistro</value>
+  </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Direzione principale della pendenza</value>
   </data>
@@ -270,11 +295,21 @@ Impossibile caricare i dati per tutti i nodi.</value>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
+  <data name="Option_Position" xml:space="preserve">
+    <value>Posizione</value>
+  </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Ripristina impostazioni predefinite</value>
   </data>
-  
-  
+  <data name="Option_RightCorner" xml:space="preserve">
+    <value>Angolo destro</value>
+  </data>
+  <data name="Option_RightCornerDirection" xml:space="preserve">
+    <value>Direzione dell'angolo destro</value>
+  </data>
+  <data name="Option_RightCornerPosition" xml:space="preserve">
+    <value>Posizione dell'angolo destro</value>
+  </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Rotazione</value>
   </data>
@@ -314,7 +349,9 @@ Impossibile caricare i dati per tutti i nodi.</value>
   <data name="Option_Type" xml:space="preserve">
     <value>Tipologia di nodo</value>
   </data>
-  
+  <data name="Option_Vertical" xml:space="preserve">
+    <value>Verticale</value>
+  </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nodo #{0}</value>
   </data>
@@ -482,14 +519,20 @@ Clicca per modificare</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Trascina per cambiare lo spostamento</value>
   </data>
-  
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>Trascina per cambiare la posizione
+Tieni premuto {0} per cambiare l'elevazione</value>
+  </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Trascina per cambiare la rotazione</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Trascina per cambiare lo spostamento dell'angolo</value>
   </data>
-  
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>Trascina per cambiare la posizione dell'angolo
+Tieni premuto {0} per cambiare l'elevazione dell'angolo</value>
+  </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Trascina questa estremità per cambiare la direzione della pendenza principale</value>
   </data>

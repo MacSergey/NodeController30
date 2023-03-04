@@ -138,6 +138,9 @@
     <value>ロード中にエラーが発生しました。
 全てのノードでロードに失敗しました。</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
+    <value>[RELEASE] Renewal version release</value>
+  </data>
   
   
   
@@ -174,7 +177,13 @@
     <value>[FIXED] Fixed compatibility with Adaptive Network mod which could cause blue voids instead of nodes.
 [FIXED] Fixed error when missed network asset could cause NCR data loading failure.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_4" xml:space="preserve">
+    <value>[NEW] Added free-form mode that allow to set corner position and rotation without any limitations.
+[NEW] Added the ability to disable "Follow main slope" for segments that allows to make segments slope independently.
+[NEW] Added the ability to set delta height for each segment.
+[UPDATED] Bend nodes follow slope of near nodes, so that segment between them is smoother.
+[FIXED] Default offset of railways is not set to 0.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>ベンド</value>
   </data>
@@ -217,20 +226,36 @@
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>デルタの高さ</value>
   </data>
-  
-  
+  <data name="Option_Direction" xml:space="preserve">
+    <value>方向</value>
+  </data>
+  <data name="Option_Distance" xml:space="preserve">
+    <value>距離</value>
+  </data>
+  <data name="Option_Elevation" xml:space="preserve">
+    <value>高さ</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>メインのスロープに追従</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Hide Crosswalks MODが必要</value>
   </data>
-  
+  <data name="Option_Horizontal" xml:space="preserve">
+    <value>水平</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>オフセットをリセット</value>
   </data>
-  
-  
+  <data name="Option_LeftCorner" xml:space="preserve">
+    <value>左コーナー</value>
+  </data>
+  <data name="Option_LeftCornerDirection" xml:space="preserve">
+    <value>左コーナーの方向</value>
+  </data>
+  <data name="Option_LeftCornerPosition" xml:space="preserve">
+    <value>左コーナーの位置</value>
+  </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>スロープ化の選択方法</value>
   </data>
@@ -270,11 +295,21 @@
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
+  <data name="Option_Position" xml:space="preserve">
+    <value>位置</value>
+  </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>デフォルトに戻す</value>
   </data>
-  
-  
+  <data name="Option_RightCorner" xml:space="preserve">
+    <value>右コーナー</value>
+  </data>
+  <data name="Option_RightCornerDirection" xml:space="preserve">
+    <value>右コーナーの方向</value>
+  </data>
+  <data name="Option_RightCornerPosition" xml:space="preserve">
+    <value>右コーナーの位置</value>
+  </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>回転(角度)</value>
   </data>
@@ -314,7 +349,9 @@
   <data name="Option_Type" xml:space="preserve">
     <value>ノードの設定</value>
   </data>
-  
+  <data name="Option_Vertical" xml:space="preserve">
+    <value>垂直</value>
+  </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>ノード #{0} を調整中</value>
   </data>
@@ -484,14 +521,20 @@
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>ドラッグしてオフセットを変更</value>
   </data>
-  
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>ドラッグして位置を変更
+ {0} を長押しで高さを変更</value>
+  </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>ドラッグして回転(角度)を変更</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>ドラッグしてコーナーオフセットを変更</value>
   </data>
-  
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>ドラッグしてコーナーの位置を変更
+ {0} を長押しでコーナーの高さを変更</value>
+  </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>終端をドラッグして、スロープ化したい接続先を変更</value>
   </data>

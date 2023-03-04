@@ -148,6 +148,7 @@ O carregamento de todas marcações falhou.</value>
   
   
   
+  
   <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
     <value>[UPDATED] Adicionado a habilidade de desativar a opção "consertar pedestre preso em interseções longas" devido a reclamação de afetar a velocidade de simulação. A opção está desabilitada por padrão pode ser ativada nas configurações do mods.
 [NEW] Opção adicionada "Collisão". Se você desativar isto para segmento, o segmento não terá limites para alterar o deslocamento e pode ser sobreposto por outros segmentos.
@@ -217,9 +218,11 @@ O carregamento de todas marcações falhou.</value>
   
   
   
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Repor deslocamento</value>
   </data>
+  
   
   
   <data name="Option_MainSlopeDirection" xml:space="preserve">
@@ -253,9 +256,11 @@ O carregamento de todas marcações falhou.</value>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
+  
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Repor predefinição</value>
   </data>
+  
   
   
   <data name="Option_Rotate" xml:space="preserve">

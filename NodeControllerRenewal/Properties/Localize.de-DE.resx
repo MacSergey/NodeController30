@@ -138,6 +138,9 @@ Daten von {0} Netzwerk-Knoten konnten nicht geladen werden.</value>
     <value>Laden mit Fehlern beendet.
 Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
+    <value>[RELEASE] Renewal Version veröffentlicht</value>
+  </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>[NEW] Automatischer Modus für die Neigungsrichtung hinzugefügt.
 [NEW] Rotes Overlay für kurze Segmente (kurze Segmente führen zur falscher Fahrzeuggeschwindigkeit).
@@ -192,7 +195,13 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
     <value>[FIXED] Kompatibilität mit Adaptive Network Mod korrigiert, die blaue Flächen anstelle von Netzwerknoten verursachen konnte.
 [FIXED] Fehler behoben durch den es bei fehlenden Netzwerken zu einem Fehler beim Laden von NCR-Daten kommen konnte.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_4" xml:space="preserve">
+    <value>[NEW] Freiform-Modus hinzugefügt, mit dem die Position und Drehung der Ecken ohne Einschränkungen festgelegt werden können.
+[NEW] Möglichkeit zum Deaktivieren von "Haupt-Neigung" für Segmente hinzugefügt, die es ermöglichen, Segmente unabhängig voneinander zu neigen.
+[NEW] Für jedes Segment ist die Deltahöhe einstellbar.
+[UPDATED] Kurven-Netzwerkknoten folgen der Neigung der nahen Netzwerknoten, so dass das Segment zwischen ihnen glatter ist.
+[FIXED] Der Standardversatz der Eisenbahn war nicht auf 0 gesetzt.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Kurve</value>
   </data>
@@ -235,20 +244,36 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Deltahöhe</value>
   </data>
-  
-  
+  <data name="Option_Direction" xml:space="preserve">
+    <value>Richtung</value>
+  </data>
+  <data name="Option_Distance" xml:space="preserve">
+    <value>Distanz</value>
+  </data>
+  <data name="Option_Elevation" xml:space="preserve">
+    <value>Höhe</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Hauptgefälle folgen</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Hide crosswalks mod erforderlich</value>
   </data>
-  
+  <data name="Option_Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Versatz zurücksetzen</value>
   </data>
-  
-  
+  <data name="Option_LeftCorner" xml:space="preserve">
+    <value>Linke Ecke</value>
+  </data>
+  <data name="Option_LeftCornerDirection" xml:space="preserve">
+    <value>Linke Eckrichtung</value>
+  </data>
+  <data name="Option_LeftCornerPosition" xml:space="preserve">
+    <value>Position der linken Ecke</value>
+  </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Neigungsrichtung</value>
   </data>
@@ -288,11 +313,21 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
+  <data name="Option_Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Auf Standard zurücksetzen</value>
   </data>
-  
-  
+  <data name="Option_RightCorner" xml:space="preserve">
+    <value>Rechte Ecke</value>
+  </data>
+  <data name="Option_RightCornerDirection" xml:space="preserve">
+    <value>Rechte Eckrichtung</value>
+  </data>
+  <data name="Option_RightCornerPosition" xml:space="preserve">
+    <value>Position der rechten Ecke</value>
+  </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Drehung</value>
   </data>
@@ -332,7 +367,9 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   <data name="Option_Type" xml:space="preserve">
     <value>Netzwerk-Knoten-Typ</value>
   </data>
-  
+  <data name="Option_Vertical" xml:space="preserve">
+    <value>Vertikal</value>
+  </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Netzwerk-Knoten #{0}</value>
   </data>
@@ -502,14 +539,20 @@ Klicken zum Bearbeiten</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Ziehen, um den Versatz zu ändern</value>
   </data>
-  
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>Ziehen, um die Position zu ändern
+Halte {0} gedrückt, um die Höhe zu ändern</value>
+  </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Ziehen, um die Links-Rechts-Drehung zu ändern</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Ziehen, um den Versatz der Ecke zu ändern</value>
   </data>
-  
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>Ziehen, um die Eckposition zu ändern
+Halte {0} gedrückt, um die Eckhöhe zu ändern</value>
+  </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Ziehe dieses Ende, um die Neigungsrichtung zu ändern</value>
   </data>

@@ -138,6 +138,9 @@
     <value>Загрузка завершилась с ошибками.
 Не удалось загрузить разметку для всех узлов.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
+    <value>[RELEASE] Выпуск новой версии</value>
+  </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>[NEW] Добавлен автоматический режим для выбора основного направления наклона.
 [NEW] Добавлен красная подсветка для слишком коротких сегментов (короткие сегменты вызывают неправильную скорость транспортных средств).
@@ -295,6 +298,9 @@
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Изменение высоты</value>
   </data>
+  <data name="Option_Direction" xml:space="preserve">
+    <value>Направление</value>
+  </data>
   <data name="Option_Distance" xml:space="preserve">
     <value>Расстояние</value>
   </data>
@@ -313,13 +319,14 @@
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Отступ по умолчанию</value>
   </data>
-  <data name="Option_LeftCornerDirDelta" xml:space="preserve">
-    <value>Левый угол
-Направление</value>
+  <data name="Option_LeftCorner" xml:space="preserve">
+    <value>Левый угол</value>
   </data>
-  <data name="Option_LeftCornerPosDelta" xml:space="preserve">
-    <value>Левый угол
-Позиция</value>
+  <data name="Option_LeftCornerDirection" xml:space="preserve">
+    <value>Направление левого угла</value>
+  </data>
+  <data name="Option_LeftCornerPosition" xml:space="preserve">
+    <value>Позиция левого угла</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Основное направление наклона</value>
@@ -360,16 +367,20 @@
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}м</value>
   </data>
+  <data name="Option_Position" xml:space="preserve">
+    <value>Позиция</value>
+  </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Сбросить к по умолчанию</value>
   </data>
-  <data name="Option_RightCornerDirDelta" xml:space="preserve">
-    <value>Правый угол
-Направление</value>
+  <data name="Option_RightCorner" xml:space="preserve">
+    <value>Правый угол</value>
   </data>
-  <data name="Option_RightCornerPosDelta" xml:space="preserve">
-    <value>Правый угол
-Позиция</value>
+  <data name="Option_RightCornerDirection" xml:space="preserve">
+    <value>Направление правого угла</value>
+  </data>
+  <data name="Option_RightCornerPosition" xml:space="preserve">
+    <value>Позиция правого угла</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Поворот</value>

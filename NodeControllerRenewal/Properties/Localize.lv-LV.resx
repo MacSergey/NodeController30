@@ -143,6 +143,7 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   
   
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Saliekt</value>
   </data>
@@ -188,6 +189,8 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   
   
   
+  
+  
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>Auto</value>
   </data>
@@ -210,9 +213,11 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
+  
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Atjaunot noklusējuma iestatījumus</value>
   </data>
+  
   
   
   <data name="Option_Rotate" xml:space="preserve">

@@ -138,6 +138,9 @@ Les données de {0} nœuds n'ont pas pu être chargées.</value>
     <value>Erreur lors du chargement.
 Les données de tous les nœuds n'ont pas pu être chargées.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
+    <value>[RELEASE] Nouvelle version</value>
+  </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>[NEW] Ajout d'un mode automatique pour la direction de la pente principale.
 [NEW] Ajout d'une mise en évidence rouge pour les segments courts (les segments courts entraînent une vitesse incorrecte pour les véhicules).
@@ -246,7 +249,13 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
     <value>[FIXED] Correction d'un problème de compatibilité avec le mod Adaptive Network qui pouvait causer des vides bleus au lieu de nœuds.
 [FIXED] Correction d'une erreur lorsqu'une ressource réseau manquante pouvait causer l'échec du chargement des données de NCR.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_4" xml:space="preserve">
+    <value>[NEW] Ajout de nœuds libres qui permettent de régler la position et la rotation des coins sans aucune limitation.
+[NEW] Ajout de la possibilité de désactiver "Suivre la pente principale" pour les segments qui permettent de faire des pentes indépendante.
+[NEW] Ajout de la possibilité de définir la hauteur delta pour chaque segment.
+[UPDATED] Les courbes suivent la pente des noeuds proches, de sorte que le segment entre eux soit plus lisse.
+[FIXED] Le décalage par défaut des chemins de fer n'est pas fixé à 0.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Courbe</value>
   </data>
@@ -289,6 +298,9 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Différence de hauteur</value>
   </data>
+  <data name="Option_Direction" xml:space="preserve">
+    <value>Direction</value>
+  </data>
   <data name="Option_Distance" xml:space="preserve">
     <value>Distance</value>
   </data>
@@ -301,12 +313,21 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Le mod Hide crosswalks est nécessaire</value>
   </data>
-  
+  <data name="Option_Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Réinitialiser le décalage</value>
   </data>
-  
-  
+  <data name="Option_LeftCorner" xml:space="preserve">
+    <value>Coin gauche</value>
+  </data>
+  <data name="Option_LeftCornerDirection" xml:space="preserve">
+    <value>Direction du coin gauche</value>
+  </data>
+  <data name="Option_LeftCornerPosition" xml:space="preserve">
+    <value>Position du coin gauche</value>
+  </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Direction de la pente</value>
   </data>
@@ -346,11 +367,21 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
+  <data name="Option_Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Rétablir les paramètres par défaut</value>
   </data>
-  
-  
+  <data name="Option_RightCorner" xml:space="preserve">
+    <value>Coin droit</value>
+  </data>
+  <data name="Option_RightCornerDirection" xml:space="preserve">
+    <value>Direction du coin droit</value>
+  </data>
+  <data name="Option_RightCornerPosition" xml:space="preserve">
+    <value>Position du coin droit</value>
+  </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Pivoter</value>
   </data>
@@ -390,7 +421,9 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   <data name="Option_Type" xml:space="preserve">
     <value>Type de nœud</value>
   </data>
-  
+  <data name="Option_Vertical" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nœud #{0}</value>
   </data>
@@ -560,14 +593,20 @@ Cliquez pour modifier</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Faites glisser pour changer le décalage</value>
   </data>
-  
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>Faites glisser pour changer la position
+Maintenez {0} pour changer l'altitude</value>
+  </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Faites glisser pour changer la rotation</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Faites glisser pour changer le décalage du coin</value>
   </data>
-  
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>Faites glisser pour changer la position du coin
+Maintenez {0} pour changer l'altitude du coin</value>
+  </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Faites glisser cette extrémité pour changer la direction de la pente</value>
   </data>

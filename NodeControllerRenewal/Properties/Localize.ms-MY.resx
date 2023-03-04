@@ -138,6 +138,9 @@ Gagal memuatkan data untuk {0} nod.</value>
     <value>Pemuatan selesai dengan ralat.
 Gagal memuatkan data untuk kesemua nod.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
+    <value>[RELEASE] Terbitan versi Renewal</value>
+  </data>
   
   
   
@@ -223,6 +226,9 @@ Gagal memuatkan data untuk kesemua nod.</value>
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Ketinggian delta</value>
   </data>
+  <data name="Option_Direction" xml:space="preserve">
+    <value>Arah</value>
+  </data>
   <data name="Option_Distance" xml:space="preserve">
     <value>Jarak</value>
   </data>
@@ -241,13 +247,14 @@ Gagal memuatkan data untuk kesemua nod.</value>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Tetap semula ofset</value>
   </data>
-  <data name="Option_LeftCornerDirDelta" xml:space="preserve">
-    <value>Arah
-Bucu kiri</value>
+  <data name="Option_LeftCorner" xml:space="preserve">
+    <value>Bucu kiri</value>
   </data>
-  <data name="Option_LeftCornerPosDelta" xml:space="preserve">
-    <value>Kedudukan
-Bucu kiri</value>
+  <data name="Option_LeftCornerDirection" xml:space="preserve">
+    <value>Arah bucu kiri</value>
+  </data>
+  <data name="Option_LeftCornerPosition" xml:space="preserve">
+    <value>Kedudukan bucu kiri</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Arah lereng utama</value>
@@ -288,16 +295,20 @@ Bucu kiri</value>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
+  <data name="Option_Position" xml:space="preserve">
+    <value>Kedudukan</value>
+  </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Tetap semula kepada asal</value>
   </data>
-  <data name="Option_RightCornerDirDelta" xml:space="preserve">
-    <value>Arah
-Bucu kanan</value>
+  <data name="Option_RightCorner" xml:space="preserve">
+    <value>Busu kanan</value>
   </data>
-  <data name="Option_RightCornerPosDelta" xml:space="preserve">
-    <value>Kedudukan
-Bucu kanan</value>
+  <data name="Option_RightCornerDirection" xml:space="preserve">
+    <value>Arah bucu kanan</value>
+  </data>
+  <data name="Option_RightCornerPosition" xml:space="preserve">
+    <value>Kedudukan bucu kanan</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Putar</value>

@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="MessageBox_CantUndone" xml:space="preserve">
+    <value>Bu işlem geri alınamaz.</value>
+  </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Orijinal Node Controller verileri içe aktarıldı.
 Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlamalar gerekebilir.</value>
@@ -128,7 +130,14 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Mod_Description" xml:space="preserve">
     <value>Düğüm tipi ve şeklini kontrol edin</value>
   </data>
-  
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>Yükleme hatalarla tamamlandı.
+{0} düğüm için veri yüklenemedi.</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>Yükleme hatalarla tamamlandı.
+Tüm düğümler için veri yüklenemedi.</value>
+  </data>
   
   
   
@@ -181,18 +190,42 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
     <value>Düğümlerin arasındaki değişimi hesapla</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="Option_Collision" xml:space="preserve">
+    <value>Çarpışma</value>
+  </data>
+  <data name="Option_DeltaHeight" xml:space="preserve">
+    <value>Delta yüksekliği</value>
+  </data>
+  <data name="Option_Direction" xml:space="preserve">
+    <value>Yön</value>
+  </data>
+  <data name="Option_Distance" xml:space="preserve">
+    <value>Mesafe</value>
+  </data>
+  <data name="Option_Elevation" xml:space="preserve">
+    <value>Yükseklik</value>
+  </data>
+  <data name="Option_FollowSlope" xml:space="preserve">
+    <value>Ana eğimi takip et</value>
+  </data>
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>Yaya geçitlerini gizleme modu gerekli</value>
+  </data>
+  <data name="Option_Horizontal" xml:space="preserve">
+    <value>Yatay</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Merkezi sıfırla</value>
   </data>
-  
-  
+  <data name="Option_LeftCorner" xml:space="preserve">
+    <value>Sol köşe</value>
+  </data>
+  <data name="Option_LeftCornerDirection" xml:space="preserve">
+    <value>Sol köşe yönü</value>
+  </data>
+  <data name="Option_LeftCornerPosition" xml:space="preserve">
+    <value>Sol köşe konumu</value>
+  </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Ana eğim yönü</value>
   </data>
@@ -208,23 +241,45 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Option_Marking" xml:space="preserve">
     <value>İşaretleniyor</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Option_Mode" xml:space="preserve">
+    <value>Mod</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>Düz</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>Serbest Form</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>Eğim</value>
+  </data>
+  <data name="Option_MoreOptions" xml:space="preserve">
+    <value>Daha fazla seçenek</value>
+  </data>
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>Düğümsüz</value>
+  </data>
   <data name="Option_Offset" xml:space="preserve">
     <value>Dengele</value>
   </data>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
+  <data name="Option_Position" xml:space="preserve">
+    <value>Konum</value>
+  </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Varsayılanlara sıfırla</value>
   </data>
-  
-  
+  <data name="Option_RightCorner" xml:space="preserve">
+    <value>Sağ köşe</value>
+  </data>
+  <data name="Option_RightCornerDirection" xml:space="preserve">
+    <value>Sağ köşe yönü</value>
+  </data>
+  <data name="Option_RightCornerPosition" xml:space="preserve">
+    <value>Sağ köşe konumu</value>
+  </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Döndür</value>
   </data>
@@ -264,53 +319,118 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Option_Type" xml:space="preserve">
     <value>Düğüm tipi</value>
   </data>
-  
+  <data name="Option_Vertical" xml:space="preserve">
+    <value>Dikey</value>
+  </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>#{0} nolu düğüm</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Settings_ApplyAfterRestart" xml:space="preserve">
+    <value>Oyun yeniden başlatıldıktan sonra geçerlidir</value>
+  </data>
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>Yedekleme</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>Yolu panoya kopyala</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>Tüm düğümlerden verileri sil</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>Tüm verileri sil</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>Tüm verileri gerçekten kaldırmak istiyor musunuz?</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>Düğüm verilerini dosyaya dök</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>Düğüm verilerini dökümü</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>Döküm başarısız oldu</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>Döküm başarıyla dosyaya kaydedildi</value>
+  </data>
+  <data name="Settings_InsertNode" xml:space="preserve">
+    <value>Düğüm ekle</value>
+  </data>
+  <data name="Settings_InsertNodeDisabled" xml:space="preserve">
+    <value>Engelli</value>
+  </data>
+  <data name="Settings_InsertNodeEnabled" xml:space="preserve">
+    <value>Segmente tıklayarak</value>
+  </data>
+  <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
+    <value>Segmentte {0} ile tıklayarak</value>
+  </data>
+  <data name="Settings_LongIntersectionFix" xml:space="preserve">
+    <value>Uzun kavşaklarda sıkışan yayaları düzeltin</value>
+  </data>
+  <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
+    <value>Bu seçenek, kavşakta maksimum yol bulma mesafesini artırarak bu kadar uzun kavşaklarda sıkışan yayaları önler, ancak bu seçenek simülasyon hızını etkileyebilir</value>
+  </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Düğüm varsayılan olarak eğim verildi</value>
   </data>
-  
-  
-  
-  
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Seçenekler görünürlüğü</value>
+  </data>
+  <data name="Settings_Option_Disabled" xml:space="preserve">
+    <value>Engelli</value>
+  </data>
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Çökmüş</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Her zaman görünür</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Yakındaki kesişen düğümleri göster</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>Geri yükle</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>Düğüm verilerini dosyadan geri yükle</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>Düğüm verilerini geri yükle</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>Düğüm verilerini gerçekten geri yüklemek istiyor musunuz?
+Geri yüklenen veriler, mevcut tüm düğüm verilerinin yerini alacaktır.</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>Düğüm verileri geri yükleme başarısız oldu</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>Düğüm verileri başarıyla geri yüklendi</value>
+  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Orta düğümü seç</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Eğer bu özellik kapalıysa, orta düğümler tıklanılan konuma taşınır</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="Settings_ShortcutEnterUnderground" xml:space="preserve">
+    <value>Yeraltı moduna girin</value>
+  </data>
+  <data name="Settings_ShortcutExitUnderground" xml:space="preserve">
+    <value>Yeraltı modundan çık</value>
+  </data>
+  <data name="Settings_ToggleUnderground" xml:space="preserve">
+    <value>Yeraltında geçiş yap</value>
+  </data>
+  <data name="Settings_ToggleUndergroundButtons" xml:space="preserve">
+    <value>Girmek için {0} ve çıkmak için {1} tuşuna basın</value>
+  </data>
+  <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
+    <value>{0} basılı tutun</value>
+  </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>Kesişimlerdeki değişimi hesapla</value>
   </data>
@@ -344,8 +464,14 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
   <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
     <value>Kesişimler arasındaki değişimi uygula</value>
   </data>
-  
-  
+  <data name="Tool_EnterUnderground" xml:space="preserve">
+    <value>Girmek için {0} tuşuna basın
+Yeraltı Modu</value>
+  </data>
+  <data name="Tool_ExitUnderground" xml:space="preserve">
+    <value>Çıkmak için {0} tuşuna basın
+yeraltı modu</value>
+  </data>
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>{0}'e basılı tutarak yolları ayarlayın</value>
   </data>
@@ -365,14 +491,20 @@ Ayarlamak için tıklayın</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Merkez noktayı ayarlamak için tutup çekin</value>
   </data>
-  
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>Konumu değiştirmek için sürükleyin
+Yüksekliği değiştirmek için {0} tuşunu basılı tutun</value>
+  </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Açıyı ayarlamak için tutup çekin</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Köşelerin çıkıntısını ayarlamak için tutup çekin</value>
   </data>
-  
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>Köşe konumunu değiştirmek için sürükleyin
+Köşe yüksekliğini değiştirmek için {0} tuşunu basılı tutun</value>
+  </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Ana eğim yönünü değiştirmek için bu uçtan tutup çekin</value>
   </data>
@@ -382,11 +514,15 @@ Ayarlamak için tıklayın</value>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Kesişimlere düğüm bölgesi eklemek için tıklayın</value>
   </data>
-  
+  <data name="Tool_InfoInsertCrossingNodeWithModifier" xml:space="preserve">
+    <value>Geçiş düğümü eklemek için {0} ile tıklayın</value>
+  </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>Düğüm bölgesi eklemek için tıklayın</value>
   </data>
-  
+  <data name="Tool_InfoInsertNodeWithModifier" xml:space="preserve">
+    <value>Düğüm eklemek için {0} ile tıklayın</value>
+  </data>
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Ayarlamak istediğiniz köşeyi seçin</value>
   </data>

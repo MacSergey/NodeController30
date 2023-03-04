@@ -148,6 +148,7 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   
   
   
+  
   <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
     <value>[UPDATED] Adăugată abilitatea de a dezactiva opțiunea "Fixează problema a pietonilor blocați în intersecțiile mari" pentru plângerile făcute din cauza afectării a vitezei a simulării. Opțiunea aceasta este dezactivată în mod implicit, aceasta poate fi activată din setările modului.
 [NEW] Adăugată opțiunea "Coliziune". Dacă o dezactivezi pentru segmente, acestea nu o să mai aibă limite la schimbarea offetului și pot fi suprapuse de alte segmente.
@@ -219,6 +220,7 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   </data>
   
   
+  
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Urmărește panta principală</value>
   </data>
@@ -229,6 +231,7 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Resetare offset</value>
   </data>
+  
   
   
   <data name="Option_MainSlopeDirection" xml:space="preserve">
@@ -270,9 +273,11 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
+  
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Resetare la valori implicite</value>
   </data>
+  
   
   
   <data name="Option_Rotate" xml:space="preserve">

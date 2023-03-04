@@ -138,6 +138,9 @@
     <value>加载完成时出现错误。
 无法加载所有节点的数据。</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
+    <value>[RELEASE] 更新版本已发布</value>
+  </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>[NEW] 添加自动设置主要斜坡方向模式。
 [NEW] 添加红色指示来标记出过短的段落(段落太短会导致车速错误)。
@@ -209,7 +212,13 @@
     <value>[FIXED] 修复了与 Adaptive Network 的兼容性，之前可能导致节点显示为蓝洞。
 [FIXED] 修复了当丢失网络资产时 NCR 数据加载失败的错误。</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_4" xml:space="preserve">
+    <value>[NEW] 添加了自由形状模式，允许不受任何限制地设置边角位置和旋转方向。
+[NEW] 添加了禁用路段 “跟随主斜坡坡度” 的功能，以允许对路段独立地设置斜坡。
+[NEW] 添加为每个路段设置三角形高度的功能。
+[UPDATED] 弯曲节点将跟随附近节点的坡度，以使它们之间的路段之间更加平滑。
+[FIXED] 修复了铁路轨道默认偏移值未设置为 0 的问题。</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>弯曲</value>
   </data>
@@ -252,20 +261,36 @@
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>三角形高度</value>
   </data>
-  
-  
+  <data name="Option_Direction" xml:space="preserve">
+    <value>方向</value>
+  </data>
+  <data name="Option_Distance" xml:space="preserve">
+    <value>距离</value>
+  </data>
+  <data name="Option_Elevation" xml:space="preserve">
+    <value>高度</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>跟随主斜坡</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>你需要 Hide TMPE crosswalks 模组</value>
   </data>
-  
+  <data name="Option_Horizontal" xml:space="preserve">
+    <value>水平</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>重置偏移</value>
   </data>
-  
-  
+  <data name="Option_LeftCorner" xml:space="preserve">
+    <value>左边角</value>
+  </data>
+  <data name="Option_LeftCornerDirection" xml:space="preserve">
+    <value>左边角方向</value>
+  </data>
+  <data name="Option_LeftCornerPosition" xml:space="preserve">
+    <value>左边角位置</value>
+  </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>主斜坡方向</value>
   </data>
@@ -305,11 +330,21 @@
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}米</value>
   </data>
+  <data name="Option_Position" xml:space="preserve">
+    <value>位置</value>
+  </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>重置为默认值</value>
   </data>
-  
-  
+  <data name="Option_RightCorner" xml:space="preserve">
+    <value>右边角</value>
+  </data>
+  <data name="Option_RightCornerDirection" xml:space="preserve">
+    <value>右边角方向</value>
+  </data>
+  <data name="Option_RightCornerPosition" xml:space="preserve">
+    <value>右边角位置</value>
+  </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>旋转</value>
   </data>
@@ -349,7 +384,9 @@
   <data name="Option_Type" xml:space="preserve">
     <value>节点类型</value>
   </data>
-  
+  <data name="Option_Vertical" xml:space="preserve">
+    <value>垂直</value>
+  </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>节点 #{0}</value>
   </data>
@@ -519,14 +556,20 @@
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>拖动以改变偏移</value>
   </data>
-  
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>拖动以改变位置
+按住 {0} 更改高度</value>
+  </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>拖动以改变旋转</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>拖动以改变边角偏移</value>
   </data>
-  
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>拖动以改变边角位置
+按住 {0} 更改边角高度</value>
+  </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>拖动此端来改变主要斜坡方向</value>
   </data>

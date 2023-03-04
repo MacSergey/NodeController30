@@ -138,6 +138,9 @@ No se pudieron cargar datos para {0} nodos.</value>
     <value>Hubo errores al cargar el juego.
 No se pudieron cargar datos para todos los nodos.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
+    <value>[RELEASE] Lanzamiento de la versión renovada</value>
+  </data>
   
   
   
@@ -223,6 +226,9 @@ No se pudieron cargar datos para todos los nodos.</value>
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Diferencia de altura</value>
   </data>
+  <data name="Option_Direction" xml:space="preserve">
+    <value>Dirección</value>
+  </data>
   <data name="Option_Distance" xml:space="preserve">
     <value>Distancia</value>
   </data>
@@ -241,14 +247,14 @@ No se pudieron cargar datos para todos los nodos.</value>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Restablecer separación</value>
   </data>
-  <data name="Option_LeftCornerDirDelta" xml:space="preserve">
-    <value>Dirección 
-Esquina izquierda
-</value>
+  <data name="Option_LeftCorner" xml:space="preserve">
+    <value>Esquina izquierda</value>
   </data>
-  <data name="Option_LeftCornerPosDelta" xml:space="preserve">
-    <value>Posición 
-Esquina izquierda</value>
+  <data name="Option_LeftCornerDirection" xml:space="preserve">
+    <value>Dirección Esquina izquierda</value>
+  </data>
+  <data name="Option_LeftCornerPosition" xml:space="preserve">
+    <value>Posición Esquina izquierda</value>
   </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Dirección de la pendiente principal</value>
@@ -289,17 +295,20 @@ Esquina izquierda</value>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
+  <data name="Option_Position" xml:space="preserve">
+    <value>Posición</value>
+  </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Restablecer la configuración predeterminada</value>
   </data>
-  <data name="Option_RightCornerDirDelta" xml:space="preserve">
-    <value>Dirección 
-Esquina izquierda
-</value>
+  <data name="Option_RightCorner" xml:space="preserve">
+    <value>Esquina derecha</value>
   </data>
-  <data name="Option_RightCornerPosDelta" xml:space="preserve">
-    <value>Posición 
-Esquina izquierda</value>
+  <data name="Option_RightCornerDirection" xml:space="preserve">
+    <value>Dirección Esquina izquierda</value>
+  </data>
+  <data name="Option_RightCornerPosition" xml:space="preserve">
+    <value>Posición Esquina izquierda</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Rotar</value>

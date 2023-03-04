@@ -148,6 +148,7 @@ Pemuatan gagal untuk semua node.</value>
   
   
   
+  
   <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
     <value>[UPDATED] Menambahkan opsi untuk mematikan fungsi "Perbaiki pejalan kaki yang tersangkut pada persimpangan besar" karena komplen terpengaruhnya kecepatan simulasi. Opsi ini mati secara bawaan, dapat dinyalakan pada prasetelan mod.
 [NEW] Menambahkan opsi "Collision". Jika dimatikan pada segmen, segmen tidak akan memiliki batas ketika mengubah pemunduran dan dapat saling tumpang tindih dengan segmen lain.
@@ -219,6 +220,7 @@ Pemuatan gagal untuk semua node.</value>
   </data>
   
   
+  
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Ikuti kemiringan utama</value>
   </data>
@@ -229,6 +231,7 @@ Pemuatan gagal untuk semua node.</value>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Setel ulang pergeseran</value>
   </data>
+  
   
   
   <data name="Option_MainSlopeDirection" xml:space="preserve">
@@ -270,9 +273,11 @@ Pemuatan gagal untuk semua node.</value>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
+  
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Setel ulang ke standar</value>
   </data>
+  
   
   
   <data name="Option_Rotate" xml:space="preserve">
