@@ -582,11 +582,19 @@ Click to edit</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Drag to change offset</value>
   </data>
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>Drag to change position
+Hold {0} to change elevation</value>
+  </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Drag to change rotate</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Drag to change corner offset</value>
+  </data>
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>Drag to change corner position
+Hold {0} to change corner elevation</value>
   </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Drag this end to change main slope direction</value>

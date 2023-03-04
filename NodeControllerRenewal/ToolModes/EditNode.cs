@@ -147,11 +147,21 @@ namespace NodeController
         public override string GetToolInfo()
         {
             if (IsHoverSegmentCenter)
-                return Localize.Tool_InfoDragCenter;
+            {
+                if (HoverSegmentCenter.Mode == Mode.FreeForm)
+                    return string.Format(Localize.Tool_InfoDragCenterFree, LocalizeExtension.Shift.AddInfoColor());
+                else
+                    return Localize.Tool_InfoDragCenter;
+            }
             else if (IsHoverSegmentCircle)
                 return Localize.Tool_InfoDragCircle;
             else if (IsHoverCornerCenter)
-                return Localize.Tool_InfoDragCorner;
+            {
+                if (HoverCornerCenter.Mode == Mode.FreeForm)
+                    return string.Format(Localize.Tool_InfoDragCornerFree, LocalizeExtension.Shift.AddInfoColor());
+                else
+                    return Localize.Tool_InfoDragCorner;
+            }
             else
             {
                 var info = new List<string>();

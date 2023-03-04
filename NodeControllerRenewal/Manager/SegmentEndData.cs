@@ -60,7 +60,7 @@ namespace NodeController
         public float AbsoluteAngle { get; private set; }
         public float Weight { get; }
 
-        public bool IsChangeable => !IsNodeLess;
+        public bool IsChangeable => Mode == Mode.FreeForm || !IsNodeLess;
         public bool IsOffsetChangeable => IsChangeable && !IsUntouchable && NodeData.Style.SupportOffset != SupportOption.None;
         public bool IsRotateChangeable => IsChangeable && NodeData.Style.SupportRotate != SupportOption.None;
         public bool IsMainRoad { get; set; }
@@ -289,7 +289,11 @@ namespace NodeController
         public bool? ForceNodeLess
         {
             get => forceNodeLessValue;
-            set => SetForceNodeless(value == true, true);
+            set
+            {
+                forceNodeLessValue = (value == true);
+                SetPossibleOffset(NodeData.Style);
+            }
         }
         public bool? FollowSlope
         {
@@ -484,21 +488,7 @@ namespace NodeController
                 if (style.SupportDeltaHeight == SupportOption.None || forceStyle || IsUntouchable)
                     DeltaHeight = style.DefaultDeltaHeight;
 
-                if (IsNodeLess)
-                {
-                    MinPossibleOffset = 0f;
-                    MaxPossibleOffset = 0f;
-                }
-                else if (style.SupportOffset == SupportOption.None)
-                {
-                    MinPossibleOffset = style.DefaultOffset;
-                    MaxPossibleOffset = style.DefaultOffset;
-                }
-                else
-                {
-                    MinPossibleOffset = NodeStyle.MinOffset;
-                    MaxPossibleOffset = NodeStyle.MaxOffset;
-                }
+                SetPossibleOffset(style);
 
                 if (style.SupportRotate == SupportOption.None || forceStyle || !IsRotateChangeable)
                     SetRotate(style.DefaultRotate);
@@ -524,7 +514,24 @@ namespace NodeController
             if (forceStyle || style.ForceKeepDefault || freeModeSwitched)
                 KeepDefaults = true;
         }
-
+        private void SetPossibleOffset(NodeStyle style)
+        {
+            if (IsNodeLess && Mode != Mode.FreeForm)
+            {
+                MinPossibleOffset = 0f;
+                MaxPossibleOffset = 0f;
+            }
+            else if (style.SupportOffset == SupportOption.None)
+            {
+                MinPossibleOffset = style.DefaultOffset;
+                MaxPossibleOffset = style.DefaultOffset;
+            }
+            else
+            {
+                MinPossibleOffset = NodeStyle.MinOffset;
+                MaxPossibleOffset = NodeStyle.MaxOffset;
+            }
+        }
         private void SetOffset(float value, bool changeRotate = false)
         {
             offsetValue = Mathf.Clamp(value, MinOffset, MaxOffset);
@@ -546,12 +553,6 @@ namespace NodeController
             var t = side.RawTrajectory.Travel(offset);
             side.RawT = Mathf.Clamp(t, side.MinT, side.MaxT);
             SetByCorners(side.Type);
-        }
-        private void SetForceNodeless(bool value, bool setOffset = false)
-        {
-            forceNodeLessValue = value;
-            if (value && setOffset)
-                SetOffset(0f, true);
         }
 
         #endregion
@@ -874,7 +875,12 @@ namespace NodeController
                         endData.RightSide.MinT = endData.RightSide.MainT;
                     }
 
-                    if (!endData.IsNodeLess && count >= 2)
+                    if (endData.Mode == Mode.FreeForm)
+                    {
+                        endData.LeftSide.DefaultT = limits[i].left.FinalDefaultT;
+                        endData.RightSide.DefaultT = limits[i].right.FinalDefaultT;
+                    }
+                    else if (!endData.IsNodeLess && count >= 2)
                     {
                         endData.LeftSide.DefaultT = limits[i].left.FinalDefaultT;
                         endData.RightSide.DefaultT = limits[i].right.FinalDefaultT;
@@ -1520,7 +1526,7 @@ namespace NodeController
                 NoMarkings = config.GetAttrValue("NM", style.DefaultNoMarking ? 1 : 0) == 1;
 
             if (style.SupportForceNodeless != SupportOption.None && !IsUntouchable)
-                SetForceNodeless(config.GetAttrValue("FNL", style.DefaultForceNodeLess ? 1 : 0) == 1);
+                ForceNodeLess = config.GetAttrValue("FNL", style.DefaultForceNodeLess ? 1 : 0) == 1;
 
             if (Mode != Mode.FreeForm)
             {

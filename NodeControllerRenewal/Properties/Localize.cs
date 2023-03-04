@@ -646,6 +646,11 @@ namespace NodeController
 		public static string Tool_InfoDragCenter => LocaleManager.GetString("Tool_InfoDragCenter", Culture);
 
 		/// <summary>
+		/// Drag to change position
+		/// </summary>
+		public static string Tool_InfoDragCenterFree => LocaleManager.GetString("Tool_InfoDragCenterFree", Culture);
+
+		/// <summary>
 		/// Drag to change rotate
 		/// </summary>
 		public static string Tool_InfoDragCircle => LocaleManager.GetString("Tool_InfoDragCircle", Culture);
@@ -654,6 +659,11 @@ namespace NodeController
 		/// Drag to change corner offset
 		/// </summary>
 		public static string Tool_InfoDragCorner => LocaleManager.GetString("Tool_InfoDragCorner", Culture);
+
+		/// <summary>
+		/// Drag to change corner position
+		/// </summary>
+		public static string Tool_InfoDragCornerFree => LocaleManager.GetString("Tool_InfoDragCornerFree", Culture);
 
 		/// <summary>
 		/// Drag this end to change main slope direction
