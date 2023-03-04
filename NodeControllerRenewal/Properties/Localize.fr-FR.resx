@@ -289,8 +289,12 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Différence de hauteur</value>
   </data>
-  
-  
+  <data name="Option_Distance" xml:space="preserve">
+    <value>Distance</value>
+  </data>
+  <data name="Option_Elevation" xml:space="preserve">
+    <value>Élévation</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Suivre la pente principale</value>
   </data>

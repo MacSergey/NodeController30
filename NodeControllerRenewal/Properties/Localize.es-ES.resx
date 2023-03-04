@@ -174,7 +174,13 @@ No se pudieron cargar datos para todos los nodos.</value>
     <value>[FIXED] Compatibilidad con Adaptive Network mod que podría causar vacíos azules en lugar de nodos.
 [FIXED] Corregido error cuando el recurso de red perdido podría causar que la carga de datos NCR fallara.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_4" xml:space="preserve">
+    <value>[NEW] Modo Libre, ajusta la posición y rotatción sin límites.
+[NEW] Opción para desactivar "Seguir pendiente principal". Permite hacer cambios en pendietes por segmento de manera independiente.
+[NEW] Ahora se puede ajustar la diferencia de altura por segmento.
+[UPDATED] Nodos "doblados", siguen la pendiente de nodos cercanos, permite que sea más suave entre segmentos.
+[FIXED] Desplazamiento de vías ferreas no es 0 de forma predeterminanda.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Doblado</value>
   </data>
@@ -217,20 +223,33 @@ No se pudieron cargar datos para todos los nodos.</value>
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Diferencia de altura</value>
   </data>
-  
-  
+  <data name="Option_Distance" xml:space="preserve">
+    <value>Distancia</value>
+  </data>
+  <data name="Option_Elevation" xml:space="preserve">
+    <value>Elevación</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Seguir pendiente principal</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Se requiere el mod "Hide crosswalks"</value>
   </data>
-  
+  <data name="Option_Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Restablecer separación</value>
   </data>
-  
-  
+  <data name="Option_LeftCornerDirDelta" xml:space="preserve">
+    <value>Dirección 
+Esquina izquierda
+</value>
+  </data>
+  <data name="Option_LeftCornerPosDelta" xml:space="preserve">
+    <value>Posición 
+Esquina izquierda</value>
+  </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Dirección de la pendiente principal</value>
   </data>
@@ -273,8 +292,15 @@ No se pudieron cargar datos para todos los nodos.</value>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Restablecer la configuración predeterminada</value>
   </data>
-  
-  
+  <data name="Option_RightCornerDirDelta" xml:space="preserve">
+    <value>Dirección 
+Esquina izquierda
+</value>
+  </data>
+  <data name="Option_RightCornerPosDelta" xml:space="preserve">
+    <value>Posición 
+Esquina izquierda</value>
+  </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Rotar</value>
   </data>
@@ -314,7 +340,9 @@ No se pudieron cargar datos para todos los nodos.</value>
   <data name="Option_Type" xml:space="preserve">
     <value>Tipo de nodo</value>
   </data>
-  
+  <data name="Option_Vertical" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nodo #{0}</value>
   </data>
@@ -422,7 +450,7 @@ Los datos restaurados reemplazarán todos los datos de nodos existentes.</value>
     <value>Presiona {0} para entrar y {1} para salir</value>
   </data>
   <data name="Settings_ToggleUndergroundHold" xml:space="preserve">
-    <value>Mantener presionado {0}</value>
+    <value>Mantener presionada la tecla {0}</value>
   </data>
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>Calcular desplazamiento usando intersecciones</value>
@@ -482,14 +510,20 @@ Clic para editar</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Arrastra para ajustar la separación</value>
   </data>
-  
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>Arrastra para cambiar la posición
+Manterner presionada la tecla {0} para cambiar elevación</value>
+  </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Arrastra para rotar</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Arrastra para cambiar la separación de la esquina</value>
   </data>
-  
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>Arrastra para cambiar la posición de la esquina
+Mantener la tecla {0} para cambiar elevación</value>
+  </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Arrastra este extremo para cambiar dirección de la pendiente principal</value>
   </data>

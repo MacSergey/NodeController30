@@ -174,7 +174,13 @@ Gagal memuatkan data untuk kesemua nod.</value>
     <value>[FIXED] Keserasian dengan mod Adaptive Network yang mampu menyebabkan lompang biru menggantikan nod telah dibaiki.
 [FIXED] Ralat ketika kehilangan aset rangkaian mampu menyebabkan kegagalan pemuatan data NCR telah dibaiki.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_4" xml:space="preserve">
+    <value>[NEW] Mod bentuk bebas telah ditambah yang membolehkan penetapan putaran dan kedudukan bucu tanpa had.
+[NEW] Keupayaan untuk menyahdayakan "Ikut lereng utama" untuk segmen telah ditambah yang membolehkan penetapan lereng segmen secara berasingan.
+[NEW] Keupayaan untuk menetapkan ketinggian delta telah ditambah untuk setiap segmen.
+[UPDATED] Nod lentur kini ikut lereng nod berhampiran, supaya segmen di antara mereka lebih rata.
+[FIXED] Ofset lalai bagi landasan kereta api tidak ditetapkan kepada 0.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Lentur</value>
   </data>
@@ -217,20 +223,32 @@ Gagal memuatkan data untuk kesemua nod.</value>
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Ketinggian delta</value>
   </data>
-  
-  
+  <data name="Option_Distance" xml:space="preserve">
+    <value>Jarak</value>
+  </data>
+  <data name="Option_Elevation" xml:space="preserve">
+    <value>Ketinggian</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Ikut lereng utama</value>
   </data>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Mod “Hide crosswalks” diperlukan</value>
   </data>
-  
+  <data name="Option_Horizontal" xml:space="preserve">
+    <value>Mendatar</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Tetap semula ofset</value>
   </data>
-  
-  
+  <data name="Option_LeftCornerDirDelta" xml:space="preserve">
+    <value>Arah
+Bucu kiri</value>
+  </data>
+  <data name="Option_LeftCornerPosDelta" xml:space="preserve">
+    <value>Kedudukan
+Bucu kiri</value>
+  </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Arah lereng utama</value>
   </data>
@@ -273,8 +291,14 @@ Gagal memuatkan data untuk kesemua nod.</value>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Tetap semula kepada asal</value>
   </data>
-  
-  
+  <data name="Option_RightCornerDirDelta" xml:space="preserve">
+    <value>Arah
+Bucu kanan</value>
+  </data>
+  <data name="Option_RightCornerPosDelta" xml:space="preserve">
+    <value>Kedudukan
+Bucu kanan</value>
+  </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Putar</value>
   </data>
@@ -314,7 +338,9 @@ Gagal memuatkan data untuk kesemua nod.</value>
   <data name="Option_Type" xml:space="preserve">
     <value>Jenis nod</value>
   </data>
-  
+  <data name="Option_Vertical" xml:space="preserve">
+    <value>Menegak</value>
+  </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nod #{0}</value>
   </data>
@@ -484,14 +510,20 @@ Klik untuk sunting</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Seret untuk ubah ofset</value>
   </data>
-  
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>Seret untuk ubah kedudukan
+Tahan {0} untuk ubah ketinggian</value>
+  </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Seret untuk ubah putaran</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Seret untuk ubah ofset bucu</value>
   </data>
-  
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>Seret untuk ubah kedudukan bucu
+Tahan {0} untuk ubah ketinggian bucu</value>
+  </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Seret penghujung ini untuk ubah arah lereng utama</value>
   </data>
