@@ -240,17 +240,17 @@ namespace NodeController.UI
             item.ButtonWidth = ItemWidth / 2f - (data is NodeData ? 5f : 0f);
             if (TotalOption == SupportOption.Group)
             {
-                item.AddItem(true, CommonLocalize.MessageBox_Yes);
+                item.AddItem(true, new OptionData(CommonLocalize.MessageBox_Yes));
                 if (data is NodeData)
-                    item.AddItem(null, "/", clickable: false, width: 10f);
-                item.AddItem(false, CommonLocalize.MessageBox_No);
+                    item.AddItem(null, new OptionData("/"), clickable: false, width: 10f);
+                item.AddItem(false, new OptionData(CommonLocalize.MessageBox_No));
             }
             else
             {
-                item.AddItem(true, "I");
+                item.AddItem(true, new OptionData("I"));
                 if (data is NodeData)
-                    item.AddItem(null, "/", clickable: false, width: 10f);
-                item.AddItem(false, "O");
+                    item.AddItem(null, new OptionData("/"), clickable: false, width: 10f);
+                item.AddItem(false, new OptionData("O"));
             }
 
             item.StartLayout();

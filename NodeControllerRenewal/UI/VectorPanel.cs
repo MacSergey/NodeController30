@@ -20,6 +20,7 @@ namespace NodeController.UI
         public new string[] Format { get; set; }
         public string[] NumberFormat { get; set; }
         public Vector3 WheelStep { get; set; } = Vector3.one;
+        public bool[] CyclicalValue { get; set; }
 
         public void Init(NodeData data, SupportOption option, SupportOption totalOption, Getter getter, Setter setter, MinMaxGetter minMax, EnableGetter enableGetter)
         {
@@ -32,6 +33,7 @@ namespace NodeController.UI
             Format = null;
             NumberFormat = null;
             WheelStep = Vector3.one;
+            CyclicalValue = null;
         }
     }
     public class DeltaOptionPanel : Vector3OptionPanel<TextStaticPanel, Vector3Panel, Vector3>
@@ -60,7 +62,7 @@ namespace NodeController.UI
             item.CheckMax = true;
             item.UseWheel = true;
             item.WheelStep = WheelStep;
-            item.CyclicalValue = true;
+            item.CyclicalValue = CyclicalValue;
             item.WheelTip = Settings.ShowToolTip;
 
             if (MinMax != null)
@@ -168,13 +170,13 @@ namespace NodeController.UI
                     Fields[i].CheckMax = value;
             }
         }
-        public bool CyclicalValue
+        public bool[] CyclicalValue
         {
-            get => Fields.All(f => f.CyclicalValue);
+            get => Fields.Select(f => f.CyclicalValue).ToArray();
             set
             {
                 for (var i = 0; i < Dimension; i += 1)
-                    Fields[i].CyclicalValue = value;
+                    Fields[i].CyclicalValue = value != null && i < value.Length ? value[i] : false;
             }
         }
         public bool UseWheel

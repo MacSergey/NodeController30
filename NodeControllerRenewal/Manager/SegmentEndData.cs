@@ -60,7 +60,7 @@ namespace NodeController
         public float AbsoluteAngle { get; private set; }
         public float Weight { get; }
 
-        public bool IsChangeable => !FinalNodeLess;
+        public bool IsChangeable => !IsNodeLess;
         public bool IsOffsetChangeable => IsChangeable && !IsUntouchable && NodeData.Style.SupportOffset != SupportOption.None;
         public bool IsRotateChangeable => IsChangeable && NodeData.Style.SupportRotate != SupportOption.None;
         public bool IsMainRoad { get; set; }
@@ -70,21 +70,21 @@ namespace NodeController
         public bool IsTrack { get; private set; }
         public bool IsPath { get; private set; }
         public bool IsDecoration { get; private set; }
-        public bool IsNodeLess { get; private set; }
-        public bool FinalNodeLess => IsNodeLess || ForceNodeLess == true;
+        public bool IsNodeLessByDefault { get; private set; }
+        public bool IsNodeLess => IsNodeLessByDefault || ForceNodeLess == true;
         public bool IsUntouchable { get; private set; }
 
         public float VehicleTwist { get; private set; }
 
         public Mode Mode { get; private set; }
 
-        private float _offsetValue;
-        private float _rotateValue;
-        private bool _keepDefault;
+        private float offsetValue;
+        private float rotateValue;
+        private bool keepDefault;
 
         public float Offset
         {
-            get => _offsetValue;
+            get => offsetValue;
             set
             {
                 SetOffset(value, changeRotate: true);
@@ -97,16 +97,16 @@ namespace NodeController
         {
             get
             {
-                if (_offsetValue == 0f)
+                if (offsetValue == 0f)
                     return 0f;
                 else
                 {
                     var lenght = RawSegmentBezier.Length;
-                    if (_offsetValue >= lenght)
+                    if (offsetValue >= lenght)
                         return 1f;
                     else
                     {
-                        var t = RawSegmentBezier.Trajectory.Travel(_offsetValue, depth: 7);
+                        var t = RawSegmentBezier.Trajectory.Travel(offsetValue, depth: 7);
                         return t;
                     }
                 }
@@ -121,7 +121,7 @@ namespace NodeController
 
         private float Rotate
         {
-            get => _rotateValue;
+            get => rotateValue;
             set
             {
                 SetRotate(value);
@@ -141,10 +141,10 @@ namespace NodeController
         }
 
 
-        private float _slope;
-        private float _twist;
-        private float _shift;
-        private float _stretch;
+        private float slopeValue;
+        private float twistValue;
+        private float shiftValue;
+        private float stretchValue;
 
         public float RotateAngle
         {
@@ -189,15 +189,15 @@ namespace NodeController
         }
         public float SlopeAngle
         {
-            get => Mode != Mode.FreeForm ? _slope : 0f;
-            set => _slope = value;
+            get => Mode != Mode.FreeForm ? slopeValue : 0f;
+            set => slopeValue = value;
         }
         public float TwistAngle
         {
             get
             {
                 if (Mode != Mode.FreeForm)
-                    return _twist;
+                    return twistValue;
                 else
                 {
                     var leftPos = LeftSide.StartPos;
@@ -213,7 +213,7 @@ namespace NodeController
             set
             {
                 if (Mode != Mode.FreeForm)
-                    _twist = value;
+                    twistValue = value;
                 else
                 {
                     var direction = RightSide.StartPos - LeftSide.StartPos;
@@ -234,15 +234,15 @@ namespace NodeController
         }
         public float Shift
         {
-            get => Mode != Mode.FreeForm ? _shift : 0f;
-            set => _shift = value;
+            get => Mode != Mode.FreeForm ? shiftValue : 0f;
+            set => shiftValue = value;
         }
         public float Stretch
         {
             get
             {
                 if (Mode != Mode.FreeForm)
-                    return _stretch;
+                    return stretchValue;
                 else
                 {
                     var distance = (RightSide.StartPos - LeftSide.StartPos).magnitude;
@@ -253,7 +253,7 @@ namespace NodeController
             set
             {
                 if (Mode != Mode.FreeForm)
-                    _stretch = value;
+                    stretchValue = value;
                 else
                 {
                     var direction = (LeftSide.StartPos - RightSide.StartPos).normalized;
@@ -277,24 +277,24 @@ namespace NodeController
         }
 
 
-        private bool? _collision;
-        private bool _forceNodeLess;
-        private bool? _followSlope;
+        private bool? collisionValue;
+        private bool forceNodeLessValue;
+        private bool? followSlopeValue;
         public bool? NoMarkings { get; set; }
         public bool? Collision
         {
-            get => Mode != Mode.FreeForm ? _collision : true;
-            set => _collision = value;
+            get => Mode != Mode.FreeForm ? collisionValue : true;
+            set => collisionValue = value;
         }
         public bool? ForceNodeLess
         {
-            get => _forceNodeLess;
+            get => forceNodeLessValue;
             set => SetForceNodeless(value == true, true);
         }
         public bool? FollowSlope
         {
-            get => IsMainRoad ? true : _followSlope;
-            set => _followSlope = value;
+            get => IsMainRoad ? true : followSlopeValue;
+            set => followSlopeValue = value;
         }
         public float DeltaHeight
         {
@@ -328,8 +328,8 @@ namespace NodeController
 
         private bool KeepDefaults
         {
-            get => _keepDefault;
-            set => _keepDefault = value;
+            get => keepDefault;
+            set => keepDefault = value;
         }
 
 
@@ -432,7 +432,7 @@ namespace NodeController
             IsPath = ai is PedestrianPathAI || ai is PedestrianBridgeAI || ai is PedestrianTunnelAI;
             IsDecoration = ai is DecorationWallAI;
             IsMainRoad = false;
-            IsNodeLess = !segment.Info.m_nodes.Any() || (IsDecoration && (!segment.Info.m_clipSegmentEnds || segment.Info.m_twistSegmentEnds));
+            IsNodeLessByDefault = !segment.Info.m_nodes.Any() || (IsDecoration && (!segment.Info.m_clipSegmentEnds || segment.Info.m_twistSegmentEnds));
             IsUntouchable = segment.m_flags.IsSet(NetSegment.Flags.Untouchable);
         }
         public void UpdateNode() => SingletonManager<Manager>.Instance.Update(NodeId);
@@ -445,46 +445,46 @@ namespace NodeController
             LeftSide.DirDelta = style.DefaultDelta;
             RightSide.DirDelta = style.DefaultDelta;
         }
-        public void ResetToDefault(NodeStyle style, Mode mode, bool force)
+        public void ResetToDefault(NodeStyle style, Mode mode, bool forceStyle, bool forceMode)
         {
             var oldMode = Mode;
-            if (style.SupportMode == SupportOption.None || (mode & style.SupportModes) == 0 || force || IsUntouchable)
+            if (style.SupportMode == SupportOption.None || (mode & style.SupportModes) == 0 || forceMode || IsUntouchable)
                 Mode = style.DefaultMode;
             else
                 Mode = mode;
 
             var freeModeSwitched = (oldMode == Mode.FreeForm) ^ (Mode == Mode.FreeForm);
 
-            if (style.SupportMarking == SupportOption.None || force || IsUntouchable)
+            if (style.SupportMarking == SupportOption.None || forceStyle || IsUntouchable)
                 NoMarkings = style.DefaultNoMarking;
 
-            if (style.SupportForceNodeless == SupportOption.None || force || IsUntouchable)
+            if (style.SupportForceNodeless == SupportOption.None || forceStyle || IsUntouchable)
                 ForceNodeLess = style.DefaultForceNodeLess;
 
             if (Mode != Mode.FreeForm)
             {
-                if (style.SupportSlope == SupportOption.None || force || IsUntouchable)
+                if (style.SupportSlope == SupportOption.None || forceStyle || IsUntouchable)
                     SlopeAngle = style.DefaultSlope;
 
-                if (style.SupportTwist == SupportOption.None || force || IsUntouchable)
+                if (style.SupportTwist == SupportOption.None || forceStyle || IsUntouchable)
                     TwistAngle = style.DefaultTwist;
 
-                if (style.SupportShift == SupportOption.None || force || IsUntouchable)
+                if (style.SupportShift == SupportOption.None || forceStyle || IsUntouchable)
                     Shift = style.DefaultShift;
 
-                if (style.SupportStretch == SupportOption.None || force || IsUntouchable)
+                if (style.SupportStretch == SupportOption.None || forceStyle || IsUntouchable)
                     Stretch = style.DefaultStretch;
 
-                if (style.SupportCollision == SupportOption.None || force || IsUntouchable)
+                if (style.SupportCollision == SupportOption.None || forceStyle || IsUntouchable)
                     Collision = style.GetDefaultCollision(this);
 
-                if (style.SupportFollowMainSlope == SupportOption.None || force || IsUntouchable)
+                if (style.SupportFollowMainSlope == SupportOption.None || forceStyle || IsUntouchable)
                     FollowSlope = style.DefaultFollowSlope;
 
-                if (style.SupportDeltaHeight == SupportOption.None || force || IsUntouchable)
+                if (style.SupportDeltaHeight == SupportOption.None || forceStyle || IsUntouchable)
                     DeltaHeight = style.DefaultDeltaHeight;
 
-                if (FinalNodeLess)
+                if (IsNodeLess)
                 {
                     MinPossibleOffset = 0f;
                     MaxPossibleOffset = 0f;
@@ -500,19 +500,19 @@ namespace NodeController
                     MaxPossibleOffset = NodeStyle.MaxOffset;
                 }
 
-                if (style.SupportRotate == SupportOption.None || force || !IsRotateChangeable)
+                if (style.SupportRotate == SupportOption.None || forceStyle || !IsRotateChangeable)
                     SetRotate(style.DefaultRotate);
 
                 if (style.SupportOffset == SupportOption.None)
                     SetOffset(style.DefaultOffset);
-                else if (force || IsUntouchable)
+                else if (forceStyle || IsUntouchable)
                     SetOffset(GetMinCornerOffset(style.DefaultOffset));
                 else
                     SetOffset(Offset);
             }
             else
             {
-                if (style.SupportCornerDelta == SupportOption.None || force || IsUntouchable || freeModeSwitched)
+                if (style.SupportCornerDelta == SupportOption.None || forceStyle || IsUntouchable || freeModeSwitched)
                 {
                     LeftSide.PosDelta = style.DefaultDelta;
                     RightSide.PosDelta = style.DefaultDelta;
@@ -521,13 +521,13 @@ namespace NodeController
                 }
             }
 
-            if (force || style.OnlyKeepDefault || freeModeSwitched)
+            if (forceStyle || style.ForceKeepDefault || freeModeSwitched)
                 KeepDefaults = true;
         }
 
         private void SetOffset(float value, bool changeRotate = false)
         {
-            _offsetValue = Mathf.Clamp(value, MinOffset, MaxOffset);
+            offsetValue = Mathf.Clamp(value, MinOffset, MaxOffset);
 
             if (changeRotate && IsMinBorderT)
                 SetRotate(0f, true);
@@ -537,7 +537,7 @@ namespace NodeController
             if (recalculateLimits)
                 CalculateMinMaxRotate();
 
-            _rotateValue = Mathf.Clamp(value, MinRotate, MaxRotate);
+            rotateValue = Mathf.Clamp(value, MinRotate, MaxRotate);
         }
         private void SetCornerOffset(SegmentSide side, float offset)
         {
@@ -547,14 +547,11 @@ namespace NodeController
             side.RawT = Mathf.Clamp(t, side.MinT, side.MaxT);
             SetByCorners(side.Type);
         }
-        private void SetForceNodeless(bool value, bool reset = false)
+        private void SetForceNodeless(bool value, bool setOffset = false)
         {
-            if (value != _forceNodeLess)
-            {
-                _forceNodeLess = value;
-                if (reset)
-                    ResetToDefault(NodeData.Style, Mode, true);
-            }
+            forceNodeLessValue = value;
+            if (value && setOffset)
+                SetOffset(0f, true);
         }
 
         #endregion
@@ -705,7 +702,9 @@ namespace NodeController
             {
                 get
                 {
-                    if (mainMinT != null)
+                    if (side.SegmentData.Collision == false)
+                        return 0f;
+                    else if (mainMinT != null)
                         return side.FromMainT(mainMinT.Value);
                     else if (additionalMinT != null)
                         return side.FromAdditionalT(additionalMinT.Value);
@@ -748,16 +747,16 @@ namespace NodeController
                 {
                     for (var leftI = 0; leftI < count; leftI += 1)
                     {
-                        if (endDatas[leftI].Collision == false)
-                        {
-                            limits[leftI].left.mainMinT = null;
-                            limits[leftI].right.mainMinT = null;
-                            limits[leftI].left.defaultT = null;
-                            limits[leftI].right.defaultT = null;
-                            continue;
-                        }
+                        //if (endDatas[leftI].Collision == false)
+                        //{
+                        //    limits[leftI].left.mainMinT = null;
+                        //    limits[leftI].right.mainMinT = null;
+                        //    limits[leftI].left.defaultT = null;
+                        //    limits[leftI].right.defaultT = null;
+                        //    continue;
+                        //}
 
-                        if (!GetNextIndex(leftI, out var rightI, endDatas))
+                        if (!GetNextIndex(endDatas, leftI, out var rightI))
                             continue;
 
                         GetMainMinLimit(endDatas[leftI], endDatas[rightI], count, ref limits[leftI].left, ref limits[rightI].right);
@@ -771,10 +770,10 @@ namespace NodeController
 
                         if ((cross > 0f || dot < -0.75f) && (count > 2 || (dot > -0.999f && cross > 0.001f)))
                         {
-                            if (GetPrevIndex(leftI, out var prevLeftI, endDatas))
+                            if (GetPrevIndex(endDatas, leftI, out var prevLeftI))
                                 GetSubMinLimit(endDatas[leftI].RightSide.MainTrajectory, endDatas[prevLeftI].LeftSide.MainTrajectory, SideType.Left, ref limits[leftI].left.defaultT);
 
-                            if (GetNextIndex(rightI, out var nextRightI, endDatas))
+                            if (GetNextIndex(endDatas, rightI, out var nextRightI))
                                 GetSubMinLimit(endDatas[rightI].LeftSide.MainTrajectory, endDatas[nextRightI].RightSide.MainTrajectory, SideType.Right, ref limits[rightI].right.defaultT);
                         }
                     }
@@ -783,10 +782,10 @@ namespace NodeController
                     {
                         for (var currentI = 0; currentI < count; currentI += 1)
                         {
-                            if (endDatas[currentI].Collision == false)
-                                continue;
+                            //if (endDatas[currentI].Collision == false)
+                            //    continue;
 
-                            if (!GetPrevIndex(currentI, out var prevI, endDatas) || !GetNextIndex(currentI, out var nextI, endDatas) || prevI == nextI)
+                            if (!GetPrevIndex(endDatas, currentI, out var prevI) || !GetNextIndex(endDatas, currentI, out var nextI) || prevI == nextI)
                                 continue;
 
                             var prevMin = Mathf.Clamp01(limits[prevI].left.mainMinT ?? 0f);
@@ -812,8 +811,8 @@ namespace NodeController
 
                     for (var currentI = 0; currentI < count; currentI += 1)
                     {
-                        if (endDatas[currentI].Collision == false)
-                            continue;
+                        //if (endDatas[currentI].Collision == false)
+                        //    continue;
 
                         if ((limits[currentI].left.defaultT == null) != (limits[currentI].right.defaultT == null))
                         {
@@ -836,13 +835,13 @@ namespace NodeController
                         CorrectDefaultOffset(endDatas[currentI].LeftSide.MainTrajectory, ref limits[currentI].left.defaultT, count == 2, defaultOffset, minCornerOffset, additionalOffset);
                         CorrectDefaultOffset(endDatas[currentI].RightSide.MainTrajectory, ref limits[currentI].right.defaultT, count == 2, defaultOffset, minCornerOffset, additionalOffset);
 
-                        if (!limits[currentI].left.MinFound && GetPrevIndex(currentI, out var prevI, endDatas))
+                        if (!limits[currentI].left.MinFound && GetPrevIndex(endDatas, currentI, out var prevI))
                         {
                             if (Intersection.CalculateSingle(endDatas[currentI].LeftSide.AdditionalTrajectory, endDatas[prevI].RightSide.RawTrajectory, out var leftT, out _))
                                 limits[currentI].left.additionalMinT = leftT;
                         }
 
-                        if (!limits[currentI].right.MinFound && GetNextIndex(currentI, out var nextI, endDatas))
+                        if (!limits[currentI].right.MinFound && GetNextIndex(endDatas, currentI, out var nextI))
                         {
                             if (Intersection.CalculateSingle(endDatas[currentI].RightSide.AdditionalTrajectory, endDatas[nextI].LeftSide.RawTrajectory, out var rightT, out _))
                                 limits[currentI].right.additionalMinT = rightT;
@@ -864,7 +863,7 @@ namespace NodeController
                         endData.LeftSide.MinT = endData.LeftSide.MainT;
                         endData.RightSide.MinT = endData.RightSide.MainT;
                     }
-                    else if (!endData.FinalNodeLess)
+                    else if (!endData.IsNodeLess)
                     {
                         endData.LeftSide.MinT = limits[i].left.FinalMinT;
                         endData.RightSide.MinT = limits[i].right.FinalMinT;
@@ -875,7 +874,7 @@ namespace NodeController
                         endData.RightSide.MinT = endData.RightSide.MainT;
                     }
 
-                    if (!endData.FinalNodeLess && count >= 2)
+                    if (!endData.IsNodeLess && count >= 2)
                     {
                         endData.LeftSide.DefaultT = limits[i].left.FinalDefaultT;
                         endData.RightSide.DefaultT = limits[i].right.FinalDefaultT;
@@ -893,7 +892,7 @@ namespace NodeController
                 SingletonMod<Mod>.Logger.Error($"Node #{data.Id} update min limits failed", error);
             }
 
-            static bool GetPrevIndex(int index, out int prev, SegmentEndData[] endDatas)
+            static bool GetPrevIndex(SegmentEndData[] endDatas, int index, out int prev)
             {
                 prev = index.PrevIndex(endDatas.Length);
                 while (prev != index && endDatas[prev].Collision == false)
@@ -902,7 +901,7 @@ namespace NodeController
                 return prev != index;
             }
 
-            static bool GetNextIndex(int index, out int next, SegmentEndData[] endDatas)
+            static bool GetNextIndex(SegmentEndData[] endDatas, int index, out int next)
             {
                 next = index.NextIndex(endDatas.Length);
                 while (next != index && endDatas[next].Collision == false)
@@ -951,7 +950,7 @@ namespace NodeController
                     var dir = bezier.Tangent(minT);
                     var dot = NormalizeDotXZ(dir, line.StartDirection);
                     var cross = NormalizeCrossXZ(dir, line.StartDirection);
-                    var minAngle = Mathf.Clamp(1 - lineT / 1600f, 0.99f, 0.999f);
+                    var minAngle = Mathf.Clamp(1f - lineT / 1600f, 0.99f, 0.999f);
                     if (Mathf.Abs(dot) < minAngle && (cross >= 0f ^ dot >= 0f ^ side == SideType.Left))
                     {
                         mainMinT = minT;
@@ -992,7 +991,7 @@ namespace NodeController
 
                 var point = mainLine.Position(aLineT);
 
-                var mirror = sub.StartDirection - main.StartDirection * dot * 2;
+                var mirror = sub.StartDirection - main.StartDirection * dot * 2f;
                 var mirrorNormal = Vector3.Cross(mirror, Vector3.up);
                 var halfWidth = LengthXZ(sub.StartPosition - point);
 
@@ -1276,10 +1275,10 @@ namespace NodeController
             var line = new StraightTrajectory(position, position + direction, false);
             var intersections = Intersection.Calculate(side.RawTrajectory, line);
 
-            if (intersections.Any(i => i.IsIntersect))
+            if (intersections.Any(i => i.isIntersect))
             {
-                var intersect = intersections.Aggregate((i, j) => Mathf.Abs(i.FirstT - t) < Mathf.Abs(j.FirstT - t) ? i : j);
-                return intersect.FirstT;
+                var intersect = intersections.Aggregate((i, j) => Mathf.Abs(i.firstT - t) < Mathf.Abs(j.firstT - t) ? i : j);
+                return intersect.firstT;
             }
             else if (Rotate == 0f)
                 return t <= 0.5f ? 0f : 1f;
@@ -1470,8 +1469,8 @@ namespace NodeController
             config.AddAttr("M", (int)Mode);
             config.AddAttr("KD", KeepDefaults ? 1 : 0);
 
-            config.AddAttr("O", _offsetValue);
-            config.AddAttr("RA", _rotateValue);
+            config.AddAttr("O", offsetValue);
+            config.AddAttr("RA", rotateValue);
 
             config.AddAttr("NM", NoMarkings == true ? 1 : 0);
             config.AddAttr("FNL", ForceNodeLess == true ? 1 : 0);
@@ -1484,7 +1483,7 @@ namespace NodeController
                 config.AddAttr("ST", Stretch);
                 config.AddAttr("CL", Collision == true ? 1 : 0);
                 config.AddAttr("FS", FollowSlope == true ? 1 : 0);
-                //config.AddAttr("DH", DeltaHeight);
+                config.AddAttr("DH", DeltaHeight);
             }
             else
             {
@@ -1572,7 +1571,7 @@ namespace NodeController
                 }
             }
 
-            KeepDefaults = style.OnlyKeepDefault && config.GetAttrValue("KD", 0) == 1;
+            KeepDefaults = style.ForceKeepDefault && config.GetAttrValue("KD", 0) == 1;
 
             if (style.SupportOffset != SupportOption.None)
                 SetOffset(config.GetAttrValue("O", GetMinCornerOffset(style.DefaultOffset)));

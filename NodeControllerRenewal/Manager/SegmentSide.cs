@@ -3,7 +3,6 @@ using ModsCommon.Utilities;
 using System;
 using UnityEngine;
 using static ColossalFramework.Math.VectorUtils;
-using static ModsCommon.Utilities.VectorUtilsExtensions;
 
 namespace NodeController
 {
@@ -11,33 +10,33 @@ namespace NodeController
     {
         private struct DataStruct
         {
-            private SegmentSide _segmentSide;
+            private SegmentSide segmentSide;
 
-            public CombinedTrajectory _rawTrajectory;
+            public CombinedTrajectory rawTrajectory;
 
-            public float _minT;
-            public float _maxT;
-            public float _mainT;
-            public float _rawT;
-            public float _defaultT;
+            public float minT;
+            public float maxT;
+            public float mainT;
+            public float rawT;
+            public float defaultT;
 
-            public Vector3 _minPos;
-            public Vector3 _minDir;
+            public Vector3 minPos;
+            public Vector3 minDir;
 
-            public Vector3 _position;
-            public Vector3 _direction;
-            public Quaternion _dirRotation;
-            public float _dirRatio;
-            public Vector3 _deltaPos;
+            public Vector3 position;
+            public Vector3 direction;
+            public Quaternion dirRotation;
+            public float dirRatio;
+            public Vector3 deltaPos;
 
-            public Vector3 _maxPos;
-            public Vector3 _maxDir;
+            public Vector3 maxPos;
+            public Vector3 maxDir;
 
             public float DeltaT
             {
                 get
                 {
-                    var deltaT = 0.05f / _rawTrajectory.Length;
+                    var deltaT = 0.05f / rawTrajectory.Length;
                     return deltaT;
                 }
             }
@@ -46,7 +45,7 @@ namespace NodeController
                 get
                 {
                     var deltaT = DeltaT;
-                    var currentT = Mathf.Clamp(_rawT, _minT + deltaT, _maxT - deltaT);
+                    var currentT = Mathf.Clamp(rawT, minT + deltaT, maxT - deltaT);
                     return currentT;
                 }
             }
@@ -56,7 +55,7 @@ namespace NodeController
                 get
                 {
                     var deltaT = DeltaT;
-                    return _rawT - deltaT <= _minT;
+                    return rawT - deltaT <= minT;
                 }
             }
             public bool IsMaxBorderT
@@ -64,51 +63,51 @@ namespace NodeController
                 get
                 {
                     var deltaT = DeltaT;
-                    return _rawT + deltaT >= _maxT;
+                    return rawT + deltaT >= maxT;
                 }
             }
             public bool IsShort
             {
                 get
                 {
-                    var isShort = (_maxT - CurrentT) <= (1f / _rawTrajectory.Length);
+                    var isShort = (maxT - CurrentT) <= (1f / rawTrajectory.Length);
                     return isShort;
                 }
             }
 
             public DataStruct(SegmentSide segmentSide)
             {
-                _segmentSide = segmentSide;
-                _rawTrajectory = new CombinedTrajectory(new StraightTrajectory(Vector3.zero, Vector3.zero));
+                this.segmentSide = segmentSide;
+                rawTrajectory = new CombinedTrajectory(new StraightTrajectory(Vector3.zero, Vector3.zero));
 
-                _minT = 0f;
-                _maxT = 1f;
-                _rawT = 0f;
-                _mainT = 0f;
-                _defaultT = 0f;
+                minT = 0f;
+                maxT = 1f;
+                rawT = 0f;
+                mainT = 0f;
+                defaultT = 0f;
 
-                _minPos = default;
-                _minDir = default;
-                _position = default;
-                _direction = default;
-                _deltaPos = default;
-                _dirRotation = Quaternion.identity;
-                _dirRatio = 1;
-                _maxPos = default;
-                _maxDir = default;
+                minPos = default;
+                minDir = default;
+                position = default;
+                direction = default;
+                deltaPos = default;
+                dirRotation = Quaternion.identity;
+                dirRatio = 1;
+                maxPos = default;
+                maxDir = default;
             }
 
             public void Set(ITrajectory trajectory)
             {
-                if (_rawTrajectory.IsZero || !_rawTrajectory[1].Equals(trajectory))
+                if (rawTrajectory.IsZero || !rawTrajectory[1].Equals(trajectory))
                 {
                     var mainTrajectory = trajectory;
-                    var additionalTrajectory = new StraightTrajectory(trajectory.StartPosition - trajectory.StartDirection * _segmentSide.AdditionalLength, trajectory.StartPosition);
-                    _rawTrajectory = new CombinedTrajectory(additionalTrajectory, mainTrajectory);
+                    var additionalTrajectory = new StraightTrajectory(trajectory.StartPosition - trajectory.StartDirection * segmentSide.AdditionalLength, trajectory.StartPosition);
+                    rawTrajectory = new CombinedTrajectory(additionalTrajectory, mainTrajectory);
 
-                    _minT = 0f;
-                    _maxT = 1f;
-                    _mainT = _rawTrajectory.Parts[1];
+                    minT = 0f;
+                    maxT = 1f;
+                    mainT = rawTrajectory.Parts[1];
 
                     Update();
                 }
@@ -116,11 +115,11 @@ namespace NodeController
 
             public void Update()
             {
-                _minPos = _rawTrajectory.Position(_minT);
-                _minDir = _rawTrajectory.Tangent(_minT).normalized;
+                minPos = rawTrajectory.Position(minT);
+                minDir = rawTrajectory.Tangent(minT).normalized;
 
-                _maxPos = _rawTrajectory.Position(_maxT);
-                _maxDir = -_rawTrajectory.Tangent(_maxT).normalized;
+                maxPos = rawTrajectory.Position(maxT);
+                maxDir = -rawTrajectory.Tangent(maxT).normalized;
             }
         }
 
@@ -132,69 +131,69 @@ namespace NodeController
         public Vector3 PosDelta { get; set; }
         public Vector3 DirDelta { get; set; }
 
-        private DataStruct _final;
-        private DataStruct _temp;
+        private DataStruct final;
+        private DataStruct temp;
 
-        public CombinedTrajectory RawTrajectory => _temp._rawTrajectory;
-        public ITrajectory MainTrajectory => _temp._rawTrajectory[1];
-        public ITrajectory AdditionalTrajectory => _temp._rawTrajectory[0];
+        public CombinedTrajectory RawTrajectory => temp.rawTrajectory;
+        public ITrajectory MainTrajectory => temp.rawTrajectory[1];
+        public ITrajectory AdditionalTrajectory => temp.rawTrajectory[0];
 
         public float MinT
         {
-            get => _temp._minT;
+            get => temp.minT;
             set
             {
-                if (value != _temp._minT)
+                if (value != temp.minT)
                 {
-                    _temp._minT = value;
-                    _temp.Update();
+                    temp.minT = value;
+                    temp.Update();
                 }
             }
         }
         public float MaxT
         {
-            get => _temp._maxT;
+            get => temp.maxT;
             set
             {
-                if (Mathf.Abs(value - _temp._maxT) > 0.001f)
+                if (Mathf.Abs(value - temp.maxT) > 0.001f)
                 {
-                    _temp._maxT = value;
-                    _temp.Update();
+                    temp.maxT = value;
+                    temp.Update();
                 }
             }
         }
-        public float MainT => _temp._mainT;
+        public float MainT => temp.mainT;
         public float DefaultT
         {
-            get => _temp._defaultT;
-            set => _temp._defaultT = value;
+            get => temp.defaultT;
+            set => temp.defaultT = value;
         }
 
         public float RawT
         {
-            set => _temp._rawT = value;
+            set => temp.rawT = value;
         }
-        public float CurrentTempT => _temp.CurrentT;
-        public float CurrentT => _final.CurrentT;
+        public float CurrentTempT => temp.CurrentT;
+        public float CurrentT => final.CurrentT;
 
-        public Vector3 MinTempPos => _temp._minPos;
-        public Vector3 MinTempDir => _temp._minDir;
+        public Vector3 MinTempPos => temp.minPos;
+        public Vector3 MinTempDir => temp.minDir;
 
-        public Vector3 MaxTempPos => _temp._maxPos;
-        public Vector3 MaxTempDir => _temp._maxDir;
-
-
-        public Vector3 StartPos => _final._position + _final._deltaPos;
-        public Vector3 StartDir => NormalizeXZ(_final._dirRotation * _final._direction) * _final._dirRatio;
-        public Vector3 OriginalPos => _final._position;
-        public Vector3 OriginalDir => _final._direction;
+        public Vector3 MaxTempPos => temp.maxPos;
+        public Vector3 MaxTempDir => temp.maxDir;
 
 
-        public Vector3 EndPos => _final._maxPos;
-        public Vector3 EndDir => _final._maxDir;
+        public Vector3 StartPos => final.position + final.deltaPos;
+        public Vector3 StartDir => NormalizeXZ(final.dirRotation * final.direction) * final.dirRatio;
+        public Vector3 OriginalPos => final.position;
+        public Vector3 OriginalDir => final.direction;
 
-        public Vector3 TempPos => _temp._position + _temp._deltaPos;
-        public Vector3 TempDir => NormalizeXZ(_temp._dirRotation * _temp._direction) * _temp._dirRatio;
+
+        public Vector3 EndPos => final.maxPos;
+        public Vector3 EndDir => final.maxDir;
+
+        public Vector3 TempPos => temp.position + temp.deltaPos;
+        public Vector3 TempDir => NormalizeXZ(temp.dirRotation * temp.direction) * temp.dirRatio;
 
         public Vector3 MarkerPos
         {
@@ -208,34 +207,34 @@ namespace NodeController
             }
         }
 
-        public bool IsMinBorderT => _temp.IsMinBorderT;
-        public bool IsMaxBorderT => _temp.IsMaxBorderT;
-        public bool IsShort => _temp.IsShort;
+        public bool IsMinBorderT => temp.IsMinBorderT;
+        public bool IsMaxBorderT => temp.IsMaxBorderT;
+        public bool IsShort => temp.IsShort;
 
         public SegmentSide(SegmentEndData segmentData, SideType type)
         {
             Type = type;
             SegmentData = segmentData;
 
-            _temp = new DataStruct(this);
-            _final = new DataStruct(this);
+            temp = new DataStruct(this);
+            final = new DataStruct(this);
         }
 
         public void SetTrajectory(ITrajectory trajectory)
         {
-            _temp.Set(trajectory);
+            temp.Set(trajectory);
         }
 
         public void CalculateMain()
         {
             var nodeData = SegmentData.NodeData;
 
-            var t = Mathf.Clamp(_temp._rawT, _temp._minT + (nodeData.IsMiddleNode || SegmentData.FinalNodeLess ? 0f : _temp.DeltaT), _temp._maxT - _temp.DeltaT);
-            var position = _temp._rawTrajectory.Position(t);
-            var direction = _temp._rawTrajectory.Tangent(t).normalized;
-            _temp._deltaPos = Vector3.zero;
-            _temp._dirRotation = Quaternion.identity;
-            _temp._dirRatio = 1f;
+            var t = Mathf.Clamp(temp.rawT, temp.minT + (nodeData.IsMiddleNode || SegmentData.IsNodeLess ? 0f : temp.DeltaT), temp.maxT - temp.DeltaT);
+            var position = temp.rawTrajectory.Position(t);
+            var direction = temp.rawTrajectory.Tangent(t).normalized;
+            temp.deltaPos = Vector3.zero;
+            temp.dirRotation = Quaternion.identity;
+            temp.dirRatio = 1f;
 
             switch (SegmentData.Mode)
             {
@@ -245,16 +244,16 @@ namespace NodeController
                         direction = direction.MakeFlatNormalized();
 
                         if (nodeData.IsEndNode)
-                            _temp._dirRatio *= SegmentData.Stretch;
+                            temp.dirRatio *= SegmentData.Stretch;
                     }
                     break;
                 case Mode.Slope:
                     {
                         if (nodeData.Style.SupportDeltaHeight != SupportOption.None)
-                            _temp._deltaPos.y = PosDelta.y;
+                            temp.deltaPos.y = PosDelta.y;
 
                         if (nodeData.Style.SupportSlope != SupportOption.None)
-                            _temp._dirRotation = Quaternion.AngleAxis(SegmentData.SlopeAngle, direction.MakeFlat().Turn90(true));
+                            temp.dirRotation = Quaternion.AngleAxis(SegmentData.SlopeAngle, direction.MakeFlat().Turn90(true));
 
                         if (nodeData.Style.SupportTwist != SupportOption.None)
                         {
@@ -262,17 +261,17 @@ namespace NodeController
                             if (nodeData.Style.SupportStretch != SupportOption.None)
                                 ratio *= SegmentData.Stretch;
 
-                            _temp._deltaPos.y += (Type == SideType.Left ? -1 : 1) * SegmentData.Id.GetSegment().Info.m_halfWidth * ratio;
+                            temp.deltaPos.y += (Type == SideType.Left ? -1 : 1) * SegmentData.Id.GetSegment().Info.m_halfWidth * ratio;
                         }
 
                         if (nodeData.IsEndNode)
-                            _temp._dirRatio *= SegmentData.Stretch;
+                            temp.dirRatio *= SegmentData.Stretch;
                     }
                     break;
                 case Mode.FreeForm:
                     {
                         var angle = direction.AbsoluteAngle();
-                        _temp._deltaPos += Quaternion.AngleAxis(-angle * Mathf.Rad2Deg, Vector3.up) * PosDelta;
+                        temp.deltaPos += Quaternion.AngleAxis(-angle * Mathf.Rad2Deg, Vector3.up) * PosDelta;
 
                         var deltaDir = Type switch
                         {
@@ -281,27 +280,29 @@ namespace NodeController
                             _ => Vector3.zero,
                         };
                         if (deltaDir.x != 0f)
-                            _temp._dirRotation *= Quaternion.AngleAxis(deltaDir.x, Vector3.up);
+                            temp.dirRotation *= Quaternion.AngleAxis(deltaDir.x, Vector3.up);
                         if (deltaDir.y != 0f)
-                            _temp._dirRotation *= Quaternion.AngleAxis(deltaDir.y, Vector3.forward);
+                            temp.dirRotation *= Quaternion.AngleAxis(deltaDir.y, Vector3.forward);
+                        if (deltaDir.z != 0f)
+                            temp.dirRatio *= deltaDir.z;
                     }
                     break;
             }
 
-            _temp._position = position;
-            _temp._direction = direction.normalized;
+            temp.position = position;
+            temp.direction = direction;
         }
 
         public void CalculateNotMain(BezierTrajectory left, BezierTrajectory right)
         {
             var nodeData = SegmentData.NodeData;
 
-            var t = Mathf.Clamp(_temp._rawT, _temp._minT + (nodeData.IsMiddleNode || SegmentData.FinalNodeLess ? 0f : _temp.DeltaT), _temp._maxT - _temp.DeltaT);
-            var position = _temp._rawTrajectory.Position(t);
-            var direction = _temp._rawTrajectory.Tangent(t).normalized;
-            _temp._deltaPos = Vector3.zero;
-            _temp._dirRotation = Quaternion.identity;
-            _temp._dirRatio = 1f;
+            var t = Mathf.Clamp(temp.rawT, temp.minT + (nodeData.IsMiddleNode || SegmentData.IsNodeLess ? 0f : temp.DeltaT), temp.maxT - temp.DeltaT);
+            var position = temp.rawTrajectory.Position(t);
+            var direction = temp.rawTrajectory.Tangent(t).normalized;
+            temp.deltaPos = Vector3.zero;
+            temp.dirRotation = Quaternion.identity;
+            temp.dirRatio = 1f;
 
             switch (SegmentData.Mode)
             {
@@ -311,13 +312,13 @@ namespace NodeController
                         direction = direction.MakeFlatNormalized();
 
                         if (nodeData.IsEndNode)
-                            _temp._dirRatio *= SegmentData.Stretch;
+                            temp.dirRatio *= SegmentData.Stretch;
                     }
                     break;
                 case Mode.Slope:
                     {
                         if (nodeData.Style.SupportDeltaHeight != SupportOption.None && SegmentData.FollowSlope == false)
-                            _temp._deltaPos.y = PosDelta.y;
+                            temp.deltaPos.y = PosDelta.y;
 
                         GetClosest(left, right, position, out var closestPos, out var closestDir, out var closestT);
 
@@ -333,16 +334,16 @@ namespace NodeController
                         var point = position + direction;
                         plane.Raycast(new Ray(point, Vector3.up), out rayT);
                         point += Vector3.up * rayT;
-                        direction = point - position;
+                        direction = (point - position).normalized;
 
                         if (nodeData.IsEndNode)
-                            _temp._dirRatio *= SegmentData.Stretch;
+                            temp.dirRatio *= SegmentData.Stretch;
                     }
                     break;
             }
 
-            _temp._position = position;
-            _temp._direction = direction.normalized;
+            temp.position = position;
+            temp.direction = direction;
         }
 
         private void GetClosest(BezierTrajectory left, BezierTrajectory right, Vector3 position, out Vector3 closestPos, out Vector3 closestDir, out float t)
@@ -366,14 +367,14 @@ namespace NodeController
 
         public void AfterCalculate()
         {
-            _final = _temp;
+            final = temp;
         }
 
-        public float FromMainT(float t) => _temp._rawTrajectory.FromPartT(1, t);
-        public float FromAdditionalT(float t) => _temp._rawTrajectory.FromPartT(0, t);
+        public float FromMainT(float t) => temp.rawTrajectory.FromPartT(1, t);
+        public float FromAdditionalT(float t) => temp.rawTrajectory.FromPartT(0, t);
 
-        public float ToMainT(float t) => _temp._rawTrajectory.ToPartT(1, t);
-        public float ToAdditionalT(float t) => _temp._rawTrajectory.ToPartT(0, t);
+        public float ToMainT(float t) => temp.rawTrajectory.ToPartT(1, t);
+        public float ToAdditionalT(float t) => temp.rawTrajectory.ToPartT(0, t);
 
         public Vector3 FromAbsoluteDeltaPos(Vector3 deltaPos)
         {
@@ -390,19 +391,19 @@ namespace NodeController
 
         public static void FixMiddle(SegmentSide first, SegmentSide second)
         {
-            var fixPosition = (first._temp._position + second._temp._position) / 2f;
-            first._temp._position = fixPosition;
-            second._temp._position = fixPosition;
+            var fixPosition = (first.temp.position + second.temp.position) / 2f;
+            first.temp.position = fixPosition;
+            second.temp.position = fixPosition;
 
-            var fixDirection = NormalizeXZ(first._temp._direction - second._temp._direction);
+            var fixDirection = NormalizeXZ(first.temp.direction - second.temp.direction);
 
             var firstFixDirection = fixDirection;
-            firstFixDirection.y = first._temp._direction.y;
-            first._temp._direction = firstFixDirection;
+            firstFixDirection.y = first.temp.direction.y;
+            first.temp.direction = firstFixDirection;
 
             var secondFixDirection = -fixDirection;
-            secondFixDirection.y = second._temp._direction.y;
-            second._temp._direction = secondFixDirection;
+            secondFixDirection.y = second.temp.direction.y;
+            second.temp.direction = secondFixDirection;
         }
         public static void FixBend(SegmentSide left, SegmentSide right)
         {
@@ -413,42 +414,48 @@ namespace NodeController
                 return;
             else if (isLeft)
             {
-                var bezier = new BezierTrajectory(left.MainTrajectory.StartPosition, left.MainTrajectory.StartDirection, right._temp._position, right._temp._direction, true, true, true);
-                bezier.GetHitPosition(new Segment3(left._temp._position, left._temp._position + Vector3.up), out _, out var t, out _);
-                left._temp._position = bezier.Position(t);
-                left._temp._direction = bezier.Tangent(t).normalized;
+                var bezier = new BezierTrajectory(left.MainTrajectory.StartPosition, left.MainTrajectory.StartDirection, right.temp.position, right.temp.direction, true, true, true);
+                bezier.GetHitPosition(new Segment3(left.temp.position, left.temp.position + Vector3.up), out _, out var t, out _);
+                if (t > 0)
+                {
+                    left.temp.position = bezier.Position(t);
+                    left.temp.direction = bezier.Tangent(t).normalized;
+                }
             }
             else
             {
-                var bezier = new BezierTrajectory(right.MainTrajectory.StartPosition, right.MainTrajectory.StartDirection, left._temp._position, left._temp._direction, true, true, true);
-                bezier.GetHitPosition(new Segment3(right._temp._position, right._temp._position + Vector3.up), out _, out var t, out _);
-                right._temp._position = bezier.Position(t);
-                right._temp._direction = bezier.Tangent(t).normalized;
+                var bezier = new BezierTrajectory(right.MainTrajectory.StartPosition, right.MainTrajectory.StartDirection, left.temp.position, left.temp.direction, true, true, true);
+                bezier.GetHitPosition(new Segment3(right.temp.position, right.temp.position + Vector3.up), out _, out var t, out _);
+                if (t > 0)
+                {
+                    right.temp.position = bezier.Position(t);
+                    right.temp.direction = bezier.Tangent(t).normalized;
+                }
             }
         }
 
         public void RenderGuides(OverlayData dataAllow, OverlayData dataForbidden, OverlayData dataDefault)
         {
-            var deltaT = 0.2f / _final._rawTrajectory.Length;
-            if (_final._minT == 0f)
+            var deltaT = 0.2f / final.rawTrajectory.Length;
+            if (final.minT == 0f)
             {
-                if (_final._rawT >= deltaT)
-                    _final._rawTrajectory.Cut(0f, _final._rawT).Render(dataAllow);
+                if (final.rawT >= deltaT)
+                    final.rawTrajectory.Cut(0f, final.rawT).Render(dataAllow);
             }
             else
             {
                 dataForbidden.CutEnd = true;
                 dataAllow.CutStart = true;
 
-                var t = Math.Min(_final._rawT, _final._minT);
-                if (t >= _final.DeltaT)
-                    _final._rawTrajectory.Cut(0f, t).Render(dataForbidden);
+                var t = Math.Min(final.rawT, final.minT);
+                if (t >= final.DeltaT)
+                    final.rawTrajectory.Cut(0f, t).Render(dataForbidden);
 
-                if (_final._rawT - _final._minT >= 0.2f / _final._rawTrajectory.Length)
-                    _final._rawTrajectory.Cut(_final._minT, _final._rawT).Render(dataAllow);
+                if (final.rawT - final.minT >= 0.2f / final.rawTrajectory.Length)
+                    final.rawTrajectory.Cut(final.minT, final.rawT).Render(dataAllow);
             }
             dataDefault.Color ??= Colors.Purple;
-            _final._rawTrajectory.Position(_final._defaultT).RenderCircle(dataDefault);
+            final.rawTrajectory.Position(final.defaultT).RenderCircle(dataDefault);
         }
         public void Render(OverlayData centerData, OverlayData circleData)
         {
@@ -458,10 +465,10 @@ namespace NodeController
         public void RenderCenter(OverlayData data)
         {
             var markerPosition = MarkerPos;
-            if ((markerPosition - _final._position).sqrMagnitude > 0.25f)
+            if ((markerPosition - final.position).sqrMagnitude > 0.25f)
             {
                 var color = data.Color.HasValue ? ((Color32)data.Color.Value).SetAlpha(128) : Colors.White128;
-                new StraightTrajectory(markerPosition, _final._position).Render(new OverlayData(data.CameraInfo) { Color = color });
+                new StraightTrajectory(markerPosition, final.position).Render(new OverlayData(data.CameraInfo) { Color = color });
             }
             markerPosition.RenderCircle(data, data.Width ?? SegmentEndData.CornerCenterRadius * 2, 0f);
         }
@@ -470,7 +477,7 @@ namespace NodeController
             MarkerPos.RenderCircle(data, SegmentEndData.CornerCircleRadius * 2 + 0.5f, SegmentEndData.CornerCircleRadius * 2 - 0.5f);
         }
 
-        public override string ToString() => $"{Type}: {nameof(_final._rawT)}={_final._rawT}; {nameof(_final._minT)}={_final._minT}; {nameof(_final._maxT)}={_final._maxT}; {nameof(_final._position)}={_final._position};";
+        public override string ToString() => $"{Type}: {nameof(final.rawT)}={final.rawT}; {nameof(final.minT)}={final.minT}; {nameof(final.maxT)}={final.maxT}; {nameof(final.position)}={final.position};";
     }
 
     public enum SideType : byte

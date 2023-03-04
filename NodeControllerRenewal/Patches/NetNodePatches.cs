@@ -127,11 +127,11 @@ namespace NodeController.Patches
         {
             if (SingletonManager<Manager>.Instance.TryGetFinalNodeData(nodeID, out var nodeData))
             {
-                {
-                    var segmentId = nodeID.GetNode().GetSegment(data.m_dataInt0 >> 4);
-                    if (nodeData.TryGetSegment(segmentId, out var segmentData) && segmentData.ForceNodeLess == true)
-                        return false;
-                }
+                //{
+                //    var segmentId = nodeID.GetNode().GetSegment(data.m_dataInt0 >> 4);
+                //    if (nodeData.TryGetSegment(segmentId, out var segmentData) && segmentData.ForceNodeLess == true)
+                //        return false;
+                //}
                 {
                     var segmentId = nodeID.GetNode().GetSegment(data.m_dataInt0 & 7);
                     if (nodeData.TryGetSegment(segmentId, out var segmentData) && segmentData.ForceNodeLess == true)

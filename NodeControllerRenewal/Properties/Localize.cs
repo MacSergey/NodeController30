@@ -106,6 +106,11 @@ namespace NodeController
 		public static string Mod_WhatsNewMessage3_3_3 => LocaleManager.GetString("Mod_WhatsNewMessage3_3_3", Culture);
 
 		/// <summary>
+		/// [NEW] Added free-form mode that allow to set corner position and rotation without any limitations.
+		/// </summary>
+		public static string Mod_WhatsNewMessage3_4 => LocaleManager.GetString("Mod_WhatsNewMessage3_4", Culture);
+
+		/// <summary>
 		/// Bend
 		/// </summary>
 		public static string NodeStyle_Bend => LocaleManager.GetString("NodeStyle_Bend", Culture);
@@ -176,6 +181,16 @@ namespace NodeController
 		public static string Option_DeltaHeight => LocaleManager.GetString("Option_DeltaHeight", Culture);
 
 		/// <summary>
+		/// Distance
+		/// </summary>
+		public static string Option_Distance => LocaleManager.GetString("Option_Distance", Culture);
+
+		/// <summary>
+		/// Elevation
+		/// </summary>
+		public static string Option_Elevation => LocaleManager.GetString("Option_Elevation", Culture);
+
+		/// <summary>
 		/// Follow main slope
 		/// </summary>
 		public static string Option_FollowSlope => LocaleManager.GetString("Option_FollowSlope", Culture);
@@ -186,9 +201,24 @@ namespace NodeController
 		public static string Option_HideCrosswalkModRequired => LocaleManager.GetString("Option_HideCrosswalkModRequired", Culture);
 
 		/// <summary>
+		/// Horizontal
+		/// </summary>
+		public static string Option_Horizontal => LocaleManager.GetString("Option_Horizontal", Culture);
+
+		/// <summary>
 		/// Reset offset
 		/// </summary>
 		public static string Option_KeepDefault => LocaleManager.GetString("Option_KeepDefault", Culture);
+
+		/// <summary>
+		/// Left corner
+		/// </summary>
+		public static string Option_LeftCornerDirDelta => LocaleManager.GetString("Option_LeftCornerDirDelta", Culture);
+
+		/// <summary>
+		/// Left corner
+		/// </summary>
+		public static string Option_LeftCornerPosDelta => LocaleManager.GetString("Option_LeftCornerPosDelta", Culture);
 
 		/// <summary>
 		/// Main slope direction
@@ -261,6 +291,16 @@ namespace NodeController
 		public static string Option_ResetToDefault => LocaleManager.GetString("Option_ResetToDefault", Culture);
 
 		/// <summary>
+		/// Right corner
+		/// </summary>
+		public static string Option_RightCornerDirDelta => LocaleManager.GetString("Option_RightCornerDirDelta", Culture);
+
+		/// <summary>
+		/// Right corner
+		/// </summary>
+		public static string Option_RightCornerPosDelta => LocaleManager.GetString("Option_RightCornerPosDelta", Culture);
+
+		/// <summary>
 		/// Rotate
 		/// </summary>
 		public static string Option_Rotate => LocaleManager.GetString("Option_Rotate", Culture);
@@ -324,6 +364,11 @@ namespace NodeController
 		/// Node type
 		/// </summary>
 		public static string Option_Type => LocaleManager.GetString("Option_Type", Culture);
+
+		/// <summary>
+		/// Vertical
+		/// </summary>
+		public static string Option_Vertical => LocaleManager.GetString("Option_Vertical", Culture);
 
 		/// <summary>
 		/// Node #{0}

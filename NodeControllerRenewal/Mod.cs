@@ -30,6 +30,7 @@ namespace NodeController
         public override string Description => !IsBeta ? Localize.Mod_Description : CommonLocalize.Mod_DescriptionBeta;
         public override List<ModVersion> Versions => new List<ModVersion>()
         {
+            new ModVersion(new Version("3.4"), new DateTime(2023, 3, 4)),
             new ModVersion(new Version("3.3.3"), new DateTime(2022, 12, 21)),
             new ModVersion(new Version("3.3.2"), new DateTime(2022, 9, 24)),
             new ModVersion(new Version("3.3.1"), new DateTime(2022, 9, 14)),
