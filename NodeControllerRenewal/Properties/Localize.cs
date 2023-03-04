@@ -181,6 +181,11 @@ namespace NodeController
 		public static string Option_DeltaHeight => LocaleManager.GetString("Option_DeltaHeight", Culture);
 
 		/// <summary>
+		/// Direction
+		/// </summary>
+		public static string Option_Direction => LocaleManager.GetString("Option_Direction", Culture);
+
+		/// <summary>
 		/// Distance
 		/// </summary>
 		public static string Option_Distance => LocaleManager.GetString("Option_Distance", Culture);
@@ -213,12 +218,17 @@ namespace NodeController
 		/// <summary>
 		/// Left corner
 		/// </summary>
-		public static string Option_LeftCornerDirDelta => LocaleManager.GetString("Option_LeftCornerDirDelta", Culture);
+		public static string Option_LeftCorner => LocaleManager.GetString("Option_LeftCorner", Culture);
 
 		/// <summary>
-		/// Left corner
+		/// Left corner direction
 		/// </summary>
-		public static string Option_LeftCornerPosDelta => LocaleManager.GetString("Option_LeftCornerPosDelta", Culture);
+		public static string Option_LeftCornerDirection => LocaleManager.GetString("Option_LeftCornerDirection", Culture);
+
+		/// <summary>
+		/// Left corner position
+		/// </summary>
+		public static string Option_LeftCornerPosition => LocaleManager.GetString("Option_LeftCornerPosition", Culture);
 
 		/// <summary>
 		/// Main slope direction
@@ -286,6 +296,11 @@ namespace NodeController
 		public static string Option_OffsetFormat => LocaleManager.GetString("Option_OffsetFormat", Culture);
 
 		/// <summary>
+		/// Position
+		/// </summary>
+		public static string Option_Position => LocaleManager.GetString("Option_Position", Culture);
+
+		/// <summary>
 		/// Reset to default
 		/// </summary>
 		public static string Option_ResetToDefault => LocaleManager.GetString("Option_ResetToDefault", Culture);
@@ -293,12 +308,17 @@ namespace NodeController
 		/// <summary>
 		/// Right corner
 		/// </summary>
-		public static string Option_RightCornerDirDelta => LocaleManager.GetString("Option_RightCornerDirDelta", Culture);
+		public static string Option_RightCorner => LocaleManager.GetString("Option_RightCorner", Culture);
 
 		/// <summary>
-		/// Right corner
+		/// Right corner direction
 		/// </summary>
-		public static string Option_RightCornerPosDelta => LocaleManager.GetString("Option_RightCornerPosDelta", Culture);
+		public static string Option_RightCornerDirection => LocaleManager.GetString("Option_RightCornerDirection", Culture);
+
+		/// <summary>
+		/// Right corner position
+		/// </summary>
+		public static string Option_RightCornerPosition => LocaleManager.GetString("Option_RightCornerPosition", Culture);
 
 		/// <summary>
 		/// Rotate

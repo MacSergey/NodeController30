@@ -703,7 +703,7 @@ namespace NodeController
             if (SupportCornerDelta != SupportOption.None && Data.SegmentEndDatas.Any(s => TouchablePredicate(s)))
             {
                 var cornerPos = ComponentPool.Get<DeltaOptionPanel>(parent);
-                cornerPos.Label = side == SideType.Left ? Localize.Option_LeftCornerPosDelta : Localize.Option_RightCornerPosDelta;
+                cornerPos.Label = $"{(side == SideType.Left ? Localize.Option_LeftCorner : Localize.Option_RightCorner)}\n{Localize.Option_Position}";
                 cornerPos.XTitle = Localize.Option_Vertical;
                 cornerPos.YTitle = Localize.Option_Horizontal;
                 cornerPos.ZTitle = Localize.Option_Elevation;
@@ -721,7 +721,7 @@ namespace NodeController
             if (SupportCornerDelta != SupportOption.None && Data.SegmentEndDatas.Any(s => TouchablePredicate(s)))
             {
                 var cornerDir = ComponentPool.Get<DeltaOptionPanel>(parent);
-                cornerDir.Label = side == SideType.Left ? Localize.Option_LeftCornerDirDelta : Localize.Option_RightCornerDirDelta;
+                cornerDir.Label = $"{(side == SideType.Left ? Localize.Option_LeftCorner : Localize.Option_RightCorner)}\n{Localize.Option_Direction}";
                 cornerDir.XTitle = Localize.Option_Rotate;
                 cornerDir.YTitle = Localize.Option_Slope;
                 cornerDir.ZTitle = Localize.Option_Distance;
@@ -1048,9 +1048,11 @@ namespace NodeController
         [Order(0)]
         LeftCorner = 1 << 12,
 
+        [Description(nameof(Localize.Option_LeftCornerPosition))]
         [Order(12)]
         LeftCornerPos = 1 << 13,
 
+        [Description(nameof(Localize.Option_LeftCornerDirection))]
         [Order(13)]
         LeftCornerDir = 1 << 14,
 
@@ -1058,9 +1060,11 @@ namespace NodeController
         [Order(0)]
         RightCorner = 1 << 15,
 
+        [Description(nameof(Localize.Option_RightCornerPosition))]
         [Order(14)]
         RightCornerPos = 1 << 16,
 
+        [Description(nameof(Localize.Option_RightCornerDirection))]
         [Order(15)]
         RightCornerDir = 1 << 17,
     }
