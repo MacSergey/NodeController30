@@ -138,6 +138,9 @@ Failed to load data for {0} nodes.</value>
     <value>Load was completed with errors.
 Failed to load data for all nodes.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
+    <value>[RELEASE] Renewal version release</value>
+  </data>
   <data name="Mod_WhatsNewMessage3_0_1" xml:space="preserve">
     <value>[NEW] Added auto mode for main slope direction.
 [NEW] Added red overlay for short segments (short segments lead wrong vehicle speed).
