@@ -148,7 +148,7 @@ namespace NodeController
         public override SupportOption SupportTwist => SupportOption.Group;
         public override SupportOption SupportStretch => SupportOption.Group;
         public override SupportOption SupportMarking => SupportOption.All;
-        public override bool OnlyKeepDefault => true;
+        public override bool ForceKeepDefault => true;
         public override bool SupportTrafficLights => true;
         public override bool NeedFixDirection => false;
 
@@ -173,7 +173,7 @@ namespace NodeController
         public override SupportOption SupportMarking => SupportOption.All;
         public override SupportOption SupportMode => SupportOption.Group;
         public override bool SupportTrafficLights => true;
-        public override bool OnlyKeepDefault => true;
+        public override bool ForceKeepDefault => true;
         public override bool NeedFixDirection => false;
 
         public UTurnNode(NodeData data) : base(data) { }

@@ -56,7 +56,7 @@ namespace NodeController.UI
             this.CustomSettingsStyle(new Vector2(278, 31));
 
             foreach (var visible in EnumExtension.GetEnumValues<OptionVisibility>())
-                AddItem(visible, visible.Description<OptionVisibility, Mod>());
+                AddItem(visible, new OptionData(visible.Description<OptionVisibility, Mod>()));
 
             SelectedObject = OptionVisibility.Visible;
         }

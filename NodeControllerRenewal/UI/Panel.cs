@@ -92,7 +92,7 @@ namespace NodeController.UI
         private void AddNodeTypeProperty()
         {
             TypeProperty = ComponentPool.Get<NodeTypePropertyPanel>(Content);
-            TypeProperty.Text = NodeController.Localize.Option_Type;
+            TypeProperty.Label = NodeController.Localize.Option_Type;
             TypeProperty.Init(Data.IsPossibleType);
             TypeProperty.UseWheel = true;
             TypeProperty.WheelTip = true;

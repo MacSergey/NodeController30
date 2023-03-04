@@ -82,7 +82,7 @@ namespace NodeController
         public bool IsStraight => IsTwoRoads && MainDot < -0.995f;
         public bool Is180 => IsTwoRoads && MainDot > 0.995f;
         public bool IsEqualWidth => IsTwoRoads && Math.Abs(FirstSegment.Info.m_halfWidth - SecondSegment.Info.m_halfWidth) < 0.001f;
-        public bool HasNodeLess => SegmentEndDatas.Any(s => s.FinalNodeLess);
+        public bool HasNodeLess => SegmentEndDatas.Any(s => s.IsNodeLess);
         public bool IsUnderground => Id.GetNode().m_flags.IsSet(NetNode.Flags.Underground);
         public bool IsSameRoad
         {
@@ -278,7 +278,7 @@ namespace NodeController
                     newSegmentEnds[newSegmentEnd.Id] = newSegmentEnd;
 
                     if (Style is NodeStyle style)
-                        newSegmentEnd.ResetToDefault(style, mode, true);
+                        newSegmentEnd.ResetToDefault(style, mode, true, false);
                 }
             }
 #if DEBUG && EXTRALOG
@@ -582,7 +582,7 @@ namespace NodeController
 
             var mode = Mode;
             foreach (var segmentEnd in SegmentEndDatas)
-                segmentEnd.ResetToDefault(Style, mode, force);
+                segmentEnd.ResetToDefault(Style, mode, force, false);
         }
         public void SetMain(ushort first, ushort second)
         {

@@ -312,7 +312,7 @@ namespace NodeController
         private void AddData()
         {
             foreach (var file in Loader.GetDataRestoreList())
-                DropDown.AddItem(file.Key, file.Value);
+                DropDown.AddItem(file.Key, new OptionData(file.Value));
         }
         private void ImportClick()
         {
