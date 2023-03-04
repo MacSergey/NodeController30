@@ -1517,9 +1517,12 @@ namespace NodeController
         {
             if (style.SupportMode != SupportOption.None)
             {
-                var isSlope = config.GetAttrValue("IS", 0) == 1;
-                Mode = isSlope ? Mode.Slope : Mode.Flat;
-                Mode = (Mode)config.GetAttrValue("M", (int)style.DefaultMode);
+                if (config.TryGetAttrValue<int>("M", out var mode))
+                    Mode = (Mode)mode;
+                else if (config.TryGetAttrValue<int>("IS", out var isSlope))
+                    Mode = isSlope == 1 ? Mode.Slope : Mode.Flat;
+                else
+                    Mode = style.DefaultMode;
             }
 
             if (style.SupportMarking != SupportOption.None && !IsUntouchable)
