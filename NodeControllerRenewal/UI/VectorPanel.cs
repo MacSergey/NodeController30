@@ -80,6 +80,16 @@ namespace NodeController.UI
             YTitle = string.Empty;
             ZTitle = string.Empty;
         }
+
+        protected override void FillContent() { }
+
+        public override void SetStyle(ControlStyle style)
+        {
+            NodeItem.LabelStyle = style.Label;
+
+            foreach (var item in SegmentItems.Values)
+                item.TextFieldStyle = style.TextField;
+        }
     }
 
     public abstract class VectorPanel<TypeVector> : CustomUIPanel, IValueChanger<TypeVector>, IReusable
@@ -212,16 +222,24 @@ namespace NodeController.UI
             }
         }
 
+        public TextFieldStyle TextFieldStyle
+        {
+            set
+            {
+                foreach (var field in Fields)
+                    field.TextFieldStyle = value;
+            }
+        }
+
         public VectorPanel()
         {
             Fields = new FloatUITextField[Dimension];
             for (var i = 0; i < Dimension; i += 1)
                 Fields[i] = AddField(i);
 
-            autoLayoutDirection = LayoutDirection.Vertical;
-            autoFitChildrenVertically = true;
-            autoLayoutPadding = new RectOffset(0, 0, 0, 2);
-            autoLayout = true;
+            AutoChildrenVertically = AutoLayoutChildren.Fit;
+            Padding = new RectOffset(0, 0, 0, 2);
+            AutoLayout = AutoLayout.Vertical;
         }
 
         public void DeInit()
@@ -287,10 +305,9 @@ namespace NodeController.UI
             for (var i = 0; i < Dimension; i += 1)
                 Fields[i] = AddField(i);
 
-            autoLayoutDirection = LayoutDirection.Vertical;
-            autoFitChildrenVertically = true;
-            autoLayoutPadding = new RectOffset(0, 0, 0, 2);
-            autoLayout = true;
+            AutoChildrenVertically = AutoLayoutChildren.Fit;
+            Padding = new RectOffset(0, 0, 0, 2);
+            AutoLayout = AutoLayout.Vertical;
         }
 
         public virtual void DeInit() { }
@@ -311,6 +328,8 @@ namespace NodeController.UI
                     field.width = width;
             }
         }
+
+        public abstract LabelStyle LabelStyle { set; }
     }
     public class TextStaticPanel : StaticPanel<CustomUILabel>, IValueChanger<Vector3>
     {
@@ -330,8 +349,8 @@ namespace NodeController.UI
             field.autoSize = false;
             field.height = 20f;
             field.textScale = 0.7f;
-            field.textAlignment = UIHorizontalAlignment.Right;
-            field.padding = new RectOffset(0, 0, 5, 0);
+            field.HorizontalAlignment = UIHorizontalAlignment.Right;
+            field.Padding = new RectOffset(0, 0, 5, 0);
             return field;
         }
         public override void DeInit()
@@ -344,8 +363,16 @@ namespace NodeController.UI
 
         public void SetText(int index, string text)
         {
-            if(index < Fields.Length)
+            if (index < Fields.Length)
                 Fields[index].text = text;
+        }
+        public override LabelStyle LabelStyle
+        {
+            set
+            {
+                foreach (var field in Fields)
+                    field.LabelStyle = value;
+            }
         }
     }
 }

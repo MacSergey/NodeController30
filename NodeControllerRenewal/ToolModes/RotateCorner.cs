@@ -72,7 +72,7 @@ namespace NodeController
 
             SegmentEnd.RenderContour(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
             SegmentEnd.RenderStart(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
-            SegmentEnd[Corner].RenderCircle(new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground });
+            SegmentEnd[Corner].RenderCircle(new OverlayData(cameraInfo) { Color = CommonColors.Yellow, RenderLimit = underground });
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
         {
@@ -82,7 +82,7 @@ namespace NodeController
             var quaternion = Quaternion.FromToRotation(BeginDirection, CurrentDirection);
             var angle = (CachedRotate + quaternion.eulerAngles.y).RoundToNearest(RoundTo) % 360f;
             text = $"{(angle > 180f ? angle - 360f : angle):0}°";
-            color = Colors.Yellow;
+            color = CommonColors.Yellow;
             return true;
         }
     }

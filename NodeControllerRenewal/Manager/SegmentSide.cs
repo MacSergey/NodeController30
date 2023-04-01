@@ -454,7 +454,7 @@ namespace NodeController
                 if (final.rawT - final.minT >= 0.2f / final.rawTrajectory.Length)
                     final.rawTrajectory.Cut(final.minT, final.rawT).Render(dataAllow);
             }
-            dataDefault.Color ??= Colors.Purple;
+            dataDefault.Color ??= CommonColors.Purple;
             final.rawTrajectory.Position(final.defaultT).RenderCircle(dataDefault);
         }
         public void Render(OverlayData centerData, OverlayData circleData)
@@ -467,7 +467,7 @@ namespace NodeController
             var markerPosition = MarkerPos;
             if ((markerPosition - final.position).sqrMagnitude > 0.25f)
             {
-                var color = data.Color.HasValue ? ((Color32)data.Color.Value).SetAlpha(128) : Colors.White128;
+                var color = data.Color.HasValue ? ((Color32)data.Color.Value).SetAlpha(128) : CommonColors.White128;
                 new StraightTrajectory(markerPosition, final.position).Render(new OverlayData(data.CameraInfo) { Color = color });
             }
             markerPosition.RenderCircle(data, data.Width ?? SegmentEndData.CornerCenterRadius * 2, 0f);

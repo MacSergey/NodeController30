@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-	<AssemblyVersion>3.4.0.149</AssemblyVersion>
+	<AssemblyVersion>3.4.0.159</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">
@@ -217,7 +217,6 @@
     </Compile>
   </ItemGroup>
     
-  <Import Project="..\ModsCommon\AutoLayoutPanelShared\AutoLayoutPanelShared.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\ColorsShared\ColorsShared.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\DependencyShared\DependencyShared.projitems" Label="Shared" />
   <Import Project="..\ModsCommon\HeaderShared\HeaderShared.projitems" Label="Shared" />

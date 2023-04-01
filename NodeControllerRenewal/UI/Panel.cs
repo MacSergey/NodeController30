@@ -21,28 +21,25 @@ namespace NodeController.UI
         public NodeData Data { get; private set; }
 
         private static Color32 DefaultColor => new Color32(36, 40, 40, 255);
-        private static Color32 ErrorColor => Colors.Error;
+        private static Color32 ErrorColor => ComponentStyle.ErrorNormalColor;
 
         public NodeControllerPanel()
         {
-            AddContent();
-            AddHeader();
-        }
-        private void AddContent()
-        {
+            Atlas = CommonTextures.Atlas;
+            BackgroundSprite = CommonTextures.PanelBig;
+            BgColors = ComponentStyle.PanelColor;
+            name = nameof(NodeControllerPanel);
+
             Content = ComponentPool.Get<PropertyGroupPanel>(this);
             Content.minimumSize = new Vector2(300f, 0f);
-            Content.color = DefaultColor;
-            Content.autoLayoutDirection = LayoutDirection.Vertical;
-            Content.autoFitChildrenVertically = true;
+            Content.BgColors = DefaultColor;
+            Content.PaddingBottom = 7;
             Content.eventSizeChanged += (UIComponent component, Vector2 value) => size = value;
-        }
-        private void AddHeader()
-        {
+
             Header = ComponentPool.Get<PanelHeader>(Content);
             Header.Target = this;
-            Header.backgroundSprite = "ButtonWhite";
-            Header.Init();
+            Header.BackgroundSprite = "ButtonWhite";
+            Header.Init(HeaderHeight);
         }
 
         public void SetData(NodeData data)
@@ -56,28 +53,26 @@ namespace NodeController.UI
         }
         public void SetPanel()
         {
-            Content.StopLayout();
+            Content.PauseLayout(() =>
+            {
+                ResetPanel();
 
-            ResetPanel();
+                Content.width = (Data.Style.TotalSupport == SupportOption.All ? Mathf.Max((Data.SegmentCount + 1) * 55f + 120f, 300f) : 300f) + 30f;
+                Header.Text = Data.Title;
+                RefreshHeader();
+                AddNodeTypeProperty();
 
-            Content.width = Data.Style.TotalSupport == SupportOption.All ? Mathf.Max((Data.SegmentCount + 1) * 55f + 120f, 300f) : 300f;
-            Header.Text = Data.Title;
-            RefreshHeader();
-            AddNodeTypeProperty();
-
-            FillProperties();
-
-            Content.StartLayout();
+                FillProperties();
+            });
         }
         private void ResetPanel()
         {
-            Content.StopLayout();
-
-            ComponentPool.Free(TypeProperty);
-            ComponentPool.Free(FreeFormProperty);
-            ClearProperties();
-
-            Content.StartLayout();
+            Content.PauseLayout(() =>
+            {
+                ComponentPool.Free(TypeProperty);
+                ComponentPool.Free(FreeFormProperty);
+                ClearProperties();
+            });
         }
 
         private void FillProperties() => Properties = Data.Style.GetUIComponents(Content, GetShowHidden, SetShowHidden);
@@ -101,13 +96,12 @@ namespace NodeController.UI
             {
                 Data.Type = value;
 
-                Content.StopLayout();
-
-                ClearProperties();
-                FillProperties();
-                RefreshHeader();
-
-                Content.StartLayout();
+                Content.PauseLayout(() =>
+                {
+                    ClearProperties();
+                    FillProperties();
+                    RefreshHeader();
+                });
             };
         }
 
@@ -118,25 +112,17 @@ namespace NodeController.UI
         {
             RefreshHeader();
             Data.Style.RefreshUIComponents(Content, GetShowHidden, SetShowHidden);
-
-            //foreach (var property in Properties.OfType<IOptionPanel>())
-            //{
-            //    if(property.isVisibleSelf)
-            //        property.Refresh();
-            //}
         }
 
         public override void Update()
         {
             base.Update();
-            Content.color = Data == null || (Data.State & State.Fail) == 0 ? DefaultColor : ErrorColor;
-            Header.color = Data == null || Data.Mode != Mode.FreeForm ? DefaultColor : Colors.Orange;
+            Content.BgColors = Data == null || (Data.State & State.Fail) == 0 ? DefaultColor : ErrorColor;
+            Header.BgColors = Data == null || Data.Mode != Mode.FreeForm ? DefaultColor : CommonColors.Orange;
         }
     }
     public class PanelHeader : HeaderMoveablePanel<PanelHeaderContent>
     {
-        protected override float DefaultHeight => 40f;
-
         private HeaderButtonInfo<HeaderButton> MakeStraight { get; set; }
 
         private HeaderButtonInfo<HeaderButton> CalculateShiftNearby { get; set; }
@@ -147,7 +133,7 @@ namespace NodeController.UI
         private HeaderButtonInfo<HeaderButton> CalculateTwistIntersections { get; set; }
         private HeaderButtonInfo<HeaderButton> SetTwistIntersections { get; set; }
 
-        public PanelHeader()
+        protected override void FillContent()
         {
             Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.KeepDefaultHeaderButton, NodeController.Localize.Option_KeepDefault, EditNodeToolMode.ResetOffsetShortcut));
             Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.ResetToDefaultHeaderButton, NodeController.Localize.Option_ResetToDefault, EditNodeToolMode.ResetToDefaultShortcut));
@@ -173,6 +159,7 @@ namespace NodeController.UI
             SetTwistIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.SetTwistBetweenIntersectionsHeaderButton, NodeController.Localize.Option_SetTwistBetweenIntersections, EditNodeToolMode.SetTwistBetweenIntersectionsShortcut);
             Content.AddButton(SetTwistIntersections);
         }
+        public void Init(float height) => base.Init(height);
 
         public override void Refresh()
         {

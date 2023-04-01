@@ -17,7 +17,7 @@ namespace NodeController
 
         public bool ShowPanel => false;
         public ToolModeType Type => ToolModeType.Select;
-        protected override Color32 NodeColor => Colors.Yellow;
+        protected override Color32 NodeColor => CommonColors.Yellow;
         private bool IsPossibleInsertNode { get; set; }
         private Vector3 InsertPosition { get; set; }
 
@@ -217,7 +217,7 @@ namespace NodeController
                 if (Settings.IsInsertEnable)
                 {
                     var isPossibleInsert = PossibleInsertNode(out var position, out var direction, out var halfWidth);
-                    var overlayData = new OverlayData(cameraInfo) { Width = halfWidth * 2, Color = isPossibleInsert ? Colors.Green : Colors.Red, AlphaBlend = false, Cut = true, RenderLimit = Underground };
+                    var overlayData = new OverlayData(cameraInfo) { Width = halfWidth * 2, Color = isPossibleInsert ? CommonColors.Green : CommonColors.Red, AlphaBlend = false, Cut = true, RenderLimit = Underground };
 
                     var middle = new Bezier3()
                     {

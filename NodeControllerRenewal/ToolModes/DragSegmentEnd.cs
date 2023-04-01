@@ -117,9 +117,9 @@ namespace NodeController
         {
             var underground = IsUnderground;
             var allow = new OverlayData(cameraInfo) { RenderLimit = underground };
-            var forbidden = new OverlayData(cameraInfo) { Color = Colors.Red, RenderLimit = underground };
+            var forbidden = new OverlayData(cameraInfo) { Color = CommonColors.Red, RenderLimit = underground };
             var defaultColor = new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground };
-            var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground };
+            var yellow = new OverlayData(cameraInfo) { Color = CommonColors.Yellow, RenderLimit = underground };
 
             if (SegmentEnd.Mode != Mode.FreeForm)
             {
@@ -141,7 +141,7 @@ namespace NodeController
             if (SegmentEnd.Mode != Mode.FreeForm)
             {
                 text = SegmentEnd.Offset.ToString("0.0");
-                color = SegmentEnd.IsStartBorderOffset || SegmentEnd.IsEndBorderOffset ? Colors.Red : Colors.Yellow;
+                color = SegmentEnd.IsStartBorderOffset || SegmentEnd.IsEndBorderOffset ? CommonColors.Red : CommonColors.Yellow;
                 return true;
             }
             else if(Utility.OnlyShiftIsPressed)
@@ -149,7 +149,7 @@ namespace NodeController
                 var y = (SegmentEnd.LeftPosDelta.y + SegmentEnd.RightPosDelta.y) * 0.5f;
                 var ySign = y < 0 ? "-" : y > 0 ? "+" : "";
                 text = $"{ySign}{Mathf.Abs(y):0.0}";
-                color = Colors.Yellow;
+                color = CommonColors.Yellow;
                 return true;
             }
             else
@@ -159,7 +159,7 @@ namespace NodeController
                 var xSign = x < 0 ? "-" : x > 0 ? "+" : "";
                 var zSign = z < 0 ? "-" : z > 0 ? "+" : "";
                 text = $"X: {xSign}{Mathf.Abs(x):0.0}\nY: {zSign}{Mathf.Abs(z):0.0}";
-                color = Colors.Yellow;
+                color = CommonColors.Yellow;
                 return true;
             }
         }

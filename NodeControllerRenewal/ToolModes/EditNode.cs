@@ -179,7 +179,7 @@ namespace NodeController
         {
             var underground = IsUnderground;
             var hover = new OverlayData(cameraInfo) { RenderLimit = underground };
-            var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground };
+            var yellow = new OverlayData(cameraInfo) { Color = CommonColors.Yellow, RenderLimit = underground };
 
             foreach (var segmentData in Tool.Data.SegmentEndDatas)
             {

@@ -613,10 +613,9 @@ namespace NodeController
                     hideMarking.ButtonText = Localize.Option_HideCrosswalkModRequired;
 
                     hideMarking.WordWrap = true;
-                    hideMarking.AutoSize = true;
+                    hideMarking.AutoSize = AutoSize.Height;
                     hideMarking.TextAlignment = UIHorizontalAlignment.Center;
                     hideMarking.Init();
-                    hideMarking.AutoSize = false;
                     var actualWidth = hideMarking.Width;
 
                     if (totalSupport == SupportOption.Group)

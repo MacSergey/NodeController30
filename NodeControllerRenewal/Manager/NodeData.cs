@@ -707,11 +707,20 @@ namespace NodeController
         public class NodeTypeEntity : SimpleEntity<NodeStyleType> { }
         public class NodeTypePopup : SimplePopup<NodeStyleType, NodeTypeEntity> { }
         protected override string GetDescription(NodeStyleType value) => value.Description();
+
+        public override void SetStyle(ControlStyle style)
+        {
+            Selector.DropDownStyle = style.DropDown;
+        }
     }
     public class ModePropertyPanel : EnumOncePropertyPanel<Mode, ModePropertyPanel.ModeSegmented>
     {
         protected override string GetDescription(Mode value) => value.Description();
         protected override bool IsEqual(Mode first, Mode second) => first == second;
+        public override void SetStyle(ControlStyle style)
+        {
+            Selector.SegmentedStyle = style.Segmented;
+        }
 
         public class ModeSegmented : UIOnceSegmented<Mode> { }
     }

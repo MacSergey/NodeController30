@@ -26,14 +26,14 @@ namespace NodeController
 
         public static Color32[] OverlayColors { get; } = new Color32[]
         {
-            Colors.GetOverlayColor(Colors.Overlay.Red, 255),
-            Colors.GetOverlayColor(Colors.Overlay.Blue, 255),
-            Colors.GetOverlayColor(Colors.Overlay.Lime, 255),
-            Colors.GetOverlayColor(Colors.Overlay.Orange, 255),
-            Colors.GetOverlayColor(Colors.Overlay.Purple, 255),
-            Colors.GetOverlayColor(Colors.Overlay.SkyBlue, 255),
-            Colors.GetOverlayColor(Colors.Overlay.Pink, 255),
-            Colors.GetOverlayColor(Colors.Overlay.Turquoise, 255),
+            CommonColors.GetOverlayColor(CommonColors.Overlay.Red, 255),
+            CommonColors.GetOverlayColor(CommonColors.Overlay.Blue, 255),
+            CommonColors.GetOverlayColor(CommonColors.Overlay.Lime, 255),
+            CommonColors.GetOverlayColor(CommonColors.Overlay.Orange, 255),
+            CommonColors.GetOverlayColor(CommonColors.Overlay.Purple, 255),
+            CommonColors.GetOverlayColor(CommonColors.Overlay.SkyBlue, 255),
+            CommonColors.GetOverlayColor(CommonColors.Overlay.Pink, 255),
+            CommonColors.GetOverlayColor(CommonColors.Overlay.Turquoise, 255),
         };
 
         #endregion
@@ -1383,7 +1383,7 @@ namespace NodeController
 
         #region RENDER
 
-        public Color32 OverlayColor => IsShort ? Colors.Red : Colors.Green;
+        public Color32 OverlayColor => IsShort ? CommonColors.Red : CommonColors.Green;
 
         public void Render(OverlayData data)
         {

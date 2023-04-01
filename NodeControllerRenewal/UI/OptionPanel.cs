@@ -40,7 +40,7 @@ namespace NodeController.UI
             TotalOption = totalOption;
             IsEnableGetter = enableGetter;
 
-            PlaceItems();
+            Content.PauseLayout(PlaceItems);
 
             base.Init();
         }
@@ -67,7 +67,6 @@ namespace NodeController.UI
                     SegmentItems[segmentData] = AddSegmentItem(segmentData);
             }
 
-            Content.Refresh();
             Refresh();
         }
 
@@ -227,9 +226,21 @@ namespace NodeController.UI
 
             base.Refresh();
         }
+
+        protected override void FillContent() { }
+
+        public override void SetStyle(ControlStyle style)
+        {
+            NodeItem.TextFieldStyle = style.TextField;
+
+            foreach (var item in SegmentItems.Values)
+                item.TextFieldStyle = style.TextField;
+        }
     }
     public class BoolOptionPanel : OptionPanel<INOSegmented, INOSegmented, bool?>
     {
+        protected override void FillContent() { }
+
         protected override void InitNodeItem(NodeData data, INOSegmented item) => InitItem(data, item);
         protected override void InitSegmentItem(SegmentEndData data, INOSegmented item) => InitItem(data, item);
         private void InitItem(INetworkData data, INOSegmented item)
@@ -255,9 +266,18 @@ namespace NodeController.UI
 
             item.StartLayout();
         }
+        public override void SetStyle(ControlStyle style)
+        {
+            NodeItem.SegmentedStyle = style.Segmented;
+
+            foreach (var item in SegmentItems.Values)
+                item.SegmentedStyle = style.Segmented;
+        }
     }
     public class TextOptionPanel : OptionPanel<CustomUILabel, CustomUILabel>
     {
+        protected override void FillContent() { }
+
         protected override CustomUILabel AddNodeItem(NodeData data)
         {
             var item = base.AddNodeItem(data);
@@ -273,25 +293,31 @@ namespace NodeController.UI
             item.text = $"#{data.Id}";
             return item;
         }
+
         private void AddItem(CustomUILabel item)
         {
             item.autoSize = false;
             item.width = ItemWidth;
             item.height = 18f;
             item.textScale = 0.65f;
-            item.textAlignment = UIHorizontalAlignment.Center;
-            item.verticalAlignment = UIVerticalAlignment.Middle;
-            item.padding.top = 3;
-            item.atlas = TextureHelper.InGameAtlas;
-            item.backgroundSprite = "ButtonWhite";
+            item.HorizontalAlignment = UIHorizontalAlignment.Center;
+            item.VerticalAlignment = UIVerticalAlignment.Middle;
+            item.Padding.top = 3;
+            item.Atlas = CommonTextures.Atlas;
+            item.BackgroundSprite = CommonTextures.PanelBig;
+        }
+        public override void SetStyle(ControlStyle style)
+        {
+            
         }
     }
-    public class SpacePanel : EditorItem, IReusable
+    public class SpacePanel : BaseEditorPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
-        public override bool SupportEven => true;
 
         public void Init(float height) => base.Init(height);
+
+        public override void SetStyle(ControlStyle style) { }
     }
     public class IOSegmented : UIOnceSegmented<bool> { }
     public class INOSegmented : UIOnceSegmented<bool?> { }

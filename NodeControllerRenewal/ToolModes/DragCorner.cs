@@ -114,20 +114,20 @@ namespace NodeController
         {
             var underground = IsUnderground;
             var allow = new OverlayData(cameraInfo) { RenderLimit = underground };
-            var forbidden = new OverlayData(cameraInfo) { Color = Colors.Red, RenderLimit = underground };
+            var forbidden = new OverlayData(cameraInfo) { Color = CommonColors.Red, RenderLimit = underground };
 
             if (SegmentEnd.Mode != Mode.FreeForm)
             {
                 SegmentEnd[Corner].RenderGuides(allow, forbidden, allow);
                 SegmentEnd.RenderContour(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
                 SegmentEnd.RenderStart(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
-                SegmentEnd[Corner].RenderCenter(new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground });
+                SegmentEnd[Corner].RenderCenter(new OverlayData(cameraInfo) { Color = CommonColors.Yellow, RenderLimit = underground });
             }
             else
             {
                 SegmentEnd.RenderContour(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
                 SegmentEnd.RenderStart(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
-                SegmentEnd[Corner].RenderCenter(new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground });
+                SegmentEnd[Corner].RenderCenter(new OverlayData(cameraInfo) { Color = CommonColors.Yellow, RenderLimit = underground });
             }
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
@@ -142,7 +142,7 @@ namespace NodeController
 
                 var value = side.RawTrajectory.Cut(0f, side.CurrentT).GetLength(1f, 7) - side.AdditionalLength;
                 text = $"{value:0.0}";
-                color = side.IsMinBorderT || side.IsMaxBorderT ? Colors.Red : Colors.Yellow;
+                color = side.IsMinBorderT || side.IsMaxBorderT ? CommonColors.Red : CommonColors.Yellow;
                 return true;
             }
             else if (Utility.OnlyShiftIsPressed)
@@ -150,7 +150,7 @@ namespace NodeController
                 var y = SegmentEnd[Corner].PosDelta.y;
                 var ySign = y < 0 ? "-" : y > 0 ? "+" : "";
                 text = $"{ySign}{Mathf.Abs(y):0.0}";
-                color = Colors.Yellow;
+                color = CommonColors.Yellow;
                 return true;
             }
             else
@@ -160,7 +160,7 @@ namespace NodeController
                 var xSign = x < 0 ? "-" : x > 0 ? "+" : "";
                 var zSign = z < 0 ? "-" : z > 0 ? "+" : "";
                 text = $"X: {xSign}{Mathf.Abs(x):0.0}\nY: {zSign}{Mathf.Abs(z):0.0}";
-                color = Colors.Yellow;
+                color = CommonColors.Yellow;
                 return true;
             }
         }

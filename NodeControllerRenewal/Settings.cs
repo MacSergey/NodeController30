@@ -102,36 +102,42 @@ namespace NodeController
 #endif
         }
 
-        private void AddGeneral(UIComponent helper, out OptionPanelWithLabelData undergroundOptions)
+        private void AddGeneral(UIComponent helper, out OptionPanelData undergroundOptions)
         {
-            var generalGroup = helper.AddOptionsGroup(CommonLocalize.Settings_General);
-            generalGroup.AddToggle(Localize.Settings_SelectMiddleNodes, SelectMiddleNodes);
-            generalGroup.AddInfoLabel(Localize.Settings_SelectMiddleNodesDiscription, 0.8f);
-            generalGroup.AddToggle(Localize.Settings_RenderNearNode, RenderNearNode);
-            generalGroup.AddToggle(Localize.Settings_NodeIsSlopedByDefault, NodeIsSlopedByDefault);
-            generalGroup.AddTogglePanel(Localize.Settings_InsertNode, InsertNode, new string[] { Localize.Settings_InsertNodeEnabled, string.Format(Localize.Settings_InsertNodeWithModifier, InsertModifier), Localize.Settings_InsertNodeDisabled });
-            undergroundOptions = generalGroup.AddTogglePanel(Localize.Settings_ToggleUnderground, ToggleUndergroundMode, new string[] { string.Format(Localize.Settings_ToggleUndergroundHold, UndergroundModifier), string.Format(Localize.Settings_ToggleUndergroundButtons, SelectNodeToolMode.EnterUndergroundShortcut, SelectNodeToolMode.ExitUndergroundShortcut) });
-            generalGroup.AddToggle(CommonLocalize.Settings_ShowTooltips, ShowToolTip);
-            AddToolButton<NodeControllerTool, NodeControllerButton>(generalGroup);
-            generalGroup.AddToggle(Localize.Settings_LongIntersectionFix, LongIntersectionFix);
-            generalGroup.AddInfoLabel(Localize.Settings_LongIntersectionFixWarning, 0.8f, new Color32(255, 68, 68, 255));
-            generalGroup.AddInfoLabel(Localize.Settings_ApplyAfterRestart, 0.8f, new Color32(255, 215, 81, 255));
+            var generalSection = helper.AddOptionsSection(CommonLocalize.Settings_General);
+            var middleNodeGroup = generalSection.AddItemsGroup();
+            var toggle = middleNodeGroup.AddToggle(Localize.Settings_SelectMiddleNodes, SelectMiddleNodes);
+            toggle.PaddingBottom = 0;
+            middleNodeGroup.AddInfoLabel(Localize.Settings_SelectMiddleNodesDiscription, 0.8f, new Color32(255, 215, 81, 255));
+
+            generalSection.AddToggle(Localize.Settings_RenderNearNode, RenderNearNode);
+            generalSection.AddToggle(Localize.Settings_NodeIsSlopedByDefault, NodeIsSlopedByDefault);
+            generalSection.AddTogglePanel(Localize.Settings_InsertNode, InsertNode, new string[] { Localize.Settings_InsertNodeEnabled, string.Format(Localize.Settings_InsertNodeWithModifier, InsertModifier), Localize.Settings_InsertNodeDisabled });
+            undergroundOptions = generalSection.AddTogglePanel(Localize.Settings_ToggleUnderground, ToggleUndergroundMode, new string[] { string.Format(Localize.Settings_ToggleUndergroundHold, UndergroundModifier), string.Format(Localize.Settings_ToggleUndergroundButtons, SelectNodeToolMode.EnterUndergroundShortcut, SelectNodeToolMode.ExitUndergroundShortcut) });
+            generalSection.AddToggle(CommonLocalize.Settings_ShowTooltips, ShowToolTip);
+            AddToolButton<NodeControllerTool, NodeControllerButton>(generalSection);
+
+            var longFixGroup = generalSection.AddItemsGroup();
+            toggle = longFixGroup.AddToggle(Localize.Settings_LongIntersectionFix, LongIntersectionFix);
+            toggle.PaddingBottom = 0;
+            longFixGroup.AddInfoLabel(Localize.Settings_LongIntersectionFixWarning, 0.8f, new Color32(255, 68, 68, 255));
+            longFixGroup.AddInfoLabel(Localize.Settings_ApplyAfterRestart, 0.8f, new Color32(255, 215, 81, 255));
         }
 
         private void AddOptionVisible(UIComponent helper)
         {
-            var group = helper.AddOptionsGroup(Localize.Settings_OptionsVisibility);
+            var section = helper.AddOptionsSection(Localize.Settings_OptionsVisibility);
             foreach (var option in EnumExtension.GetEnumValues<Options>())
             {
-                var item = group.AddUIComponent<OptionVisibilitySettingsItem>();
+                var item = section.AddUIComponent<OptionVisibilitySettingsItem>();
                 item.Label = option.Description();
                 item.Option = option;
             }
         }
 
-        private void AddKeyMapping(UIComponent helper, OptionPanelWithLabelData undergroundOptions)
+        private void AddKeyMapping(UIComponent helper, OptionPanelData undergroundOptions)
         {
-            var keymappings = helper.AddOptionsGroup(CommonLocalize.Settings_Shortcuts);
+            var keymappings = helper.AddOptionsSection(CommonLocalize.Settings_Shortcuts);
             keymappings.AddKeyMappingButton(NodeControllerTool.ActivationShortcut);
 
             keymappings.AddKeyMappingButton(SelectNodeToolMode.SelectionStepOverShortcut);
@@ -152,26 +158,23 @@ namespace NodeController
 
             void OnBindingChanged(Shortcut shortcut)
             {
-                undergroundOptions.checkBoxes[1].label.text = string.Format(Localize.Settings_ToggleUndergroundButtons, SelectNodeToolMode.EnterUndergroundShortcut, SelectNodeToolMode.ExitUndergroundShortcut);
+                undergroundOptions.checkBoxes.SetLabel(1, string.Format(Localize.Settings_ToggleUndergroundButtons, SelectNodeToolMode.EnterUndergroundShortcut, SelectNodeToolMode.ExitUndergroundShortcut));
             }
         }
 
         private void AddBackupData(UIComponent helper)
         {
-            var group = helper.AddOptionsGroup();
+            var section = helper.AddOptionsSection();
 
-            AddDeleteAll(group);
-            AddDump(group);
-            AddRestore(group);
+            AddDeleteAll(section);
+            AddDump(section);
+            AddRestore(section);
         }
         private void AddDeleteAll(CustomUIPanel group)
         {
             var buttonPanel = group.AddButtonPanel();
             var button = buttonPanel.AddButton(Localize.Settings_DeleteDataButton, Click, 600);
-            button.color = new Color32(255, 40, 40, 255);
-            button.hoveredColor = new Color32(224, 40, 40, 255);
-            button.pressedColor = new Color32(192, 40, 40, 255);
-            button.focusedColor = button.color;
+            button.BgColors = new ColorSet(new Color32(255, 40, 40, 255), new Color32(224, 40, 40, 255), new Color32(192, 40, 40, 255), new Color32(255, 40, 40, 255), default);
 
             void Click()
             {
@@ -239,23 +242,23 @@ namespace NodeController
 
         private void AddDebug(UIComponent helper)
         {
-            var overlayGroup = helper.AddOptionsGroup("Selection overlay");
+            var overlaySection = helper.AddOptionsSection("Selection overlay");
 
-            Selection.AddAlphaBlendOverlay(overlayGroup);
-            Selection.AddRenderOverlayCentre(overlayGroup);
-            Selection.AddRenderOverlayBorders(overlayGroup);
-            Selection.AddBorderOverlayWidth(overlayGroup);
+            Selection.AddAlphaBlendOverlay(overlaySection);
+            Selection.AddRenderOverlayCentre(overlaySection);
+            Selection.AddRenderOverlayBorders(overlaySection);
+            Selection.AddBorderOverlayWidth(overlaySection);
 
 
-            var groupOther = helper.AddOptionsGroup("Other");
+            var otherSection = helper.AddOptionsSection("Other");
 
-            groupOther.AddFloatField("SegmentId", SegmentId, 0f);
-            groupOther.AddFloatField("NodeId", NodeId, 0f);
+            otherSection.AddFloatField("SegmentId", SegmentId, 0f);
+            otherSection.AddFloatField("NodeId", NodeId, 0f);
 
-            var buttonPanel = groupOther.AddButtonPanel();
+            var buttonPanel = otherSection.AddButtonPanel();
             buttonPanel.AddButton("Add all nodes", AddAllNodes, 200f);
             buttonPanel.AddButton("Clear", SingletonManager<Manager>.Destroy, 200f);
-            groupOther.AddToggle("Show extra debug", ExtraDebug);
+            otherSection.AddToggle("Show extra debug", ExtraDebug);
 
             static void AddAllNodes()
             {
@@ -295,8 +298,8 @@ namespace NodeController
         }
         private void AddFileList()
         {
-            DropDown = Panel.Content.AddUIComponent<StringDropDown>();
-            ComponentStyle.DropDownMessageBoxStyle(DropDown, new Vector2(DefaultWidth - 2 * Padding, 38));
+            DropDown = Content.AddUIComponent<StringDropDown>();
+            ComponentStyle.DropDownMessageBoxStyle(DropDown, new Vector2(DefaultWidth - 2 * DefaultPadding, 38));
             DropDown.EntityTextScale = 1f;
 
             DropDown.textScale = 1.25f;
@@ -331,11 +334,6 @@ namespace NodeController
                 ImportButton.Disable();
         }
 
-        private void AddData()
-        {
-            foreach (var file in Loader.GetDataRestoreList())
-                DropDown.AddItem(file.Key, new OptionData(file.Value));
-        }
         private void ImportClick()
         {
             var result = Loader.ImportData(DropDown.SelectedObject);
