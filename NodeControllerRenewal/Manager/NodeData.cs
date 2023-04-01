@@ -703,7 +703,9 @@ namespace NodeController
     {
         protected override float DropDownWidth => 150f;
         protected override bool IsEqual(NodeStyleType first, NodeStyleType second) => first == second;
-        public class NodeTypeDropDown : UIDropDown<NodeStyleType> { }
+        public class NodeTypeDropDown : SimpleDropDown<NodeStyleType, NodeTypeEntity, NodeTypePopup> { }
+        public class NodeTypeEntity : SimpleEntity<NodeStyleType> { }
+        public class NodeTypePopup : SimplePopup<NodeStyleType, NodeTypeEntity> { }
         protected override string GetDescription(NodeStyleType value) => value.Description();
     }
     public class ModePropertyPanel : EnumOncePropertyPanel<Mode, ModePropertyPanel.ModeSegmented>

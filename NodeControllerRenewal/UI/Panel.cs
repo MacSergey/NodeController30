@@ -20,7 +20,7 @@ namespace NodeController.UI
 
         public NodeData Data { get; private set; }
 
-        private static Color32 DefaultColor => new Color32(72, 80, 80, 255);
+        private static Color32 DefaultColor => new Color32(36, 40, 40, 255);
         private static Color32 ErrorColor => Colors.Error;
 
         public NodeControllerPanel()

@@ -36,6 +36,11 @@ namespace NodeController
 		public static string Mod_LoadFailedAll => LocaleManager.GetString("Mod_LoadFailedAll", Culture);
 
 		/// <summary>
+		/// [RELEASE] Renewal version release
+		/// </summary>
+		public static string Mod_WhatsNewMessage3_0 => LocaleManager.GetString("Mod_WhatsNewMessage3_0", Culture);
+
+		/// <summary>
 		/// [NEW] Added auto mode for main slope direction.
 		/// </summary>
 		public static string Mod_WhatsNewMessage3_0_1 => LocaleManager.GetString("Mod_WhatsNewMessage3_0_1", Culture);

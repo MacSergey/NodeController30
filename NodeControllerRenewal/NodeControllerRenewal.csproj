@@ -16,11 +16,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
-	<AssemblyVersion>3.4.0.140</AssemblyVersion>
+	<AssemblyVersion>3.4.0.149</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">
-    <AssemblyVersion>3.4.0.1</AssemblyVersion>
+    <AssemblyVersion>3.4.0.2</AssemblyVersion>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stable Release|AnyCPU'">
@@ -68,6 +68,7 @@
     <EmbeddedResource Include="Resources\HeaderButtons\ResetToDefaultHeaderButton.png" />
     <EmbeddedResource Include="Resources\HeaderButtons\SetShiftBetweenIntersectionsHeaderButton.png" />
     <EmbeddedResource Include="Resources\HeaderButtons\SetTwistBetweenIntersectionsHeaderButton.png" />
+    <EmbeddedResource Include="Resources\PreviewImage.png" />
     <EmbeddedResource Include="Resources\UUIButton\UUIButtonHovered.png" />
     <EmbeddedResource Include="Resources\UUIButton\UUIButtonNormal.png" />
     <EmbeddedResource Include="Resources\UUIButton\UUIButtonPressed.png" />
@@ -170,6 +171,10 @@
 	  <EmbeddedResource Remove="Properties\Localize.tr.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.zh-CN.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.zh-TW.resx" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="Resources\PreviewImage.png" />
   </ItemGroup>
   
   

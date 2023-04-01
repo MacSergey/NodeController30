@@ -3,6 +3,7 @@ using ColossalFramework.UI;
 using ICities;
 using ModsCommon;
 using ModsCommon.UI;
+using ModsCommon.Settings;
 using ModsCommon.Utilities;
 using NodeController.UI;
 using NodeController.Utilities;
@@ -10,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static ModsCommon.SettingsHelper;
+using static ModsCommon.Settings.Helper;
 
 namespace NodeController
 {
@@ -70,8 +71,8 @@ namespace NodeController
         }
         public static void SetOptionVisibility(Options option, OptionVisibility visibility) => OptionsVisibility[option].value = (int)visibility;
 
-        protected UIAdvancedHelper ShortcutsTab => GetTab(nameof(ShortcutsTab));
-        protected UIAdvancedHelper BackupTab => GetTab(nameof(BackupTab));
+        protected UIComponent ShortcutsTab => GetTabContent(nameof(ShortcutsTab));
+        protected UIComponent BackupTab => GetTabContent(nameof(BackupTab));
 
         protected override IEnumerable<KeyValuePair<string, string>> AdditionalTabs
         {
@@ -101,69 +102,72 @@ namespace NodeController
 #endif
         }
 
-        private void AddGeneral(UIAdvancedHelper helper, out OptionPanelWithLabelData undergroundOptions)
+        private void AddGeneral(UIComponent helper, out OptionPanelWithLabelData undergroundOptions)
         {
-            var generalGroup = helper.AddGroup(CommonLocalize.Settings_General);
-            AddCheckBox(generalGroup, Localize.Settings_SelectMiddleNodes, SelectMiddleNodes);
-            AddLabel(generalGroup, Localize.Settings_SelectMiddleNodesDiscription, 0.8f, padding: 25);
-            AddCheckBox(generalGroup, Localize.Settings_RenderNearNode, RenderNearNode);
-            AddCheckBox(generalGroup, Localize.Settings_NodeIsSlopedByDefault, NodeIsSlopedByDefault);
-            AddCheckboxPanel(generalGroup, Localize.Settings_InsertNode, InsertNode, new string[] { Localize.Settings_InsertNodeEnabled, string.Format(Localize.Settings_InsertNodeWithModifier, InsertModifier), Localize.Settings_InsertNodeDisabled });
-            undergroundOptions = AddCheckboxPanel(generalGroup, Localize.Settings_ToggleUnderground, ToggleUndergroundMode, new string[] { string.Format(Localize.Settings_ToggleUndergroundHold, UndergroundModifier), string.Format(Localize.Settings_ToggleUndergroundButtons, SelectNodeToolMode.EnterUndergroundShortcut, SelectNodeToolMode.ExitUndergroundShortcut) });
-            AddCheckBox(generalGroup, CommonLocalize.Settings_ShowTooltips, ShowToolTip);
+            var generalGroup = helper.AddOptionsGroup(CommonLocalize.Settings_General);
+            generalGroup.AddToggle(Localize.Settings_SelectMiddleNodes, SelectMiddleNodes);
+            generalGroup.AddInfoLabel(Localize.Settings_SelectMiddleNodesDiscription, 0.8f);
+            generalGroup.AddToggle(Localize.Settings_RenderNearNode, RenderNearNode);
+            generalGroup.AddToggle(Localize.Settings_NodeIsSlopedByDefault, NodeIsSlopedByDefault);
+            generalGroup.AddTogglePanel(Localize.Settings_InsertNode, InsertNode, new string[] { Localize.Settings_InsertNodeEnabled, string.Format(Localize.Settings_InsertNodeWithModifier, InsertModifier), Localize.Settings_InsertNodeDisabled });
+            undergroundOptions = generalGroup.AddTogglePanel(Localize.Settings_ToggleUnderground, ToggleUndergroundMode, new string[] { string.Format(Localize.Settings_ToggleUndergroundHold, UndergroundModifier), string.Format(Localize.Settings_ToggleUndergroundButtons, SelectNodeToolMode.EnterUndergroundShortcut, SelectNodeToolMode.ExitUndergroundShortcut) });
+            generalGroup.AddToggle(CommonLocalize.Settings_ShowTooltips, ShowToolTip);
             AddToolButton<NodeControllerTool, NodeControllerButton>(generalGroup);
-            AddCheckBox(generalGroup, Localize.Settings_LongIntersectionFix, LongIntersectionFix);
-            AddLabel(generalGroup, Localize.Settings_LongIntersectionFixWarning, 0.8f, new Color32(255, 68, 68, 255), 25);
-            AddLabel(generalGroup, Localize.Settings_ApplyAfterRestart, 0.8f, new Color32(255, 215, 81, 255), 25);
+            generalGroup.AddToggle(Localize.Settings_LongIntersectionFix, LongIntersectionFix);
+            generalGroup.AddInfoLabel(Localize.Settings_LongIntersectionFixWarning, 0.8f, new Color32(255, 68, 68, 255));
+            generalGroup.AddInfoLabel(Localize.Settings_ApplyAfterRestart, 0.8f, new Color32(255, 215, 81, 255));
         }
 
-        private void AddOptionVisible(UIAdvancedHelper helper)
+        private void AddOptionVisible(UIComponent helper)
         {
-            var panel = helper.AddGroup(Localize.Settings_OptionsVisibility).self as UIPanel;
-            panel.gameObject.AddComponent<OptionVisiblePanel>();
-        }
-
-        private void AddKeyMapping(UIAdvancedHelper helper, OptionPanelWithLabelData undergroundOptions)
-        {
-            var keymappingsGroup = helper.AddGroup(CommonLocalize.Settings_Shortcuts);
-            var keymappings = AddKeyMappingPanel(keymappingsGroup);
-            keymappings.AddKeymapping(NodeControllerTool.ActivationShortcut);
-
-            keymappings.AddKeymapping(SelectNodeToolMode.SelectionStepOverShortcut);
-            keymappings.AddKeymapping(SelectNodeToolMode.EnterUndergroundShortcut);
-            keymappings.AddKeymapping(SelectNodeToolMode.ExitUndergroundShortcut);
-
-            keymappings.AddKeymapping(EditNodeToolMode.ResetOffsetShortcut);
-            keymappings.AddKeymapping(EditNodeToolMode.ResetToDefaultShortcut);
-            keymappings.AddKeymapping(EditNodeToolMode.MakeStraightEndsShortcut);
-            keymappings.AddKeymapping(EditNodeToolMode.CalculateShiftByNearbyShortcut);
-            keymappings.AddKeymapping(EditNodeToolMode.CalculateShiftByIntersectionsShortcut);
-            keymappings.AddKeymapping(EditNodeToolMode.SetShiftBetweenIntersectionsShortcut);
-            keymappings.AddKeymapping(EditNodeToolMode.CalculateTwistByNearbyShortcut);
-            keymappings.AddKeymapping(EditNodeToolMode.CalculateTwistByIntersectionsShortcut);
-            keymappings.AddKeymapping(EditNodeToolMode.SetTwistBetweenIntersectionsShortcut);
-            //keymappings.AddKeymapping(EditNodeToolMode.ChangeNodeStyleShortcut);
-            keymappings.AddKeymapping(EditNodeToolMode.ChangeMainRoadModeShortcut);
-
-            keymappings.BindingChanged += OnBindingChanged;
-            void OnBindingChanged(Shortcut shortcut)
+            var group = helper.AddOptionsGroup(Localize.Settings_OptionsVisibility);
+            foreach (var option in EnumExtension.GetEnumValues<Options>())
             {
-                if (shortcut == SelectNodeToolMode.EnterUndergroundShortcut || shortcut == SelectNodeToolMode.ExitUndergroundShortcut)
-                    undergroundOptions.checkBoxes[1].label.text = string.Format(Localize.Settings_ToggleUndergroundButtons, SelectNodeToolMode.EnterUndergroundShortcut, SelectNodeToolMode.ExitUndergroundShortcut);
+                var item = group.AddUIComponent<OptionVisibilitySettingsItem>();
+                item.Label = option.Description();
+                item.Option = option;
             }
         }
 
-        private void AddBackupData(UIAdvancedHelper helper)
+        private void AddKeyMapping(UIComponent helper, OptionPanelWithLabelData undergroundOptions)
         {
-            var group = helper.AddGroup();
+            var keymappings = helper.AddOptionsGroup(CommonLocalize.Settings_Shortcuts);
+            keymappings.AddKeyMappingButton(NodeControllerTool.ActivationShortcut);
+
+            keymappings.AddKeyMappingButton(SelectNodeToolMode.SelectionStepOverShortcut);
+            keymappings.AddKeyMappingButton(SelectNodeToolMode.EnterUndergroundShortcut, OnBindingChanged);
+            keymappings.AddKeyMappingButton(SelectNodeToolMode.ExitUndergroundShortcut, OnBindingChanged);
+
+            keymappings.AddKeyMappingButton(EditNodeToolMode.ResetOffsetShortcut);
+            keymappings.AddKeyMappingButton(EditNodeToolMode.ResetToDefaultShortcut);
+            keymappings.AddKeyMappingButton(EditNodeToolMode.MakeStraightEndsShortcut);
+            keymappings.AddKeyMappingButton(EditNodeToolMode.CalculateShiftByNearbyShortcut);
+            keymappings.AddKeyMappingButton(EditNodeToolMode.CalculateShiftByIntersectionsShortcut);
+            keymappings.AddKeyMappingButton(EditNodeToolMode.SetShiftBetweenIntersectionsShortcut);
+            keymappings.AddKeyMappingButton(EditNodeToolMode.CalculateTwistByNearbyShortcut);
+            keymappings.AddKeyMappingButton(EditNodeToolMode.CalculateTwistByIntersectionsShortcut);
+            keymappings.AddKeyMappingButton(EditNodeToolMode.SetTwistBetweenIntersectionsShortcut);
+            //keymappings.AddKeymapping(EditNodeToolMode.ChangeNodeStyleShortcut);
+            keymappings.AddKeyMappingButton(EditNodeToolMode.ChangeMainRoadModeShortcut);
+
+            void OnBindingChanged(Shortcut shortcut)
+            {
+                undergroundOptions.checkBoxes[1].label.text = string.Format(Localize.Settings_ToggleUndergroundButtons, SelectNodeToolMode.EnterUndergroundShortcut, SelectNodeToolMode.ExitUndergroundShortcut);
+            }
+        }
+
+        private void AddBackupData(UIComponent helper)
+        {
+            var group = helper.AddOptionsGroup();
 
             AddDeleteAll(group);
             AddDump(group);
             AddRestore(group);
         }
-        private void AddDeleteAll(UIHelper group)
+        private void AddDeleteAll(CustomUIPanel group)
         {
-            var button = AddButton(group, Localize.Settings_DeleteDataButton, Click, 600);
+            var buttonPanel = group.AddButtonPanel();
+            var button = buttonPanel.AddButton(Localize.Settings_DeleteDataButton, Click, 600);
             button.color = new Color32(255, 40, 40, 255);
             button.hoveredColor = new Color32(224, 40, 40, 255);
             button.pressedColor = new Color32(192, 40, 40, 255);
@@ -182,9 +186,10 @@ namespace NodeController
                 return true;
             }
         }
-        private void AddDump(UIHelper group)
+        private void AddDump(CustomUIPanel group)
         {
-            AddButton(group, Localize.Settings_DumpDataButton, Click, 600);
+            var buttonPanel = group.AddButtonPanel();
+            buttonPanel.AddButton(Localize.Settings_DumpDataButton, Click, 600);
 
             void Click()
             {
@@ -214,9 +219,10 @@ namespace NodeController
                 }
             }
         }
-        private void AddRestore(UIHelper group)
+        private void AddRestore(CustomUIPanel group)
         {
-            AddButton(group, Localize.Settings_RestoreDataButton, Click, 600);
+            var buttonPanel = group.AddButtonPanel();
+            buttonPanel.AddButton(Localize.Settings_RestoreDataButton, Click, 600);
 
             void Click()
             {
@@ -231,9 +237,9 @@ namespace NodeController
         public static SavedFloat NodeId { get; } = new SavedFloat(nameof(NodeId), SettingsFile, 0f, false);
         public static SavedBool ExtraDebug { get; } = new SavedBool(nameof(ExtraDebug), SettingsFile, false, true);
 
-        private void AddDebug(UIAdvancedHelper helper)
+        private void AddDebug(UIComponent helper)
         {
-            var overlayGroup = helper.AddGroup("Selection overlay");
+            var overlayGroup = helper.AddOptionsGroup("Selection overlay");
 
             Selection.AddAlphaBlendOverlay(overlayGroup);
             Selection.AddRenderOverlayCentre(overlayGroup);
@@ -241,13 +247,15 @@ namespace NodeController
             Selection.AddBorderOverlayWidth(overlayGroup);
 
 
-            var groupOther = helper.AddGroup("Other");
+            var groupOther = helper.AddOptionsGroup("Other");
 
-            AddFloatField(groupOther, "SegmentId", SegmentId, 0f);
-            AddFloatField(groupOther, "NodeId", NodeId, 0f);
-            AddButton(groupOther, "Add all nodes", AddAllNodes, 200f);
-            AddButton(groupOther, "Clear", SingletonManager<Manager>.Destroy, 200f);
-            AddCheckBox(groupOther, "Show extra debug", ExtraDebug);
+            groupOther.AddFloatField("SegmentId", SegmentId, 0f);
+            groupOther.AddFloatField("NodeId", NodeId, 0f);
+
+            var buttonPanel = groupOther.AddButtonPanel();
+            buttonPanel.AddButton("Add all nodes", AddAllNodes, 200f);
+            buttonPanel.AddButton("Clear", SingletonManager<Manager>.Destroy, 200f);
+            groupOther.AddToggle("Show extra debug", ExtraDebug);
 
             static void AddAllNodes()
             {
@@ -274,7 +282,7 @@ namespace NodeController
     {
         private CustomUIButton ImportButton { get; set; }
         private CustomUIButton CancelButton { get; set; }
-        protected FileDropDown DropDown { get; set; }
+        protected StringDropDown DropDown { get; set; }
         public ImportDataMessageBox()
         {
             ImportButton = AddButton(ImportClick);
@@ -287,23 +295,37 @@ namespace NodeController
         }
         private void AddFileList()
         {
-            DropDown = Panel.Content.AddUIComponent<FileDropDown>();
-            ComponentStyle.CustomSettingsStyle(DropDown, new Vector2(DefaultWidth - 2 * Padding, 38));
+            DropDown = Panel.Content.AddUIComponent<StringDropDown>();
+            ComponentStyle.DropDownMessageBoxStyle(DropDown, new Vector2(DefaultWidth - 2 * Padding, 38));
+            DropDown.EntityTextScale = 1f;
 
-            DropDown.listWidth = (int)DropDown.width;
-            DropDown.listHeight = 200;
-            DropDown.itemPadding = new RectOffset(14, 14, 0, 0);
             DropDown.textScale = 1.25f;
-            DropDown.clampListToScreen = true;
-            DropDown.eventSelectedIndexChanged += DropDownIndexChanged;
+            DropDown.OnSelectObject += DropDownValueChanged;
 
-            AddData();
-            DropDown.selectedIndex = 0;
+            var files = Loader.GetDataRestoreList();
+            foreach (var file in files)
+                DropDown.AddItem(file.Key, file.Value);
+
+            DropDown.SelectedObject = files.FirstOrDefault().Key;
+            DropDown.OnSetPopupStyle += SetPopupStyle;
+            DropDown.OnSetEntityStyle += SetEntityStyle;
+
+            DropDownValueChanged(DropDown.SelectedObject);
+        }
+        private void SetPopupStyle(StringDropDown.StringPopup popup, ref bool overridden)
+        {
+            popup.PopupSettingsStyle<DropDownItem<string>, StringDropDown.StringEntity, StringDropDown.StringPopup>();
+            overridden = true;
+        }
+        private void SetEntityStyle(StringDropDown.StringEntity entity, ref bool overridden)
+        {
+            entity.EntitySettingsStyle<DropDownItem<string>, StringDropDown.StringEntity>();
+            overridden = true;
         }
 
-        private void DropDownIndexChanged(UIComponent component, int value)
+        private void DropDownValueChanged(string obj)
         {
-            if (DropDown.SelectedObject != null)
+            if (!string.IsNullOrEmpty(obj))
                 ImportButton.Enable();
             else
                 ImportButton.Disable();
@@ -326,8 +348,6 @@ namespace NodeController
         }
 
         protected virtual void CancelClick() => Close();
-
-        public class FileDropDown : UIDropDown<string> { }
     }
 }
 
