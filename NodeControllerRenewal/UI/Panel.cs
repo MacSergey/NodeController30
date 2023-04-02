@@ -14,6 +14,7 @@ namespace NodeController.UI
         private PropertyGroupPanel Content { get; set; }
         private PanelHeader Header { get; set; }
         private NodeTypePropertyPanel TypeProperty { get; set; }
+        private ModePropertyPanel ModeProperty { get; set; }
         private List<EditorItem> Properties { get; set; } = new List<EditorItem>();
         private bool _showHidden;
 
@@ -74,6 +75,7 @@ namespace NodeController.UI
                 Content.PauseLayout(() =>
                 {
                     AddNodeTypeProperty();
+                    AddModeProperty();
                     FillProperties();
                 });
             });
@@ -83,6 +85,9 @@ namespace NodeController.UI
             Content.PauseLayout(() =>
             {
                 ComponentPool.Free(TypeProperty);
+                TypeProperty = null;
+                ComponentPool.Free(ModeProperty);
+                ModeProperty = null;
                 ClearProperties();
             });
         }
@@ -92,7 +97,7 @@ namespace NodeController.UI
         {
             foreach (var property in Content.components.ToArray())
             {
-                if (property != TypeProperty)
+                if (property != TypeProperty && property != ModeProperty)
                     ComponentPool.Free(property);
             }
 
@@ -101,7 +106,7 @@ namespace NodeController.UI
 
         private void AddNodeTypeProperty()
         {
-            TypeProperty = ComponentPool.Get<NodeTypePropertyPanel>(Content);
+            TypeProperty = ComponentPool.Get<NodeTypePropertyPanel>(Content, nameof(Data.Type));
             TypeProperty.Label = NodeController.Localize.Option_Type;
             TypeProperty.SetStyle(UIStyle.Default);
             TypeProperty.Init(Data.IsPossibleType);
@@ -111,14 +116,28 @@ namespace NodeController.UI
             TypeProperty.OnSelectObjectChanged += (value) =>
             {
                 Data.Type = value;
-
-                Content.PauseLayout(() =>
-                {
-                    ClearProperties();
-                    FillProperties();
-                    RefreshHeader();
-                });
+                Content.PauseLayout(RefreshProperties);
             };
+        }
+        private void AddModeProperty()
+        {
+            ModeProperty = ComponentPool.Get<ModePropertyPanel>(Content, nameof(Data.Mode));
+            ModeProperty.Label = NodeController.Localize.Option_Mode;
+            ModeProperty.SetStyle(UIStyle.Default);
+            ModeProperty.Init(m => (m & Data.Style.SupportModes) != 0);
+            ModeProperty.SelectedObject = Data.Mode;
+            ModeProperty.OnSelectObjectChanged += (Mode value) =>
+            {
+                Data.Mode = value;
+                Data.UpdateNode();
+                Content.PauseLayout(RefreshProperties);
+            };
+        }
+        private void RefreshProperties()
+        {
+            ClearProperties();
+            FillProperties();
+            RefreshHeader();
         }
 
         private bool GetShowHidden() => _showHidden;

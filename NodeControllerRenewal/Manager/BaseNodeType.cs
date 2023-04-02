@@ -37,7 +37,7 @@ namespace NodeController
         public static float MinDeltaHeight => -10f;
         public static Vector3 MinPosDelta => new Vector3(-100f, -100f, -100f);
         public static Vector3 MaxPosDelta => new Vector3(100f, 100f, 100f);
-        public static Vector3 MinDirDelta => new Vector3(-180f, -180f, 0f);
+        public static Vector3 MinDirDelta => new Vector3(-180f, -180f, 0.0001f);
         public static Vector3 MaxDirDelta => new Vector3(180f, 180f, 10f);
 
         private static bool HideCrosswalksEnable { get; } = DependencyUtilities.HideCrossings?.isEnabled == true;
@@ -81,7 +81,8 @@ namespace NodeController
         public virtual bool DefaultForceNodeLess => false;
         public virtual Mode DefaultMode => Settings.NodeIsSlopedByDefault ? Mode.Slope : Mode.Flat;
         public virtual float DefaultStretch => 1f;
-        public virtual Vector3 DefaultDelta => Vector3.zero;
+        public virtual Vector3 DefaultPosDelta => Vector3.zero;
+        public virtual Vector3 DefaultDirDelta => new Vector3(0f, 0f, 1f);
         public virtual bool DefaultFollowSlope => true;
         public virtual float DefaultDeltaHeight => 0f;
 
@@ -334,8 +335,6 @@ namespace NodeController
             OptionPanels.Clear();
             var totalSupport = TotalSupport;
 
-            if (GetModeButtons(parent) is EditorPropertyPanel mode)
-                components.Add(mode);
             if (GetMainRoadButtons(parent) is EditorPropertyPanel mainRoad)
                 OptionPanels.Add(Options.MainRoad, mainRoad);
 
@@ -468,27 +467,6 @@ namespace NodeController
             _ => null,
         };
 
-        private ModePropertyPanel GetModeButtons(UIComponent parent)
-        {
-            if (SupportMode != SupportOption.None)
-            {
-                var modeProperty = ComponentPool.Get<ModePropertyPanel>(parent, nameof(Data.Mode));
-                modeProperty.Label = Localize.Option_Mode;
-                modeProperty.SetStyle(UIStyle.Default);
-                modeProperty.Init(m => (m & SupportModes) != 0);
-                modeProperty.SelectedObject = Data.Mode;
-                modeProperty.OnSelectObjectChanged += (Mode value) =>
-                {
-                    Data.Mode = value;
-                    Data.UpdateNode();
-                    SingletonTool<NodeControllerTool>.Instance.Panel.RefreshPanel();
-                };
-
-                return modeProperty;
-            }
-            else
-                return null;
-        }
         private BoolListPropertyPanel GetMainRoadButtons(UIComponent parent)
         {
             if (Data.IsJunction && !Data.IsDecoration)
@@ -518,7 +496,7 @@ namespace NodeController
                 offset.Label = Localize.Option_Offset;
                 offset.Format = Localize.Option_OffsetFormat;
                 offset.NumberFormat = "0.##";
-                offset.Init(Data, SupportOffset, totalSupport, OffsetGetter, OffsetSetter, MinMaxOffset, HasNodePredicate);
+                offset.Init(Data, SupportOffset, totalSupport, OffsetGetter, OffsetSetter, MinMaxOffset, TouchablePredicate);
                 offset.SetStyle(UIStyle.Default);
 
                 return offset;
@@ -550,7 +528,7 @@ namespace NodeController
                 rotate.Label = Localize.Option_Rotate;
                 rotate.Format = Localize.Option_RotateFormat;
                 rotate.NumberFormat = "0.#";
-                rotate.Init(Data, SupportRotate, totalSupport, RotateGetter, RotateSetter, MinMaxRotate, HasNodePredicate);
+                rotate.Init(Data, SupportRotate, totalSupport, RotateGetter, RotateSetter, MinMaxRotate, TouchablePredicate);
                 rotate.SetStyle(UIStyle.Default);
 
                 return rotate;
@@ -659,7 +637,7 @@ namespace NodeController
             {
                 var collision = ComponentPool.Get<BoolOptionPanel>(parent, nameof(Data.Collision));
                 collision.Label = Localize.Option_Collision;
-                collision.Init(Data, SupportCollision, totalSupport, CollisionGetter, CollisionSetter, TouchablePredicate);
+                collision.Init(Data, SupportCollision, totalSupport, CollisionGetter, CollisionSetter, HasNodePredicate);
                 collision.SetStyle(UIStyle.Default);
 
                 return collision;
@@ -741,7 +719,7 @@ namespace NodeController
                 cornerDir.ZTitle = Localize.Option_Distance;
                 cornerDir.Format = new string[] { Localize.Option_RotateFormat, Localize.Option_RotateFormat, Localize.Option_OffsetFormat };
                 cornerDir.NumberFormat = new string[] { "0.#", "0.#", "0.#" };
-                cornerDir.WheelStep = new Vector3(10f, 10f, 1f);
+                cornerDir.WheelStep = new Vector3(10f, 10f, 0.1f);
                 cornerDir.Init(Data, SupportCornerDelta, totalSupport, side == SideType.Left ? LeftCornerDirGetter : RightCornerDirGetter, side == SideType.Left ? LeftCornerDirSetter : RightCornerDirSetter, MinMaxDirDelta, TouchablePredicate);
                 cornerDir.SetStyle(UIStyle.Default);
 
@@ -869,12 +847,12 @@ namespace NodeController
 
         private static void OnValueSet(INetworkData data)
         {
-            if(data is NodeData nodeData)
+            if (data is NodeData nodeData)
             {
                 nodeData.UpdateNode();
                 SingletonTool<NodeControllerTool>.Instance.Panel.RefreshPanel();
             }
-            else if(data is SegmentEndData segmentData)
+            else if (data is SegmentEndData segmentData)
             {
                 segmentData.UpdateNode();
                 SingletonTool<NodeControllerTool>.Instance.Panel.RefreshPanel();
@@ -977,8 +955,8 @@ namespace NodeController
         private static Vector3 RightCornerDirGetter(INetworkData data) => data.RightDirDelta;
         private static Vector3 InvertPosCoord(Vector3 value) => new Vector3(value.x, value.z, value.y);
 
-        protected static bool HasNodePredicate(SegmentEndData data) => TouchablePredicate(data) && !data.IsNodeLess;
         protected static bool TouchablePredicate(SegmentEndData data) => !data.IsUntouchable;
+        protected static bool HasNodePredicate(SegmentEndData data) => TouchablePredicate(data) && !data.IsNodeLess;
         protected static bool IsRoadPredicate(SegmentEndData data) => data.IsRoad;
         protected static bool IsTrackPredicate(SegmentEndData data) => data.IsTrack;
         protected static bool IsPathPredicate(SegmentEndData data) => data.IsPath;

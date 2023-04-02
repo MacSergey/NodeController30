@@ -53,7 +53,7 @@ namespace NodeController.UI
                 BgAtlas = Atlas,
                 FgAtlas = Atlas,
 
-                BgSprites = new SpriteSet(FieldSingle, FieldSingle, FieldSingle, FieldSingle, BorderSmall),
+                BgSprites = new SpriteSet(PanelBig, PanelBig, PanelBig, PanelBig, BorderBig),
                 BgColors = new ColorSet(PropertyNormal, PropertyHovered, PropertyPressed, PropertyNormal, PropertyNormal),
                 SelBgColors = new ColorSet(),
 
@@ -107,15 +107,15 @@ namespace NodeController.UI
                 FgAtlas = Atlas,
 
                 BgSprites = new SpriteSet(background, background, background, background, border),
-                BgColors = new ColorSet(PropertyNormal, PropertyHovered, PropertyHovered, PropertyFocused, PropertyNormal),
+                BgColors = new ColorSet(PropertyNormal, PropertyHovered, PropertyHovered, PropertyNormal, PropertyNormal),
                 SelBgSprites = background,
-                SelBgColors = PropertyFocused,
+                SelBgColors = new ColorSet(PropertyFocused, PropertyFocused, PropertyFocused, PropertyFocused, PropertyNormal),
 
                 FgColors = new ColorSet(Color.white, Color.white, Color.white, Color.white, PropertyNormal),
                 SelFgColors = new ColorSet(Color.white, Color.white, Color.white, Color.white, Color.white),
 
-                TextColors = Color.white,
-                SelTextColors = new ColorSet(Color.white, Color.white, Color.white, Color.white, Color.white),
+                TextColors = new ColorSet(Color.white, Color.white, Color.white, Color.white, TextDisabled),
+                SelTextColors = new ColorSet(Color.white, Color.white, Color.white, Color.white, Color.black),
             };
         }
     }

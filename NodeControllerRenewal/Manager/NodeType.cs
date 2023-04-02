@@ -191,14 +191,14 @@ namespace NodeController
 
         public override Mode SupportModes => Mode.Flat | Mode.Slope | Mode.FreeForm;
         public override SupportOption SupportMode => SupportOption.Group;
-        public override SupportOption SupportOffset => SupportOption.None;
-        public override SupportOption SupportRotate => SupportOption.Group;
+        public override SupportOption SupportOffset => Data.Mode == Mode.FreeForm ? SupportOption.Individually : SupportOption.None;
+        public override SupportOption SupportRotate => Data.Mode == Mode.FreeForm ? SupportOption.Individually : SupportOption.Group;
         public override SupportOption SupportShift => SupportOption.Group;
         public override SupportOption SupportSlope => SupportOption.Group;
-        public override SupportOption SupportTwist => SupportOption.Group;
-        public override SupportOption SupportStretch => SupportOption.Group;
-        public override SupportOption SupportDeltaHeight => SupportOption.All;
-        public override SupportOption SupportCornerDelta => SupportOption.Individually;
+        public override SupportOption SupportTwist => Data.Mode == Mode.FreeForm ? SupportOption.Individually : SupportOption.Group;
+        public override SupportOption SupportStretch => Data.Mode == Mode.FreeForm ? SupportOption.Individually : SupportOption.Group;
+        public override SupportOption SupportDeltaHeight => SupportOption.Group;
+        public override SupportOption SupportCornerDelta => Data.Mode == Mode.FreeForm ? SupportOption.Individually : SupportOption.None;
         public override bool SupportTrafficLights => true;
         public override bool IsMoveable => true;
 

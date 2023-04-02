@@ -449,7 +449,7 @@ namespace NodeController
                 {
                     firstMain.AfterCalculate();
 
-                    position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
+                    position = SegmentEndDatas.First().Position;
                 }
                 else if (IsMiddleNode)
                 {
