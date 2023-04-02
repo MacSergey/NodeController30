@@ -374,7 +374,11 @@ namespace NodeController
             var moreOptionsButton = ComponentPool.Get<ButtonPanel>(parent);
             components.Add(moreOptionsButton);
             moreOptionsButton.Text = $"▼ {Localize.Option_MoreOptions} ▼";
+            moreOptionsButton.TextAlignment = UIHorizontalAlignment.Center;
+            moreOptionsButton.TextPadding = new RectOffset(10, 10, 6, 3);
+            moreOptionsButton.AutoSize = AutoSize.Height;
             moreOptionsButton.Init();
+            moreOptionsButton.SetStyle(UIStyle.Default);
             moreOptionsButton.isVisible = hiddenCount >= 2 && !getShowHidden();
             moreOptionsButton.OnButtonClick += () =>
             {
@@ -470,6 +474,7 @@ namespace NodeController
             {
                 var modeProperty = ComponentPool.Get<ModePropertyPanel>(parent, nameof(Data.Mode));
                 modeProperty.Label = Localize.Option_Mode;
+                modeProperty.SetStyle(UIStyle.Default);
                 modeProperty.Init(m => (m & SupportModes) != 0);
                 modeProperty.SelectedObject = Data.Mode;
                 modeProperty.OnSelectObjectChanged += (Mode value) =>
@@ -491,6 +496,7 @@ namespace NodeController
                 var mainRoadProperty = ComponentPool.Get<BoolListPropertyPanel>(parent, nameof(Data.MainRoad));
                 mainRoadProperty.Label = Localize.Option_MainSlopeDirection;
                 mainRoadProperty.Init(Localize.Option_MainSlopeDirectionManually, Localize.Option_MainSlopeDirectionAuto);
+                mainRoadProperty.SetStyle(UIStyle.Default);
                 mainRoadProperty.SelectedObject = Data.MainRoad.Auto;
                 mainRoadProperty.OnSelectObjectChanged += (value) =>
                 {
@@ -513,6 +519,7 @@ namespace NodeController
                 offset.Format = Localize.Option_OffsetFormat;
                 offset.NumberFormat = "0.##";
                 offset.Init(Data, SupportOffset, totalSupport, OffsetGetter, OffsetSetter, MinMaxOffset, HasNodePredicate);
+                offset.SetStyle(UIStyle.Default);
 
                 return offset;
             }
@@ -528,6 +535,7 @@ namespace NodeController
                 shift.Format = Localize.Option_ShiftFormat;
                 shift.NumberFormat = "0.##";
                 shift.Init(Data, SupportShift, totalSupport, ShiftGetter, ShiftSetter, MinMaxShift, AllowShiftPredicate);
+                shift.SetStyle(UIStyle.Default);
 
                 return shift;
             }
@@ -543,6 +551,7 @@ namespace NodeController
                 rotate.Format = Localize.Option_RotateFormat;
                 rotate.NumberFormat = "0.#";
                 rotate.Init(Data, SupportRotate, totalSupport, RotateGetter, RotateSetter, MinMaxRotate, HasNodePredicate);
+                rotate.SetStyle(UIStyle.Default);
 
                 return rotate;
             }
@@ -558,6 +567,7 @@ namespace NodeController
                 stretch.Format = Localize.Option_StretchFormat;
                 stretch.NumberFormat = "0.#";
                 stretch.Init(Data, SupportStretch, totalSupport, StretchGetter, StretchSetter, MinMaxStretch, TouchablePredicate);
+                stretch.SetStyle(UIStyle.Default);
 
                 return stretch;
             }
@@ -573,6 +583,7 @@ namespace NodeController
                 slope.Format = Localize.Option_SlopeFormat;
                 slope.NumberFormat = "0.#";
                 slope.Init(Data, SupportSlope, totalSupport, SlopeGetter, SlopeSetter, MinMaxSlope, FollowSlopePredicate);
+                slope.SetStyle(UIStyle.Default);
 
                 return slope;
             }
@@ -588,6 +599,7 @@ namespace NodeController
                 twist.Format = Localize.Option_TwistFormat;
                 twist.NumberFormat = "0.#";
                 twist.Init(Data, SupportTwist, totalSupport, TwistGetter, TwistSetter, MinMaxTwist, FollowSlopePredicate);
+                twist.SetStyle(UIStyle.Default);
 
                 return twist;
             }
@@ -603,6 +615,7 @@ namespace NodeController
                     var hideMarking = ComponentPool.Get<BoolOptionPanel>(parent, nameof(Data.NoMarkings));
                     hideMarking.Label = Localize.Option_Marking;
                     hideMarking.Init(Data, SupportMarking, totalSupport, MarkingsGetter, MarkingsSetter, IsRoadPredicate);
+                    hideMarking.SetStyle(UIStyle.Default);
 
                     return hideMarking;
                 }
@@ -615,8 +628,9 @@ namespace NodeController
                     hideMarking.WordWrap = true;
                     hideMarking.AutoSize = AutoSize.Height;
                     hideMarking.TextAlignment = UIHorizontalAlignment.Center;
+                    hideMarking.TextPadding = new RectOffset(10, 10, 6, 3);
                     hideMarking.Init();
-                    var actualWidth = hideMarking.Width;
+                    hideMarking.SetStyle(UIStyle.Default);
 
                     if (totalSupport == SupportOption.Group)
                         hideMarking.Width = 100f;
@@ -630,10 +644,6 @@ namespace NodeController
 
                         hideMarking.Width = count * 50f + (count - 1) * 5f;
                     }
-                    if (hideMarking.Width < actualWidth)
-                        hideMarking.Init(50f);
-                    else
-                        hideMarking.Init();
 
                     hideMarking.OnButtonClick += () => DependencyUtilities.HideCrosswalksId.GetWorkshopUrl().OpenUrl();
                     return hideMarking;
@@ -650,6 +660,7 @@ namespace NodeController
                 var collision = ComponentPool.Get<BoolOptionPanel>(parent, nameof(Data.Collision));
                 collision.Label = Localize.Option_Collision;
                 collision.Init(Data, SupportCollision, totalSupport, CollisionGetter, CollisionSetter, TouchablePredicate);
+                collision.SetStyle(UIStyle.Default);
 
                 return collision;
             }
@@ -663,6 +674,7 @@ namespace NodeController
                 var forceNodeLess = ComponentPool.Get<BoolOptionPanel>(parent, nameof(Data.ForceNodeLess));
                 forceNodeLess.Label = Localize.Option_NodeLess;
                 forceNodeLess.Init(Data, SupportForceNodeless, totalSupport, ForceNodeLessGetter, ForceNodeLessSetter, AllowNodeLessPredicate);
+                forceNodeLess.SetStyle(UIStyle.Default);
 
                 return forceNodeLess;
             }
@@ -676,6 +688,7 @@ namespace NodeController
                 var followSlope = ComponentPool.Get<BoolOptionPanel>(parent, nameof(Data.FollowSlope));
                 followSlope.Label = Localize.Option_FollowSlope;
                 followSlope.Init(Data, SupportFollowMainSlope, totalSupport, FollowSlopeGetter, FollowSlopeSetter, NotMainRoadPredicate);
+                followSlope.SetStyle(UIStyle.Default);
 
                 return followSlope;
             }
@@ -691,6 +704,7 @@ namespace NodeController
                 offset.Format = Localize.Option_OffsetFormat;
                 offset.NumberFormat = "0.##";
                 offset.Init(Data, SupportDeltaHeight, totalSupport, DeltaHeightGetter, DeltaHeightSetter, MinMaxDeltaHeight, FollowSlopePredicate);
+                offset.SetStyle(UIStyle.Default);
 
                 return offset;
             }
@@ -708,7 +722,8 @@ namespace NodeController
                 cornerPos.ZTitle = Localize.Option_Elevation;
                 cornerPos.Format = new string[] { Localize.Option_OffsetFormat, Localize.Option_OffsetFormat, Localize.Option_OffsetFormat };
                 cornerPos.NumberFormat = new string[] { "0.#", "0.#", "0.#" };
-                cornerPos.Init(Data, SupportFollowMainSlope, totalSupport, side == SideType.Left ? LeftCornerPosGetter : RightCornerPosGetter, side == SideType.Left ? LeftCornerPosSetter : RightCornerPosSetter, MinMaxPosDelta, TouchablePredicate);
+                cornerPos.Init(Data, SupportCornerDelta, totalSupport, side == SideType.Left ? LeftCornerPosGetter : RightCornerPosGetter, side == SideType.Left ? LeftCornerPosSetter : RightCornerPosSetter, MinMaxPosDelta, TouchablePredicate);
+                cornerPos.SetStyle(UIStyle.Default);
 
                 return cornerPos;
             }
@@ -727,7 +742,8 @@ namespace NodeController
                 cornerDir.Format = new string[] { Localize.Option_RotateFormat, Localize.Option_RotateFormat, Localize.Option_OffsetFormat };
                 cornerDir.NumberFormat = new string[] { "0.#", "0.#", "0.#" };
                 cornerDir.WheelStep = new Vector3(10f, 10f, 1f);
-                cornerDir.Init(Data, SupportFollowMainSlope, totalSupport, side == SideType.Left ? LeftCornerDirGetter : RightCornerDirGetter, side == SideType.Left ? LeftCornerDirSetter : RightCornerDirSetter, MinMaxDirDelta, TouchablePredicate);
+                cornerDir.Init(Data, SupportCornerDelta, totalSupport, side == SideType.Left ? LeftCornerDirGetter : RightCornerDirGetter, side == SideType.Left ? LeftCornerDirSetter : RightCornerDirSetter, MinMaxDirDelta, TouchablePredicate);
+                cornerDir.SetStyle(UIStyle.Default);
 
                 return cornerDir;
             }

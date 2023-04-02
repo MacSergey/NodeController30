@@ -239,6 +239,7 @@ namespace NodeController.UI
 
             AutoChildrenVertically = AutoLayoutChildren.Fit;
             Padding = new RectOffset(0, 0, 0, 2);
+            AutoLayoutSpace = 2;
             AutoLayout = AutoLayout.Vertical;
         }
 

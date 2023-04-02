@@ -5,8 +5,6 @@ using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using TrafficManager.UI.MainMenu.OSD;
 using UnityEngine;
 
 namespace NodeController.UI
@@ -83,8 +81,8 @@ namespace NodeController.UI
 
         public virtual void Refresh()
         {
-            if (!Option.IsSet(SupportOption.Group) && NodeItem is TypeNodeItem nodeItem)
-                nodeItem.isEnabled = false;
+            if (NodeItem is TypeNodeItem nodeItem)
+                nodeItem.isEnabled = Option.IsSet(SupportOption.Group);
 
             foreach (var segmentData in Data.SegmentEndDatas)
             {
@@ -276,6 +274,7 @@ namespace NodeController.UI
     }
     public class TextOptionPanel : OptionPanel<CustomUILabel, CustomUILabel>
     {
+        private static float Contrast { get; } = 4.5f;
         protected override void FillContent() { }
 
         protected override CustomUILabel AddNodeItem(NodeData data)
@@ -283,6 +282,7 @@ namespace NodeController.UI
             var item = base.AddNodeItem(data);
             AddItem(item);
             item.text = NodeController.Localize.Options_All;
+            item.textColor = Color.black;
             return item;
         }
         protected override CustomUILabel AddSegmentItem(SegmentEndData data)
@@ -290,6 +290,7 @@ namespace NodeController.UI
             var item = base.AddSegmentItem(data);
             AddItem(item);
             item.color = data.Color;
+            item.textColor = Color.white.GetContrast(data.Color) >= Contrast ? Color.white : ComponentStyle.DarkPrimaryColor15;
             item.text = $"#{data.Id}";
             return item;
         }
@@ -302,21 +303,27 @@ namespace NodeController.UI
             item.textScale = 0.65f;
             item.HorizontalAlignment = UIHorizontalAlignment.Center;
             item.VerticalAlignment = UIVerticalAlignment.Middle;
-            item.Padding.top = 3;
+            item.Padding.top = 5;
             item.Atlas = CommonTextures.Atlas;
             item.BackgroundSprite = CommonTextures.PanelBig;
         }
         public override void SetStyle(ControlStyle style)
         {
-            
+
         }
     }
     public class SpacePanel : BaseEditorPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
 
-        public void Init(float height) => base.Init(height);
+        public SpacePanel() : base()
+        {
+            SpritePadding.left = 10;
+            SpritePadding.right = 10;
+            Borders = PropertyBorder.Top;
+        }
 
+        public void Init(float height) => base.Init(height);
         public override void SetStyle(ControlStyle style) { }
     }
     public class IOSegmented : UIOnceSegmented<bool> { }

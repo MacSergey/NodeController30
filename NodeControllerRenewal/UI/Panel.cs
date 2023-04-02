@@ -14,7 +14,6 @@ namespace NodeController.UI
         private PropertyGroupPanel Content { get; set; }
         private PanelHeader Header { get; set; }
         private NodeTypePropertyPanel TypeProperty { get; set; }
-        private BoolListPropertyPanel FreeFormProperty { get; set; }
         private List<EditorItem> Properties { get; set; } = new List<EditorItem>();
         private bool _showHidden;
 
@@ -30,16 +29,24 @@ namespace NodeController.UI
             BgColors = ComponentStyle.PanelColor;
             name = nameof(NodeControllerPanel);
 
-            Content = ComponentPool.Get<PropertyGroupPanel>(this);
-            Content.minimumSize = new Vector2(300f, 0f);
-            Content.BgColors = DefaultColor;
-            Content.PaddingBottom = 7;
-            Content.eventSizeChanged += (UIComponent component, Vector2 value) => size = value;
+            PauseLayout(() =>
+            {
+                AutoLayout = AutoLayout.Vertical;
+                AutoChildrenHorizontally = AutoLayoutChildren.Fit;
+                AutoChildrenVertically = AutoLayoutChildren.Fit;
 
-            Header = ComponentPool.Get<PanelHeader>(Content);
-            Header.Target = this;
-            Header.BackgroundSprite = "ButtonWhite";
-            Header.Init(HeaderHeight);
+                Header = ComponentPool.Get<PanelHeader>(this);
+                Header.Target = this;
+                Header.BackgroundSprite = "ButtonWhite";
+                Header.BgColors = DefaultColor;
+                Header.Init(HeaderHeight);
+
+                Content = ComponentPool.Get<PropertyGroupPanel>(this);
+                Content.minimumSize = new Vector2(300f, 0f);
+                Content.BgColors = DefaultColor;
+                Content.PaddingBottom = 7;
+                Content.eventSizeChanged += (UIComponent component, Vector2 value) => size = value;
+            });
         }
 
         public void SetData(NodeData data)
@@ -53,16 +60,22 @@ namespace NodeController.UI
         }
         public void SetPanel()
         {
-            Content.PauseLayout(() =>
+            PauseLayout(() =>
             {
                 ResetPanel();
 
-                Content.width = (Data.Style.TotalSupport == SupportOption.All ? Mathf.Max((Data.SegmentCount + 1) * 55f + 120f, 300f) : 300f) + 30f;
                 Header.Text = Data.Title;
                 RefreshHeader();
-                AddNodeTypeProperty();
 
-                FillProperties();
+                var width = (Data.Style.TotalSupport == SupportOption.All ? Mathf.Max((Data.SegmentCount + 1) * 55f + 120f, 300f) : 300f) + 30f;
+                Header.width = width;
+                Content.width = width;
+
+                Content.PauseLayout(() =>
+                {
+                    AddNodeTypeProperty();
+                    FillProperties();
+                });
             });
         }
         private void ResetPanel()
@@ -70,7 +83,6 @@ namespace NodeController.UI
             Content.PauseLayout(() =>
             {
                 ComponentPool.Free(TypeProperty);
-                ComponentPool.Free(FreeFormProperty);
                 ClearProperties();
             });
         }
@@ -78,8 +90,11 @@ namespace NodeController.UI
         private void FillProperties() => Properties = Data.Style.GetUIComponents(Content, GetShowHidden, SetShowHidden);
         private void ClearProperties()
         {
-            foreach (var property in Properties)
-                ComponentPool.Free(property);
+            foreach (var property in Content.components.ToArray())
+            {
+                if (property != TypeProperty)
+                    ComponentPool.Free(property);
+            }
 
             Properties.Clear();
         }
@@ -88,6 +103,7 @@ namespace NodeController.UI
         {
             TypeProperty = ComponentPool.Get<NodeTypePropertyPanel>(Content);
             TypeProperty.Label = NodeController.Localize.Option_Type;
+            TypeProperty.SetStyle(UIStyle.Default);
             TypeProperty.Init(Data.IsPossibleType);
             TypeProperty.UseWheel = true;
             TypeProperty.WheelTip = true;
