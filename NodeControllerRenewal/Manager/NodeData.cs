@@ -413,8 +413,9 @@ namespace NodeController
                     var secondLeft = secondMain[SideType.Left];
                     var secondRight = secondMain[SideType.Right];
 
-                    var leftBezier = new BezierTrajectory(firstLeft.TempPos, -firstLeft.TempDir, secondRight.TempPos, -secondRight.TempDir, false, true, true);
-                    var rightBezier = new BezierTrajectory(secondLeft.TempPos, -secondLeft.TempDir, firstRight.TempPos, -firstRight.TempDir, false, true, true);
+                    var data = new BezierTrajectory.Data(false, true, true);
+                    var leftBezier = new BezierTrajectory(firstLeft.TempPos, -firstLeft.TempDir, secondRight.TempPos, -secondRight.TempDir, data);
+                    var rightBezier = new BezierTrajectory(secondLeft.TempPos, -secondLeft.TempDir, firstRight.TempPos, -firstRight.TempDir, data);
 
                     foreach (var segmentEnd in SegmentEndDatas)
                     {
@@ -471,15 +472,17 @@ namespace NodeController
                             segmentEnd.AfterCalculate();
                     }
 
-                    MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, true, true, true);
+                    var data = new BezierTrajectory.Data(true, true, true);
+                    MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, data);
 
                     var firstLeft = firstMain[SideType.Left];
                     var firstRight = firstMain[SideType.Right];
                     var secondLeft = secondMain[SideType.Left];
                     var secondRight = secondMain[SideType.Right];
 
-                    var leftBezier = new BezierTrajectory(firstLeft.TempPos, -firstLeft.TempDir, secondRight.TempPos, -secondRight.TempDir, false, true, true);
-                    var rightBezier = new BezierTrajectory(secondLeft.TempPos, -secondLeft.TempDir, firstRight.TempPos, -firstRight.TempDir, false, true, true);
+                    data = new BezierTrajectory.Data(false, true, true);
+                    var leftBezier = new BezierTrajectory(firstLeft.TempPos, -firstLeft.TempDir, secondRight.TempPos, -secondRight.TempDir, data);
+                    var rightBezier = new BezierTrajectory(secondLeft.TempPos, -secondLeft.TempDir, firstRight.TempPos, -firstRight.TempDir, data);
 
                     position = (leftBezier.Position(0.5f) + rightBezier.Position(0.5f)) * 0.5f;
 

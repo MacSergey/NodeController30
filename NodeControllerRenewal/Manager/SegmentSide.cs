@@ -282,7 +282,7 @@ namespace NodeController
                         if (deltaDir.x != 0f)
                             temp.dirRotation *= Quaternion.AngleAxis(deltaDir.x, Vector3.up);
                         if (deltaDir.y != 0f)
-                            temp.dirRotation *= Quaternion.AngleAxis(deltaDir.y, Vector3.forward);
+                            temp.dirRotation *= Quaternion.AngleAxis(deltaDir.y, direction.MakeFlat().Turn90(true));
                         if (deltaDir.z != 0f)
                             temp.dirRatio *= deltaDir.z;
                     }
@@ -414,7 +414,7 @@ namespace NodeController
                 return;
             else if (isLeft)
             {
-                var bezier = new BezierTrajectory(left.MainTrajectory.StartPosition, left.MainTrajectory.StartDirection, right.temp.position, right.temp.direction, true, true, true);
+                var bezier = new BezierTrajectory(left.MainTrajectory.StartPosition, left.MainTrajectory.StartDirection, right.temp.position, right.temp.direction, new BezierTrajectory.Data(true, true, true));
                 bezier.GetHitPosition(new Segment3(left.temp.position, left.temp.position + Vector3.up), out _, out var t, out _);
                 if (t > 0)
                 {
@@ -424,7 +424,7 @@ namespace NodeController
             }
             else
             {
-                var bezier = new BezierTrajectory(right.MainTrajectory.StartPosition, right.MainTrajectory.StartDirection, left.temp.position, left.temp.direction, true, true, true);
+                var bezier = new BezierTrajectory(right.MainTrajectory.StartPosition, right.MainTrajectory.StartDirection, left.temp.position, left.temp.direction, new BezierTrajectory.Data(true, true, true));
                 bezier.GetHitPosition(new Segment3(right.temp.position, right.temp.position + Vector3.up), out _, out var t, out _);
                 if (t > 0)
                 {

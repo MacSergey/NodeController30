@@ -22,7 +22,7 @@ namespace NodeController
         private Vector3 CachedPosition { get; set; }
         private Vector3 CachedDelta { get; set; }
         private float CachedDeltaHeight { get; set; }
-        private bool WasShiftPressed { get; set; }
+        private int WasModifierPressed { get; set; }
 
         private float RoundTo => Utility.OnlyShiftIsPressed ? 1f : 0.1f;
 
@@ -46,19 +46,26 @@ namespace NodeController
                 CachedPosition = SegmentEnd[Corner].StartPos;
                 CachedDelta = SegmentEnd[Corner].PosDelta;
                 CachedDeltaHeight = 0f;
-                WasShiftPressed = false;
+                WasModifierPressed = 0;
             }
         }
         public override void OnToolUpdate()
         {
             if (SegmentEnd.Mode == Mode.FreeForm)
             {
-                var isShiftPressed = Utility.OnlyShiftIsPressed;
-                if (isShiftPressed != WasShiftPressed)
+                var isPressed = 0;
+                if (Utility.AltIsPressed)
+                    isPressed += 1;
+                if (Utility.CtrlIsPressed)
+                    isPressed += 2;
+                if (Utility.ShiftIsPressed)
+                    isPressed += 4;
+
+                if (isPressed != WasModifierPressed)
                 {
                     Reset(this);
                 }
-                WasShiftPressed = isShiftPressed;
+                WasModifierPressed = isPressed;
             }
         }
         public override void OnMouseDrag(Event e)
@@ -101,7 +108,12 @@ namespace NodeController
                 var side = SegmentEnd[Corner];
                 var angle = side.RawTrajectory.Tangent(side.CurrentT).AbsoluteAngle();
 
-                SegmentEnd[Corner].PosDelta = CachedDelta + Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.up) * deltaPos;
+                deltaPos = CachedDelta + Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.up) * deltaPos;
+                if (Utility.OnlyCtrlIsPressed)
+                    deltaPos.z = 0f;
+                else if (Utility.OnlyAltIsPressed)
+                    deltaPos.x = 0f;
+                SegmentEnd[Corner].PosDelta = deltaPos;
             }
 
             SegmentEnd.UpdateNode();

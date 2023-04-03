@@ -15,7 +15,7 @@ namespace NodeController
         private Vector3 CachedLeftDelta { get; set; }
         private Vector3 CachedRightDelta { get; set; }
         private float CachedDeltaHeight { get; set; }
-        private bool WasShiftPressed { get; set; }
+        private int WasModifierPressed { get; set; }
         private float RoundTo => Utility.OnlyShiftIsPressed ? 1f : 0.1f;
 
 #if DEBUG
@@ -50,19 +50,26 @@ namespace NodeController
                 CachedLeftDelta = SegmentEnd.LeftPosDelta;
                 CachedRightDelta = SegmentEnd.RightPosDelta;
                 CachedDeltaHeight = 0f;
-                WasShiftPressed = false;
+                WasModifierPressed = 0;
             }
         }
         public override void OnToolUpdate()
         {
             if (SegmentEnd.Mode == Mode.FreeForm)
             {
-                var isShiftPressed = Utility.OnlyShiftIsPressed;
-                if (isShiftPressed != WasShiftPressed)
+                var isPressed = 0;
+                if (Utility.AltIsPressed)
+                    isPressed += 1;
+                if (Utility.CtrlIsPressed)
+                    isPressed += 2;
+                if (Utility.ShiftIsPressed)
+                    isPressed += 4;
+
+                if (isPressed != WasModifierPressed)
                 {
                     Reset(this);
                 }
-                WasShiftPressed = isShiftPressed;
+                WasModifierPressed = isPressed;
             }
         }
         public override void OnMouseDrag(Event e)
@@ -103,8 +110,22 @@ namespace NodeController
                 var leftAngle = left.RawTrajectory.Tangent(left.CurrentT).AbsoluteAngle();
                 var rigthAngle = rigth.RawTrajectory.Tangent(rigth.CurrentT).AbsoluteAngle();
 
-                left.PosDelta = CachedLeftDelta + Quaternion.AngleAxis(leftAngle * Mathf.Rad2Deg, Vector3.up) * deltaPos;
-                rigth.PosDelta = CachedRightDelta + Quaternion.AngleAxis(rigthAngle * Mathf.Rad2Deg, Vector3.up) * deltaPos;
+                var leftDelta = Quaternion.AngleAxis(leftAngle * Mathf.Rad2Deg, Vector3.up) * deltaPos;
+                var rightDelta = Quaternion.AngleAxis(rigthAngle * Mathf.Rad2Deg, Vector3.up) * deltaPos;
+
+                if (Utility.OnlyCtrlIsPressed)
+                {
+                    leftDelta.z = 0f;
+                    rightDelta.z = 0f;
+                }
+                else if (Utility.OnlyAltIsPressed)
+                {
+                    leftDelta.x = 0f;
+                    rightDelta.x = 0f;
+                }
+
+                left.PosDelta = CachedLeftDelta + leftDelta;
+                rigth.PosDelta = CachedRightDelta + rightDelta;
             }
 
             SegmentEnd.UpdateNode();
@@ -144,7 +165,7 @@ namespace NodeController
                 color = SegmentEnd.IsStartBorderOffset || SegmentEnd.IsEndBorderOffset ? CommonColors.Red : CommonColors.Yellow;
                 return true;
             }
-            else if(Utility.OnlyShiftIsPressed)
+            else if (Utility.OnlyShiftIsPressed)
             {
                 var y = (SegmentEnd.LeftPosDelta.y + SegmentEnd.RightPosDelta.y) * 0.5f;
                 var ySign = y < 0 ? "-" : y > 0 ? "+" : "";
@@ -158,7 +179,9 @@ namespace NodeController
                 var z = (SegmentEnd.LeftPosDelta.z + SegmentEnd.RightPosDelta.z) * 0.5f;
                 var xSign = x < 0 ? "-" : x > 0 ? "+" : "";
                 var zSign = z < 0 ? "-" : z > 0 ? "+" : "";
-                text = $"X: {xSign}{Mathf.Abs(x):0.0}\nY: {zSign}{Mathf.Abs(z):0.0}";
+                var xText = $"X: {xSign}{Mathf.Abs(x):0.0}".AddColor(Utility.OnlyAltIsPressed ? Color.white : CommonColors.Yellow);
+                var yText = $"Y: {zSign}{Mathf.Abs(z):0.0}".AddColor(Utility.OnlyCtrlIsPressed ? Color.white : CommonColors.Yellow);
+                text = xText + '\n' + yText;
                 color = CommonColors.Yellow;
                 return true;
             }

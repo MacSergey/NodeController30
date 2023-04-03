@@ -610,7 +610,8 @@ namespace NodeController
         {
             GetSegmentPosAndDir(segmentId, out var startPos, out var startDir, out var endPos, out var endDir);
 
-            bezier = new BezierTrajectory(startPos, startDir, endPos, endDir, true, true, true);
+            var data = new BezierTrajectory.Data(true, true, true);
+            bezier = new BezierTrajectory(startPos, startDir, endPos, endDir, data);
 
             var startNormal = Vector3.Cross(startDir, Vector3.up).normalized;
             var endNormal = Vector3.Cross(endDir, Vector3.up).normalized;
@@ -624,8 +625,8 @@ namespace NodeController
 
             GetSegmentWidth(segmentId, out var startHalfWidth, out var endHalfWidth);
 
-            leftSide = new BezierTrajectory(startPos + startNormal * startHalfWidth, startDir, endPos - endNormal * endHalfWidth, endDir, true, true, true);
-            rightSide = new BezierTrajectory(startPos - startNormal * startHalfWidth, startDir, endPos + endNormal * endHalfWidth, endDir, true, true, true);
+            leftSide = new BezierTrajectory(startPos + startNormal * startHalfWidth, startDir, endPos - endNormal * endHalfWidth, endDir, data);
+            rightSide = new BezierTrajectory(startPos - startNormal * startHalfWidth, startDir, endPos + endNormal * endHalfWidth, endDir, data);
         }
         private static void GetSegmentPosAndDir(ushort segmentId, out Vector3 startPos, out Vector3 startDir, out Vector3 endPos, out Vector3 endDir)
         {
@@ -776,7 +777,7 @@ namespace NodeController
                             var prevBezier = endDatas[prevI].LeftSide.MainTrajectory;
                             var nextBezier = endDatas[nextI].RightSide.MainTrajectory;
 
-                            var limitBezier = new BezierTrajectory(prevBezier.Position(prevMin), -prevBezier.Tangent(prevMin), nextBezier.Position(nextMin), -nextBezier.Tangent(nextMin), true, true, true);
+                            var limitBezier = new BezierTrajectory(prevBezier.Position(prevMin), -prevBezier.Tangent(prevMin), nextBezier.Position(nextMin), -nextBezier.Tangent(nextMin), new BezierTrajectory.Data(true, true, true));
 
                             if (Intersection.CalculateSingle(endDatas[currentI].LeftSide.MainTrajectory, limitBezier, out var leftT, out _))
                             {
@@ -838,7 +839,7 @@ namespace NodeController
                 {
                     var endData = endDatas[i];
 
-                    if(endData.IsNodeLess)
+                    if (endData.IsNodeLess)
                     {
                         endData.LeftSide.MinT = limits[i].left.FinalMinT;
                         endData.RightSide.MinT = limits[i].right.FinalMinT;
@@ -854,7 +855,7 @@ namespace NodeController
                         endData.RightSide.MinT = limits[i].right.FinalMinT;
                     }
 
-                    if(endData.IsNodeLess)
+                    if (endData.IsNodeLess)
                     {
                         endData.LeftSide.DefaultT = endData.LeftSide.MainT;
                         endData.RightSide.DefaultT = endData.RightSide.MainT;
@@ -985,7 +986,7 @@ namespace NodeController
                 var mirrorNormal = Vector3.Cross(mirror, Vector3.up);
                 var halfWidth = LengthXZ(sub.StartPosition - point);
 
-                sub = new BezierTrajectory(point + (side == SideType.Left ? halfWidth : -halfWidth) * mirrorNormal, mirror, sub.EndPosition, sub.EndDirection, true, true, true);
+                sub = new BezierTrajectory(point + (side == SideType.Left ? halfWidth : -halfWidth) * mirrorNormal, mirror, sub.EndPosition, sub.EndDirection, new BezierTrajectory.Data(true, true, true));
             }
 
             if (Intersection.CalculateSingle(main, sub, out var t, out _))
@@ -1431,7 +1432,7 @@ namespace NodeController
         }
         private void RenderSide(SegmentSide side, OverlayData data)
         {
-            var bezier = new BezierTrajectory(side.StartPos, side.StartDir, side.EndPos, side.EndDir, true, true, true);
+            var bezier = new BezierTrajectory(side.StartPos, side.StartDir, side.EndPos, side.EndDir, new BezierTrajectory.Data(true, true, true));
             bezier.Render(data);
         }
         private void RenderEnd(OverlayData data)

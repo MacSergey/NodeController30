@@ -338,16 +338,16 @@ namespace NodeController
             if (GetMainRoadButtons(parent) is EditorPropertyPanel mainRoad)
                 OptionPanels.Add(Options.MainRoad, mainRoad);
 
-            if (totalSupport == SupportOption.All)
-            {
+            //if (totalSupport == SupportOption.All)
+            //{
                 var space = ComponentPool.Get<SpacePanel>(parent);
                 space.Init(20f);
                 components.Add(space);
 
                 var titles = ComponentPool.Get<TextOptionPanel>(parent);
-                titles.Init(Data, SupportOption.All, SupportOption.All);
+                titles.Init(Data, totalSupport, totalSupport);
                 components.Add(titles);
-            }
+            //}
 
             OptionsZOrder = parent.childCount;
             int hiddenCount = 0;

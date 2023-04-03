@@ -127,12 +127,12 @@ namespace NodeController
 
                 if (IsHoverSegmentEnd)
                 {
-                    var bezier = new BezierTrajectory(SelectedSegmentEnd.Position, -SelectedSegmentEnd.Direction, HoverSegmentEnd.Position, -HoverSegmentEnd.Direction, true, true, true);
+                    var bezier = new BezierTrajectory(SelectedSegmentEnd.Position, -SelectedSegmentEnd.Direction, HoverSegmentEnd.Position, -HoverSegmentEnd.Direction, new BezierTrajectory.Data(true, true, true));
                     bezier.Render(new OverlayData(cameraInfo) { Width = width, Color = CommonColors.Yellow, RenderLimit = underground });
                 }
                 else
                 {
-                    var bezier = new BezierTrajectory(SelectedSegmentEnd.Position, -SelectedSegmentEnd.Direction, endPosition);
+                    var bezier = new BezierTrajectory(SelectedSegmentEnd.Position, -SelectedSegmentEnd.Direction, endPosition, BezierTrajectory.Data.Default);
                     bezier.Render(new OverlayData(cameraInfo) { Width = width, Color = CommonColors.Yellow, RenderLimit = underground });
                 }
 

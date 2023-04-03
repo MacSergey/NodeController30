@@ -46,6 +46,7 @@ namespace NodeController.UI
                 Content.minimumSize = new Vector2(300f, 0f);
                 Content.BgColors = DefaultColor;
                 Content.PaddingBottom = 7;
+                Content.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
                 Content.eventSizeChanged += (UIComponent component, Vector2 value) => size = value;
             });
         }
@@ -124,14 +125,21 @@ namespace NodeController.UI
             ModeProperty = ComponentPool.Get<ModePropertyPanel>(Content, nameof(Data.Mode));
             ModeProperty.Label = NodeController.Localize.Option_Mode;
             ModeProperty.SetStyle(UIStyle.Default);
-            ModeProperty.Init(m => (m & Data.Style.SupportModes) != 0);
+            ModeProperty.Init(Select);
             ModeProperty.SelectedObject = Data.Mode;
             ModeProperty.OnSelectObjectChanged += (Mode value) =>
             {
                 Data.Mode = value;
                 Data.UpdateNode();
+
+                ModeProperty.Clear();
+                ModeProperty.Init(Select);
+                ModeProperty.SelectedObject = Data.Mode;
+
                 Content.PauseLayout(RefreshProperties);
             };
+
+            bool Select(Mode mode) => (mode & Data.Style.SupportModes) != 0;
         }
         private void RefreshProperties()
         {
