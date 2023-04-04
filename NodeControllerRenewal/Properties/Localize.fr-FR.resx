@@ -307,6 +307,9 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   <data name="Option_Elevation" xml:space="preserve">
     <value>Élévation</value>
   </data>
+  <data name="Option_FlatEnd" xml:space="preserve">
+    <value>Extrémité plate</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Suivre la pente principale</value>
   </data>
@@ -324,6 +327,9 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   </data>
   <data name="Option_LeftCornerDirection" xml:space="preserve">
     <value>Direction du coin gauche</value>
+  </data>
+  <data name="Option_LeftCornerFlatEnd" xml:space="preserve">
+    <value>Coin gauche extrémité plate</value>
   </data>
   <data name="Option_LeftCornerPosition" xml:space="preserve">
     <value>Position du coin gauche</value>
@@ -378,6 +384,9 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   </data>
   <data name="Option_RightCornerDirection" xml:space="preserve">
     <value>Direction du coin droit</value>
+  </data>
+  <data name="Option_RightCornerFlatEnd" xml:space="preserve">
+    <value>Coin droit extrémité plate</value>
   </data>
   <data name="Option_RightCornerPosition" xml:space="preserve">
     <value>Position du coin droit</value>
@@ -489,6 +498,9 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
   </data>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Toujours visible</value>
+  </data>
+  <data name="Settings_OverlayOpacity" xml:space="preserve">
+    <value>Opacité de la superposition</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Afficher les nœuds à proximité</value>

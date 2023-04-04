@@ -138,7 +138,9 @@ O carregamento de {0} marcações falhou.</value>
     <value>O carregamento foi concluído com erros.
 O carregamento de todas marcações falhou.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
+    <value>[RELEASE] Versão da Renovação</value>
+  </data>
   
   
   
@@ -219,9 +221,11 @@ O carregamento de todas marcações falhou.</value>
   
   
   
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Repor deslocamento</value>
   </data>
+  
   
   
   
@@ -260,6 +264,7 @@ O carregamento de todas marcações falhou.</value>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Repor predefinição</value>
   </data>
+  
   
   
   
@@ -351,6 +356,7 @@ O carregamento de todas marcações falhou.</value>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Sempre visível</value>
   </data>
+  
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostrar sobreposição de nódulos próximos</value>
   </data>

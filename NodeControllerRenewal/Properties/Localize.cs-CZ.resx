@@ -221,6 +221,7 @@ Nepodařilo se načíst data všechny uzly.</value>
   
   
   
+  
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Následovat hlavní sklon</value>
   </data>
@@ -231,6 +232,7 @@ Nepodařilo se načíst data všechny uzly.</value>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Resetovat odsazení</value>
   </data>
+  
   
   
   
@@ -277,6 +279,7 @@ Nepodařilo se načíst data všechny uzly.</value>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Obnovit výchozí nastavení</value>
   </data>
+  
   
   
   
@@ -386,6 +389,7 @@ Nepodařilo se načíst data všechny uzly.</value>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Vždy zobrazit</value>
   </data>
+  
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Zobrazit blízké uzly</value>
   </data>

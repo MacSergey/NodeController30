@@ -191,6 +191,8 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   
   
   
+  
+  
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>Auto</value>
   </data>
@@ -217,6 +219,7 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Atjaunot noklusējuma iestatījumus</value>
   </data>
+  
   
   
   
@@ -280,6 +283,7 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   <data name="Settings_Option_Disabled" xml:space="preserve">
     <value>Izslēgts</value>
   </data>
+  
   
   
   

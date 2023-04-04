@@ -307,6 +307,9 @@
   <data name="Option_Elevation" xml:space="preserve">
     <value>Подъем</value>
   </data>
+  <data name="Option_FlatEnd" xml:space="preserve">
+    <value>Плоское окончание</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Следовать основному наклону</value>
   </data>
@@ -324,6 +327,9 @@
   </data>
   <data name="Option_LeftCornerDirection" xml:space="preserve">
     <value>Направление левого угла</value>
+  </data>
+  <data name="Option_LeftCornerFlatEnd" xml:space="preserve">
+    <value>Плоское окончание левого угла</value>
   </data>
   <data name="Option_LeftCornerPosition" xml:space="preserve">
     <value>Позиция левого угла</value>
@@ -378,6 +384,9 @@
   </data>
   <data name="Option_RightCornerDirection" xml:space="preserve">
     <value>Направление правого угла</value>
+  </data>
+  <data name="Option_RightCornerFlatEnd" xml:space="preserve">
+    <value>Плоское окончание правого угла</value>
   </data>
   <data name="Option_RightCornerPosition" xml:space="preserve">
     <value>Позиция правого угла</value>
@@ -489,6 +498,9 @@
   </data>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Отображать всегда</value>
+  </data>
+  <data name="Settings_OverlayOpacity" xml:space="preserve">
+    <value>Непразрачность оверлея</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Подсвечивать ближайшие узлы</value>
@@ -643,7 +655,7 @@
   </data>
   <data name="Tool_InfoTooCloseNode" xml:space="preserve">
     <value>Невозможно вставить узел
-Слишком близко к соседнему углу</value>
+Слишком близко к соседнему узлу</value>
   </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
     <value>Удерживайте {0}

@@ -235,6 +235,9 @@
   <data name="Option_Elevation" xml:space="preserve">
     <value>고도</value>
   </data>
+  <data name="Option_FlatEnd" xml:space="preserve">
+    <value>평탄한 끝</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>주 경사 따르기</value>
   </data>
@@ -252,6 +255,9 @@
   </data>
   <data name="Option_LeftCornerDirection" xml:space="preserve">
     <value>왼쪽 코너 방향</value>
+  </data>
+  <data name="Option_LeftCornerFlatEnd" xml:space="preserve">
+    <value>평탄한 왼쪽 모서리 끝</value>
   </data>
   <data name="Option_LeftCornerPosition" xml:space="preserve">
     <value>왼쪽 코너 위치</value>
@@ -306,6 +312,9 @@
   </data>
   <data name="Option_RightCornerDirection" xml:space="preserve">
     <value>오른쪽 코너 방향</value>
+  </data>
+  <data name="Option_RightCornerFlatEnd" xml:space="preserve">
+    <value>평탄한 오른쪽 모서리 끝</value>
   </data>
   <data name="Option_RightCornerPosition" xml:space="preserve">
     <value>오른쪽 코너 위치</value>
@@ -417,6 +426,9 @@
   </data>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>항상 표시</value>
+  </data>
+  <data name="Settings_OverlayOpacity" xml:space="preserve">
+    <value>오버레이 불투명도</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>근처 노드 오버레이 표시</value>

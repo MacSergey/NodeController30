@@ -235,6 +235,9 @@ No se pudieron cargar datos para todos los nodos.</value>
   <data name="Option_Elevation" xml:space="preserve">
     <value>Elevación</value>
   </data>
+  <data name="Option_FlatEnd" xml:space="preserve">
+    <value>Final plano</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Seguir pendiente principal</value>
   </data>
@@ -252,6 +255,9 @@ No se pudieron cargar datos para todos los nodos.</value>
   </data>
   <data name="Option_LeftCornerDirection" xml:space="preserve">
     <value>Dirección Esquina izquierda</value>
+  </data>
+  <data name="Option_LeftCornerFlatEnd" xml:space="preserve">
+    <value>Final plano de esquina izquierda</value>
   </data>
   <data name="Option_LeftCornerPosition" xml:space="preserve">
     <value>Posición Esquina izquierda</value>
@@ -305,10 +311,13 @@ No se pudieron cargar datos para todos los nodos.</value>
     <value>Esquina derecha</value>
   </data>
   <data name="Option_RightCornerDirection" xml:space="preserve">
-    <value>Dirección Esquina izquierda</value>
+    <value>Dirección esquina derecha</value>
+  </data>
+  <data name="Option_RightCornerFlatEnd" xml:space="preserve">
+    <value>Fin plano de esquina derecha</value>
   </data>
   <data name="Option_RightCornerPosition" xml:space="preserve">
-    <value>Posición Esquina izquierda</value>
+    <value>Posición esquina derecha</value>
   </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Rotar</value>
@@ -417,6 +426,9 @@ No se pudieron cargar datos para todos los nodos.</value>
   </data>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Siempre visible</value>
+  </data>
+  <data name="Settings_OverlayOpacity" xml:space="preserve">
+    <value>Transparencia de superposición</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostrar superposición de nodos cercanos</value>

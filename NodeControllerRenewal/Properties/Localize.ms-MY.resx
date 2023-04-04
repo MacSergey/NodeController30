@@ -235,6 +235,9 @@ Gagal memuatkan data untuk kesemua nod.</value>
   <data name="Option_Elevation" xml:space="preserve">
     <value>Ketinggian</value>
   </data>
+  <data name="Option_FlatEnd" xml:space="preserve">
+    <value>Penghujung datar</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Ikut lereng utama</value>
   </data>
@@ -252,6 +255,9 @@ Gagal memuatkan data untuk kesemua nod.</value>
   </data>
   <data name="Option_LeftCornerDirection" xml:space="preserve">
     <value>Arah bucu kiri</value>
+  </data>
+  <data name="Option_LeftCornerFlatEnd" xml:space="preserve">
+    <value>Penghujung datar bucu kiri</value>
   </data>
   <data name="Option_LeftCornerPosition" xml:space="preserve">
     <value>Kedudukan bucu kiri</value>
@@ -306,6 +312,9 @@ Gagal memuatkan data untuk kesemua nod.</value>
   </data>
   <data name="Option_RightCornerDirection" xml:space="preserve">
     <value>Arah bucu kanan</value>
+  </data>
+  <data name="Option_RightCornerFlatEnd" xml:space="preserve">
+    <value>Penghujung datar bucu kanan</value>
   </data>
   <data name="Option_RightCornerPosition" xml:space="preserve">
     <value>Kedudukan bucu kanan</value>
@@ -417,6 +426,9 @@ Gagal memuatkan data untuk kesemua nod.</value>
   </data>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Sentiasa tampak</value>
+  </data>
+  <data name="Settings_OverlayOpacity" xml:space="preserve">
+    <value>Kelegapan tindihan atas</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Tunjuk tindihan atas nod berhampiran</value>

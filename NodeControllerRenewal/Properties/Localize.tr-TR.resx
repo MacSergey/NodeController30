@@ -205,6 +205,7 @@ Tüm düğümler için veri yüklenemedi.</value>
   <data name="Option_Elevation" xml:space="preserve">
     <value>Yükseklik</value>
   </data>
+  
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Ana eğimi takip et</value>
   </data>
@@ -223,6 +224,7 @@ Tüm düğümler için veri yüklenemedi.</value>
   <data name="Option_LeftCornerDirection" xml:space="preserve">
     <value>Sol köşe yönü</value>
   </data>
+  
   <data name="Option_LeftCornerPosition" xml:space="preserve">
     <value>Sol köşe konumu</value>
   </data>
@@ -277,6 +279,7 @@ Tüm düğümler için veri yüklenemedi.</value>
   <data name="Option_RightCornerDirection" xml:space="preserve">
     <value>Sağ köşe yönü</value>
   </data>
+  
   <data name="Option_RightCornerPosition" xml:space="preserve">
     <value>Sağ köşe konumu</value>
   </data>
@@ -388,6 +391,7 @@ Tüm düğümler için veri yüklenemedi.</value>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Her zaman görünür</value>
   </data>
+  
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Yakındaki kesişen düğümleri göster</value>
   </data>

@@ -131,8 +131,8 @@
     <value>控制节点类型和形状</value>
   </data>
   <data name="Mod_LoadFailed" xml:space="preserve">
-    <value>加载完成时出现错误。
-无法加载 {0} 节点的数据。</value>
+    <value>加载完毕时出现了错误。
+共有 {0} 个节点的数据加载失败。</value>
   </data>
   <data name="Mod_LoadFailedAll" xml:space="preserve">
     <value>加载完成时出现错误。
@@ -270,6 +270,9 @@
   <data name="Option_Elevation" xml:space="preserve">
     <value>高度</value>
   </data>
+  <data name="Option_FlatEnd" xml:space="preserve">
+    <value>平端</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>跟随主斜坡</value>
   </data>
@@ -287,6 +290,9 @@
   </data>
   <data name="Option_LeftCornerDirection" xml:space="preserve">
     <value>左边角方向</value>
+  </data>
+  <data name="Option_LeftCornerFlatEnd" xml:space="preserve">
+    <value>左转弯平端</value>
   </data>
   <data name="Option_LeftCornerPosition" xml:space="preserve">
     <value>左边角位置</value>
@@ -341,6 +347,9 @@
   </data>
   <data name="Option_RightCornerDirection" xml:space="preserve">
     <value>右边角方向</value>
+  </data>
+  <data name="Option_RightCornerFlatEnd" xml:space="preserve">
+    <value>右转弯平端</value>
   </data>
   <data name="Option_RightCornerPosition" xml:space="preserve">
     <value>右边角位置</value>
@@ -452,6 +461,9 @@
   </data>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>总是可见</value>
+  </data>
+  <data name="Settings_OverlayOpacity" xml:space="preserve">
+    <value>覆盖层不透明度</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>显示光标附近节点</value>

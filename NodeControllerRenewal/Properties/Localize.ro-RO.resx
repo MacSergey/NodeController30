@@ -221,6 +221,7 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   
   
   
+  
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Urmărește panta principală</value>
   </data>
@@ -231,6 +232,7 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Resetare offset</value>
   </data>
+  
   
   
   
@@ -277,6 +279,7 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Resetare la valori implicite</value>
   </data>
+  
   
   
   
@@ -386,6 +389,7 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Mereu vizibil</value>
   </data>
+  
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Afișați overlay-ul cu nodurile din apropriere</value>
   </data>

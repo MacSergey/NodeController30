@@ -235,6 +235,9 @@
   <data name="Option_Elevation" xml:space="preserve">
     <value>高さ</value>
   </data>
+  <data name="Option_FlatEnd" xml:space="preserve">
+    <value>平坦な終端</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>メインのスロープに追従</value>
   </data>
@@ -252,6 +255,9 @@
   </data>
   <data name="Option_LeftCornerDirection" xml:space="preserve">
     <value>左コーナーの方向</value>
+  </data>
+  <data name="Option_LeftCornerFlatEnd" xml:space="preserve">
+    <value>左コーナーの平坦な終端</value>
   </data>
   <data name="Option_LeftCornerPosition" xml:space="preserve">
     <value>左コーナーの位置</value>
@@ -306,6 +312,9 @@
   </data>
   <data name="Option_RightCornerDirection" xml:space="preserve">
     <value>右コーナーの方向</value>
+  </data>
+  <data name="Option_RightCornerFlatEnd" xml:space="preserve">
+    <value>右コーナーの平坦な終端</value>
   </data>
   <data name="Option_RightCornerPosition" xml:space="preserve">
     <value>右コーナーの位置</value>
@@ -417,6 +426,9 @@
   </data>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>常に表示</value>
+  </data>
+  <data name="Settings_OverlayOpacity" xml:space="preserve">
+    <value>オーバーレイの不透明度</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>選択中は近くにあるノードをハイライト</value>

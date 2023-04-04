@@ -235,6 +235,9 @@ Impossibile caricare i dati per tutti i nodi.</value>
   <data name="Option_Elevation" xml:space="preserve">
     <value>Elevazione</value>
   </data>
+  <data name="Option_FlatEnd" xml:space="preserve">
+    <value>Estremità iatta</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Segui la pendenza principale</value>
   </data>
@@ -252,6 +255,9 @@ Impossibile caricare i dati per tutti i nodi.</value>
   </data>
   <data name="Option_LeftCornerDirection" xml:space="preserve">
     <value>Direzione dell'angolo sinistro</value>
+  </data>
+  <data name="Option_LeftCornerFlatEnd" xml:space="preserve">
+    <value>Angolo sinistro estremità piatta</value>
   </data>
   <data name="Option_LeftCornerPosition" xml:space="preserve">
     <value>Posizione dell'angolo sinistro</value>
@@ -306,6 +312,9 @@ Impossibile caricare i dati per tutti i nodi.</value>
   </data>
   <data name="Option_RightCornerDirection" xml:space="preserve">
     <value>Direzione dell'angolo destro</value>
+  </data>
+  <data name="Option_RightCornerFlatEnd" xml:space="preserve">
+    <value>Angolo destro estremità piatta</value>
   </data>
   <data name="Option_RightCornerPosition" xml:space="preserve">
     <value>Posizione dell'angolo destro</value>
@@ -417,6 +426,9 @@ Impossibile caricare i dati per tutti i nodi.</value>
   </data>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Sempre visibile</value>
+  </data>
+  <data name="Settings_OverlayOpacity" xml:space="preserve">
+    <value>Opacità Copertura</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostra la sovrapposizione dei nodi vicini</value>

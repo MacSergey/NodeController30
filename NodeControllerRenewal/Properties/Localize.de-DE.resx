@@ -253,6 +253,9 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   <data name="Option_Elevation" xml:space="preserve">
     <value>Höhe</value>
   </data>
+  <data name="Option_FlatEnd" xml:space="preserve">
+    <value>Flaches Ende</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Hauptgefälle folgen</value>
   </data>
@@ -270,6 +273,9 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   </data>
   <data name="Option_LeftCornerDirection" xml:space="preserve">
     <value>Linke Eckrichtung</value>
+  </data>
+  <data name="Option_LeftCornerFlatEnd" xml:space="preserve">
+    <value>Linke Ecke flaches Ende</value>
   </data>
   <data name="Option_LeftCornerPosition" xml:space="preserve">
     <value>Position der linken Ecke</value>
@@ -324,6 +330,9 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   </data>
   <data name="Option_RightCornerDirection" xml:space="preserve">
     <value>Rechte Eckrichtung</value>
+  </data>
+  <data name="Option_RightCornerFlatEnd" xml:space="preserve">
+    <value>Rechte Ecke flaches Ende</value>
   </data>
   <data name="Option_RightCornerPosition" xml:space="preserve">
     <value>Position der rechten Ecke</value>
@@ -435,6 +444,9 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
   </data>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Immer sichtbar</value>
+  </data>
+  <data name="Settings_OverlayOpacity" xml:space="preserve">
+    <value>Sichtbarkeit des Overlays</value>
   </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Zeige Hervorhebung für nahe Netzwerk-Knoten</value>

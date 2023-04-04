@@ -221,6 +221,7 @@ Pemuatan gagal untuk semua node.</value>
   
   
   
+  
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Ikuti kemiringan utama</value>
   </data>
@@ -231,6 +232,7 @@ Pemuatan gagal untuk semua node.</value>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Setel ulang pergeseran</value>
   </data>
+  
   
   
   
@@ -277,6 +279,7 @@ Pemuatan gagal untuk semua node.</value>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Setel ulang ke standar</value>
   </data>
+  
   
   
   
@@ -386,6 +389,7 @@ Pemuatan gagal untuk semua node.</value>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Selalu Tampak</value>
   </data>
+  
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Perlihatkan hamparan titik hubung yang berdekatan</value>
   </data>

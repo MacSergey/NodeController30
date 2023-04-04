@@ -190,9 +190,11 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   
   
   
+  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Palauta etäisyydet</value>
   </data>
+  
   
   
   
@@ -227,6 +229,7 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Palauta oletukseksi</value>
   </data>
+  
   
   
   
@@ -292,6 +295,7 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Liittymät ovat kaltevia oletuksena</value>
   </data>
+  
   
   
   
