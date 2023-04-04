@@ -244,6 +244,11 @@ namespace NodeController
         protected bool IsUnderground => Tool.IsUnderground;
 
         public virtual IEnumerable<Shortcut> Shortcuts { get { yield break; } }
+
+        public static Color32 Green => CommonColors.Green.SetOpacity(Settings.OverlayOpacity);
+        public static Color32 Red => CommonColors.Red.SetOpacity(Settings.OverlayOpacity);
+        public static Color32 Yellow => CommonColors.Yellow.SetOpacity(Settings.OverlayOpacity);
+        public static Color32 Purple => CommonColors.Purple.SetOpacity(Settings.OverlayOpacity);
     }
     public interface IShortcutMode
     {

@@ -506,6 +506,11 @@ namespace NodeController
 		public static string Settings_Option_Visible => LocaleManager.GetString("Settings_Option_Visible", Culture);
 
 		/// <summary>
+		/// Overlay opacity
+		/// </summary>
+		public static string Settings_OverlayOpacity => LocaleManager.GetString("Settings_OverlayOpacity", Culture);
+
+		/// <summary>
 		/// Show nearby nodes overlay
 		/// </summary>
 		public static string Settings_RenderNearNode => LocaleManager.GetString("Settings_RenderNearNode", Culture);

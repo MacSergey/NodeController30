@@ -49,6 +49,14 @@ namespace NodeController.UI
             Data = null;
             IsEnableGetter = null;
             NodeItem = null;
+
+            foreach (var item in SegmentItems)
+            {
+                item.Value.eventMouseEnter -= SegmentItemMouseEnter;
+                item.Value.eventMouseLeave -= SegmentItemMouseLeave;
+                if (item.Value.containsMouse)
+                    item.Key.IsHovered = false;
+            }
             SegmentItems.Clear();
 
             foreach (var component in Content.components.ToArray())
@@ -62,10 +70,27 @@ namespace NodeController.UI
             if (TotalOption.IsSet(SupportOption.Individually))
             {
                 foreach (var segmentData in Data.SegmentEndDatas)
-                    SegmentItems[segmentData] = AddSegmentItem(segmentData);
+                {
+                    var segmentItem = AddSegmentItem(segmentData);
+                    segmentItem.objectUserData = segmentData;
+                    segmentItem.eventMouseEnter += SegmentItemMouseEnter;
+                    segmentItem.eventMouseLeave += SegmentItemMouseLeave;
+                    SegmentItems[segmentData] = segmentItem;
+                }
             }
 
             Refresh();
+        }
+
+        private void SegmentItemMouseEnter(UIComponent component, UIMouseEventParameter eventParam)
+        {
+            if (component.objectUserData is SegmentEndData data)
+                data.IsHovered = true;
+        }
+        private void SegmentItemMouseLeave(UIComponent component, UIMouseEventParameter eventParam)
+        {
+            if (component.objectUserData is SegmentEndData data)
+                data.IsHovered = false;
         }
 
         protected virtual TypeNodeItem AddNodeItem(NodeData data)

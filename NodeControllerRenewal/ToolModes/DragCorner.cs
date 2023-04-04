@@ -126,20 +126,20 @@ namespace NodeController
         {
             var underground = IsUnderground;
             var allow = new OverlayData(cameraInfo) { RenderLimit = underground };
-            var forbidden = new OverlayData(cameraInfo) { Color = CommonColors.Red, RenderLimit = underground };
+            var forbidden = new OverlayData(cameraInfo) { Color = Red, RenderLimit = underground };
 
             if (SegmentEnd.Mode != Mode.FreeForm)
             {
                 SegmentEnd[Corner].RenderGuides(allow, forbidden, allow);
                 SegmentEnd.RenderContour(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
                 SegmentEnd.RenderStart(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
-                SegmentEnd[Corner].RenderCenter(new OverlayData(cameraInfo) { Color = CommonColors.Yellow, RenderLimit = underground });
+                SegmentEnd[Corner].RenderCenter(new OverlayData(cameraInfo) { Color = Yellow, RenderLimit = underground });
             }
             else
             {
                 SegmentEnd.RenderContour(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
                 SegmentEnd.RenderStart(new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground });
-                SegmentEnd[Corner].RenderCenter(new OverlayData(cameraInfo) { Color = CommonColors.Yellow, RenderLimit = underground });
+                SegmentEnd[Corner].RenderCenter(new OverlayData(cameraInfo) { Color = Yellow, RenderLimit = underground });
             }
         }
         public override bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)

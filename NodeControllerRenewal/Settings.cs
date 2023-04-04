@@ -24,6 +24,7 @@ namespace NodeController
         public static SavedInt InsertNode { get; } = new SavedInt(nameof(InsertNode), SettingsFile, 0, true);
         public static SavedInt ToggleUndergroundMode { get; } = new SavedInt(nameof(ToggleUndergroundMode), SettingsFile, 0, true);
         public static SavedBool LongIntersectionFix { get; } = new SavedBool(nameof(LongIntersectionFix), SettingsFile, false, true);
+        public static SavedInt OverlayOpacity { get; } = new SavedInt(nameof(OverlayOpacity), SettingsFile, 100, true);
         public static bool IsInsertEnable => InsertNode != 2;
         public static bool IsInsertWithModifier => InsertNode == 1;
         public static bool IsUndegroundWithModifier => ToggleUndergroundMode == 0;
@@ -116,6 +117,9 @@ namespace NodeController
             undergroundOptions = generalSection.AddTogglePanel(Localize.Settings_ToggleUnderground, ToggleUndergroundMode, new string[] { string.Format(Localize.Settings_ToggleUndergroundHold, UndergroundModifier), string.Format(Localize.Settings_ToggleUndergroundButtons, SelectNodeToolMode.EnterUndergroundShortcut, SelectNodeToolMode.ExitUndergroundShortcut) });
             generalSection.AddToggle(CommonLocalize.Settings_ShowTooltips, ShowToolTip);
             AddToolButton<NodeControllerTool, NodeControllerButton>(generalSection);
+            var overlayField = generalSection.AddIntField(Localize.Settings_OverlayOpacity, OverlayOpacity, 10, 100);
+            overlayField.Control.width = 60f;
+            overlayField.Control.Format = "{0}%";
 
             var longFixGroup = generalSection.AddItemsGroup();
             toggle = longFixGroup.AddToggle(Localize.Settings_LongIntersectionFix, LongIntersectionFix);

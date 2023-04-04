@@ -138,9 +138,9 @@ namespace NodeController
         {
             var underground = IsUnderground;
             var allow = new OverlayData(cameraInfo) { RenderLimit = underground };
-            var forbidden = new OverlayData(cameraInfo) { Color = CommonColors.Red, RenderLimit = underground };
+            var forbidden = new OverlayData(cameraInfo) { Color = Red, RenderLimit = underground };
             var defaultColor = new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground };
-            var yellow = new OverlayData(cameraInfo) { Color = CommonColors.Yellow, RenderLimit = underground };
+            var yellow = new OverlayData(cameraInfo) { Color = Yellow, RenderLimit = underground };
 
             if (SegmentEnd.Mode != Mode.FreeForm)
             {

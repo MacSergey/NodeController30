@@ -454,7 +454,7 @@ namespace NodeController
                 if (final.rawT - final.minT >= 0.2f / final.rawTrajectory.Length)
                     final.rawTrajectory.Cut(final.minT, final.rawT).Render(dataAllow);
             }
-            dataDefault.Color ??= CommonColors.Purple;
+            dataDefault.Color ??= NodeControllerToolMode.Purple;
             final.rawTrajectory.Position(final.defaultT).RenderCircle(dataDefault);
         }
         public void Render(OverlayData centerData, OverlayData circleData)

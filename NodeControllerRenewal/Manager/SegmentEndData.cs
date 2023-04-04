@@ -24,18 +24,6 @@ namespace NodeController
 
         public static string XmlName => "SE";
 
-        public static Color32[] OverlayColors { get; } = new Color32[]
-        {
-            CommonColors.GetOverlayColor(CommonColors.Overlay.Red, 255),
-            CommonColors.GetOverlayColor(CommonColors.Overlay.Blue, 255),
-            CommonColors.GetOverlayColor(CommonColors.Overlay.Lime, 255),
-            CommonColors.GetOverlayColor(CommonColors.Overlay.Orange, 255),
-            CommonColors.GetOverlayColor(CommonColors.Overlay.Purple, 255),
-            CommonColors.GetOverlayColor(CommonColors.Overlay.SkyBlue, 255),
-            CommonColors.GetOverlayColor(CommonColors.Overlay.Pink, 255),
-            CommonColors.GetOverlayColor(CommonColors.Overlay.Turquoise, 255),
-        };
-
         #endregion
 
         #region PROPERTIES
@@ -47,9 +35,21 @@ namespace NodeController
         public ushort NodeId => NodeData.Id;
         public ushort Id { get; set; }
         public int Index { get; set; }
-        public Color32 Color => OverlayColors[Index];
+        public Color32 Color => Index switch
+        {
+            0 => CommonColors.GetOverlayColor(CommonColors.Overlay.Red, 255),
+            1 => CommonColors.GetOverlayColor(CommonColors.Overlay.Blue, 255),
+            2 => CommonColors.GetOverlayColor(CommonColors.Overlay.Lime, 255),
+            3 => CommonColors.GetOverlayColor(CommonColors.Overlay.Orange, 255),
+            4 => CommonColors.GetOverlayColor(CommonColors.Overlay.Purple, 255),
+            5 => CommonColors.GetOverlayColor(CommonColors.Overlay.SkyBlue, 255),
+            6 => CommonColors.GetOverlayColor(CommonColors.Overlay.Pink, 255),
+            7 => CommonColors.GetOverlayColor(CommonColors.Overlay.Turquoise, 255),
+            _ => UnityEngine.Color.white,
+        };
 
         public bool IsStartNode => Id.GetSegment().IsStartNode(NodeId);
+        public bool IsHovered { get; set; }
 
         public BezierTrajectory RawSegmentBezier { get; private set; }
         public BezierTrajectory SegmentBezier { get; private set; }
@@ -1368,7 +1368,22 @@ namespace NodeController
 
         #region RENDER
 
-        public Color32 OverlayColor => IsShort ? CommonColors.Red : CommonColors.Green;
+        public Color32 OverlayColor
+        {
+            get
+            {
+                var color = IsShort? CommonColors.Red: CommonColors.Green;
+
+                if (IsHovered)
+                {
+                    var time = DateTime.Now;
+                    var t = Math.Abs((time.Second % 2) * 1000 + time.Millisecond - 1000) / 1000f;
+                    color = UnityEngine.Color.Lerp(color, CommonColors.Orange, t);
+                }
+
+                return color.SetOpacity(Settings.OverlayOpacity);
+            }
+        }
 
         public void Render(OverlayData data)
         {

@@ -490,6 +490,9 @@ Failed to load data for all nodes.</value>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Always visible</value>
   </data>
+  <data name="Settings_OverlayOpacity" xml:space="preserve">
+    <value>Overlay opacity</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Show nearby nodes overlay</value>
   </data>
