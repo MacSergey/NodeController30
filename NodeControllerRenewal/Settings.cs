@@ -58,6 +58,8 @@ namespace NodeController
             Options.RightCornerPos => OptionVisibility.Visible,
             Options.LeftCornerDir => OptionVisibility.Visible,
             Options.RightCornerDir => OptionVisibility.Visible,
+            Options.LeftCornerFlatEnd => OptionVisibility.Visible,
+            Options.RightCornerFlatEnd => OptionVisibility.Visible,
             _ => OptionVisibility.Hidden,
         };
 

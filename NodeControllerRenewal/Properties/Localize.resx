@@ -307,6 +307,9 @@ Failed to load data for all nodes.</value>
   <data name="Option_Elevation" xml:space="preserve">
     <value>Elevation</value>
   </data>
+  <data name="Option_FlatEnd" xml:space="preserve">
+    <value>Flat end</value>
+  </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Follow main slope</value>
   </data>
@@ -324,6 +327,9 @@ Failed to load data for all nodes.</value>
   </data>
   <data name="Option_LeftCornerDirection" xml:space="preserve">
     <value>Left corner direction</value>
+  </data>
+  <data name="Option_LeftCornerFlatEnd" xml:space="preserve">
+    <value>Left corner flat end</value>
   </data>
   <data name="Option_LeftCornerPosition" xml:space="preserve">
     <value>Left corner position</value>
@@ -378,6 +384,9 @@ Failed to load data for all nodes.</value>
   </data>
   <data name="Option_RightCornerDirection" xml:space="preserve">
     <value>Right corner direction</value>
+  </data>
+  <data name="Option_RightCornerFlatEnd" xml:space="preserve">
+    <value>Right corner flat end</value>
   </data>
   <data name="Option_RightCornerPosition" xml:space="preserve">
     <value>Right corner position</value>

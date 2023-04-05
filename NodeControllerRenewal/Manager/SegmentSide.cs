@@ -130,6 +130,7 @@ namespace NodeController
 
         public Vector3 PosDelta { get; set; }
         public Vector3 DirDelta { get; set; }
+        public bool FlatEnd { get; set; }
 
         private DataStruct final;
         private DataStruct temp;
@@ -270,6 +271,9 @@ namespace NodeController
                     break;
                 case Mode.FreeForm:
                     {
+                        if(FlatEnd)
+                            direction = direction.MakeFlatNormalized();
+
                         var angle = direction.AbsoluteAngle();
                         temp.deltaPos += Quaternion.AngleAxis(-angle * Mathf.Rad2Deg, Vector3.up) * PosDelta;
 

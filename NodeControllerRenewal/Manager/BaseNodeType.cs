@@ -64,11 +64,12 @@ namespace NodeController
         public virtual SupportOption SupportFollowMainSlope => SupportOption.None;
         public virtual SupportOption SupportDeltaHeight => SupportOption.None;
         public virtual SupportOption SupportCornerDelta => SupportOption.None;
+        public virtual SupportOption SupportCornerFlatEnd => SupportOption.None;
         public virtual bool SupportTrafficLights => false;
         public virtual bool ForceKeepDefault => false;
         public virtual bool NeedFixDirection => true;
 
-        public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch | SupportCollision | SupportForceNodeless | SupportFollowMainSlope | SupportCornerDelta) & SupportOption.All;
+        public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch | SupportCollision | SupportForceNodeless | SupportFollowMainSlope | SupportCornerDelta | SupportCornerFlatEnd) & SupportOption.All;
         private bool OnlyOnSlope => DefaultMode != Mode.Flat;
 
         public virtual float DefaultOffset => 0f;
@@ -83,6 +84,7 @@ namespace NodeController
         public virtual float DefaultStretch => 1f;
         public virtual Vector3 DefaultPosDelta => Vector3.zero;
         public virtual Vector3 DefaultDirDelta => new Vector3(0f, 0f, 1f);
+        public virtual bool DefaultFlatEnd => false;
         public virtual bool DefaultFollowSlope => true;
         public virtual float DefaultDeltaHeight => 0f;
 
@@ -322,6 +324,29 @@ namespace NodeController
             }
         }
 
+        public virtual bool? GetFlatEnd(SideType side)
+        {
+            if (GetDatas(TouchablePredicate).All(s => (side == SideType.Left ? s.LeftFlatEnd : s.RightFlatEnd) == true))
+                return true;
+            else if (GetDatas(TouchablePredicate).All(s => (side == SideType.Left ? s.LeftFlatEnd : s.RightFlatEnd) == false))
+                return false;
+            else
+                return null;
+        }
+        public virtual void SetFlatEnd(SideType side, bool? value)
+        {
+            if (value != null)
+            {
+                foreach (var segmentData in GetDatas(TouchablePredicate))
+                {
+                    if (side == SideType.Left)
+                        segmentData.LeftFlatEnd = value;
+                    else
+                        segmentData.RightFlatEnd = value;
+                }
+            }
+        }
+
         #endregion
 
         #region UICOMPONENTS
@@ -338,16 +363,13 @@ namespace NodeController
             if (GetMainRoadButtons(parent) is EditorPropertyPanel mainRoad)
                 OptionPanels.Add(Options.MainRoad, mainRoad);
 
-            //if (totalSupport == SupportOption.All)
-            //{
-                var space = ComponentPool.Get<SpacePanel>(parent);
-                space.Init(20f);
-                components.Add(space);
+            var space = ComponentPool.Get<SpacePanel>(parent);
+            space.Init(20f);
+            components.Add(space);
 
-                var titles = ComponentPool.Get<TextOptionPanel>(parent);
-                titles.Init(Data, totalSupport, totalSupport);
-                components.Add(titles);
-            //}
+            var titles = ComponentPool.Get<TextOptionPanel>(parent);
+            titles.Init(Data, totalSupport, totalSupport);
+            components.Add(titles);
 
             OptionsZOrder = parent.childCount;
             int hiddenCount = 0;
@@ -429,7 +451,6 @@ namespace NodeController
                     return visible && Data.Mode != Mode.Flat;
 
                 case Options.Offset:
-                case Options.Shift:
                 case Options.Collision:
                     return visible && Data.Mode != Mode.FreeForm;
 
@@ -437,6 +458,8 @@ namespace NodeController
                 case Options.RightCornerPos:
                 case Options.LeftCornerDir:
                 case Options.RightCornerDir:
+                case Options.LeftCornerFlatEnd:
+                case Options.RightCornerFlatEnd:
                     return visible && Data.Mode == Mode.FreeForm;
 
                 case Options.MainRoad:
@@ -464,6 +487,8 @@ namespace NodeController
             Options.RightCornerPos => GetCornerPosOption(parent, support, SideType.Right),
             Options.LeftCornerDir => GetCornerDirOption(parent, support, SideType.Left),
             Options.RightCornerDir => GetCornerDirOption(parent, support, SideType.Right),
+            Options.LeftCornerFlatEnd => GetCornerFlatOption(parent, support, SideType.Left),
+            Options.RightCornerFlatEnd => GetCornerFlatOption(parent, support, SideType.Right),
             _ => null,
         };
 
@@ -728,6 +753,20 @@ namespace NodeController
             else
                 return null;
         }
+        private BoolOptionPanel GetCornerFlatOption(UIComponent parent, SupportOption totalSupport, SideType side)
+        {
+            if (SupportCornerFlatEnd != SupportOption.None && Data.SegmentEndDatas.Any(s => TouchablePredicate(s)))
+            {
+                var flatEnd = ComponentPool.Get<BoolOptionPanel>(parent);
+                flatEnd.Label = $"{(side == SideType.Left ? Localize.Option_LeftCorner : Localize.Option_RightCorner)}\n{Localize.Option_FlatEnd}";
+                flatEnd.Init(Data, SupportCornerFlatEnd, totalSupport, side == SideType.Left ? LeftCornerFlatGetter : RightCornerFlatGetter, side == SideType.Left ? LeftCornerFlatSetter : RightCornerFlatSetter, TouchablePredicate);
+                flatEnd.SetStyle(UIStyle.Default);
+
+                return flatEnd;
+            }
+            else
+                return null;
+        }
 
         private void MinMaxOffset(INetworkData data, out float min, out float max)
         {
@@ -933,6 +972,16 @@ namespace NodeController
             data.RightDirDelta = value;
             OnValueSet(data);
         }
+        private static void LeftCornerFlatSetter(INetworkData data, bool? value)
+        {
+            data.LeftFlatEnd = value;
+            OnValueSet(data);
+        }
+        private static void RightCornerFlatSetter(INetworkData data, bool? value)
+        {
+            data.RightFlatEnd = value;
+            OnValueSet(data);
+        }
 
         private static float OffsetGetter(INetworkData data) => data.Offset;
         private static float ShiftGetter(INetworkData data) => data.Shift;
@@ -953,6 +1002,8 @@ namespace NodeController
         private static Vector3 RightCornerPosGetter(INetworkData data) => InvertPosCoord(data.RightPosDelta);
         private static Vector3 LeftCornerDirGetter(INetworkData data) => data.LeftDirDelta;
         private static Vector3 RightCornerDirGetter(INetworkData data) => data.RightDirDelta;
+        private static bool? LeftCornerFlatGetter(INetworkData data) => data.LeftFlatEnd;
+        private static bool? RightCornerFlatGetter(INetworkData data) => data.RightFlatEnd;
         private static Vector3 InvertPosCoord(Vector3 value) => new Vector3(value.x, value.z, value.y);
 
         protected static bool TouchablePredicate(SegmentEndData data) => !data.IsUntouchable;
@@ -1054,12 +1105,20 @@ namespace NodeController
         RightCorner = 1 << 15,
 
         [Description(nameof(Localize.Option_RightCornerPosition))]
-        [Order(14)]
+        [Order(15)]
         RightCornerPos = 1 << 16,
 
         [Description(nameof(Localize.Option_RightCornerDirection))]
-        [Order(15)]
+        [Order(16)]
         RightCornerDir = 1 << 17,
+
+        [Description(nameof(Localize.Option_LeftCornerFlatEnd))]
+        [Order(14)]
+        LeftCornerFlatEnd = 1 << 18,
+
+        [Description(nameof(Localize.Option_RightCornerFlatEnd))]
+        [Order(17)]
+        RightCornerFlatEnd = 1 << 19,
     }
 
     public enum OptionVisibility

@@ -12,7 +12,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
-using static ColossalFramework.Math.VectorUtils;
 using static ModsCommon.Utilities.VectorUtilsExtensions;
 
 namespace NodeController
@@ -177,6 +176,16 @@ namespace NodeController
         {
             get => Vector3.zero;
             set { }
+        }
+        public bool? LeftFlatEnd
+        {
+            get => Style.GetFlatEnd(SideType.Left);
+            set => Style.SetFlatEnd(SideType.Left, value);
+        }
+        public bool? RightFlatEnd
+        {
+            get => Style.GetFlatEnd(SideType.Right);
+            set => Style.SetFlatEnd(SideType.Right, value);
         }
 
         public bool IsRoad => SegmentEndDatas.All(s => s.IsRoad);

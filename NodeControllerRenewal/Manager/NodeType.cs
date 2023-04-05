@@ -99,6 +99,7 @@ namespace NodeController
         public override SupportOption SupportStretch => SupportOption.All;
         public override SupportOption SupportDeltaHeight => SupportOption.All;
         public override SupportOption SupportCornerDelta => SupportOption.Individually;
+        public override SupportOption SupportCornerFlatEnd => SupportOption.All;
         public override bool IsMoveable => true;
 
         public BendNode(NodeData data) : base(data) { }
@@ -127,6 +128,7 @@ namespace NodeController
         public override SupportOption SupportStretch => SupportOption.All;
         public override SupportOption SupportDeltaHeight => SupportOption.All;
         public override SupportOption SupportCornerDelta => SupportOption.Individually;
+        public override SupportOption SupportCornerFlatEnd => SupportOption.All;
         public override bool IsMoveable => true;
 
         public StretchNode(NodeData data) : base(data) { }
@@ -193,12 +195,13 @@ namespace NodeController
         public override SupportOption SupportMode => SupportOption.Group;
         public override SupportOption SupportOffset => Data.Mode == Mode.FreeForm ? SupportOption.Individually : SupportOption.None;
         public override SupportOption SupportRotate => Data.Mode == Mode.FreeForm ? SupportOption.Individually : SupportOption.Group;
-        public override SupportOption SupportShift => SupportOption.Group;
+        public override SupportOption SupportShift => Data.Mode == Mode.FreeForm ? SupportOption.Individually : SupportOption.Group;
         public override SupportOption SupportSlope => SupportOption.Group;
         public override SupportOption SupportTwist => Data.Mode == Mode.FreeForm ? SupportOption.Individually : SupportOption.Group;
         public override SupportOption SupportStretch => Data.Mode == Mode.FreeForm ? SupportOption.Individually : SupportOption.Group;
         public override SupportOption SupportDeltaHeight => SupportOption.Group;
         public override SupportOption SupportCornerDelta => Data.Mode == Mode.FreeForm ? SupportOption.Individually : SupportOption.None;
+        public override SupportOption SupportCornerFlatEnd => Data.Mode == Mode.FreeForm ? SupportOption.Individually : SupportOption.None;
         public override bool SupportTrafficLights => true;
         public override bool IsMoveable => true;
 
@@ -225,6 +228,7 @@ namespace NodeController
         public override SupportOption SupportFollowMainSlope => SupportOption.All;
         public override SupportOption SupportDeltaHeight => SupportOption.All;
         public override SupportOption SupportCornerDelta => SupportOption.Individually;
+        public override SupportOption SupportCornerFlatEnd => SupportOption.All;
         public override bool IsMoveable => true;
         public override bool SupportTrafficLights => true;
 
