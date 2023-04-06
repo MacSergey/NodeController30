@@ -117,6 +117,11 @@ namespace NodeController.UI
             TypeProperty.OnSelectObjectChanged += (value) =>
             {
                 Data.Type = value;
+
+                ModeProperty.Clear();
+                ModeProperty.Init(SelectMode);
+                ModeProperty.SelectedObject = Data.Mode;
+
                 Content.PauseLayout(RefreshProperties);
             };
         }
@@ -125,22 +130,18 @@ namespace NodeController.UI
             ModeProperty = ComponentPool.Get<ModePropertyPanel>(Content, nameof(Data.Mode));
             ModeProperty.Label = NodeController.Localize.Option_Mode;
             ModeProperty.SetStyle(UIStyle.Default);
-            ModeProperty.Init(Select);
+            ModeProperty.Init(SelectMode);
             ModeProperty.SelectedObject = Data.Mode;
-            ModeProperty.OnSelectObjectChanged += (Mode value) =>
+            ModeProperty.OnSelectObjectChanged += (value) =>
             {
                 Data.Mode = value;
                 Data.UpdateNode();
 
-                ModeProperty.Clear();
-                ModeProperty.Init(Select);
-                ModeProperty.SelectedObject = Data.Mode;
-
                 Content.PauseLayout(RefreshProperties);
             };
-
-            bool Select(Mode mode) => (mode & Data.Style.SupportModes) != 0;
         }
+        bool SelectMode(Mode mode) => (mode & Data.Style.SupportModes) != 0;
+
         private void RefreshProperties()
         {
             ClearProperties();
