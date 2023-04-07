@@ -35,7 +35,7 @@ namespace NodeController
         private static Dictionary<Options, SavedInt> GetOptionVisibilitySaved()
         {
             var savedDic = new Dictionary<Options, SavedInt>();
-            foreach (var option in EnumExtension.GetEnumValues<Options>(i => true))
+            foreach (var option in EnumExtension.GetEnumValues<Options>(i => true).Order())
             {
                 var saved = new SavedInt($"{option}Visible", SettingsFile, (int)GetDefaultOptionVisibility(option), true);
                 savedDic[option] = saved;
@@ -133,7 +133,7 @@ namespace NodeController
         private void AddOptionVisible(UIComponent helper)
         {
             var section = helper.AddOptionsSection(Localize.Settings_OptionsVisibility);
-            foreach (var option in EnumExtension.GetEnumValues<Options>())
+            foreach (var option in EnumExtension.GetEnumValues<Options>().Order())
             {
                 var item = section.AddUIComponent<OptionVisibilitySettingsItem>();
                 item.Label = option.Description();
