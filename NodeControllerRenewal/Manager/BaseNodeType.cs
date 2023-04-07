@@ -373,7 +373,7 @@ namespace NodeController
 
             OptionsZOrder = parent.childCount;
             int hiddenCount = 0;
-            foreach (var option in EnumExtension.GetEnumValues<Options>(i => true).Order())
+            foreach (var option in EnumExtension.GetEnumValues<Options>().Order())
             {
                 var visibility = Settings.GetOptionVisibility(option);
                 if (visibility != OptionVisibility.Disabled)
@@ -414,7 +414,7 @@ namespace NodeController
         }
         public void RefreshUIComponents(UIComponent parent, Func<bool> getShowHidden, Action<bool> setShowHidden)
         {
-            foreach (var option in EnumExtension.GetEnumValues<Options>(i => true).Order())
+            foreach (var option in EnumExtension.GetEnumValues<Options>().Order())
             {
                 if (OptionPanels.TryGetValue(option, out var optionPanel))
                 {
