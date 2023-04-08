@@ -147,7 +147,7 @@ namespace NodeController
 
         private IEnumerable<SegmentEndData> GetDatas(Func<SegmentEndData, bool> predicate) => Data.SegmentEndDatas.Where(predicate);
 
-        public virtual Mode GetMode() => TouchableDatas.Max(s => s.Mode);
+        public virtual Mode GetMode() => (Mode)TouchableDatas.Aggregate(0, (m, s) => Math.Max(m, (int)s.Mode));
         public virtual void SetMode(Mode value)
         {
             foreach (var segmentData in TouchableDatas)

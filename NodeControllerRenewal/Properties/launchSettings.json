@@ -13,12 +13,12 @@
     "Release": {
       "commandName": "Executable",
       "executablePath": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\255710\\2953447919\\Tool\\LoadOrderToolTwo.exe",
-      "commandLineArgs": " -launch -profile Release"
+      "commandLineArgs": " -launch -noWindow -profile Release"
     },
     "Debug": {
       "commandName": "Executable",
       "executablePath": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\255710\\2953447919\\Tool\\LoadOrderToolTwo.exe",
-      "commandLineArgs": "-launch -profile Debug"
+      "commandLineArgs": "-launch -noWindow -profile Debug"
     }
   }
 }
