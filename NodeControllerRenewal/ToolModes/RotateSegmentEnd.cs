@@ -111,9 +111,9 @@ namespace NodeController
         {
             var underground = IsUnderground;
             var allow = new OverlayData(cameraInfo) { RenderLimit = underground };
-            var forbidden = new OverlayData(cameraInfo) { Color = Colors.Red, RenderLimit = underground };
+            var forbidden = new OverlayData(cameraInfo) { Color = Red, RenderLimit = underground };
             var defaultColor = new OverlayData(cameraInfo) { Color = SegmentEnd.OverlayColor, RenderLimit = underground };
-            var yellow = new OverlayData(cameraInfo) { Color = Colors.Yellow, RenderLimit = underground };
+            var yellow = new OverlayData(cameraInfo) { Color = Yellow, RenderLimit = underground };
 
             if (SegmentEnd.Mode != Mode.FreeForm)
             {
@@ -133,7 +133,7 @@ namespace NodeController
             if (SegmentEnd.Mode != Mode.FreeForm)
             {
                 text = $"{SegmentEnd.RotateAngle:0}°";
-                color = SegmentEnd.IsBorderRotate ? Colors.Red : Colors.Yellow;
+                color = SegmentEnd.IsBorderRotate ? CommonColors.Red : CommonColors.Yellow;
                 return true;
             }
             else
@@ -141,7 +141,7 @@ namespace NodeController
                 var quaternion = Quaternion.FromToRotation(BeginDirection, CurrentDirection);
                 var angle = ((CachedLeftRot + CachedRightRot) * 0.5f + quaternion.eulerAngles.y) % 360f;
                 text = $"{(angle > 180f ? angle - 360f : angle):0}°";
-                color = Colors.Yellow;
+                color = CommonColors.Yellow;
                 return true;
             }
         }

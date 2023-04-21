@@ -14,35 +14,41 @@ namespace NodeController.UI
         private PropertyGroupPanel Content { get; set; }
         private PanelHeader Header { get; set; }
         private NodeTypePropertyPanel TypeProperty { get; set; }
-        private BoolListPropertyPanel FreeFormProperty { get; set; }
+        private ModePropertyPanel ModeProperty { get; set; }
         private List<EditorItem> Properties { get; set; } = new List<EditorItem>();
         private bool _showHidden;
 
         public NodeData Data { get; private set; }
 
         private static Color32 DefaultColor => new Color32(36, 40, 40, 255);
-        private static Color32 ErrorColor => Colors.Error;
+        private static Color32 ErrorColor => ComponentStyle.ErrorNormalColor;
 
         public NodeControllerPanel()
         {
-            AddContent();
-            AddHeader();
-        }
-        private void AddContent()
-        {
-            Content = ComponentPool.Get<PropertyGroupPanel>(this);
-            Content.minimumSize = new Vector2(300f, 0f);
-            Content.color = DefaultColor;
-            Content.autoLayoutDirection = LayoutDirection.Vertical;
-            Content.autoFitChildrenVertically = true;
-            Content.eventSizeChanged += (UIComponent component, Vector2 value) => size = value;
-        }
-        private void AddHeader()
-        {
-            Header = ComponentPool.Get<PanelHeader>(Content);
-            Header.Target = this;
-            Header.backgroundSprite = "ButtonWhite";
-            Header.Init();
+            Atlas = CommonTextures.Atlas;
+            BackgroundSprite = CommonTextures.PanelBig;
+            BgColors = ComponentStyle.PanelColor;
+            name = nameof(NodeControllerPanel);
+
+            PauseLayout(() =>
+            {
+                AutoLayout = AutoLayout.Vertical;
+                AutoChildrenHorizontally = AutoLayoutChildren.Fit;
+                AutoChildrenVertically = AutoLayoutChildren.Fit;
+
+                Header = ComponentPool.Get<PanelHeader>(this);
+                Header.Target = this;
+                Header.BackgroundSprite = "ButtonWhite";
+                Header.BgColors = DefaultColor;
+                Header.Init(HeaderHeight);
+
+                Content = ComponentPool.Get<PropertyGroupPanel>(this);
+                Content.minimumSize = new Vector2(300f, 0f);
+                Content.BgColors = DefaultColor;
+                Content.PaddingBottom = 7;
+                Content.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
+                Content.eventSizeChanged += (UIComponent component, Vector2 value) => size = value;
+            });
         }
 
         public void SetData(NodeData data)
@@ -56,43 +62,54 @@ namespace NodeController.UI
         }
         public void SetPanel()
         {
-            Content.StopLayout();
+            PauseLayout(() =>
+            {
+                ResetPanel();
 
-            ResetPanel();
+                Header.Text = Data.Title;
+                RefreshHeader();
 
-            Content.width = Data.Style.TotalSupport == SupportOption.All ? Mathf.Max((Data.SegmentCount + 1) * 55f + 120f, 300f) : 300f;
-            Header.Text = Data.Title;
-            RefreshHeader();
-            AddNodeTypeProperty();
+                var width = (Data.Style.TotalSupport == SupportOption.All ? Mathf.Max((Data.SegmentCount + 1) * 55f + 120f, 300f) : 300f) + 30f;
+                Header.width = width;
+                Content.width = width;
 
-            FillProperties();
-
-            Content.StartLayout();
+                Content.PauseLayout(() =>
+                {
+                    AddNodeTypeProperty();
+                    AddModeProperty();
+                    FillProperties();
+                });
+            });
         }
         private void ResetPanel()
         {
-            Content.StopLayout();
-
-            ComponentPool.Free(TypeProperty);
-            ComponentPool.Free(FreeFormProperty);
-            ClearProperties();
-
-            Content.StartLayout();
+            Content.PauseLayout(() =>
+            {
+                ComponentPool.Free(TypeProperty);
+                TypeProperty = null;
+                ComponentPool.Free(ModeProperty);
+                ModeProperty = null;
+                ClearProperties();
+            });
         }
 
         private void FillProperties() => Properties = Data.Style.GetUIComponents(Content, GetShowHidden, SetShowHidden);
         private void ClearProperties()
         {
-            foreach (var property in Properties)
-                ComponentPool.Free(property);
+            foreach (var property in Content.components.ToArray())
+            {
+                if (property != TypeProperty && property != ModeProperty)
+                    ComponentPool.Free(property);
+            }
 
             Properties.Clear();
         }
 
         private void AddNodeTypeProperty()
         {
-            TypeProperty = ComponentPool.Get<NodeTypePropertyPanel>(Content);
+            TypeProperty = ComponentPool.Get<NodeTypePropertyPanel>(Content, nameof(Data.Type));
             TypeProperty.Label = NodeController.Localize.Option_Type;
+            TypeProperty.SetStyle(UIStyle.Default);
             TypeProperty.Init(Data.IsPossibleType);
             TypeProperty.UseWheel = true;
             TypeProperty.WheelTip = true;
@@ -101,14 +118,35 @@ namespace NodeController.UI
             {
                 Data.Type = value;
 
-                Content.StopLayout();
+                ModeProperty.Clear();
+                ModeProperty.Init(SelectMode);
+                ModeProperty.SelectedObject = Data.Mode;
 
-                ClearProperties();
-                FillProperties();
-                RefreshHeader();
-
-                Content.StartLayout();
+                Content.PauseLayout(RefreshProperties);
             };
+        }
+        private void AddModeProperty()
+        {
+            ModeProperty = ComponentPool.Get<ModePropertyPanel>(Content, nameof(Data.Mode));
+            ModeProperty.Label = NodeController.Localize.Option_Mode;
+            ModeProperty.SetStyle(UIStyle.Default);
+            ModeProperty.Init(SelectMode);
+            ModeProperty.SelectedObject = Data.Mode;
+            ModeProperty.OnSelectObjectChanged += (value) =>
+            {
+                Data.Mode = value;
+                Data.UpdateNode();
+
+                Content.PauseLayout(RefreshProperties);
+            };
+        }
+        bool SelectMode(Mode mode) => (mode & Data.Style.SupportModes) != 0;
+
+        private void RefreshProperties()
+        {
+            ClearProperties();
+            FillProperties();
+            RefreshHeader();
         }
 
         private bool GetShowHidden() => _showHidden;
@@ -118,25 +156,17 @@ namespace NodeController.UI
         {
             RefreshHeader();
             Data.Style.RefreshUIComponents(Content, GetShowHidden, SetShowHidden);
-
-            //foreach (var property in Properties.OfType<IOptionPanel>())
-            //{
-            //    if(property.isVisibleSelf)
-            //        property.Refresh();
-            //}
         }
 
         public override void Update()
         {
             base.Update();
-            Content.color = Data == null || (Data.State & State.Fail) == 0 ? DefaultColor : ErrorColor;
-            Header.color = Data == null || Data.Mode != Mode.FreeForm ? DefaultColor : Colors.Orange;
+            Content.BgColors = Data == null || (Data.State & State.Fail) == 0 ? DefaultColor : ErrorColor;
+            Header.BgColors = Data == null || Data.Mode != Mode.FreeForm ? DefaultColor : CommonColors.Orange;
         }
     }
     public class PanelHeader : HeaderMoveablePanel<PanelHeaderContent>
     {
-        protected override float DefaultHeight => 40f;
-
         private HeaderButtonInfo<HeaderButton> MakeStraight { get; set; }
 
         private HeaderButtonInfo<HeaderButton> CalculateShiftNearby { get; set; }
@@ -147,7 +177,7 @@ namespace NodeController.UI
         private HeaderButtonInfo<HeaderButton> CalculateTwistIntersections { get; set; }
         private HeaderButtonInfo<HeaderButton> SetTwistIntersections { get; set; }
 
-        public PanelHeader()
+        protected override void FillContent()
         {
             Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.KeepDefaultHeaderButton, NodeController.Localize.Option_KeepDefault, EditNodeToolMode.ResetOffsetShortcut));
             Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.ResetToDefaultHeaderButton, NodeController.Localize.Option_ResetToDefault, EditNodeToolMode.ResetToDefaultShortcut));
@@ -173,6 +203,7 @@ namespace NodeController.UI
             SetTwistIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.SetTwistBetweenIntersectionsHeaderButton, NodeController.Localize.Option_SetTwistBetweenIntersections, EditNodeToolMode.SetTwistBetweenIntersectionsShortcut);
             Content.AddButton(SetTwistIntersections);
         }
+        public void Init(float height) => base.Init(height);
 
         public override void Refresh()
         {

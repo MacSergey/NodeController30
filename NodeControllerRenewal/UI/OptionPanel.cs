@@ -5,8 +5,6 @@ using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using TrafficManager.UI.MainMenu.OSD;
 using UnityEngine;
 
 namespace NodeController.UI
@@ -40,7 +38,7 @@ namespace NodeController.UI
             TotalOption = totalOption;
             IsEnableGetter = enableGetter;
 
-            PlaceItems();
+            Content.PauseLayout(PlaceItems);
 
             base.Init();
         }
@@ -51,6 +49,14 @@ namespace NodeController.UI
             Data = null;
             IsEnableGetter = null;
             NodeItem = null;
+
+            foreach (var item in SegmentItems)
+            {
+                item.Value.eventMouseEnter -= SegmentItemMouseEnter;
+                item.Value.eventMouseLeave -= SegmentItemMouseLeave;
+                if (item.Value.containsMouse)
+                    item.Key.IsHovered = false;
+            }
             SegmentItems.Clear();
 
             foreach (var component in Content.components.ToArray())
@@ -64,11 +70,27 @@ namespace NodeController.UI
             if (TotalOption.IsSet(SupportOption.Individually))
             {
                 foreach (var segmentData in Data.SegmentEndDatas)
-                    SegmentItems[segmentData] = AddSegmentItem(segmentData);
+                {
+                    var segmentItem = AddSegmentItem(segmentData);
+                    segmentItem.objectUserData = segmentData;
+                    segmentItem.eventMouseEnter += SegmentItemMouseEnter;
+                    segmentItem.eventMouseLeave += SegmentItemMouseLeave;
+                    SegmentItems[segmentData] = segmentItem;
+                }
             }
 
-            Content.Refresh();
             Refresh();
+        }
+
+        private void SegmentItemMouseEnter(UIComponent component, UIMouseEventParameter eventParam)
+        {
+            if (component.objectUserData is SegmentEndData data)
+                data.IsHovered = true;
+        }
+        private void SegmentItemMouseLeave(UIComponent component, UIMouseEventParameter eventParam)
+        {
+            if (component.objectUserData is SegmentEndData data)
+                data.IsHovered = false;
         }
 
         protected virtual TypeNodeItem AddNodeItem(NodeData data)
@@ -84,8 +106,8 @@ namespace NodeController.UI
 
         public virtual void Refresh()
         {
-            if (!Option.IsSet(SupportOption.Group) && NodeItem is TypeNodeItem nodeItem)
-                nodeItem.isEnabled = false;
+            if (NodeItem is TypeNodeItem nodeItem)
+                nodeItem.isEnabled = Option.IsSet(SupportOption.Group);
 
             foreach (var segmentData in Data.SegmentEndDatas)
             {
@@ -227,9 +249,21 @@ namespace NodeController.UI
 
             base.Refresh();
         }
+
+        protected override void FillContent() { }
+
+        public override void SetStyle(ControlStyle style)
+        {
+            NodeItem.TextFieldStyle = style.TextField;
+
+            foreach (var item in SegmentItems.Values)
+                item.TextFieldStyle = style.TextField;
+        }
     }
     public class BoolOptionPanel : OptionPanel<INOSegmented, INOSegmented, bool?>
     {
+        protected override void FillContent() { }
+
         protected override void InitNodeItem(NodeData data, INOSegmented item) => InitItem(data, item);
         protected override void InitSegmentItem(SegmentEndData data, INOSegmented item) => InitItem(data, item);
         private void InitItem(INetworkData data, INOSegmented item)
@@ -242,27 +276,38 @@ namespace NodeController.UI
             {
                 item.AddItem(true, new OptionData(CommonLocalize.MessageBox_Yes));
                 if (data is NodeData)
-                    item.AddItem(null, new OptionData("/"), clickable: false, width: 10f);
+                    item.AddItem(null, new OptionData("/"), clickable: null, width: 10f);
                 item.AddItem(false, new OptionData(CommonLocalize.MessageBox_No));
             }
             else
             {
                 item.AddItem(true, new OptionData("I"));
                 if (data is NodeData)
-                    item.AddItem(null, new OptionData("/"), clickable: false, width: 10f);
+                    item.AddItem(null, new OptionData("/"), clickable: null, width: 10f);
                 item.AddItem(false, new OptionData("O"));
             }
 
             item.StartLayout();
         }
+        public override void SetStyle(ControlStyle style)
+        {
+            NodeItem.SegmentedStyle = style.Segmented;
+
+            foreach (var item in SegmentItems.Values)
+                item.SegmentedStyle = style.Segmented;
+        }
     }
     public class TextOptionPanel : OptionPanel<CustomUILabel, CustomUILabel>
     {
+        private static float Contrast { get; } = 4.5f;
+        protected override void FillContent() { }
+
         protected override CustomUILabel AddNodeItem(NodeData data)
         {
             var item = base.AddNodeItem(data);
             AddItem(item);
             item.text = NodeController.Localize.Options_All;
+            item.textColor = Color.black;
             return item;
         }
         protected override CustomUILabel AddSegmentItem(SegmentEndData data)
@@ -270,28 +315,41 @@ namespace NodeController.UI
             var item = base.AddSegmentItem(data);
             AddItem(item);
             item.color = data.Color;
+            item.textColor = Color.white.GetContrast(data.Color) >= Contrast ? Color.white : ComponentStyle.DarkPrimaryColor15;
             item.text = $"#{data.Id}";
             return item;
         }
+
         private void AddItem(CustomUILabel item)
         {
             item.autoSize = false;
             item.width = ItemWidth;
             item.height = 18f;
             item.textScale = 0.65f;
-            item.textAlignment = UIHorizontalAlignment.Center;
-            item.verticalAlignment = UIVerticalAlignment.Middle;
-            item.padding.top = 3;
-            item.atlas = TextureHelper.InGameAtlas;
-            item.backgroundSprite = "ButtonWhite";
+            item.HorizontalAlignment = UIHorizontalAlignment.Center;
+            item.VerticalAlignment = UIVerticalAlignment.Middle;
+            item.Padding.top = 5;
+            item.Atlas = CommonTextures.Atlas;
+            item.BackgroundSprite = CommonTextures.PanelBig;
+        }
+        public override void SetStyle(ControlStyle style)
+        {
+
         }
     }
-    public class SpacePanel : EditorItem, IReusable
+    public class SpacePanel : BaseEditorPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
-        public override bool SupportEven => true;
+
+        public SpacePanel() : base()
+        {
+            SpritePadding.left = 10;
+            SpritePadding.right = 10;
+            Borders = PropertyBorder.Top;
+        }
 
         public void Init(float height) => base.Init(height);
+        public override void SetStyle(ControlStyle style) { }
     }
     public class IOSegmented : UIOnceSegmented<bool> { }
     public class INOSegmented : UIOnceSegmented<bool?> { }

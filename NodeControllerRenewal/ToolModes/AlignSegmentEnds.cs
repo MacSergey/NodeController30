@@ -174,14 +174,14 @@ namespace NodeController
             foreach (var target in Targets)
             {
                 if (target != HoverSide)
-                    target.RenderCenter(new OverlayData(cameraInfo) { Color = Colors.Yellow, Width = width, RenderLimit = underground });
+                    target.RenderCenter(new OverlayData(cameraInfo) { Color = Yellow, Width = width, RenderLimit = underground });
             }
 
             if (IsHoverSide)
                 HoverSide.RenderCenter(new OverlayData(cameraInfo) { Width = width, RenderLimit = underground });
 
             if (IsSelectedSide)
-                SelectedSide.RenderCenter(new OverlayData(cameraInfo) { Color = Colors.Purple, Width = width, RenderLimit = underground });
+                SelectedSide.RenderCenter(new OverlayData(cameraInfo) { Color = Purple, Width = width, RenderLimit = underground });
         }
     }
 }

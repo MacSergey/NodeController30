@@ -56,10 +56,10 @@ namespace NodeController
             {
                 var infos = base.DependencyInfos;
 
-                var info = new ConflictDependencyInfo(DependencyState.Disable, DependencyUtilities.NC2Searcher);
+                var info = new ConflictDependencyInfo(DependencyState.Disable, DependencyUtilities.NC2Searcher, "Original Node Controller");
                 infos.Add(info);
 
-                var crossingInfo = new ConflictDependencyInfo(DependencyState.Unsubscribe, PluginUtilities.GetSearcher("Pedestrian Crossings", 427258853ul));
+                var crossingInfo = new ConflictDependencyInfo(DependencyState.Unsubscribe, PluginUtilities.GetSearcher("Pedestrian Crossings", 427258853ul), "Pedestrian Crossings");
                 infos.Add(crossingInfo);
 
                 return infos;

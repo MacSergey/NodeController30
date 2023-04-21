@@ -1,4 +1,5 @@
-﻿using ModsCommon;
+﻿using ColossalFramework.UI;
+using ModsCommon;
 using ModsCommon.UI;
 using System;
 using System.Collections.Generic;
@@ -12,18 +13,23 @@ namespace NodeController.UI
     {
         public BackwardCompatibilityMessageBox()
         {
-            Panel.StopLayout();
+            Content.PauseLayout(() =>
+            {
+                Message.maximumSize = Vector2.zero;
 
-            Message.maximumSize = Vector2.zero;
+                var warning = Content.AddUIComponent<CustomUILabel>();
+                warning.name = "Message";
+                warning.Bold = true;
+                warning.WordWrap = true;
+                warning.AutoSize = AutoSize.Height;
+                warning.textColor = ComponentStyle.DarkPrimaryColor100;
+                warning.HorizontalAlignment = UIHorizontalAlignment.Center;
+                warning.VerticalAlignment = UIVerticalAlignment.Middle;
+                warning.text = NodeController.Localize.Mod_BackwardCompatibilityWarning;
 
-            var warning = AddLabel();
-            warning.textColor = Color.red;
-
-            CaptionText = SingletonMod<Mod>.Instance.NameRaw;
-            MessageText = NodeController.Localize.Mod_BackwardCompatibilityMessage;
-            warning.text = NodeController.Localize.Mod_BackwardCompatibilityWarning;
-
-            Panel.StartLayout();
+                CaptionText = SingletonMod<Mod>.Instance.NameRaw;
+                MessageText = NodeController.Localize.Mod_BackwardCompatibilityMessage;
+            });
         }
     }
 }

@@ -25,5 +25,7 @@ namespace NodeController
         public Vector3 RightPosDelta { get; set; }
         public Vector3 LeftDirDelta { get; set; }
         public Vector3 RightDirDelta { get; set; }
+        public bool? LeftFlatEnd { get; set; }
+        public bool? RightFlatEnd { get; set;}
     }
 }

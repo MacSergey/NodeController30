@@ -130,6 +130,7 @@ namespace NodeController
 
         public Vector3 PosDelta { get; set; }
         public Vector3 DirDelta { get; set; }
+        public bool FlatEnd { get; set; }
 
         private DataStruct final;
         private DataStruct temp;
@@ -270,6 +271,12 @@ namespace NodeController
                     break;
                 case Mode.FreeForm:
                     {
+                        if (FlatEnd)
+                        {
+                            position.y = SegmentData.NodeId.GetNode().m_position.y;
+                            direction = direction.MakeFlatNormalized();
+                        }
+
                         var angle = direction.AbsoluteAngle();
                         temp.deltaPos += Quaternion.AngleAxis(-angle * Mathf.Rad2Deg, Vector3.up) * PosDelta;
 
@@ -282,7 +289,7 @@ namespace NodeController
                         if (deltaDir.x != 0f)
                             temp.dirRotation *= Quaternion.AngleAxis(deltaDir.x, Vector3.up);
                         if (deltaDir.y != 0f)
-                            temp.dirRotation *= Quaternion.AngleAxis(deltaDir.y, Vector3.forward);
+                            temp.dirRotation *= Quaternion.AngleAxis(deltaDir.y, direction.MakeFlat().Turn90(true));
                         if (deltaDir.z != 0f)
                             temp.dirRatio *= deltaDir.z;
                     }
@@ -414,7 +421,7 @@ namespace NodeController
                 return;
             else if (isLeft)
             {
-                var bezier = new BezierTrajectory(left.MainTrajectory.StartPosition, left.MainTrajectory.StartDirection, right.temp.position, right.temp.direction, true, true, true);
+                var bezier = new BezierTrajectory(left.MainTrajectory.StartPosition, left.MainTrajectory.StartDirection, right.temp.position, right.temp.direction, new BezierTrajectory.Data(true, true, true));
                 bezier.GetHitPosition(new Segment3(left.temp.position, left.temp.position + Vector3.up), out _, out var t, out _);
                 if (t > 0)
                 {
@@ -424,7 +431,7 @@ namespace NodeController
             }
             else
             {
-                var bezier = new BezierTrajectory(right.MainTrajectory.StartPosition, right.MainTrajectory.StartDirection, left.temp.position, left.temp.direction, true, true, true);
+                var bezier = new BezierTrajectory(right.MainTrajectory.StartPosition, right.MainTrajectory.StartDirection, left.temp.position, left.temp.direction, new BezierTrajectory.Data(true, true, true));
                 bezier.GetHitPosition(new Segment3(right.temp.position, right.temp.position + Vector3.up), out _, out var t, out _);
                 if (t > 0)
                 {
@@ -454,7 +461,7 @@ namespace NodeController
                 if (final.rawT - final.minT >= 0.2f / final.rawTrajectory.Length)
                     final.rawTrajectory.Cut(final.minT, final.rawT).Render(dataAllow);
             }
-            dataDefault.Color ??= Colors.Purple;
+            dataDefault.Color ??= NodeControllerToolMode.Purple;
             final.rawTrajectory.Position(final.defaultT).RenderCircle(dataDefault);
         }
         public void Render(OverlayData centerData, OverlayData circleData)
@@ -467,7 +474,7 @@ namespace NodeController
             var markerPosition = MarkerPos;
             if ((markerPosition - final.position).sqrMagnitude > 0.25f)
             {
-                var color = data.Color.HasValue ? ((Color32)data.Color.Value).SetAlpha(128) : Colors.White128;
+                var color = data.Color.HasValue ? ((Color32)data.Color.Value).SetAlpha(128) : CommonColors.White128;
                 new StraightTrajectory(markerPosition, final.position).Render(new OverlayData(data.CameraInfo) { Color = color });
             }
             markerPosition.RenderCircle(data, data.Width ?? SegmentEndData.CornerCenterRadius * 2, 0f);

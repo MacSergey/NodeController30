@@ -24,18 +24,6 @@ namespace NodeController
 
         public static string XmlName => "SE";
 
-        public static Color32[] OverlayColors { get; } = new Color32[]
-        {
-            Colors.GetOverlayColor(Colors.Overlay.Red, 255),
-            Colors.GetOverlayColor(Colors.Overlay.Blue, 255),
-            Colors.GetOverlayColor(Colors.Overlay.Lime, 255),
-            Colors.GetOverlayColor(Colors.Overlay.Orange, 255),
-            Colors.GetOverlayColor(Colors.Overlay.Purple, 255),
-            Colors.GetOverlayColor(Colors.Overlay.SkyBlue, 255),
-            Colors.GetOverlayColor(Colors.Overlay.Pink, 255),
-            Colors.GetOverlayColor(Colors.Overlay.Turquoise, 255),
-        };
-
         #endregion
 
         #region PROPERTIES
@@ -47,9 +35,21 @@ namespace NodeController
         public ushort NodeId => NodeData.Id;
         public ushort Id { get; set; }
         public int Index { get; set; }
-        public Color32 Color => OverlayColors[Index];
+        public Color32 Color => Index switch
+        {
+            0 => CommonColors.GetOverlayColor(CommonColors.Overlay.Red, 255),
+            1 => CommonColors.GetOverlayColor(CommonColors.Overlay.Blue, 255),
+            2 => CommonColors.GetOverlayColor(CommonColors.Overlay.Lime, 255),
+            3 => CommonColors.GetOverlayColor(CommonColors.Overlay.Orange, 255),
+            4 => CommonColors.GetOverlayColor(CommonColors.Overlay.Purple, 255),
+            5 => CommonColors.GetOverlayColor(CommonColors.Overlay.SkyBlue, 255),
+            6 => CommonColors.GetOverlayColor(CommonColors.Overlay.Pink, 255),
+            7 => CommonColors.GetOverlayColor(CommonColors.Overlay.Turquoise, 255),
+            _ => UnityEngine.Color.white,
+        };
 
         public bool IsStartNode => Id.GetSegment().IsStartNode(NodeId);
+        public bool IsHovered { get; set; }
 
         public BezierTrajectory RawSegmentBezier { get; private set; }
         public BezierTrajectory SegmentBezier { get; private set; }
@@ -60,9 +60,8 @@ namespace NodeController
         public float AbsoluteAngle { get; private set; }
         public float Weight { get; }
 
-        public bool IsChangeable => Mode == Mode.FreeForm || !IsNodeLess;
-        public bool IsOffsetChangeable => IsChangeable && !IsUntouchable && NodeData.Style.SupportOffset != SupportOption.None;
-        public bool IsRotateChangeable => IsChangeable && NodeData.Style.SupportRotate != SupportOption.None;
+        public bool IsOffsetChangeable => !IsUntouchable && NodeData.Style.SupportOffset != SupportOption.None;
+        public bool IsRotateChangeable => NodeData.Style.SupportRotate != SupportOption.None;
         public bool IsMainRoad { get; set; }
 
         public bool IsRoad { get; private set; }
@@ -167,6 +166,18 @@ namespace NodeController
                     Rotate = value;
                 else
                 {
+                    var delta = value - RotateAngle;
+
+                    var leftDir = LeftDirDelta;
+                    leftDir.x += delta;
+                    LeftDirDelta = leftDir;
+
+                    var rightDir = RightDirDelta;
+                    rightDir.x += delta;
+                    RightDirDelta = rightDir;
+
+
+
                     var leftOriginalPos = LeftSide.OriginalPos.MakeFlat();
                     var rightOriginalPos = RightSide.OriginalPos.MakeFlat();
                     var originDir = leftOriginalPos - rightOriginalPos;
@@ -234,8 +245,30 @@ namespace NodeController
         }
         public float Shift
         {
-            get => Mode != Mode.FreeForm ? shiftValue : 0f;
-            set => shiftValue = value;
+            get
+            {
+                if (Mode != Mode.FreeForm)
+                    return shiftValue;
+                else
+                    return (RightPosDelta.z + LeftPosDelta.z) * 0.5f;
+            }
+            set
+            {
+                if (Mode != Mode.FreeForm)
+                    shiftValue = value;
+                else
+                {
+                    var delta = value - Shift;
+
+                    var rightPos = RightPosDelta;
+                    rightPos.z += delta;
+                    RightPosDelta = rightPos;
+
+                    var leftPos = LeftPosDelta;
+                    leftPos.z += delta;
+                    LeftPosDelta = leftPos;
+                }
+            }
         }
         public float Stretch
         {
@@ -283,7 +316,7 @@ namespace NodeController
         public bool? NoMarkings { get; set; }
         public bool? Collision
         {
-            get => Mode != Mode.FreeForm ? collisionValue : true;
+            get => (Mode == Mode.FreeForm || IsNodeLess) ? false : collisionValue;
             set => collisionValue = value;
         }
         public bool? ForceNodeLess
@@ -328,6 +361,16 @@ namespace NodeController
         {
             get => RightSide.DirDelta;
             set => RightSide.DirDelta = value;
+        }
+        public bool? LeftFlatEnd
+        {
+            get => LeftSide.FlatEnd;
+            set => LeftSide.FlatEnd = value == true;
+        }
+        public bool? RightFlatEnd
+        {
+            get => RightSide.FlatEnd;
+            set => RightSide.FlatEnd = value == true;
         }
 
         private bool KeepDefaults
@@ -444,10 +487,10 @@ namespace NodeController
         public void SetKeepDefaults(NodeStyle style)
         {
             KeepDefaults = true;
-            LeftSide.PosDelta = style.DefaultDelta;
-            RightSide.PosDelta = style.DefaultDelta;
-            LeftSide.DirDelta = style.DefaultDelta;
-            RightSide.DirDelta = style.DefaultDelta;
+            LeftSide.PosDelta = style.DefaultPosDelta;
+            RightSide.PosDelta = style.DefaultPosDelta;
+            LeftSide.DirDelta = style.DefaultDirDelta;
+            RightSide.DirDelta = style.DefaultDirDelta;
         }
         public void ResetToDefault(NodeStyle style, Mode mode, bool forceStyle, bool forceMode)
         {
@@ -465,50 +508,61 @@ namespace NodeController
             if (style.SupportForceNodeless == SupportOption.None || forceStyle || IsUntouchable)
                 ForceNodeLess = style.DefaultForceNodeLess;
 
-            if (Mode != Mode.FreeForm)
+            switch (Mode)
             {
-                if (style.SupportSlope == SupportOption.None || forceStyle || IsUntouchable)
-                    SlopeAngle = style.DefaultSlope;
+                case Mode.Flat:
+                case Mode.Slope:
+                    {
+                        if (style.SupportSlope == SupportOption.None || forceStyle || IsUntouchable)
+                            SlopeAngle = style.DefaultSlope;
 
-                if (style.SupportTwist == SupportOption.None || forceStyle || IsUntouchable)
-                    TwistAngle = style.DefaultTwist;
+                        if (style.SupportTwist == SupportOption.None || forceStyle || IsUntouchable)
+                            TwistAngle = style.DefaultTwist;
 
-                if (style.SupportShift == SupportOption.None || forceStyle || IsUntouchable)
-                    Shift = style.DefaultShift;
+                        if (style.SupportShift == SupportOption.None || forceStyle || IsUntouchable)
+                            Shift = style.DefaultShift;
 
-                if (style.SupportStretch == SupportOption.None || forceStyle || IsUntouchable)
-                    Stretch = style.DefaultStretch;
+                        if (style.SupportStretch == SupportOption.None || forceStyle || IsUntouchable)
+                            Stretch = style.DefaultStretch;
 
-                if (style.SupportCollision == SupportOption.None || forceStyle || IsUntouchable)
-                    Collision = style.GetDefaultCollision(this);
+                        if (style.SupportCollision == SupportOption.None || forceStyle || IsUntouchable)
+                            Collision = style.GetDefaultCollision(this);
 
-                if (style.SupportFollowMainSlope == SupportOption.None || forceStyle || IsUntouchable)
-                    FollowSlope = style.DefaultFollowSlope;
+                        if (style.SupportFollowMainSlope == SupportOption.None || forceStyle || IsUntouchable)
+                            FollowSlope = style.DefaultFollowSlope;
 
-                if (style.SupportDeltaHeight == SupportOption.None || forceStyle || IsUntouchable)
-                    DeltaHeight = style.DefaultDeltaHeight;
+                        if (style.SupportDeltaHeight == SupportOption.None || forceStyle || IsUntouchable)
+                            DeltaHeight = style.DefaultDeltaHeight;
 
-                SetPossibleOffset(style);
+                        SetPossibleOffset(style);
 
-                if (style.SupportRotate == SupportOption.None || forceStyle || !IsRotateChangeable)
-                    SetRotate(style.DefaultRotate);
+                        if (style.SupportRotate == SupportOption.None || forceStyle || !IsRotateChangeable)
+                            SetRotate(style.DefaultRotate);
 
-                if (style.SupportOffset == SupportOption.None)
-                    SetOffset(style.DefaultOffset);
-                else if (forceStyle || IsUntouchable)
-                    SetOffset(GetMinCornerOffset(style.DefaultOffset));
-                else
-                    SetOffset(Offset);
-            }
-            else
-            {
-                if (style.SupportCornerDelta == SupportOption.None || forceStyle || IsUntouchable || freeModeSwitched)
-                {
-                    LeftSide.PosDelta = style.DefaultDelta;
-                    RightSide.PosDelta = style.DefaultDelta;
-                    LeftSide.DirDelta = style.DefaultDelta;
-                    RightSide.DirDelta = style.DefaultDelta;
-                }
+                        if (style.SupportOffset == SupportOption.None)
+                            SetOffset(style.DefaultOffset);
+                        else if (forceStyle || IsUntouchable)
+                            SetOffset(GetMinCornerOffset(style.DefaultOffset));
+                        else
+                            SetOffset(Offset);
+                        break;
+                    }
+                case Mode.FreeForm:
+                    {
+                        if (style.SupportCornerDelta == SupportOption.None || forceStyle || IsUntouchable || freeModeSwitched)
+                        {
+                            LeftSide.PosDelta = style.DefaultPosDelta;
+                            RightSide.PosDelta = style.DefaultPosDelta;
+                            LeftSide.DirDelta = style.DefaultDirDelta;
+                            RightSide.DirDelta = style.DefaultDirDelta;
+                        }
+                        if(style.SupportCornerFlatEnd == SupportOption.None || forceStyle || IsUntouchable || freeModeSwitched)
+                        {
+                            LeftSide.FlatEnd = style.DefaultFlatEnd;
+                            RightSide.FlatEnd = style.DefaultFlatEnd;
+                        }
+                        break;
+                    }
             }
 
             if (forceStyle || style.ForceKeepDefault || freeModeSwitched)
@@ -516,12 +570,7 @@ namespace NodeController
         }
         private void SetPossibleOffset(NodeStyle style)
         {
-            if (IsNodeLess && Mode != Mode.FreeForm)
-            {
-                MinPossibleOffset = 0f;
-                MaxPossibleOffset = 0f;
-            }
-            else if (style.SupportOffset == SupportOption.None)
+            if (style.SupportOffset == SupportOption.None)
             {
                 MinPossibleOffset = style.DefaultOffset;
                 MaxPossibleOffset = style.DefaultOffset;
@@ -616,7 +665,8 @@ namespace NodeController
         {
             GetSegmentPosAndDir(segmentId, out var startPos, out var startDir, out var endPos, out var endDir);
 
-            bezier = new BezierTrajectory(startPos, startDir, endPos, endDir, true, true, true);
+            var data = new BezierTrajectory.Data(true, true, true);
+            bezier = new BezierTrajectory(startPos, startDir, endPos, endDir, data);
 
             var startNormal = Vector3.Cross(startDir, Vector3.up).normalized;
             var endNormal = Vector3.Cross(endDir, Vector3.up).normalized;
@@ -630,8 +680,8 @@ namespace NodeController
 
             GetSegmentWidth(segmentId, out var startHalfWidth, out var endHalfWidth);
 
-            leftSide = new BezierTrajectory(startPos + startNormal * startHalfWidth, startDir, endPos - endNormal * endHalfWidth, endDir, true, true, true);
-            rightSide = new BezierTrajectory(startPos - startNormal * startHalfWidth, startDir, endPos + endNormal * endHalfWidth, endDir, true, true, true);
+            leftSide = new BezierTrajectory(startPos + startNormal * startHalfWidth, startDir, endPos - endNormal * endHalfWidth, endDir, data);
+            rightSide = new BezierTrajectory(startPos - startNormal * startHalfWidth, startDir, endPos + endNormal * endHalfWidth, endDir, data);
         }
         private static void GetSegmentPosAndDir(ushort segmentId, out Vector3 startPos, out Vector3 startDir, out Vector3 endPos, out Vector3 endDir)
         {
@@ -646,12 +696,12 @@ namespace NodeController
             if (SingletonManager<Manager>.Instance.TryGetNodeData(segment.m_startNode, out var startData))
             {
                 if (startData.TryGetSegment(segmentId, out var startSegmentData))
-                    startShift = startSegmentData.Shift;
+                    startShift = startSegmentData.Mode != Mode.FreeForm ? startSegmentData.Shift : 0f;
             }
             if (SingletonManager<Manager>.Instance.TryGetNodeData(segment.m_endNode, out var endData))
             {
                 if (endData.TryGetSegment(segmentId, out var endSegmentData))
-                    endShift = endSegmentData.Shift;
+                    endShift = endSegmentData.Mode != Mode.FreeForm ? endSegmentData.Shift : 0f;
             }
 
             if (startShift == 0f && endShift == 0f)
@@ -748,15 +798,6 @@ namespace NodeController
                 {
                     for (var leftI = 0; leftI < count; leftI += 1)
                     {
-                        //if (endDatas[leftI].Collision == false)
-                        //{
-                        //    limits[leftI].left.mainMinT = null;
-                        //    limits[leftI].right.mainMinT = null;
-                        //    limits[leftI].left.defaultT = null;
-                        //    limits[leftI].right.defaultT = null;
-                        //    continue;
-                        //}
-
                         if (!GetNextIndex(endDatas, leftI, out var rightI))
                             continue;
 
@@ -783,9 +824,6 @@ namespace NodeController
                     {
                         for (var currentI = 0; currentI < count; currentI += 1)
                         {
-                            //if (endDatas[currentI].Collision == false)
-                            //    continue;
-
                             if (!GetPrevIndex(endDatas, currentI, out var prevI) || !GetNextIndex(endDatas, currentI, out var nextI) || prevI == nextI)
                                 continue;
 
@@ -794,7 +832,7 @@ namespace NodeController
                             var prevBezier = endDatas[prevI].LeftSide.MainTrajectory;
                             var nextBezier = endDatas[nextI].RightSide.MainTrajectory;
 
-                            var limitBezier = new BezierTrajectory(prevBezier.Position(prevMin), -prevBezier.Tangent(prevMin), nextBezier.Position(nextMin), -nextBezier.Tangent(nextMin), true, true, true);
+                            var limitBezier = new BezierTrajectory(prevBezier.Position(prevMin), -prevBezier.Tangent(prevMin), nextBezier.Position(nextMin), -nextBezier.Tangent(nextMin), new BezierTrajectory.Data(true, true, true));
 
                             if (Intersection.CalculateSingle(endDatas[currentI].LeftSide.MainTrajectory, limitBezier, out var leftT, out _))
                             {
@@ -812,9 +850,6 @@ namespace NodeController
 
                     for (var currentI = 0; currentI < count; currentI += 1)
                     {
-                        //if (endDatas[currentI].Collision == false)
-                        //    continue;
-
                         if ((limits[currentI].left.defaultT == null) != (limits[currentI].right.defaultT == null))
                         {
                             if (limits[currentI].left.defaultT == null)
@@ -859,28 +894,33 @@ namespace NodeController
                 {
                     var endData = endDatas[i];
 
-                    if (endData.Mode == Mode.FreeForm)
-                    {
-                        endData.LeftSide.MinT = endData.LeftSide.MainT;
-                        endData.RightSide.MinT = endData.RightSide.MainT;
-                    }
-                    else if (!endData.IsNodeLess)
+                    if (endData.IsNodeLess)
                     {
                         endData.LeftSide.MinT = limits[i].left.FinalMinT;
                         endData.RightSide.MinT = limits[i].right.FinalMinT;
                     }
-                    else
+                    else if (endData.Mode == Mode.FreeForm)
                     {
                         endData.LeftSide.MinT = endData.LeftSide.MainT;
                         endData.RightSide.MinT = endData.RightSide.MainT;
                     }
+                    else
+                    {
+                        endData.LeftSide.MinT = limits[i].left.FinalMinT;
+                        endData.RightSide.MinT = limits[i].right.FinalMinT;
+                    }
 
-                    if (endData.Mode == Mode.FreeForm)
+                    if (endData.IsNodeLess)
+                    {
+                        endData.LeftSide.DefaultT = endData.LeftSide.MainT;
+                        endData.RightSide.DefaultT = endData.RightSide.MainT;
+                    }
+                    else if (endData.Mode == Mode.FreeForm)
                     {
                         endData.LeftSide.DefaultT = limits[i].left.FinalDefaultT;
                         endData.RightSide.DefaultT = limits[i].right.FinalDefaultT;
                     }
-                    else if (!endData.IsNodeLess && count >= 2)
+                    else if (count >= 2)
                     {
                         endData.LeftSide.DefaultT = limits[i].left.FinalDefaultT;
                         endData.RightSide.DefaultT = limits[i].right.FinalDefaultT;
@@ -1001,7 +1041,7 @@ namespace NodeController
                 var mirrorNormal = Vector3.Cross(mirror, Vector3.up);
                 var halfWidth = LengthXZ(sub.StartPosition - point);
 
-                sub = new BezierTrajectory(point + (side == SideType.Left ? halfWidth : -halfWidth) * mirrorNormal, mirror, sub.EndPosition, sub.EndDirection, true, true, true);
+                sub = new BezierTrajectory(point + (side == SideType.Left ? halfWidth : -halfWidth) * mirrorNormal, mirror, sub.EndPosition, sub.EndDirection, new BezierTrajectory.Data(true, true, true));
             }
 
             if (Intersection.CalculateSingle(main, sub, out var t, out _))
@@ -1383,7 +1423,22 @@ namespace NodeController
 
         #region RENDER
 
-        public Color32 OverlayColor => IsShort ? Colors.Red : Colors.Green;
+        public Color32 OverlayColor
+        {
+            get
+            {
+                var color = IsShort ? CommonColors.Red : CommonColors.Green;
+
+                if (IsHovered)
+                {
+                    var time = DateTime.Now;
+                    var t = Math.Abs((time.Second % 2) * 1000 + time.Millisecond - 1000) / 1000f;
+                    color = UnityEngine.Color.Lerp(color, CommonColors.Orange, t);
+                }
+
+                return color.SetOpacity(Settings.OverlayOpacity);
+            }
+        }
 
         public void Render(OverlayData data)
         {
@@ -1396,7 +1451,7 @@ namespace NodeController
             SingletonManager<Manager>.Instance.TryGetNodeData(NodeId, out var data);
 
             RenderContour(contourData);
-            if (data.IsMoveableEnds && IsChangeable)
+            if (data.IsMoveableEnds)
             {
                 if (!IsNarrow)
                 {
@@ -1447,7 +1502,7 @@ namespace NodeController
         }
         private void RenderSide(SegmentSide side, OverlayData data)
         {
-            var bezier = new BezierTrajectory(side.StartPos, side.StartDir, side.EndPos, side.EndDir, true, true, true);
+            var bezier = new BezierTrajectory(side.StartPos, side.StartDir, side.EndPos, side.EndDir, new BezierTrajectory.Data(true, true, true));
             bezier.Render(data);
         }
         private void RenderEnd(OverlayData data)
@@ -1481,33 +1536,42 @@ namespace NodeController
             config.AddAttr("NM", NoMarkings == true ? 1 : 0);
             config.AddAttr("FNL", ForceNodeLess == true ? 1 : 0);
 
-            if (Mode != Mode.FreeForm)
+            switch (Mode)
             {
-                config.AddAttr("SA", SlopeAngle);
-                config.AddAttr("TA", TwistAngle);
-                config.AddAttr("S", Shift);
-                config.AddAttr("ST", Stretch);
-                config.AddAttr("CL", Collision == true ? 1 : 0);
-                config.AddAttr("FS", FollowSlope == true ? 1 : 0);
-                config.AddAttr("DH", DeltaHeight);
-            }
-            else
-            {
-                config.AddAttr("LPDX", LeftPosDelta.x);
-                config.AddAttr("LPDY", LeftPosDelta.y);
-                config.AddAttr("LPDZ", LeftPosDelta.z);
+                case Mode.Flat:
+                case Mode.Slope:
+                    {
+                        config.AddAttr("SA", SlopeAngle);
+                        config.AddAttr("TA", TwistAngle);
+                        config.AddAttr("S", Shift);
+                        config.AddAttr("ST", Stretch);
+                        config.AddAttr("CL", Collision == true ? 1 : 0);
+                        config.AddAttr("FS", FollowSlope == true ? 1 : 0);
+                        config.AddAttr("DH", DeltaHeight);
+                        break;
+                    }
+                case Mode.FreeForm:
+                    {
+                        config.AddAttr("LPDX", LeftPosDelta.x);
+                        config.AddAttr("LPDY", LeftPosDelta.y);
+                        config.AddAttr("LPDZ", LeftPosDelta.z);
 
-                config.AddAttr("RPDX", RightPosDelta.x);
-                config.AddAttr("RPDY", RightPosDelta.y);
-                config.AddAttr("RPDZ", RightPosDelta.z);
+                        config.AddAttr("RPDX", RightPosDelta.x);
+                        config.AddAttr("RPDY", RightPosDelta.y);
+                        config.AddAttr("RPDZ", RightPosDelta.z);
 
-                config.AddAttr("LDDX", LeftDirDelta.x);
-                config.AddAttr("LDDY", LeftDirDelta.y);
-                config.AddAttr("LDDZ", LeftDirDelta.z);
+                        config.AddAttr("LDDX", LeftDirDelta.x);
+                        config.AddAttr("LDDY", LeftDirDelta.y);
+                        config.AddAttr("LDDZ", LeftDirDelta.z);
 
-                config.AddAttr("RDDX", RightDirDelta.x);
-                config.AddAttr("RDDY", RightDirDelta.y);
-                config.AddAttr("RDDZ", RightDirDelta.z);
+                        config.AddAttr("RDDX", RightDirDelta.x);
+                        config.AddAttr("RDDY", RightDirDelta.y);
+                        config.AddAttr("RDDZ", RightDirDelta.z);
+
+                        config.AddAttr("LFE", LeftFlatEnd == true ? 1 : 0);
+                        config.AddAttr("RFE", RightFlatEnd == true ? 1 : 0);
+                        break;
+                    }
             }
 
             return config;
@@ -1531,53 +1595,64 @@ namespace NodeController
             if (style.SupportForceNodeless != SupportOption.None && !IsUntouchable)
                 ForceNodeLess = config.GetAttrValue("FNL", style.DefaultForceNodeLess ? 1 : 0) == 1;
 
-            if (Mode != Mode.FreeForm)
+            switch (Mode)
             {
-                if (style.SupportSlope != SupportOption.None && !IsUntouchable)
-                    SlopeAngle = config.GetAttrValue("SA", style.DefaultSlope);
+                case Mode.Flat:
+                case Mode.Slope:
+                    {
+                        if (style.SupportSlope != SupportOption.None && !IsUntouchable)
+                            SlopeAngle = config.GetAttrValue("SA", style.DefaultSlope);
 
-                if (style.SupportTwist != SupportOption.None && !IsUntouchable)
-                    TwistAngle = config.GetAttrValue("TA", style.DefaultTwist);
+                        if (style.SupportTwist != SupportOption.None && !IsUntouchable)
+                            TwistAngle = config.GetAttrValue("TA", style.DefaultTwist);
 
-                if (style.SupportShift != SupportOption.None && !IsUntouchable)
-                    Shift = config.GetAttrValue("S", style.DefaultShift);
+                        if (style.SupportShift != SupportOption.None && !IsUntouchable)
+                            Shift = config.GetAttrValue("S", style.DefaultShift);
 
-                if (style.SupportStretch != SupportOption.None && !IsUntouchable)
-                    Stretch = config.GetAttrValue("ST", style.DefaultStretch);
+                        if (style.SupportStretch != SupportOption.None && !IsUntouchable)
+                            Stretch = config.GetAttrValue("ST", style.DefaultStretch);
 
-                if (style.SupportCollision != SupportOption.None && !IsUntouchable)
-                    Collision = config.GetAttrValue("CL", style.GetDefaultCollision(this) ? 1 : 0) == 1;
+                        if (style.SupportCollision != SupportOption.None && !IsUntouchable)
+                            Collision = config.GetAttrValue("CL", style.GetDefaultCollision(this) ? 1 : 0) == 1;
 
-                if (style.SupportFollowMainSlope != SupportOption.None && !IsUntouchable)
-                    FollowSlope = config.GetAttrValue("FS", style.DefaultFollowSlope ? 1 : 0) == 1;
+                        if (style.SupportFollowMainSlope != SupportOption.None && !IsUntouchable)
+                            FollowSlope = config.GetAttrValue("FS", style.DefaultFollowSlope ? 1 : 0) == 1;
 
-                if (style.SupportDeltaHeight != SupportOption.None && !IsUntouchable)
-                    DeltaHeight = config.GetAttrValue("DH", style.DefaultDeltaHeight);
-            }
-            else
-            {
-                if (style.SupportCornerDelta != SupportOption.None && !IsUntouchable)
-                {
-                    var x = config.GetAttrValue("LPDX", style.DefaultDelta.x);
-                    var y = config.GetAttrValue("LPDY", style.DefaultDelta.y);
-                    var z = config.GetAttrValue("LPDZ", style.DefaultDelta.z);
-                    LeftPosDelta = new Vector3(x, y, z);
+                        if (style.SupportDeltaHeight != SupportOption.None && !IsUntouchable)
+                            DeltaHeight = config.GetAttrValue("DH", style.DefaultDeltaHeight);
+                        break;
+                    }
+                case Mode.FreeForm:
+                    {
+                        if (style.SupportCornerDelta != SupportOption.None && !IsUntouchable)
+                        {
+                            var x = config.GetAttrValue("LPDX", style.DefaultPosDelta.x);
+                            var y = config.GetAttrValue("LPDY", style.DefaultPosDelta.y);
+                            var z = config.GetAttrValue("LPDZ", style.DefaultPosDelta.z);
+                            LeftPosDelta = new Vector3(x, y, z);
 
-                    x = config.GetAttrValue("RPDX", style.DefaultDelta.x);
-                    y = config.GetAttrValue("RPDY", style.DefaultDelta.y);
-                    z = config.GetAttrValue("RPDZ", style.DefaultDelta.z);
-                    RightPosDelta = new Vector3(x, y, z);
+                            x = config.GetAttrValue("RPDX", style.DefaultPosDelta.x);
+                            y = config.GetAttrValue("RPDY", style.DefaultPosDelta.y);
+                            z = config.GetAttrValue("RPDZ", style.DefaultPosDelta.z);
+                            RightPosDelta = new Vector3(x, y, z);
 
-                    x = config.GetAttrValue("LDDX", style.DefaultDelta.x);
-                    y = config.GetAttrValue("LDDY", style.DefaultDelta.y);
-                    z = config.GetAttrValue("LDDZ", style.DefaultDelta.z);
-                    LeftDirDelta = new Vector3(x, y, z);
+                            x = config.GetAttrValue("LDDX", style.DefaultDirDelta.x);
+                            y = config.GetAttrValue("LDDY", style.DefaultDirDelta.y);
+                            z = config.GetAttrValue("LDDZ", style.DefaultDirDelta.z);
+                            LeftDirDelta = new Vector3(x, y, z);
 
-                    x = config.GetAttrValue("RDDX", style.DefaultDelta.x);
-                    y = config.GetAttrValue("RDDY", style.DefaultDelta.y);
-                    z = config.GetAttrValue("RDDZ", style.DefaultDelta.z);
-                    RightDirDelta = new Vector3(x, y, z);
-                }
+                            x = config.GetAttrValue("RDDX", style.DefaultDirDelta.x);
+                            y = config.GetAttrValue("RDDY", style.DefaultDirDelta.y);
+                            z = config.GetAttrValue("RDDZ", style.DefaultDirDelta.z);
+                            RightDirDelta = new Vector3(x, y, z);
+                        }
+                        if(style.SupportCornerFlatEnd != SupportOption.None && !IsUntouchable)
+                        {
+                            LeftFlatEnd = config.GetAttrValue("LFE", style.DefaultFlatEnd ? 1 : 0) == 1;
+                            RightFlatEnd = config.GetAttrValue("RFE", style.DefaultFlatEnd ? 1 : 0) == 1;
+                        }
+                        break;
+                    }
             }
 
             KeepDefaults = style.ForceKeepDefault && config.GetAttrValue("KD", 0) == 1;

@@ -201,6 +201,11 @@ namespace NodeController
 		public static string Option_Elevation => LocaleManager.GetString("Option_Elevation", Culture);
 
 		/// <summary>
+		/// Flat end
+		/// </summary>
+		public static string Option_FlatEnd => LocaleManager.GetString("Option_FlatEnd", Culture);
+
+		/// <summary>
 		/// Follow main slope
 		/// </summary>
 		public static string Option_FollowSlope => LocaleManager.GetString("Option_FollowSlope", Culture);
@@ -229,6 +234,11 @@ namespace NodeController
 		/// Left corner direction
 		/// </summary>
 		public static string Option_LeftCornerDirection => LocaleManager.GetString("Option_LeftCornerDirection", Culture);
+
+		/// <summary>
+		/// Left corner flat end
+		/// </summary>
+		public static string Option_LeftCornerFlatEnd => LocaleManager.GetString("Option_LeftCornerFlatEnd", Culture);
 
 		/// <summary>
 		/// Left corner position
@@ -319,6 +329,11 @@ namespace NodeController
 		/// Right corner direction
 		/// </summary>
 		public static string Option_RightCornerDirection => LocaleManager.GetString("Option_RightCornerDirection", Culture);
+
+		/// <summary>
+		/// Right corner flat end
+		/// </summary>
+		public static string Option_RightCornerFlatEnd => LocaleManager.GetString("Option_RightCornerFlatEnd", Culture);
 
 		/// <summary>
 		/// Right corner position
@@ -504,6 +519,11 @@ namespace NodeController
 		/// Always visible
 		/// </summary>
 		public static string Settings_Option_Visible => LocaleManager.GetString("Settings_Option_Visible", Culture);
+
+		/// <summary>
+		/// Overlay opacity
+		/// </summary>
+		public static string Settings_OverlayOpacity => LocaleManager.GetString("Settings_OverlayOpacity", Culture);
 
 		/// <summary>
 		/// Show nearby nodes overlay

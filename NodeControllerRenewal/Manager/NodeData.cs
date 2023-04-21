@@ -12,7 +12,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
-using static ColossalFramework.Math.VectorUtils;
 using static ModsCommon.Utilities.VectorUtilsExtensions;
 
 namespace NodeController
@@ -177,6 +176,16 @@ namespace NodeController
         {
             get => Vector3.zero;
             set { }
+        }
+        public bool? LeftFlatEnd
+        {
+            get => Style.GetFlatEnd(SideType.Left);
+            set => Style.SetFlatEnd(SideType.Left, value);
+        }
+        public bool? RightFlatEnd
+        {
+            get => Style.GetFlatEnd(SideType.Right);
+            set => Style.SetFlatEnd(SideType.Right, value);
         }
 
         public bool IsRoad => SegmentEndDatas.All(s => s.IsRoad);
@@ -413,8 +422,9 @@ namespace NodeController
                     var secondLeft = secondMain[SideType.Left];
                     var secondRight = secondMain[SideType.Right];
 
-                    var leftBezier = new BezierTrajectory(firstLeft.TempPos, -firstLeft.TempDir, secondRight.TempPos, -secondRight.TempDir, false, true, true);
-                    var rightBezier = new BezierTrajectory(secondLeft.TempPos, -secondLeft.TempDir, firstRight.TempPos, -firstRight.TempDir, false, true, true);
+                    var data = new BezierTrajectory.Data(false, true, true);
+                    var leftBezier = new BezierTrajectory(firstLeft.TempPos, -firstLeft.TempDir, secondRight.TempPos, -secondRight.TempDir, data);
+                    var rightBezier = new BezierTrajectory(secondLeft.TempPos, -secondLeft.TempDir, firstRight.TempPos, -firstRight.TempDir, data);
 
                     foreach (var segmentEnd in SegmentEndDatas)
                     {
@@ -449,7 +459,7 @@ namespace NodeController
                 {
                     firstMain.AfterCalculate();
 
-                    position = SegmentEndDatas.First().RawSegmentBezier.StartPosition;
+                    position = SegmentEndDatas.First().Position;
                 }
                 else if (IsMiddleNode)
                 {
@@ -471,15 +481,17 @@ namespace NodeController
                             segmentEnd.AfterCalculate();
                     }
 
-                    MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, true, true, true);
+                    var data = new BezierTrajectory.Data(true, true, true);
+                    MainBezier = new BezierTrajectory(firstMain.Position, -firstMain.Direction, secondMain.Position, -secondMain.Direction, data);
 
                     var firstLeft = firstMain[SideType.Left];
                     var firstRight = firstMain[SideType.Right];
                     var secondLeft = secondMain[SideType.Left];
                     var secondRight = secondMain[SideType.Right];
 
-                    var leftBezier = new BezierTrajectory(firstLeft.TempPos, -firstLeft.TempDir, secondRight.TempPos, -secondRight.TempDir, false, true, true);
-                    var rightBezier = new BezierTrajectory(secondLeft.TempPos, -secondLeft.TempDir, firstRight.TempPos, -firstRight.TempDir, false, true, true);
+                    data = new BezierTrajectory.Data(false, true, true);
+                    var leftBezier = new BezierTrajectory(firstLeft.TempPos, -firstLeft.TempDir, secondRight.TempPos, -secondRight.TempDir, data);
+                    var rightBezier = new BezierTrajectory(secondLeft.TempPos, -secondLeft.TempDir, firstRight.TempPos, -firstRight.TempDir, data);
 
                     position = (leftBezier.Position(0.5f) + rightBezier.Position(0.5f)) * 0.5f;
 
@@ -707,11 +719,20 @@ namespace NodeController
         public class NodeTypeEntity : SimpleEntity<NodeStyleType> { }
         public class NodeTypePopup : SimplePopup<NodeStyleType, NodeTypeEntity> { }
         protected override string GetDescription(NodeStyleType value) => value.Description();
+
+        public override void SetStyle(ControlStyle style)
+        {
+            Selector.DropDownStyle = style.DropDown;
+        }
     }
     public class ModePropertyPanel : EnumOncePropertyPanel<Mode, ModePropertyPanel.ModeSegmented>
     {
         protected override string GetDescription(Mode value) => value.Description();
         protected override bool IsEqual(Mode first, Mode second) => first == second;
+        public override void SetStyle(ControlStyle style)
+        {
+            Selector.SegmentedStyle = style.Segmented;
+        }
 
         public class ModeSegmented : UIOnceSegmented<Mode> { }
     }

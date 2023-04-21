@@ -37,7 +37,7 @@ namespace NodeController
         public static float MinDeltaHeight => -10f;
         public static Vector3 MinPosDelta => new Vector3(-100f, -100f, -100f);
         public static Vector3 MaxPosDelta => new Vector3(100f, 100f, 100f);
-        public static Vector3 MinDirDelta => new Vector3(-180f, -180f, 0f);
+        public static Vector3 MinDirDelta => new Vector3(-180f, -180f, 0.0001f);
         public static Vector3 MaxDirDelta => new Vector3(180f, 180f, 10f);
 
         private static bool HideCrosswalksEnable { get; } = DependencyUtilities.HideCrossings?.isEnabled == true;
@@ -64,11 +64,12 @@ namespace NodeController
         public virtual SupportOption SupportFollowMainSlope => SupportOption.None;
         public virtual SupportOption SupportDeltaHeight => SupportOption.None;
         public virtual SupportOption SupportCornerDelta => SupportOption.None;
+        public virtual SupportOption SupportCornerFlatEnd => SupportOption.None;
         public virtual bool SupportTrafficLights => false;
         public virtual bool ForceKeepDefault => false;
         public virtual bool NeedFixDirection => true;
 
-        public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch | SupportCollision | SupportForceNodeless | SupportFollowMainSlope | SupportCornerDelta) & SupportOption.All;
+        public SupportOption TotalSupport => (SupportOffset | SupportShift | SupportRotate | SupportSlope | SupportTwist | SupportStretch | SupportCollision | SupportForceNodeless | SupportFollowMainSlope | SupportCornerDelta | SupportCornerFlatEnd) & SupportOption.All;
         private bool OnlyOnSlope => DefaultMode != Mode.Flat;
 
         public virtual float DefaultOffset => 0f;
@@ -81,7 +82,9 @@ namespace NodeController
         public virtual bool DefaultForceNodeLess => false;
         public virtual Mode DefaultMode => Settings.NodeIsSlopedByDefault ? Mode.Slope : Mode.Flat;
         public virtual float DefaultStretch => 1f;
-        public virtual Vector3 DefaultDelta => Vector3.zero;
+        public virtual Vector3 DefaultPosDelta => Vector3.zero;
+        public virtual Vector3 DefaultDirDelta => new Vector3(0f, 0f, 1f);
+        public virtual bool DefaultFlatEnd => false;
         public virtual bool DefaultFollowSlope => true;
         public virtual float DefaultDeltaHeight => 0f;
 
@@ -144,7 +147,7 @@ namespace NodeController
 
         private IEnumerable<SegmentEndData> GetDatas(Func<SegmentEndData, bool> predicate) => Data.SegmentEndDatas.Where(predicate);
 
-        public virtual Mode GetMode() => TouchableDatas.Max(s => s.Mode);
+        public virtual Mode GetMode() => (Mode)TouchableDatas.Aggregate(0, (m, s) => Math.Max(m, (int)s.Mode));
         public virtual void SetMode(Mode value)
         {
             foreach (var segmentData in TouchableDatas)
@@ -321,6 +324,29 @@ namespace NodeController
             }
         }
 
+        public virtual bool? GetFlatEnd(SideType side)
+        {
+            if (GetDatas(TouchablePredicate).All(s => (side == SideType.Left ? s.LeftFlatEnd : s.RightFlatEnd) == true))
+                return true;
+            else if (GetDatas(TouchablePredicate).All(s => (side == SideType.Left ? s.LeftFlatEnd : s.RightFlatEnd) == false))
+                return false;
+            else
+                return null;
+        }
+        public virtual void SetFlatEnd(SideType side, bool? value)
+        {
+            if (value != null)
+            {
+                foreach (var segmentData in GetDatas(TouchablePredicate))
+                {
+                    if (side == SideType.Left)
+                        segmentData.LeftFlatEnd = value;
+                    else
+                        segmentData.RightFlatEnd = value;
+                }
+            }
+        }
+
         #endregion
 
         #region UICOMPONENTS
@@ -334,25 +360,20 @@ namespace NodeController
             OptionPanels.Clear();
             var totalSupport = TotalSupport;
 
-            if (GetModeButtons(parent) is EditorPropertyPanel mode)
-                components.Add(mode);
             if (GetMainRoadButtons(parent) is EditorPropertyPanel mainRoad)
                 OptionPanels.Add(Options.MainRoad, mainRoad);
 
-            if (totalSupport == SupportOption.All)
-            {
-                var space = ComponentPool.Get<SpacePanel>(parent);
-                space.Init(20f);
-                components.Add(space);
+            var space = ComponentPool.Get<SpacePanel>(parent);
+            space.Init(20f);
+            components.Add(space);
 
-                var titles = ComponentPool.Get<TextOptionPanel>(parent);
-                titles.Init(Data, SupportOption.All, SupportOption.All);
-                components.Add(titles);
-            }
+            var titles = ComponentPool.Get<TextOptionPanel>(parent);
+            titles.Init(Data, totalSupport, totalSupport);
+            components.Add(titles);
 
             OptionsZOrder = parent.childCount;
             int hiddenCount = 0;
-            foreach (var option in EnumExtension.GetEnumValues<Options>(i => true))
+            foreach (var option in EnumExtension.GetEnumValues<Options>().Order())
             {
                 var visibility = Settings.GetOptionVisibility(option);
                 if (visibility != OptionVisibility.Disabled)
@@ -374,7 +395,11 @@ namespace NodeController
             var moreOptionsButton = ComponentPool.Get<ButtonPanel>(parent);
             components.Add(moreOptionsButton);
             moreOptionsButton.Text = $"▼ {Localize.Option_MoreOptions} ▼";
+            moreOptionsButton.TextAlignment = UIHorizontalAlignment.Center;
+            moreOptionsButton.TextPadding = new RectOffset(10, 10, 6, 3);
+            moreOptionsButton.AutoSize = AutoSize.Height;
             moreOptionsButton.Init();
+            moreOptionsButton.SetStyle(UIStyle.Default);
             moreOptionsButton.isVisible = hiddenCount >= 2 && !getShowHidden();
             moreOptionsButton.OnButtonClick += () =>
             {
@@ -389,7 +414,7 @@ namespace NodeController
         }
         public void RefreshUIComponents(UIComponent parent, Func<bool> getShowHidden, Action<bool> setShowHidden)
         {
-            foreach (var option in EnumExtension.GetEnumValues<Options>(i => true))
+            foreach (var option in EnumExtension.GetEnumValues<Options>().Order())
             {
                 if (OptionPanels.TryGetValue(option, out var optionPanel))
                 {
@@ -426,7 +451,6 @@ namespace NodeController
                     return visible && Data.Mode != Mode.Flat;
 
                 case Options.Offset:
-                case Options.Shift:
                 case Options.Collision:
                     return visible && Data.Mode != Mode.FreeForm;
 
@@ -434,6 +458,8 @@ namespace NodeController
                 case Options.RightCornerPos:
                 case Options.LeftCornerDir:
                 case Options.RightCornerDir:
+                case Options.LeftCornerFlatEnd:
+                case Options.RightCornerFlatEnd:
                     return visible && Data.Mode == Mode.FreeForm;
 
                 case Options.MainRoad:
@@ -461,29 +487,11 @@ namespace NodeController
             Options.RightCornerPos => GetCornerPosOption(parent, support, SideType.Right),
             Options.LeftCornerDir => GetCornerDirOption(parent, support, SideType.Left),
             Options.RightCornerDir => GetCornerDirOption(parent, support, SideType.Right),
+            Options.LeftCornerFlatEnd => GetCornerFlatOption(parent, support, SideType.Left),
+            Options.RightCornerFlatEnd => GetCornerFlatOption(parent, support, SideType.Right),
             _ => null,
         };
 
-        private ModePropertyPanel GetModeButtons(UIComponent parent)
-        {
-            if (SupportMode != SupportOption.None)
-            {
-                var modeProperty = ComponentPool.Get<ModePropertyPanel>(parent, nameof(Data.Mode));
-                modeProperty.Label = Localize.Option_Mode;
-                modeProperty.Init(m => (m & SupportModes) != 0);
-                modeProperty.SelectedObject = Data.Mode;
-                modeProperty.OnSelectObjectChanged += (Mode value) =>
-                {
-                    Data.Mode = value;
-                    Data.UpdateNode();
-                    SingletonTool<NodeControllerTool>.Instance.Panel.RefreshPanel();
-                };
-
-                return modeProperty;
-            }
-            else
-                return null;
-        }
         private BoolListPropertyPanel GetMainRoadButtons(UIComponent parent)
         {
             if (Data.IsJunction && !Data.IsDecoration)
@@ -491,6 +499,7 @@ namespace NodeController
                 var mainRoadProperty = ComponentPool.Get<BoolListPropertyPanel>(parent, nameof(Data.MainRoad));
                 mainRoadProperty.Label = Localize.Option_MainSlopeDirection;
                 mainRoadProperty.Init(Localize.Option_MainSlopeDirectionManually, Localize.Option_MainSlopeDirectionAuto);
+                mainRoadProperty.SetStyle(UIStyle.Default);
                 mainRoadProperty.SelectedObject = Data.MainRoad.Auto;
                 mainRoadProperty.OnSelectObjectChanged += (value) =>
                 {
@@ -512,7 +521,8 @@ namespace NodeController
                 offset.Label = Localize.Option_Offset;
                 offset.Format = Localize.Option_OffsetFormat;
                 offset.NumberFormat = "0.##";
-                offset.Init(Data, SupportOffset, totalSupport, OffsetGetter, OffsetSetter, MinMaxOffset, HasNodePredicate);
+                offset.Init(Data, SupportOffset, totalSupport, OffsetGetter, OffsetSetter, MinMaxOffset, TouchablePredicate);
+                offset.SetStyle(UIStyle.Default);
 
                 return offset;
             }
@@ -528,6 +538,7 @@ namespace NodeController
                 shift.Format = Localize.Option_ShiftFormat;
                 shift.NumberFormat = "0.##";
                 shift.Init(Data, SupportShift, totalSupport, ShiftGetter, ShiftSetter, MinMaxShift, AllowShiftPredicate);
+                shift.SetStyle(UIStyle.Default);
 
                 return shift;
             }
@@ -542,7 +553,8 @@ namespace NodeController
                 rotate.Label = Localize.Option_Rotate;
                 rotate.Format = Localize.Option_RotateFormat;
                 rotate.NumberFormat = "0.#";
-                rotate.Init(Data, SupportRotate, totalSupport, RotateGetter, RotateSetter, MinMaxRotate, HasNodePredicate);
+                rotate.Init(Data, SupportRotate, totalSupport, RotateGetter, RotateSetter, MinMaxRotate, TouchablePredicate);
+                rotate.SetStyle(UIStyle.Default);
 
                 return rotate;
             }
@@ -558,6 +570,7 @@ namespace NodeController
                 stretch.Format = Localize.Option_StretchFormat;
                 stretch.NumberFormat = "0.#";
                 stretch.Init(Data, SupportStretch, totalSupport, StretchGetter, StretchSetter, MinMaxStretch, TouchablePredicate);
+                stretch.SetStyle(UIStyle.Default);
 
                 return stretch;
             }
@@ -573,6 +586,7 @@ namespace NodeController
                 slope.Format = Localize.Option_SlopeFormat;
                 slope.NumberFormat = "0.#";
                 slope.Init(Data, SupportSlope, totalSupport, SlopeGetter, SlopeSetter, MinMaxSlope, FollowSlopePredicate);
+                slope.SetStyle(UIStyle.Default);
 
                 return slope;
             }
@@ -588,6 +602,7 @@ namespace NodeController
                 twist.Format = Localize.Option_TwistFormat;
                 twist.NumberFormat = "0.#";
                 twist.Init(Data, SupportTwist, totalSupport, TwistGetter, TwistSetter, MinMaxTwist, FollowSlopePredicate);
+                twist.SetStyle(UIStyle.Default);
 
                 return twist;
             }
@@ -603,6 +618,7 @@ namespace NodeController
                     var hideMarking = ComponentPool.Get<BoolOptionPanel>(parent, nameof(Data.NoMarkings));
                     hideMarking.Label = Localize.Option_Marking;
                     hideMarking.Init(Data, SupportMarking, totalSupport, MarkingsGetter, MarkingsSetter, IsRoadPredicate);
+                    hideMarking.SetStyle(UIStyle.Default);
 
                     return hideMarking;
                 }
@@ -613,11 +629,11 @@ namespace NodeController
                     hideMarking.ButtonText = Localize.Option_HideCrosswalkModRequired;
 
                     hideMarking.WordWrap = true;
-                    hideMarking.AutoSize = true;
+                    hideMarking.AutoSize = AutoSize.Height;
                     hideMarking.TextAlignment = UIHorizontalAlignment.Center;
+                    hideMarking.TextPadding = new RectOffset(10, 10, 6, 3);
                     hideMarking.Init();
-                    hideMarking.AutoSize = false;
-                    var actualWidth = hideMarking.Width;
+                    hideMarking.SetStyle(UIStyle.Default);
 
                     if (totalSupport == SupportOption.Group)
                         hideMarking.Width = 100f;
@@ -631,10 +647,6 @@ namespace NodeController
 
                         hideMarking.Width = count * 50f + (count - 1) * 5f;
                     }
-                    if (hideMarking.Width < actualWidth)
-                        hideMarking.Init(50f);
-                    else
-                        hideMarking.Init();
 
                     hideMarking.OnButtonClick += () => DependencyUtilities.HideCrosswalksId.GetWorkshopUrl().OpenUrl();
                     return hideMarking;
@@ -650,7 +662,8 @@ namespace NodeController
             {
                 var collision = ComponentPool.Get<BoolOptionPanel>(parent, nameof(Data.Collision));
                 collision.Label = Localize.Option_Collision;
-                collision.Init(Data, SupportCollision, totalSupport, CollisionGetter, CollisionSetter, TouchablePredicate);
+                collision.Init(Data, SupportCollision, totalSupport, CollisionGetter, CollisionSetter, HasNodePredicate);
+                collision.SetStyle(UIStyle.Default);
 
                 return collision;
             }
@@ -664,6 +677,7 @@ namespace NodeController
                 var forceNodeLess = ComponentPool.Get<BoolOptionPanel>(parent, nameof(Data.ForceNodeLess));
                 forceNodeLess.Label = Localize.Option_NodeLess;
                 forceNodeLess.Init(Data, SupportForceNodeless, totalSupport, ForceNodeLessGetter, ForceNodeLessSetter, AllowNodeLessPredicate);
+                forceNodeLess.SetStyle(UIStyle.Default);
 
                 return forceNodeLess;
             }
@@ -677,6 +691,7 @@ namespace NodeController
                 var followSlope = ComponentPool.Get<BoolOptionPanel>(parent, nameof(Data.FollowSlope));
                 followSlope.Label = Localize.Option_FollowSlope;
                 followSlope.Init(Data, SupportFollowMainSlope, totalSupport, FollowSlopeGetter, FollowSlopeSetter, NotMainRoadPredicate);
+                followSlope.SetStyle(UIStyle.Default);
 
                 return followSlope;
             }
@@ -692,6 +707,7 @@ namespace NodeController
                 offset.Format = Localize.Option_OffsetFormat;
                 offset.NumberFormat = "0.##";
                 offset.Init(Data, SupportDeltaHeight, totalSupport, DeltaHeightGetter, DeltaHeightSetter, MinMaxDeltaHeight, FollowSlopePredicate);
+                offset.SetStyle(UIStyle.Default);
 
                 return offset;
             }
@@ -709,7 +725,8 @@ namespace NodeController
                 cornerPos.ZTitle = Localize.Option_Elevation;
                 cornerPos.Format = new string[] { Localize.Option_OffsetFormat, Localize.Option_OffsetFormat, Localize.Option_OffsetFormat };
                 cornerPos.NumberFormat = new string[] { "0.#", "0.#", "0.#" };
-                cornerPos.Init(Data, SupportFollowMainSlope, totalSupport, side == SideType.Left ? LeftCornerPosGetter : RightCornerPosGetter, side == SideType.Left ? LeftCornerPosSetter : RightCornerPosSetter, MinMaxPosDelta, TouchablePredicate);
+                cornerPos.Init(Data, SupportCornerDelta, totalSupport, side == SideType.Left ? LeftCornerPosGetter : RightCornerPosGetter, side == SideType.Left ? LeftCornerPosSetter : RightCornerPosSetter, MinMaxPosDelta, TouchablePredicate);
+                cornerPos.SetStyle(UIStyle.Default);
 
                 return cornerPos;
             }
@@ -727,10 +744,25 @@ namespace NodeController
                 cornerDir.ZTitle = Localize.Option_Distance;
                 cornerDir.Format = new string[] { Localize.Option_RotateFormat, Localize.Option_RotateFormat, Localize.Option_OffsetFormat };
                 cornerDir.NumberFormat = new string[] { "0.#", "0.#", "0.#" };
-                cornerDir.WheelStep = new Vector3(10f, 10f, 1f);
-                cornerDir.Init(Data, SupportFollowMainSlope, totalSupport, side == SideType.Left ? LeftCornerDirGetter : RightCornerDirGetter, side == SideType.Left ? LeftCornerDirSetter : RightCornerDirSetter, MinMaxDirDelta, TouchablePredicate);
+                cornerDir.WheelStep = new Vector3(10f, 10f, 0.1f);
+                cornerDir.Init(Data, SupportCornerDelta, totalSupport, side == SideType.Left ? LeftCornerDirGetter : RightCornerDirGetter, side == SideType.Left ? LeftCornerDirSetter : RightCornerDirSetter, MinMaxDirDelta, TouchablePredicate);
+                cornerDir.SetStyle(UIStyle.Default);
 
                 return cornerDir;
+            }
+            else
+                return null;
+        }
+        private BoolOptionPanel GetCornerFlatOption(UIComponent parent, SupportOption totalSupport, SideType side)
+        {
+            if (SupportCornerFlatEnd != SupportOption.None && Data.SegmentEndDatas.Any(s => TouchablePredicate(s)))
+            {
+                var flatEnd = ComponentPool.Get<BoolOptionPanel>(parent);
+                flatEnd.Label = $"{(side == SideType.Left ? Localize.Option_LeftCorner : Localize.Option_RightCorner)}\n{Localize.Option_FlatEnd}";
+                flatEnd.Init(Data, SupportCornerFlatEnd, totalSupport, side == SideType.Left ? LeftCornerFlatGetter : RightCornerFlatGetter, side == SideType.Left ? LeftCornerFlatSetter : RightCornerFlatSetter, TouchablePredicate);
+                flatEnd.SetStyle(UIStyle.Default);
+
+                return flatEnd;
             }
             else
                 return null;
@@ -854,12 +886,12 @@ namespace NodeController
 
         private static void OnValueSet(INetworkData data)
         {
-            if(data is NodeData nodeData)
+            if (data is NodeData nodeData)
             {
                 nodeData.UpdateNode();
                 SingletonTool<NodeControllerTool>.Instance.Panel.RefreshPanel();
             }
-            else if(data is SegmentEndData segmentData)
+            else if (data is SegmentEndData segmentData)
             {
                 segmentData.UpdateNode();
                 SingletonTool<NodeControllerTool>.Instance.Panel.RefreshPanel();
@@ -940,6 +972,16 @@ namespace NodeController
             data.RightDirDelta = value;
             OnValueSet(data);
         }
+        private static void LeftCornerFlatSetter(INetworkData data, bool? value)
+        {
+            data.LeftFlatEnd = value;
+            OnValueSet(data);
+        }
+        private static void RightCornerFlatSetter(INetworkData data, bool? value)
+        {
+            data.RightFlatEnd = value;
+            OnValueSet(data);
+        }
 
         private static float OffsetGetter(INetworkData data) => data.Offset;
         private static float ShiftGetter(INetworkData data) => data.Shift;
@@ -960,10 +1002,12 @@ namespace NodeController
         private static Vector3 RightCornerPosGetter(INetworkData data) => InvertPosCoord(data.RightPosDelta);
         private static Vector3 LeftCornerDirGetter(INetworkData data) => data.LeftDirDelta;
         private static Vector3 RightCornerDirGetter(INetworkData data) => data.RightDirDelta;
+        private static bool? LeftCornerFlatGetter(INetworkData data) => data.LeftFlatEnd;
+        private static bool? RightCornerFlatGetter(INetworkData data) => data.RightFlatEnd;
         private static Vector3 InvertPosCoord(Vector3 value) => new Vector3(value.x, value.z, value.y);
 
-        protected static bool HasNodePredicate(SegmentEndData data) => TouchablePredicate(data) && !data.IsNodeLess;
         protected static bool TouchablePredicate(SegmentEndData data) => !data.IsUntouchable;
+        protected static bool HasNodePredicate(SegmentEndData data) => TouchablePredicate(data) && !data.IsNodeLess;
         protected static bool IsRoadPredicate(SegmentEndData data) => data.IsRoad;
         protected static bool IsTrackPredicate(SegmentEndData data) => data.IsTrack;
         protected static bool IsPathPredicate(SegmentEndData data) => data.IsPath;
@@ -1061,12 +1105,20 @@ namespace NodeController
         RightCorner = 1 << 15,
 
         [Description(nameof(Localize.Option_RightCornerPosition))]
-        [Order(14)]
+        [Order(15)]
         RightCornerPos = 1 << 16,
 
         [Description(nameof(Localize.Option_RightCornerDirection))]
-        [Order(15)]
+        [Order(16)]
         RightCornerDir = 1 << 17,
+
+        [Description(nameof(Localize.Option_LeftCornerFlatEnd))]
+        [Order(14)]
+        LeftCornerFlatEnd = 1 << 18,
+
+        [Description(nameof(Localize.Option_RightCornerFlatEnd))]
+        [Order(17)]
+        RightCornerFlatEnd = 1 << 19,
     }
 
     public enum OptionVisibility
