@@ -340,6 +340,7 @@ namespace NodeController.UI
     public class SpacePanel : BaseEditorPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
 
         public SpacePanel() : base()
         {
@@ -350,6 +351,11 @@ namespace NodeController.UI
 
         public void Init(float height) => base.Init(height);
         public override void SetStyle(ControlStyle style) { }
+
+        void IReusable.DeInit()
+        {
+            throw new NotImplementedException();
+        }
     }
     public class IOSegmented : UIOnceSegmented<bool> { }
     public class INOSegmented : UIOnceSegmented<bool?> { }

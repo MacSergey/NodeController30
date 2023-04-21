@@ -165,7 +165,7 @@ namespace NodeController.UI
             Header.BgColors = Data == null || Data.Mode != Mode.FreeForm ? DefaultColor : CommonColors.Orange;
         }
     }
-    public class PanelHeader : HeaderMoveablePanel<PanelHeaderContent>
+    public class PanelHeader : HeaderMoveablePanel<BaseHeaderContent>
     {
         private HeaderButtonInfo<HeaderButton> MakeStraight { get; set; }
 
@@ -179,28 +179,28 @@ namespace NodeController.UI
 
         protected override void FillContent()
         {
-            Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.KeepDefaultHeaderButton, NodeController.Localize.Option_KeepDefault, EditNodeToolMode.ResetOffsetShortcut));
-            Content.AddButton(new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.ResetToDefaultHeaderButton, NodeController.Localize.Option_ResetToDefault, EditNodeToolMode.ResetToDefaultShortcut));
+            Content.AddButton(new HeaderButtonInfo<HeaderButton>("Keep Default", HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.KeepDefaultHeaderButton, NodeController.Localize.Option_KeepDefault, EditNodeToolMode.ResetOffsetShortcut));
+            Content.AddButton(new HeaderButtonInfo<HeaderButton>("Reset to Default", HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.ResetToDefaultHeaderButton, NodeController.Localize.Option_ResetToDefault, EditNodeToolMode.ResetToDefaultShortcut));
 
-            MakeStraight = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.MakeStraightHeaderButton, NodeController.Localize.Option_MakeStraightEnds, EditNodeToolMode.MakeStraightEndsShortcut);
+            MakeStraight = new HeaderButtonInfo<HeaderButton>("Make Straight", HeaderButtonState.Main, NodeControllerTextures.Atlas, NodeControllerTextures.MakeStraightHeaderButton, NodeController.Localize.Option_MakeStraightEnds, EditNodeToolMode.MakeStraightEndsShortcut);
             Content.AddButton(MakeStraight);
 
-            CalculateShiftNearby = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftNearbyHeaderButton, NodeController.Localize.Option_CalculateShiftByNearby, EditNodeToolMode.CalculateShiftByNearbyShortcut);
+            CalculateShiftNearby = new HeaderButtonInfo<HeaderButton>("Shift by Nearby", HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftNearbyHeaderButton, NodeController.Localize.Option_CalculateShiftByNearby, EditNodeToolMode.CalculateShiftByNearbyShortcut);
             Content.AddButton(CalculateShiftNearby);
 
-            CalculateShiftIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftIntersectionsHeaderButton, NodeController.Localize.Option_CalculateShiftByIntersections, EditNodeToolMode.CalculateShiftByIntersectionsShortcut);
+            CalculateShiftIntersections = new HeaderButtonInfo<HeaderButton>("Shift Intersection", HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateShiftIntersectionsHeaderButton, NodeController.Localize.Option_CalculateShiftByIntersections, EditNodeToolMode.CalculateShiftByIntersectionsShortcut);
             Content.AddButton(CalculateShiftIntersections);
 
-            SetShiftIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.SetShiftBetweenIntersectionsHeaderButton, NodeController.Localize.Option_SetShiftBetweenIntersections, EditNodeToolMode.SetShiftBetweenIntersectionsShortcut);
+            SetShiftIntersections = new HeaderButtonInfo<HeaderButton>("Shift Between Intersections", HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.SetShiftBetweenIntersectionsHeaderButton, NodeController.Localize.Option_SetShiftBetweenIntersections, EditNodeToolMode.SetShiftBetweenIntersectionsShortcut);
             Content.AddButton(SetShiftIntersections);
 
-            CalculateTwistNearby = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateTwistNearbyHeaderButton, NodeController.Localize.Option_CalculateTwistByNearby, EditNodeToolMode.CalculateTwistByNearbyShortcut);
+            CalculateTwistNearby = new HeaderButtonInfo<HeaderButton>("Twist bt Nearby", HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateTwistNearbyHeaderButton, NodeController.Localize.Option_CalculateTwistByNearby, EditNodeToolMode.CalculateTwistByNearbyShortcut);
             Content.AddButton(CalculateTwistNearby);
 
-            CalculateTwistIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateTwistIntersectionsHeaderButton, NodeController.Localize.Option_CalculateTwistByIntersections, EditNodeToolMode.CalculateTwistByIntersectionsShortcut);
+            CalculateTwistIntersections = new HeaderButtonInfo<HeaderButton>("Twist Intersections", HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.CalculateTwistIntersectionsHeaderButton, NodeController.Localize.Option_CalculateTwistByIntersections, EditNodeToolMode.CalculateTwistByIntersectionsShortcut);
             Content.AddButton(CalculateTwistIntersections);
 
-            SetTwistIntersections = new HeaderButtonInfo<HeaderButton>(HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.SetTwistBetweenIntersectionsHeaderButton, NodeController.Localize.Option_SetTwistBetweenIntersections, EditNodeToolMode.SetTwistBetweenIntersectionsShortcut);
+            SetTwistIntersections = new HeaderButtonInfo<HeaderButton>("Twist Between Intersections", HeaderButtonState.Additional, NodeControllerTextures.Atlas, NodeControllerTextures.SetTwistBetweenIntersectionsHeaderButton, NodeController.Localize.Option_SetTwistBetweenIntersections, EditNodeToolMode.SetTwistBetweenIntersectionsShortcut);
             Content.AddButton(SetTwistIntersections);
         }
         public void Init(float height) => base.Init(height);

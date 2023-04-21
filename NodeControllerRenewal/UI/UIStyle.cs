@@ -48,7 +48,7 @@ namespace NodeController.UI
                 Middle = GetSegmentedStyle(FieldMiddle, FieldBorderMiddle),
                 Right = GetSegmentedStyle(FieldRight, FieldBorderRight),
             },
-            Button = new ButtonStyle()
+            LargeButton = new ButtonStyle()
             {
                 BgAtlas = Atlas,
                 FgAtlas = Atlas,

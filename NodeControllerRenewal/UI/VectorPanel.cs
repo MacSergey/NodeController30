@@ -97,6 +97,8 @@ namespace NodeController.UI
         public event Action<TypeVector> OnValueChanged;
 
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         public abstract uint Dimension { get; }
 
         protected FloatUITextField[] Fields { get; }
@@ -296,6 +298,8 @@ namespace NodeController.UI
         where TypeItem : UIComponent
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         public abstract uint Dimension { get; }
 
         protected TypeItem[] Fields { get; }
