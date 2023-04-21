@@ -132,13 +132,15 @@ Kompatibilitas ke belakang tidak menyediakan perpindahan semua data. Penyesuaian
   </data>
   <data name="Mod_LoadFailed" xml:space="preserve">
     <value>Pemuatan telah selesai dengan kendala.
-Pemuatan gagal untuk {0} node.</value>
+Gagal memuat untuk {0} node.</value>
   </data>
   <data name="Mod_LoadFailedAll" xml:space="preserve">
     <value>Pemuatan telah selesai dengan kendala.
-Pemuatan gagal untuk semua node.</value>
+Semua node gagal dimuat.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
+    <value>[RELEASE] Rilisan versi Renewal</value>
+  </data>
   
   
   
@@ -175,7 +177,13 @@ Pemuatan gagal untuk semua node.</value>
     <value>[FIXED] Memperbaiki kompatibilitas dengan mod Adaptive Network yang dapat menyebabkan lubang-lubang biru pada node.
 [FIXED] Memperbaiki error ketika aset network tidak ditemukan menyebabkan pemuatan data NCR gagal.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_4" xml:space="preserve">
+    <value>[NEW] Menambahkan mode free-form yang membolehkan untuk mengatur posisi dan rotasi sudut tanpa ada batasan apapun.
+[NEW] Menambahkan kemampuan untuk menonaktifkan opsi "Ikuti ketinggian utama" pada segmen yang membolehkan untuk membuat kemiringan segmen secara independen.
+[NEW] Menambahkan kemampuan untuk mengatur perbedaan tinggi pada setiap segmen.
+[UPDATED] Lekukan node mengikuti kemiringan dari node terdekat, sehingga setiap segmen diantaranya terlihat lebih halus.
+[FIXED] Offset bawaan dari rel kereta tidak lagi di-set ke angka 0.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Tikungan</value>
   </data>
@@ -213,14 +221,20 @@ Pemuatan gagal untuk semua node.</value>
     <value>Hitungkan twist berdasarkan titik hubung yang berdekatan</value>
   </data>
   <data name="Option_Collision" xml:space="preserve">
-    <value>Collision</value>
+    <value>Bentrokan</value>
   </data>
   <data name="Option_DeltaHeight" xml:space="preserve">
     <value>Perbedaan tinggi</value>
   </data>
-  
-  
-  
+  <data name="Option_Direction" xml:space="preserve">
+    <value>Arah</value>
+  </data>
+  <data name="Option_Distance" xml:space="preserve">
+    <value>Jarak</value>
+  </data>
+  <data name="Option_Elevation" xml:space="preserve">
+    <value>Ketinggian</value>
+  </data>
   
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Ikuti kemiringan utama</value>
@@ -228,14 +242,22 @@ Pemuatan gagal untuk semua node.</value>
   <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
     <value>Mod Hide crosswalks dibutuhkan</value>
   </data>
-  
+  <data name="Option_Horizontal" xml:space="preserve">
+    <value>Horisontal</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Setel ulang pergeseran</value>
   </data>
+  <data name="Option_LeftCorner" xml:space="preserve">
+    <value>Sudut kiri</value>
+  </data>
+  <data name="Option_LeftCornerDirection" xml:space="preserve">
+    <value>Arah sudut kiri</value>
+  </data>
   
-  
-  
-  
+  <data name="Option_LeftCornerPosition" xml:space="preserve">
+    <value>Posisi sudut kiri</value>
+  </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Arah lereng utama</value>
   </data>
@@ -275,14 +297,22 @@ Pemuatan gagal untuk semua node.</value>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
-  
+  <data name="Option_Position" xml:space="preserve">
+    <value>Posisi</value>
+  </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Setel ulang ke standar</value>
   </data>
+  <data name="Option_RightCorner" xml:space="preserve">
+    <value>Sudut Kanan</value>
+  </data>
+  <data name="Option_RightCornerDirection" xml:space="preserve">
+    <value>Arah sudut kanan</value>
+  </data>
   
-  
-  
-  
+  <data name="Option_RightCornerPosition" xml:space="preserve">
+    <value>Posisi sudut kanan</value>
+  </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Perputaran</value>
   </data>
@@ -322,7 +352,9 @@ Pemuatan gagal untuk semua node.</value>
   <data name="Option_Type" xml:space="preserve">
     <value>Jenis titik hubung</value>
   </data>
-  
+  <data name="Option_Vertical" xml:space="preserve">
+    <value>Vertikal</value>
+  </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Titik hubung #{0}</value>
   </data>
@@ -372,13 +404,13 @@ Pemuatan gagal untuk semua node.</value>
     <value>Perbaiki pejalan kaki yang tersangkut pada persimpangan besar</value>
   </data>
   <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
-    <value>Opsi ini akan memperbesar jarak untuk pencarian jalur yang mencegah tersangkutnya pejalan kaki pada persimpangan besar. Namun, opsi ini memengaruhi kecepatan simulasi</value>
+    <value>Opsi ini akan memperbesar jarak untuk pencarian jalur yang mencegah tersangkutnya pejalan kaki pada persimpangan besar. Namun, opsi ini dapat memengaruhi kecepatan simulasi</value>
   </data>
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Titik hubung dimiringkan sesuai dengan standar</value>
   </data>
   <data name="Settings_OptionsVisibility" xml:space="preserve">
-    <value>Penglihatan opsi</value>
+    <value>Visibilitas opsi</value>
   </data>
   <data name="Settings_Option_Disabled" xml:space="preserve">
     <value>Nonaktif</value>
@@ -493,14 +525,20 @@ Klik untuk mengedit</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Seretkan untuk mengubah pergeseran</value>
   </data>
-  
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>Geser untuk mengubah posisi
+Tahan {0} untuk mengubah ketinggian</value>
+  </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Seretkan untuk mengubah putaran</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Seretkan untuk mengubah pergeseran pojok</value>
   </data>
-  
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>Geser untuk mengubah posisi sudut
+Tahan {0} untuk mengubah ketinggian sudut</value>
+  </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Seretkan ujung ini untuk mengubah arah lereng utama</value>
   </data>
