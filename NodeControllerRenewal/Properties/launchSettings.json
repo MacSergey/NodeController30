@@ -3,7 +3,7 @@
     "Normal": {
       "commandName": "Executable",
       "executablePath": "C:\\Program Files (x86)\\Steam\\steam.exe",
-      "commandLineArgs": "-applaunch 255710"
+      "commandLineArgs": "-applaunch 255710 --refreshWorkshop"
     },
     "No Workshop": {
       "commandName": "Executable",
@@ -12,13 +12,13 @@
     },
     "Release": {
       "commandName": "Executable",
-      "executablePath": "C:\\Users\\MacSergey\\AppData\\Local\\Colossal Order\\Cities_Skylines\\LoadOrder\\Launch.bat",
-      "commandLineArgs": "Release release"
+      "executablePath": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\255710\\2953447919\\App\\Skyve.exe",
+      "commandLineArgs": " -launch -noWindow -profile Release"
     },
     "Debug": {
       "commandName": "Executable",
-      "executablePath": "C:\\Users\\MacSergey\\AppData\\Local\\Colossal Order\\Cities_Skylines\\LoadOrder\\Launch.bat",
-      "commandLineArgs": "Debug debug --noWorkshop"
+      "executablePath": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\255710\\2953447919\\App\\Skyve.exe",
+      "commandLineArgs": "-launch -noWindow -profile Debug"
     }
   }
 }
