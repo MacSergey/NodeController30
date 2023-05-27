@@ -1,5 +1,4 @@
 ﻿using ColossalFramework.UI;
-using ModsCommon;
 using ModsCommon.UI;
 using NodeController.Utilities;
 using UnityEngine;
@@ -7,7 +6,7 @@ using static NodeController.Utilities.NodeControllerTextures;
 
 namespace NodeController.UI
 {
-    public class NodeControllerButton : UUINetToolButton<Mod, NodeControllerTool>
+    public class NodeControllerButton : ToolButton<NodeControllerTool>
     {
         protected override Vector2 ButtonPosition => new Vector3(94, 38);
         protected override UITextureAtlas DefaultAtlas => NodeControllerTextures.Atlas;
