@@ -47,7 +47,7 @@ namespace NodeController
             new ModVersion(new Version("3.0.1"), new DateTime(2021, 5, 11)),
             new ModVersion(new Version("3.0"), new DateTime(2021, 4, 30)),
         };
-        protected override Version RequiredGameVersion => new Version(1, 16, 1, 2);
+        protected override Version RequiredGameVersion => new Version(1, 17, 0, 3);
 
         protected override string IdRaw => nameof(NodeController);
         protected override List<BaseDependencyInfo> DependencyInfos
@@ -408,7 +408,7 @@ namespace NodeController
     {
         public static IEnumerable<CodeInstruction> ToolControllerAwakeTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions) => ModsCommon.Patcher.ToolControllerAwakeTranspiler<Mod, NodeControllerTool>(generator, instructions);
 
-        public static void GeneratedScrollPanelCreateOptionPanelPostfix(string templateName, ref OptionPanelBase __result) => ModsCommon.Patcher.GeneratedScrollPanelCreateOptionPanelPostfix<Mod, NodeControllerButton>(templateName, ref __result, ModsCommon.Patcher.RoadsOptionPanel, ModsCommon.Patcher.PathsOptionPanel, ModsCommon.Patcher.QuaysOptionPanel, ModsCommon.Patcher.CanalsOptionPanel, ModsCommon.Patcher.FloodWallsOptionPanel);
+        public static void GeneratedScrollPanelCreateOptionPanelPostfix(string templateName, ref OptionPanelBase __result) => SingletonTool<NodeControllerTool>.Instance.CreateButton<NodeControllerButton>(templateName, ref __result, ModsCommon.Patcher.RoadsOptionPanel, ModsCommon.Patcher.TracksOptionPanel, ModsCommon.Patcher.PathsOptionPanel, ModsCommon.Patcher.QuaysOptionPanel, ModsCommon.Patcher.CanalsOptionPanel, ModsCommon.Patcher.FloodWallsOptionPanel);
 
         public static IEnumerable<CodeInstruction> GameKeyShortcutsEscapeTranspiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions) => ModsCommon.Patcher.GameKeyShortcutsEscapeTranspiler<Mod, NodeControllerTool>(generator, instructions);
 

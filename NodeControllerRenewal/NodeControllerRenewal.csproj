@@ -16,11 +16,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
-	<AssemblyVersion>3.5.0.89</AssemblyVersion>
+	<AssemblyVersion>3.5.0.98</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">
-    <AssemblyVersion>3.4.0.2</AssemblyVersion>
+    <AssemblyVersion>3.4.0.3</AssemblyVersion>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stable Release|AnyCPU'">
@@ -129,6 +129,9 @@
     <None Include="Properties\Localize.tr-TR.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Properties\Localize.uk-UA.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Localize.zh-CN.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -169,6 +172,7 @@
 	  <EmbeddedResource Remove="Properties\Localize.ru.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.tr-TR.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.tr.resx" />
+	  <EmbeddedResource Remove="Properties\Localize.uk-UA.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.zh-CN.resx" />
 	  <EmbeddedResource Remove="Properties\Localize.zh-TW.resx" />
   </ItemGroup>
@@ -261,7 +265,8 @@
   <Import Project="..\ModsCommon\LocalizeShared\ru-RU\LocalizeShared.ru-RU.projitems" Label="Shared" /> 
   <Import Project="..\ModsCommon\LocalizeShared\tr-TR\LocalizeShared.tr-TR.projitems" Label="Shared" /> 
   <Import Project="..\ModsCommon\LocalizeShared\LocalizeManager\LocalizeManager.projitems" Label="Shared" /> 
-  <Import Project="..\ModsCommon\LocalizeShared\ms-MY\LocalizeShared.ms-MY.projitems" Label="Shared" />
+  <Import Project="..\ModsCommon\LocalizeShared\ms-MY\LocalizeShared.ms-MY.projitems" Label="Shared" /> 
+  <Import Project="..\ModsCommon\LocalizeShared\uk-UA\LocalizeShared.uk-UA.projitems" Label="Shared" />
   
 
   <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">
