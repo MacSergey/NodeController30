@@ -184,6 +184,7 @@ Nie udało się załadować danych wszystkich węzłów.</value>
 [UPDATED] Wygięcie wezłów śledzi nachylenie sąsiednich węzłów tak aby segment pomiędzy nimi był gładszy.
 [FIXED] Domyślne przesunięcie linii kolejowych nie jest ustawione na 0.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Zegnij</value>
   </data>

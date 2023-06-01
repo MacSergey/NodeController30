@@ -183,6 +183,7 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
 [UPDATED] Gebogen knooppunten volgen de helling van nabijgelegen knooppunten, waardoor het segment ertussen vloeiender wordt.
 [FIXED] De standaard offset van spoorwegen was niet ingesteld op 0.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bocht</value>
   </data>

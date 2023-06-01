@@ -219,6 +219,21 @@
 [UPDATED] 弯曲节点将跟随附近节点的坡度，以使它们之间的路段之间更加平滑。
 [FIXED] 修复了铁路轨道默认偏移值未设置为 0 的问题。</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_5" xml:space="preserve">
+    <value>[UPDATED] 新的用户界面风格。
+[NEW] 允许更改无节点路段的偏移和旋转。
+[NEW] 允许在自由形状模式下移动终点节点。
+[NEW] 新增了切换到到自由形状模式的功能。
+[NEW] 为自由形状模式新增了平坦选项。
+[NEW] 现在使用鼠标滚轮改变参数时，按住 Alt 键会将单次调整的数值 × 0.01。
+[NEW] 在自由形状模式下，按住 Ctrl 键沿 X 轴方向移动，按住 Alt 键沿 Y 轴方向移动。
+[NEW] 新增了设置重叠不透明度的选项。
+[NEW] 当鼠标指针悬停在面板里的文字上时，文字颜色会闪烁。
+[FIXED] 修复了自由形状模式下的无节点路段的位置问题。
+[FIXED] 修复了自由形状模式下拐角方向的默认值问题。
+[FIXED] 修复了当编辑与公共交通站点或建筑物相连接的节点时会出现错误的问题。
+</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>弯曲</value>
   </data>

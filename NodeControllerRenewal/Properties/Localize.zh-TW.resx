@@ -176,6 +176,7 @@
 [FIXED] 修復了丟失道路（網路）素材時使NCR資料載入失敗的錯誤。</value>
   </data>
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>彎曲</value>
   </data>

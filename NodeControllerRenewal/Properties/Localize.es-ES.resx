@@ -184,6 +184,20 @@ No se pudieron cargar datos para todos los nodos.</value>
 [UPDATED] Nodos "doblados", siguen la pendiente de nodos cercanos, permite que sea más suave entre segmentos.
 [FIXED] Desplazamiento de vías ferreas no es 0 de forma predeterminanda.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_5" xml:space="preserve">
+    <value>[UPDATED] Nuevo estilo de interfaz de usuario.
+[NEW] Permite cambiar el desplazamiento y rotación de segmentos sin nodo.
+[NEW] Permite mover el nodo final en modo de forma libre.
+[NEW] Se agregó desplazamiento al modo de forma libre.
+[NEW] Se agregó final plano en modo de forma libre.
+[NEW] Permite cambiar valores con paso 0.01 al usar la rueda del mouse cuando es presionada la tecla Alt.
+[NEW] Presionar Ctrl para mover solo en direccion X, presionar Alt para mover solo en dirección Y. En modo de forma libre.
+[NEW] Agregada la opción para establecer la opacidad de superposicion.
+[NEW] El color de superposición del segmento parpadea cuando el campo en el panel de control se apunta con el cursor.
+[FIXED] Arreglada la posición de segmento sin nodo en modo de forma libre. 
+[FIXED] Arreglado valor por defecto de la dirección de la esquina en modo de forma libre.
+[FIXED] Arreglado error al editar nodos que están conectados a estaciones de transporte o edificios.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Doblado</value>
   </data>

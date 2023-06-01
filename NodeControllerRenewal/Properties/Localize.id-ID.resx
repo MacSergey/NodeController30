@@ -184,6 +184,7 @@ Semua node gagal dimuat.</value>
 [UPDATED] Lekukan node mengikuti kemiringan dari node terdekat, sehingga setiap segmen diantaranya terlihat lebih halus.
 [FIXED] Offset bawaan dari rel kereta tidak lagi di-set ke angka 0.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Tikungan</value>
   </data>

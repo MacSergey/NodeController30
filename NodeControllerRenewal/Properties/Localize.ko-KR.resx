@@ -184,6 +184,20 @@
 [UPDATED] 커브 노드가 근처 노드의 경사를 따르도록 하여, 노드 사이의 구간이 더욱 부드러워졌습니다.
 [FIXED] 철도의 기본 오프셋이 0으로 설정되지 않던 것을 수정했습니다.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_5" xml:space="preserve">
+    <value>[UPDATED] 새 UI 스타일을 적용했습니다.
+[NEW] '노드 없음' 세그먼트의 오프셋과 회전을 설정할 수 있습니다.
+[NEW] 자유형 모드에서 끝 노드를 옮길 수 있습니다.
+[NEW] 자유형 모드에 '밀려짐' 설정을 추가했습니다.
+[NEW] 자유형 모드에 '평탄한 끝' 설정을 추가했습니다.
+[NEW] Alt를 누른 채 마우스 휠을 스크롤하여 값을 0.01씩 변경할 수 있습니다.
+[NEW] 자유형 모드에서 Ctrl 키를 눌러 X 방향으로만, Alt 키를 눌러 Y 방향으로만 움직이도록 할 수 있습니다.
+[NEW] 오버레이 투명도를 설정하는 설정을 추가했습니다.
+[NEW] 입력란에 마우스 커서를 올려두면 세그먼트 오버레이 색상이 깜박입니다.
+[FIXED] 자유형 모드에서 '노드 없음' 세그먼트의 위치를 수정했습니다.
+[FIXED] 자유형 모드에서 코너 방향의 기본값을 수정했습니다.
+[FIXED] 역이나 건물에 연결된 노드를 편집할 때 발생하는 오류를 수정했습니다.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>커브</value>
   </data>
@@ -401,10 +415,10 @@
     <value>꺼짐</value>
   </data>
   <data name="Settings_InsertNodeEnabled" xml:space="preserve">
-    <value>구간 클릭하기</value>
+    <value>세그먼트 클릭하기</value>
   </data>
   <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
-    <value>{0} 키를 누른 채 구간 클릭하기</value>
+    <value>{0} 키를 누른 채 세그먼트 클릭하기</value>
   </data>
   <data name="Settings_LongIntersectionFix" xml:space="preserve">
     <value>긴 교차로에서 보행자 끼임 현상 수정</value>

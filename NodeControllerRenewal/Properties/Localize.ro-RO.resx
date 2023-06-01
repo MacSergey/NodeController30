@@ -176,6 +176,7 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
 [FIXED] Eroare rezolvată atunci când un activ de rețea pierdut ar putea cauza eșecul încărcării datelor NCR.</value>
   </data>
   
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curbă</value>
   </data>

@@ -184,6 +184,20 @@ Gagal memuatkan data untuk kesemua nod.</value>
 [UPDATED] Nod lentur kini ikut lereng nod berhampiran, supaya segmen di antara mereka lebih rata.
 [FIXED] Ofset lalai bagi landasan kereta api tidak ditetapkan kepada 0.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_5" xml:space="preserve">
+    <value>[UPDATED] Gaya UI baharu.
+[NEW] Membolehkan pengubahan ofset dan putaran untuk segmen tanpa nod.
+[NEW] Membolehkan nod penamat dipindahkan dalam mod bentuk bebas.
+[NEW] Anjakan telah ditambah ke mod bentuk bebas.
+[NEW] Penghujung datar telah ditambah ke mod bentuk bebas.
+[NEW] Membolehkan pengubahan nilai dengan 0.01 langkah dengan menatal roda tetikus sambil menahan Alt.
+[NEW] Tahan ctrl untuk pindah dalam arah X sahaja, tahan alt untuk pindah dalam arah Y sahaja dalam mod bentuk bebas.
+[NEW] Pilihan untuk menetapkan kelegapan tindihan atas telah ditambah.
+[NEW] Warna tindihan atas segmen berkelip apabila tetikus dilalukan di atas medannya di atas panel.
+[FIXED] Kedudukan segmen tanpa nod dalam mod bentuk bebas telah dibaiki.
+[FIXED] Nilai asal arah bucu dalam mod bentuk bebas telah dibaiki.
+[FIXED] Ralat ketika menyunting nod yang tersambung ke stesen pengangkutan atau bangunan telah dibaiki.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Lentur</value>
   </data>

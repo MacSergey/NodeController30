@@ -202,6 +202,7 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
 [UPDATED] Kurven-Netzwerkknoten folgen der Neigung der nahen Netzwerknoten, so dass das Segment zwischen ihnen glatter ist.
 [FIXED] Der Standardversatz der Eisenbahn war nicht auf 0 gesetzt.</value>
   </data>
+  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Kurve</value>
   </data>
