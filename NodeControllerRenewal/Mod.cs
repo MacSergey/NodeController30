@@ -1,9 +1,7 @@
-﻿using ColossalFramework.Plugins;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 using HarmonyLib;
 using ICities;
 using ModsCommon;
-using ModsCommon.UI;
 using ModsCommon.Utilities;
 using NodeController.Patches;
 using NodeController.UI;
@@ -12,10 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection.Emit;
-using System.Resources;
 using TrafficManager.Manager.Impl;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace NodeController
 {

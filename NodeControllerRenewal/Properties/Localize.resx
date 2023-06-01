@@ -256,6 +256,20 @@ Failed to load data for all nodes.</value>
 [UPDATED] Bend nodes follow slope of near nodes, so that segment between them is smoother.
 [FIXED] Default offset of railways is not set to 0.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_5" xml:space="preserve">
+    <value>[UPDATED] New UI style.
+[NEW] Allow to change offset and rotation for nodeless segments.
+[NEW] Allow to move end node in free form mode.
+[NEW] Added shift to free form mode.
+[NEW] Added flat end to free form mode.
+[NEW] Allow to change value with step 0.01 by scrolling the wheel when Alt is being held.
+[NEW] Hold ctrl to move only by X direction, hold alt to move only by Y direction in free form mode.
+[NEW] Added option to set overlay opacity.
+[NEW] Segment overlay color is blinking when its fields on panel is being hovered.
+[FIXED] Fixed nodeless segment position in free form mode.
+[FIXED] Fixed default value of corner direction in free form mode.
+[FIXED] Fixed error while editing nodes which is connected to transport strations or buildings.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bend</value>
   </data>
