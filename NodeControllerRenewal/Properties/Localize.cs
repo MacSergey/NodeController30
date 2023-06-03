@@ -116,6 +116,11 @@ namespace NodeController
 		public static string Mod_WhatsNewMessage3_4 => LocaleManager.GetString("Mod_WhatsNewMessage3_4", Culture);
 
 		/// <summary>
+		/// [UPDATED] New UI style.
+		/// </summary>
+		public static string Mod_WhatsNewMessage3_5 => LocaleManager.GetString("Mod_WhatsNewMessage3_5", Culture);
+
+		/// <summary>
 		/// Bend
 		/// </summary>
 		public static string NodeStyle_Bend => LocaleManager.GetString("NodeStyle_Bend", Culture);
