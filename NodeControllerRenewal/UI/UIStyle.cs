@@ -67,14 +67,14 @@ namespace NodeController.UI
             DropDown = new DropDownStyle()
             {
                 BgAtlas = Atlas,
-                FgAtlas = Atlas,
+                IconAtlas = Atlas,
 
                 AllBgSprites = new SpriteSet(FieldSingle, FieldSingle, FieldSingle, FieldSingle, BorderSmall),
                 BgColors = new ColorSet(PropertyNormal, PropertyHovered, PropertyHovered, PropertyNormal, PropertyNormal),
                 SelBgColors = PropertyFocused,
 
-                FgSprites = new SpriteSet(VectorDown, VectorDown, VectorDown, VectorDown, default),
-                FgColors = Color.white,
+                IconSprites = new SpriteSet(VectorDown, VectorDown, VectorDown, VectorDown, default),
+                IconColors = Color.white,
 
                 AllTextColors = new ColorSet(Color.white, Color.white, Color.white, Color.white, Color.black),
 

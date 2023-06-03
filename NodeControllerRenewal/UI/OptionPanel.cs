@@ -352,10 +352,7 @@ namespace NodeController.UI
         public void Init(float height) => base.Init(height);
         public override void SetStyle(ControlStyle style) { }
 
-        void IReusable.DeInit()
-        {
-            throw new NotImplementedException();
-        }
+        void IReusable.DeInit() { }
     }
     public class IOSegmented : UIOnceSegmented<bool> { }
     public class INOSegmented : UIOnceSegmented<bool?> { }
