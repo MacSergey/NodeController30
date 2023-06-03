@@ -38,8 +38,9 @@ namespace NodeController.UI
 
                 TextColors = new ColorSet(Color.white, Color.white, Color.white, Color.white, TextDisabled),
 
+                SelAtlas = Atlas,
                 SelectionSprite = Empty,
-                SelectionColor = PropertyFocused,
+                SelectionColor = new Color32(255, 64, 0, 255),
             },
             Segmented = new SegmentedStyle()
             {

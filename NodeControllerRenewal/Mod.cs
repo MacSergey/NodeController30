@@ -90,6 +90,7 @@ namespace NodeController
         {
             var success = true;
 
+            success &= FixHasInputFocus();
             success &= AddTool();
             success &= AddNetToolButton();
             success &= ToolOnEscape();
@@ -133,6 +134,11 @@ namespace NodeController
         protected bool ToolOnEscape()
         {
             return AddTranspiler(typeof(Patcher), nameof(Patcher.GameKeyShortcutsEscapeTranspiler), typeof(GameKeyShortcuts), "Escape");
+        }
+
+        private bool FixHasInputFocus()
+        {
+            return AddPrefix(typeof(ModsCommon.Patcher), nameof(ModsCommon.Patcher.UIViewHasInputFocusPrefix), typeof(UIView), nameof(UIView.HasInputFocus));
         }
 
         private bool AssetDataExtensionFix()
