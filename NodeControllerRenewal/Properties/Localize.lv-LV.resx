@@ -282,18 +282,30 @@ Neizdevās ielādēt datus visiem mezgliem.</value>
   <data name="Option_NodeLess" xml:space="preserve">
     <value>Bez mezgla</value>
   </data>
-  
+  <data name="Option_Offset" xml:space="preserve">
+    <value>Atkāpe</value>
+  </data>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
-  
+  <data name="Option_Position" xml:space="preserve">
+    <value>Pozīcija</value>
+  </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Atjaunot noklusējuma iestatījumus</value>
   </data>
-  
-  
-  
-  
+  <data name="Option_RightCorner" xml:space="preserve">
+    <value>Labais stūris</value>
+  </data>
+  <data name="Option_RightCornerDirection" xml:space="preserve">
+    <value>Labā stūra virziens</value>
+  </data>
+  <data name="Option_RightCornerFlatEnd" xml:space="preserve">
+    <value>Labā stūra plakanais gals</value>
+  </data>
+  <data name="Option_RightCornerPosition" xml:space="preserve">
+    <value>Labā stūra pozīcija</value>
+  </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Pagriezt</value>
   </data>
