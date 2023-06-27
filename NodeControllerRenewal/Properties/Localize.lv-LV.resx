@@ -312,8 +312,12 @@ Neizdevās ielādēt datus visiem mezgliem.</value>
   <data name="Option_RotateFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
-  
-  
+  <data name="Option_SetShiftBetweenIntersections" xml:space="preserve">
+    <value>Iestatiet nobīdi starp krustojumiem</value>
+  </data>
+  <data name="Option_SetTwistBetweenIntersections" xml:space="preserve">
+    <value>Iestatiet sagriešanu starp krustojumiem</value>
+  </data>
   <data name="Option_Shift" xml:space="preserve">
     <value>Shift</value>
   </data>
@@ -332,34 +336,66 @@ Neizdevās ielādēt datus visiem mezgliem.</value>
   <data name="Option_StretchFormat" xml:space="preserve">
     <value>{0}%</value>
   </data>
-  
+  <data name="Option_Twist" xml:space="preserve">
+    <value>Sagriešana</value>
+  </data>
   <data name="Option_TwistFormat" xml:space="preserve">
     <value>{0}°</value>
   </data>
   <data name="Option_Type" xml:space="preserve">
     <value>Mezgla tips</value>
   </data>
-  
+  <data name="Option_Vertical" xml:space="preserve">
+    <value>Vertikāls</value>
+  </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Mezgls #{0}</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Settings_ApplyAfterRestart" xml:space="preserve">
+    <value>Izmaiņas stāsies spēkā pēc spēles restartēšanas</value>
+  </data>
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>Rezerves kopija</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>Kopēt starpliktuvē</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>Dzēst datus no visiem mezgliem</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>Dzēst visus datus</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>Vai tiešām vēlaties izdzēst visus datus?</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>Saglabāt mezglu datus failā</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>Saglabāt mezglu datus</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>Neizdevās saglabāt</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>Saglabāšana veiksmīgi saglabāta failā</value>
+  </data>
+  <data name="Settings_InsertNode" xml:space="preserve">
+    <value>Ievietot mezglu</value>
+  </data>
   <data name="Settings_InsertNodeDisabled" xml:space="preserve">
     <value>Izslēgts</value>
   </data>
-  
-  
-  
+  <data name="Settings_InsertNodeEnabled" xml:space="preserve">
+    <value>Noklikšķinot uz segmenta</value>
+  </data>
+  <data name="Settings_InsertNodeWithModifier" xml:space="preserve">
+    <value>Noklikšķinot ar {0} uz segmenta</value>
+  </data>
+  <data name="Settings_LongIntersectionFix" xml:space="preserve">
+    <value>Izlabot iestrēgušu gājēju garos krustojumos</value>
+  </data>
   
   
   
