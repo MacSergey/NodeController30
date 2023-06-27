@@ -121,14 +121,25 @@
     <value>Šo darbību nevar atsaukt.</value>
   </data>
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
-    <value>Tika importēti oriģinālie mezgla kontrollera dati.
+    <value>Tika importēti oriģinālie Mezgla Kontrollera dati.
 Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepieciešama manuāla korekcija.</value>
   </data>
   <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
     <value>BRĪDINĀJUMS: Ja veiksiet jaunu saglabāšanu, jūs vairs nevarēsit izmantot sākotnējo mezgla kontrolleri šajā kartē.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
-    <value>Kontrolēt node veidu un formu</value>
+    <value>Kontrolēt mezglu veidu un formu</value>
+  </data>
+  <data name="Mod_LoadFailed" xml:space="preserve">
+    <value>Ielāde tika pabeigta ar kļūdām.
+Neizdevās ielādēt datus par {0} mezgliem.</value>
+  </data>
+  <data name="Mod_LoadFailedAll" xml:space="preserve">
+    <value>Ielāde tika pabeigta ar kļūdām.
+Neizdevās ielādēt datus visiem mezgliem.</value>
+  </data>
+  <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
+    <value>[RELEASE] Jaunas versijas izlaišana</value>
   </data>
   
   
@@ -145,17 +156,30 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   
   
   
-  
-  
-  
-  
+  <data name="Mod_WhatsNewMessage3_5" xml:space="preserve">
+    <value>[UPDATED] Jauns lietotāja interfeisa stils.
+[NEW] Iespēja mainīt beznosacījuma segmenta atkāpi un rotāciju.
+[NEW] Iespēja pārvietot gala mezglu brīvajā režīmā.
+[NEW] Pievienota pārslēgšanas iespēja brīvajā režīmā.
+[NEW] Brīvajā režīmā pievienota plakano beigu opcija.
+[NEW] Iespēja mainīt vērtības ar soli 0,01, turot nospiestu taustiņu Alt.
+[NEW] Turiet nospiestu taustiņu Ctrl, lai pārvietotu X asi, vai Alt, lai pārvietotu Y asi brīvajā režīmā.
+[NEW] Pievienota iespēja mainīt pārklājuma caurspīdīgumu.
+[NEW] Segmenta krāsa mirgo, virzot kursoru virs tā vērtībām opciju joslā.
+[FIXED] Fiksēta beznosacījuma segmenta sākuma pozīcija brīvajā režīmā.
+[FIXED] Fiksēts sākotnējais leņķa virziens brīvajā režīmā.
+[FIXED] Novērsta kļūda, rediģējot mezglu, kas ir daļa no transporta stacijas vai ēkas.
+[TRANSLATION] Pievienots tulkojums ukraiņu valodā.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Saliekt</value>
   </data>
   <data name="NodeStyle_Crossing" xml:space="preserve">
     <value>Krustojums</value>
   </data>
-  
+  <data name="NodeStyle_Custom" xml:space="preserve">
+    <value>Patvaļīgs</value>
+  </data>
   <data name="NodeStyle_End" xml:space="preserve">
     <value>Beigas</value>
   </data>
@@ -183,39 +207,81 @@ Atgriezeniskā saderība nenodrošina visu datu pārsūtīšanu, var būt nepiec
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
     <value>Aprēķināt maiņu pēc tuvējiem mezgliem</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Option_Collision" xml:space="preserve">
+    <value>Kollīzija</value>
+  </data>
+  <data name="Option_DeltaHeight" xml:space="preserve">
+    <value>Augstuma izmaiņas</value>
+  </data>
+  <data name="Option_Direction" xml:space="preserve">
+    <value>Virziens</value>
+  </data>
+  <data name="Option_Distance" xml:space="preserve">
+    <value>Attālums</value>
+  </data>
+  <data name="Option_Elevation" xml:space="preserve">
+    <value>Augstums</value>
+  </data>
+  <data name="Option_FlatEnd" xml:space="preserve">
+    <value>Plakans gals</value>
+  </data>
+  <data name="Option_FollowSlope" xml:space="preserve">
+    <value>Sekot galvenajam slīpumam</value>
+  </data>
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>"Hide crosswalks" modifikācija ir nepieciešama</value>
+  </data>
+  <data name="Option_Horizontal" xml:space="preserve">
+    <value>Horizontāls</value>
+  </data>
+  <data name="Option_KeepDefault" xml:space="preserve">
+    <value>Atiestatīt nobīdi</value>
+  </data>
+  <data name="Option_LeftCorner" xml:space="preserve">
+    <value>Kreisais stūris</value>
+  </data>
+  <data name="Option_LeftCornerDirection" xml:space="preserve">
+    <value>Kreisā stūra virziens</value>
+  </data>
+  <data name="Option_LeftCornerFlatEnd" xml:space="preserve">
+    <value>Kreisā stūra plakanais gals</value>
+  </data>
+  <data name="Option_LeftCornerPosition" xml:space="preserve">
+    <value>Kreisā stūra pozīcija</value>
+  </data>
+  <data name="Option_MainSlopeDirection" xml:space="preserve">
+    <value>Galvenais slīpuma virziens</value>
+  </data>
   <data name="Option_MainSlopeDirectionAuto" xml:space="preserve">
     <value>Auto</value>
   </data>
   <data name="Option_MainSlopeDirectionManually" xml:space="preserve">
     <value>Manuāli</value>
   </data>
-  
+  <data name="Option_MakeStraightEnds" xml:space="preserve">
+    <value>Iztaisnot galus</value>
+  </data>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marķēšana</value>
   </data>
-  
-  
-  
-  
+  <data name="Option_Mode" xml:space="preserve">
+    <value>Režīms</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>Plakans</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>Brīvā forma</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>Slīpums</value>
+  </data>
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Papildu opcijas</value>
   </data>
-  
+  <data name="Option_NodeLess" xml:space="preserve">
+    <value>Bez mezgla</value>
+  </data>
   
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
