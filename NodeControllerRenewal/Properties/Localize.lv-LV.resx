@@ -396,9 +396,15 @@ Neizdevās ielādēt datus visiem mezgliem.</value>
   <data name="Settings_LongIntersectionFix" xml:space="preserve">
     <value>Izlabot iestrēgušu gājēju garos krustojumos</value>
   </data>
-  
-  
-  
+  <data name="Settings_LongIntersectionFixWarning" xml:space="preserve">
+    <value>Šī opcija palielina maksimālo ceļa noteikšanas attālumu krustojumos, kas neļauj gājējiem iestrēgt, bet var ietekmēt simulācijas ātrumu</value>
+  </data>
+  <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
+    <value>Mezgls pēc noklusējuma ir slīps</value>
+  </data>
+  <data name="Settings_OptionsVisibility" xml:space="preserve">
+    <value>Opciju redzamība</value>
+  </data>
   <data name="Settings_Option_Disabled" xml:space="preserve">
     <value>Izslēgts</value>
   </data>
