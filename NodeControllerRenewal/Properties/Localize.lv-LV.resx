@@ -408,20 +408,49 @@ Neizdevās ielādēt datus visiem mezgliem.</value>
   <data name="Settings_Option_Disabled" xml:space="preserve">
     <value>Izslēgts</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Settings_Option_Hidden" xml:space="preserve">
+    <value>Sakļauts</value>
+  </data>
+  <data name="Settings_Option_Visible" xml:space="preserve">
+    <value>Vienmēr redzams</value>
+  </data>
+  <data name="Settings_OverlayOpacity" xml:space="preserve">
+    <value>Overlaya caurredzamība</value>
+  </data>
+  <data name="Settings_RenderNearNode" xml:space="preserve">
+    <value>Rādīt tuvumā esošo mezglu</value>
+  </data>
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>Atjaunot</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>Atjaunojiet mezglu datus no faila</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>Atjaunojiet mezglu datus</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>Vai tiešām vēlaties atjaunot mezglu datus?
+Atjaunotie dati aizstās visus esošos mezglu datus.</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>Mezglu datu atjaunošana neizdevās</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>Mezglu dati ir veiksmīgi atjaunoti</value>
+  </data>
+  <data name="Settings_SelectMiddleNodes" xml:space="preserve">
+    <value>Izvēlieties vidējos mezglus</value>
+  </data>
+  <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
+    <value>Ja šī opcija ir izslēgta, vidējie mezgli tiks pārvietoti uz noklikšķināto pozīciju</value>
+  </data>
+  <data name="Settings_ShortcutEnterUnderground" xml:space="preserve">
+    <value>Ieslēgt pazemes režīmu</value>
+  </data>
+  <data name="Settings_ShortcutExitUnderground" xml:space="preserve">
+    <value>Izslēgt pazemes režīmu</value>
+  </data>
   <data name="Settings_ToggleUnderground" xml:space="preserve">
     <value>Pārslēgšanās pazemes režīmu</value>
   </data>
@@ -443,48 +472,105 @@ Neizdevās ielādēt datus visiem mezgliem.</value>
   <data name="Setting_ShortcutCalculateTwistByNearby" xml:space="preserve">
     <value>Aprēķināt maiņu pēc tuvējiem mezgliem</value>
   </data>
-  
-  
-  
-  
+  <data name="Setting_ShortcutChangeMainRoadMode" xml:space="preserve">
+    <value>Mainīt galvenā slīpuma virziena režīmu</value>
+  </data>
+  <data name="Setting_ShortcutChangeNodeStyle" xml:space="preserve">
+    <value>Mainiet mezgla stilu</value>
+  </data>
+  <data name="Setting_ShortcutKeepDefault" xml:space="preserve">
+    <value>Atiestatīt nobīdi</value>
+  </data>
+  <data name="Setting_ShortcutMakeStraightEnds" xml:space="preserve">
+    <value>Iztaisnot galus</value>
+  </data>
   <data name="Setting_ShortcutResetToDefault" xml:space="preserve">
     <value>Atjaunot noklusējuma iestatījumus</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="Setting_ShortcutSetShiftBetweenIntersections" xml:space="preserve">
+    <value>Iestatīt nobīdi starp krustojumiem</value>
+  </data>
+  <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
+    <value>Iestatīt pagriezienu starp krustojumiem</value>
+  </data>
+  <data name="Tool_EnterUnderground" xml:space="preserve">
+    <value>Nospiediet {0}, lai ieslēgtu
+pazemes režīmu</value>
+  </data>
+  <data name="Tool_ExitUnderground" xml:space="preserve">
+    <value>Nospiediet {0}, lai izslēgtu
+pazemes režīmu</value>
+  </data>
+  <data name="Tool_InfoAlignMode" xml:space="preserve">
+    <value>Turiet nospiestu {0}, lai izlīdzinātu ceļus</value>
+  </data>
+  <data name="Tool_InfoApplyAlign" xml:space="preserve">
+    <value>Noklikšķiniet, lai izlīdzinātu ar šo stūri</value>
+  </data>
+  <data name="Tool_InfoChangeMainMode" xml:space="preserve">
+    <value>Turiet nospiestu {0}, lai mainītu galvenā slīpuma virzienu</value>
+  </data>
   <data name="Tool_InfoClickNode" xml:space="preserve">
     <value>Mezgls #{0}
 Noklikšķiniet, lai rediģētu</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Tool_InfoClickToSelectFirstAlign" xml:space="preserve">
+    <value>Noklikšķiniet, lai atlasītu izlīdzināšanas leņķi</value>
+  </data>
+  <data name="Tool_InfoDragCenter" xml:space="preserve">
+    <value>Velciet, lai mainītu nobīdi</value>
+  </data>
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>Velciet, lai mainītu pozīciju
+Turiet nospiestu {0}, lai mainītu augstumu</value>
+  </data>
+  <data name="Tool_InfoDragCircle" xml:space="preserve">
+    <value>Velciet, lai mainītu pagriešanu</value>
+  </data>
+  <data name="Tool_InfoDragCorner" xml:space="preserve">
+    <value>Velciet, lai mainītu stūra nobīdi</value>
+  </data>
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>Velciet, lai mainītu stūra pozīciju
+Turiet nospiestu {0}, lai mainītu stūra augstumu</value>
+  </data>
+  <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
+    <value>Velciet šo galu, lai mainītu galvenā slīpuma virzienu</value>
+  </data>
+  <data name="Tool_InfoDropMainSlopeDirectionEnd" xml:space="preserve">
+    <value>Atlaid šo galu, lai mainītu galvenā slīpuma virzienu</value>
+  </data>
+  <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
+    <value>Noklikšķiniet, lai ievietotu krustojuma mezglu</value>
+  </data>
+  <data name="Tool_InfoInsertCrossingNodeWithModifier" xml:space="preserve">
+    <value>Noklikšķiniet ar {0}, lai ievietotu krustojuma mezglu</value>
+  </data>
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>Noklikšķiniet, lai ievietotu mezglu</value>
   </data>
   <data name="Tool_InfoInsertNodeWithModifier" xml:space="preserve">
     <value>Noklikšķiniet ar {0}, lai ievietotu mezglu</value>
   </data>
-  
-  
-  
+  <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
+    <value>Izveleties stūri, ar kuru vēlaties izlīdzināt</value>
+  </data>
+  <data name="Tool_InfoSelectMainSlopeDirection" xml:space="preserve">
+    <value>Mainiet uz vēlamo galvenā slīpuma virzienu</value>
+  </data>
+  <data name="Tool_InfoSelectNewMainSlopeDirectionEnd" xml:space="preserve">
+    <value>Izvēlieties galvenā slīpuma virziena gala pozīciju</value>
+  </data>
   <data name="Tool_InfoSelectNode" xml:space="preserve">
     <value>Izvēlēties mezglu</value>
   </data>
-  
-  
+  <data name="Tool_InfoSelectToAlign" xml:space="preserve">
+    <value>Izveleties stūrus, kurus vēlaties izlīdzināt</value>
+  </data>
+  <data name="Tool_InfoTooCloseNode" xml:space="preserve">
+    <value>Nevar ievietot mezglu
+Pārāk tuvu tuvējam mezglam</value>
+  </data>
   <data name="Tool_InfoUnderground" xml:space="preserve">
     <value>Turiet {0}, 
 lai ieslēgtu pazemes režīmu</value>
