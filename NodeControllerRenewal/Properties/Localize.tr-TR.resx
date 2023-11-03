@@ -138,6 +138,9 @@ Geriye dönük uyumluluk tüm verilerin aktarımını sağlamaz, manuel ayarlama
     <value>Yükleme hatalarla tamamlandı.
 Tüm düğümler için veri yüklenemedi.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
+    <value/>
+  </data>
   
   
   
@@ -153,8 +156,9 @@ Tüm düğümler için veri yüklenemedi.</value>
   
   
   
-  
-  
+  <data name="Mod_WhatsNewMessage3_5" xml:space="preserve">
+    <value>build</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Eğim</value>
   </data>
