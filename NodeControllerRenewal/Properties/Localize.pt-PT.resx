@@ -125,7 +125,7 @@
 A compatível com versões anteriores não fornece a transferência de todos os dados, talvez sejam necessários ajustes manuais.</value>
   </data>
   <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
-    <value>AVISO: Se criar um novo save, não poderá mais usar o Node Controller original neste mapa.</value>
+    <value>AVISO: Ao fazer um novo salvamento, não poderá mais usar o Node Controller original neste mapa.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Controle o tipo do nó e sua forma</value>
@@ -175,7 +175,21 @@ O carregamento de todas marcações falhou.</value>
   </data>
   
   
-  
+  <data name="Mod_WhatsNewMessage3_5" xml:space="preserve">
+    <value>[ATUALIZADO] Novo estilo de interface.
+[NOVO] Permite alterar o deslocamento e rotação para segmentos sem nós.
+[NOVO] Permite mover o nó final no modo de forma livre.
+[NOVO] Adicionado deslocamento ao modo de forma livre.
+[NOVO] Adicionado final plano ao modo de forma livre.
+[NOVO] Permite alterar o valor com incremento de 0.01 rolando a roda quando a tecla Alt está pressionada.
+[NOVO] Mantenha pressionada a tecla Ctrl para mover apenas na direção X, mantenha a tecla Alt para mover apenas na direção Y no modo de forma livre.
+[NOVO] Adicionada opção para definir a opacidade da sobreposição.
+[NOVO] A cor da sobreposição do segmento pisca quando seus campos no painel estão sendo sobrevoados.
+[CORRIGIDO] Corrigida a posição do segmento sem nós no modo de forma livre.
+[CORRIGIDO] Corrigido o valor padrão da direção do canto no modo de forma livre.
+[CORRIGIDO] Corrigido erro ao editar nós que estão conectados a estações de transporte ou edifícios.
+[TRADUÇÃO] Adicionada tradução em ucraniano.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curva</value>
   </data>
@@ -228,7 +242,7 @@ O carregamento de todas marcações falhou.</value>
     <value>Elevação</value>
   </data>
   <data name="Option_FlatEnd" xml:space="preserve">
-    <value>Final fixo</value>
+    <value>Final plano</value>
   </data>
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Seguir a inclinação principal</value>
