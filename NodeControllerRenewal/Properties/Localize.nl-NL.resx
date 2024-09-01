@@ -183,7 +183,21 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
 [UPDATED] Gebogen knooppunten volgen de helling van nabijgelegen knooppunten, waardoor het segment ertussen vloeiender wordt.
 [FIXED] De standaard offset van spoorwegen was niet ingesteld op 0.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_5" xml:space="preserve">
+    <value>[UPDATED] Nieuwe UI-stijl.
+[NEW] Mogelijkheid om de offset en rotatie te wijzigen voor segmenten zonder knooppunten.
+[NEW] Mogelijkheid om eindknoop te verplaatsen in vrije vorm modus.
+[NEW] Verschuiving toegevoegd aan vrije vorm modus.
+[NEW] Vlak einde toegevoegd aan vrije vorm modus.
+[NEW] Mogelijkheid om de waarde te wijzigen met stap 0.01 door met het wiel te scrollen wanneer Alt wordt ingedrukt.
+[NEW] Houd Ctrl ingedrukt om alleen in X-as te bewegen, houd Alt ingedrukt om alleen in Y-as te bewegen in vrije vorm modus.
+[NEW] Optie toegevoegd om overlay doorzichtigheid in te stellen.
+[NEW] De kleur van de segmentoverlay knippert als je met de muis over de velden in het paneel beweegt.
+[FIXED] Positie voor segment zonder knooppunten in vrije vorm modus hersteld.
+[FIXED] Standaardwaarde van hoekrichting in vrije vorm modus hersteld.
+[FIXED] Fout hersteld bij het bewerken van knooppunten die verbonden zijn met transportstations of gebouwen.
+[TRANSLATION] Oekraïense vertaling toegevoegd.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bocht</value>
   </data>

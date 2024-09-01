@@ -125,7 +125,7 @@
 A compatível com versões anteriores não fornece a transferência de todos os dados, talvez sejam necessários ajustes manuais.</value>
   </data>
   <data name="Mod_BackwardCompatibilityWarning" xml:space="preserve">
-    <value>AVISO: Se criar um novo save, não poderá mais usar o Node Controller original neste mapa.</value>
+    <value>AVISO: Ao fazer um novo salvamento, não poderá mais usar o Node Controller original neste mapa.</value>
   </data>
   <data name="Mod_Description" xml:space="preserve">
     <value>Controle o tipo do nó e sua forma</value>
@@ -175,7 +175,21 @@ O carregamento de todas marcações falhou.</value>
   </data>
   
   
-  
+  <data name="Mod_WhatsNewMessage3_5" xml:space="preserve">
+    <value>[ATUALIZADO] Novo estilo de interface.
+[NOVO] Permite alterar o deslocamento e rotação para segmentos sem nós.
+[NOVO] Permite mover o nó final no modo de forma livre.
+[NOVO] Adicionado deslocamento ao modo de forma livre.
+[NOVO] Adicionado final plano ao modo de forma livre.
+[NOVO] Permite alterar o valor com incremento de 0.01 rolando a roda quando a tecla Alt está pressionada.
+[NOVO] Mantenha pressionada a tecla Ctrl para mover apenas na direção X, mantenha a tecla Alt para mover apenas na direção Y no modo de forma livre.
+[NOVO] Adicionada opção para definir a opacidade da sobreposição.
+[NOVO] A cor da sobreposição do segmento pisca quando seus campos no painel estão sendo sobrevoados.
+[CORRIGIDO] Corrigida a posição do segmento sem nós no modo de forma livre.
+[CORRIGIDO] Corrigido o valor padrão da direção do canto no modo de forma livre.
+[CORRIGIDO] Corrigido erro ao editar nós que estão conectados a estações de transporte ou edifícios.
+[TRADUÇÃO] Adicionada tradução em ucraniano.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curva</value>
   </data>
@@ -215,21 +229,45 @@ O carregamento de todas marcações falhou.</value>
   <data name="Option_Collision" xml:space="preserve">
     <value>Colisão</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Option_DeltaHeight" xml:space="preserve">
+    <value>Altura de Delta</value>
+  </data>
+  <data name="Option_Direction" xml:space="preserve">
+    <value>Direção</value>
+  </data>
+  <data name="Option_Distance" xml:space="preserve">
+    <value>Distância</value>
+  </data>
+  <data name="Option_Elevation" xml:space="preserve">
+    <value>Elevação</value>
+  </data>
+  <data name="Option_FlatEnd" xml:space="preserve">
+    <value>Final plano</value>
+  </data>
+  <data name="Option_FollowSlope" xml:space="preserve">
+    <value>Seguir a inclinação principal</value>
+  </data>
+  <data name="Option_HideCrosswalkModRequired" xml:space="preserve">
+    <value>Mod "Hide crosswalks" exigido</value>
+  </data>
+  <data name="Option_Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Repor deslocamento</value>
   </data>
-  
-  
-  
-  
+  <data name="Option_LeftCorner" xml:space="preserve">
+    <value>Canto esquerdo</value>
+  </data>
+  <data name="Option_LeftCornerDirection" xml:space="preserve">
+    <value>Direção do canto esquerdo</value>
+  </data>
+  <data name="Option_LeftCornerFlatEnd" xml:space="preserve">
+    <value>Fim do canto esquerdo</value>
+  </data>
+  <data name="Option_LeftCornerPosition" xml:space="preserve">
+    <value>Posição do canto esquerdo</value>
+  </data>
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Direção da inclinação principal</value>
   </data>
@@ -245,10 +283,18 @@ O carregamento de todas marcações falhou.</value>
   <data name="Option_Marking" xml:space="preserve">
     <value>Marcação</value>
   </data>
-  
-  
-  
-  
+  <data name="Option_Mode" xml:space="preserve">
+    <value>Modo</value>
+  </data>
+  <data name="Option_ModeFlat" xml:space="preserve">
+    <value>Plano</value>
+  </data>
+  <data name="Option_ModeFreeForm" xml:space="preserve">
+    <value>Forma livre</value>
+  </data>
+  <data name="Option_ModeSlope" xml:space="preserve">
+    <value>Inclinação</value>
+  </data>
   <data name="Option_MoreOptions" xml:space="preserve">
     <value>Mais opções</value>
   </data>
@@ -261,14 +307,24 @@ O carregamento de todas marcações falhou.</value>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
-  
+  <data name="Option_Position" xml:space="preserve">
+    <value>Posição</value>
+  </data>
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Repor predefinição</value>
   </data>
-  
-  
-  
-  
+  <data name="Option_RightCorner" xml:space="preserve">
+    <value>Canto direito</value>
+  </data>
+  <data name="Option_RightCornerDirection" xml:space="preserve">
+    <value>Direção do canto direito</value>
+  </data>
+  <data name="Option_RightCornerFlatEnd" xml:space="preserve">
+    <value>Fim do canto direito</value>
+  </data>
+  <data name="Option_RightCornerPosition" xml:space="preserve">
+    <value>Posição do canto direito</value>
+  </data>
   <data name="Option_Rotate" xml:space="preserve">
     <value>Rodar</value>
   </data>
@@ -308,22 +364,42 @@ O carregamento de todas marcações falhou.</value>
   <data name="Option_Type" xml:space="preserve">
     <value>Tipo de Nó</value>
   </data>
-  
+  <data name="Option_Vertical" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Nó #{0}</value>
   </data>
   <data name="Settings_ApplyAfterRestart" xml:space="preserve">
     <value>Aplica-se depois do reinício do jogo</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Settings_BackupTab" xml:space="preserve">
+    <value>Cópia de segurança</value>
+  </data>
+  <data name="Settings_CopyPathToClipboard" xml:space="preserve">
+    <value>Copiar caminho para a área de transferência</value>
+  </data>
+  <data name="Settings_DeleteDataButton" xml:space="preserve">
+    <value>Apagar dados de todos os nós</value>
+  </data>
+  <data name="Settings_DeleteDataCaption" xml:space="preserve">
+    <value>Apagar todos os dados</value>
+  </data>
+  <data name="Settings_DeleteDataMessage" xml:space="preserve">
+    <value>Tem certeza que quer apagar todos os dados?</value>
+  </data>
+  <data name="Settings_DumpDataButton" xml:space="preserve">
+    <value>Exportar dados dos nós para um arquivo</value>
+  </data>
+  <data name="Settings_DumpDataCaption" xml:space="preserve">
+    <value>Exportar dados dos nós</value>
+  </data>
+  <data name="Settings_DumpMessageFailed" xml:space="preserve">
+    <value>Falha ao exportar</value>
+  </data>
+  <data name="Settings_DumpMessageSuccess" xml:space="preserve">
+    <value>Exportação para o arquivo concluída com sucesso</value>
+  </data>
   <data name="Settings_InsertNode" xml:space="preserve">
     <value>Inserir nó</value>
   </data>
@@ -357,16 +433,31 @@ O carregamento de todas marcações falhou.</value>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Sempre visível</value>
   </data>
-  
+  <data name="Settings_OverlayOpacity" xml:space="preserve">
+    <value>Opacidade da sobreposição</value>
+  </data>
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Mostrar sobreposição de nódulos próximos</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Settings_Restore" xml:space="preserve">
+    <value>Restaurar</value>
+  </data>
+  <data name="Settings_RestoreDataButton" xml:space="preserve">
+    <value>Restaurar nós a partir de um arquivo</value>
+  </data>
+  <data name="Settings_RestoreDataCaption" xml:space="preserve">
+    <value>Restaurar dados dos nós</value>
+  </data>
+  <data name="Settings_RestoreDataMessage" xml:space="preserve">
+    <value>Tem certeza que quer restaurar os dados?
+Os dados restaurados vão substituir todos os nós existentes.</value>
+  </data>
+  <data name="Settings_RestoreDataMessageFailed" xml:space="preserve">
+    <value>A restauração de dados dos nós falhou</value>
+  </data>
+  <data name="Settings_RestoreDataMessageSuccess" xml:space="preserve">
+    <value>Restauração dos dados dos nós concluída com sucesso</value>
+  </data>
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Selecione os nós do meio</value>
   </data>
@@ -447,14 +538,20 @@ Clique para editar</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Arraste para alterar o deslocamento</value>
   </data>
-  
+  <data name="Tool_InfoDragCenterFree" xml:space="preserve">
+    <value>Arraste para alterar a posição
+Segure {0} para alterar a elevação</value>
+  </data>
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Arraste para alterar a rotação</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Arraste para alterar deslocamento do canto</value>
   </data>
-  
+  <data name="Tool_InfoDragCornerFree" xml:space="preserve">
+    <value>Arraste para mudar a posição do canto
+Segure {0} para mudar a elevação do canto</value>
+  </data>
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Arraste esta extremidade para mudar a direção da inclinação principal</value>
   </data>
