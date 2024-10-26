@@ -26,6 +26,7 @@ namespace NodeController
         public override string Description => !IsBeta ? Localize.Mod_Description : CommonLocalize.Mod_DescriptionBeta;
         public override List<ModVersion> Versions => new List<ModVersion>()
         {
+            new ModVersion(new Version("3.5.1"), new DateTime(2024, 10, 26)),
             new ModVersion(new Version("3.5"), new DateTime(2023, 6, 3)),
             new ModVersion(new Version("3.4"), new DateTime(2023, 3, 4)),
             new ModVersion(new Version("3.3.3"), new DateTime(2022, 12, 21)),
@@ -44,7 +45,7 @@ namespace NodeController
             new ModVersion(new Version("3.0.1"), new DateTime(2021, 5, 11)),
             new ModVersion(new Version("3.0"), new DateTime(2021, 4, 30)),
         };
-        protected override Version RequiredGameVersion => new Version(1, 17, 1, 2);
+        protected override Version RequiredGameVersion => new Version(1, 18, 1, 3);
 
         protected override string IdRaw => nameof(NodeController);
         protected override List<BaseDependencyInfo> DependencyInfos
