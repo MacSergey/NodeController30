@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -138,17 +138,6 @@
     <value>載入完畢時出現錯誤。
 無法載入所有節點的資料。</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
     <value>[UPDATED] 由於可能影響模擬速度，添加了禁用「修復卡在長交叉路口的行人」的選項。該選項默認禁用，可以在模組設定中啟用。
 [NEW] 添加選項「碰撞」。如果禁用該選項，則路段將失去更改偏移的限制，並且可以與其他路段重疊。
@@ -175,8 +164,6 @@
     <value>[FIXED] 修復後與自適應網路模組(Adaptive Network Mod) 相容，之前可能導致節點顯示為藍洞。
 [FIXED] 修復了丟失道路（網路）素材時使NCR資料載入失敗的錯誤。</value>
   </data>
-  
-  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>彎曲</value>
   </data>
@@ -228,7 +215,6 @@
   <data name="Option_Elevation" xml:space="preserve">
     <value>高度</value>
   </data>
-  
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>跟隨主斜坡</value>
   </data>
@@ -241,10 +227,6 @@
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>重設偏移</value>
   </data>
-  
-  
-  
-  
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>主斜坡方向</value>
   </data>
@@ -290,10 +272,6 @@
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>重設為預設值</value>
   </data>
-  
-  
-  
-  
   <data name="Option_Rotate" xml:space="preserve">
     <value>旋轉</value>
   </data>
@@ -402,7 +380,6 @@
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>總是顯示</value>
   </data>
-  
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>凸顯臨近節點</value>
   </data>
@@ -506,14 +483,12 @@
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>拖曳以調整偏移</value>
   </data>
-  
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>拖曳以調整旋轉角度</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>拖曳以調整角落偏移</value>
   </data>
-  
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>拖曳這端來調整主斜坡方向</value>
   </data>

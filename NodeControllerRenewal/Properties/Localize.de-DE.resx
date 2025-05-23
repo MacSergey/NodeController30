@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -158,17 +158,9 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
 [FIXED] Fehlerbehebung für das Laden von Daten von Kreuzungs-Assets.
 [FIXED] Fehlerbehebung für nicht-löschbare Pfeiler nach dem Setzen von Kreuzungs-Assets.</value>
   </data>
-  
-  
-  
-  
-  
-  
   <data name="Mod_WhatsNewMessage3_1_2" xml:space="preserve">
     <value>[TRANSLATION] Indonesische, Koreanische und Malaiische Übersetzungen hinzugefügt.</value>
   </data>
-  
-  
   <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
     <value>[UPDATED] Die Möglichkeit zum Deaktivieren der Option "Feststeckte Fußgänger an langen Kreuzungen reparieren" wurde aufgrund von Beschwerden über Auswirkungen auf die Simulationsgeschwindigkeit hinzugefügt. Die Option ist standardmäßig deaktiviert, kann aber in den Mod-Einstellungen aktiviert werden.
 [NEW] Option "Kollision" hinzugefügt. wenn es für das Segment deaktivieret wird, hat das Segment keine Limits für das Ändern des Offsets und kann durch andere Segmente hindurch überlappt werden.
@@ -202,7 +194,6 @@ Daten aller Netzwerk-Knoten konnten nicht geladen werden.</value>
 [UPDATED] Kurven-Netzwerkknoten folgen der Neigung der nahen Netzwerknoten, so dass das Segment zwischen ihnen glatter ist.
 [FIXED] Der Standardversatz der Eisenbahn war nicht auf 0 gesetzt.</value>
   </data>
-  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Kurve</value>
   </data>

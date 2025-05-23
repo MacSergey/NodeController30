@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,7 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
   <data name="Mod_BackwardCompatibilityMessage" xml:space="preserve">
     <value>Alkuperäisen Node Controllerin tiedot tuotiin.
 Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittymistä voi vaatia hienosäätöä.</value>
@@ -128,25 +127,6 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Mod_Description" xml:space="preserve">
     <value>Säädä risteysten muotoa ja tyyppiä</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Mutka</value>
   </data>
@@ -183,22 +163,9 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Option_CalculateTwistByNearby" xml:space="preserve">
     <value>Laske sivukaltevuus viereisten liittymien perusteella</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Option_KeepDefault" xml:space="preserve">
     <value>Palauta etäisyydet</value>
   </data>
-  
-  
-  
-  
   <data name="Option_MainSlopeDirection" xml:space="preserve">
     <value>Kaltevuuden suunta</value>
   </data>
@@ -214,26 +181,15 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Option_Marking" xml:space="preserve">
     <value>Merkinnät</value>
   </data>
-  
-  
-  
-  
-  
-  
   <data name="Option_Offset" xml:space="preserve">
     <value>Etäisyys</value>
   </data>
   <data name="Option_OffsetFormat" xml:space="preserve">
     <value>{0}m</value>
   </data>
-  
   <data name="Option_ResetToDefault" xml:space="preserve">
     <value>Palauta oletukseksi</value>
   </data>
-  
-  
-  
-  
   <data name="Option_Rotate" xml:space="preserve">
     <value>Käännös</value>
   </data>
@@ -273,54 +229,21 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Option_Type" xml:space="preserve">
     <value>Liittymän tyyppi</value>
   </data>
-  
   <data name="Panel_NodeId" xml:space="preserve">
     <value>Liittymä #{0}</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Settings_NodeIsSlopedByDefault" xml:space="preserve">
     <value>Liittymät ovat kaltevia oletuksena</value>
   </data>
-  
-  
-  
-  
-  
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Näytä läheisten liittymien peittokuva</value>
   </data>
-  
-  
-  
-  
-  
-  
   <data name="Settings_SelectMiddleNodes" xml:space="preserve">
     <value>Valitse keskiliittymät</value>
   </data>
   <data name="Settings_SelectMiddleNodesDiscription" xml:space="preserve">
     <value>Jos tämä asetus ei ole käytössä, keskiliittymät siirtyvät napautettuun kohtaan</value>
   </data>
-  
-  
-  
-  
-  
   <data name="Setting_ShortcutCalculateShiftByIntersections" xml:space="preserve">
     <value>Laske siirtymä risteysten välille</value>
   </data>
@@ -354,8 +277,6 @@ Taaksepäin yhteensopivuus ei takaa kaikkien tietojen siirtoa, joten osa liittym
   <data name="Setting_ShortcutSetTwistBetweenIntersections" xml:space="preserve">
     <value>Aseta sivukaltevuus risteysten välille</value>
   </data>
-  
-  
   <data name="Tool_InfoAlignMode" xml:space="preserve">
     <value>Pidä {0}-näppäintä pohjassa kohdistaaksesi tiet</value>
   </data>
@@ -375,14 +296,12 @@ Napauta muokataksesi</value>
   <data name="Tool_InfoDragCenter" xml:space="preserve">
     <value>Vedä muuttaaksesi etäisyyttä</value>
   </data>
-  
   <data name="Tool_InfoDragCircle" xml:space="preserve">
     <value>Vedä kääntääksesi</value>
   </data>
   <data name="Tool_InfoDragCorner" xml:space="preserve">
     <value>Vedä muuttaaksesi kulman etäisyyttä</value>
   </data>
-  
   <data name="Tool_InfoDragMainSlopeDirectionEnd" xml:space="preserve">
     <value>Vedä muuttaaksesi kaltevuuden suuntaa</value>
   </data>
@@ -392,11 +311,9 @@ Napauta muokataksesi</value>
   <data name="Tool_InfoInsertCrossingNode" xml:space="preserve">
     <value>Napauta lisätäksesi ylityspaikka</value>
   </data>
-  
   <data name="Tool_InfoInsertNode" xml:space="preserve">
     <value>Napauta lisätäksesi liittymä</value>
   </data>
-  
   <data name="Tool_InfoSelectAlignRelative" xml:space="preserve">
     <value>Valitse kulma, jonka suhteen haluat tasata</value>
   </data>

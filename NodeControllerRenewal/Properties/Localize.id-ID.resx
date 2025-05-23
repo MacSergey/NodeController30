@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -141,16 +141,6 @@ Semua node gagal dimuat.</value>
   <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
     <value>[RELEASE] Rilisan versi Renewal</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
     <value>[UPDATED] Menambahkan opsi untuk mematikan fungsi "Perbaiki pejalan kaki yang tersangkut pada persimpangan besar" karena komplen terpengaruhnya kecepatan simulasi. Opsi ini mati secara bawaan, dapat dinyalakan pada prasetelan mod.
 [NEW] Menambahkan opsi "Collision". Jika dimatikan pada segmen, segmen tidak akan memiliki batas ketika mengubah pemunduran dan dapat saling tumpang tindih dengan segmen lain.
@@ -184,7 +174,6 @@ Semua node gagal dimuat.</value>
 [UPDATED] Lekukan node mengikuti kemiringan dari node terdekat, sehingga setiap segmen diantaranya terlihat lebih halus.
 [FIXED] Offset bawaan dari rel kereta tidak lagi di-set ke angka 0.</value>
   </data>
-  
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Tikungan</value>
   </data>
@@ -236,7 +225,6 @@ Semua node gagal dimuat.</value>
   <data name="Option_Elevation" xml:space="preserve">
     <value>Ketinggian</value>
   </data>
-  
   <data name="Option_FollowSlope" xml:space="preserve">
     <value>Ikuti kemiringan utama</value>
   </data>
@@ -255,7 +243,6 @@ Semua node gagal dimuat.</value>
   <data name="Option_LeftCornerDirection" xml:space="preserve">
     <value>Arah sudut kiri</value>
   </data>
-  
   <data name="Option_LeftCornerPosition" xml:space="preserve">
     <value>Posisi sudut kiri</value>
   </data>
@@ -310,7 +297,6 @@ Semua node gagal dimuat.</value>
   <data name="Option_RightCornerDirection" xml:space="preserve">
     <value>Arah sudut kanan</value>
   </data>
-  
   <data name="Option_RightCornerPosition" xml:space="preserve">
     <value>Posisi sudut kanan</value>
   </data>
@@ -422,7 +408,6 @@ Semua node gagal dimuat.</value>
   <data name="Settings_Option_Visible" xml:space="preserve">
     <value>Selalu Tampak</value>
   </data>
-  
   <data name="Settings_RenderNearNode" xml:space="preserve">
     <value>Perlihatkan hamparan titik hubung yang berdekatan</value>
   </data>
