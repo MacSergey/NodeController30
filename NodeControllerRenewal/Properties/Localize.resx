@@ -277,6 +277,9 @@ Failed to load data for all nodes.</value>
   <data name="Mod_WhatsNewMessage3_5_2" xml:space="preserve">
     <value>[UPDATED] Updated required game version to 1.19.2-f3</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_5_3" xml:space="preserve">
+    <value>[UPDATED] Updated required game version to 1.20.1-f1</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Bend</value>
   </data>
