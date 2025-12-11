@@ -140,16 +140,6 @@ Het laden van gegevens voor alle knooppunten is mislukt.</value>
   <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
     <value>[RELEASE] Vernieuwde versie gepubliceerd</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
     <value>[UPDATED] De mogelijkheid is toegevoegd om de optie "Vastzittende voetgangers op lange kruispunten verhelpen" uit te schakelen, vanwege klachten over de impact op de simulatiesnelheid. De optie is standaard uitgeschakeld, maar kan worden ingeschakeld in de mod instellingen.
 [NEW] Optie "Botsing" toegevoegd. Indien uitgeschakeld voor het segment, heeft het segment geen limieten voor het veranderen van de verschuiving en kan het overlapt worden door andere segmenten.
