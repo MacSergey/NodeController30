@@ -141,16 +141,6 @@ O carregamento de todas marcações falhou.</value>
   <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
     <value>[RELEASE] Versão da Renovação</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
     <value>[UPDATED] Adicionado a habilidade de desativar a opção "consertar pedestre preso em interseções longas" devido a reclamação de afetar a velocidade de simulação. A opção está desabilitada por padrão pode ser ativada nas configurações do mods.
 [NEW] Opção adicionada "Collisão". Se você desativar isto para segmento, o segmento não terá limites para alterar o deslocamento e pode ser sobreposto por outros segmentos.
@@ -173,8 +163,6 @@ O carregamento de todas marcações falhou.</value>
     <value>[FIXED] Corrigido erros de terreno que aparece ao usar o pintor de terreno.
 [TRANSLATION] Adicionado linguagem Tcheca.</value>
   </data>
-  
-  
   <data name="Mod_WhatsNewMessage3_5" xml:space="preserve">
     <value>[ATUALIZADO] Novo estilo de interface.
 [NOVO] Permite alterar o deslocamento e rotação para segmentos sem nós.
