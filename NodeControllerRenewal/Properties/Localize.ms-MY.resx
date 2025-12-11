@@ -141,16 +141,6 @@ Gagal memuatkan data untuk kesemua nod.</value>
   <data name="Mod_WhatsNewMessage3_0" xml:space="preserve">
     <value>[RELEASE] Terbitan versi Renewal</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Mod_WhatsNewMessage3_3" xml:space="preserve">
     <value>[UPDATED] Keupayaan untuk menyahdayakan pilihan "baiki pejalan kaki yang tersangkut pada persimpangan yang panjang" telah ditambah kerana terdapat aduan mengenai terkesannya kelajuan penyelakuan. Pilihan ini dinyahdayakan secara lalai, boleh didayakan dalam tetapan mod.
 [NEW] Pilihan "Perlanggaran" telah ditambah. Jika anda menyahdayakannya untuk segmen, segmen tidak akan ada had dalam pengubahan ofset dan boleh bertindih dengan segmen lain.
