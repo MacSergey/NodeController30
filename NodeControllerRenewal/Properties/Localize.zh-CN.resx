@@ -158,12 +158,6 @@
 [FIXED] 修复交叉路资源的加载数据。
 [FIXED] 修复放置交叉路资产后不能删除支撑柱的错误。</value>
   </data>
-  
-  
-  
-  
-  
-  
   <data name="Mod_WhatsNewMessage3_1_2" xml:space="preserve">
     <value>[TRANSLATION] 添加韩语和马来语翻译。</value>
   </data>

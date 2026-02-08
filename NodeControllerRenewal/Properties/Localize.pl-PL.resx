@@ -184,7 +184,21 @@ Nie udało się załadować danych wszystkich węzłów.</value>
 [UPDATED] Wygięcie wezłów śledzi nachylenie sąsiednich węzłów tak aby segment pomiędzy nimi był gładszy.
 [FIXED] Domyślne przesunięcie linii kolejowych nie jest ustawione na 0.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_5" xml:space="preserve">
+    <value>[UPDATED] Nowy styl interfejsu użytkownika.
+[NEW] Pozwala na zmianę przesunięcia i rotacji segmentów bez węzłów.
+[NEW] Zezwalaj na przenoszenie węzła końcowego w trybie darmowym.
+[NEW] Dodano przejście do trybu darmowego formularza.
+[NEW] Dodano płaski koniec do trybu darmowego formularza.
+[NEW] Pozwala na zmianę wartości z krokiem 0.01 poprzez przewijanie koła, gdy Alt jest utrzymywany.
+[NEW] Przytrzymaj ctrl, aby poruszać się tylko w kierunku X, przytrzymaj alt, aby poruszać się tylko o kierunek Y w trybie darmowym.
+[NEW] Dodano opcję ustawiania przezroczystości nakładki.
+[NEW] Kolor nakładki segmentu miga, gdy pola w panelu są otoczone.
+[FIXED] Stała pozycja segmentu bez węzła w trybie darmowym.
+[FIXED] Ustalona domyślna wartość kierunku narożnika w trybie darmowego formularza.
+[FIXED] Naprawiono błąd podczas edycji węzłów, które są połączone ze ciągami lub budynkami transportowymi.
+[TRANSLATION] Dodano tłumaczenie na Ukraiński.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Zegnij</value>
   </data>

@@ -256,7 +256,21 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
 [UPDATED] Les courbes suivent la pente des noeuds proches, de sorte que le segment entre eux soit plus lisse.
 [FIXED] Le décalage par défaut des chemins de fer n'est pas fixé à 0.</value>
   </data>
-  
+  <data name="Mod_WhatsNewMessage3_5" xml:space="preserve">
+    <value>[UPDATED] Nouveau style d'interface.
+[NEW] Permettre de modifier le décalage et la rotation pour les segments de nœud.
+[NEW] Permettre de déplacer le noeud de fin en mode forme libre.
+[NEW] Ajout de shift vers le mode de forme libre.
+[NEW] Ajout de bout plat vers le mode de forme libre.
+[NEW] Permet de changer de valeur avec l'étape 0.01 en faisant défiler la roue lorsque Alt est maintenu.
+[NEW] Maintenez ctrl enfoncé pour se déplacer uniquement dans l'axe X, maintenez alt enfoncé pour se déplacer seulement dans l'axe Y en mode forme libre.
+[NEW] Ajouté une option pour définir l'opacité de superposition.
+[NEW] La couleur de superposition du segment clignote lorsque ses champs sur le panneau sont survolés.
+[FIXED] Correction de la position du segment nodeless en mode forme libre.
+[FIXED] Fixe la valeur par défaut de la direction du coin en mode forme libre.
+[FIXED] Correction d'une erreur lors de l'édition de nœuds connectés à des stations de transport ou des bâtiments.
+[TRANSLATION] Ajout de la traduction urkainienne.</value>
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Courbe</value>
   </data>
