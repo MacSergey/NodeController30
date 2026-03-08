@@ -188,6 +188,9 @@
 [FIXED] Fixed default value of corner direction in free form mode.
 [FIXED] Fixed error while editing nodes which is connected to transport strations or buildings.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_5_4" xml:space="preserve">
+    <value />
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>ベンド</value>
   </data>

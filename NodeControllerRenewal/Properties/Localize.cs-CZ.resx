@@ -167,6 +167,9 @@ Nepodařilo se načíst data všechny uzly.</value>
     <value>[FIXED] Opravena kompatibilita s Adaptive Network modem, která by mohla způsobit modré díry místo uzlů.
 [FIXED] Opravena chyba, kdy chybějící objekt silnic může způsobit selhání načítání NCR.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_5_4" xml:space="preserve">
+    <value />
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Ohebný</value>
   </data>

@@ -136,6 +136,11 @@ namespace NodeController
 		public static string Mod_WhatsNewMessage3_5_3 => LocaleManager.GetString("Mod_WhatsNewMessage3_5_3", Culture);
 
 		/// <summary>
+		/// [UPDATED] Updated required game version to 1.21.1-f5
+		/// </summary>
+		public static string Mod_WhatsNewMessage3_5_4 => LocaleManager.GetString("Mod_WhatsNewMessage3_5_4", Culture);
+
+		/// <summary>
 		/// Bend
 		/// </summary>
 		public static string NodeStyle_Bend => LocaleManager.GetString("NodeStyle_Bend", Culture);

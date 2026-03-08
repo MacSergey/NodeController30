@@ -188,6 +188,9 @@ Gagal memuatkan data untuk kesemua nod.</value>
 [FIXED] Nilai asal arah bucu dalam mod bentuk bebas telah dibaiki.
 [FIXED] Ralat ketika menyunting nod yang tersambung ke stesen pengangkutan atau bangunan telah dibaiki.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_5_4" xml:space="preserve">
+    <value />
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Lentur</value>
   </data>

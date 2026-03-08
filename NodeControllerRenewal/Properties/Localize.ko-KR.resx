@@ -188,6 +188,9 @@
 [FIXED] 자유형 모드에서 코너 방향의 기본값을 수정했습니다.
 [FIXED] 역이나 건물에 연결된 노드를 편집할 때 발생하는 오류를 수정했습니다.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_5_4" xml:space="preserve">
+    <value />
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>커브</value>
   </data>

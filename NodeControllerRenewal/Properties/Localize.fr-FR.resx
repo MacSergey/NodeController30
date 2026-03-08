@@ -256,6 +256,9 @@ Les données de tous les nœuds n'ont pas pu être chargées.</value>
 [UPDATED] Les courbes suivent la pente des noeuds proches, de sorte que le segment entre eux soit plus lisse.
 [FIXED] Le décalage par défaut des chemins de fer n'est pas fixé à 0.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_5_4" xml:space="preserve">
+    <value />
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Courbe</value>
   </data>

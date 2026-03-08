@@ -164,6 +164,9 @@ Retrocompatibilitatea nu oferă transferul a toate datele, ar putea necesita aju
     <value>[FIXED] S-a rezolvat Compatibilitatea cu Adaptive Network mod care ar putea cauza goluri albastre în locul nodurilor.
 [FIXED] Eroare rezolvată atunci când un activ de rețea pierdut ar putea cauza eșecul încărcării datelor NCR.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_5_4" xml:space="preserve">
+    <value />
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Curbă</value>
   </data>

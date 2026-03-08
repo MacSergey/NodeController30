@@ -188,6 +188,9 @@ No se pudieron cargar datos para todos los nodos.</value>
 [FIXED] Arreglado valor por defecto de la dirección de la esquina en modo de forma libre.
 [FIXED] Arreglado error al editar nodos que están conectados a estaciones de transporte o edificios.</value>
   </data>
+  <data name="Mod_WhatsNewMessage3_5_4" xml:space="preserve">
+    <value />
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Doblado</value>
   </data>
