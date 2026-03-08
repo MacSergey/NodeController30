@@ -26,6 +26,7 @@ namespace NodeController
         public override string Description => !IsBeta ? Localize.Mod_Description : CommonLocalize.Mod_DescriptionBeta;
         public override List<ModVersion> Versions => new List<ModVersion>()
         {
+            new ModVersion(new Version("3.5.3"), new DateTime(2026, 3, 8)),
             new ModVersion(new Version("3.5.3"), new DateTime(2025, 9, 29)),
             new ModVersion(new Version("3.5.2"), new DateTime(2025, 5, 23)),
             new ModVersion(new Version("3.5.1"), new DateTime(2024, 10, 26)),
@@ -47,7 +48,7 @@ namespace NodeController
             new ModVersion(new Version("3.0.1"), new DateTime(2021, 5, 11)),
             new ModVersion(new Version("3.0"), new DateTime(2021, 4, 30)),
         };
-        protected override Version RequiredGameVersion => new Version(1, 20, 1, 1);
+        protected override Version RequiredGameVersion => new Version(1, 21, 1, 5);
 
         protected override string IdRaw => nameof(NodeController);
         protected override List<BaseDependencyInfo> DependencyInfos
@@ -117,6 +118,8 @@ namespace NodeController
 
                 if (DependencyUtilities.HideCrossings is null)
                     Logger.Debug("Hide Crosswalks not exist, skip patches");
+                else if (Type.GetType(nameof(HideCrosswalks.Patches.CalculateMaterialCommons), false) == null)
+                    Logger.Debug("Hide Crosswalks is broken, skip patches");
                 else
                     PatchHideCrosswalk(ref success);
             }
@@ -232,7 +235,7 @@ namespace NodeController
 
         private bool Patch_NetSegment_CalculateCorner_Prefix()
         {
-            var parameters = new Type[] { typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(ushort), typeof(ushort), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType() };
+            var parameters = new Type[] { typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(NetInfo), typeof(Vector3), typeof(Vector3), typeof(Vector3), typeof(ushort), typeof(ushort), typeof(bool), typeof(bool), typeof(Vector3).MakeByRefType(), typeof(Vector3).MakeByRefType(), typeof(bool).MakeByRefType(), typeof(float) };
             return AddPrefix(typeof(NetSegmentPatches), nameof(NetSegmentPatches.CalculateCornerPrefix), typeof(NetSegment), nameof(NetSegment.CalculateCorner), parameters);
         }
         private bool Patch_NetSegment_FindDirection()
