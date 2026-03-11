@@ -136,7 +136,7 @@ namespace NodeController
 		public static string Mod_WhatsNewMessage3_5_3 => LocaleManager.GetString("Mod_WhatsNewMessage3_5_3", Culture);
 
 		/// <summary>
-		/// [UPDATED] Updated required game version to 1.21.1-f5
+		/// [UPDATED] The mod is compatible with the game version 1.21.1-f5
 		/// </summary>
 		public static string Mod_WhatsNewMessage3_5_4 => LocaleManager.GetString("Mod_WhatsNewMessage3_5_4", Culture);
 

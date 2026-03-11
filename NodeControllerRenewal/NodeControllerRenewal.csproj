@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-	<AssemblyVersion>3.5.0.107</AssemblyVersion>
+	<AssemblyVersion>3.5.0.108</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Stable Release' OR '$(Configuration)' == 'Stable Debug'">
