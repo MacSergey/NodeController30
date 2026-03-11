@@ -648,7 +648,7 @@ namespace NodeController
                         hideMarking.Width = count * 50f + (count - 1) * 5f;
                     }
 
-                    hideMarking.OnButtonClick += () => DependencyUtilities.HideCrosswalksId.GetWorkshopUrl().OpenUrl();
+                    hideMarking.OnButtonClick += () => DependencyUtilities.HideCrosswalksRenewedId.GetWorkshopUrl().OpenUrl();
                     return hideMarking;
                 }
             }

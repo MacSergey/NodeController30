@@ -118,8 +118,6 @@ namespace NodeController
 
                 if (DependencyUtilities.HideCrossings is null)
                     Logger.Debug("Hide Crosswalks not exist, skip patches");
-                else if (Type.GetType(nameof(HideCrosswalks.Patches.CalculateMaterialCommons), false) == null)
-                    Logger.Debug("Hide Crosswalks is broken, skip patches");
                 else
                     PatchHideCrosswalk(ref success);
             }
@@ -349,7 +347,7 @@ namespace NodeController
 
         private void PatchHideCrosswalk(ref bool success)
         {
-            success &= AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.ShouldHideCrossingPrefix), typeof(HideCrosswalks.Patches.CalculateMaterialCommons), nameof(HideCrosswalks.Patches.CalculateMaterialCommons.ShouldHideCrossing));
+            success &= AddPrefix(typeof(ExternalModPatches), nameof(ExternalModPatches.ShouldHideCrossingPrefix), typeof(HideCrosswalksRenewed.Patches.CalculateMaterialCommons), nameof(HideCrosswalksRenewed.Patches.CalculateMaterialCommons.ShouldHideCrossing));
         }
 
         #endregion
