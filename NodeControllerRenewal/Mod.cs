@@ -26,6 +26,7 @@ namespace NodeController
         public override string Description => !IsBeta ? Localize.Mod_Description : CommonLocalize.Mod_DescriptionBeta;
         public override List<ModVersion> Versions => new List<ModVersion>()
         {
+            new ModVersion(new Version("3.5.5"), new DateTime(2026, 3, 14)),
             new ModVersion(new Version("3.5.4"), new DateTime(2026, 3, 11)),
             new ModVersion(new Version("3.5.3"), new DateTime(2025, 9, 29)),
             new ModVersion(new Version("3.5.2"), new DateTime(2025, 5, 23)),
@@ -314,21 +315,13 @@ namespace NodeController
         {
             return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TrainAI), nameof(TrainAI.SimulationStep), parameters);
         }
-        private bool Patch_TMPE_CustomTrainAI_CustomSimulationStep(Type[] parameters)
-        {
-            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), Type.GetType("TrafficManager.Custom.AI.CustomTrainAI"), "CustomSimulationStep", parameters);
-        }
         private bool Patch_TramBaseAI_SimulationStep(Type[] parameters)
         {
             return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TramBaseAI), nameof(TramBaseAI.SimulationStep), parameters);
         }
-        private bool Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(Type[] parameters)
-        {
-            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), Type.GetType("TrafficManager.Custom.AI.CustomTramBaseAI"), "CustomSimulationStep", parameters);
-        }
         private bool Patch_TMPE_TrainAI_SimulationStep2Patch()
         {
-            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), Type.GetType("TrafficManager.Patch._VehicleAI._TrainAI.SimulationStep2Patch"), "Prefix");
+            return AddTranspiler(typeof(SimulationStepPatches), nameof(SimulationStepPatches.SimulationStepTranspiler), typeof(TrafficManager.Patch._VehicleAI._TrainAI.SimulationStep2Patch), nameof(TrafficManager.Patch._VehicleAI._TrainAI.SimulationStep2Patch.Prefix));
         }
 
         #endregion
@@ -363,19 +356,7 @@ namespace NodeController
             success &= Patch_JunctionRestrictionsManager_IsEnteringBlockedJunctionAllowedConfigurable();
             success &= Patch_JunctionRestrictionsManager_IsPedestrianCrossingAllowedConfigurable();
             success &= Patch_JunctionRestrictionsManager_IsUturnAllowedConfigurable();
-
-            if ((Type.GetType("TrafficManager.TrafficManagerMod") ?? Type.GetType("TrafficManager.Lifecycle.TrafficManagerMod")) is Type tmpeMod)
-            {
-                if (tmpeMod.Assembly.GetName().Version < new Version(11, 5, 4))
-                {
-                    var parameters = new Type[] { typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(Vehicle.Frame).MakeByRefType(), typeof(ushort), typeof(Vehicle).MakeByRefType(), typeof(int) };
-
-                    success &= Patch_TMPE_CustomTrainAI_CustomSimulationStep(parameters);
-                    success &= Patch_TMPE_CustomTramBaseAI_CustomSimulationStep(parameters);
-                }
-                else
-                    success &= Patch_TMPE_TrainAI_SimulationStep2Patch();
-            }
+            success &= Patch_TMPE_TrainAI_SimulationStep2Patch();
         }
         private bool Patch_TrafficLightManager_CanToggleTrafficLight()
         {

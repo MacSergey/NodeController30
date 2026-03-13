@@ -568,7 +568,7 @@ namespace NodeController
                 var stretch = ComponentPool.Get<FloatOptionPanel>(parent, nameof(Data.Stretch));
                 stretch.Label = Localize.Option_Stretch;
                 stretch.Format = Localize.Option_StretchFormat;
-                stretch.NumberFormat = "0.#";
+                stretch.NumberFormat = "0.##";
                 stretch.Init(Data, SupportStretch, totalSupport, StretchGetter, StretchSetter, MinMaxStretch, TouchablePredicate);
                 stretch.SetStyle(UIStyle.Default);
 
@@ -584,7 +584,7 @@ namespace NodeController
                 var slope = ComponentPool.Get<FloatOptionPanel>(parent, nameof(Data.SlopeAngle));
                 slope.Label = Localize.Option_Slope;
                 slope.Format = Localize.Option_SlopeFormat;
-                slope.NumberFormat = "0.#";
+                slope.NumberFormat = "0.##";
                 slope.Init(Data, SupportSlope, totalSupport, SlopeGetter, SlopeSetter, MinMaxSlope, FollowSlopePredicate);
                 slope.SetStyle(UIStyle.Default);
 
@@ -600,7 +600,7 @@ namespace NodeController
                 var twist = ComponentPool.Get<FloatOptionPanel>(parent, nameof(Data.TwistAngle));
                 twist.Label = Localize.Option_Twist;
                 twist.Format = Localize.Option_TwistFormat;
-                twist.NumberFormat = "0.#";
+                twist.NumberFormat = "0.##";
                 twist.Init(Data, SupportTwist, totalSupport, TwistGetter, TwistSetter, MinMaxTwist, FollowSlopePredicate);
                 twist.SetStyle(UIStyle.Default);
 

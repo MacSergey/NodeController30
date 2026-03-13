@@ -191,6 +191,9 @@ Impossibile caricare i dati per tutti i nodi.</value>
   <data name="Mod_WhatsNewMessage3_5_4" xml:space="preserve">
     <value />
   </data>
+  <data name="Mod_WhatsNewMessage3_5_5" xml:space="preserve">
+    <value />
+  </data>
   <data name="NodeStyle_Bend" xml:space="preserve">
     <value>Piega</value>
   </data>

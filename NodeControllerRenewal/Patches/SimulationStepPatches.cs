@@ -23,7 +23,7 @@ namespace NodeController.Patches
 
             foreach (var instruction in instructions)
             {
-                if (instruction.opcode == OpCodes.Stfld && instruction.operand == rotationField)
+                if (instruction.StoresField(rotationField))
                 {
                     yield return new CodeInstruction(original.GetLDArg("vehicleData"));
                     yield return new CodeInstruction(OpCodes.Call, getDelegate.Method);

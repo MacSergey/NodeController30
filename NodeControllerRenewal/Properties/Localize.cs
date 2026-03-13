@@ -141,6 +141,11 @@ namespace NodeController
 		public static string Mod_WhatsNewMessage3_5_4 => LocaleManager.GetString("Mod_WhatsNewMessage3_5_4", Culture);
 
 		/// <summary>
+		/// [FIXED] Vehicles tilt on tilted roads
+		/// </summary>
+		public static string Mod_WhatsNewMessage3_5_5 => LocaleManager.GetString("Mod_WhatsNewMessage3_5_5", Culture);
+
+		/// <summary>
 		/// Bend
 		/// </summary>
 		public static string NodeStyle_Bend => LocaleManager.GetString("NodeStyle_Bend", Culture);
