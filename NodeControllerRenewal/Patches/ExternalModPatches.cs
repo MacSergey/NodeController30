@@ -60,30 +60,30 @@ namespace NodeController.Patches
         };
 
 
-        public static bool CanToggleTrafficLightPrefix(ref bool __result, ushort nodeId, ref ToggleTrafficLightError reason)
+        public static bool CanToggleTrafficLightPrefix(ref bool __result, ushort nodeId, bool flag, ref NetNode node, ref ToggleTrafficLightError reason)
         {
             SingletonManager<Manager>.Instance.TryGetFinalNodeData(nodeId, out var nodeData);
             return HandleNullBool(CanHaveTrafficLights(nodeData, out reason), ref __result);
         }
-        public static bool GetDefaultEnteringBlockedJunctionAllowedPrefix(ushort segmentId, bool startNode, ref bool __result)
+        public static bool GetDefaultEnteringBlockedJunctionAllowedPrefix(ushort segmentId, bool startNode, ref NetNode node, ref bool __result)
         {
             ushort nodeId = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
             SingletonManager<Manager>.Instance.TryGetFinalNodeData(nodeId, out var nodeData);
             return HandleNullBool(IsDefaultEnteringBlockedJunctionAllowed(nodeData), ref __result);
         }
-        public static bool GetDefaultPedestrianCrossingAllowedPrefix(ushort segmentId, bool startNode, ref bool __result)
+        public static bool GetDefaultPedestrianCrossingAllowedPrefix(ushort segmentId, bool startNode, ref NetNode node, ref bool __result)
         {
             ushort nodeId = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
             SingletonManager<Manager>.Instance.TryGetFinalNodeData(nodeId, out var nodeData);
             return HandleNullBool(IsDefaultPedestrianCrossingAllowed(nodeData), ref __result);
         }
-        public static bool GetDefaultUturnAllowedPrefix(ushort segmentId, bool startNode, ref bool __result)
+        public static bool GetDefaultUturnAllowedPrefix(ushort segmentId, bool startNode, ref NetNode node, ref bool __result)
         {
             ushort nodeId = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
             SingletonManager<Manager>.Instance.TryGetFinalNodeData(nodeId, out var nodeData);
             return HandleNullBool(IsDefaultUturnAllowed(nodeData), ref __result);
         }
-        public static bool IsEnteringBlockedJunctionAllowedConfigurablePrefix(ushort segmentId, bool startNode, ref bool __result)
+        public static bool IsEnteringBlockedJunctionAllowedConfigurablePrefix(ushort segmentId, bool startNode, ref NetNode node, ref bool __result)
         {
             ushort nodeId = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
             SingletonManager<Manager>.Instance.TryGetFinalNodeData(nodeId, out var nodeData);
@@ -100,13 +100,13 @@ namespace NodeController.Patches
 
             return HandleNullBool(IsEnteringBlockedJunctionAllowedConfigurable(nodeData), ref __result);
         }
-        public static bool IsPedestrianCrossingAllowedConfigurablePrefix(ushort segmentId, bool startNode, ref bool __result)
+        public static bool IsPedestrianCrossingAllowedConfigurablePrefix(ushort segmentId, bool startNode, ref NetNode node, ref bool __result)
         {
             ushort nodeId = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
             SingletonManager<Manager>.Instance.TryGetFinalNodeData(nodeId, out var nodeData);
             return HandleNullBool(IsPedestrianCrossingAllowedConfigurable(nodeData), ref __result);
         }
-        public static bool IsUturnAllowedConfigurablePrefix(ushort segmentId, bool startNode, ref bool __result)
+        public static bool IsUturnAllowedConfigurablePrefix(ushort segmentId, bool startNode, ref NetNode node, ref bool __result)
         {
             ushort nodeId = startNode ? segmentId.GetSegment().m_startNode : segmentId.GetSegment().m_endNode;
             SingletonManager<Manager>.Instance.TryGetFinalNodeData(nodeId, out var nodeData);
